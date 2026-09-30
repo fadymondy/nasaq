@@ -36,7 +36,7 @@ jobs:
       - name: Build (packages, lab, site; turbo runs the site after the registry)
         run: pnpm build
       - name: Published package (publint, attw, use client, npm pack)
-        run: pnpm check:package && npm pack --dry-run --workspace @fadymondy/nasaq
+        run: pnpm check:package && (cd packages/nasaq && npm pack --dry-run)
 
   # Slow: scaffolds a Next app, runs `shadcn add` against the built registry, then tsc.
   smoke:
