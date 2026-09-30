@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Lint (logical properties, no raw hex)
+        run: pnpm lint
+      - name: Tests (token contrast matrix)
+        run: pnpm test
+      - name: Every component has a README and a story
+        run: pnpm check:components
+      - name: Vendored feedback core in sync
+        run: pnpm --filter @nasaq/feedback check:sync
+      - name: Registry (build, shadcn build, validate against the schema)
+        run: pnpm --filter @nasaq/site registry
+      - name: Build (packages, lab, site; turbo runs the site after the registry)
+        run: pnpm build
+      - name: Published package (publint, attw, use client, npm pack)
+        run: pnpm check:package && npm pack --dry-run --workspace @fadymondy/nasaq
+
+  # Slow: scaffolds a Next app, runs `shadcn add` against the built registry, then tsc.
+  smoke:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build --filter=@nasaq/tokens --filter=@nasaq/brands
+      - name: Registry smoke test
+        run: node scripts/smoke-registry.mjs

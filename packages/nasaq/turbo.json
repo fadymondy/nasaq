@@ -1,0 +1,15 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["@nasaq/tokens#build", "^build"],
+      "inputs": ["scripts/**", "tsdown.config.ts", "tsconfig.json", "package.json", "../tsconfig.nasaq.json", "../web/src/**", "../tokens/src/**", "../tokens/dist/**", "../brands/src/**", "../native/src/**", "../electron/src/**"],
+      "outputs": ["dist/**"]
+    },
+    "check": {
+      "dependsOn": ["build"],
+      "cache": false
+    }
+  }
+}

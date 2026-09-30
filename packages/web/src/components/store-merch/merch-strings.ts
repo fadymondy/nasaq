@@ -1,0 +1,76 @@
+"use client";
+import { useOptionalNasaq } from "../../provider/nasaq-provider";
+
+const STRINGS = {
+  en: {
+    shopNow: "Shop now",
+    shopCategory: "Shop {name}",
+    itemsCount: "Items: {n}",
+    categories: "Shop by category",
+    promotions: "Promotions",
+    // flash deals
+    flashDeals: "Flash deals",
+    endsIn: "Ends in",
+    days: "days",
+    hours: "hours",
+    minutes: "minutes",
+    seconds: "seconds",
+    dayShort: "d",
+    hourShort: "h",
+    minuteShort: "m",
+    secondShort: "s",
+    dealEnded: "This deal has ended",
+    timeLeft: "Time left: {time}",
+    claimed: "{percent}% claimed",
+    almostGone: "Almost gone",
+    viewAllDeals: "View all deals",
+    // carousel
+    relatedProducts: "You may also like",
+    recentlyViewed: "Recently viewed",
+    carouselOf: "{title} carousel",
+    viewAll: "View all",
+    // brands
+    brands: "Our brands",
+    brandLink: "Shop {name}",
+  },
+  ar: {
+    shopNow: "تسوّق الآن",
+    shopCategory: "تسوّق {name}",
+    itemsCount: "{n} منتجات",
+    categories: "تسوّق حسب القسم",
+    promotions: "العروض",
+    flashDeals: "عروض سريعة",
+    endsIn: "ينتهي خلال",
+    days: "أيام",
+    hours: "ساعات",
+    minutes: "دقائق",
+    seconds: "ثوانٍ",
+    dayShort: "ي",
+    hourShort: "س",
+    minuteShort: "د",
+    secondShort: "ث",
+    dealEnded: "انتهى هذا العرض",
+    timeLeft: "الوقت المتبقي: {time}",
+    claimed: "تم استهلاك {percent}%",
+    almostGone: "أوشك على النفاد",
+    viewAllDeals: "عرض كل العروض",
+    relatedProducts: "قد يعجبك أيضًا",
+    recentlyViewed: "شاهدتها مؤخرًا",
+    carouselOf: "شريط {title}",
+    viewAll: "عرض الكل",
+    brands: "علاماتنا التجارية",
+    brandLink: "تسوّق {name}",
+  },
+};
+
+export type MerchLabels = Partial<(typeof STRINGS)["en"]>;
+
+export const merchFill = (template: string, values: Record<string, string | number>) => template.replace(/\{(\w+)\}/g, (_, k: string) => String(values[k] ?? ""));
+
+/** Strings and locale for the merchandising blocks. English outside a NasaqProvider. */
+export function useMerchStrings(labels?: MerchLabels) {
+  const locale = useOptionalNasaq()?.locale ?? "en";
+  const lang = locale.startsWith("ar") ? "ar" : "en";
+  const t = { ...STRINGS[lang], ...labels } as (typeof STRINGS)["en"];
+  return { locale, lang, rtl: lang === "ar", t };
+}

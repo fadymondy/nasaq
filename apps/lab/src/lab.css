@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import "@nasaq/tokens/tokens.css";
+@import "@nasaq/tokens/theme.css";
+@import "@nasaq/web/styles.css";
+
+@source "../../../packages/web/src";
+@source "../../../packages/feedback/src/react";
+@source "../stories";
+
+/* Lusail at the product weights only: 300 / 400 / 500 (Bold is banned), Arabic script only: Latin
+   runs inside Arabic text fall through to Inter. Served from the product's
+   files by .storybook/main.ts, never committed. If they are absent the stack falls to Alexandria. */
+@font-face { font-family: Lusail; font-style: normal; font-weight: 300; font-display: swap; src: url("/fonts/lusail/Lusail-Light.woff2") format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F; }
+@font-face { font-family: Lusail; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/lusail/Lusail-Regular.woff2") format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F; }
+@font-face { font-family: Lusail; font-style: normal; font-weight: 500; font-display: swap; src: url("/fonts/lusail/Lusail-Medium.woff2") format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F; }
+
+/* No faux bold: anything asking for 600+ in Arabic renders at Lusail's heaviest allowed cut. */
+[lang|="ar"] { font-synthesis-weight: none; }

@@ -1,0 +1,146 @@
+{
+  "name": "@fadymondy/nasaq",
+  "version": "0.1.0",
+  "description": "Nasaq (نسق): one product language for every surface. React + Base UI + Tailwind v4 components, design tokens, brand marks, a React Native kit and Electron window chrome. Arabic and RTL native.",
+  "keywords": [
+    "design-system",
+    "ui",
+    "react",
+    "react-components",
+    "tailwindcss",
+    "tailwind-v4",
+    "base-ui",
+    "design-tokens",
+    "rtl",
+    "arabic",
+    "react-native",
+    "electron",
+    "shadcn"
+  ],
+  "license": "MIT",
+  "author": "Fady Mondy",
+  "homepage": "https://nasaq.fadymondy.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fadymondy/nasaq.git",
+    "directory": "packages/nasaq"
+  },
+  "bugs": {
+    "url": "https://github.com/fadymondy/nasaq/issues"
+  },
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    "./web": {
+      "types": "./dist/web/index.d.ts",
+      "default": "./dist/web/index.js"
+    },
+    "./web/styles.css": "./dist/web/styles.css",
+    "./tokens": {
+      "types": "./dist/tokens/index.d.ts",
+      "default": "./dist/tokens/index.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./theme.css": "./dist/theme.css",
+    "./brands": {
+      "types": "./dist/brands/index.d.ts",
+      "default": "./dist/brands/index.js"
+    },
+    "./native": {
+      "types": "./dist/native/index.d.ts",
+      "default": "./dist/native/index.js"
+    },
+    "./electron": {
+      "types": "./dist/electron/index.d.ts",
+      "default": "./dist/electron/index.js"
+    },
+    "./electron/main": {
+      "types": "./dist/electron/main.d.ts",
+      "default": "./dist/electron/main.js"
+    },
+    "./electron/preload": {
+      "types": "./dist/electron/preload.d.ts",
+      "default": "./dist/electron/preload.js"
+    },
+    "./electron/chrome.css": "./dist/electron/chrome.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsdown && node scripts/postbuild.mjs",
+    "check": "pnpm run publint && pnpm run attw && pnpm run check:client",
+    "check:client": "node scripts/check-client.mjs",
+    "publint": "publint run --strict .",
+    "attw": "attw --pack . --profile esm-only --exclude-entrypoints web/styles.css tokens.css theme.css electron/chrome.css",
+    "pack:dry": "npm pack --dry-run",
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "dependencies": {
+    "@base-ui/react": "1.8.0",
+    "@dnd-kit/core": "6.3.1",
+    "@dnd-kit/sortable": "10.0.0",
+    "@dnd-kit/utilities": "3.2.2",
+    "@tiptap/extensions": "3.31.3",
+    "@tiptap/pm": "3.31.3",
+    "@tiptap/react": "3.31.3",
+    "@tiptap/starter-kit": "3.31.3",
+    "@xyflow/react": "12.12.0",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "embla-carousel-react": "8.6.0",
+    "frimousse": "0.4.0",
+    "jsbarcode": "3.12.3",
+    "lucide-react": "1.48.0",
+    "react-markdown": "10.1.0",
+    "react-resizable-panels": "4.14.1",
+    "recharts": "3.10.1",
+    "remark-gfm": "4.0.1",
+    "shiki": "4.4.3",
+    "sonner": "2.0.8",
+    "tailwind-merge": "3.7.0",
+    "uqr": "0.1.3"
+  },
+  "peerDependencies": {
+    "electron": ">=38",
+    "expo-haptics": ">=57",
+    "react": ">=19",
+    "react-dom": ">=19",
+    "react-native": ">=0.86",
+    "react-native-svg": ">=15"
+  },
+  "peerDependenciesMeta": {
+    "electron": {
+      "optional": true
+    },
+    "expo-haptics": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    },
+    "react-native-svg": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "publint": "0.3.24",
+    "tsdown": "0.23.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

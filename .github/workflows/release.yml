@@ -1,0 +1,72 @@
+name: Release
+
+# On every push to main: changesets opens (or updates) a "Version packages" PR when there are pending
+# changesets; when that PR is merged, or when a package.json version is not on npm yet, it publishes
+# @fadymondy/nasaq and @fadymondy/nasaq-mcp with `pnpm release`.
+#
+# Auth: npm trusted publishing (OIDC, no stored token). Configure it once per package on npmjs.com
+# (Settings > Trusted Publisher > GitHub Actions: repo fadymondy/nasaq, workflow release.yml).
+# A brand-new package must be published once by hand first (see docs in packages/nasaq/README.md), because
+# npm only lets you attach a trusted publisher to a package that exists.
+# Fallback: add an NPM_TOKEN repository secret (granular, publish access to both packages); the step below
+# uses it when present.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write        # push the version branch and tags
+  pull-requests: write   # open the "Version packages" PR
+  id-token: write        # npm trusted publishing (OIDC) and provenance
+
+jobs:
+  release:
+    if: github.repository == 'fadymondy/nasaq'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      # Trusted publishing needs npm >= 11.5.1.
+      - name: Update npm
+        run: npm install -g npm@latest && npm --version
+      - run: pnpm install --frozen-lockfile
+      # Fallback auth. Skipped when NPM_TOKEN is not set, so OIDC trusted publishing is used.
+      - name: Use NPM_TOKEN when provided
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -n "$NPM_TOKEN" ]; then
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> "$HOME/.npmrc"
+            echo "Using NPM_TOKEN"
+          else
+            echo "No NPM_TOKEN; using OIDC trusted publishing"
+          fi
+      - name: Verify before publishing
+        run: |
+          pnpm typecheck
+          pnpm lint
+          pnpm test
+          pnpm check:components
+          pnpm check:package
+      - name: Version PR or publish
+        uses: changesets/action@v1
+        with:
+          version: pnpm changeset version
+          publish: pnpm release
+          title: "Version packages"
+          commit: "Version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"

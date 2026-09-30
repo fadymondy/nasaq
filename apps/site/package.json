@@ -1,0 +1,32 @@
+{
+  "name": "@nasaq/site",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "registry": "node ../../scripts/registry.mjs",
+    "docs:sync": "node scripts/sync-docs.mjs",
+    "dev": "pnpm docs:sync && next dev -p 6107",
+    "build": "pnpm docs:sync && next build",
+    "start": "next start -p 6107",
+    "typecheck": "pnpm docs:sync && fumadocs-mdx && next typegen && tsc --noEmit",
+    "lint": "node ../../packages/tooling/src/lint.mjs app lib"
+  },
+  "dependencies": {
+    "fumadocs-core": "16.15.17",
+    "fumadocs-mdx": "15.4.5",
+    "fumadocs-ui": "16.15.17",
+    "next": "16.3.7",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/mdx": "2.0.14",
+    "@types/node": "^24.0.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2"
+  }
+}

@@ -1,0 +1,199 @@
+/*
+ * Nasaq web base styles. Import inside your Tailwind entry, after the tokens:
+ *   @import "tailwindcss";
+ *   @import "@fadymondy/nasaq/tokens.css";
+ *   @import "@fadymondy/nasaq/theme.css";
+ *   @import "@fadymondy/nasaq/web/styles.css";
+ *   @source "../node_modules/@fadymondy/nasaq/dist/web";
+ */
+
+@layer base {
+  html {
+    font-family: var(--nq-font-ui);
+    background-color: var(--nq-bg);
+    color: var(--nq-fg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    /* Inter's contextual alternates turn "3x1" into "3×1", even inside emails and URLs.
+       Arabic joining uses init/medi/fina/rlig, not calt, so this is safe in RTL too. */
+    font-feature-settings: "calt" 0;
+  }
+
+  body {
+    font-size: var(--nq-type-body-size);
+    line-height: var(--nq-type-body-line);
+  }
+
+  *,
+  ::before,
+  ::after {
+    border-color: var(--nq-line);
+  }
+
+  /* Inter's contextual alternates reshape some numerals; tabular digits stay stable. */
+  :where(input, .tabular-nums, time, [data-numeric]) {
+    font-feature-settings: "calt" 0, "tnum" 1;
+  }
+
+  /* Arabic: never tracked, never mono. */
+  [lang|="ar"] {
+    letter-spacing: 0;
+  }
+
+  /* Scrollbars follow the palette: a thin rounded line-strong thumb on a clear track, no arrow buttons.
+     Chromium/WebKit use the pseudo-elements (setting scrollbar-color there would disable them);
+     Firefox gets the standard properties. */
+  @supports selector(::-webkit-scrollbar) {
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-button {
+      display: none;
+    }
+    ::-webkit-scrollbar-thumb {
+      border: 3px solid transparent;
+      border-radius: 999px;
+      background: var(--nq-line-strong) padding-box;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: var(--nq-fg-muted);
+    }
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    html {
+      scrollbar-color: var(--nq-line-strong) transparent;
+    }
+    :where(*) {
+      scrollbar-width: thin;
+    }
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--nq-accent) 35%, transparent);
+  }
+
+  :focus-visible {
+    outline-color: var(--nq-focus);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Elevation for floating surfaces (palette, sheets). Always a black shadow:
+   tinting it with --nq-fg turns into a light glow in dark mode. */
+@utility shadow-floating {
+  box-shadow:
+    0 1px 2px color-mix(in oklab, black 6%, transparent),
+    0 12px 32px -8px color-mix(in oklab, black 18%, transparent);
+  .dark &,
+  [data-theme="dark"] & {
+    box-shadow:
+      0 1px 2px color-mix(in oklab, black 30%, transparent),
+      0 16px 40px -8px color-mix(in oklab, black 55%, transparent);
+  }
+}
+
+/* The grid hatch (315°). Disappears in the native expression. */
+@utility hatch {
+  background-image: repeating-linear-gradient(315deg, var(--nq-line) 0 1px, transparent 1px 7px);
+  [data-expression="native"] & {
+    background-image: none;
+  }
+}
+
+/* Section micro-label: uppercase mono in Latin (grid); a plain caption in Arabic and the native expression. */
+@utility eyebrow {
+  font-family: var(--nq-font-eyebrow);
+  font-size: var(--nq-type-eyebrow-size);
+  line-height: var(--nq-type-eyebrow-line);
+  font-weight: var(--nq-type-eyebrow-weight);
+  letter-spacing: var(--nq-type-eyebrow-tracking);
+  text-transform: var(--nq-eyebrow-transform);
+  color: var(--nq-fg-muted);
+}
+
+/*
+ * @xyflow/react (WorkflowCanvas, WorkflowNetwork, GraphView). Those components import the library's
+ * structural base.css themselves; this block only points its --xy-* variables at Nasaq tokens, so the canvas
+ * follows light/dark and the brand. The canvas stays left-to-right in Arabic (React Flow sets direction: ltr
+ * on .react-flow); only the chrome around it and the text inside nodes follow the page direction.
+ */
+.react-flow.nq-flow {
+  --xy-background-color-default: var(--nq-bg);
+  --xy-background-pattern-dots-color-default: var(--nq-line-strong);
+  --xy-background-pattern-lines-color-default: var(--nq-line);
+  --xy-background-pattern-cross-color-default: var(--nq-line);
+  --xy-edge-stroke-default: var(--nq-line-strong);
+  --xy-edge-stroke-selected-default: var(--nq-action);
+  --xy-edge-stroke-width-default: 1.5;
+  --xy-connectionline-stroke-default: var(--nq-action);
+  --xy-connectionline-stroke-width-default: 1.5;
+  --xy-handle-background-color-default: var(--nq-surface);
+  --xy-minimap-background-color-default: var(--nq-surface);
+  --xy-minimap-mask-background-color-default: color-mix(in oklab, var(--nq-bg) 70%, transparent);
+  --xy-minimap-mask-stroke-color-default: var(--nq-line-strong);
+  --xy-minimap-node-background-color-default: var(--nq-line-strong);
+  --xy-selection-background-color-default: color-mix(in oklab, var(--nq-action) 8%, transparent);
+  --xy-selection-border-default: 1px dashed var(--nq-action);
+  --xy-attribution-background-color-default: transparent;
+  font-family: var(--nq-font-ui);
+}
+.react-flow.nq-flow .react-flow__attribution {
+  color: var(--nq-fg-muted);
+  font-size: 10px;
+}
+.react-flow.nq-flow .react-flow__attribution a {
+  color: inherit;
+}
+.react-flow.nq-flow .react-flow__minimap {
+  border: 1px solid var(--nq-line);
+  border-radius: var(--nq-radius-control, 6px);
+  overflow: hidden;
+}
+.react-flow.nq-flow .react-flow__node:focus-visible {
+  outline: 2px solid var(--nq-focus);
+  outline-offset: 2px;
+  border-radius: var(--nq-radius-control, 6px);
+}
+.react-flow.nq-flow .nq-edge-live path.react-flow__edge-path {
+  stroke-dasharray: 6 4;
+  animation: nq-flow-dash 0.9s linear infinite;
+}
+@keyframes nq-flow-dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+/* Workflow network: connectors draw in (pathLength is normalised to 1 on the path). */
+.nq-net-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: nq-net-draw 0.6s var(--nq-ease, ease-out) forwards;
+}
+@keyframes nq-net-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nq-net-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

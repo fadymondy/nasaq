@@ -1,0 +1,12 @@
+/* Nasaq Electron chrome: drag regions. Import once in the renderer. */
+[data-nq-drag] {
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Anything interactive inside a drag region stays clickable. */
+[data-nq-drag] :is(button, a, input, select, textarea, label, summary, [role="button"], [role="tab"], [role="menuitem"], [contenteditable], [tabindex]:not([tabindex="-1"])),
+[data-nq-no-drag] {
+  -webkit-app-region: no-drag;
+}

@@ -1,0 +1,58 @@
+import { brands as brandTokens } from "@nasaq/tokens";
+import { BRAND_ALIASES, MARKS, type MarkSpec } from "./marks";
+
+export type BrandKey = keyof typeof MARKS;
+type Pair = { light: string; dark: string };
+
+export interface BrandManifest {
+  key: BrandKey;
+  aliases: string[];
+  name: { en: string; ar?: string };
+  /** Typeset, never an image: JetBrains Mono 500 +0.14em uppercase (Latin) or the Arabic face, no tracking. */
+  wordmark: { latin: string; arabic?: string };
+  mark: MarkSpec;
+  color: { brand: Pair; action: Pair; onAction: Pair; accent: string };
+  typography: { latin: "lusail" | "inter" };
+  links?: { site?: string };
+}
+
+const meta: Record<BrandKey, Pick<BrandManifest, "name" | "typography"> & { site?: string }> = {
+  nasaq: { name: { en: "Nasaq", ar: "نسق" }, typography: { latin: "lusail" }, site: "https://nasaq.fadymondy.com" },
+  fadymondy: { name: { en: "Fady Mondy" }, typography: { latin: "lusail" }, site: "https://fadymondy.com" },
+  mahaam: { name: { en: "Mahaam", ar: "مهام" }, typography: { latin: "inter" }, site: "https://mahaam.app" },
+  zekra: { name: { en: "Zekra", ar: "ذكرة" }, typography: { latin: "inter" }, site: "https://zekra.dev" },
+  moharrik: { name: { en: "Moharrik", ar: "محرّك" }, typography: { latin: "inter" } },
+  seatfor: { name: { en: "SeatFor" }, typography: { latin: "lusail" } },
+  "health-debug": { name: { en: "Health Debug", ar: "شفرة التعافي الصحي" }, typography: { latin: "lusail" } },
+  circlexo: { name: { en: "CircleXO" }, typography: { latin: "lusail" } },
+  hosbah: { name: { en: "Hosbah", ar: "حوسبة" }, typography: { latin: "inter" } },
+  orchestra: { name: { en: "Orchestra", ar: "اوركيسترا" }, typography: { latin: "lusail" } },
+};
+
+export const BRAND_KEYS = Object.keys(MARKS) as BrandKey[];
+
+export const BRANDS = Object.fromEntries(
+  BRAND_KEYS.map((key) => {
+    const m = meta[key];
+    const t = brandTokens[key];
+    const manifest: BrandManifest = {
+      key,
+      aliases: Object.entries(BRAND_ALIASES)
+        .filter(([, v]) => v === key)
+        .map(([k]) => k),
+      name: m.name,
+      wordmark: { latin: m.name.en.toUpperCase(), ...(m.name.ar ? { arabic: m.name.ar } : {}) },
+      mark: MARKS[key],
+      color: { brand: { ...t.brand }, action: { ...t.action }, onAction: { ...t.onAction }, accent: t.accent },
+      typography: m.typography,
+      ...(m.site ? { links: { site: m.site } } : {}),
+    };
+    return [key, manifest];
+  }),
+) as Record<BrandKey, BrandManifest>;
+
+/** Resolve a Nasaq key or a legacy alias (managy, cabrain, cloudy, …). */
+export function resolveBrand(key: string): BrandManifest | undefined {
+  const k = (key in BRANDS ? key : BRAND_ALIASES[key]) as BrandKey | undefined;
+  return k ? BRANDS[k] : undefined;
+}

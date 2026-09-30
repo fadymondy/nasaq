@@ -1,0 +1,62 @@
+{
+  "name": "@fadymondy/nasaq-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for the Nasaq design system: list components and read their manuals, source, stories, tokens and foundations.",
+  "license": "MIT",
+  "author": "Fady Mondy",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fadymondy/nasaq.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://nasaq-ui.fadymondy.com",
+  "bugs": {
+    "url": "https://github.com/fadymondy/nasaq/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "design-system",
+    "nasaq",
+    "react",
+    "shadcn",
+    "tailwind",
+    "rtl",
+    "arabic",
+    "claude",
+    "cursor"
+  ],
+  "type": "module",
+  "bin": {
+    "nasaq-mcp": "./src/server.mjs",
+    "nasaq-mcp-http": "./src/http.mjs"
+  },
+  "exports": {
+    ".": "./src/catalog.mjs",
+    "./http": "./src/http.mjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "catalog.json",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node scripts/build-catalog.mjs",
+    "start": "node src/server.mjs",
+    "test": "node --test \"test/*.test.mjs\"",
+    "prepublishOnly": "node scripts/build-catalog.mjs",
+    "start:http": "node src/http.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "yaml": "2.9.1",
+    "zod": "4.6.5"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

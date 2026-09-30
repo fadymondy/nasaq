@@ -1,0 +1,31 @@
+{
+  "name": "nasaq-monorepo",
+  "private": true,
+  "description": "Nasaq (نسق) — one product language, every surface.",
+  "license": "MIT",
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lab": "pnpm --filter @nasaq/lab dev",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "check:components": "node scripts/check-components.mjs",
+    "mcp": "node packages/mcp/src/server.mjs",
+    "changeset": "changeset",
+    "check:package": "turbo run check --filter=@fadymondy/nasaq",
+    "release": "turbo run build --filter=@fadymondy/nasaq --filter=@fadymondy/nasaq-mcp && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.3",
+    "@types/node": "^24.0.0",
+    "postcss": "8.5.28",
+    "shadcn": "4.21.0",
+    "turbo": "2.11.5",
+    "typescript": "7.0.2"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "registry": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "../../scripts/**", "../../packages/web/src/**", "../../packages/brands/src/**", "../../packages/tokens/src/**"],
+      "env": ["NASAQ_REGISTRY_URL"],
+      "outputs": ["public/r/**"]
+    },
+    "build": {
+      "dependsOn": ["^build", "registry"],
+      "inputs": ["$TURBO_DEFAULT$", "../../packages/web/src/components/*/README.md", "../../packages/mcp/src/catalog.mjs"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "typecheck": { "dependsOn": ["^build", "registry"] }
+  }
+}

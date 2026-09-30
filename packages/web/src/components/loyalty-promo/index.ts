@@ -1,0 +1,21 @@
+export * from "./loyalty-promo";
+export {
+  evaluatePromo,
+  expiringPoints,
+  isPromoCodeFormat,
+  loyaltyTier,
+  maxRedeemablePoints,
+  normalizePromoCode,
+  type EarnRule,
+  type LoyaltyTierState,
+  type PointsLot,
+  type PromoContext,
+  type PromoLike,
+  type PromoProblem,
+  type PromoResult,
+  type RedeemRule,
+  pointsEarned,
+  pointsValue,
+  promoLive,
+  spendablePoints,
+} from "./loyalty-logic";
