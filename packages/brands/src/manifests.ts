@@ -24,7 +24,7 @@ const meta: Record<BrandKey, Pick<BrandManifest, "name" | "typography"> & { site
   moharrik: { name: { en: "Moharrik", ar: "محرّك" }, typography: { latin: "inter" } },
   seatfor: { name: { en: "SeatFor" }, typography: { latin: "lusail" } },
   "health-debug": { name: { en: "Health Debug", ar: "شفرة التعافي الصحي" }, typography: { latin: "lusail" } },
-  circlexo: { name: { en: "CircleXO" }, typography: { latin: "lusail" } },
+  circlexo: { name: { en: "CircleXO", ar: "سيركل إكس أو" }, typography: { latin: "lusail" } },
   hosbah: { name: { en: "Hosbah", ar: "حوسبة" }, typography: { latin: "inter" } },
   orchestra: { name: { en: "Orchestra", ar: "اوركيسترا" }, typography: { latin: "lusail" } },
 };
