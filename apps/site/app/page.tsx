@@ -28,7 +28,7 @@ export default function HomePage() {
         <header className="flex flex-col gap-4">
           <h1 className="text-4xl font-bold tracking-tight">Nasaq (نسق)</h1>
           <p className="text-lg text-fd-muted-foreground">
-            One product language, every surface. Nasaq is a design system of <code>--nq-*</code> tokens, ten brand themes
+            One product language, every surface. Nasaq is a design system of <code>--nq-*</code> tokens, eleven brand themes
             and Base UI components, built for light, dark, LTR and RTL. Install what you need through the shadcn CLI and
             own the code, or take the whole thing from npm.
           </p>

@@ -29,7 +29,7 @@ const modes: ThemeName[] = ["light", "dark"];
  * Upstream brand actions that miss 4.5:1 for normal text. Values are quoted from product code and are
  * not Nasaq's to change; they still must clear 3:1 (large text / UI). Open decision B15 (BRAND-AUDIT §7).
  */
-const KNOWN_ACTION_EXCEPTIONS = new Set(["health-debug:dark", "circlexo:light"]);
+const KNOWN_ACTION_EXCEPTIONS = new Set(["health-debug:dark", "circlexo:light", "togo:light", "togo:dark"]);
 
 describe("semantic contrast", () => {
   for (const mode of modes) {

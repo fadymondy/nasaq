@@ -1,12 +1,12 @@
 "use client";
 
 import { type LucideIcon, Search, Shapes } from "lucide-react";
-import { type KeyboardEvent, useEffect, useId, useMemo, useRef, useState } from "react";
+import { type KeyboardEvent, type ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Button } from "../button";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
-import { ICON_CATALOG, ICON_CATEGORIES, type IconEntry } from "./icon-catalog";
+import { ICON_CATALOG, ICON_CATEGORIES, type IconEntry, toKebab } from "./icon-catalog";
 import { filterIcons, nextGridIndex, pushRecent } from "./icon-search";
 
 /* ------------------------------------------------------------------ strings */
@@ -52,15 +52,50 @@ const PAGE = 96;
 
 /* ------------------------------------------------------------------ helpers */
 
-/** Finds an icon component by its kebab-case name in the built-in set (or your own). */
-export function findIcon(name: string | null | undefined, icons: readonly IconEntry[] = ICON_CATALOG): IconEntry | undefined {
-  return name ? icons.find((i) => i.name === name) : undefined;
+/** Accepts the stored forms of an icon name: `users`, `Users`, `lucide:users`. Returns the kebab-case name. */
+export function normalizeIconName(name: string): string {
+  const bare = name.trim().replace(/^lucide:/, "");
+  return /[A-Z]/.test(bare) ? toKebab(bare) : bare;
 }
 
-/** Renders the icon a picker returned. Renders nothing for an unknown name. */
-export function IconByName({ name, icons, ...props }: { name: string | null | undefined; icons?: readonly IconEntry[] } & React.ComponentProps<LucideIcon>) {
+/** Finds an icon component by name in the built-in set (or your own). Accepts `users`, `Users` and `lucide:users`. */
+export function findIcon(name: string | null | undefined, icons: readonly IconEntry[] = ICON_CATALOG): IconEntry | undefined {
+  if (!name) return undefined;
+  const key = normalizeIconName(name);
+  return icons.find((i) => i.name === key);
+}
+
+const isIconUrl = (name: string) => /^(https?:\/\/|\/|data:image\/)/.test(name);
+
+export type IconByNameProps = {
+  /** An icon name (`users`, `Users`, `lucide:users`) or an image URL (`https://…`, `/…`, `data:image/…`). */
+  name: string | null | undefined;
+  icons?: readonly IconEntry[];
+  /** Rendered when the name is empty or unknown. Default: nothing. */
+  fallback?: ReactNode;
+} & React.ComponentProps<LucideIcon>;
+
+/**
+ * Renders an icon stored as a string: what a picker returned, or what a server sent (navigation, resources,
+ * plugin manifests). An image URL renders as a decorative `<img>` at the same size. Unknown names render `fallback`.
+ */
+export function IconByName({ name, icons, fallback = null, className, size, ...props }: IconByNameProps) {
+  if (name && isIconUrl(name)) {
+    const px = typeof size === "number" ? size : undefined;
+    return (
+      <img
+        src={name}
+        alt=""
+        aria-hidden
+        data-slot="icon-image"
+        width={px}
+        height={px}
+        className={cn("inline-block shrink-0 object-contain", px === undefined && "size-4", className as string)}
+      />
+    );
+  }
   const Found = findIcon(name, icons)?.icon;
-  return Found ? <Found aria-hidden {...props} /> : null;
+  return Found ? <Found aria-hidden className={className} size={size} {...props} /> : <>{fallback}</>;
 }
 
 function useUi() {

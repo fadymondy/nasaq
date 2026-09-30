@@ -355,6 +355,21 @@ export const brands = {
       "dark": "#0E1A3C"
     },
     "accent": "#8C3B1F"
+  },
+  "togo": {
+    "brand": {
+      "light": "#0E1A3C",
+      "dark": "#F0EBE1"
+    },
+    "action": {
+      "light": "#1F8A99",
+      "dark": "#1F8A99"
+    },
+    "onAction": {
+      "light": "#0B1429",
+      "dark": "#0B1429"
+    },
+    "accent": "#1F8A99"
   }
 } as const;
 

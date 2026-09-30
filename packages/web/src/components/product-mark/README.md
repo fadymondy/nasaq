@@ -61,11 +61,11 @@ ProductLogo    data-slot="product-logo"    (<span> flex, gap 2)
 ## Brand keys
 
 `BrandKey` values (from `@nasaq/brands`): `nasaq`, `fadymondy`, `mahaam`, `zekra`, `moharrik`, `seatfor`,
-`health-debug`, `circlexo`, `hosbah`, `orchestra`.
+`health-debug`, `circlexo`, `hosbah`, `orchestra`, `togo`.
 
 Legacy aliases also resolve: `managy` to `mahaam`, `cabrain` to `zekra`, `claude-digital-twin` to
 `moharrik`, `booki` to `seatfor`, `cloudy` to `hosbah`, `orchestra-mcp` to `orchestra`, `fady-mondy` to
-`fadymondy`.
+`fadymondy`, `togo-framework` to `togo`.
 
 The Nasaq mark itself is currently a proposal pending approval.
 

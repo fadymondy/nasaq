@@ -1,6 +1,6 @@
 # The token system
 
-Every colour, space, radius, type size and control height in Nasaq is a CSS custom property named `--nq-*`. Components use these and nothing else, which is what lets one component library serve ten brands, two themes, three densities and two expressions.
+Every colour, space, radius, type size and control height in Nasaq is a CSS custom property named `--nq-*`. Components use these and nothing else, which is what lets one component library serve eleven brands, two themes, three densities and two expressions.
 
 ## Where they come from
 

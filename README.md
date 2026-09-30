@@ -1,6 +1,6 @@
 # Nasaq (نسق)
 
-One product language for every surface: 347 React components, a token system, ten brand themes and full page templates, built on Base UI and Tailwind CSS v4, with Arabic and right-to-left layout treated as a first-class case. Install it as a shadcn registry (you own the source) or, once the first release is out, as an npm package.
+One product language for every surface: 351 React components, a token system, eleven brand themes and full page templates, built on Base UI and Tailwind CSS v4, with Arabic and right-to-left layout treated as a first-class case. Install it as a shadcn registry (you own the source) or, once the first release is out, as an npm package.
 
 | | |
 | --- | --- |
@@ -30,7 +30,7 @@ npx shadcn@latest add https://nasaq-ui.fadymondy.com/r/nasaq.json
 # then any component by URL
 npx shadcn@latest add https://nasaq-ui.fadymondy.com/r/button.json
 
-# a brand theme (10 available, theme-<brand>)
+# a brand theme (11 available, theme-<brand>)
 npx shadcn@latest add https://nasaq-ui.fadymondy.com/r/theme-nasaq.json
 ```
 
@@ -125,7 +125,7 @@ Contributions are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md). Security repo
 The MIT licence covers the source code and documentation. It does **not** cover the items below.
 
 - **Fonts.** No font files are included in this repository or in the published site. The token stacks name Inter and Alexandria (open licences, loaded by the app that uses them) and IBM Plex Sans Arabic, with the Arabic display face Lusail first in the Arabic stack. Lusail is a commercial-licence face that is not redistributed here; where it is not installed the stack falls back to the next family. If you deploy Nasaq you are responsible for the licences of the fonts you load.
-- **Logos and brand marks.** The sign-in components (`oauth-buttons`, `connected-accounts`) draw the official Google, GitHub, Apple and Microsoft marks, unmodified, in the providers' own colours, following each provider's branding guidelines. They are trademarks of their owners, are never recoloured, mirrored or redrawn, and are not licensed to you by this repository: follow each provider's guidelines in your own product. The brand manifests (`packages/brands`) hold the marks of the author's own products and the ten brand themes, drawn as data to demonstrate theming; do not use one for a product you do not own.
+- **Logos and brand marks.** The sign-in components (`oauth-buttons`, `connected-accounts`) draw the official Google, GitHub, Apple and Microsoft marks, unmodified, in the providers' own colours, following each provider's branding guidelines. They are trademarks of their owners, are never recoloured, mirrored or redrawn, and are not licensed to you by this repository: follow each provider's guidelines in your own product. The brand manifests (`packages/brands`) hold the marks of the author's own products and the eleven brand themes, drawn as data to demonstrate theming; do not use one for a product you do not own.
 - **Images.** The storefront demos use simple SVG illustrations under `apps/lab/public/store`, drawn for the demos so they render. They are not a product-photo library.
 
 If you believe something here is used in a way its owner does not allow, please tell us through [SECURITY.md](SECURITY.md) and it will be removed.

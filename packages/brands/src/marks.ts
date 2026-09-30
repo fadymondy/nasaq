@@ -103,6 +103,15 @@ export const MARKS = {
     body: "#D97757",
     accent: "#8C3B1F",
   },
+  /** to-go.dev/brand: the ToGO framework */
+  togo: {
+    name: "ToGO",
+    cells: [[0, 1], [1, 0], [1, 2], [2, 1], [2, 3], [3, 2]],
+    accentCells: [[2, 1], [2, 3], [3, 2]],
+    body: "#0E1A3C",
+    bodyOnDark: "#F0EBE1",
+    accent: "#1F8A99",
+  },
 } as const satisfies Record<string, MarkSpec>;
 
 /** Legacy / upstream keys that resolve to a Nasaq brand key. */
@@ -114,4 +123,5 @@ export const BRAND_ALIASES: Record<string, keyof typeof MARKS> = {
   cloudy: "hosbah",
   "orchestra-mcp": "orchestra",
   "fady-mondy": "fadymondy",
+  "togo-framework": "togo",
 };

@@ -1,6 +1,6 @@
 # What Nasaq is
 
-Nasaq (نسق, Arabic for "order" or "system") is a design system for product interfaces: {{components}} React components, a token system, ten brand themes and full-page templates. It is built on Base UI and Tailwind CSS v4, follows shadcn's anatomy and prop names, and treats Arabic and right-to-left layouts as a first-class case, not an afterthought.
+Nasaq (نسق, Arabic for "order" or "system") is a design system for product interfaces: {{components}} React components, a token system, eleven brand themes and full-page templates. It is built on Base UI and Tailwind CSS v4, follows shadcn's anatomy and prop names, and treats Arabic and right-to-left layouts as a first-class case, not an afterthought.
 
 This site is the documentation. Every component has a live story and a manual; the sidebar below the docs is the catalogue.
 

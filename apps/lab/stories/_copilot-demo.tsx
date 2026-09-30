@@ -78,7 +78,8 @@ function useCopilotState(ar: boolean, seed?: CopilotMessage[]) {
   };
 }
 
-function useCopilotProps(seeded: boolean) {
+/** Scripted CopilotChat props: streaming answers, context chips, models and mentions. */
+export function useCopilotProps(seeded: boolean) {
   const ar = useAr();
   const seed: CopilotMessage[] | undefined = seeded
     ? (() => {

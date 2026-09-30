@@ -27,6 +27,7 @@ const meta: Record<BrandKey, Pick<BrandManifest, "name" | "typography"> & { site
   circlexo: { name: { en: "CircleXO", ar: "سيركل إكس أو" }, typography: { latin: "lusail" } },
   hosbah: { name: { en: "Hosbah", ar: "حوسبة" }, typography: { latin: "inter" } },
   orchestra: { name: { en: "Orchestra", ar: "اوركيسترا" }, typography: { latin: "lusail" } },
+  togo: { name: { en: "ToGO" }, typography: { latin: "lusail" }, site: "https://to-go.dev" },
 };
 
 export const BRAND_KEYS = Object.keys(MARKS) as BrandKey[];

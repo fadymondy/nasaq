@@ -28,7 +28,7 @@ npx shadcn@latest add @nasaq/nasaq
 
 It does four things:
 
-- Writes the `--nq-*` tokens (light, dark, all ten brands, three densities, two expressions) and the shadcn bridge variables (`--background`, `--primary`, `--border` and the rest) into your global CSS. shadcn's own components keep working and pick up Nasaq's colours.
+- Writes the `--nq-*` tokens (light, dark, all eleven brands, three densities, two expressions) and the shadcn bridge variables (`--background`, `--primary`, `--border` and the rest) into your global CSS. shadcn's own components keep working and pick up Nasaq's colours.
 - Adds `lib/utils.ts` (`cn`), `lib/nasaq/tokens.ts`, `lib/nasaq/brands.ts` (brand data and the official marks) and `lib/nasaq/hotkey.ts`.
 - Adds `components/nasaq/nasaq-provider.tsx` and `theme-script.ts`.
 - Adds the npm packages those files need.

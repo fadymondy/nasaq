@@ -4,7 +4,7 @@ title: IconPicker
 category: pickers
 status: beta
 summary: A popover or inline panel to choose a lucide icon with search in English and Arabic, categories, recent icons, a capped grid with show more and full keyboard navigation. Returns the icon name.
-exports: [IconPickerLabels, findIcon, IconByName, IconPickerPanelProps, IconPickerPanel, IconPickerProps, IconPicker]
+exports: [IconPickerLabels, normalizeIconName, findIcon, IconByName, IconByNameProps, IconPickerPanelProps, IconPickerPanel, IconPickerProps, IconPicker]
 related: [emoji-picker, color-picker, popover]
 story: components-pickers-icon-picker
 keywords: [icon, picker, lucide, symbol, glyph, select icon, search, categories, recent]
@@ -78,7 +78,16 @@ IconPicker                     Popover; trigger is a button showing the chosen i
 
 **IconPicker** adds `trigger`, `closeOnSelect` (default true), `open` / `onOpenChange`, `side`, `align`, `disabled`.
 
-**Helpers**: `findIcon(name)`, `IconByName`, `filterIcons(icons, query, category)`, `ICON_CATALOG`, `ICON_CATEGORIES`.
+**IconByName** renders an icon stored as a string.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `string | null | undefined` | | `users`, `Users` or `lucide:users`; or an image URL (`https://…`, `/…`, `data:image/…`), drawn as a decorative `<img>`. |
+| `icons` | `readonly IconEntry[]` | `ICON_CATALOG` | The set to look the name up in. |
+| `fallback` | `ReactNode` | `null` | Rendered for an empty or unknown name. |
+| `size`, `className`, … | lucide props | | Passed to the icon (`size` also sizes an image). |
+
+**Helpers**: `normalizeIconName(name)` (to kebab-case, strips `lucide:`), `findIcon(name)`, `filterIcons(icons, query, category)`, `ICON_CATALOG`, `ICON_CATEGORIES`.
 
 ## Examples
 
@@ -91,6 +100,19 @@ import { Anchor, Ship } from "lucide-react";
 const icons = [Anchor, Ship].map((icon) => ({ name: toKebab(icon.displayName ?? ""), icon, category: "sea", keywords: "boat harbor" }));
 
 <IconPicker icons={icons} onValueChange={console.log} />;
+```
+
+### Icons sent by a server
+
+Navigation and resource manifests often name their icon as a string. Give unknown names a neutral fallback so a typo never leaves a hole in the menu.
+
+```tsx
+import { IconByName } from "@fadymondy/nasaq/web";
+import { Circle } from "lucide-react";
+
+export function NavIcon({ icon }: { icon?: string }) {
+  return <IconByName name={icon} className="size-4" fallback={<Circle aria-hidden className="size-4" />} />;
+}
 ```
 
 ## Accessibility
