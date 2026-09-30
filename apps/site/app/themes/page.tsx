@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Brand themes", description: "The ten
 type Theme = { name: string; description: string; css?: Record<string, Record<string, string>> };
 
 async function themes(): Promise<Theme[]> {
-  const dir = join(process.cwd(), "public", "r");
+  const dir = join(process.cwd(), "..", "lab", ".registry", "r");
   const files = (await readdir(dir)).filter((f) => /^theme-.+\.json$/.test(f)).sort();
   return Promise.all(files.map(async (f) => JSON.parse(await readFile(join(dir, f), "utf8")) as Theme));
 }
