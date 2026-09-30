@@ -53,10 +53,11 @@ export function UserMenu({ user, children, preferences = true, onSignOut, profil
     signOut: labels?.signOut ?? (ar ? "تسجيل الخروج" : "Sign out"),
   };
   const identity = (
-    <span className="grid min-w-0 flex-1 text-start leading-tight">
-      <span className="truncate text-label text-foreground">{user.name}</span>
+    <span className="grid min-w-0 flex-1 text-start">
+      {/* leading-snug on each line: the type roles carry their own (taller, Arabic) line height, which a parent leading can't override. */}
+      <span className="truncate text-label leading-snug text-foreground">{user.name}</span>
       {/* Isolate the address (LTR) but keep the line aligned to the reading start. */}
-      <span className="truncate text-caption text-muted-foreground">
+      <span className="truncate text-caption leading-snug text-muted-foreground">
         <bdi dir="ltr">{user.email}</bdi>
       </span>
     </span>
@@ -68,11 +69,14 @@ export function UserMenu({ user, children, preferences = true, onSignOut, profil
         data-slot="user-menu"
         aria-label={collapsed ? user.name : undefined}
         className={cn(
-          "flex h-[calc(var(--spacing-nav-row)+12px)] w-full items-center gap-2 rounded-control px-1.5 outline-none",
+          "flex w-full items-center gap-2 rounded-control px-1.5 outline-none",
           "transition-colors duration-150 ease-nq hover:bg-nq-hover data-popup-open:bg-nq-selected",
           "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus",
-          // Expanded: a bordered surface so the switcher reads as a control, not a nav row.
-          collapsed ? "size-control justify-center px-0" : "border border-border bg-background/60 shadow-xs hover:border-nq-line-strong",
+          // Expanded: a bordered surface so the switcher reads as a control, not a nav row. A minimum
+          // height, not a fixed one, so the two lines keep their padding in Arabic's larger type.
+          collapsed
+            ? "size-control justify-center px-0"
+            : "min-h-[calc(var(--spacing-nav-row)+12px)] border border-border bg-background/60 py-1 shadow-xs hover:border-nq-line-strong",
           className,
         )}
       >

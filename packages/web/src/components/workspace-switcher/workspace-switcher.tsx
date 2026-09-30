@@ -67,20 +67,24 @@ export function WorkspaceSwitcher({ workspaces, value, onValueChange, onCreate, 
         data-slot="workspace-switcher"
         aria-label={collapsed ? active.name : undefined}
         className={cn(
-          "flex h-[calc(var(--spacing-nav-row)+12px)] w-full items-center gap-2 rounded-control px-1.5 text-start outline-none",
+          "flex w-full items-center gap-2 rounded-control px-1.5 text-start outline-none",
           "transition-colors duration-150 ease-nq hover:bg-nq-hover data-popup-open:bg-nq-selected",
           "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus",
-          // Expanded: a bordered surface so the switcher reads as a control, not a nav row.
-          collapsed ? "size-control justify-center px-0" : "border border-border bg-background/60 shadow-xs hover:border-nq-line-strong",
+          // Expanded: a bordered surface so the switcher reads as a control, not a nav row. A minimum
+          // height, not a fixed one, so the two lines keep their padding in Arabic's larger type.
+          collapsed
+            ? "size-control justify-center px-0"
+            : "min-h-[calc(var(--spacing-nav-row)+12px)] border border-border bg-background/60 py-1 shadow-xs hover:border-nq-line-strong",
           className,
         )}
       >
         <WorkspaceLogo workspace={active} size={collapsed ? "sm" : "md"} />
         {collapsed ? null : (
           <>
-            <span className="grid min-w-0 flex-1 leading-tight">
-              <span className="truncate text-label text-foreground">{active.name}</span>
-              {active.description ? <span className="truncate text-caption text-muted-foreground">{active.description}</span> : null}
+            <span className="grid min-w-0 flex-1">
+              {/* leading-snug on each line: the type roles carry their own (taller, Arabic) line height, which a parent leading can't override. */}
+              <span className="truncate text-label leading-snug text-foreground">{active.name}</span>
+              {active.description ? <span className="truncate text-caption leading-snug text-muted-foreground">{active.description}</span> : null}
             </span>
             <ChevronsUpDown aria-hidden className="size-4 shrink-0 text-muted-foreground" />
           </>
