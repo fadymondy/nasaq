@@ -5,7 +5,7 @@ Working branch `feat/frameworks` in the worktree `E:\Sites\nasaq-wt-frameworks`.
 - [x] `packages/html`: `nasaq.css`, the plain-CSS component layer (`.nq-*` classes on Nasaq tokens, no Tailwind needed)
 - [x] `packages/html`: vanilla behaviours (`data-nq` auto-init): dialog, menu, tabs, tooltip, toast, accordion, theme/locale, money (USD, or SAR in Arabic)
 - [x] `packages/html`: Alpine.js plugin (`Alpine.plugin(nasaq)`): `nqDialog`, `nqMenu`, `nqTabs`, `nqToast` store, `$nq` magic
-- [ ] `packages/vue`: Vue 3 components rendering the same classes, `NasaqProvider` / `useNasaq` / `useCurrency`
+- [x] `packages/vue`: Vue 3 components rendering the same classes, `NasaqProvider` / `useNasaq` / `useCurrency`
 - [ ] `@fadymondy/nasaq` exports: `./html`, `./html.css`, `./alpine`, `./vue`, IIFE/CDN builds, Blade component stubs
 - [ ] Tests: core logic plus DOM behaviours
 - [ ] Lab stories: Frameworks/HTML, Frameworks/Alpine, Frameworks/Vue
