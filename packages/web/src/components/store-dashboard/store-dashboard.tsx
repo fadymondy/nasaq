@@ -32,6 +32,7 @@ import {
   storeToMajor,
   storeTopN,
 } from "./store-dashboard-math";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const ORDER_STATUS_EN: Record<CommerceOrderStatus, string> = {
   pending: "Pending",
@@ -234,7 +235,8 @@ export interface StoreLiveVisitors {
 
 export interface StoreDashboardProps {
   /** ISO 4217 code of the store. Every money figure is integer minor units in it. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** What the period adds up to. */
   totals: StorePeriodTotals;
   /** The comparison period. Without it the KPIs show no change. */
@@ -330,7 +332,7 @@ function MenuRow({ actions, children, className }: { actions: ContextMenuAction[
  * recent orders) that the owner can rearrange. Presentational: pass the numbers for the period, it does the ratios.
  */
 export function StoreDashboard({
-  currency,
+  currency: currencyProp,
   totals,
   previousTotals,
   series,
@@ -358,6 +360,7 @@ export function StoreDashboard({
   className,
   labels,
 }: StoreDashboardProps) {
+  const currency = useCurrency(currencyProp);
   const t = useAnalyticsLabels(STRINGS, labels);
   const [innerLayout, setInnerLayout] = useState<readonly BoardItem[]>(STORE_DASHBOARD_LAYOUT);
   const boardLayout = layout ?? innerLayout;

@@ -4,7 +4,7 @@ import { Coins, Cpu, ReceiptText, Sparkles, Wallet } from "lucide-react";
 import { type ComponentProps, type ReactNode, useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { cn } from "../../lib/cn";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { useCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { BreakdownTable, type BreakdownColumn, type BreakdownRow } from "../breakdown-table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../card";
 import { ChartContainer, type ChartConfig, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, useChartAxis } from "../chart";
@@ -92,7 +92,7 @@ export interface AiUsageCostProps extends Omit<ComponentProps<"div">, "children"
   markup?: number;
   /** Total cost of the previous period, adds a change to the total tile. */
   previousTotal?: number;
-  /** ISO 4217 code. Default "USD". */
+  /** ISO 4217 code. Default USD, or SAR in Arabic. */
   currency?: string;
   loading?: boolean;
   labels?: AiUsageCostLabels;
@@ -102,7 +102,8 @@ export interface AiUsageCostProps extends Omit<ComponentProps<"div">, "children"
  * AI spend at a glance: total, tokens, billed, unbilled and the client price with markup, a daily stacked bar
  * of billed and unbilled cost, and a breakdown by model, product or run with token columns.
  */
-export function AiUsageCost({ days, byModel, byProduct, byRun, markup, previousTotal, currency = "USD", loading = false, labels, className, ...props }: AiUsageCostProps) {
+export function AiUsageCost({ days, byModel, byProduct, byRun, markup, previousTotal, currency: currencyProp, loading = false, labels, className, ...props }: AiUsageCostProps) {
+  const currency = useCurrency(currencyProp);
   const { locale, t } = useLabels(labels);
   const { xAxis, yAxis } = useChartAxis();
   const totals = useMemo(() => costTotals(days), [days]);
@@ -205,7 +206,8 @@ export interface TokenCostMeterProps extends Omit<ComponentProps<"div">, "childr
 }
 
 /** One run's tokens split into input, output and cached, with an optional spend meter against its budget. */
-export function TokenCostMeter({ tokensIn, tokensOut, cached = 0, cost, budget, currency = "USD", className, labels, ...props }: TokenCostMeterProps) {
+export function TokenCostMeter({ tokensIn, tokensOut, cached = 0, cost, budget, currency: currencyProp, className, labels, ...props }: TokenCostMeterProps) {
+  const currency = useCurrency(currencyProp);
   const { locale, t } = useLabels(labels);
   const split = tokenSplit(tokensIn, tokensOut, cached);
   const n = (v: number) => formatNumber(v, locale, { notation: "compact", maximumFractionDigits: 1 });

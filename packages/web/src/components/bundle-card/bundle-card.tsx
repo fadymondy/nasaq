@@ -6,6 +6,7 @@ import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Badge } from "../badge";
 import { useFormatNumber } from "../numeric";
 import { Price, type PricePeriod } from "../price";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface BundleCardProps extends Omit<ComponentProps<"article">, "title"> {
   /** The bundled products' artwork or glyphs, in order. They overlap like a stack of cards. */
@@ -29,7 +30,8 @@ export interface BundleCardProps extends Omit<ComponentProps<"article">, "title"
  * Several apps sold together for less. Shows the stack, what it's for, the saving and the price against the
  * separate total. Stacks vertically in a narrow container and lays out in a row from 36rem.
  */
-export function BundleCard({ items, title, description, includes, price, compareAt, currency = "USD", period = "month", savingsLabel, action, className, ...props }: BundleCardProps) {
+export function BundleCard({ items, title, description, includes, price, compareAt, currency: currencyProp, period = "month", savingsLabel, action, className, ...props }: BundleCardProps) {
+  const currency = useCurrency(currencyProp);
   const ar = useOptionalNasaq()?.locale.startsWith("ar") ?? false;
   const fmt = useFormatNumber();
   const saving = compareAt - price;

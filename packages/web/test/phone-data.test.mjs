@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { formatE164, formatNational, isValidE164, parsePhone, PHONE_COUNTRIES, phoneCountryName, phoneExample } from "../src/components/phone-input/phone-data.ts";
+import { formatE164, formatNational, isValidE164, parsePhone, parsePhoneLenient, PHONE_COUNTRIES, phoneCountryName, phoneExample } from "../src/components/phone-input/phone-data.ts";
 
 const byIso = (iso) => PHONE_COUNTRIES.find((c) => c.iso === iso);
 
@@ -44,4 +44,15 @@ test("Arabic-Indic and Persian digits are read as 0-9", () => {
   assert.equal(formatE164(byIso("IR"), "۰۹۱۲۳۴۵۶۷۸۹"), "+989123456789");
   assert.equal(parsePhone("+٩٦٦٥٠١٢٣٤٥٦٧").country.iso, "SA");
   assert.equal(formatE164(byIso("SA"), "٠٥٠١٢٣٤٥٦٧"), "+966501234567");
+});
+
+test("parsePhoneLenient keeps local-format numbers instead of dropping them", () => {
+  const ps = parsePhoneLenient("0591234567", PHONE_COUNTRIES, "PS");
+  assert.equal(ps.country.iso, "PS");
+  assert.equal(ps.national, "0591234567");
+  assert.equal(formatE164(ps.country, ps.national), "+970591234567");
+  assert.equal(parsePhoneLenient("00966501234567", PHONE_COUNTRIES, "PS").country.iso, "SA");
+  assert.equal(parsePhoneLenient("+966501234567", PHONE_COUNTRIES, "PS").country.iso, "SA");
+  assert.equal(parsePhoneLenient("059-123 4567", PHONE_COUNTRIES, "PS").national, "0591234567");
+  assert.equal(parsePhoneLenient("", PHONE_COUNTRIES, "PS"), null);
 });

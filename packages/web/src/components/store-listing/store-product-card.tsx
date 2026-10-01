@@ -21,10 +21,11 @@ import { Price } from "../price";
 import { Rating } from "../rating";
 import { fillTemplate, type ListingLabels, useListingStrings } from "./listing-strings";
 import { listingBestDiscount, listingCheapestVariant, listingHasPriceRange, listingProductInStock } from "./listing-model";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 /* ------------------------------------------------------------------ helpers */
 
-/** Minor-unit exponent of a currency (EGP 2, JPY 0, KWD 3). */
+/** Minor-unit exponent of a currency (USD 2, JPY 0, KWD 3). */
 export function storeCurrencyDigits(currency: string): number {
   try {
     return new Intl.NumberFormat("en", { style: "currency", currency }).resolvedOptions().maximumFractionDigits ?? 2;
@@ -37,14 +38,16 @@ export interface StorePriceProps extends Omit<ComponentProps<typeof Price>, "amo
   /** Integer minor units. */
   amount: number;
   compareAt?: number;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Show a "From" prefix. */
   from?: boolean;
   labels?: ListingLabels;
 }
 
 /** A price in integer minor units, formatted for the active locale with the struck-through original when on sale. */
-export function StorePrice({ amount, compareAt, currency, from, labels, ...props }: StorePriceProps) {
+export function StorePrice({ amount, compareAt, currency: currencyProp, from, labels, ...props }: StorePriceProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useListingStrings(labels);
   const digits = useMemo(() => storeCurrencyDigits(currency), [currency]);
   const major = (n: number) => n / 10 ** digits;
@@ -205,7 +208,8 @@ export function StoreOptionPicker({ product, option, selection, onSelect, onPrev
 export interface StoreProductCardProps extends Omit<ComponentProps<"article">, "children"> {
   product: CommerceProduct;
   /** ISO 4217 code; prices are integer minor units. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Product page URL (image and name link to it). */
   href?: string;
   /** "grid" stacks image over details; "list" puts the image beside them and shows the description. Default "grid". */
@@ -246,7 +250,7 @@ function initialSelection(product: CommerceProduct): CommerceSelection {
  */
 export function StoreProductCard({
   product,
-  currency,
+  currency: currencyProp,
   href,
   layout = "grid",
   ratio = "portrait",
@@ -264,6 +268,7 @@ export function StoreProductCard({
   className,
   ...props
 }: StoreProductCardProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useListingStrings(labels);
   const list = layout === "list";
   const [selection, setSelection] = useState<CommerceSelection>(() => initialSelection(product));

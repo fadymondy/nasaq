@@ -3,7 +3,7 @@
 import { CircleAlert, Infinity as InfinityIcon, TriangleAlert, Zap } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "../../lib/cn";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { defaultCurrency, useCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Alert } from "../alert";
 import { Badge } from "../badge";
 import { Button } from "../button";
@@ -74,7 +74,7 @@ function useLabels(labels?: UsageMeterLabels) {
 export type UsageKind = "count" | "money" | "hours";
 
 /** Formats an amount of a usage kind: "1,200 seats", "$45", "12.5 h". The result is a plain string; wrap it in `<bdi>`. */
-function formatAmount(value: number, kind: UsageKind, locale: string, t: { hoursUnit: string }, unit?: string, currency = "USD") {
+function formatAmount(value: number, kind: UsageKind, locale: string, t: { hoursUnit: string }, unit?: string, currency = defaultCurrency(locale)) {
   if (kind === "money") {
     const whole = Number.isInteger(value);
     return formatNumber(value, locale, { style: "currency", currency, minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: 2 });
@@ -99,7 +99,7 @@ export interface UsageMeterProps extends Omit<ComponentProps<"div">, "children">
   kind?: UsageKind;
   /** Noun after a count: "seats", "GB". Localise it. */
   unit?: string;
-  /** ISO 4217 code for `money`. Default "USD". */
+  /** ISO 4217 code for `money`. Default USD, or SAR in Arabic. */
   currency?: string;
   /** Fraction at which the fill turns warning (default 0.75) and danger (default 0.9). */
   thresholds?: UsageThresholds;
@@ -240,7 +240,7 @@ export interface UsageSummaryProps extends Omit<ComponentProps<typeof Card>, "ch
   /** Which period this is: "1 Sep to 30 Sep". Localise it. */
   period?: ReactNode;
   items: readonly UsageItem[];
-  /** ISO 4217 code for the overage estimate and money items. Default "USD". */
+  /** ISO 4217 code for the overage estimate and money items. Default USD, or SAR in Arabic. */
   currency?: string;
   thresholds?: UsageThresholds;
   /** Shows Upgrade plan when something is near or over its limit. */
@@ -253,7 +253,8 @@ export interface UsageSummaryProps extends Omit<ComponentProps<typeof Card>, "ch
  * The plan usage page section: every metered resource against the plan, then a strip with the estimated overage
  * and a line per item that went over. Money and counts stay left-to-right and isolated inside Arabic text.
  */
-export function UsageSummary({ planName, period, items, currency = "USD", thresholds, onUpgrade, loading = false, className, labels, ...props }: UsageSummaryProps) {
+export function UsageSummary({ planName, period, items, currency: currencyProp, thresholds, onUpgrade, loading = false, className, labels, ...props }: UsageSummaryProps) {
+  const currency = useCurrency(currencyProp);
   const { locale, t } = useLabels(labels);
   const money = (n: number) => formatAmount(n, "money", locale, t, undefined, currency);
   const total = overageTotal(items);

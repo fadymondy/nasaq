@@ -233,7 +233,7 @@ export function commerceClampQuantity(quantity: number, max?: number): number {
 
 const minorFactorCache = new Map<string, number>();
 
-/** Minor units per major unit for an ISO currency (100 for EGP and USD, 1 for JPY, 1000 for KWD). Unknown codes use 100. */
+/** Minor units per major unit for an ISO currency (100 for USD and SAR, 1 for JPY, 1000 for KWD). Unknown codes use 100. */
 export function commerceMinorFactor(currency: string): number {
   const code = currency.toUpperCase();
   const known = minorFactorCache.get(code);
@@ -248,7 +248,7 @@ export function commerceMinorFactor(currency: string): number {
   return factor;
 }
 
-/** Minor units to the major amount Intl expects (12550 becomes 125.5 for EGP). Display only: never do maths on it. */
+/** Minor units to the major amount Intl expects (12550 becomes 125.5 for USD). Display only: never do maths on it. */
 export function commerceToMajor(minor: CommerceMoney, currency: string): number {
   return minor / commerceMinorFactor(currency);
 }

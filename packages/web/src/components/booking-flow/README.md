@@ -84,7 +84,7 @@ Every `div` prop is passed through unless noted.
 | `onSubmit` | `(booking) => Promise<void \| { code?, error? }>` | `required` | Create the booking. Return { error } to stay on the review step. |
 | `signedIn` | `{ name, phone, email? }` |  | Fills the details and shows a short booking-as line. |
 | `allowOnlinePayment` | `boolean` | `true` | Offer online payment. The flow only records the choice: taking the payment is the host's job. |
-| `currency, taxRate` | `string, number` | "EGP", 0 | Money display and tax as a fraction. |
+| `currency, taxRate` | `string, number` | "USD" ("SAR" in Arabic), 0 | Money display and tax as a fraction. |
 | `now` | `Date` | the clock | For stories and tests. |
 | `onStepChange, onReset` | `callbacks` |  | Analytics and routing hooks. |
 | `labels` | `Partial<BookingFlowLabels>` |  | Override any string. |

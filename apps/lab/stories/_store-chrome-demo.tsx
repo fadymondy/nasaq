@@ -59,7 +59,7 @@ export function chromeNav(ar: boolean): StoreNavItem[] {
 
 export function chromeAnnouncements(ar: boolean): StoreAnnouncement[] {
   return [
-    { id: "ship", content: t(ar, "Free delivery on orders over EGP 1,000", "شحن مجاني للطلبات فوق ١٬٠٠٠ جنيه"), href: "#shipping" },
+    { id: "ship", content: t(ar, "Free delivery on orders over $1,000", "شحن مجاني للطلبات فوق ١٬٠٠٠ ريال"), href: "#shipping" },
     { id: "returns", content: t(ar, "30-day easy returns", "استرجاع سهل خلال ٣٠ يومًا") },
     { id: "app", content: t(ar, "Members get early access to new drops", "الأعضاء يحصلون على وصول مبكر للإصدارات الجديدة"), href: "#members" },
   ];
@@ -85,8 +85,8 @@ export const chromeLanguages: StoreFooterOption[] = [
   { value: "ar", label: "العربية" },
 ];
 export const chromeCurrencies: StoreFooterOption[] = [
-  { value: "EGP", label: "EGP" },
   { value: "USD", label: "USD" },
+  { value: "SAR", label: "SAR" },
 ];
 
 export function chromePopular(ar: boolean): string[] {
@@ -106,7 +106,7 @@ export function chromeTiles(ar: boolean): StoreCategoryTile[] {
 
 export function chromeHero(ar: boolean): StoreBanner[] {
   return [
-    { id: "h1", eyebrow: t(ar, "New season", "موسم جديد"), title: t(ar, "Everyday essentials, made to last", "أساسيات يومية تدوم طويلًا"), description: t(ar, "Soft cotton, honest prices and free delivery over EGP 1,000.", "قطن ناعم وأسعار عادلة وشحن مجاني فوق ١٬٠٠٠ جنيه."), cta: t(ar, "Shop the collection", "تسوّق التشكيلة"), href: "#collection", image: "/store/hoodie-navy.svg", tone: "brand" },
+    { id: "h1", eyebrow: t(ar, "New season", "موسم جديد"), title: t(ar, "Everyday essentials, made to last", "أساسيات يومية تدوم طويلًا"), description: t(ar, "Soft cotton, honest prices and free delivery over $1,000.", "قطن ناعم وأسعار عادلة وشحن مجاني فوق ١٬٠٠٠ ريال."), cta: t(ar, "Shop the collection", "تسوّق التشكيلة"), href: "#collection", image: "/store/hoodie-navy.svg", tone: "brand" },
     { id: "h2", eyebrow: t(ar, "Home", "المنزل"), title: t(ar, "Small things that warm a room", "تفاصيل صغيرة تدفّئ المكان"), cta: t(ar, "Shop home", "تسوّق المنزل"), href: "#home", image: "/store/lamp-sand.svg", tone: "dark" },
   ];
 }
@@ -143,7 +143,7 @@ export function StoreShell({ children, query, cartStart = 0, onCart }: { childre
   const [q, setQ] = useState(query ?? "");
   const [cart, setCart] = useState(cartStart);
   const [lang, setLang] = useState(ar ? "ar" : "en");
-  const [currency, setCurrency] = useState("EGP");
+  const [currency, setCurrency] = useState(ar ? "SAR" : "USD");
   const products = storeProducts(ar ? "ar" : "en");
   return (
     <div className="min-h-dvh bg-background text-foreground">
@@ -151,7 +151,7 @@ export function StoreShell({ children, query, cartStart = 0, onCart }: { childre
         brand={ar ? "متجر النيل" : "Nile Store"}
         nav={chromeNav(ar)}
         announcement={<StoreAnnouncementBar items={chromeAnnouncements(ar)} />}
-        search={{ products, categoryTree: chromeCategoryTree(ar), currency: "EGP", popular: chromePopular(ar), onSearch: () => undefined, onSelectProduct: () => undefined, onSelectCategory: () => undefined, value: q, onValueChange: setQ }}
+        search={{ products, categoryTree: chromeCategoryTree(ar), currency: ar ? "SAR" : "USD", popular: chromePopular(ar), onSearch: () => undefined, onSelectProduct: () => undefined, onSelectCategory: () => undefined, value: q, onValueChange: setQ }}
         cartCount={cart}
         onCartClick={onCart ?? (() => undefined)}
         wishlistCount={2}

@@ -19,6 +19,7 @@ import { EmptyState, ErrorState, Skeleton } from "../states";
 import { Tabs, TabsList, TabsPanel, TabsTab } from "../tabs";
 import { COLLECTION_FIELDS, type CollectionDef, type CollectionKind, matchCollection, moveItem } from "./product-admin-logic";
 import { failMessage, type ProductAdminResult, type StoreProductsAdminLabels, Thumb, useProductAdminStrings } from "./product-admin-shared";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const EVENT = "product";
 const ACTION = "add";
@@ -30,7 +31,8 @@ export interface CollectionsManagerProps extends Omit<ComponentProps<"section">,
   /** The whole catalogue, for the manual picker and the live match preview. */
   products: readonly CommerceProduct[];
   /** ISO 4217 code. Prices in rules are typed in major units of it. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Saves a new or changed collection. New ones arrive with a fresh `id`. Resolve `{ error }` to keep the editor open. */
   onSave: (collection: CollectionDef) => Promise<ProductAdminResult>;
   onDelete?: (collection: CollectionDef) => Promise<ProductAdminResult>;
@@ -45,7 +47,8 @@ export interface CollectionsManagerProps extends Omit<ComponentProps<"section">,
  * condition tree over tag, brand, category, title, price, stock, sale and status). While you edit, the products that
  * match are listed live, so a rule is checked before it is saved. Rule prices are typed in major units.
  */
-export function CollectionsManager({ collections, products, currency, onSave, onDelete, loading = false, error, onRetry, labels, className, ...props }: CollectionsManagerProps) {
+export function CollectionsManager({ collections, products, currency: currencyProp, onSave, onDelete, loading = false, error, onRetry, labels, className, ...props }: CollectionsManagerProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useProductAdminStrings(labels);
   const minorPerMajor = 10 ** currencyDecimals(currency);
   const [editing, setEditing] = useState<CollectionDef | null>(null);

@@ -4,20 +4,23 @@ import { useHaptics } from "./haptics";
 import { useNasaq } from "./provider";
 import { Text } from "./text";
 import { TOUCH_MIN } from "./theme";
+import { toneColors } from "./tone";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "success";
 
 export interface ButtonProps extends Omit<PressableProps, "children"> {
   children: ReactNode;
   variant?: ButtonVariant;
-  /** sm draws a shorter button and extends its hit area to the 44pt minimum. */
-  size?: "md" | "sm";
+  /** sm draws a shorter button and extends its hit area to the 44pt minimum; lg is 52pt for the main action of a screen. */
+  size?: "md" | "sm" | "lg";
   /** Shows a spinner and blocks presses. */
   loading?: boolean;
   /** Leading icon; the row follows the layout direction. */
   icon?: ReactNode;
-  /** Light impact haptic on press, when expo-haptics is installed. Default true. */
-  haptic?: boolean;
+  /** Haptic on press when expo-haptics is installed. `true` (default) is a light impact; "success" is the success notification (accept, delivered, collect cash); false is silent. */
+  haptic?: boolean | "impact" | "success";
+  /** Stretch to the full width of the parent. */
+  fullWidth?: boolean;
 }
 
 export function Button({
@@ -28,6 +31,7 @@ export function Button({
   disabled,
   icon,
   haptic = true,
+  fullWidth = false,
   onPress,
   style,
   ...props
@@ -35,13 +39,15 @@ export function Button({
   const nq = useNasaq();
   const haptics = useHaptics();
   const c = nq.colors;
+  const success = toneColors(c, "success");
   const { fill, fg, border } = {
     primary: { fill: c.action, fg: c.onAction, border: c.action },
     secondary: { fill: c.surfaceRaised, fg: c.fg, border: c.line },
     ghost: { fill: "transparent", fg: c.fg, border: "transparent" },
     danger: { fill: c.dangerSolid, fg: c.onDanger, border: c.dangerSolid },
+    success: { fill: success.solid, fg: success.onSolid, border: success.solid },
   }[variant];
-  const height = size === "sm" ? nq.size["control-sm"] : Math.max(nq.size.control, TOUCH_MIN);
+  const height = size === "sm" ? nq.size["control-sm"] : size === "lg" ? Math.max(nq.size.control + 12, 52) : Math.max(nq.size.control, TOUCH_MIN);
   const slop = Math.max(0, Math.ceil((TOUCH_MIN - height) / 2));
   const inactive = !!disabled || loading;
 
@@ -52,7 +58,8 @@ export function Button({
       disabled={inactive}
       hitSlop={slop ? { top: slop, bottom: slop } : undefined}
       onPress={(e) => {
-        if (haptic) haptics.impact("light");
+        if (haptic === "success") haptics.notify("success");
+        else if (haptic) haptics.impact("light");
         onPress?.(e);
       }}
       style={(state) => [
@@ -60,6 +67,7 @@ export function Button({
         {
           minHeight: height,
           paddingHorizontal: size === "sm" ? nq.space[3] : nq.size["control-pad"],
+          alignSelf: fullWidth ? "stretch" : undefined,
           borderRadius: nq.radius.control,
           backgroundColor: fill,
           borderColor: border,

@@ -499,3 +499,16 @@ export const TopNavigationTextOnly: Story = {
   args: { sidebar: null },
   render: () => <TopNavApp icons="mobile" />,
 };
+
+/** A host banner of 40px sits above the shell; the shell subtracts it via --nasaq-shell-offset. */
+export const WithOffset: Story = {
+  args: { offset: 40 } as never,
+  render: (args) => (
+    <div>
+      <div className="h-10 bg-muted text-body-sm flex items-center justify-center">Host banner</div>
+      <AppShell {...args}>
+        <DemoPage />
+      </AppShell>
+    </div>
+  ),
+};

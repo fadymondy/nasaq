@@ -165,7 +165,7 @@ export function LeaveDemo({ manager = false }: { manager?: boolean }) {
 
 export function PayrollDemo() {
   const d = useHrDemo();
-  return <PayrollRuns runs={d.runs} currency="EGP" onApprove={d.onApprove} onMarkPaid={d.onMarkPaid} />;
+  return <PayrollRuns runs={d.runs} onApprove={d.onApprove} onMarkPaid={d.onMarkPaid} />;
 }
 
 /* ------------------------------------------------------------------ local payments */
@@ -211,9 +211,9 @@ export function usePaymentsDemo() {
   ];
   const [submission, setSubmission] = useState<LocalPaymentSubmission | undefined>();
   const [queue, setQueue] = useState<PaymentSubmission[]>(() => [
-    { id: "q1", customer: "Youssef Adel", methodName: "InstaPay", amount: 1_250_000, currency: "EGP", reference: "IP-448120", receiptName: "receipt-448120.jpg", receiptUrl: "#", submittedAt: at(0, 9, 12), status: "submitted" },
-    { id: "q2", customer: "Nour Hassan", methodName: "Vodafone Cash", amount: 480_000, currency: "EGP", reference: "VC-77120334", receiptUrl: "#", submittedAt: at(-1, 16, 40), status: "verifying" },
-    { id: "q3", customer: "Karim Fathy", methodName: ar ? "تحويل بنكي" : "Bank transfer", amount: 3_000_000, currency: "EGP", reference: "BM-20993", submittedAt: at(-2, 11, 5), status: "verified" },
+    { id: "q1", customer: "Youssef Adel", methodName: "InstaPay", amount: 1_250_000, currency: ar ? "SAR" : "USD", reference: "IP-448120", receiptName: "receipt-448120.jpg", receiptUrl: "#", submittedAt: at(0, 9, 12), status: "submitted" },
+    { id: "q2", customer: "Nour Hassan", methodName: "Vodafone Cash", amount: 480_000, currency: ar ? "SAR" : "USD", reference: "VC-77120334", receiptUrl: "#", submittedAt: at(-1, 16, 40), status: "verifying" },
+    { id: "q3", customer: "Karim Fathy", methodName: ar ? "تحويل بنكي" : "Bank transfer", amount: 3_000_000, currency: ar ? "SAR" : "USD", reference: "BM-20993", submittedAt: at(-2, 11, 5), status: "verified" },
   ]);
   return {
     ar,
@@ -225,7 +225,7 @@ export function usePaymentsDemo() {
       await wait(900);
       if (input.reference === "FAIL0000") return { error: ar ? "لم نستطع قراءة الإيصال." : "We could not read that receipt." };
       setSubmission({ methodId: input.methodId, reference: input.reference, receiptName: input.receipt?.name, status: "submitted", submittedAt: new Date() });
-      setQueue((q) => [{ id: `q${q.length + 1}`, customer: ar ? "أنت (تجريبي)" : "You (demo)", methodName: methods.find((m) => m.id === input.methodId)?.name ?? "", amount: 1_250_000, currency: "EGP", reference: input.reference, receiptUrl: "#", submittedAt: new Date(), status: "submitted" }, ...q]);
+      setQueue((q) => [{ id: `q${q.length + 1}`, customer: ar ? "أنت (تجريبي)" : "You (demo)", methodName: methods.find((m) => m.id === input.methodId)?.name ?? "", amount: 1_250_000, currency: ar ? "SAR" : "USD", reference: input.reference, receiptUrl: "#", submittedAt: new Date(), status: "submitted" }, ...q]);
     },
     onVerify: async (s: PaymentSubmission) => {
       await wait(500);
@@ -244,7 +244,7 @@ export function LocalPaymentsDemo({ status }: { status?: LocalPaymentSubmission[
   const seeded: LocalPaymentSubmission | undefined = status
     ? { methodId: "instapay", reference: "IP-448120", status, submittedAt: at(0, 9, 12), rejectionReason: status === "rejected" ? (d.ar ? "المبلغ في الإيصال لا يطابق الفاتورة." : "The amount on the receipt does not match the invoice.") : undefined }
     : undefined;
-  return <LocalPayments className="max-w-2xl" amount={1_250_000} currency="EGP" methods={d.methods} submission={d.submission ?? seeded} onSubmit={d.onSubmit} />;
+  return <LocalPayments className="max-w-2xl" amount={1_250_000} methods={d.methods} submission={d.submission ?? seeded} onSubmit={d.onSubmit} />;
 }
 
 export function PaymentQueueDemo() {
@@ -256,7 +256,7 @@ export function LocalPaymentsPageDemo() {
   const d = usePaymentsDemo();
   return (
     <div className="flex flex-col gap-10">
-      <LocalPayments className="max-w-2xl" amount={1_250_000} currency="EGP" methods={d.methods} submission={d.submission} onSubmit={d.onSubmit} />
+      <LocalPayments className="max-w-2xl" amount={1_250_000} methods={d.methods} submission={d.submission} onSubmit={d.onSubmit} />
       <PaymentVerificationQueue submissions={d.queue} onVerify={d.onVerify} onReject={d.onReject} />
     </div>
   );
@@ -319,7 +319,7 @@ export function PromoFieldDemo() {
   const [applied, setApplied] = useState<PromoApplied | null>(null);
   return (
     <div className="flex max-w-sm flex-col gap-2">
-      <PromoCodeField applied={applied} currency="EGP" promos={demoPromos()} context={{ subtotal: 42_000, today: dayIn(0), firstOrder: true }} onApplied={setApplied} onRemove={() => setApplied(null)} />
+      <PromoCodeField applied={applied} promos={demoPromos()} context={{ subtotal: 42_000, today: dayIn(0), firstOrder: true }} onApplied={setApplied} onRemove={() => setApplied(null)} />
       <p className="text-caption text-muted-foreground">Try WELCOME15, EID50 or OLD10.</p>
     </div>
   );
@@ -337,7 +337,7 @@ export function PromoManagerDemo() {
   return (
     <PromoCodeManager
       promos={promos}
-      currency="EGP"
+     
       onSave={async (input, id) => {
         await wait(600);
         if (input.code === "TAKEN") return { error: "That code already exists." };
@@ -359,7 +359,7 @@ export function VisitHistoryDemo() {
   const ar = useAr();
   return (
     <VisitHistory
-      currency="EGP"
+     
       visits={[
         { id: "1", date: at(-1, 20), place: ar ? "المعادي" : "Maadi", spend: 125_000, points: 125, status: "completed" },
         { id: "2", date: at(-8, 13), place: ar ? "الزمالك" : "Zamalek", spend: 98_000, points: 98, status: "completed" },
@@ -395,8 +395,8 @@ export function RateScheduleDemo({ readOnly = false }: { readOnly?: boolean }) {
   };
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <RateSchedule title={ar ? "سعر الفوترة" : "Bill rate"} rates={bill} currency="EGP" marginAgainst={cost} onAdd={readOnly ? undefined : add(setBill)} onRemove={readOnly ? undefined : remove(setBill)} />
-      <RateSchedule title={ar ? "سعر التكلفة" : "Cost rate"} rates={cost} currency="EGP" onAdd={readOnly ? undefined : add(setCost)} onRemove={readOnly ? undefined : remove(setCost)} />
+      <RateSchedule title={ar ? "سعر الفوترة" : "Bill rate"} rates={bill} marginAgainst={cost} onAdd={readOnly ? undefined : add(setBill)} onRemove={readOnly ? undefined : remove(setBill)} />
+      <RateSchedule title={ar ? "سعر التكلفة" : "Cost rate"} rates={cost} onAdd={readOnly ? undefined : add(setCost)} onRemove={readOnly ? undefined : remove(setCost)} />
     </div>
   );
 }
@@ -432,20 +432,20 @@ export function useSubscriptionsDemo() {
 
 export function SubscriptionsDemo() {
   const d = useSubscriptionsDemo();
-  return <RecurringSubscriptions subscriptions={d.subs} currency="EGP" projects={d.projects} onSave={d.onSave} onStatusChange={d.onStatusChange} />;
+  return <RecurringSubscriptions subscriptions={d.subs} projects={d.projects} onSave={d.onSave} onStatusChange={d.onStatusChange} />;
 }
 
 export function BillingOverviewDemo() {
   const d = useSubscriptionsDemo();
-  return <BillingOverview subscriptions={d.subs} currency="EGP" />;
+  return <BillingOverview subscriptions={d.subs} />;
 }
 
 export function RatesPageDemo() {
   const d = useSubscriptionsDemo();
   return (
     <div className="flex flex-col gap-10">
-      <BillingOverview subscriptions={d.subs} currency="EGP" />
-      <RecurringSubscriptions subscriptions={d.subs} currency="EGP" projects={d.projects} onSave={d.onSave} onStatusChange={d.onStatusChange} />
+      <BillingOverview subscriptions={d.subs} />
+      <RecurringSubscriptions subscriptions={d.subs} projects={d.projects} onSave={d.onSave} onStatusChange={d.onStatusChange} />
       <RateScheduleDemo />
     </div>
   );
@@ -460,7 +460,7 @@ export function HrPageDemo() {
       <AttendanceMarker punches={d.punches} shift={{ start: "09:00", end: "17:00", graceMinutes: 10 }} place={d.ar ? "المكتب الرئيسي" : "Head office"} onPunch={d.onPunch} />
       <LeaveBalances types={d.types} requests={mine} carriedOver={{ annual: 3 }} onRequest={() => setOpen(true)} />
       <LeaveRequestList requests={d.requests} types={d.types} mode="manager" onDecide={d.onDecide} onNew={() => setOpen(true)} />
-      <PayrollRuns runs={d.runs} currency="EGP" onApprove={d.onApprove} onMarkPaid={d.onMarkPaid} />
+      <PayrollRuns runs={d.runs} onApprove={d.onApprove} onMarkPaid={d.onMarkPaid} />
       <LeaveRequestDialog open={open} onOpenChange={setOpen} types={d.types} requests={mine} carriedOver={{ annual: 3 }} onSubmit={d.onSubmit} />
     </div>
   );

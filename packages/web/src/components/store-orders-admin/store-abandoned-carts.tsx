@@ -24,6 +24,7 @@ import {
   recoveryStats,
   recoveryStatus,
 } from "./abandoned-logic";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface RecoveryEmail {
   cartId: string;
@@ -44,7 +45,8 @@ const STATUS_VARIANT: Record<RecoveryStatus, "info" | "warning" | "success" | "n
 
 export interface StoreAbandonedCartsProps {
   carts: readonly AbandonedCart[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Reference time. Pass it so the list is stable and testable. Default: the current time. */
   now?: number | Date;
   rules?: RecoveryRules;
@@ -69,7 +71,8 @@ function Idle({ minutes }: { minutes: number }) {
  * Carts that were left behind, with how long they have been idle, what they are worth and whether the shopper can be
  * emailed again. Sending is gated by `canSendRecovery`: idle long enough, not in cooldown, under the email limit.
  */
-export function StoreAbandonedCarts({ carts, currency, now, rules, maxDiscountPercent = 20, onSendRecovery, loading, error, onRetry, labels, className }: StoreAbandonedCartsProps) {
+export function StoreAbandonedCarts({ carts, currency: currencyProp, now, rules, maxDiscountPercent = 20, onSendRecovery, loading, error, onRetry, labels, className }: StoreAbandonedCartsProps) {
+  const currency = useCurrency(currencyProp);
   const { t, ar } = useStoreAdminStrings(labels);
   const clock = useMemo(() => now ?? Date.now(), [now]);
   const stats = recoveryStats(carts, clock, rules);

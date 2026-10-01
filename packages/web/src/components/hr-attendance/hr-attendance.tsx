@@ -39,6 +39,7 @@ import {
   todayKey,
   attendanceMinutes,
 } from "./hr-math";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 /* ------------------------------------------------------------------ strings */
 
@@ -954,7 +955,8 @@ export interface PayrollRun {
 export interface PayrollRunsProps extends Omit<ComponentProps<"section">, "children"> {
   runs: readonly PayrollRun[];
   /** ISO 4217 code. Every amount is an integer in its minor units. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Moves a draft run to approved. Resolve `{ error }` or reject to show the message. */
   onApprove?: (run: PayrollRun) => Promise<Result>;
   /** Moves an approved run to paid. */
@@ -966,7 +968,8 @@ export interface PayrollRunsProps extends Omit<ComponentProps<"section">, "child
 const RUN_TONE: Record<PayrollRunStatus, StatusTone> = { draft: "neutral", approved: "info", paid: "success" };
 
 /** Payroll runs with gross, deductions and net computed from their lines, and a detail dialog per run with approve and paid steps. */
-export function PayrollRuns({ runs, currency, onApprove, onMarkPaid, loading = false, labels, className, ...props }: PayrollRunsProps) {
+export function PayrollRuns({ runs, currency: currencyProp, onApprove, onMarkPaid, loading = false, labels, className, ...props }: PayrollRunsProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale, n } = useStrings(labels);
   const titleId = useId();
   const [openId, setOpenId] = useState<string | null>(null);

@@ -72,7 +72,7 @@ TokenCostMeter     data-slot="token-cost-meter"
 | `byModel` / `byProduct` / `byRun` | `AiCostRow[]` | none | `{ id, label, tokensIn, tokensOut, cost, previous? }`. A tab appears for each one given. |
 | `markup` | `number` | none | Fraction over provider cost (0.2 is +20%). Adds the client price tile. |
 | `previousTotal` | `number` | none | Adds the change on the total tile (a rise is the bad tone). |
-| `currency` | `string` | `"USD"` | ISO 4217 code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. |
 | `loading` | `boolean` | `false` | Skeletons in tiles and tables. |
 | `labels` | `AiUsageCostLabels` | en / ar | Override any string. |
 

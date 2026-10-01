@@ -132,9 +132,9 @@ export interface TwoFactorSetupProps extends Omit<ComponentProps<"div">, "childr
   secret?: string;
   /** Show the enabled state. Controlled; omit to let the component switch after the last step. */
   enabled?: boolean;
-  /** Called with the 6-digit code. Resolve with `{ recoveryCodes }` on success or `{ error }` when the code is wrong. */
+  /** Called with the 6-digit code. Resolve with `{ recoveryCodes }` on success (optional) or `{ error }` when the code is wrong. */
   onVerify: (code: string) => Promise<void | { error?: string; recoveryCodes?: readonly string[] }>;
-  /** Recovery codes to show in step 3, when you already have them. Otherwise return them from `onVerify`. */
+  /** Recovery codes to show in step 3, when you already have them. Otherwise return them from `onVerify`. With none from either, step 3 is skipped and setup finishes after the code is verified. */
   recoveryCodes?: readonly string[];
   /** Called when the user finishes step 3 (after confirming they saved the codes). */
   onComplete?: () => void;
@@ -395,7 +395,12 @@ export function TwoFactorSetup({
         setError(result.error);
         return;
       }
-      if (result.recoveryCodes) setIssued(result.recoveryCodes);
+      if (result.recoveryCodes?.length) setIssued(result.recoveryCodes);
+      // Recovery codes are optional: with none to show, setup is done.
+      if (!result.recoveryCodes?.length && !recoveryProp?.length) {
+        finish();
+        return;
+      }
       setStep(3);
     } catch {
       setError(t.genericError);

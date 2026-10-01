@@ -3,7 +3,16 @@
 import { DirectionProvider } from "@base-ui/react/direction-provider";
 import { Tooltip } from "@base-ui/react/tooltip";
 import { type BrandKey, BRANDS, type BrandManifest, resolveBrand } from "@nasaq/brands";
-import type { Density, Direction, Expression, ThemeName, ThemePreference } from "@nasaq/tokens";
+import {
+  type CustomBrandColors,
+  customBrandCssVars,
+  type Density,
+  type Direction,
+  type Expression,
+  resolveCustomBrandColors,
+  type ThemeName,
+  type ThemePreference,
+} from "@nasaq/tokens";
 import {
   createContext,
   type ReactNode,
@@ -13,11 +22,30 @@ import {
   useLayoutEffect,
   useMemo,
   useState,
+  type CSSProperties,
 } from "react";
 import { THEME_STORAGE_KEY } from "./theme-script";
 
+/**
+ * A client's own brand, for an app that is not a registered Nasaq brand. Pass it as `brand`, or pass only
+ * `brandColors`. Anything left out falls back to the Nasaq manifest.
+ */
+export interface CustomBrand {
+  /** Your own identifier. Defaults to "custom". */
+  key?: string;
+  name?: BrandManifest["name"];
+  wordmark?: BrandManifest["wordmark"];
+  mark?: BrandManifest["mark"];
+  typography?: BrandManifest["typography"];
+  tagline?: BrandManifest["tagline"];
+  links?: BrandManifest["links"];
+  color?: CustomBrandColors;
+}
+
 export interface NasaqContextValue {
   brand: BrandManifest;
+  /** True when the colours come from `brandColors` or a custom `brand` object (data-brand="custom"). */
+  isCustomBrand: boolean;
   theme: ThemePreference;
   resolvedTheme: ThemeName;
   setTheme: (theme: ThemePreference) => void;
@@ -49,8 +77,14 @@ const NasaqContext = createContext<NasaqContextValue | null>(null);
 
 export interface NasaqProviderProps {
   children: ReactNode;
-  /** Brand key or legacy alias (managy, cabrain, cloudy, …). */
-  brand?: BrandKey | (string & {});
+  /** A registered brand key or legacy alias (managy, cabrain, cloudy, …), or a `CustomBrand` object. */
+  brand?: BrandKey | (string & {}) | CustomBrand;
+  /**
+   * Your own colours, written as CSS variables over the brand. Sets `data-brand="custom"`. Give `brand` and
+   * `action` as "#RRGGBB" or `{ light, dark }`; missing dark steps, `onAction` (chosen for contrast) and
+   * `accent` are derived, so every role resolves the way it does for a registered brand.
+   */
+  brandColors?: CustomBrandColors;
   /** Controlled theme. Omit to let the provider own it (persisted in localStorage). */
   theme?: ThemePreference;
   defaultTheme?: ThemePreference;
@@ -76,7 +110,8 @@ const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayout
 
 export function NasaqProvider({
   children,
-  brand: brandKey = "nasaq",
+  brand: brandProp = "nasaq",
+  brandColors,
   theme: controlledTheme,
   defaultTheme = "system",
   onThemeChange,
@@ -90,7 +125,22 @@ export function NasaqProvider({
   target = "document",
   className,
 }: NasaqProviderProps) {
-  const brand = resolveBrand(brandKey) ?? BRANDS.nasaq;
+  const customObject = typeof brandProp === "object" && brandProp !== null ? brandProp : null;
+  const registered = typeof brandProp === "string" ? (resolveBrand(brandProp) ?? BRANDS.nasaq) : BRANDS.nasaq;
+  const colorInput = brandColors ?? customObject?.color;
+  const isCustomBrand = !!colorInput || !!customObject;
+  const colorKey = JSON.stringify(colorInput ?? null);
+  const customKey = customObject ? JSON.stringify({ ...customObject, color: undefined, mark: customObject.mark }) : "";
+  const brand = useMemo<BrandManifest>(() => {
+    if (!isCustomBrand) return registered;
+    const { key: _key, color: _color, ...rest } = customObject ?? {};
+    return { ...registered, ...rest, color: resolveCustomBrandColors(colorInput, registered.color) };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [registered, isCustomBrand, colorKey, customKey]);
+  const brandVars = useMemo<CSSProperties | undefined>(
+    () => (isCustomBrand ? (customBrandCssVars(brand.color) as CSSProperties) : undefined),
+    [isCustomBrand, brand],
+  );
 
   const [storedTheme, setStoredTheme] = useState<ThemePreference>(defaultTheme);
   const theme = controlledTheme ?? storedTheme;
@@ -138,7 +188,7 @@ export function NasaqProvider({
   );
 
   const attrs = {
-    "data-brand": brand.key,
+    "data-brand": isCustomBrand ? "custom" : brand.key,
     "data-theme": resolvedTheme,
     "data-density": density,
     "data-expression": expression,
@@ -152,13 +202,19 @@ export function NasaqProvider({
     for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
     el.classList.toggle("dark", resolvedTheme === "dark");
     el.style.colorScheme = resolvedTheme;
+    const written = Object.entries(brandVars ?? {});
+    for (const [k, v] of written) el.style.setProperty(k, String(v));
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute("content", getComputedStyle(el).getPropertyValue("--nq-bg").trim());
-  }, [target, brand.key, resolvedTheme, density, expression, direction, lang]);
+    return () => {
+      for (const [k] of written) el.style.removeProperty(k);
+    };
+  }, [target, brand.key, isCustomBrand, brandVars, resolvedTheme, density, expression, direction, lang]);
 
   const value = useMemo<NasaqContextValue>(
     () => ({
       brand,
+      isCustomBrand,
       theme,
       resolvedTheme,
       setTheme,
@@ -170,7 +226,7 @@ export function NasaqProvider({
       setLocale,
       locales,
     }),
-    [brand, theme, resolvedTheme, setTheme, direction, density, expression, locale, setLocale, locales],
+    [brand, isCustomBrand, theme, resolvedTheme, setTheme, direction, density, expression, locale, setLocale, locales],
   );
 
   const inner = (
@@ -182,7 +238,7 @@ export function NasaqProvider({
   return (
     <NasaqContext.Provider value={value}>
       {target === "scope" ? (
-        <div {...attrs} className={[resolvedTheme === "dark" ? "dark" : "", className].filter(Boolean).join(" ")}>
+        <div {...attrs} style={brandVars} className={[resolvedTheme === "dark" ? "dark" : "", className].filter(Boolean).join(" ")}>
           {inner}
         </div>
       ) : (
@@ -201,4 +257,15 @@ export function useNasaq(): NasaqContextValue {
 /** Like useNasaq, but returns null outside a provider (for components that must work standalone). */
 export function useOptionalNasaq(): NasaqContextValue | null {
   return useContext(NasaqContext);
+}
+
+/** The currency when a caller sets none: Saudi riyal in Arabic, US dollar otherwise. */
+export function defaultCurrency(locale = "en"): string {
+  return locale.startsWith("ar") ? "SAR" : "USD";
+}
+
+/** The given currency, or the default for the ambient locale (SAR in Arabic, USD otherwise). */
+export function useCurrency(currency?: string): string {
+  const locale = useOptionalNasaq()?.locale ?? "en";
+  return currency ?? defaultCurrency(locale);
 }

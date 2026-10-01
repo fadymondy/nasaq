@@ -43,7 +43,7 @@ export function Orders({ orders, products }: { orders: CommerceOrder[]; products
     <StoreOrderHistory
       orders={orders}
       products={products}
-      currency="EGP"
+      currency="USD"
       onOpenOrder={(o) => navigate(`/account/orders/${o.id}`)}
       onReorder={(_order, plan) => plan.add.forEach((l) => cart.add(l.variantId, l.quantity))}
       onOpenCart={() => navigate("/cart")}
@@ -73,7 +73,7 @@ StoreRecentlyViewed [data-slot="store-recently-viewed"]
 | --- | --- | --- | --- |
 | `orders` | `CommerceOrder[]` | `required` | The customer's orders. |
 | `products` | `CommerceProduct[]` | `[]` | The current catalogue, to plan a reorder. |
-| `currency` | `string` | `required` | ISO code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO code. |
 | `trackingTemplate` | `string` |  | Carrier link with `{number}`. |
 | `onOpenOrder, onReorder, onOpenCart` | `callbacks` |  | `onReorder(order, plan)` gets `plan.add`; the list shows what was added, reduced or skipped. |
 | `loading, error, onRetry` |  |  | States. |
@@ -132,7 +132,7 @@ Defective, wrong and not-as-described reasons need a photo; "Something else" nee
 
 ```tsx
 <StoreAccountLayout title="My account" nav={<StoreAccountNav active="wishlist" onNavigate={go} counts={{ wishlist: 4 }} />}>
-  <StoreWishlist items={items} products={products} currency="EGP" onMoveToCart={(e) => cart.add(e.item.variantId, 1)} />
+  <StoreWishlist items={items} products={products} currency="USD" onMoveToCart={(e) => cart.add(e.item.variantId, 1)} />
 </StoreAccountLayout>
 ```
 

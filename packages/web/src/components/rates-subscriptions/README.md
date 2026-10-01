@@ -35,9 +35,9 @@ import { BillingOverview, RateSchedule, RecurringSubscriptions } from "@fadymond
 ## Quick start
 
 ```tsx
-<RateSchedule rates={rates} currency="EGP" onAdd={async ({ amount, from }) => api.addRate(amount, from)} />
-<RecurringSubscriptions subscriptions={subs} currency="EGP" onSave={save} onStatusChange={setStatus} />
-<BillingOverview subscriptions={subs} currency="EGP" />
+<RateSchedule rates={rates} currency="USD" onAdd={async ({ amount, from }) => api.addRate(amount, from)} />
+<RecurringSubscriptions subscriptions={subs} currency="USD" onSave={save} onStatusChange={setStatus} />
+<BillingOverview subscriptions={subs} currency="USD" />
 ```
 
 ## Anatomy

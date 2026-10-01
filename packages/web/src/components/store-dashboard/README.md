@@ -39,7 +39,7 @@ import { StoreDashboard } from "@fadymondy/nasaq/web";
 import { StoreDashboard } from "@fadymondy/nasaq/web";
 
 <StoreDashboard
-  currency="EGP"
+  currency="USD"
   totals={totals}
   previousTotals={previousTotals}
   series={series}
@@ -75,7 +75,7 @@ StoreDashboard
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `currency` | `string` | `required` | ISO code. Money is in minor units. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO code. Money is in minor units. |
 | `totals, previousTotals` | `StorePeriodTotals` | `required, none` | Sales, orders, sessions, customers, returning, add to cart, checkouts. No previous means no change shown. |
 | `series, previousSeries` | `StoreSalesPoint[]` | `required, none` | Date, sales, orders and sessions per point. |
 | `topProducts` | `StoreTopProduct[]` | `required` | With units, revenue and previous revenue. |

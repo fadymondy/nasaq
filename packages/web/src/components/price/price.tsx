@@ -4,6 +4,7 @@ import type { ComponentProps } from "react";
 import { cn } from "../../lib/cn";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { useFormatNumber } from "../numeric";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export type PricePeriod = "month" | "year" | "seat-month" | "once";
 
@@ -22,7 +23,7 @@ const sizes = {
 export interface PriceProps extends Omit<ComponentProps<"span">, "children"> {
   /** The price. 0 renders the free label. */
   amount: number;
-  /** ISO 4217 code. Default "USD". */
+  /** ISO 4217 code. Default USD, or SAR in Arabic. */
   currency?: string;
   /** Billing period suffix. Default "once" (no suffix). */
   period?: PricePeriod;
@@ -40,7 +41,8 @@ export interface PriceProps extends Omit<ComponentProps<"span">, "children"> {
  * active locale ("$12" / "12 US$") with the Nasaq digit set, and the figure is isolated so it keeps its order
  * inside Arabic text.
  */
-export function Price({ amount, currency = "USD", period = "once", compareAt, freeLabel, fractionDigits, size = "md", className, ...props }: PriceProps) {
+export function Price({ amount, currency: currencyProp, period = "once", compareAt, freeLabel, fractionDigits, size = "md", className, ...props }: PriceProps) {
+  const currency = useCurrency(currencyProp);
   const ar = useOptionalNasaq()?.locale.startsWith("ar") ?? false;
   const fmt = useFormatNumber();
   const s = sizes[size];

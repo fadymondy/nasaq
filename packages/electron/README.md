@@ -30,6 +30,15 @@ nativeTheme.on("updated", () => updateTitleBarOverlay(win, theme()));
 `kind` is `main` (1280×820), `panel` (420×640) or `settings` (760×580, not maximizable). Every window starts
 hidden (`show: false`); show it on `ready-to-show`.
 
+Override the defaults per window with `size` (`width`, `height`, `minWidth`, `minHeight`, `maxWidth`, `maxHeight`,
+`maximizable`, `fullscreenable`, `resizable`; unset keys keep the defaults of the `kind`) and any other
+`BrowserWindow` option with `overrides` (merged last; `webPreferences` merges key by key, so the chrome argument
+survives):
+
+```ts
+windowChrome({ kind: "main", size: { width: 1440, height: 900, minWidth: 1100 }, overrides: { title: "Wasla" } });
+```
+
 ## Preload
 
 ```ts

@@ -1,6 +1,6 @@
 /*
  * Demo data and stateful page shells for the account and admin order stories.
- * Built on _store-demo.ts. Money is integer minor units (EGP piasters). Names and figures are invented.
+ * Built on _store-demo.ts. Money is integer minor units (cents, halalas in Arabic). Names and figures are invented.
  */
 import {
   type AbandonedCart,

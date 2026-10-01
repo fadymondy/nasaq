@@ -4,7 +4,7 @@ title: PhoneInput
 category: forms
 status: beta
 summary: Phone number field with a searchable country list (SVG flag, name in English or Arabic, calling code; Gulf and Arab countries first) and a digits input that groups the number as you type. The value is E.164.
-exports: [PhoneInput, PhoneInputProps, PhoneCountry, PHONE_COUNTRIES, PHONE_PREFERRED, phoneCountryName, countryFlag, parsePhone, formatE164, formatNational, phoneExample, isValidE164]
+exports: [PhoneInput, PhoneInputProps, PhoneCountry, PHONE_COUNTRIES, PHONE_PREFERRED, phoneCountryName, countryFlag, parsePhone, parsePhoneLenient, formatE164, formatNational, phoneExample, isValidE164]
 related: [input-group, combobox, field, otp-input, country-flag]
 story: components-forms-phone-input
 base-ui: [combobox, field, input]
@@ -87,16 +87,17 @@ PhoneInput                  InputGroup                       data-slot="phone-in
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `value?` | `string` | none | Controlled E.164 value. |
+| `value?` | `string` | none | Controlled value, E.164. A local number (`0591234567`) or `00966…` is accepted and kept as the national digits of `defaultCountry` (or the country the `00` code names) instead of being dropped; `onValueChange` then reports E.164. |
 | `defaultValue?` | `string` | `""` | Initial E.164 value when uncontrolled. |
 | `onValueChange?` | `(value: string, country: PhoneCountry) => void` | none | Fires on every change of the digits or the country. `value` is E.164 or `""`. |
-| `defaultCountry?` | `string` | `"SA"` | ISO code used when there is no value. |
+| `defaultCountry?` | `string` | `"SA"` | ISO code used when there is no value, and the country of a local-format value such as `0591234567`. |
 | `countries?` | `readonly PhoneCountry[]` | `PHONE_COUNTRIES` | The list to offer. |
 | `preferred?` | `readonly string[]` | `PHONE_PREFERRED` | ISO codes listed first, in order. The rest are sorted by name in the active language. |
 | `disabled?` | `boolean` | `false` | Disables both parts. |
 | `invalid?` | `boolean` | `false` | Sets `aria-invalid` and the danger border. |
 | `name?` | `string` | none | Renders a hidden input with the E.164 value, for native form posts. |
 | `id?` | `string` | none | Id of the digits input. |
+| `onFocus?` / `onBlur?` | `FocusEventHandler<HTMLInputElement>` | none | Focus and blur of the digits input, for form libraries that validate on blur. |
 | `placeholder?` | `string` | an example number | Placeholder of the digits input. Default is an example mobile number for the selected country (`50 123 4567`), or "Phone number". |
 | `locale?` / `dir?` | `string` / `"ltr" \| "rtl"` | from the provider | Override for strings, country names and popup direction. |
 | `aria-label?` | `string` | none | Name of the digits input when there is no `FieldLabel`. |
@@ -111,6 +112,7 @@ PhoneInput                  InputGroup                       data-slot="phone-in
 | `PHONE_PREFERRED` | `["SA", "AE", "EG", "KW", "QA", "BH", "OM", "JO"]`. |
 | `phoneCountryName(iso, locale?)` | A country's name in any locale (Intl region names, with Palestine as "Palestine" / "فلسطين"). |
 | `parsePhone(value, countries?)` | `{ country, national } \| null` from an E.164 string. Shared codes resolve by number range. |
+| `parsePhoneLenient(value, countries?, fallbackIso?)` | Like `parsePhone`, but reads `00966…` as `+966…` and keeps local numbers as national digits of `fallbackIso`. `null` only without digits. |
 | `formatE164(country, national)` | E.164 string, or `""` when there are no digits. Drops a trunk prefix where the country uses one. |
 | `formatNational(country, national)` | The digits grouped as written after the calling code: `50 123 4567`. |
 | `phoneExample(country)` | An example mobile number, grouped the same way, for placeholders. |

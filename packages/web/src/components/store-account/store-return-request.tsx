@@ -26,6 +26,7 @@ import {
   returnWindow,
   returnableLines,
 } from "./return-math";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface ReturnSubmission {
   orderId: string;
@@ -40,7 +41,8 @@ export interface ReturnSubmission {
 
 export interface StoreReturnRequestProps {
   order: CommerceOrder;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Existing requests, so units already in a return are not offered again. */
   requests?: readonly ReturnRequest[];
   /** Days after delivery a return can be requested. Default 30. */
@@ -76,7 +78,8 @@ function Photo({ file, onRemove, label }: { file: File; onRemove: () => void; la
  * The return / refund request flow: pick lines and quantities, a reason, photos when the reason needs proof, how to be
  * refunded, with the return window and a live refund estimate. All checks come from `planReturn`.
  */
-export function StoreReturnRequest({ order, currency, requests = [], returnDays = 30, now, maxPhotos = 5, onSubmit, onBack, labels, className }: StoreReturnRequestProps) {
+export function StoreReturnRequest({ order, currency: currencyProp, requests = [], returnDays = 30, now, maxPhotos = 5, onSubmit, onBack, labels, className }: StoreReturnRequestProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStoreAccountStrings(labels);
   const clock = useMemo(() => now ?? Date.now(), [now]);
   const rows = useMemo(() => returnableLines(order, requests), [order, requests]);

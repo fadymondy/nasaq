@@ -2,7 +2,7 @@
 
 import { Avatar as BaseAvatar } from "@base-ui/react/avatar";
 import { cva, type VariantProps } from "class-variance-authority";
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { cn } from "../../lib/cn";
 
 export const avatarVariants = cva(
@@ -42,26 +42,44 @@ export function initials(name: string): string {
   return (first + last).toUpperCase();
 }
 
-export interface AvatarProps extends Omit<ComponentProps<typeof BaseAvatar.Root>, "children">, VariantProps<typeof avatarVariants> {
-  /** Used for the alt text and the initials fallback. */
-  name: string;
+export interface AvatarProps extends ComponentProps<typeof BaseAvatar.Root>, VariantProps<typeof avatarVariants> {
+  /** Used for the alt text and the initials fallback. Optional when you compose `children` or pass `fallback`. */
+  name?: string;
   src?: string;
+  /** Shown instead of the initials while there is no image or it fails to load (an icon, a glyph). */
+  fallback?: ReactNode;
+  /** Compose the parts yourself with `AvatarImage` and `AvatarFallback`; this replaces the `src` image and the fallback. */
+  children?: ReactNode;
 }
 
-export function Avatar({ name, src, size, shape, className, ...props }: AvatarProps) {
+/** The image part, for composing inside `Avatar`. It renders nothing until it has loaded, so `AvatarFallback` shows meanwhile. */
+export function AvatarImage({ className, alt = "", ...props }: ComponentProps<typeof BaseAvatar.Image>) {
+  return <BaseAvatar.Image data-slot="avatar-image" alt={alt} className={cn("size-full object-cover", className as string)} {...props} />;
+}
+
+/** The fallback part, for composing inside `Avatar`: shown while the image is missing or loading. */
+export function AvatarFallback({ className, ...props }: ComponentProps<typeof BaseAvatar.Fallback>) {
+  return <BaseAvatar.Fallback data-slot="avatar-fallback" className={cn("flex size-full items-center justify-center", className as string)} {...props} />;
+}
+
+export function Avatar({ name = "", src, fallback, size, shape, className, children, ...props }: AvatarProps) {
   return (
     <BaseAvatar.Root
       data-slot="avatar"
       className={(state) => cn(avatarVariants({ size, shape }), typeof className === "function" ? className(state) : className)}
       {...props}
     >
-      {src ? <BaseAvatar.Image src={src} alt={name} className="size-full object-cover" /> : null}
-      <BaseAvatar.Fallback
-        delay={src ? 400 : 0}
-        {...(src ? { "aria-hidden": true } : name ? { role: "img", "aria-label": name } : {})}
-      >
-        {initials(name)}
-      </BaseAvatar.Fallback>
+      {children ?? (
+        <>
+          {src ? <BaseAvatar.Image src={src} alt={name} className="size-full object-cover" /> : null}
+          <BaseAvatar.Fallback
+            delay={src ? 400 : 0}
+            {...(src ? { "aria-hidden": true } : name ? { role: "img", "aria-label": name } : {})}
+          >
+            {fallback ?? initials(name)}
+          </BaseAvatar.Fallback>
+        </>
+      )}
     </BaseAvatar.Root>
   );
 }

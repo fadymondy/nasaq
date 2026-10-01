@@ -80,7 +80,7 @@ PersonaPicker      data-slot="persona-picker"
 | `agentRequired` | `boolean` | `false` | Marks the field required and invalid until one is chosen. |
 | `effortLabels` | `Record<string, string>` | none | Names for effort ids other than low, medium, high, max. |
 | `variant` | `"cards" \| "compact"` | `"cards"` | Full cards, or one row for a toolbar. |
-| `currency` | `string` | `"USD"` | ISO 4217 code for prices. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code for prices. |
 | `disabled` | `boolean` | `false` | Disables every control. |
 | `labels` | `AiModelPickerLabels` | en / ar | Override any string. |
 

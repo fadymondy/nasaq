@@ -3,7 +3,7 @@
 import { ArrowLeft, ArrowRight, CalendarClock, Check, CheckCircle2, CreditCard, Landmark, Loader2, MapPin, Pencil, Stethoscope, UserRound } from "lucide-react";
 import { type ComponentProps, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { useCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Alert } from "../alert";
 import { Avatar } from "../avatar";
 import { bookingCode, type BookingSlot, bookingTotals, validateDetails, type BookingDetailsErrors } from "./booking-math";
@@ -198,7 +198,7 @@ export interface BookingFlowProps extends Omit<ComponentProps<"div">, "onSubmit"
   signedIn?: { name: string; phone: string; email?: string };
   /** Offer online payment. Default true. */
   allowOnlinePayment?: boolean;
-  /** ISO currency code. Default "EGP". */
+  /** ISO currency code. Default USD, or SAR in Arabic. */
   currency?: string;
   /** Tax as a fraction, 0.14 for 14%. Default 0. */
   taxRate?: number;
@@ -227,7 +227,7 @@ export function BookingFlow({
   onSubmit,
   signedIn,
   allowOnlinePayment = true,
-  currency = "EGP",
+  currency: currencyProp,
   taxRate = 0,
   now: nowProp,
   onStepChange,
@@ -236,6 +236,7 @@ export function BookingFlow({
   className,
   ...rest
 }: BookingFlowProps) {
+  const currency = useCurrency(currencyProp);
   const locale = useOptionalNasaq()?.locale ?? "en";
   const ar = locale.startsWith("ar");
   const t = { ...STRINGS[ar ? "ar" : "en"], ...labels } as BookingFlowLabels;

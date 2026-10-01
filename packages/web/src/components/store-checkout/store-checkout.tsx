@@ -41,6 +41,7 @@ import {
   validateSection,
 } from "./checkout-machine";
 import { type StoreCheckoutLabels, type StoreCheckoutStrings, useStoreCheckoutStrings } from "./checkout-strings";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 type Strings = StoreCheckoutStrings;
 
@@ -159,7 +160,8 @@ export function StoreAddressForm({ value, onChange, errors = {}, countries = STO
 
 export interface StoreOrderSummaryProps extends Omit<ComponentProps<"aside">, "children"> {
   lines: readonly CommerceCartLine[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   summary: CheckoutSummary;
   /** Shows the chosen method's name next to Shipping. */
   shippingMethod?: CommerceShippingMethod | undefined;
@@ -173,7 +175,8 @@ export interface StoreOrderSummaryProps extends Omit<ComponentProps<"aside">, "c
  * The order summary beside the checkout. On large screens it is always open; on small ones it folds behind a bar that
  * shows the total (a disclosure button with `aria-expanded`), so the form is not pushed down the page.
  */
-export function StoreOrderSummary({ lines, currency, summary, shippingMethod, defaultOpen = false, onEditCart, labels, className, ...props }: StoreOrderSummaryProps) {
+export function StoreOrderSummary({ lines, currency: currencyProp, summary, shippingMethod, defaultOpen = false, onEditCart, labels, className, ...props }: StoreOrderSummaryProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n, money } = useStoreCheckoutStrings(labels);
   const [open, setOpen] = useState(defaultOpen);
   const panelId = useId();
@@ -292,7 +295,8 @@ export type StorePlaceOrderResult = void | { error?: string; orderNumber?: strin
 
 export interface StoreCheckoutProps extends Omit<ComponentProps<"div">, "children" | "defaultValue"> {
   lines: readonly CommerceCartLine[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   shippingMethods: readonly CommerceShippingMethod[];
   /** Saved addresses of a signed-in shopper: picked from a list instead of typed. */
   savedAddresses?: readonly CommerceAddress[];
@@ -344,7 +348,7 @@ function shippingEta(method: CommerceShippingMethod, now: Date, weekend: readonl
  */
 export function StoreCheckout({
   lines,
-  currency,
+  currency: currencyProp,
   shippingMethods,
   savedAddresses = [],
   countries = STORE_COUNTRY_CODES,
@@ -369,6 +373,7 @@ export function StoreCheckout({
   className,
   ...props
 }: StoreCheckoutProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n, money, locale, ar } = useStoreCheckoutStrings(labels);
   const active = useMemo(() => lines.filter((l) => !l.savedForLater), [lines]);
   const idBase = useId();
@@ -804,7 +809,8 @@ export function StoreCheckout({
 
 export interface StoreOrderConfirmationProps extends Omit<ComponentProps<"div">, "children"> {
   order: CommerceOrder;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** How it was paid, for the wording. Default: from `order.payment` ("cod" is pay on delivery, "pending" a transfer being checked). */
   paymentKind?: CheckoutPaymentKind;
   gift?: boolean;
@@ -820,7 +826,8 @@ export interface StoreOrderConfirmationProps extends Omit<ComponentProps<"div">,
  * when it should arrive, how it was paid, the items and totals, what happens next, and Track order / Continue shopping.
  * The heading takes focus on arrival so screen readers announce it.
  */
-export function StoreOrderConfirmation({ order, currency, paymentKind, gift, onTrackOrder, onContinueShopping, now, weekend = [], labels, className, ...props }: StoreOrderConfirmationProps) {
+export function StoreOrderConfirmation({ order, currency: currencyProp, paymentKind, gift, onTrackOrder, onContinueShopping, now, weekend = [], labels, className, ...props }: StoreOrderConfirmationProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n, locale, ar } = useStoreCheckoutStrings(labels);
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => heading.current?.focus(), []);

@@ -20,6 +20,7 @@ export {
   mapFormatCoordinates,
   mapFromScreen,
   mapPanBy,
+  mapPointInPolygon,
   mapProject,
   mapRouteLength,
   mapToScreen,

@@ -12,6 +12,7 @@ import { RadioCard, RadioGroup } from "../radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select";
 import { Toggle, ToggleGroup } from "../toggle-group";
 import { resolveEffort } from "./model-picker-math";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const STRINGS = {
   en: {
@@ -151,7 +152,7 @@ export interface AiModelPickerProps extends Omit<ComponentProps<"div">, "default
   effortLabels?: Record<string, string>;
   /** `cards` (default) lists every model with its details; `compact` is one row of controls for a toolbar. */
   variant?: "cards" | "compact";
-  /** ISO 4217 code for prices. Default "USD". */
+  /** ISO 4217 code for prices. Default USD, or SAR in Arabic. */
   currency?: string;
   disabled?: boolean;
   labels?: AiModelPickerLabels;
@@ -171,12 +172,13 @@ export function AiModelPicker({
   agentRequired = false,
   effortLabels,
   variant = "cards",
-  currency = "USD",
+  currency: currencyProp,
   disabled = false,
   labels,
   className,
   ...props
 }: AiModelPickerProps) {
+  const currency = useCurrency(currencyProp);
   const { locale, t } = useLabels(labels);
   const [inner, setInner] = useState<AiModelSelection>(() => {
     const first = defaultValue?.model ?? models[0]?.id;

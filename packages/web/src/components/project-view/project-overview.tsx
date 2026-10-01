@@ -3,7 +3,7 @@
 import { CircleCheck, CircleDot, Clock, TriangleAlert } from "lucide-react";
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, XAxis, YAxis } from "recharts";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { defaultCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../card";
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, useChartAxis } from "../chart";
 import type { Issue } from "../issue-view/issue-logic";
@@ -92,7 +92,7 @@ export function ProjectOverview({ issues, statuses, activity = [], budget, start
   const statusCfg: ChartConfig = { count: { label: t.issues, color: "var(--primary)" } };
   const burnCfg: ChartConfig = { remaining: { label: t.remaining, color: "var(--primary)" }, ideal: { label: t.ideal, color: "var(--muted-foreground)" } };
   const burnData = points.map((p) => ({ label: day(p.date), remaining: p.remaining, ideal: p.ideal }));
-  const money = (n: number) => formatNumber(n, locale, { style: "currency", currency: budget?.currency ?? "USD", maximumFractionDigits: 0 });
+  const money = (n: number) => formatNumber(n, locale, { style: "currency", currency: budget?.currency ?? defaultCurrency(locale), maximumFractionDigits: 0 });
   const b = budget ? budgetState(budget.total, budget.spent) : null;
 
   return (

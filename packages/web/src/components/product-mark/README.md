@@ -82,6 +82,7 @@ The Nasaq mark itself is currently a proposal pending approval.
 | `size?` | `number` | `24` | Rendered width and height in px (square). |
 | `onDark?` | `boolean` | `NasaqProvider` resolved theme is dark | Use the spec's `bodyOnDark`. Set explicitly on a fixed dark or light ground. |
 | `title?` | `string` | the mark's name | Accessible name. Pass `""` when the name is visible beside the mark (the SVG becomes `aria-hidden`). |
+| `src?` / `logoUrl?` | `string` | none | A custom logo image (an admin-uploaded brand logo) drawn instead of the mark, sized to `size`. If it fails to load the mark is drawn. It renders an `<img data-slot="product-mark" data-custom>` with the same `title` as its `alt`. |
 | `className?` | `string` | none | Merged after `shrink-0`. Use for layout only. |
 | other `<svg>` props | | none | Forwarded. |
 

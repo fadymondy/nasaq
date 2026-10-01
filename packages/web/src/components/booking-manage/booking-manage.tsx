@@ -3,7 +3,7 @@
 import { CalendarPlus, CalendarClock, Download, MapPin, User, Stethoscope, Phone, Wallet } from "lucide-react";
 import { type ComponentProps, type ReactNode, useMemo, useState } from "react";
 import { cn } from "../../lib/cn";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { defaultCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Alert } from "../alert";
 import { ConfirmButton } from "../alert-dialog";
 import { type BookingSlot, type BookingPolicy, bookingTicketValue, buildIcs, evaluatePolicy, googleCalendarUrl } from "../booking-flow/booking-math";
@@ -142,7 +142,7 @@ export function BookingTicket({ booking, children, hideCalendar = false, labels,
     () => ({ uid: `${booking.id}@nasaq`, title: `${booking.service} – ${booking.provider}`, start: booking.start, end: booking.end, location: [booking.location, booking.address].filter(Boolean).join(", ") || undefined, description: booking.code }),
     [booking],
   );
-  const price = booking.price > 0 ? fmt(booking.price, { style: "currency", currency: booking.currency ?? "EGP", maximumFractionDigits: 2, minimumFractionDigits: Number.isInteger(booking.price) ? 0 : 2 }) : null;
+  const price = booking.price > 0 ? fmt(booking.price, { style: "currency", currency: booking.currency ?? defaultCurrency(locale), maximumFractionDigits: 2, minimumFractionDigits: Number.isInteger(booking.price) ? 0 : 2 }) : null;
   const payLabel = booking.payment === "visit" ? t.payVisit : booking.paid ? t.payOnline : t.payOnlinePending;
 
   return (

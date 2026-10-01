@@ -127,7 +127,7 @@ and has no `render` prop, so drive client-side routing through `href` and `onCli
 ## Anatomy
 
 ```
-AppShell                          data-slot="app-shell"      (flex row, min-h-dvh)
+AppShell                          data-slot="app-shell"      (flex row, min-h of 100dvh minus `--nasaq-shell-offset`)
 ├─ aside                          data-slot="app-sidebar"    data-collapsed, data-resizing; md+ only
 │  ├─ your `sidebar` node         (SidebarRailContext = collapsed)
 │  └─ resize handle               data-slot="sidebar-resize-handle" role="separator"
@@ -178,6 +178,7 @@ Extends `ComponentProps<"div">` (extra props land on the root element).
 | `minWidth?` | `number` | `208` | Lower clamp. Dragging about 28px below it snaps to the rail. |
 | `maxWidth?` | `number` | `420` | Upper clamp. |
 | `resizeLabel?` | `string` | "Resize sidebar" / "تغيير عرض الشريط الجانبي" | Accessible name of the resize handle. Localise it if you are not on `en`/`ar`. |
+| `offset?` | `number | string` | `0` | Height taken from above the shell, such as an Electron title bar (number = px, string = any CSS length). Sets `--nasaq-shell-offset`, which the shell subtracts from its `100dvh` and the sidebar sticks below; you can also set that CSS variable yourself. The sticky `AppHeader` stays at the top of its scroll container. |
 | `className?` | `string` | none | Classes for the root. |
 
 ### `SidebarTrigger`
@@ -251,6 +252,7 @@ Extends `ComponentProps<"a">`.
 | `icon?` | `ReactNode` | none | Leading icon (16px). |
 | `trailing?` | `ReactNode` | none | Count or status at the inline end. Hidden on the rail. |
 | `tooltip?` | `string` | children if a string | Tooltip and `aria-label` on the rail. **Set it when `children` is not a string**; otherwise the rail item falls back to the `aria-label` prop you pass, and has no name if there is none. |
+| `render?` | `ReactElement \| (props) => ReactElement` | `<a>` | Render another element in place of the `<a>`, so a router link keeps client-side navigation: `render={<Link href="/orders" />}` (Next.js) or `render={(props) => <NavLink {...props} to="/orders" />}` (react-router). Nasaq merges its classes, `aria-current`, `data-slot` and children into it. |
 
 ### `SidebarNest`
 

@@ -16,10 +16,12 @@ import { type StoreAccountLabels, useStoreAccountStrings } from "./account-strin
 import { type ReturnRequest, deliveredAt, returnWindow, returnableLines } from "./return-math";
 import { ReorderNotice } from "./store-order-history";
 import { StoreReturnStatus } from "./store-return-status";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface StoreAccountOrderProps {
   order: CommerceOrder;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   requests?: readonly ReturnRequest[];
   products?: readonly CommerceProduct[];
   /** Carrier link template with `{number}`. */
@@ -41,7 +43,8 @@ export interface StoreAccountOrderProps {
  * One order in the customer's account: the tracking timeline with a carrier link, the items with what shipped or was
  * refunded, the totals, the address, and any returns with their RMA status.
  */
-export function StoreAccountOrder({ order, currency, requests = [], products = [], trackingTemplate, returnDays = 30, now, onBack, onReorder, onOpenCart, onReturn, onCancelReturn, labels, className }: StoreAccountOrderProps) {
+export function StoreAccountOrder({ order, currency: currencyProp, requests = [], products = [], trackingTemplate, returnDays = 30, now, onBack, onReorder, onOpenCart, onReturn, onCancelReturn, labels, className }: StoreAccountOrderProps) {
+  const currency = useCurrency(currencyProp);
   const { t, ar } = useStoreAccountStrings(labels);
   const [notice, setNotice] = useState<ReorderPlan | null>(null);
   const clock = useMemo(() => now ?? Date.now(), [now]);

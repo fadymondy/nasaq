@@ -3,7 +3,7 @@
 import { CalendarDays, Download, ExternalLink, FileText, GitBranch, Link2, Plus, Trash2, Upload } from "lucide-react";
 import { type ComponentProps, type ReactNode, useId, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { defaultCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { ActivityComposer, ActivityTimeline } from "../activity-composer/activity-composer";
 import { AiUsageCost } from "../ai-usage-cost";
 import { Avatar } from "../avatar";
@@ -725,7 +725,7 @@ function SettingsTab({ project, onSave, workflow, statuses, labels, budget, extr
       ) : null}
     </>
   );
-  const money = (n: number) => formatNumber(n, locale, { style: "currency", currency: budget?.currency ?? project.currency ?? "USD", maximumFractionDigits: 0 });
+  const money = (n: number) => formatNumber(n, locale, { style: "currency", currency: budget?.currency ?? project.currency ?? defaultCurrency(locale), maximumFractionDigits: 0 });
 
   const general = (
     <Card>
@@ -789,7 +789,7 @@ function SettingsTab({ project, onSave, workflow, statuses, labels, budget, extr
           </Field>
           <Field>
             <FieldLabel>{t.currency}</FieldLabel>
-            <Input ltr readOnly value={budget?.currency ?? project.currency ?? "USD"} />
+            <Input ltr readOnly value={budget?.currency ?? project.currency ?? defaultCurrency(locale)} />
           </Field>
           <div className="flex items-center gap-3 @2xl:col-span-2">
             <Button type="submit" loading={busy} disabled={!onSave}>

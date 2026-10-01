@@ -79,3 +79,8 @@ export const ArabicRtl: Story = {
     </ArabicScope>
   ),
 };
+
+/** Server does not issue recovery codes: setup finishes right after the code is confirmed. */
+export const WithoutRecoveryCodes: Story = {
+  render: () => <TwoFactorSetup otpauthUri={OTPAUTH_URI} onVerify={async (code) => (code === DEMO_CODE ? {} : { error: "Try 123456." })} />,
+};

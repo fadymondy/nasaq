@@ -1,6 +1,6 @@
 /*
  * Demo data for the product page, reviews and Q&A stories. Products come from ./_store-demo.
- * Everything here is illustrative. Money is integer minor units in EGP.
+ * Everything here is illustrative. Money is integer minor units (USD, or SAR in Arabic).
  */
 import type { ProductDeliveryConfig, ProductQuestion, ProductReview, ProductSizeGuideData, ProductSpec } from "@nasaq/web";
 import { useNasaq } from "@nasaq/web";
@@ -60,8 +60,8 @@ export const specs = (ar: boolean): ProductSpec[] =>
 
 export const shippingInfo = (ar: boolean) =>
   ar
-    ? "الشحن مجاني للطلبات فوق ١٠٠٠ ج.م. يمكنك الإرجاع خلال ١٤ يومًا من الاستلام إذا كان المنتج بحالته الأصلية."
-    : "Free shipping on orders over EGP 1,000. Return within 14 days of delivery if the item is unused.";
+    ? "الشحن مجاني للطلبات فوق ١٠٠٠ ر.س. يمكنك الإرجاع خلال ١٤ يومًا من الاستلام إذا كان المنتج بحالته الأصلية."
+    : "Free shipping on orders over $1,000. Return within 14 days of delivery if the item is unused.";
 
 const P = (n: string) => ({ src: `/store/${n}.svg`, alt: "" });
 

@@ -81,6 +81,7 @@ AuthLayout                        data-slot="auth-layout", data-variant="card" |
 | `title` | `ReactNode` | | Page heading, rendered as the `h1`. |
 | `description` | `ReactNode` | | One line under the title. |
 | `panel` | `ReactNode` | | Content of the brand side in the split layout. Hidden below `lg`. |
+| `logo` | `ReactNode` | `<ProductLogo />` | Your own logo in the default split panel (when no `panel` is passed). Use it, with `mark`, so an app that is not a Nasaq brand never shows a Nasaq mark. |
 | `prompt` | `ReactNode` | | One centred line under the form that links to the other auth page: "Don't have an account? Create one" on sign-in, "Already have an account? Sign in" on sign-up. Links inside it get the foreground colour and an underline on hover. |
 | `footer` | `ReactNode` | | Slot under the form. |
 | `backdrop` | `boolean` | `true` | A plain lattice of tiny cubes around the form; the cubes under the mouse light up. |

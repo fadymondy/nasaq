@@ -51,7 +51,7 @@ import { ChartOfAccounts, JournalEntryEditor, TrialBalance, AccountStatement } f
 | --- | --- | --- | --- |
 | `accounts` | `AccountingAccount[]` | required | `{ id, code, name, type, parentId?, archived? }`. |
 | `entries` | `AccountingEntry[]` | `[]` | Posted ones give each row a balance; a group shows its whole branch. |
-| `currency` | `string` | `"USD"` | ISO 4217 code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. |
 | `selectedId` | `string \| null` | none | Highlighted row. |
 | `onSelectAccount` | `(account) => void` | none | Open the statement. |
 | `onAddChild` | `(parent) => void` | none | Adds the "Add sub-account" action. |
@@ -65,7 +65,7 @@ import { ChartOfAccounts, JournalEntryEditor, TrialBalance, AccountStatement } f
 | `accounts` | `AccountingAccount[]` | required | Only active leaf accounts can be picked. |
 | `value` / `defaultValue` | `JournalEntryEditorValue` | `journalEntryDraft()` | `{ date, memo, lines }`, amounts in minor units. |
 | `onValueChange` | `(value) => void` | none | Every edit. |
-| `currency` | `string` | `"USD"` | ISO 4217 code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. |
 | `number` | `string` | none | Shown as the entry number. |
 | `onPost` | `(value) => void \| Promise<void>` | none | Called only for a balanced entry. Throw to keep the editor. |
 | `onSaveDraft` | `(value) => void \| Promise<void>` | none | Saves without posting. |

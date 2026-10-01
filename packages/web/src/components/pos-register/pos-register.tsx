@@ -28,6 +28,7 @@ import {
   posTenderLimit,
   posVariance,
 } from "./pos-math";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export {
   posCanAddTender,
@@ -312,7 +313,7 @@ export interface PosCloseReport extends PosDrawerSummary {
 export interface PosRegisterProps extends Omit<ComponentProps<"section">, "children" | "defaultValue"> {
   products: readonly PosProduct[];
   categories?: readonly PosCategory[];
-  /** ISO 4217 code. Default "USD". */
+  /** ISO 4217 code. Default USD, or SAR in Arabic. */
   currency?: string;
   taxMode?: LineTaxMode;
   defaultTaxBps?: number;
@@ -371,7 +372,7 @@ function Row({ label, children, strong }: { label: ReactNode; children: ReactNod
 export function PosRegister({
   products,
   categories = [],
-  currency = "USD",
+  currency: currencyProp,
   taxMode = "exclusive",
   defaultTaxBps = 0,
   session: sessionProp,
@@ -390,6 +391,7 @@ export function PosRegister({
   className,
   ...props
 }: PosRegisterProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale } = usePosRegisterStrings(labels);
   const [innerSession, setInnerSession] = useState<PosSession | null>(defaultSession);
   const session = sessionProp !== undefined ? sessionProp : innerSession;

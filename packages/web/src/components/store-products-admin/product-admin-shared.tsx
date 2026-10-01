@@ -438,5 +438,5 @@ export function Thumb({ src, alt, size = 40, className, label }: { src?: string;
   );
 }
 
-/** Minor units in one major unit: 100 for EGP, 1 for JPY, 1000 for KWD. */
+/** Minor units in one major unit: 100 for USD, 1 for JPY, 1000 for KWD. */
 export const minorPerMajorOf = (decimals: number) => 10 ** decimals;

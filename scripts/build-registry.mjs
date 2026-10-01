@@ -44,6 +44,7 @@ function rewrite(code, { deps, regDeps, self }) {
     if (spec === "../../lib/cn") to = "@/lib/utils";
     else if (spec === "../../lib/hotkey") to = "@/lib/nasaq/hotkey";
     else if (spec === "../../lib/commerce") to = "@/lib/nasaq/commerce";
+    else if (spec === "../../lib/delivery") to = "@/lib/nasaq/delivery";
     else if (spec === "../../lib/click-sound") to = "@/lib/nasaq/click-sound";
     else if (spec === "../../provider/nasaq-provider" || spec === "../provider/nasaq-provider") to = "@/components/nasaq/nasaq-provider";
     else if (spec === "@nasaq/brands") to = "@/lib/nasaq/brands";
@@ -118,11 +119,13 @@ const items = [];
   const colorConst = generated.match(/export const color = [\s\S]*?\n\} as const;\n/)?.[0];
   if (!colorConst) throw new Error("color not found in generated tokens");
   const contrastSrc = await readFile(join(root, "packages/tokens/src/contrast.ts"), "utf8");
+  const customBrandSrc = (await readFile(join(root, "packages/tokens/src/custom-brand.ts"), "utf8")).replace(/^import .*\r?\n/gm, "");
   const files = [
     { path: await emit("lib/utils.ts", await readFile(join(root, "packages/web/src/lib/cn.ts"), "utf8")), type: "registry:lib", target: "lib/utils.ts" },
-    { path: await emit("lib/nasaq/tokens.ts", `// Nasaq token types and brand colours (from @nasaq/tokens).\n${tokIndex.replace(/^export \*.*\n/gm, "").trim()}\n\n${colorConst}\n${brandsConst}\n${contrastSrc}`), type: "registry:lib", target: "lib/nasaq/tokens.ts" },
+    { path: await emit("lib/nasaq/tokens.ts", `// Nasaq token types and brand colours (from @nasaq/tokens).\n${tokIndex.replace(/^export \*.*\n/gm, "").trim()}\n\n${colorConst}\n${brandsConst}\n${contrastSrc}\n${customBrandSrc}`), type: "registry:lib", target: "lib/nasaq/tokens.ts" },
     { path: await emit("lib/nasaq/hotkey.ts", await readFile(join(root, "packages/web/src/lib/hotkey.ts"), "utf8")), type: "registry:lib", target: "lib/nasaq/hotkey.ts" },
     { path: await emit("lib/nasaq/commerce.ts", await readFile(join(root, "packages/web/src/lib/commerce.ts"), "utf8")), type: "registry:lib", target: "lib/nasaq/commerce.ts" },
+    { path: await emit("lib/nasaq/delivery.ts", await readFile(join(root, "packages/web/src/lib/delivery.ts"), "utf8")), type: "registry:lib", target: "lib/nasaq/delivery.ts" },
     { path: await emit("lib/nasaq/click-sound.ts", await readFile(join(root, "packages/web/src/lib/click-sound.ts"), "utf8")), type: "registry:lib", target: "lib/nasaq/click-sound.ts" },
   ];
   for (const f of ["marks.ts", "mark-svg.ts", "manifests.ts"]) {

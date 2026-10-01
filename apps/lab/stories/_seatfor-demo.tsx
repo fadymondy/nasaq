@@ -118,7 +118,7 @@ export function useDemoBooking(status: BookingRecord["status"] = "confirmed"): B
     patient: tr(ar, "Nour Hassan", "نور حسن"),
     phone: "+20 100 123 4567",
     price: 400,
-    currency: "EGP",
+    currency: ar ? "SAR" : "USD",
     payment: "visit",
     notes: tr(ar, "Persistent cough for two weeks.", "سعال مستمر منذ أسبوعين."),
     history,
@@ -155,7 +155,7 @@ export function useStaffBookings(): BookingRecord[] {
     patient: person(ar, i),
     phone: `+20 100 ${200 + i} 45${i}${i}`,
     price: 400,
-    currency: "EGP",
+    currency: ar ? "SAR" : "USD",
     payment: i % 3 === 0 ? "online" : "visit",
     history: [{ status, at: at(8, 30 + i) }],
   }));

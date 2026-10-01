@@ -98,7 +98,7 @@ export const MegaMenu: Story = {
 function Footer() {
   const ar = useAr();
   const [lang, setLang] = useState(ar ? "ar" : "en");
-  const [cur, setCur] = useState("EGP");
+  const [cur, setCur] = useState(ar ? "SAR" : "USD");
   return (
     <StoreFooter
       brand={ar ? "متجر النيل" : "Nile Store"}

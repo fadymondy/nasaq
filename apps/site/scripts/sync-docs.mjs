@@ -33,6 +33,7 @@ const LABELS = {
   chat: "Chat",
   collaboration: "Collaboration",
   crm: "CRM",
+  delivery: "Delivery",
   "data-display": "Data Display",
   "developer-tools": "Developer Tools",
   editors: "Editors",

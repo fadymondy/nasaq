@@ -26,6 +26,28 @@ export function Root({ children }: { children: React.ReactNode }) {
 }
 ```
 
+## Your own colours (client brands)
+
+An app that is not one of the registered brands themes Nasaq with its own colours, with no brand registered. Pass `brandColors`, or a `brand` object (the same colours plus an optional `name`, `wordmark` and `mark`):
+
+```tsx
+<NasaqProvider brandColors={{ brand: "#C8283A", accent: "#C9A227" }}>{children}</NasaqProvider>
+
+// Full control per mode. Each role is "#RRGGBB" or { light, dark }.
+<NasaqProvider
+  brandColors={{
+    brand: { light: "#C8283A", dark: "#F2626F" },
+    action: { light: "#C8283A", dark: "#F2626F" },
+    onAction: { light: "#FFFFFF", dark: "#1A0A0D" },
+    accent: "#C9A227",
+  }}
+>
+```
+
+The provider sets `data-brand="custom"` and writes the seven raw variables (`--nq-brand-l/-d`, `--nq-action-l/-d`, `--nq-on-action-l/-d`, `--nq-accent-brand`). `--nq-brand`, `--nq-action`, `--nq-on-action` and `--nq-primary-action` then resolve from them exactly as for a registered brand, per theme. What you leave out is derived: a light-only colour gets a lighter dark step (same hue, lightness of at least 62%), `action` defaults to `brand`, and `onAction` is whichever of ivory or ink has the higher contrast on the action fill. Invalid values are ignored. On a scoped provider (`target="scope"`) the variables go on the wrapper. `useNasaq().isCustomBrand` tells you it is active.
+
+Nasaq draws no brand mark for a client: pass your own `logo` / `mark` (`SidebarBrand logo`, `AuthLayout mark` and `logo`, `ProductMark src`, native `AppHeader logo`). The same API exists on the native `NasaqProvider` (`brandColors`, `brand`). The resolution (`resolveCustomBrandColors`) is a pure function in `@nasaq/tokens`, tested for contrast.
+
 Legacy names from the products' earlier codenames resolve to the current key (`managy` to `mahaam`, `cabrain` to `zekra`, `cloudy` to `hosbah`, `booki` to `seatfor`, `claude-digital-twin` to `moharrik`).
 
 ## Choosing a brand

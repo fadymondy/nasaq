@@ -31,6 +31,7 @@ import {
   type PaygPrice,
   type PlanCatalog,
 } from "./catalog-math";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const STRINGS = {
   en: {
@@ -180,7 +181,7 @@ export interface PlanCatalogEditorProps extends Omit<ComponentProps<"section">, 
   onApply?: (draft: PlanCatalog) => Promise<CatalogApplyResult> | CatalogApplyResult;
   /** Called on every edit of the draft. */
   onChange?: (draft: PlanCatalog) => void;
-  /** ISO 4217 code for prices. Default "USD". */
+  /** ISO 4217 code for prices. Default USD, or SAR in Arabic. */
   currency?: string;
   /** Labels for the plan cards and plan dialog (AdminPlans). */
   planLabels?: AdminTenantsLabels;
@@ -202,7 +203,8 @@ const errorOf = async (fn: () => unknown): Promise<string | null> => {
  * prices and bundles, all edited into a draft. Nothing is live until the sync preview, a dry run listing what will be
  * added, updated and removed, is applied. Persistence is yours: `onPreview` and `onApply` are async callbacks.
  */
-export function PlanCatalogEditor({ catalog, onPreview, onApply, onChange, currency = "USD", planLabels, loading = false, labels, className, ...props }: PlanCatalogEditorProps) {
+export function PlanCatalogEditor({ catalog, onPreview, onApply, onChange, currency: currencyProp, planLabels, loading = false, labels, className, ...props }: PlanCatalogEditorProps) {
+  const currency = useCurrency(currencyProp);
   const locale = useOptionalNasaq()?.locale ?? "en";
   const t = { ...STRINGS[locale.startsWith("ar") ? "ar" : "en"], ...labels };
   const num = (n: number) => formatNumber(n, locale);

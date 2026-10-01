@@ -138,7 +138,7 @@ inline-start when selected. Place inside `DropdownMenuRadioGroup`.
 
 ### `DropdownMenuLabel`
 
-Base UI `Menu.GroupLabel` props. **It must be rendered inside a `DropdownMenuGroup`**: Base UI reads the group context to label the group (`aria-labelledby`), and a label outside a group throws. Always wrap a label and its items in `<DropdownMenuGroup>`.
+Inside a `DropdownMenuGroup` it is Base UI `Menu.GroupLabel` and labels the group (`aria-labelledby`). Outside a group it renders a plain presentational heading (`role="presentation"`) with the same style, so it no longer throws. Wrap a label and its items in `<DropdownMenuGroup>` when you want the group announced.
 
 ### `DropdownMenuSeparator`
 

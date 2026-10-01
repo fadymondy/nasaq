@@ -21,6 +21,7 @@ import { DEFAULT_VARIANT_ID, draftChanged, emptyProductDraft, generateVariants, 
 import { failMessage, Money, type ProductAdminResult, type StoreProductsAdminLabels, useProductAdminStrings } from "./product-admin-shared";
 import { MediaManager } from "./media-manager";
 import { OptionsEditor, VariantMatrix } from "./variant-matrix";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const RichTextEditor = lazy(() => import("../rich-text-editor").then((m) => ({ default: m.RichTextEditor })));
 
@@ -28,7 +29,8 @@ export interface ProductEditorProps extends Omit<ComponentProps<"form">, "childr
   /** The product to edit. Omit for a new one. Build it with `productToDraft(product, { cost, … })`. */
   initial?: ProductDraft;
   /** ISO 4217 code of the store. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Origin of the storefront, for the search preview URL. */
   siteUrl?: string;
   /** Saves the draft. Resolve `{ error }` to show a message and keep the edits. */
@@ -50,7 +52,8 @@ type Setter = (change: Partial<ProductDraft> | ((d: ProductDraft) => ProductDraf
  * fill), brand, category and tags, a search listing preview, and status and visibility. Save is off until the
  * product is valid and has changed. Changing options keeps what you already typed on the variants that remain.
  */
-export function ProductEditor({ initial, currency, siteUrl = "https://store.example", onSave, onCancel, suggestions, loading = false, labels, className, ...props }: ProductEditorProps) {
+export function ProductEditor({ initial, currency: currencyProp, siteUrl = "https://store.example", onSave, onCancel, suggestions, loading = false, labels, className, ...props }: ProductEditorProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n, locale } = useProductAdminStrings(labels);
   const uid = useId();
   const base = useRef<ProductDraft>(initial ?? emptyProductDraft());

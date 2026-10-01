@@ -2,6 +2,7 @@
 
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { Popover } from "@base-ui/react/popover";
+import { useRender } from "@base-ui/react/use-render";
 import { ChevronRight, ChevronsUpDown, Ellipsis, PanelLeft } from "lucide-react";
 import {
   Children,
@@ -99,6 +100,13 @@ export interface AppShellProps extends ComponentProps<"div"> {
   maxWidth?: number;
   /** Accessible name of the resize handle; localise it. */
   resizeLabel?: string;
+  /**
+   * Height taken from above the shell, such as an Electron title bar: a number is px, a string any CSS length. It
+   * sets `--nasaq-shell-offset`, which the shell subtracts from its `100dvh` (and the sidebar sticks below). Set the
+   * variable yourself in CSS to get the same result. Default 0. The sticky page header (`AppHeader`) stays at the top
+   * of its scroll container.
+   */
+  offset?: number | string;
 }
 
 export const SIDEBAR_WIDTH_KEY = "nasaq-sidebar-width";
@@ -121,6 +129,8 @@ export function AppShell({
   minWidth = 208,
   maxWidth = 420,
   resizeLabel,
+  offset,
+  style,
   className,
   children,
   ...props
@@ -251,8 +261,9 @@ export function AppShell({
         data-slot="app-shell"
         data-variant={variant}
         data-navigation={sidebar ? "sidebar" : "top"}
+        style={offset === undefined ? style : ({ ...style, "--nasaq-shell-offset": typeof offset === "number" ? `${offset}px` : offset } as CSSProperties)}
         className={cn(
-          "flex min-h-dvh bg-background text-foreground",
+          "flex min-h-[calc(100dvh_-_var(--nasaq-shell-offset,0px))] bg-background text-foreground",
           "has-data-[slot=app-nav-bar]:max-md:pb-[calc(3.5rem+env(safe-area-inset-bottom))]",
           inset && "md:bg-sidebar",
           className,
@@ -272,7 +283,7 @@ export function AppShell({
           data-resizing={resizing || undefined}
           style={{ "--nq-sidebar-width": `${width}px` } as CSSProperties}
           className={cn(
-            "sticky top-0 hidden h-dvh shrink-0 border-e border-border bg-sidebar transition-[width] duration-200 ease-nq md:block",
+            "sticky top-[var(--nasaq-shell-offset,0px)] hidden h-[calc(100dvh_-_var(--nasaq-shell-offset,0px))] shrink-0 border-e border-border bg-sidebar transition-[width] duration-200 ease-nq md:block",
             inset && "md:border-e-0",
             "data-resizing:transition-none",
             collapsed ? "w-[calc(var(--nq-control)+2*var(--nq-shell-pad))]" : "w-(--nq-sidebar-width)",
@@ -326,7 +337,7 @@ export function AppShell({
         ) : null}
         {inset ? (
           // The panel scrolls by itself, so the sticky header stays inside its rounded corners.
-          <div data-slot="app-shell-panel-frame" className="flex min-w-0 flex-1 flex-col md:h-dvh md:py-2 md:pe-2">
+          <div data-slot="app-shell-panel-frame" className="flex min-w-0 flex-1 flex-col md:h-[calc(100dvh_-_var(--nasaq-shell-offset,0px))] md:py-2 md:pe-2">
             <div
               data-slot="app-shell-panel"
               className="flex min-w-0 flex-1 flex-col bg-background md:overflow-y-auto md:rounded-xl md:border md:border-border md:shadow-xs"
@@ -571,6 +582,12 @@ export interface SidebarItemProps extends ComponentProps<"a"> {
    * string; with non-string children pass `tooltip` (or `aria-label`), or the rail item has no name.
    */
   tooltip?: string;
+  /**
+   * Render another element instead of the `<a>`, so a router link keeps its client-side navigation: pass
+   * `render={<Link href="/orders" />}` (Next.js, react-router) or a function `(props) => <Link {...props} to="/orders" />`.
+   * Nasaq merges its classes, `aria-current`, `data-slot` and children into it.
+   */
+  render?: ReactElement | ((props: ComponentProps<"a">) => ReactElement);
 }
 
 /** An item's icon, tagged so `<Sidebar icons="mobile">` can hide it on the desktop column. */
@@ -583,23 +600,28 @@ function SidebarIcon({ children }: { children: ReactNode }) {
 }
 
 /** Active state = gold accent rule at the inline start + stronger text, never colour alone. */
-export function SidebarItem({ active = false, icon, trailing, tooltip, className, children, ...props }: SidebarItemProps) {
+export function SidebarItem({ active = false, icon, trailing, tooltip, render, className, children, ...props }: SidebarItemProps) {
   const collapsed = useSidebarCollapsed();
   const label = tooltip ?? (typeof children === "string" ? children : undefined);
   const name = label ?? props["aria-label"];
-  const link = (
-    <a
-      data-slot="sidebar-item"
-      aria-current={active ? "page" : undefined}
-      className={cn(itemClass(active), className)}
-      {...props}
-      aria-label={collapsed ? name : props["aria-label"]}
-    >
-      <SidebarIcon>{icon}</SidebarIcon>
-      {collapsed ? null : <span className="min-w-0 flex-1 truncate">{children}</span>}
-      {trailing && !collapsed ? <span className="ms-auto text-caption text-muted-foreground tabular-nums">{trailing}</span> : null}
-    </a>
-  );
+  const link = useRender({
+    defaultTagName: "a",
+    render,
+    props: {
+      "data-slot": "sidebar-item",
+      "aria-current": active ? "page" : undefined,
+      className: cn(itemClass(active), className),
+      ...props,
+      "aria-label": collapsed ? name : props["aria-label"],
+      children: (
+        <>
+          <SidebarIcon>{icon}</SidebarIcon>
+          {collapsed ? null : <span className="min-w-0 flex-1 truncate">{children}</span>}
+          {trailing && !collapsed ? <span className="ms-auto text-caption text-muted-foreground tabular-nums">{trailing}</span> : null}
+        </>
+      ),
+    },
+  });
   return collapsed && name ? (
     <Tooltip content={name} side="inline-end">
       {link}

@@ -427,7 +427,7 @@ function testGroup(g: RuleGroup, facts: Facts, minorPerMajor: number): boolean {
 }
 
 export interface MatchOptions {
-  /** Minor units in one major unit (100 for EGP). Rule prices are typed in major units. Default 100. */
+  /** Minor units in one major unit (100 for USD). Rule prices are typed in major units. Default 100. */
   minorPerMajor?: number;
   /** Also match draft and archived products. Default false: only active products show in a collection. */
   includeInactive?: boolean;

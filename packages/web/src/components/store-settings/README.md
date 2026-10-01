@@ -37,10 +37,10 @@ import { ShippingSettings, TaxSettings, DiscountsManager, GiftCardsManager, Gift
 ## Quick start
 
 ```tsx
-<ShippingSettings zones={zones} pickups={pickups} currency="EGP" onSaveZone={async (z) => api.saveZone(z)} />
-<TaxSettings rates={rates} currency="EGP" onSave={async (r) => api.saveTax(r)} />
-<DiscountsManager discounts={discounts} currency="EGP" products={products} onSave={async (d) => api.saveDiscount(d)} />
-<GiftCardsManager cards={cards} currency="EGP" onIssue={async (c) => api.createCard(c)} onUpdate={async (c) => api.saveCard(c)} />
+<ShippingSettings zones={zones} pickups={pickups} currency="USD" onSaveZone={async (z) => api.saveZone(z)} />
+<TaxSettings rates={rates} currency="USD" onSave={async (r) => api.saveTax(r)} />
+<DiscountsManager discounts={discounts} currency="USD" products={products} onSave={async (d) => api.saveDiscount(d)} />
+<GiftCardsManager cards={cards} currency="USD" onIssue={async (c) => api.createCard(c)} onUpdate={async (c) => api.saveCard(c)} />
 ```
 
 ## Anatomy
@@ -61,7 +61,7 @@ GiftCardField     [data-slot=gift-card-field]    checkout box with card chips
 | --- | --- | --- | --- |
 | `zones` | `readonly ShippingZone[]` | required | Countries (`"*"` for the rest of the world), optional cities, and rates. |
 | `pickups` | `readonly PickupLocation[]` | none | Local pickup points. |
-| `currency` | `string` | required | ISO 4217 code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. |
 | `onSaveZone` | `(zone) => Promise<SettingsResult>` | required | Resolve `{ error }` to keep the editor open. |
 | `onDeleteZone`, `onSavePickup`, `onDeletePickup` | | none | Each adds its action. |
 | `loading`, `error`, `onRetry`, `labels` | | | States and strings. |

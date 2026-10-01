@@ -1,12 +1,13 @@
 /*
  * Shared demo data for the commerce kit stories (storefront + store admin).
  * Images are flat demo illustrations in apps/lab/public/store (lab only, never shipped).
- * Money is integer minor units; the demo store sells in EGP.
+ * Money is integer minor units; components default to USD, or SAR in Arabic.
  */
 import type { CommerceAddress, CommerceCartLine, CommerceOrder, CommerceProduct, CommerceShippingMethod, CommerceVariant } from "@nasaq/web";
 
 export type StoreLocale = "en" | "ar";
-export const STORE_CURRENCY = "EGP";
+/** Unset, so every store component shows its default: US dollars, or Saudi riyals in Arabic. */
+export const STORE_CURRENCY: string | undefined = undefined;
 const img = (name: string, alt: string) => ({ src: `/store/${name}.svg`, alt, width: 800, height: 800 });
 
 type Colour = "black" | "white" | "red" | "blue" | "green" | "sand" | "navy" | "pink";

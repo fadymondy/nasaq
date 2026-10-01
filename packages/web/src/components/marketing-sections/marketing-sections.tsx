@@ -3,7 +3,7 @@
 import { ArrowRight, Pause, Play, RotateCcw, Sparkles, Wrench } from "lucide-react";
 import { type CSSProperties, type ComponentProps, type ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { defaultCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { usePrefersReducedMotion } from "../ai-states";
 import { Badge } from "../badge";
 import { Button } from "../button";
@@ -372,10 +372,10 @@ export function PricingPacks({ eyebrow, title, description, packs, onPurchase, s
                 </div>
                 <div className="mt-auto flex flex-col gap-3">
                   <div className="flex flex-col gap-0.5">
-                    <Price amount={pack.price} currency={pack.currency ?? "USD"} size="lg" />
+                    <Price amount={pack.price} currency={pack.currency ?? defaultCurrency(ar ? "ar" : "en")} size="lg" />
                     {showUnitPrice && unit > 0 ? (
                       <span className="text-caption text-muted-foreground">
-                        <bdi dir="ltr">{new Intl.NumberFormat(ar ? "ar-u-nu-latn" : "en", { style: "currency", currency: pack.currency ?? "USD", maximumFractionDigits: 3 }).format(unit)}</bdi> {t.perUnit}
+                        <bdi dir="ltr">{new Intl.NumberFormat(ar ? "ar-u-nu-latn" : "en", { style: "currency", currency: pack.currency ?? defaultCurrency(ar ? "ar" : "en"), maximumFractionDigits: 3 }).format(unit)}</bdi> {t.perUnit}
                       </span>
                     ) : null}
                   </div>

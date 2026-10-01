@@ -40,7 +40,7 @@ import { StoreAnnouncementBar, StoreHeader, StoreFooter } from "@fadymondy/nasaq
   brand="Nile Store"
   nav={nav}
   announcement={<StoreAnnouncementBar items={announcements} />}
-  search={{ products, categoryTree, currency: "EGP", popular: ["hoodie"], onSearch: (q) => go(`/search?q=${q}`), onSelectProduct: (p) => go(`/p/${p.slug}`) }}
+  search={{ products, categoryTree, currency: "USD", popular: ["hoodie"], onSearch: (q) => go(`/search?q=${q}`), onSelectProduct: (p) => go(`/p/${p.slug}`) }}
   cartCount={cart.count}
   onCartClick={openCart}
 />

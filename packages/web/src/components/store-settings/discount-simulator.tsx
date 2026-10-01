@@ -10,6 +10,7 @@ import { CurrencyInput } from "../currency-input";
 import { Field, FieldLabel, Input } from "../field";
 import { type Discount, type DiscountLine, evaluateDiscounts, normalizeDiscountCode } from "./discount-logic";
 import { Money, type StoreSettingsLabels, useSettingsStrings } from "./store-settings-shared";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface SimCollection {
   id: string;
@@ -21,7 +22,8 @@ export interface SimCollection {
  * Runs `evaluateDiscounts` on a sample basket, so a merchant sees which discounts apply, what each takes off, and why
  * the others do not. Codes are typed like a customer would. The same function can run on your server at checkout.
  */
-export function DiscountSimulator({ discounts, products, collections = [], currency, now, labels }: { discounts: readonly Discount[]; products: readonly CommerceProduct[]; collections?: readonly SimCollection[]; currency: string; now: Date; labels?: StoreSettingsLabels }) {
+export function DiscountSimulator({ discounts, products, collections = [], currency: currencyProp, now, labels }: { discounts: readonly Discount[]; products: readonly CommerceProduct[]; collections?: readonly SimCollection[]; currency?: string; now: Date; labels?: StoreSettingsLabels }) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useSettingsStrings(labels);
   const id = useId();
   const [qty, setQty] = useState<Record<string, number>>(() => Object.fromEntries(products.slice(0, 2).map((p, i) => [p.id, i + 1])));

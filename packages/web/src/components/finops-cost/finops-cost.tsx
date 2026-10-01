@@ -31,6 +31,7 @@ import {
   roundMoney,
   validateLineItem,
 } from "./finops-format";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export { budgetState, finopsTotals, monthlyEquivalent, parseAmount, rightsize, roundMoney, validateLineItem } from "./finops-format";
 export type { BudgetState, LineItemDraft, LineItemPeriod, LineItemProblem, PlanOption, Rightsize, ServerUsage, Totals } from "./finops-format";
@@ -251,7 +252,7 @@ function hintOf(server: CostServer): Rightsize {
 export function FinopsCost({
   servers,
   items = [],
-  currency = "USD",
+  currency: currencyProp,
   previousTotal,
   budget,
   history,
@@ -265,6 +266,7 @@ export function FinopsCost({
   className,
   ...props
 }: FinopsCostProps) {
+  const currency = useCurrency(currencyProp);
   const locale = useOptionalNasaq()?.locale ?? "en";
   const ar = locale.startsWith("ar");
   const t = { ...STRINGS[ar ? "ar" : "en"], ...labels } as FinopsCostLabels;

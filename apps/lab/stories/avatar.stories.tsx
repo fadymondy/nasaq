@@ -1,4 +1,4 @@
-import { Avatar } from "@nasaq/web";
+import { Avatar, AvatarFallback, AvatarImage } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
@@ -34,5 +34,14 @@ export const Fallbacks: Story = {
       <Avatar name="Mahaam" shape="square" />
       <Avatar name="Broken image" src="/does-not-exist.png" />
     </div>
+  ),
+};
+
+export const Composition: Story = {
+  render: () => (
+    <Avatar>
+      <AvatarImage src="/__missing__.png" alt="Fady Mondy" />
+      <AvatarFallback>FM</AvatarFallback>
+    </Avatar>
   ),
 };

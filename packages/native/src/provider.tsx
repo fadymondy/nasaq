@@ -1,8 +1,8 @@
 import type { BrandKey } from "@nasaq/brands";
-import type { Density, Direction, Expression, ThemeName } from "@nasaq/tokens";
+import type { CustomBrandColors, Density, Direction, Expression, ThemeName } from "@nasaq/tokens";
 import { createContext, type ReactNode, useContext, useEffect, useMemo } from "react";
 import { I18nManager, Platform, StyleSheet, useColorScheme, View } from "react-native";
-import { type NasaqTheme, resolveTheme, type Script } from "./theme";
+import { type CustomBrand, type NasaqTheme, resolveTheme, type Script } from "./theme";
 
 export interface NasaqFonts {
   /** Family names as registered with the app (expo-font or native assets). Omit for the system face. */
@@ -27,8 +27,13 @@ const NO_FONTS: NasaqFonts = {};
 
 export interface NasaqProviderProps {
   children: ReactNode;
-  /** Brand key or legacy alias. */
-  brand?: BrandKey | (string & {});
+  /** A registered brand key or legacy alias, or a `CustomBrand` object for an app that is not a Nasaq brand. */
+  brand?: BrandKey | (string & {}) | CustomBrand;
+  /**
+   * Your own colours over the brand, e.g. the admin colours from your API. `{ brand, action, onAction, accent }`,
+   * each "#RRGGBB" or `{ light, dark }`. Dark steps and on-colours are derived for contrast.
+   */
+  brandColors?: CustomBrandColors;
   /** Omit to follow the OS appearance. */
   scheme?: ThemeName;
   expression?: Expression;
@@ -48,6 +53,7 @@ export interface NasaqProviderProps {
 export function NasaqProvider({
   children,
   brand = "nasaq",
+  brandColors,
   scheme,
   expression = "native",
   density = "comfortable",
@@ -68,9 +74,11 @@ export function NasaqProvider({
     onDirectionChangeRequiresReload?.(dir);
   }, [isRtl, dir, onDirectionChangeRequiresReload]);
 
+  // Objects are usually rebuilt each render; compare by content so the theme is not recomputed for nothing.
+  const sig = JSON.stringify([brand, brandColors]);
   const value = useMemo<NasaqContextValue>(
     () => ({
-      ...resolveTheme({ brand, scheme: resolvedScheme, expression, density }),
+      ...resolveTheme({ brand, brandColors, scheme: resolvedScheme, expression, density }),
       locale,
       direction: dir,
       isRtl,
@@ -78,7 +86,8 @@ export function NasaqProvider({
       fonts,
       flip: { transform: [{ scaleX: isRtl ? -1 : 1 }] },
     }),
-    [brand, resolvedScheme, expression, density, locale, dir, isRtl, fonts],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [sig, resolvedScheme, expression, density, locale, dir, isRtl, fonts],
   );
 
   // react-native-web writes `dir` and `lang` to the DOM, which is how RTL reaches the browser.

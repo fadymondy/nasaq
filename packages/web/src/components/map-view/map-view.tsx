@@ -1,7 +1,7 @@
 "use client";
 
-import { Crosshair, Layers, MapPin as MapPinIcon, Minus, Plus, X, type LucideIcon } from "lucide-react";
-import { type KeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Check, Crosshair, Layers, MapPin as MapPinIcon, Minus, Plus, Undo2, X, type LucideIcon } from "lucide-react";
+import { type KeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Badge } from "../badge";
@@ -25,6 +25,7 @@ import {
   mapFromScreen,
   mapGraticuleStep,
   mapPanBy,
+  mapPointInPolygon,
   mapRouteLength,
   mapScaleBar,
   mapTileUrl,
@@ -40,6 +41,7 @@ const STRINGS = {
     map: "Map",
     layers: "Layers",
     routes: "Routes",
+    areas: "Areas",
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
     fit: "Show everything",
@@ -56,11 +58,20 @@ const STRINGS = {
     clusterList: (n: number) => `${n} pins, show the list`,
     clusterPins: (n: number) => `${n} pins`,
     clusterHint: "These pins share one spot. Choose one to see it.",
+    pickedPoint: "Chosen location",
+    pickedHint: "Drag to move. Arrow keys nudge it, Shift for bigger steps.",
+    vertex: (n: number) => `Point ${n}`,
+    vertexHint: "Drag to move. Arrow keys nudge it. Delete removes it.",
+    shape: "Shape being edited",
+    removeLast: "Remove last point",
+    finishShape: "Finish shape",
+    editHint: "Click the map, or press Enter, to add a point.",
   },
   ar: {
     map: "الخريطة",
     layers: "الطبقات",
     routes: "المسارات",
+    areas: "المناطق",
     zoomIn: "تكبير",
     zoomOut: "تصغير",
     fit: "عرض كل شيء",
@@ -77,6 +88,14 @@ const STRINGS = {
     clusterList: (n: number) => `${clusterCount(n)}، عرض القائمة`,
     clusterPins: (n: number) => clusterCount(n),
     clusterHint: "هذه الأماكن في نقطة واحدة. اختر مكانًا لعرضه.",
+    pickedPoint: "الموقع المختار",
+    pickedHint: "اسحب للتحريك. الأسهم تحرّكه خطوة خطوة، ومع Shift خطوة أكبر.",
+    vertex: (n: number) => `النقطة ${n}`,
+    vertexHint: "اسحب للتحريك. الأسهم تحرّكها. Delete يحذفها.",
+    shape: "الشكل قيد التعديل",
+    removeLast: "حذف آخر نقطة",
+    finishShape: "إنهاء الشكل",
+    editHint: "انقر على الخريطة، أو اضغط Enter، لإضافة نقطة.",
   },
 };
 export type MapViewLabels = Partial<(typeof STRINGS)["en"]>;
@@ -94,6 +113,11 @@ export interface MapPin extends MapLatLng {
   layer?: string;
   tone?: MapTone;
   icon?: LucideIcon;
+  /**
+   * A moving thing, such as a driver: shows a soft pulse and glides to each new position instead of jumping. The
+   * glide is off while the map is being dragged and when the user prefers reduced motion.
+   */
+  live?: boolean;
   /** A short status word for a badge in the card ("Moving", "Idle"). */
   status?: string;
   statusAr?: string;
@@ -108,6 +132,19 @@ export interface MapRoute {
   labelAr?: string;
   layer?: string;
   tone?: MapTone;
+  dashed?: boolean;
+}
+
+/** A filled polygon: a delivery zone, a service area, a no-go region. */
+export interface MapArea {
+  id: string;
+  /** Ring of at least three points. It is closed for you. */
+  points: readonly MapLatLng[];
+  label: string;
+  labelAr?: string;
+  layer?: string;
+  tone?: MapTone;
+  /** Draw the outline dashed. */
   dashed?: boolean;
 }
 
@@ -134,6 +171,8 @@ export interface MapClusterInfo {
 export interface MapViewProps {
   pins?: readonly MapPin[];
   routes?: readonly MapRoute[];
+  /** Filled polygons drawn under the routes and pins, for zones. */
+  areas?: readonly MapArea[];
   layers?: readonly MapLayer[];
   /** Visible layer ids. Controlled when set. Default: every layer that is not `defaultHidden`. */
   visibleLayers?: readonly string[];
@@ -170,6 +209,38 @@ export interface MapViewProps {
   renderCluster?: (cluster: MapClusterInfo) => ReactNode;
   /** Legend of layers and routes. Default true. */
   legend?: boolean;
+  /**
+   * The layers and legend panel: "collapsed" (default) shows only the Layers button, "expanded" opens it at first,
+   * "hidden" removes it. `legend={false}` also hides it.
+   */
+  layersPanel?: "collapsed" | "expanded" | "hidden";
+  /** Fires on a tap or click on the map itself (not on a pin or a control) with the place under it. */
+  onMapClick?: (point: MapLatLng) => void;
+  /** Fires when an area is clicked (or chosen in the legend). Areas under the click are tested topmost first. */
+  onAreaClick?: (area: MapArea) => void;
+  /** Fires when a pin is clicked, besides selecting it. */
+  onPinClick?: (pin: MapPin) => void;
+  /**
+   * A chosen place with a draggable pin, for picking an address. Controlled when set (`null` shows none); drag it,
+   * or focus it and use the arrow keys. Pair it with `onMapClick` to place it by clicking.
+   */
+  pickedPoint?: MapLatLng | null;
+  defaultPickedPoint?: MapLatLng | null;
+  onPickedPointChange?: (point: MapLatLng) => void;
+  /**
+   * Area editing mode: clicking the map (or Enter on the focused map) adds a vertex to `editPoints`, vertices drag
+   * and nudge with the arrow keys, Delete removes the focused one, and a toolbar removes the last point or finishes.
+   */
+  editing?: boolean;
+  /** The ring being edited. Controlled when set. */
+  editPoints?: readonly MapLatLng[];
+  defaultEditPoints?: readonly MapLatLng[];
+  /** Fires with the new ring after every add, move or removal. */
+  onAreaChange?: (points: MapLatLng[]) => void;
+  /** Fires from the Finish shape button (enabled from three points) with the ring. */
+  onAreaDone?: (points: MapLatLng[]) => void;
+  /** Tone of the shape being edited. Default brand. */
+  editTone?: MapTone;
   /** Accessible name of the map. */
   label?: string;
   locale?: string;
@@ -193,6 +264,14 @@ const STROKE: Record<MapTone, string> = {
   danger: "stroke-nq-danger",
   neutral: "stroke-muted-foreground",
 };
+const FILL: Record<MapTone, string> = {
+  brand: "fill-primary/15",
+  info: "fill-nq-info/15",
+  success: "fill-nq-success/15",
+  warning: "fill-nq-warning/15",
+  danger: "fill-nq-danger/15",
+  neutral: "fill-muted-foreground/15",
+};
 const SWATCH: Record<MapTone, string> = {
   brand: "bg-primary",
   info: "bg-nq-info",
@@ -202,6 +281,82 @@ const SWATCH: Record<MapTone, string> = {
   neutral: "bg-muted-foreground",
 };
 const BADGE: Record<MapTone, "brand" | "info" | "success" | "warning" | "danger" | "neutral"> = { brand: "brand", info: "info", success: "success", warning: "warning", danger: "danger", neutral: "neutral" };
+
+/** A focusable handle that drags with the pointer or nudges with the arrow keys. Coordinates are canvas px. */
+function MapHandle({
+  x,
+  y,
+  label,
+  hint,
+  onMove,
+  onRemove,
+  className,
+  children,
+  data,
+  canvas,
+}: {
+  x: number;
+  y: number;
+  label: string;
+  hint: string;
+  onMove: (screen: { x: number; y: number }) => void;
+  onRemove?: () => void;
+  className?: string;
+  children?: ReactNode;
+  data: Record<string, string>;
+  canvas: RefObject<HTMLDivElement | null>;
+}) {
+  const grab = useRef<{ dx: number; dy: number } | null>(null);
+  const rel = (event: ReactPointerEvent<HTMLElement>) => {
+    const rect = canvas.current?.getBoundingClientRect();
+    return { x: event.clientX - (rect?.left ?? 0), y: event.clientY - (rect?.top ?? 0) };
+  };
+  return (
+    <button
+      type="button"
+      data-map-control=""
+      {...data}
+      aria-label={label}
+      title={hint}
+      onPointerDown={(event) => {
+        if (event.button !== 0) return;
+        const at = rel(event);
+        grab.current = { dx: x - at.x, dy: y - at.y };
+        event.currentTarget.setPointerCapture(event.pointerId);
+      }}
+      onPointerMove={(event) => {
+        if (!grab.current) return;
+        const at = rel(event);
+        onMove({ x: at.x + grab.current.dx, y: at.y + grab.current.dy });
+      }}
+      onPointerUp={(event) => {
+        grab.current = null;
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+      }}
+      onPointerCancel={() => {
+        grab.current = null;
+      }}
+      onKeyDown={(event) => {
+        const step = event.shiftKey ? 32 : 8;
+        const move: Record<string, [number, number]> = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
+        const d = move[event.key];
+        if (d) {
+          onMove({ x: x + d[0], y: y + d[1] });
+        } else if (onRemove && (event.key === "Delete" || event.key === "Backspace")) {
+          onRemove();
+        } else {
+          return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+      }}
+      className={cn("absolute z-20 flex cursor-move touch-none items-center justify-center outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus", className)}
+      style={{ left: x, top: y }}
+    >
+      {children}
+    </button>
+  );
+}
 
 const pick = (en: string | undefined, ar: string | undefined, isAr: boolean) => (isAr ? ar || en : en || ar) ?? "";
 const EMPTY_SIZE: MapSize = { width: 0, height: 0 };
@@ -214,6 +369,7 @@ const EMPTY_SIZE: MapSize = { width: 0, height: 0 };
 export function MapView({
   pins = [],
   routes = [],
+  areas = [],
   layers = [],
   visibleLayers,
   onVisibleLayersChange,
@@ -233,6 +389,19 @@ export function MapView({
   clusterRadius = MAP_CLUSTER_RADIUS,
   renderCluster,
   legend = true,
+  layersPanel = "collapsed",
+  onMapClick,
+  onAreaClick,
+  onPinClick,
+  pickedPoint: pickedProp,
+  defaultPickedPoint = null,
+  onPickedPointChange,
+  editing = false,
+  editPoints: editProp,
+  defaultEditPoints,
+  onAreaChange,
+  onAreaDone,
+  editTone = "brand",
   label,
   locale: localeProp,
   labels,
@@ -248,16 +417,21 @@ export function MapView({
   const [innerSelected, setInnerSelected] = useState<string | null>(defaultSelectedId);
   const [innerLayers, setInnerLayers] = useState<string[]>(() => layers.filter((l) => !l.defaultHidden).map((l) => l.id));
   const [legendOpen, setLegendOpen] = useState<boolean | null>(null);
+  const [innerPicked, setInnerPicked] = useState<MapLatLng | null>(defaultPickedPoint);
+  const [innerEdit, setInnerEdit] = useState<MapLatLng[]>(() => [...(defaultEditPoints ?? [])]);
   const [drag, setDrag] = useState(false);
   const [clusterList, setClusterList] = useState<string[] | null>(null);
   const last = useRef<{ x: number; y: number } | null>(null);
   const moved = useRef(false);
 
+  const picked = pickedProp === undefined ? innerPicked : pickedProp;
+  const editRing: readonly MapLatLng[] = editProp ?? innerEdit;
   const selectedId = selectedProp === undefined ? innerSelected : selectedProp;
   const shown = visibleLayers ?? innerLayers;
   const isShown = useCallback((layer?: string) => !layer || !layers.some((l) => l.id === layer) || shown.includes(layer), [layers, shown]);
   const visiblePins = useMemo(() => pins.filter((p) => isShown(p.layer)), [pins, isShown]);
   const visibleRoutes = useMemo(() => routes.filter((r) => isShown(r.layer)), [routes, isShown]);
+  const visibleAreas = useMemo(() => areas.filter((a) => isShown(a.layer)), [areas, isShown]);
 
   useEffect(() => {
     const el = canvas.current;
@@ -270,9 +444,9 @@ export function MapView({
   }, []);
 
   const fitted = useMemo(() => {
-    const points: MapLatLng[] = [...visiblePins, ...visibleRoutes.flatMap((r) => r.points)];
+    const points: MapLatLng[] = [...visiblePins, ...visibleRoutes.flatMap((r) => r.points), ...visibleAreas.flatMap((a) => a.points)];
     return mapFit(points, size, { minZoom, maxZoom });
-  }, [visiblePins, visibleRoutes, size, minZoom, maxZoom]);
+  }, [visiblePins, visibleRoutes, visibleAreas, size, minZoom, maxZoom]);
   const view = viewProp ?? own ?? fitted;
   const ready = size.width > 0 && size.height > 0;
 
@@ -345,9 +519,34 @@ export function MapView({
     last.current = null;
     setDrag(false);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    // A tap on empty ground clears the selection.
-    if (!moved.current && event.type === "pointerup" && !(event.target as HTMLElement).closest("[data-map-control]")) select(null);
+    // A tap on empty ground clears the selection and reports the place.
+    if (!moved.current && event.type === "pointerup" && !(event.target as HTMLElement).closest("[data-map-control]")) {
+      const rect = event.currentTarget.getBoundingClientRect();
+      const at = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+      const point = mapFromScreen(at, view, size);
+      if (editing) {
+        changeRing([...editRing, point]);
+        return;
+      }
+      select(null);
+      if (onAreaClick) {
+        const hit = [...visibleAreas].reverse().find((a) => mapPointInPolygon(at, a.points.map((pt) => mapToScreen(pt, view, size))));
+        if (hit) onAreaClick(hit);
+      }
+      onMapClick?.(point);
+    }
   };
+
+  const changeRing = (next: MapLatLng[]) => {
+    if (editProp === undefined) setInnerEdit(next);
+    onAreaChange?.(next);
+  };
+  const movePicked = (screen: { x: number; y: number }) => {
+    const next = mapFromScreen(screen, view, size);
+    if (pickedProp === undefined) setInnerPicked(next);
+    onPickedPointChange?.(next);
+  };
+  const moveVertex = (index: number, screen: { x: number; y: number }) => changeRing(editRing.map((pt, i) => (i === index ? mapFromScreen(screen, view, size) : pt)));
 
   const fit = () => {
     if (viewProp === undefined) setOwn(null);
@@ -391,6 +590,10 @@ export function MapView({
       case "Escape":
         select(null);
         break;
+      case "Enter":
+        if (!editing) return;
+        changeRing([...editRing, view.center]);
+        break;
       default:
         return;
     }
@@ -406,8 +609,7 @@ export function MapView({
   // A cluster list only makes sense at the zoom it was opened at: zooming out closes it.
   const listed = useMemo(() => (clusterList && view.zoom >= clusterMax ? visiblePins.filter((p) => clusterList.includes(p.id)) : []), [clusterList, view.zoom, clusterMax, visiblePins]);
   const selected = selectedId ? pins.find((p) => p.id === selectedId) : undefined;
-  const narrow = ready && size.width < 560;
-  const legendVisible = legendOpen ?? !narrow;
+  const legendVisible = legendOpen ?? layersPanel === "expanded";
   const fmtKm = (m: number) => new Intl.NumberFormat(ar ? "ar-u-nu-latn" : "en", { maximumFractionDigits: 1 }).format(m / 1000);
 
   const tiles = useMemo(() => (ready && tileUrl ? mapVisibleTiles(view, size) : []), [ready, tileUrl, view, size]);
@@ -496,6 +698,16 @@ export function MapView({
               ))}
             </svg>
           ) : null}
+          {visibleAreas.length > 0 ? (
+            <svg aria-hidden className="pointer-events-none absolute inset-0 size-full" data-slot="map-areas">
+              {visibleAreas.map((area) => {
+                if (area.points.length < 3) return null;
+                const d = area.points.map((pt) => mapToScreen(pt, view, size)).map((q) => `${q.x.toFixed(1)},${q.y.toFixed(1)}`).join(" ");
+                const tone = area.tone ?? "brand";
+                return <polygon key={area.id} data-area={area.id} points={d} strokeWidth={2} strokeLinejoin="round" strokeDasharray={area.dashed ? "6 6" : undefined} className={cn(FILL[tone], STROKE[tone])} />;
+              })}
+            </svg>
+          ) : null}
           <svg aria-hidden className="pointer-events-none absolute inset-0 size-full" data-slot="map-routes">
             {visibleRoutes.map((route) => {
               const pts = route.points.map((p) => mapToScreen(p, view, size));
@@ -514,6 +726,15 @@ export function MapView({
               );
             })}
           </svg>
+          {editing && editRing.length > 0 ? (
+            <svg aria-hidden className="pointer-events-none absolute inset-0 size-full" data-slot="map-edit-shape">
+              {editRing.length >= 3 ? (
+                <polygon points={editRing.map((pt) => mapToScreen(pt, view, size)).map((q) => `${q.x.toFixed(1)},${q.y.toFixed(1)}`).join(" ")} strokeWidth={2} strokeLinejoin="round" strokeDasharray="6 6" className={cn(FILL[editTone], STROKE[editTone])} />
+              ) : (
+                <polyline points={editRing.map((pt) => mapToScreen(pt, view, size)).map((q) => `${q.x.toFixed(1)},${q.y.toFixed(1)}`).join(" ")} fill="none" strokeWidth={2} strokeDasharray="6 6" className={STROKE[editTone]} />
+              )}
+            </svg>
+          ) : null}
           {items.map((item) => {
             if (item.type === "cluster") {
               const c = mapToScreen(item, view, size);
@@ -550,13 +771,18 @@ export function MapView({
                 data-map-control=""
                 data-pin={pin.id}
                 data-selected={isSelected || undefined}
+                data-live={pin.live || undefined}
                 aria-label={isSelected ? t.selected(name) : name}
                 aria-pressed={isSelected}
-                onClick={() => select(isSelected ? null : pin.id)}
+                onClick={() => {
+                  select(isSelected ? null : pin.id);
+                  onPinClick?.(pin);
+                }}
                 className={cn(
                   "absolute flex -translate-x-1/2 -translate-y-full cursor-pointer flex-col items-center outline-none",
                   "focus-visible:[&>span:first-child]:outline-2 focus-visible:[&>span:first-child]:outline-offset-2 focus-visible:[&>span:first-child]:outline-nq-focus",
                   isSelected ? "z-20" : "z-10",
+                  pin.live && !drag && "motion-safe:transition-[left,top] motion-safe:duration-1000 motion-safe:ease-linear",
                 )}
                 style={{ left: p.x, top: p.y }}
               >
@@ -569,6 +795,7 @@ export function MapView({
                 >
                   <Icon aria-hidden />
                 </span>
+                {pin.live ? <span aria-hidden className={cn("pointer-events-none absolute top-0 rounded-full motion-safe:animate-ping", isSelected ? "size-10" : "size-8", SWATCH[tone], "opacity-25")} /> : null}
                 <span aria-hidden className={cn("-mt-0.5 h-2 w-0.5", SWATCH[tone])} />
                 {isSelected ? (
                   <bdi dir="auto" className="pointer-events-none absolute top-full mt-0.5 max-w-40 truncate rounded-[4px] border border-border bg-card px-1.5 text-caption text-foreground shadow-sm">
@@ -580,13 +807,54 @@ export function MapView({
             const actions = pinActions?.(pin) ?? [];
             return actions.length ? <ContextMenuActions key={pin.id} actions={actions} render={button} /> : button;
           })}
-          {pins.length === 0 && routes.length === 0 ? (
+          {editing
+            ? editRing.map((pt, i) => {
+                const q = mapToScreen(pt, view, size);
+                return (
+                  <MapHandle
+                    key={i}
+                    canvas={canvas}
+                    x={q.x}
+                    y={q.y}
+                    label={t.vertex(i + 1)}
+                    hint={t.vertexHint}
+                    data={{ "data-vertex": String(i) }}
+                    onMove={(screen) => moveVertex(i, screen)}
+                    onRemove={() => changeRing(editRing.filter((_, k) => k !== i))}
+                    className={cn("size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-card shadow-sm", SWATCH[editTone])}
+                  />
+                );
+              })
+            : null}
+          {picked
+            ? (() => {
+                const q = mapToScreen(picked, view, size);
+                return (
+                  <MapHandle
+                    canvas={canvas}
+                    x={q.x}
+                    y={q.y}
+                    label={t.pickedPoint}
+                    hint={t.pickedHint}
+                    data={{ "data-picked-point": "" }}
+                    onMove={movePicked}
+                    className="-translate-x-1/2 -translate-y-full flex-col"
+                  >
+                    <span className="flex size-10 items-center justify-center rounded-full border-2 border-primary bg-primary text-primary-foreground shadow-md ring-4 ring-nq-focus/30 [&_svg]:size-5">
+                      <MapPinIcon aria-hidden />
+                    </span>
+                    <span aria-hidden className="-mt-0.5 h-2 w-0.5 bg-primary" />
+                  </MapHandle>
+                );
+              })()
+            : null}
+          {pins.length === 0 && routes.length === 0 && areas.length === 0 && !editing && !picked ? (
             <p className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-body-sm text-muted-foreground">{t.noPins}</p>
           ) : null}
         </>
       ) : null}
 
-      {legend && (layers.length > 0 || visibleRoutes.length > 0) ? (
+      {legend && layersPanel !== "hidden" && (layers.length > 0 || visibleRoutes.length > 0 || visibleAreas.length > 0) ? (
         <div data-map-control="" data-slot="map-legend" className="absolute start-3 top-3 z-30 flex max-w-[calc(100%-6rem)] cursor-default flex-col items-start gap-1.5" dir={ar ? "rtl" : "ltr"}>
           <Button type="button" variant="secondary" size="sm" aria-expanded={legendVisible} onClick={() => setLegendOpen(!legendVisible)} className="shadow-sm">
             <Layers aria-hidden />
@@ -612,8 +880,30 @@ export function MapView({
                   })}
                 </ul>
               ) : null}
-              {visibleRoutes.length > 0 ? (
+              {visibleAreas.length > 0 ? (
                 <div className={cn("flex flex-col gap-1.5", layers.length > 0 && "border-t border-border pt-2")}>
+                  <span className="text-caption text-muted-foreground">{t.areas}</span>
+                  <ul role="list" className="flex flex-col gap-1.5">
+                    {visibleAreas.map((area) => (
+                      <li key={area.id}>
+                        {onAreaClick ? (
+                          <button type="button" data-area-item={area.id} onClick={() => onAreaClick(area)} className="flex w-full cursor-pointer items-center gap-2 rounded-control text-start outline-none hover:bg-accent focus-visible:outline-2 focus-visible:outline-nq-focus">
+                            <span aria-hidden className={cn("size-3 shrink-0 rounded-[3px] opacity-70", SWATCH[area.tone ?? "brand"])} />
+                            <span className="min-w-0 flex-1 truncate text-foreground">{pick(area.label, area.labelAr, ar)}</span>
+                          </button>
+                        ) : (
+                          <span className="flex items-center gap-2">
+                            <span aria-hidden className={cn("size-3 shrink-0 rounded-[3px] opacity-70", SWATCH[area.tone ?? "brand"])} />
+                            <span className="min-w-0 flex-1 truncate text-foreground">{pick(area.label, area.labelAr, ar)}</span>
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              {visibleRoutes.length > 0 ? (
+                <div className={cn("flex flex-col gap-1.5", (layers.length > 0 || visibleAreas.length > 0) && "border-t border-border pt-2")}>
                   <span className="text-caption text-muted-foreground">{t.routes}</span>
                   <ul role="list" className="flex flex-col gap-1.5">
                     {visibleRoutes.map((route) => (
@@ -642,6 +932,20 @@ export function MapView({
           <Crosshair aria-hidden />
         </Button>
       </div>
+
+      {editing ? (
+        <div data-map-control="" data-slot="map-edit-toolbar" role="toolbar" aria-label={t.shape} dir={ar ? "rtl" : "ltr"} className="absolute inset-x-0 top-3 z-30 mx-auto flex w-fit max-w-[calc(100%-9rem)] cursor-default flex-wrap items-center justify-center gap-1.5 rounded-card border border-border bg-card p-1.5 shadow-md">
+          <span className="px-1.5 text-caption text-muted-foreground">{t.editHint}</span>
+          <Button type="button" size="sm" variant="secondary" disabled={editRing.length === 0} onClick={() => changeRing(editRing.slice(0, -1))}>
+            <Undo2 aria-hidden />
+            {t.removeLast}
+          </Button>
+          <Button type="button" size="sm" disabled={editRing.length < 3} onClick={() => onAreaDone?.([...editRing])}>
+            <Check aria-hidden />
+            {t.finishShape}
+          </Button>
+        </div>
+      ) : null}
 
       <div className="pointer-events-none absolute inset-x-3 bottom-2 z-10 flex items-end justify-between gap-3 text-caption text-muted-foreground">
         <span aria-hidden className={cn("flex flex-col items-start gap-0.5", selected && "max-sm:invisible")}>

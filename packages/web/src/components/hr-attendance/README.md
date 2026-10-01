@@ -38,7 +38,7 @@ import { AttendanceMarker, LeaveBalances, LeaveRequestList, PayrollRuns } from "
 ```tsx
 <AttendanceMarker punches={punches} onPunch={async (kind) => api.punch(kind)} />
 <LeaveBalances types={types} requests={mine} />
-<PayrollRuns runs={runs} currency="EGP" onApprove={async (run) => api.approve(run.id)} />
+<PayrollRuns runs={runs} currency="USD" onApprove={async (run) => api.approve(run.id)} />
 ```
 
 ## Anatomy

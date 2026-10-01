@@ -7,12 +7,14 @@ import { Button } from "../button";
 import { EmptyState, Skeleton } from "../states";
 import { StoreMoney } from "../store-orders-admin/money";
 import { type StoreAccountLabels, useStoreAccountStrings } from "./account-strings";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface StoreRecentlyViewedProps {
   /** Product ids, most recent first (see `pushRecentlyViewed`). Ids that are no longer in the catalogue are skipped. */
   ids: readonly string[];
   products: readonly CommerceProduct[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   onOpenProduct?: (product: CommerceProduct) => void;
   onRemove?: (id: string) => void;
   onClear?: () => void;
@@ -22,7 +24,8 @@ export interface StoreRecentlyViewedProps {
 }
 
 /** Products the shopper looked at, newest first, with a way to drop one or clear the list. */
-export function StoreRecentlyViewed({ ids, products, currency, onOpenProduct, onRemove, onClear, loading, labels, className }: StoreRecentlyViewedProps) {
+export function StoreRecentlyViewed({ ids, products, currency: currencyProp, onOpenProduct, onRemove, onClear, loading, labels, className }: StoreRecentlyViewedProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStoreAccountStrings(labels);
   const shown = ids.map((id) => products.find((p) => p.id === id && p.status !== "archived")).filter((p): p is CommerceProduct => !!p);
   return (

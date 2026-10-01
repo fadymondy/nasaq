@@ -13,6 +13,7 @@ import { EmptyState } from "../states";
 import { TagInput } from "../tag-input";
 import { bulkFillVariants, duplicateSkus, MAX_OPTIONS, optionValuesFromLabels, type VariantPatch, variantLabel } from "./product-admin-logic";
 import { type StoreProductsAdminLabels, Thumb, useProductAdminStrings } from "./product-admin-shared";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 /* ------------------------------------------------------------------ OptionsEditor */
 
@@ -75,7 +76,8 @@ export interface VariantMatrixProps extends Omit<ComponentProps<"section">, "chi
   options: readonly CommerceOption[];
   variants: readonly CommerceVariant[];
   onVariantsChange: (variants: CommerceVariant[]) => void;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** The product's pictures, offered as each variant's image. */
   images?: readonly CommerceImage[];
   disabled?: boolean;
@@ -90,7 +92,8 @@ const GRID = "lg:grid-cols-[auto_minmax(8rem,1.2fr)_minmax(7rem,1fr)_minmax(8rem
  * image. Select rows and fill a price, stock, stock change or SKU prefix into all of them at once. Duplicate SKUs are
  * flagged. On a phone each row becomes a card.
  */
-export function VariantMatrix({ options, variants, onVariantsChange, currency, images = [], disabled = false, labels, className, ...props }: VariantMatrixProps) {
+export function VariantMatrix({ options, variants, onVariantsChange, currency: currencyProp, images = [], disabled = false, labels, className, ...props }: VariantMatrixProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useProductAdminStrings(labels);
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
   const [fill, setFill] = useState<{ price: number | null; compareAt: number | null; stock: string; add: string; sku: string }>({ price: null, compareAt: null, stock: "", add: "", sku: "" });

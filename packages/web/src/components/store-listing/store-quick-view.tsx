@@ -20,6 +20,7 @@ import { Rating } from "../rating";
 import { listingCheapestVariant, listingHasPriceRange } from "./listing-model";
 import { fillTemplate, type ListingLabels, useListingStrings } from "./listing-strings";
 import { StoreProductImage, StoreOptionPicker, StorePrice } from "./store-product-card";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface StoreQuickViewProps {
   /** The product to show. `null` keeps the dialog closed. */
@@ -27,7 +28,8 @@ export interface StoreQuickViewProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   /** ISO 4217 code; prices are integer minor units. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Full product page. Shows a "View full details" link when given. */
   href?: string;
   /** Adds the chosen variant and quantity. Awaited so the button can show progress. */
@@ -48,7 +50,8 @@ function firstAvailable(product: CommerceProduct): CommerceSelection {
  * A dialog with the gallery, options, price, stock and quantity of one product, so a shopper can add it without
  * leaving the listing. Options start on the first in-stock variant, so the add button is usable at once.
  */
-export function StoreQuickView({ product, open, onOpenChange, currency, href, onAddToCart, closeOnAdd = true, lowStockAt = 5, labels }: StoreQuickViewProps) {
+export function StoreQuickView({ product, open, onOpenChange, currency: currencyProp, href, onAddToCart, closeOnAdd = true, lowStockAt = 5, labels }: StoreQuickViewProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useListingStrings(labels);
   const fmt = useFormatNumber();
   const [selection, setSelection] = useState<CommerceSelection>({});

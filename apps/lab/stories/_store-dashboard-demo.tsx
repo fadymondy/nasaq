@@ -1,7 +1,7 @@
 /*
  * Demo data and the page shell for the store admin dashboard stories.
  * Everything is generated from a seeded generator, so a chart never changes between renders or reloads.
- * Money is integer minor units (EGP piasters). Names and figures are invented.
+ * Money is integer minor units (cents, halalas in Arabic). Names and figures are invented.
  */
 import {
   type CommerceOrder,
@@ -124,7 +124,7 @@ function sumTotals(series: readonly StoreSalesPoint[], seed: number, returningSh
 }
 
 export interface StoreDashboardDemoData {
-  currency: string;
+  currency?: string;
   totals: StorePeriodTotals;
   previousTotals?: StorePeriodTotals;
   series: StoreSalesPoint[];

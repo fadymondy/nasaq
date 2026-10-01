@@ -119,3 +119,21 @@ export function phoneExample(country: PhoneCountry) {
   const example = getExampleNumber(country.iso as CountryCode, examples);
   return example ? afterCode(country, example.formatInternational()) : "";
 }
+
+/**
+ * Like `parsePhone`, but also accepts what is not E.164: `00966…` is read as `+966…`, and local numbers such as
+ * `0591234567` are kept as the national digits of `fallbackIso` (or the first country) instead of being dropped.
+ * Returns null only when there are no digits.
+ */
+export function parsePhoneLenient(value: string, countries: readonly PhoneCountry[] = PHONE_COUNTRIES, fallbackIso?: string): { country: PhoneCountry; national: string } | null {
+  const exact = parsePhone(value, countries);
+  if (exact) return exact;
+  const digits = toDigits(value);
+  if (!digits) return null;
+  if (/^00[1-9]/.test(digits)) {
+    const international = parsePhone(`+${digits.slice(2)}`, countries);
+    if (international) return international;
+  }
+  const country = countries.find((c) => c.iso === fallbackIso) ?? countries[0];
+  return country ? { country, national: digits } : null;
+}
