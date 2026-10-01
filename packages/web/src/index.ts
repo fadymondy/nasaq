@@ -136,6 +136,7 @@ export * from "./components/api-keys";
 export * from "./components/mcp-connect";
 export * from "./components/integration-connector";
 export * from "./components/plugin-card";
+export * from "./components/placement-settings";
 export * from "./components/chrome-extension-install";
 export * from "./components/whatsapp-qr-connect";
 export * from "./components/engine-details";
