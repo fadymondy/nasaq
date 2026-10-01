@@ -347,6 +347,7 @@ export * from "./components/loyalty-promo";
 export * from "./components/rates-subscriptions";
 export * from "./components/stock-ledger";
 export * from "./components/map-view";
+export * from "./components/map-monitor";
 export * from "./components/infolist";
 export * from "./components/schema-form";
 export * from "./components/relation-picker";
