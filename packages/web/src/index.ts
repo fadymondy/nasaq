@@ -190,6 +190,7 @@ export * from "./components/copilot-provider";
 export * from "./components/weighted-criteria-card";
 export * from "./components/workflow-canvas";
 export * from "./components/workflow-network";
+export * from "./components/workflow-views";
 export * from "./components/graph-view";
 export * from "./components/catalog-store";
 export * from "./components/workflow-marketplace";
