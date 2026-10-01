@@ -2,7 +2,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { IssuePageDemo } from "./_mahaam-demo";
 
-const meta = { title: "Pages/Projects/Issue", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Projects & Work/Pages/Issue", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

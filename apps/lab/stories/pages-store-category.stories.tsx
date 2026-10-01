@@ -3,7 +3,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { STORE_CURRENCY, StoreShell, chromeCategoryTree, chromePopular, storeProducts, useAr } from "./_store-chrome-demo";
 
-const meta = { title: "Pages/Store/Category", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Storefront/Pages/Category", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

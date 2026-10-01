@@ -1,12 +1,12 @@
 ---
 name: feature-story
 title: FeatureStory
-category: layout
+category: website
 status: beta
 summary: One feature told as copy plus a picture, side by side above 48rem of container width; alternate with reverse to build a product page.
 exports: [FeatureStory, FeatureStoryProps]
 related: [screenshot-frame, plan-card, tabs]
-story: components-layout-feature-story
+story: components-website-feature-story
 base-ui: []
 keywords: [feature, story, marketing, section, product page, media, proof points, split]
 ---
@@ -177,4 +177,4 @@ The caller localises all copy.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-feature-story--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-website-feature-story--docs

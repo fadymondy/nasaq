@@ -1,12 +1,12 @@
 ---
 name: uptime-monitors
 title: UptimeMonitors
-category: health
+category: monitoring
 status: beta
 summary: The admin side of uptime - a table of monitors with status, a recent-checks bar, a 24h, 7d or 30d uptime badge, response time and last check, pause, resume, check now, edit and delete, plus incidents with their updates.
 exports: [UptimeMonitorsLabels, UptimeResult, UptimeMonitor, IncidentUpdate, Incident, MonitorInput, UptimeBarProps, UptimeBar, UptimeBadgeProps, UptimeBadge, IncidentListProps, IncidentList, UptimeMonitorsProps, UptimeMonitors, CheckResult, computeUptime, formatIncidentDuration, formatUptime, incidentMinutes, IncidentImpact, IncidentStatus, isOpenIncident, MonitorStatus, overallStatus, OverallStatus, responseLabel, UPTIME_PERIODS, UptimePeriod, UptimeTone, uptimeTone]
 related: [status-page, status-page-manager, cert-monitor, ws-status, alerts, data-table]
-story: components-health-uptime-monitors
+story: components-monitoring-uptime-monitors
 base-ui: [dialog, alert-dialog, field, select, toggle-group]
 keywords: [uptime, monitor, ping, http check, incident, sla, availability, downtime]
 ---
@@ -127,4 +127,4 @@ export const Health = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-uptime-monitors--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-uptime-monitors--docs

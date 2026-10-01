@@ -6,7 +6,7 @@ status: beta
 summary: A realtime connection indicator showing live with latency, connecting, reconnecting with a countdown to the next try, and offline, as a pill, bare text or a banner with Retry now.
 exports: [WsStatus, WsStatusProps, WsStatusLabels, WsStatusVariant, useCountdown, backoffDelay, FAIR_LATENCY_MS, formatCountdown, formatLatency, GOOD_LATENCY_MS, LatencyQuality, latencyQuality, signalBars, WsState]
 related: [status, alert, spinner, realtime-counter]
-story: components-feedback-ws-status
+story: components-loading-states-ws-status
 base-ui: []
 keywords: [websocket, realtime, connection, reconnecting, offline, latency, live, sse]
 ---
@@ -113,4 +113,4 @@ export const Offline = () => <WsStatus variant="banner" state="offline" lastConn
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-feedback-ws-status--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-loading-states-ws-status--docs

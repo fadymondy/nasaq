@@ -4,7 +4,7 @@ import { useState } from "react";
 import { NESTED_RULES, NESTED_SCHEMA, NESTED_VALUE, saveNested } from "./_nested-form-demo";
 import { createPerson, CUSTOMER_SCHEMA, resolvePeople, searchPeople, useAr, wait } from "./_w2-demo";
 
-const meta = { title: "Components/Forms/Schema Form", component: SchemaForm, parameters: { layout: "padded" } } satisfies Meta<typeof SchemaForm>;
+const meta = { title: "Components/Form Builders/Schema Form", component: SchemaForm, parameters: { layout: "padded" } } satisfies Meta<typeof SchemaForm>;
 export default meta;
 type Story = StoryObj;
 

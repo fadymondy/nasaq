@@ -1,12 +1,12 @@
 ---
 name: kanban-board
 title: KanbanBoard
-category: collaboration
+category: work
 status: beta
 summary: Controlled board of columns and draggable cards (dnd-kit sortable) with keyboard moves, localised announcements and RTL column flow.
 exports: [KanbanBoard, KanbanCard, KanbanBoardProps, KanbanColumnData, KanbanCardData, KanbanLabel, KanbanCardRenderState]
 related: [card, badge, avatar, data-table]
-story: components-collaboration-kanban-board
+story: components-projects-work-kanban-board
 base-ui: []
 keywords: [kanban, board, columns, cards, drag, drop, dnd, tasks, pipeline]
 ---
@@ -173,4 +173,4 @@ Target `data-over` on columns and `data-dragging` on items. Extend with `classNa
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-collaboration-kanban-board--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-kanban-board--docs

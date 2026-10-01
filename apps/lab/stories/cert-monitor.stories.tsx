@@ -2,7 +2,7 @@ import { DaysLeftBadge } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CertsDemo } from "./_infra-demo";
 
-const meta = { title: "Components/Health/Certificate Monitor" } satisfies Meta;
+const meta = { title: "Components/Security/Certificate Monitor" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

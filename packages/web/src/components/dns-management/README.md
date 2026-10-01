@@ -1,12 +1,12 @@
 ---
 name: dns-management
 title: DnsManagement
-category: developer
+category: server-tools
 status: beta
 summary: A DNS zone editor with a searchable records table (A, AAAA, CNAME, MX, TXT and more), an add and edit form with type-aware validation, TTL choices, a proxy toggle and confirmed delete.
 exports: [DnsManagement, DnsManagementProps, DnsManagementLabels, DnsRecord, DnsRecordInput, DEFAULT_TTLS, DNS_TYPES, DnsDraft, DnsErrorCode, DnsErrors, DnsType, fqdn, formatTtl, isHostname, isIPv4, isIPv6, isProxiable, needsPriority, relativeName, TTL_AUTO, TtlUnits, validateRecord]
 related: [data-table, dialog, alert-dialog, switch, api-keys]
-story: components-developer-dns-management
+story: components-server-tools-dns-management
 base-ui: [dialog, alert-dialog, select, switch, field, input]
 keywords: [dns, records, zone, a record, cname, mx, txt, ttl, proxy, cloudflare, domain]
 ---
@@ -127,4 +127,4 @@ export const NoProxy = () => <DnsManagement zone="example.org" records={records}
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-dns-management--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-dns-management--docs

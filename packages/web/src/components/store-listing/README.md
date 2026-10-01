@@ -1,12 +1,12 @@
 ---
 name: store-listing
 title: Store product listing
-category: commerce
+category: store
 status: beta
 summary: "A storefront results page: facet sidebar with live counts, active chips, sort, grid and list views, pagination or load more, empty results with suggestions, a mobile filter sheet, plus the storefront product card, quick view and compare tray and table."
 exports: [storeChipLabel, StoreFacetSidebarProps, StoreFacetSidebar, StoreActiveChipsProps, StoreActiveChips, StoreFilterSheetProps, StoreFilterSheet, StoreListingView, StoreListingDensity, StoreListingToolbarProps, StoreListingToolbar, StoreListingProps, StoreListing, StoreCompareDialog, StoreCompareTable, StoreCompareTray, StoreProductImage, StoreOptionPicker, StorePrice, StoreProductCard, storeCurrencyDigits, StoreQuickView]
 related: [store-chrome, store-merch, product-detail, pagination, sheet]
-story: components-commerce-store-listing
+story: components-storefront-store-listing
 base-ui: [dialog, checkbox, slider, toggle-group, select]
 keywords: [store, listing, category, search results, facets, filters, sort, grid, product card, quick view, compare, wishlist, ecommerce]
 ---

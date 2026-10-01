@@ -32,6 +32,8 @@ export const sampleValues = (ar: boolean): ProfileValues => ({
   bio: ar ? "مصممة منتجات أحب الأنظمة البسيطة." : "Product designer who likes small, quiet systems.",
   locale: ar ? "ar" : "en",
   timezone: "Asia/Riyadh",
+  location: ar ? "الرياض، السعودية" : "Riyadh, Saudi Arabia",
+  website: "https://sara.design",
 });
 
 /** A small generated portrait so the crop has something to work with (an SVG data URL, no network). */

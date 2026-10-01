@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { gscReport, useAr, useDemoConnection, useDemoReport, wait } from "./_analytics-demo";
 
-const meta = { title: "Pages/Analytics/Search Console", component: SearchConsolePage, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof SearchConsolePage>;
+const meta = { title: "Components/SEO/Pages/Search Console", component: SearchConsolePage, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof SearchConsolePage>;
 export default meta;
 type Story = StoryObj;
 

@@ -2,7 +2,7 @@ import { PomodoroCard } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useFocusDemo } from "./_focus-demo";
 
-const meta = { title: "Components/Health/Pomodoro Card", component: PomodoroCard, parameters: { layout: "padded" } } satisfies Meta<typeof PomodoroCard>;
+const meta = { title: "Components/Productivity/Pomodoro Card", component: PomodoroCard, parameters: { layout: "padded" } } satisfies Meta<typeof PomodoroCard>;
 export default meta;
 type Story = StoryObj;
 

@@ -1,12 +1,12 @@
 ---
 name: admin-tenants
 title: AdminWorkspaces
-category: layout
+category: admin
 status: beta
 summary: The tenants and plans console for an admin area. A workspaces table with seat usage, change plan, suspend and reactivate, and a plan catalogue with an edit dialog.
 exports: [AdminWorkspaces, AdminPlans, PlanDialog, AdminTenantsLabels, AdminPlan, WorkspaceStatus, AdminWorkspace, AdminTenantResult, AdminWorkspacesProps, PlanDialogProps, AdminPlansProps]
 related: [admin-area, admin-users, plan-card, repeater]
-story: components-layout-admin-tenants
+story: components-admin-admin-tenants
 base-ui: [dialog, alert-dialog, select, switch]
 keywords: [admin, workspaces, tenants, plans, pricing, seats, suspend, billing]
 ---
@@ -109,4 +109,4 @@ Uses `PlanCard`, `Price`, `Meter` and `Status`. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-admin-tenants--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-admin-admin-tenants--docs

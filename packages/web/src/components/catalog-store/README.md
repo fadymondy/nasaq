@@ -1,12 +1,12 @@
 ---
 name: catalog-store
 title: Catalog store
-category: commerce
+category: store
 status: beta
 summary: A store for installable things with search, category chips, sort, a card grid and a detail sheet with install and uninstall, reusable for workflow steps, plugins and apps.
 exports: [CatalogStore, CatalogCard, CatalogIcon, CatalogItem, CatalogCategory, CatalogResult, CatalogLabels, CatalogStoreProps]
 related: [install-button, rating, price, sheet, chip-group, workflow-marketplace]
-story: components-commerce-catalog-store
+story: components-storefront-catalog-store
 base-ui: []
 keywords: [store, marketplace, catalog, plugins, apps, install, search, categories, detail, cards]
 ---
@@ -108,4 +108,4 @@ CatalogStore                data-slot="catalog-store"
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-catalog-store--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-catalog-store--docs

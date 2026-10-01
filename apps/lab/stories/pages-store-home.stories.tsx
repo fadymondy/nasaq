@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useMemo, useState } from "react";
 import { STORE_CURRENCY, StoreShell, chromeBrands, chromeDeals, chromeHero, chromePromos, chromeTiles, storeProducts, useAr, wait } from "./_store-chrome-demo";
 
-const meta = { title: "Pages/Store/Home", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Storefront/Pages/Home", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

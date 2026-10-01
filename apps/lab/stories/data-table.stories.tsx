@@ -204,6 +204,21 @@ export const SortOnly: Story = {
   },
 };
 
+/** Frame, lines between columns, stripes, hover and density: presentation props passed through to `Table`. */
+export const Styles: Story = {
+  render: function Render() {
+    const ar = useAr();
+    const columns = useColumns(ar);
+    const table = useDataTable({ data: ISSUES.slice(0, 8), columns, getRowId: (r) => r.key, selectable: true });
+    return (
+      <div className="flex max-w-5xl flex-col gap-8">
+        <DataTable table={table} label={ar ? "المهام" : "Issues"} frame striped />
+        <DataTable table={table} label={ar ? "المهام" : "Issues"} frame bordered density="compact" />
+      </div>
+    );
+  },
+};
+
 /** Loading skeletons, an error with retry, the empty state, and "no results" after filtering. */
 export const States: Story = {
   render: function Render() {

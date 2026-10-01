@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { gaReport, useAr, useDemoConnection, useDemoReport, wait } from "./_analytics-demo";
 
-const meta = { title: "Pages/Analytics/Google Analytics", component: GoogleAnalyticsPage, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof GoogleAnalyticsPage>;
+const meta = { title: "Components/Analytics/Pages/Google Analytics", component: GoogleAnalyticsPage, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof GoogleAnalyticsPage>;
 export default meta;
 type Story = StoryObj;
 

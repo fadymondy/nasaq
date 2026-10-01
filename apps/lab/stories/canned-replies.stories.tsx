@@ -2,7 +2,7 @@ import { CannedRepliesManager } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CannedRepliesDemo, makeCannedReplies } from "./_crm-r1-demo";
 
-const meta = { title: "Components/CRM/Canned Replies", component: CannedRepliesManager, parameters: { layout: "padded" } } satisfies Meta<typeof CannedRepliesManager>;
+const meta = { title: "Components/Chat/Canned Replies", component: CannedRepliesManager, parameters: { layout: "padded" } } satisfies Meta<typeof CannedRepliesManager>;
 export default meta;
 type Story = StoryObj;
 

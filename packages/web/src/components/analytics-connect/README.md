@@ -1,12 +1,12 @@
 ---
 name: analytics-connect
 title: AnalyticsConnect
-category: analytics
+category: integrations
 status: beta
 summary: The connect-account empty state of an analytics page, built on IntegrationConnector, plus AnalyticsPageFrame, the shared page shell.
 exports: [AnalyticsConnect, AnalyticsConnectProps, AnalyticsConnectLabels]
 related: [integration-connector, metric-tiles, google-analytics-page, search-console-page]
-story: components-analytics-analytics-connect
+story: components-integrations-analytics-connect
 base-ui: []
 keywords: [connect, oauth, empty state, google analytics, search console, youtube, integration]
 ---
@@ -157,4 +157,4 @@ The empty state is a labelled section with a heading; the connector's dialog tra
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-analytics-connect--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-integrations-analytics-connect--docs

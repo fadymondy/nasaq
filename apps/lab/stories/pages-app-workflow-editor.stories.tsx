@@ -5,7 +5,7 @@ import { useState } from "react";
 import { automationStepTypes, demoParams, demoSteps, fakeTestRun, KNOWN_VARIABLES, NESTABLE, stepCategories, useAr } from "./_automation-demo";
 import { FlowPage } from "./_workflow-demo";
 
-const meta = { title: "Pages/App/Workflow Editor", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Workflow/Pages/Workflow Editor", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

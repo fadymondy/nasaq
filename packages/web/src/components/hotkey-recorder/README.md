@@ -1,12 +1,12 @@
 ---
 name: hotkey-recorder
 title: HotkeyRecorder
-category: utilities
+category: keyboard
 status: stable
 summary: A control that records a keyboard shortcut from the keys the user presses, reads the physical key so it works on an Arabic layout, refuses shortcuts the browser or OS keeps, warns about clashes, and a settings list of bindings with reset.
 exports: [HotkeyRecorder, HotkeyBindings, HotkeyRecorderBinding, HotkeyRecorderProps, HotkeyRecorderLabels, HotkeyBindingItem, HotkeyBindingsProps]
 related: [keyboard-shortcuts, commands, kbd, account-settings]
-story: components-utilities-hotkey-recorder
+story: components-keyboard-commands-hotkey-recorder
 keywords: [hotkey, shortcut, record, keybinding, settings, conflict, sequence]
 ---
 
@@ -120,4 +120,4 @@ Border, focus and danger tokens of the form controls. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-utilities-hotkey-recorder--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-keyboard-commands-hotkey-recorder--docs

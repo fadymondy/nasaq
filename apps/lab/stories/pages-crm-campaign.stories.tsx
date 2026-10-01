@@ -13,7 +13,7 @@ function CampaignPage() {
   );
 }
 
-const meta = { title: "Pages/CRM/Campaign", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Marketing/Pages/Campaign", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

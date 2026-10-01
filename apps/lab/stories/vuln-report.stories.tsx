@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VulnDemo } from "./_infra-demo";
 
-const meta = { title: "Components/Health/Vulnerability Report" } satisfies Meta;
+const meta = { title: "Components/Security/Vulnerability Report" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

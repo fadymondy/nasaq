@@ -3,7 +3,7 @@ import { Alert, Badge } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DNS_ZONE, DnsDemo, useAr } from "./_ops-demo";
 
-const meta = { title: "Pages/Admin/DNS", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Server Tools/Pages/DNS", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

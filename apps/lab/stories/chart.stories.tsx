@@ -20,7 +20,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart, XAxis, YAxis } from "recharts";
 
-const meta = { title: "Components/Charts/Chart", component: ChartContainer, parameters: { layout: "padded" } } satisfies Meta<typeof ChartContainer>;
+const meta = { title: "Components/Charts & Maps/Chart", component: ChartContainer, parameters: { layout: "padded" } } satisfies Meta<typeof ChartContainer>;
 export default meta;
 type Story = StoryObj;
 

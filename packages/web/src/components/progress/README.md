@@ -6,7 +6,7 @@ status: stable
 summary: Progress bar for work under way (with an indeterminate state and tones) and Meter for a quantity against a limit that turns warning and danger past thresholds. Wraps Base UI Progress and Meter.
 exports: [Progress, Meter, ProgressProps, MeterProps, ProgressTone, ProgressSize]
 related: [spinner, states, alert, badge, status]
-story: components-feedback-progress
+story: components-loading-states-progress
 base-ui: [progress, meter]
 keywords: [progress, meter, quota, budget, usage, upload, loading, bar, gauge]
 ---
@@ -165,4 +165,4 @@ export function BudgetAr() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-feedback-progress--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-loading-states-progress--docs

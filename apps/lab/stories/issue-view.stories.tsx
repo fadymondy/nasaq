@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { IssueQuickViewDemo, IssueViewDemo } from "./_mahaam-demo";
 
-const meta = { title: "Components/Workflow/Issue View", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Projects & Work/Issue View", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

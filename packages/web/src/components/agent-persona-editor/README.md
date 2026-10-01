@@ -1,12 +1,12 @@
 ---
 name: agent-persona-editor
 title: AgentPersonaEditor
-category: ai
+category: ai-agents
 status: beta
 summary: Editor for an AI agent persona with name, tagline, colour, icon, traits, model, greeting and a markdown persona with write and preview tabs, section chips, counts, save and revert.
 exports: [AgentPersonaEditorLabels, AgentPersona, AgentPersonaModel, AgentPersonaSaveResult, AgentPersonaEditorProps, AgentPersonaPreviewProps, AgentPersonaPreview, AgentPersonaEditor]
 related: [ai-model-picker, markdown, tag-input, copilot-chat]
-story: components-ai-agent-persona-editor
+story: components-ai-agents-agent-persona-editor
 keywords: [agent, persona, prompt, markdown, colour, icon, traits, editor]
 ---
 
@@ -94,4 +94,4 @@ Every field has a label. Errors are tied to their field. The Write and Preview t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agent-persona-editor--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-agent-persona-editor--docs

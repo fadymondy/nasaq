@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { IntegrationDemo } from "./_connectors-demo";
 
-const meta = { title: "Components/Account/Integration Connector" } satisfies Meta;
+const meta = { title: "Components/Integrations/Integration Connector" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

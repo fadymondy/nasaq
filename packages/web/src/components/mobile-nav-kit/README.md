@@ -6,7 +6,7 @@ status: beta
 summary: Mobile navigation, a bottom tab bar with badges, swipe-action list rows that also open a context menu, and a horizontally scrolling filter strip.
 exports: [MobileNavLabels, BottomTabBarItem, BottomTabBarProps, BottomTabBar, FilterStripItem, FilterStripSingleProps, FilterStripMultiProps, FilterStripProps, FilterStrip, SwipeAction, SwipeActionRowProps, SwipeActionRow]
 related: [context-menu, tabs, badge, chip]
-story: pages-app-mobile-nav-kit
+story: components-navigation-pages-mobile-nav-kit
 base-ui: [context-menu]
 keywords: [mobile, tab bar, bottom navigation, swipe, swipe actions, filter, chips, scroll, list row]
 ---

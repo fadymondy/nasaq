@@ -1,12 +1,12 @@
 ---
 name: audit-log
 title: AuditLog
-category: account
+category: security
 status: beta
 summary: The audit log table. Filter by actor, action, entity, channel (web, API or MCP) and dates, open a row for the field-level before and after, and set how long entries are kept.
 exports: [AuditLog, AuditLogProps, AuditLogLabels, AuditRetention, AUDIT_CHANNELS, diffRecords, changeKind, formatChangeValue, retentionCutoff, expiringCount]
 related: [admin-area, data-table, admin-users, export-action]
-story: components-account-audit-log
+story: components-security-audit-log
 base-ui: [dialog, select]
 keywords: [audit, log, activity, history, diff, before, after, retention, compliance, channel, mcp, api]
 ---
@@ -109,4 +109,4 @@ Success and danger soft tokens for the diff. Built on `DataTable`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-audit-log--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-security-audit-log--docs

@@ -2,7 +2,7 @@ import { ScoreBadge, ScoreExplainer } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { makeScoreDimensions } from "./_crm-r1-demo";
 
-const meta = { title: "Components/AI/Score Explainer", component: ScoreExplainer, parameters: { layout: "padded" } } satisfies Meta<typeof ScoreExplainer>;
+const meta = { title: "Components/AI Assistant/Score Explainer", component: ScoreExplainer, parameters: { layout: "padded" } } satisfies Meta<typeof ScoreExplainer>;
 export default meta;
 type Story = StoryObj;
 

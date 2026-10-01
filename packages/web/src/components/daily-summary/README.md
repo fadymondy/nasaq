@@ -1,12 +1,12 @@
 ---
 name: daily-summary
 title: Daily Summary
-category: health
+category: wellness
 status: beta
 summary: One day at a glance with water, meals by safety, caffeine by kind, focus sessions, shutdown violations, steps, sleep, energy, heart rate and weight, plus a day switcher.
 exports: [DailySummary, DailySummaryProps, DailySummaryData, DailySummaryLabels, SummarySource]
 related: [engine-card, vitals, health-reports, stat-card, meter]
-story: components-health-daily-summary
+story: components-wellness-daily-summary
 base-ui: []
 keywords: [health, daily, summary, water, meals, caffeine, steps, sleep, rollup, day]
 ---

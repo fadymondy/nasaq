@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { demoInvoices, invoiceFor } from "./_billing-demo";
 import { useAr, wait } from "./_profile-demo";
 
-const meta = { title: "Components/Commerce/InvoiceView", component: InvoiceView, parameters: { layout: "padded" } } satisfies Meta<typeof InvoiceView>;
+const meta = { title: "Components/Billing/InvoiceView", component: InvoiceView, parameters: { layout: "padded" } } satisfies Meta<typeof InvoiceView>;
 export default meta;
 type Story = StoryObj;
 

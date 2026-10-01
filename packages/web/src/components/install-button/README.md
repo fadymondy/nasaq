@@ -1,12 +1,12 @@
 ---
 name: install-button
 title: InstallButton
-category: actions
+category: platforms
 status: beta
 summary: The install call to action for an app; controlled through four states, with built-in English and Arabic labels, and a quiet "Open" once installed.
 exports: [InstallButton, InstallState, InstallButtonProps]
 related: [button, product-card, plan-card, price]
-story: components-actions-install-button
+story: components-apps-platforms-install-button
 base-ui: []
 keywords: [install, get, open, update, app, store, cta, button]
 ---
@@ -112,8 +112,8 @@ import { InstallButton, NasaqProvider } from "@fadymondy/nasaq/web";
 export function ArabicInstall() {
   return (
     <NasaqProvider locale="ar" dir="rtl">
-      <InstallButton appName="حسبة" state="available" onInstall={() => {}} />
-      <InstallButton appName="حسبة" state="update" labels={{ update: "تحديث متاح" }} onUpdate={() => {}} />
+      <InstallButton appName="حوسبة" state="available" onInstall={() => {}} />
+      <InstallButton appName="حوسبة" state="update" labels={{ update: "تحديث متاح" }} onUpdate={() => {}} />
     </NasaqProvider>
   );
 }
@@ -158,4 +158,4 @@ export function ArabicInstall() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-actions-install-button--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-apps-platforms-install-button--docs

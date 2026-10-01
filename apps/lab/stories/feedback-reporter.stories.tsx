@@ -5,7 +5,7 @@ import { useState } from "react";
 
 // The Mahaam feedback reporter (@nasaq/feedback): @mahaam/feedback-core vendored, UI rebuilt on Nasaq.
 // These stories use a mock submitter; the live one is the launcher at the corner of every lab story.
-const meta = { title: "Patterns/Feedback Reporter", component: ReportDialog } satisfies Meta<typeof ReportDialog>;
+const meta = { title: "Components/Feedback SDK/Patterns/Feedback Reporter", component: ReportDialog } satisfies Meta<typeof ReportDialog>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

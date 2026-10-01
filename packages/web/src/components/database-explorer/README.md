@@ -1,12 +1,12 @@
 ---
 name: database-explorer
 title: DatabaseExplorer
-category: developer
+category: server-tools
 status: beta
 summary: A database browser with a schema and table tree, a SQL editor, a results grid with CSV export, table structure and query history. It has no connection of its own, you run the SQL.
 exports: [DatabaseExplorerLabels, DatabaseColumn, DatabaseTable, DatabaseSchema, QueryResult, QueryOutcome, TableRef, DatabaseExplorerProps, DatabaseExplorer, buildSelectSql, CellKind, cellKind, formatCell, isReadOnlySql, pushHistory, quoteIdent, resultToCsv]
 related: [tree-view, data-table, code-block, alert-dialog, tabs, backup-manager]
-story: components-developer-database-explorer
+story: components-server-tools-database-explorer
 base-ui: [tabs, alert-dialog]
 keywords: [database, sql, query, schema, tables, postgres, mysql, sqlite, explorer, admin, results, csv]
 ---
@@ -124,4 +124,4 @@ Every `section` prop except `children` and `title`, plus:
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-database-explorer--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-database-explorer--docs

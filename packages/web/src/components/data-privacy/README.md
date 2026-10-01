@@ -1,12 +1,12 @@
 ---
 name: data-privacy
 title: DataPrivacy
-category: account
+category: security
 status: beta
 summary: Your data rights. Request a copy of your data and follow it until it is ready to download, delete the account with a grace period, and the public page that cancels a scheduled deletion.
 exports: [DataPrivacy, DataPrivacyProps, DataPrivacyLabels, DataExport, DataExportProps, DataExportRequest, DataExportResult, AccountDeletion, AccountDeletionProps, CancelDeletionPage, CancelDeletionPageProps, CancelDeletionState, daysRemaining, deletionDate, deletionPhase, graceElapsed, isExportActive, pollDelay]
 related: [account-settings, export-action, auth-layout, settings-sections]
-story: components-account-data-privacy
+story: components-security-data-privacy
 base-ui: [alert-dialog, progress]
 keywords: [gdpr, privacy, export, download, delete account, grace period, cancel deletion, data request]
 ---
@@ -120,4 +120,4 @@ Built on `SettingsSection`, `DangerZone`, `Progress` and `AuthLayout`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-data-privacy--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-security-data-privacy--docs

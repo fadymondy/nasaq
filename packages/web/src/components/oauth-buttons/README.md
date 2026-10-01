@@ -4,7 +4,7 @@ title: OAuthButtons
 category: auth
 status: beta
 summary: "Provider sign-in buttons for Google, GitHub, Apple and Microsoft with their official logos, stacked, in a grid or icon-only, with per-provider loading."
-exports: [OAuthButtons, OAuthDivider, OAuthProviderId, OAuthCustomProvider, OAuthProvider, OAuthIntent, OAuthButtonsLabels, OAuthButtonsProps, OAuthDividerProps]
+exports: [OAuthButtons, OAuthDivider, LastUsed, OAuthProviderId, OAuthCustomProvider, OAuthProvider, OAuthIntent, OAuthButtonsLabels, OAuthButtonsProps, OAuthDividerProps]
 related: [login-form, register-form, button, auth-layout]
 story: components-auth-oauth-buttons
 base-ui: []
@@ -52,7 +52,8 @@ declare function startOAuth(id: string): Promise<void>;
 OAuthButtons                     data-slot="oauth-buttons", role="group"
 └─ Button (one per provider)     data-slot="oauth-button", data-provider
    ├─ logo                        official SVG, aria-hidden
-   └─ label                       "Continue with Google"
+   ├─ label                       "Continue with Google"
+   └─ LastUsed (optional)         data-slot="last-used": the "Last used" pill at the inline end
 OAuthDivider                     data-slot="oauth-divider" (the "or" rule)
 ```
 
@@ -67,8 +68,12 @@ OAuthDivider                     data-slot="oauth-divider" (the "or" rule)
 | `layout` | `"stack" \| "grid" \| "icon-only"` | `"stack"` | Full-width rows, two columns, or square icon buttons. |
 | `intent` | `"signin" \| "signup" \| "continue"` | `"continue"` | Which verb the labels use. |
 | `pendingProvider` | `string \| null` | | Hold a provider in the loading state from outside (redirect flows). |
+| `lastUsed` | `string \| null` | | Provider id to mark "Last used" (not shown in `icon-only`). Read it from your own cookie; the component stores nothing. |
 | `disabled` | `boolean` | `false` | Disable all buttons. |
-| `labels` | `Partial<OAuthButtonsLabels>` | English or Arabic | `signin`, `signup`, `continue` (use `{provider}`), `group`, `divider`. |
+| `labels` | `Partial<OAuthButtonsLabels>` | English or Arabic | `signin`, `signup`, `continue` (use `{provider}`), `group`, `divider`, `lastUsed`. |
+
+**LastUsed**: the small pill on its own, for other sign-in buttons (the passkey button in `SignInFlow` uses it).
+Give its parent `relative`.
 
 **OAuthDivider**: a horizontal rule with centred text. `children` defaults to "or" / "أو".
 
@@ -115,6 +120,7 @@ export function Sso() {
 - The group has an accessible name (`labels.group`). Each button's name is the full text ("Continue with Google"), the
   logo is `aria-hidden`. In `icon-only` layout the text is kept as the accessible name.
 - Loading buttons are `aria-busy`; the other buttons are disabled while one is pending.
+- The "Last used" text is inside the button, so it is read as part of its name.
 - All buttons are keyboard operable and show the standard focus ring.
 
 ## RTL & i18n

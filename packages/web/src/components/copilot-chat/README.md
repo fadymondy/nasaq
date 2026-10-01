@@ -6,7 +6,7 @@ status: beta
 summary: AI assistant chat with streamed Markdown answers, collapsible tool-call steps, sources, starter prompts and follow-ups, context chips, a model picker, @mentions and copy-for-AI code blocks, as a side panel or a full page.
 exports: [CopilotChatLabels, CopilotSendMeta, CopilotChatProps, CopilotSteps, CopilotSources, CopilotContextBarProps, CopilotContextBar, CopilotAnswerProps, CopilotAnswer, CopilotChat, availableContext, hostOf, isSafeUrl, stepCounts, transcriptToMarkdown, withoutContext, CopilotContextItem, CopilotMessage, CopilotModel, CopilotSource, CopilotStep, CopilotStepStatus]
 related: [chat, markdown, mention-textarea, code-block-variants, chat-widget]
-story: components-ai-copilot-chat
+story: components-ai-assistant-copilot-chat
 base-ui: [collapsible, menu, select]
 keywords: [copilot, ai chat, assistant, llm, streaming, tool calls, sources, citations, model picker, context, side panel]
 ---

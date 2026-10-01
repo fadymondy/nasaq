@@ -2,7 +2,7 @@ import { SubscriptionLanding } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SubscriptionDemo } from "./_crm-r1-demo";
 
-const meta = { title: "Components/CRM/Subscription Landing", component: SubscriptionLanding, parameters: { layout: "fullscreen" } } satisfies Meta<typeof SubscriptionLanding>;
+const meta = { title: "Components/Marketing/Subscription Landing", component: SubscriptionLanding, parameters: { layout: "fullscreen" } } satisfies Meta<typeof SubscriptionLanding>;
 export default meta;
 type Story = StoryObj;
 

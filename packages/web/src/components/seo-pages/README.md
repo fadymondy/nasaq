@@ -1,12 +1,12 @@
 ---
 name: seo-pages
 title: SeoPageList
-category: analytics
+category: seo
 status: beta
 summary: "A pages list with SEO score, open-issue count, index status and Core Web Vitals, plus a per-page issue checklist with fix hints."
 exports: [SeoPagesLabels, SeoPageRow, SeoPageListProps, SeoPageList, SeoIssueChecklistProps, SeoIssueChecklist, SEO_ISSUE_CATALOG, SEVERITY_WEIGHT, issueCounts, openIssues, scoreBand, seoScore, siteScore, sortIssues]
 related: [seo-preview, keyword-tracker, web-vital-gauge, data-table]
-story: components-analytics-seo-pages
+story: components-seo-seo-pages
 base-ui: [collapsible, checkbox]
 keywords: [seo, audit, crawl, index status, core web vitals, issues, score, checklist]
 ---
@@ -136,4 +136,4 @@ Score bands use the success, warning and danger tokens. All spacing is logical.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-seo-pages--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-seo-pages--docs

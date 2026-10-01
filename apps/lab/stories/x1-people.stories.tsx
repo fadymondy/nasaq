@@ -10,7 +10,7 @@ import { useMembersDemo } from "./_team-demo";
 import { PageShell } from "./_team-pages";
 import { mentionOptions, people, resolveMention, useAr, VIEWER_ZONE, X1_NOW } from "./_x1-demo";
 
-const meta = { title: "Pages/App/People", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Collaboration/Pages/People", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

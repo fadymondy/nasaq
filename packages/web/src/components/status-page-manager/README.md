@@ -1,12 +1,12 @@
 ---
 name: status-page-manager
 title: StatusPageManager
-category: health
+category: monitoring
 status: beta
 summary: Admin for the public status page - title, address and custom domain, which services show and in what order (staged until Save), and posting incidents that appear on the page.
 exports: [StatusPageManagerLabels, StatusPageManagerResult, ManagedService, StatusPageSettings, IncidentInput, StatusPageManagerProps, StatusPageManager, isValidStatusSlug, moveItem, StatusPageSettingsDraft]
 related: [status-page, uptime-monitors, domains-manager, switch]
-story: components-health-status-page-manager
+story: components-monitoring-status-page-manager
 base-ui: [dialog, field, select, switch]
 keywords: [status page, admin, publish, incident, services, visibility, order]
 ---
@@ -108,4 +108,4 @@ isValidStatusSlug("Acme Status"); // false
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-status-page-manager--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-status-page-manager--docs

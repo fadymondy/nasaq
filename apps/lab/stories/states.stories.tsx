@@ -1,7 +1,7 @@
 import { Button, EmptyState, ErrorState, LoadingState, Skeleton, Spinner } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-const meta = { title: "Components/Feedback/States" } satisfies Meta;
+const meta = { title: "Components/Loading & States/States" } satisfies Meta;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

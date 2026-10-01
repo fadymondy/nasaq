@@ -6,7 +6,7 @@ status: beta
 summary: Themed Recharts wrapper (shadcn style) with token colours, a Nasaq-formatted tooltip and legend, RTL axis helpers, plus tiny Sparkline and MiniBar for table cells and cards.
 exports: [ChartContainer, ChartContainerProps, ChartConfig, ChartSeries, ChartTooltip, ChartTooltipContent, ChartTooltipContentProps, ChartLegend, ChartLegendContent, ChartLegendContentProps, useChartAxis, CHART_COLORS, Sparkline, SparklineProps, MiniBar, MiniBarProps]
 related: [stat-card, numeric, card, data-table]
-story: components-charts-chart
+story: components-charts-maps-chart
 base-ui: []
 keywords: [chart, graph, recharts, area, bar, line, donut, pie, sparkline, mini bar, tooltip, legend, rtl, analytics]
 ---
@@ -249,4 +249,4 @@ two series must be distinguished for colour-blind readers.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-chart--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-maps-chart--docs

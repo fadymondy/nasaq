@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { GithubActivityDemo } from "./_ops-demo";
 
-const meta = { title: "Components/Developer/GitHub Activity" } satisfies Meta;
+const meta = { title: "Components/Developer Tools/GitHub Activity" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

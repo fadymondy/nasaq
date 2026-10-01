@@ -6,7 +6,7 @@ status: beta
 summary: "OS-style lock screen over a wallpaper with a clock. Unlock by PIN keypad, password with an optional authenticator code, or biometrics, with a lockout after wrong tries and a quiet-mode gate."
 exports: [LockScreenLabels, LockUser, LockAttempt, LockReason, LockScreenProps, LockScreen]
 related: [idle-lock, session-expired, two-factor-challenge, otp-input, password-input, login-form]
-story: pages-auth-lock-screen
+story: components-auth-pages-lock-screen
 base-ui: [field, input]
 keywords: [lock screen, pin, keypad, password, totp, biometric, idle, quiet mode, session lock]
 ---
@@ -140,4 +140,4 @@ export function Secure() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-auth-lock-screen--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-pages-lock-screen--docs

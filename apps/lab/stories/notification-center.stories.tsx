@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CreditCard } from "lucide-react";
 import { useState } from "react";
 
-const meta = { title: "Components/Collaboration/Notification Center", component: NotificationCenter, args: { items: [] } } satisfies Meta<typeof NotificationCenter>;
+const meta = { title: "Components/Alerts & Notifications/Notification Center", component: NotificationCenter, args: { items: [] } } satisfies Meta<typeof NotificationCenter>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

@@ -1,12 +1,12 @@
 ---
 name: clinic-queue
 title: ClinicQueue
-category: health
+category: healthcare
 status: beta
 summary: The doctor's live patient queue - a big Call next button, who is called or in the room, and a table of everyone else with call, call again, skip, start, finish and put back actions.
 exports: [ClinicQueueAction, ClinicQueueLabels, ClinicQueueProps, ClinicQueue]
 related: [waiting-screen, lobby-display, current-visit, data-table]
-story: components-health-clinic-queue
+story: components-healthcare-clinic-queue
 base-ui: [menu, context-menu]
 keywords: [queue, call next, skip, recall, doctor, live, data table]
 ---
@@ -103,4 +103,4 @@ const change = action === "call-next" ? callNext(list, { room: "1", at: Date.now
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-clinic-queue--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-healthcare-clinic-queue--docs

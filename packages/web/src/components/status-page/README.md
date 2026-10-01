@@ -1,12 +1,12 @@
 ---
 name: status-page
 title: StatusPage
-category: health
+category: monitoring
 status: beta
 summary: The public status page - an overall banner, each service with a daily history bar and uptime, active and past incidents with their updates, and scheduled maintenance. No admin controls and no sign-in.
 exports: [StatusPageLabels, StatusPageService, StatusPageMaintenance, StatusPageProps, StatusPage]
 related: [uptime-monitors, status-page-manager, timeline, alert]
-story: components-health-status-page
+story: components-monitoring-status-page
 base-ui: []
 keywords: [status page, public, incident, maintenance, uptime, outage, operational]
 ---
@@ -116,4 +116,4 @@ export const Branded = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-status-page--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-status-page--docs

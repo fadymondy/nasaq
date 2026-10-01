@@ -2,7 +2,7 @@ import { ImpersonationBanner } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArabicScope, useAr, wait } from "./_team-demo";
 
-const meta = { title: "Components/Account/Impersonation Banner", component: ImpersonationBanner, parameters: { layout: "padded" } } satisfies Meta<typeof ImpersonationBanner>;
+const meta = { title: "Components/Admin/Impersonation Banner", component: ImpersonationBanner, parameters: { layout: "padded" } } satisfies Meta<typeof ImpersonationBanner>;
 export default meta;
 type Story = StoryObj;
 

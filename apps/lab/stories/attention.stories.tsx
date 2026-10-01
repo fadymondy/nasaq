@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MessageSquare } from "lucide-react";
 import { useState } from "react";
 
-const meta = { title: "Components/Data Display/Attention", component: Attention, args: { items: [] } } satisfies Meta<typeof Attention>;
+const meta = { title: "Components/Alerts & Notifications/Attention", component: Attention, args: { items: [] } } satisfies Meta<typeof Attention>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

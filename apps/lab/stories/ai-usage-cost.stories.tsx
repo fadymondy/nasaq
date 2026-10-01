@@ -2,7 +2,7 @@ import { TokenCostMeter } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AiCostDemo } from "./_usage-demo";
 
-const meta = { title: "Components/AI/AI Usage Cost", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/AI Agents/AI Usage Cost", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

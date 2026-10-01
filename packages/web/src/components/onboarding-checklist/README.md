@@ -1,12 +1,12 @@
 ---
 name: onboarding-checklist
 title: OnboardingChecklist
-category: account
+category: onboarding
 status: beta
 summary: "The in-app Get started card: x of y done with a progress bar, the next step highlighted, one action per open item and a dismiss."
 exports: [OnboardingChecklistLabels, OnboardingChecklistItem, OnboardingChecklistProps, OnboardingChecklist]
 related: [onboarding-flow, checklist, progress, states]
-story: pages-onboarding-checklist
+story: components-onboarding-pages-checklist
 base-ui: []
 keywords: [get started, onboarding checklist, setup progress, first run, getting started card, empty state]
 ---
@@ -115,4 +115,4 @@ export const Empty = () => <EmptyState title="No projects yet" description="Crea
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-onboarding-checklist--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-onboarding-pages-checklist--docs

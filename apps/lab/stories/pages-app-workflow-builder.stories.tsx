@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { demoGraph, demoRuns, demoVersions, FlowPage, stepCategories, stepTypes, useAr, wait } from "./_workflow-demo";
 
-const meta = { title: "Pages/App/Workflow Builder", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Workflow/Pages/Workflow Builder", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

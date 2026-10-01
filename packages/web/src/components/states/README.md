@@ -6,7 +6,7 @@ status: stable
 summary: Empty, error and loading states for a region (dashed frame with icon, title, description and actions; skeleton rows), plus the Skeleton primitive.
 exports: [StateProps, EmptyState, ErrorState, LoadingState, LoadingStateProps, Skeleton]
 related: [spinner, table, card, status]
-story: components-feedback-states
+story: components-loading-states-states
 base-ui: []
 keywords: [empty, error, loading, skeleton, placeholder, no data, zero state, failure]
 ---
@@ -215,4 +215,4 @@ None of these are focusable; keyboard access is through the `actions` you pass.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-feedback-states--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-loading-states-states--docs

@@ -38,12 +38,16 @@ export interface UserMenuProps {
   /** Adds "View profile" to the profile card. */
   onViewProfile?: (person: PersonProfile) => void;
   labels?: { theme?: string; language?: string; signOut?: string };
+  /** `sidebar` (default): the name and email card at the bottom of the sidebar. `avatar`: just the avatar, for a top bar; the menu opens below it. */
+  variant?: "sidebar" | "avatar";
   className?: string;
 }
 
 /** Avatar menu at the bottom of the sidebar (shadcn NavUser): account items, theme, language, sign out. */
-export function UserMenu({ user, children, preferences = true, onSignOut, profile, onViewProfile, labels, className }: UserMenuProps) {
-  const collapsed = useSidebarCollapsed();
+export function UserMenu({ user, children, preferences = true, onSignOut, profile, onViewProfile, labels, variant = "sidebar", className }: UserMenuProps) {
+  const rail = useSidebarCollapsed();
+  const top = variant === "avatar";
+  const collapsed = rail || top;
   const { locale, locales } = useNasaq();
   const ar = locale.startsWith("ar");
   const themeLabels = useThemeLabels();
@@ -74,7 +78,9 @@ export function UserMenu({ user, children, preferences = true, onSignOut, profil
           "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus",
           // Expanded: a bordered surface so the switcher reads as a control, not a nav row. A minimum
           // height, not a fixed one, so the two lines keep their padding in Arabic's larger type.
-          collapsed
+          top
+            ? "size-control justify-center rounded-full px-0"
+            : collapsed
             ? "size-control justify-center px-0"
             : "min-h-[calc(var(--spacing-nav-row)+12px)] border border-border bg-background/60 py-1 shadow-xs hover:border-nq-line-strong",
           className,
@@ -89,7 +95,7 @@ export function UserMenu({ user, children, preferences = true, onSignOut, profil
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        side={collapsed ? "inline-end" : "top"}
+        side={top ? "bottom" : collapsed ? "inline-end" : "top"}
         align={collapsed ? "end" : "start"}
         className={cn("w-60", !collapsed && "w-[max(15rem,var(--anchor-width))]")}
       >

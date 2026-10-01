@@ -1,12 +1,12 @@
 ---
 name: inbox
 title: Inbox
-category: collaboration
+category: chat
 status: beta
 summary: Unified inbox for chat, email and WhatsApp with a filterable conversation list, thread, composer, contact panel, assignment, snooze, find in thread, voice notes, location sharing, saved replies, reactions, a docked chat launcher and live new message toasts, driven by callbacks.
 exports: [InboxProps, Inbox, ColorDot, ConversationRowMenu, SnoozeMenu, CannedPicker, ConversationRowMenuProps, SnoozeMenuProps, CannedPickerProps, InboxComposer, InboxComposerProps, VoicePlayer, VoiceRecorder, LocationPicker, LocationCard, LinkPreviewCard, VoicePlayerProps, VoiceRecorderProps, VoiceRecording, LocationPickerProps, LocationCardProps, LinkPreviewCardProps, QUICK_REACTIONS, MessageReactions, ReactionPicker, ReplyQuote, MessageText, AttachmentList, InboxMessageView, MessageReactionsProps, ReactionPickerProps, ReplyQuoteProps, MessageTextProps, InboxMessageViewProps, ThreadSearchBar, ContactInfoPanel, NewMessageToast, InboxDock, ThreadSearchBarProps, ContactInfoPanelProps, NewMessageToastProps, InboxDockProps, applySnippet, filterConversations, countViews, findMatches, snoozePresets, INBOX_COLORS, InboxAgent, InboxAttachment, InboxChannel, InboxColor, InboxContact, InboxConversation, InboxDraft, InboxMessage, InboxResult, InboxStatus, ConversationPatch, CannedSnippet, GeoPoint, LinkPreviewData, InboxReaction, VoiceNote, InboxLabels, ConversationContextMenu, ConversationContextMenuProps]
 related: [chat, mention-textarea, rich-text-editor, notification-item, markdown, chat-widget]
-story: components-collaboration-inbox
+story: components-chat-inbox
 base-ui: [dialog, menu, popover, tabs]
 keywords: [inbox, helpdesk, support, chat, email, whatsapp, conversation, assign, snooze, canned replies, voice note, location, live chat]
 ---

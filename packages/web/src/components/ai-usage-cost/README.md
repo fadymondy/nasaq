@@ -1,12 +1,12 @@
 ---
 name: ai-usage-cost
 title: AiUsageCost
-category: ai
+category: ai-agents
 status: beta
 summary: AI spend overview with total, token, billed, unbilled and marked-up client price tiles, a daily stacked cost chart and a by-model, product or run breakdown with token columns, plus a TokenCostMeter for one run.
 exports: [AiUsageCost, AiUsageCostProps, AiUsageCostLabels, TokenCostMeter, TokenCostMeterProps]
 related: [usage-meter, ai-model-picker, model-routing-editor, breakdown-table, stat-card]
-story: components-ai-ai-usage-cost
+story: components-ai-agents-ai-usage-cost
 base-ui: [tabs]
 keywords: [ai, cost, tokens, spend, billing, markup, billed, unbilled, model, run, llm]
 ---
@@ -123,4 +123,4 @@ The chart has a text name and the same data is in the breakdown tables. The toke
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-ai-usage-cost--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-ai-usage-cost--docs

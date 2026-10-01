@@ -1,12 +1,12 @@
 ---
 name: file-explorer
 title: FileExplorer
-category: data-display
+category: files
 status: beta
 summary: A file browser with a folder tree, breadcrumbs, a sortable list or a grid, a preview pane, upload by button or drop, new folder and delete. It has no storage, your callbacks do the work.
 exports: [FileExplorerLabels, FileNode, FileExplorerView, FileResult, FileExplorerProps, FileExplorer, checkName, extension, FileKind, fileKind, findNode, findPath, folderSize, NameProblem, SortKey, sortNodes]
 related: [file-upload, tree-view, data-table, breadcrumb, code-block]
-story: components-data-display-file-explorer
+story: components-files-file-explorer
 base-ui: [dialog, alert-dialog]
 keywords: [files, folders, browser, drive, storage, upload, preview, media library, documents]
 ---
@@ -129,4 +129,4 @@ Rows (list view) and tiles (grid view) open their actions (download, delete) on 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-file-explorer--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-files-file-explorer--docs

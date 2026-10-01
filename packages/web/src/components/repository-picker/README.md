@@ -1,12 +1,12 @@
 ---
 name: repository-picker
 title: Repository picker
-category: pickers
+category: developer-tools
 status: beta
 summary: Pick a GitHub repository and branch by searching through the app installation, with the official GitHub mark, debounced search, keyboard support and a Configure access link.
 exports: [RepositoryPicker, PickerRepo, PickerBranch, PickerAccount, RepositoryPickerValue, RepositoryPickerLabels, RepositoryPickerProps]
 related: [oauth-buttons, connected-accounts, popover, input]
-story: components-pickers-repository-picker
+story: components-developer-tools-repository-picker
 base-ui: [popover]
 keywords: [github, repository, repo, branch, picker, search, installation, app, select]
 ---
@@ -105,4 +105,4 @@ RepositoryPicker            data-slot="repository-picker"
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pickers-repository-picker--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-repository-picker--docs

@@ -2,7 +2,7 @@ import { AvailabilityBadge, LocalClock, NowWidget, SkillsWidget, SocialLinks, St
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { profileData, useAr5 } from "./_x5-demo";
 
-const meta = { title: "Components/Brand/Personal Widgets", component: LocalClock } satisfies Meta<typeof LocalClock>;
+const meta = { title: "Components/Website/Personal Widgets", component: LocalClock } satisfies Meta<typeof LocalClock>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

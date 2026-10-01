@@ -1,12 +1,12 @@
 ---
 name: clinic-dashboard
 title: ClinicDashboard
-category: health
+category: healthcare
 status: beta
 summary: Front-desk overview with waiting count and longest wait, doctors on duty, room use, a card per room and a row per doctor, each state shown with an icon and a word.
 exports: [ClinicDashboardLabels, ClinicDashboardProps, ClinicDashboard]
 related: [clinic-queue, lobby-display, stat-card]
-story: components-health-clinic-dashboard
+story: components-healthcare-clinic-dashboard
 base-ui: []
 keywords: [dashboard, rooms, doctors on duty, waiting, front desk, occupancy]
 ---
@@ -100,4 +100,4 @@ Every `div` prop is passed through unless noted.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-clinic-dashboard--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-healthcare-clinic-dashboard--docs

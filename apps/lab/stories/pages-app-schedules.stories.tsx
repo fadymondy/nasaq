@@ -6,7 +6,7 @@ import { useState } from "react";
 import { demoSchedules, useAr, wait } from "./_automation-demo";
 import { FlowPage } from "./_workflow-demo";
 
-const meta = { title: "Pages/App/Schedules", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Productivity/Pages/Schedules", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

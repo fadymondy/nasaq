@@ -1,12 +1,12 @@
 ---
 name: wallet
 title: Wallet
-category: commerce
+category: billing
 status: beta
 summary: A balance card with top-up and withdraw dialogs and a grouped transaction list, all amounts through Intl.
 exports: [WalletLabels, WalletTransactionType, WalletTransactionStatus, WalletTransaction, WalletAccount, TopUpDialogProps, TopUpDialog, PayoutDialogProps, PayoutDialog, WalletBalanceProps, WalletBalance, WalletTransactionsProps, WalletTransactions, WalletProps, Wallet]
 related: [invoice-list, price, checkout-steps, chart]
-story: components-commerce-wallet
+story: components-billing-wallet
 base-ui: [dialog, radio-group, toggle-group]
 keywords: [wallet, balance, top-up, payout, withdraw, transactions, credit, funds]
 ---
@@ -172,4 +172,4 @@ Uses card, border and text tokens plus the success and danger text tokens for di
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-wallet--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-billing-wallet--docs

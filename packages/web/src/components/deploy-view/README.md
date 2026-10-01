@@ -1,12 +1,12 @@
 ---
 name: deploy-view
 title: DeployView
-category: developer
+category: server-tools
 status: stable
 summary: A deploy run as ordered steps with status, live durations, expandable ANSI logs that follow the output, and retry for failed steps.
 exports: [DeployViewLabels, DeployStep, DeployResult, DeployViewProps, DeployView, completedCount, DeployStatus, deriveStatus, DurationUnits, formatDuration, stepDuration, tailLines, totalDuration]
 related: [terminal, log-viewer, progress, collapsible]
-story: components-developer-deploy-view
+story: components-server-tools-deploy-view
 base-ui: [collapsible]
 keywords: [deploy, pipeline, ci, build, steps, status, duration, retry, logs, release, progress]
 ---
@@ -129,4 +129,4 @@ Helpers: `deriveStatus`, `stepDuration`, `totalDuration`, `formatDuration`, `tai
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-deploy-view--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-deploy-view--docs

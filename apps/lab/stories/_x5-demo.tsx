@@ -203,6 +203,8 @@ export function BlogPostDemo() {
 export function profileData(ar: boolean): ProfileData {
   return {
     name: ar ? "ليلى حداد" : "Layla Haddad",
+    handle: "@laylah",
+    joined: "2023-01-14",
     headline: ar
       ? "مهندسة تصميم أبني أنظمة تصميم ثنائية اللغة ومنتجات ويب سريعة ويسهل الوصول إليها."
       : "Design engineer building bilingual design systems and fast, accessible web products.",

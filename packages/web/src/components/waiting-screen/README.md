@@ -1,12 +1,12 @@
 ---
 name: waiting-screen
 title: WaitingScreen
-category: commerce
+category: bookings
 status: beta
 summary: Patient waiting screen with ticket, position, estimated wait, now serving, room, a live connection indicator and a called state, driven by pure queue math.
 exports: [QueueConnection, WaitingScreenLabels, QueueLiveIndicatorProps, QueueLiveIndicator, WaitingScreenProps, WaitingScreen]
 related: [lobby-display, check-in-kiosk, clinic-queue]
-story: components-commerce-waiting-screen
+story: components-bookings-waiting-screen
 base-ui: [progress]
 keywords: [queue, waiting, ticket, position, eta, live, realtime]
 ---
@@ -105,4 +105,4 @@ socket.onclose = () => setConnection("reconnecting");
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-waiting-screen--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-waiting-screen--docs

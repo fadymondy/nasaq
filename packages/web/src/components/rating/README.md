@@ -1,12 +1,12 @@
 ---
 name: rating
 title: Rating
-category: commerce
+category: store
 status: beta
 summary: One star, the average score and an optional compact count ("4.8 · 2.1K workspaces"), with built-in English and Arabic screen reader text.
 exports: [Rating, RatingProps]
 related: [price, product-card, badge]
-story: components-commerce-rating
+story: components-storefront-rating
 base-ui: []
 keywords: [rating, stars, score, reviews, average, count]
 ---
@@ -131,4 +131,4 @@ export function ArabicRating() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-rating--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-rating--docs

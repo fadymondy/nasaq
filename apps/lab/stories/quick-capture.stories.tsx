@@ -2,7 +2,7 @@ import { QuickCapture } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { QuickCaptureDemo, WebClipperDemo } from "./_u-demo";
 
-const meta = { title: "Components/Workflow/Quick Capture", component: QuickCapture, parameters: { layout: "fullscreen" } } satisfies Meta<typeof QuickCapture>;
+const meta = { title: "Components/Productivity/Quick Capture", component: QuickCapture, parameters: { layout: "fullscreen" } } satisfies Meta<typeof QuickCapture>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MessageSquareWarning } from "lucide-react";
 
 const meta = {
-  title: "Components/Layout/Feature Story",
+  title: "Components/Website/Feature Story",
   component: FeatureStory,
   args: { title: "Feedback straight from your clients' sites" },
   decorators: [frame("w-full max-w-5xl", "mahaam")],

@@ -1,12 +1,12 @@
 ---
 name: whatsapp-qr-connect
 title: WhatsappQrConnect
-category: developer
+category: integrations
 status: beta
 summary: Link a WhatsApp number by scanning a QR code, with numbered steps, a live countdown, automatic refresh when the code expires, and connected and disconnected states with a confirmed disconnect.
 exports: [WhatsappQrConnect, WhatsappQrConnectProps, WhatsappQrConnectLabels, WhatsappConnectStatus]
 related: [qr-code, chrome-extension-install, integration-connector, status]
-story: components-developer-whatsapp-qr-connect
+story: components-integrations-whatsapp-qr-connect
 base-ui: [alert-dialog]
 keywords: [whatsapp, qr, pairing, linked devices, connect, countdown, refresh]
 ---
@@ -123,4 +123,4 @@ export const Manual = () => <WhatsappQrConnect status="qr" qr="2@example" autoRe
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-whatsapp-qr-connect--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-integrations-whatsapp-qr-connect--docs

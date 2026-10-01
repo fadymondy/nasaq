@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCopilotProps } from "./_copilot-demo";
 import { useAr } from "./_lifecycle-demo";
 
-const meta = { title: "Components/AI/Copilot Dock", parameters: { layout: "fullscreen" } } satisfies Meta;
+const meta = { title: "Components/AI Assistant/Copilot Dock", parameters: { layout: "fullscreen" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

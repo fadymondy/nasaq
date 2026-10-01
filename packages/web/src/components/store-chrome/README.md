@@ -1,12 +1,12 @@
 ---
 name: store-chrome
 title: Store header and footer
-category: commerce
+category: store
 status: beta
 summary: "The storefront frame: announcement bar, sticky header with mega menu, search autocomplete and cart count, and a footer with link columns, newsletter, payments slot, social links and language and currency switches."
 exports: [StoreAnnouncement, StoreAnnouncementBarProps, StoreAnnouncementBar, StoreSearchProps, StoreSearch, StoreNavLink, StoreNavColumn, StoreNavFeatured, StoreNavItem, StoreMegaMenuProps, StoreMegaMenu, StoreHeaderProps, StoreHeader, StoreFooterColumn, StoreFooterSocial, StoreFooterOption, StoreFooterProps, StoreFooter]
 related: [store-merch, store-listing, navigation-menu, sheet, accordion]
-story: components-commerce-store-header
+story: components-storefront-store-header
 base-ui: [navigation-menu, dialog, accordion, select]
 keywords: [store, header, footer, mega menu, search, autocomplete, announcement bar, newsletter, cart, ecommerce, storefront]
 ---

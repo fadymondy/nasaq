@@ -2,7 +2,7 @@ import { ResearchRun } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ResearchRunDemo } from "./_t2-demo";
 
-const meta = { title: "Components/AI/Research Run", component: ResearchRun, parameters: { layout: "padded" } } satisfies Meta<typeof ResearchRun>;
+const meta = { title: "Components/AI Agents/Research Run", component: ResearchRun, parameters: { layout: "padded" } } satisfies Meta<typeof ResearchRun>;
 export default meta;
 type Story = StoryObj;
 

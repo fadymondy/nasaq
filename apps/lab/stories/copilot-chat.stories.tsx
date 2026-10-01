@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CopilotDemo } from "./_copilot-demo";
 
-const meta = { title: "Components/AI/Copilot Chat" } satisfies Meta;
+const meta = { title: "Components/AI Assistant/Copilot Chat" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

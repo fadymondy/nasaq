@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AchievementsDemo, LeaderboardDemo, RewardsDemo, StreakDemo } from "./_x3-demo";
 
-const meta = { title: "Components/Data Display/Gamification" } satisfies Meta;
+const meta = { title: "Components/Gamification/Gamification" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

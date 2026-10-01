@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { BookingFlow } from "@nasaq/web";
 import { makeGetSlots, NOW_DATE, tr, useCatalogue, wait } from "./_seatfor-demo";
 
-const meta = { title: "Components/Commerce/Booking Flow", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Bookings/Booking Flow", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

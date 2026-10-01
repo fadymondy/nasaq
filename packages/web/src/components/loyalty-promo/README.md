@@ -1,12 +1,12 @@
 ---
 name: loyalty-promo
 title: Loyalty and Promo
-category: crm
+category: gamification
 status: beta
 summary: A loyalty card with tiers and expiring points, a points ledger, promo-code entry and management, and a customer visit history.
 exports: [LoyaltyPromoLabels, LoyaltyTier, LoyaltyReward, LoyaltyCardProps, LoyaltyCard, PointsEntryKind, PointsEntry, PointsHistoryProps, PointsHistory, PromoApplied, PromoCodeFieldProps, PromoCodeField, PromoCode, PromoCodeInput, PromoCodeManagerProps, PromoCodeManager, VisitStatus, Visit, VisitHistoryProps, VisitHistory]
 related: [gamification, qr-code, data-table, stat-card, price]
-story: components-crm-loyalty-and-promo
+story: components-gamification-loyalty-and-promo
 base-ui: [dialog, progress, select, switch]
 keywords: [loyalty, points, tier, promo code, coupon, discount, visits, rewards]
 ---

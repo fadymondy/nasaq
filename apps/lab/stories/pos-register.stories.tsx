@@ -4,7 +4,7 @@ import { userEvent, within } from "storybook/test";
 import { parkedDemo } from "./_pos-demo";
 import { CURRENCY, posCategories, posProducts, t, useAr, VAT_BPS, wait } from "./_v1-demo";
 
-const meta = { title: "Components/Commerce/POS Register", component: PosRegister, parameters: { layout: "padded" } } satisfies Meta<typeof PosRegister>;
+const meta = { title: "Components/Store Admin/POS Register", component: PosRegister, parameters: { layout: "padded" } } satisfies Meta<typeof PosRegister>;
 export default meta;
 type Story = StoryObj;
 

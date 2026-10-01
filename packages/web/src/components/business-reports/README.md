@@ -6,7 +6,7 @@ status: beta
 summary: Four ready made business reports, profitability by project, an employee KPI dashboard, a CRM pipeline with a chart and table toggle and support inbox statistics. Each is a section you drop into a page.
 exports: [BusinessReportsLabels, ProfitabilityRow, ProfitabilityReportProps, ProfitabilityReport, EmployeeKpi, EmployeeKpiDashboardProps, EmployeeKpiDashboard, PipelineStage, PipelineReportProps, PipelineReport, SupportSummary, SupportAgentRow, SupportStatsReportProps, SupportStatsReport]
 related: [report-filter-bar, chart-extras, stat-card, data-table, time-series-panel, funnel-chart]
-story: pages-analytics-profitability
+story: components-analytics-pages-profitability
 base-ui: [toggle-group, context-menu]
 keywords: [report, profitability, margin, employee, kpi, target, crm, pipeline, funnel, support, inbox, sla, csat, analytics]
 ---
@@ -175,4 +175,4 @@ Uses the Card, Badge, StatCard and chart tokens (`--nq-success`, `--nq-warning`,
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-analytics-profitability--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-pages-profitability--docs

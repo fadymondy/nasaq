@@ -1,12 +1,12 @@
 ---
 name: onboarding-flow
 title: OnboardingFlow
-category: account
+category: onboarding
 status: beta
 summary: "The flow after sign-up: welcome, profile, workspace, invites, preferences, first integration and a review, with skip, back and progress that resumes after a reload."
 exports: [OnboardingFlowLabels, OnboardingProfileValues, OnboardingWorkspaceValues, OnboardingInviteValues, OnboardingPreferenceValues, OnboardingValues, OnboardingProgressState, OnboardingIntegration, OnboardingOption, OnboardingFlowProps, OnboardingFlow]
 related: [setup-wizard, onboarding-checklist, avatar-upload, tag-input, stepper]
-story: pages-onboarding-flow
+story: components-onboarding-pages-flow
 base-ui: []
 keywords: [onboarding, first run, welcome, sign up, profile, workspace, invite teammates, preferences, integration, resume]
 ---
@@ -138,4 +138,4 @@ declare const api: { saveProgress(p: OnboardingProgressState): Promise<void> };
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-onboarding-flow--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-onboarding-pages-flow--docs

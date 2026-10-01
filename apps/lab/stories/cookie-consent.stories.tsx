@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { consentCategories, sleep, useAr } from "./_onboarding-demo";
 
-const meta = { title: "Components/Utilities/Cookie Consent", component: CookieConsent, parameters: { layout: "fullscreen" } } satisfies Meta<typeof CookieConsent>;
+const meta = { title: "Components/Website/Cookie Consent", component: CookieConsent, parameters: { layout: "fullscreen" } } satisfies Meta<typeof CookieConsent>;
 export default meta;
 type Story = StoryObj;
 

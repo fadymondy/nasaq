@@ -6,7 +6,7 @@ import { ORDERS_NOW, abandonedSeed, ordersSeed, TRACKING_TEMPLATE } from "./_ord
 import { STORE_CURRENCY } from "./_store-demo";
 
 const meta = {
-  title: "Components/Commerce/Store Orders Admin",
+  title: "Components/Store Admin/Store Orders Admin",
   parameters: { layout: "padded" },
 } satisfies Meta;
 export default meta;

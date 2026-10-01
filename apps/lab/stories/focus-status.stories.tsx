@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { demoPeople, useAr } from "./_focus-demo";
 
-const meta = { title: "Components/Health/Focus Status", component: FocusStatusChip, parameters: { layout: "padded" } } satisfies Meta<typeof FocusStatusChip>;
+const meta = { title: "Components/Productivity/Focus Status", component: FocusStatusChip, parameters: { layout: "padded" } } satisfies Meta<typeof FocusStatusChip>;
 export default meta;
 type Story = StoryObj;
 

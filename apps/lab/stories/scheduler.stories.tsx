@@ -2,7 +2,7 @@ import { Scheduler, type SchedulerEvent, SlotPicker } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 
-const meta = { title: "Components/Collaboration/Scheduler", component: Scheduler } satisfies Meta<typeof Scheduler>;
+const meta = { title: "Components/Productivity/Scheduler", component: Scheduler } satisfies Meta<typeof Scheduler>;
 export default meta;
 type Story = StoryObj;
 

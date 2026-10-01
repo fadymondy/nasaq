@@ -1,12 +1,12 @@
 ---
 name: trash-bin
 title: TrashBin
-category: data-display
+category: files
 status: stable
 summary: The trash of an app, listing deleted items with who deleted them and a retention countdown, with restore, delete forever and empty trash behind confirmations, built on EntityList.
 exports: [TrashBin, TrashBinLabels, TrashResult, TrashType, TrashItem, TrashBinProps]
 related: [entity-list, data-table, alert-dialog, empty-state]
-story: components-data-display-trash-bin
+story: components-files-trash-bin
 keywords: [trash, recycle bin, deleted, restore, soft delete, retention, purge]
 ---
 
@@ -117,4 +117,4 @@ Badge variants `neutral`, `warning`, `danger` and `outline`; EntityList tokens. 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-trash-bin--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-files-trash-bin--docs

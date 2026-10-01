@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { youtubeReport, useAr, useDemoConnection, useDemoReport, wait } from "./_analytics-demo";
 
-const meta = { title: "Pages/Analytics/YouTube", component: YouTubeChannelPage, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof YouTubeChannelPage>;
+const meta = { title: "Components/Marketing/Pages/YouTube", component: YouTubeChannelPage, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof YouTubeChannelPage>;
 export default meta;
 type Story = StoryObj;
 

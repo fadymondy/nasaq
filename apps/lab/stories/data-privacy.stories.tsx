@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArabicScope, useExportDemo, wait } from "./_team-demo";
 import { CancelDemo, PrivacyDemo } from "./_team-pages";
 
-const meta = { title: "Components/Account/Data Privacy", component: DataPrivacy, parameters: { layout: "padded" } } satisfies Meta<typeof DataPrivacy>;
+const meta = { title: "Components/Security/Data Privacy", component: DataPrivacy, parameters: { layout: "padded" } } satisfies Meta<typeof DataPrivacy>;
 export default meta;
 type Story = StoryObj;
 

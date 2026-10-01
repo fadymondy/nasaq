@@ -1,12 +1,12 @@
 ---
 name: availability-editor
 title: AvailabilityEditor
-category: health
+category: bookings
 status: beta
 summary: Weekly hours per day with breaks, copy to other days, and vacations picked as date ranges, with overlap and range checks that block saving.
 exports: [AvailabilityEditorLabels, AvailabilityEditorProps, AvailabilityEditor]
 related: [clinic-schedule, booking-slots, date-picker]
-story: components-health-availability-editor
+story: components-bookings-availability-editor
 base-ui: [switch]
 keywords: [availability, hours, breaks, vacation, time off, working hours, week]
 ---
@@ -101,4 +101,4 @@ const hours = hoursForDate(availability, new Date(2026, 9, 20)); // null on vaca
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-availability-editor--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-availability-editor--docs

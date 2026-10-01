@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { ArabicScope, useAr } from "./_profile-demo";
 
-const meta = { title: "Components/Layout/Admin Area", component: AdminArea, parameters: { layout: "fullscreen" } } satisfies Meta<typeof AdminArea>;
+const meta = { title: "Components/Admin/Admin Area", component: AdminArea, parameters: { layout: "fullscreen" } } satisfies Meta<typeof AdminArea>;
 export default meta;
 type Story = StoryObj;
 

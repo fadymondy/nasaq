@@ -1,12 +1,12 @@
 ---
 name: code-block
 title: CodeBlock
-category: data-display
+category: developer-tools
 status: stable
 summary: Syntax-highlighted code with filename header, line numbers, highlighted lines and a copy button; Shiki loads lazily. Also InlineCode.
 exports: [CodeBlock, InlineCode, highlightCode, CodeBlockProps, CodeLanguage, CodeToken]
 related: [copy-button, markdown, text]
-story: components-data-display-code-block
+story: components-developer-tools-code-block
 base-ui: []
 keywords: [code, syntax, highlight, shiki, snippet, pre, monospace, inline-code]
 ---
@@ -161,4 +161,4 @@ export function Install() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-code-block--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-code-block--docs

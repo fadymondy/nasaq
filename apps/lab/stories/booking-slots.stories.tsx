@@ -3,7 +3,7 @@ import { type BookingSlot, BookingSlots } from "@nasaq/web";
 import { useEffect, useState } from "react";
 import { makeGetSlots, NOW_DATE, useCatalogue } from "./_seatfor-demo";
 
-const meta = { title: "Components/Commerce/Booking Slots", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Bookings/Booking Slots", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

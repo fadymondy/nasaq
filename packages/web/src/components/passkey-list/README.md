@@ -1,12 +1,12 @@
 ---
 name: passkey-list
 title: PasskeyList
-category: account
+category: security
 status: beta
 summary: Manage the passkeys on an account with a list with device hint, created and last-used dates, add through an async callback, rename in place, remove with confirmation, an unsupported-browser notice and an empty state.
 exports: [PasskeyList, PasskeyListProps, Passkey, PasskeyKind, PasskeyLabels, isPasskeySupported]
 related: [alert-dialog, states, card, two-factor-setup, connected-accounts, numeric]
-story: components-account-passkey-list
+story: components-security-passkey-list
 base-ui: [alert-dialog, input, button]
 keywords: [passkey, webauthn, fido, security key, biometric, passwordless, account, security]
 ---
@@ -119,4 +119,4 @@ export const canUsePasskeys = () => isPasskeySupported();
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-passkey-list--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-security-passkey-list--docs

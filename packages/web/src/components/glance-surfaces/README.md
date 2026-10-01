@@ -1,12 +1,12 @@
 ---
 name: glance-surfaces
 title: GlanceSurfaces
-category: layout
+category: platforms
 status: beta
 summary: Glanceable surfaces, a tray or menu-bar popover, watch rows, home and lock-screen widget tiles and a widget gallery with a size picker.
 exports: [GlanceLabels, GlanceTone, GlanceRowProps, GlanceRow, TrayPopoverAction, TrayPopoverProps, TrayPopover, WatchGlanceProps, WatchGlance, WidgetSize, WidgetTileProps, WidgetTile, WidgetDefinition, WidgetGalleryProps, WidgetGallery]
 related: [extension-popup, progress, badge, popover]
-story: components-layout-glance-surfaces
+story: components-apps-platforms-glance-surfaces
 base-ui: []
 keywords: [glance, widget, tray, menu bar, popover, watch, lock screen, home screen, tile, gallery]
 ---

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { t, useAr, wait } from "./_s-demo";
 import { SAR, supportStatus, supportVolume } from "./_s-demo-reports";
 
-const meta = { title: "Pages/App/Dashboard Board", component: DashboardBoard, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof DashboardBoard>;
+const meta = { title: "Components/Layout/Pages/Dashboard Board", component: DashboardBoard, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof DashboardBoard>;
 export default meta;
 type Story = StoryObj;
 

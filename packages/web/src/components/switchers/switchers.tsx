@@ -5,6 +5,7 @@ import { ToggleGroup } from "@base-ui/react/toggle-group";
 import type { ThemePreference } from "@nasaq/tokens";
 import { Languages, Monitor, Moon, Sun } from "lucide-react";
 import type { ComponentProps } from "react";
+import { playClick } from "../../lib/click-sound";
 import { cn } from "../../lib/cn";
 import { useNasaq } from "../../provider/nasaq-provider";
 import { Button } from "../button";
@@ -25,9 +26,27 @@ export interface ThemeLabels {
   dark: string;
   system: string;
   group: string;
+  /** ThemeToggle's name while the page is light. */
+  toDark: string;
+  /** ThemeToggle's name while the page is dark. */
+  toLight: string;
 }
-const EN_THEME: ThemeLabels = { light: "Light", dark: "Dark", system: "System", group: "Theme" };
-const AR_THEME: ThemeLabels = { light: "فاتح", dark: "داكن", system: "النظام", group: "المظهر" };
+const EN_THEME: ThemeLabels = {
+  light: "Light",
+  dark: "Dark",
+  system: "System",
+  group: "Theme",
+  toDark: "Switch to dark theme",
+  toLight: "Switch to light theme",
+};
+const AR_THEME: ThemeLabels = {
+  light: "فاتح",
+  dark: "داكن",
+  system: "النظام",
+  group: "المظهر",
+  toDark: "التبديل إلى المظهر الداكن",
+  toLight: "التبديل إلى المظهر الفاتح",
+};
 
 export const THEME_OPTIONS = [
   { value: "light", icon: Sun },
@@ -78,6 +97,44 @@ export function ThemeSwitcher({ labels, className, ...props }: ThemeSwitcherProp
         </Tooltip>
       ))}
     </ToggleGroup>
+  );
+}
+
+export interface ThemeToggleProps extends Omit<ComponentProps<typeof Button>, "onClick" | "children"> {
+  labels?: Partial<ThemeLabels>;
+  /** Play a soft click on switch. Always silent under reduced motion. Default true. */
+  sound?: boolean;
+}
+
+/**
+ * One icon button that flips light and dark. The sun and the moon cross-fade and counter-rotate; under reduced
+ * motion they swap without moving. It sets an explicit theme, so the first click leaves "system".
+ */
+export function ThemeToggle({ labels, sound = true, className, ...props }: ThemeToggleProps) {
+  const { resolvedTheme, setTheme } = useNasaq();
+  const t = useThemeLabels(labels);
+  const dark = resolvedTheme === "dark";
+  const glyph =
+    "absolute inset-0 m-auto transition-[opacity,rotate,scale] duration-300 ease-nq motion-reduce:transition-none";
+  return (
+    <Tooltip content={dark ? t.toLight : t.toDark}>
+      <Button
+        data-slot="theme-toggle"
+        data-state={dark ? "dark" : "light"}
+        variant="ghost"
+        size="icon-sm"
+        aria-label={dark ? t.toLight : t.toDark}
+        onClick={() => {
+          if (sound) playClick();
+          setTheme(dark ? "light" : "dark");
+        }}
+        className={cn("relative overflow-hidden text-muted-foreground hover:text-foreground", className)}
+        {...props}
+      >
+        <Sun aria-hidden className={cn(glyph, dark ? "rotate-90 scale-50 opacity-0" : "rotate-0 scale-100 opacity-100")} />
+        <Moon aria-hidden className={cn(glyph, dark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-50 opacity-0")} />
+      </Button>
+    </Tooltip>
   );
 }
 

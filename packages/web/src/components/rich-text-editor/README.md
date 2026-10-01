@@ -1,12 +1,12 @@
 ---
 name: rich-text-editor
 title: RichTextEditor
-category: forms
+category: editors
 status: beta
 summary: Tiptap-based rich text editor with a Nasaq toolbar, per-paragraph auto direction, HTML or JSON output and read-only mode.
 exports: [RichTextEditor, AutoDirection, isSafeLink, RichTextEditorProps, RichTextEditorHtmlProps, RichTextEditorJsonProps, RichTextFormat, RichTextToolbarItem, RichTextJson]
 related: [markdown, field, mention-textarea, toggle-group]
-story: components-forms-richtexteditor
+story: components-editors-richtexteditor
 base-ui: [toggle, toggle-group, popover, tooltip]
 keywords: [wysiwyg, editor, tiptap, prosemirror, rich text, html, formatting, rtl]
 ---
@@ -172,4 +172,4 @@ token. Target `data-slot` values and `data-readonly`. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-richtexteditor--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-editors-richtexteditor--docs

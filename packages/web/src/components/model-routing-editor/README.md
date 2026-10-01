@@ -1,12 +1,12 @@
 ---
 name: model-routing-editor
 title: ModelRoutingEditor
-category: ai
+category: ai-agents
 status: beta
 summary: Admin editor for AI model routing with an automatic-routing switch, a task class to model and fallback route table, an active backend switch and provider or node registration with modality chips.
 exports: [ModelRoutingEditor, ModelRoutingEditorProps, ModelRoutingEditorLabels, RoutingTaskClass, RoutingModel, RoutingProvider, RegisterProviderInput, RoutingResult]
 related: [ai-model-picker, ai-usage-cost, select, switch, dialog]
-story: components-ai-model-routing-editor
+story: components-ai-agents-model-routing-editor
 base-ui: [select, switch, toggle-group, dialog, field]
 keywords: [ai, model, routing, fallback, provider, node, modality, backend, llm, admin]
 ---
@@ -123,4 +123,4 @@ Every select is named with its task class and role ("Chat: Model"). Errors sit u
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-model-routing-editor--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-model-routing-editor--docs

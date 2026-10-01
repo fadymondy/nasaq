@@ -1,12 +1,12 @@
 ---
 name: blog-index
 title: Blog index
-category: layout
+category: website
 status: beta
 summary: "A blog landing page: featured post, search, category and tag filters, post cards with cover, date and reading time, and pagination."
 exports: [BlogIndexLabels, useBlogStrings, hueFor, PostCoverProps, PostCover, PostCardProps, PostMeta, PostCard, BlogIndexProps, BlogIndex]
 related: [blog-post, profile-page, pagination, section-header, chip]
-story: components-layout-blog-index
+story: components-website-blog-index
 base-ui: []
 keywords: [blog, posts, articles, index, filter, search, pagination, cards]
 ---

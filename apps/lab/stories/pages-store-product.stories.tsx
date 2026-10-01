@@ -3,7 +3,7 @@ import { Price, ProductCard, ProductDetail, ProductGrid, ProductQA, ProductRevie
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { STORE_CURRENCY, breadcrumbs, delivery, demoProduct, manyReviews, questions, relatedProducts, shippingInfo, sizeGuide, specs, useAr, wait } from "./_product-demo";
 
-const meta = { title: "Pages/Store/Product", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Storefront/Pages/Product", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

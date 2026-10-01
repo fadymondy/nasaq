@@ -13,10 +13,11 @@ function Demo() {
   const [values, setValues] = useState(sampleValues(ar));
   const [avatar, setAvatar] = useState<string | undefined>();
   return (
-    <div className="w-[40rem] max-w-full">
+    <div className="w-full max-w-5xl">
       <ProfileForm
         values={values}
         emailVerified={false}
+        profileHref="/u/sara.h"
         checkUsername={checkUsername}
         onSubmit={async (next) => {
           await wait(800);
@@ -51,10 +52,18 @@ export const Arabic: Story = {
     </ArabicScope>
   ),
 };
+/** In a narrow column the preview stacks above the cards. */
+export const Narrow: Story = {
+  render: () => (
+    <div className="w-[26rem] max-w-full">
+      <ProfileForm values={sampleValues(false)} emailVerified profileHref="/u/sara.h" onSubmit={() => wait(600)} />
+    </div>
+  ),
+};
 /** The server answers with a field error and a form error. */
 export const ServerErrors: Story = {
   render: () => (
-    <div className="w-[40rem] max-w-full">
+    <div className="w-full max-w-5xl">
       <ProfileForm
         values={sampleValues(false)}
         emailVerified

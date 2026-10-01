@@ -1,12 +1,12 @@
 ---
 name: legal-page
 title: LegalPage
-category: layout
+category: website
 status: beta
 summary: A legal document page with a switcher between documents, the updated date, a draft notice, numbered sections with copyable anchors and a section rail.
 exports: [LegalPageLabels, LegalSection, LegalDocument, LegalPageProps, LegalPage]
 related: [docs-shell, blog-post, markdown, cookie-consent]
-story: components-layout-legal-page
+story: components-website-legal-page
 base-ui: []
 keywords: [legal, terms, privacy, policy, anchors, sections, updated, draft, cookies]
 ---
@@ -130,4 +130,4 @@ Uses the typography roles and `--nq-*` border, selected and focus tokens. Target
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-legal-page--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-website-legal-page--docs

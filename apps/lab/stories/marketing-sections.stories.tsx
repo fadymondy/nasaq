@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FileEdit, Search, Send } from "lucide-react";
 import { MockApp, useAr, useFeatures, useSessionEvents } from "./_w3-demo";
 
-const meta = { title: "Components/Brand/Marketing Sections", component: FeatureGrid, parameters: { layout: "padded" } } satisfies Meta<typeof FeatureGrid>;
+const meta = { title: "Components/Website/Marketing Sections", component: FeatureGrid, parameters: { layout: "padded" } } satisfies Meta<typeof FeatureGrid>;
 export default meta;
 type Story = StoryObj;
 

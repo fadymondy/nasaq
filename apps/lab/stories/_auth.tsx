@@ -2,8 +2,8 @@
  * Shared bits for the auth stories: a fake async backend, the layout footer and the split panel.
  * Demo credentials: any email, password `nasaq123`, code `123456`, recovery code `nasaq-2024`.
  */
-import { AuthFooter, LocaleSwitcher, ProductLogo, useNasaq, type AuthSubmitResult } from "@nasaq/web";
-import { CircleCheck } from "lucide-react";
+import { AuthFooter, buttonVariants, LocaleSwitcher, ProductLogo, ThemeToggle, useNasaq, type AuthSubmitResult } from "@nasaq/web";
+import { Building2, CircleCheck, Fingerprint, History, LockKeyhole, MonitorSmartphone, type LucideIcon } from "lucide-react";
 
 export const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -34,24 +34,55 @@ export function StoryFooter() {
         { label: ar ? "الخصوصية" : "Privacy", href: "#privacy" },
         { label: ar ? "المساعدة" : "Help", href: "#help" },
       ]}
-      end={<LocaleSwitcher showLabel />}
+      end={
+        <>
+          <ThemeToggle />
+          <LocaleSwitcher showLabel />
+        </>
+      }
     />
   );
 }
 
-/** The illustration side of the split layout. */
+const SECURITY: { icon: LucideIcon; en: [string, string]; ar: [string, string] }[] = [
+  { icon: Building2, en: ["Single sign-on", "SAML and OIDC with your identity provider. Your company password never reaches us."], ar: ["الدخول الموحّد", "SAML وOIDC مع مزوّد الهوية لديك. كلمة مرور شركتك لا تصل إلينا أبدًا."] },
+  { icon: Fingerprint, en: ["Passkeys and two-step verification", "Phishing-resistant sign-in, with one-time codes as a fallback."], ar: ["مفاتيح المرور والتحقق بخطوتين", "دخول مقاوم للتصيّد، مع رموز لمرة واحدة كبديل."] },
+  { icon: LockKeyhole, en: ["Encrypted end to end", "TLS in transit and encryption at rest for every account."], ar: ["تشفير كامل", "TLS أثناء النقل وتشفير أثناء التخزين لكل حساب."] },
+  { icon: MonitorSmartphone, en: ["Every session in your hands", "Alerts on new devices, a list of where you are signed in, sign out everywhere."], ar: ["كل جلسة تحت سيطرتك", "تنبيه عند كل جهاز جديد، وقائمة بأماكن دخولك، وخروج من كل الأجهزة."] },
+  { icon: History, en: ["A full audit trail", "Every sign-in and change is recorded for your admins."], ar: ["سجل تدقيق كامل", "كل دخول وكل تغيير مسجّل لمسؤولي مؤسستك."] },
+];
+
+/** The illustration side of the split layout: one identity for every product, and what protects it. */
 export function BrandPanel() {
   const ar = useAr();
   return (
     <>
       <ProductLogo size={28} />
-      <div className="flex max-w-md flex-col gap-3">
-        <p className="text-h2 text-foreground">{ar ? "كل منتجاتك، حساب واحد." : "One account for every product."}</p>
-        <p className="text-body text-muted-foreground">
-          {ar ? "سجّل الدخول مرة واحدة وانتقل بين المنتجات دون إعادة تسجيل." : "Sign in once and move between products without signing in again."}
-        </p>
+      <div className="flex max-w-md flex-col gap-8">
+        <div className="flex flex-col gap-3">
+          <p className="text-h2 text-foreground">{ar ? "هوية واحدة لكل منتجاتك." : "One identity for every product."}</p>
+          <p className="text-body text-muted-foreground">
+            {ar ? "سجّل الدخول مرة واحدة وانتقل بين المنتجات، بحماية على مستوى المؤسسات." : "Sign in once and move between products, with enterprise-grade protection at every step."}
+          </p>
+        </div>
+        <ul className="flex flex-col gap-4">
+          {SECURITY.map(({ icon: Icon, en, ar: arText }) => {
+            const [title, body] = ar ? arText : en;
+            return (
+              <li key={en[0]} className="flex gap-3">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-nq-action">
+                  <Icon aria-hidden="true" className="size-4" />
+                </span>
+                <div className="flex flex-col gap-0.5">
+                  <p className="text-body-sm font-medium text-foreground">{title}</p>
+                  <p className="text-caption text-muted-foreground">{body}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       </div>
-      <p className="text-caption text-muted-foreground">{ar ? "محمي بالتحقق بخطوتين ومفاتيح المرور." : "Protected by two-step verification and passkeys."}</p>
+      <p className="text-caption text-muted-foreground">{ar ? "© نسق. هويتك، بإدارتك." : "© Nasaq. Your identity, under your control."}</p>
     </>
   );
 }
@@ -79,4 +110,34 @@ export function consentScopes(ar: boolean) {
     { id: "projects", label: ar ? "عرض مشاريعك" : "View your projects", description: ar ? "قوائم المشاريع والمهام، دون تعديلها." : "Project and task lists, without changing them." },
     { id: "write", label: ar ? "إنشاء وتعديل المهام" : "Create and edit tasks", description: ar ? "يمكنه التصرف نيابةً عنك في مشاريعك." : "It can act for you in your projects.", sensitive: true },
   ];
+}
+
+/** The "Forgot password?" link for a form's `forgotPassword` slot. */
+export function ForgotLink() {
+  const ar = useAr();
+  return (
+    <a href="#forgot" className={buttonVariants({ variant: "link", size: "sm" })}>
+      {ar ? "نسيت كلمة المرور؟" : "Forgot password?"}
+    </a>
+  );
+}
+
+/** `AuthLayout`'s `prompt` on a sign-in page. */
+export function SignUpPrompt() {
+  const ar = useAr();
+  return (
+    <>
+      {ar ? "ليس لديك حساب؟" : "Don't have an account?"} <a href="#register">{ar ? "أنشئ حسابًا" : "Create one"}</a>
+    </>
+  );
+}
+
+/** `AuthLayout`'s `prompt` on a sign-up page. */
+export function SignInPrompt() {
+  const ar = useAr();
+  return (
+    <>
+      {ar ? "لديك حساب بالفعل؟" : "Already have an account?"} <a href="#sign-in">{ar ? "سجّل الدخول" : "Sign in"}</a>
+    </>
+  );
 }

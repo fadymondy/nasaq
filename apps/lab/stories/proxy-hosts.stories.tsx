@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ProxyDemo } from "./_infra-demo";
 
-const meta = { title: "Components/Developer/Proxy Hosts" } satisfies Meta;
+const meta = { title: "Components/Server Tools/Proxy Hosts" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

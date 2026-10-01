@@ -2,7 +2,7 @@ import { Button, DeployView, type DeployStep } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useAr, useDeployRun, wait } from "./_developer-demo";
 
-const meta = { title: "Components/Developer/Deploy View", component: DeployView, parameters: { layout: "padded" } } satisfies Meta<typeof DeployView>;
+const meta = { title: "Components/Server Tools/Deploy View", component: DeployView, parameters: { layout: "padded" } } satisfies Meta<typeof DeployView>;
 export default meta;
 type Story = StoryObj;
 

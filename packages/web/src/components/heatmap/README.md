@@ -6,7 +6,7 @@ status: beta
 summary: GitHub-style contribution grid. One cell per day, one column per week, five intensity levels of a token colour, a tooltip per day and a legend. Time runs right to left in RTL.
 exports: [Heatmap, HeatmapProps, HeatmapDatum, heatmapLevel, parseHeatmapDay]
 related: [chart, calendar, tooltip, stat-card]
-story: components-charts-heatmap
+story: components-charts-maps-heatmap
 base-ui: [tooltip]
 keywords: [heatmap, contributions, activity, calendar heatmap, streak, grid]
 ---
@@ -173,4 +173,4 @@ The grid is `role="grid"` with weeks as `row`s and days as `gridcell`s. Every ce
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-heatmap--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-maps-heatmap--docs

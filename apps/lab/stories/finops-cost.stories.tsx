@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FinopsCostDemo } from "./_infra-admin-demo";
 
-const meta = { title: "Components/Analytics/FinOps Cost" } satisfies Meta;
+const meta = { title: "Components/Server Tools/FinOps Cost" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

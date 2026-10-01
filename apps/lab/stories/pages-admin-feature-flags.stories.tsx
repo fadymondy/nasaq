@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FlagsDemo, MarketingShell, useAr } from "./_moharrik-demo";
 
-const meta = { title: "Pages/Admin/Feature Flags", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Developer Tools/Pages/Feature Flags", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

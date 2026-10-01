@@ -1,12 +1,12 @@
 ---
 name: backup-manager
 title: BackupManager
-category: developer
+category: server-tools
 status: beta
 summary: Backups in one place with a summary, history with progress, run now, download, delete, a restore that needs confirming, and a schedule and retention form with a preview of what would be pruned.
 exports: [BackupManager, BackupManagerProps, BackupManagerLabels, BackupRecord, BackupKind, BackupFrequency, BackupRetention, BackupSchedule, BackupStatus, RetentionError, formatBytes, nextRun, parseTime, pruneCandidates, totalSize, validateRetention]
 related: [deploy-view, progress, dialog, github-activity, dns-management]
-story: components-developer-backup-manager
+story: components-server-tools-backup-manager
 base-ui: [checkbox, dialog, field, select, switch]
 keywords: [backup, restore, schedule, retention, snapshot, disaster recovery, database]
 ---
@@ -140,4 +140,4 @@ export const Weekly = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-backup-manager--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-backup-manager--docs

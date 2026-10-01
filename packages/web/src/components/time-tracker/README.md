@@ -1,12 +1,12 @@
 ---
 name: time-tracker
 title: TimeTracker
-category: workflow
+category: productivity
 status: beta
 summary: A running timer with project and task picker, manual time entries, an entries list grouped by day, and a day or week timesheet grid with totals.
 exports: [TimeTrackerLabels, TimeTask, TimeProject, TimeEntry, TimerSelection, RunningTimer, StoppedTimer, TimeEntryInput, TimeTrackerProps, TimeTracker, TimeEntryDialogProps, TimeEntryDialog, TimeEntryListProps, TimeEntryList, TimesheetView, TimesheetProps, Timesheet]
 related: [stat-card, data-table, date-picker, scheduler]
-story: components-workflow-timetracker
+story: components-productivity-timetracker
 base-ui: [select, dialog, toggle-group]
 keywords: [time, timer, timesheet, tracking, hours, entries, project, task]
 ---
@@ -166,4 +166,4 @@ Uses card, border, text and danger tokens. Target `[data-slot="time-tracker"]`, 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-timetracker--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-productivity-timetracker--docs

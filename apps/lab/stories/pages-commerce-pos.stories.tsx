@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { parkedDemo } from "./_pos-demo";
 import { CURRENCY, posCategories, posProducts, t, useAr, V1Page, VAT_BPS } from "./_v1-demo";
 
-const meta = { title: "Pages/Commerce/POS Register", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Store Admin/Pages/POS Register", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LocationPickerDemo, LocationsDemo } from "./_explorer-demo";
 
-const meta = { title: "Components/Developer/Desktop Locations" } satisfies Meta;
+const meta = { title: "Components/Apps & Platforms/Desktop Locations" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

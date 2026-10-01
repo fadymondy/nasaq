@@ -11,7 +11,7 @@ import { DemoSidebar, Palette } from "./_shell";
 import { InstallProvider } from "./_store";
 
 const meta = {
-  title: "Pages/Marketing/Mahaam Product Page",
+  title: "Components/Website/Pages/Mahaam Product Page",
   parameters: { layout: "fullscreen", nasaq: { fullBleed: true } },
   globals: { brand: "circlexo" },
 } satisfies Meta;

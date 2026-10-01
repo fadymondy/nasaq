@@ -2,7 +2,7 @@ import { Badge, ChatComposer, ChatMessage, ChatThread, TypingIndicator, useNasaq
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect, useRef, useState } from "react";
 
-const meta = { title: "Components/Collaboration/Chat", component: ChatThread } satisfies Meta<typeof ChatThread>;
+const meta = { title: "Components/Chat/Chat", component: ChatThread } satisfies Meta<typeof ChatThread>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

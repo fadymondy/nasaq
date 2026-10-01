@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { demoRunRecords, useAr, wait } from "./_automation-demo";
 import { FlowPage } from "./_workflow-demo";
 
-const meta = { title: "Pages/App/Run History", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Workflow/Pages/Run History", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

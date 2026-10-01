@@ -2,7 +2,7 @@ import { SeoIssueChecklist, SeoPageList } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SeoDemo, seoPages, useAr } from "./_moharrik-demo";
 
-const meta = { title: "Components/Analytics/SEO Pages", component: SeoPageList, parameters: { layout: "padded" } } satisfies Meta<typeof SeoPageList>;
+const meta = { title: "Components/SEO/SEO Pages", component: SeoPageList, parameters: { layout: "padded" } } satisfies Meta<typeof SeoPageList>;
 export default meta;
 type Story = StoryObj;
 

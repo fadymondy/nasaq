@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { STORE_CURRENCY, chromeCategoryTree, chromePopular, storeProducts, useAr, wait } from "./_store-chrome-demo";
 
-const meta = { title: "Components/Commerce/Store Listing", component: StoreListing, parameters: { layout: "padded" } } satisfies Meta<typeof StoreListing>;
+const meta = { title: "Components/Storefront/Store Listing", component: StoreListing, parameters: { layout: "padded" } } satisfies Meta<typeof StoreListing>;
 export default meta;
 type Story = StoryObj;
 

@@ -1,12 +1,12 @@
 ---
 name: export-action
 title: ExportButton
-category: actions
+category: files
 status: beta
 summary: A button or menu that exports table data as CSV, XLSX or JSON, and PDF through a callback, with column choice, a rows scope of selected, filtered or all, a progress state and pure serializers with no dependency.
 exports: [ExportActionLabels, ExportFormat, ExportScope, ExportColumn, ExportScopeSource, ExportRequest, ExportFile, ExportActionProps, saveExportBlob, ExportDialogProps, ExportDialog, ExportButton]
 related: [data-table, entity-list, share-action, page-actions]
-story: components-actions-export-button
+story: components-files-export-button
 keywords: [export, download, csv, xlsx, excel, json, pdf, report, columns, scope, progress]
 ---
 
@@ -152,4 +152,4 @@ const csv = toCsv([["Name", "Note"], ["Sara", "=1+1"]], { bom: true }); // "=1+1
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-actions-export-button--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-files-export-button--docs

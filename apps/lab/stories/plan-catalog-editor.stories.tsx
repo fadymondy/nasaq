@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CatalogDemo } from "./_usage-demo";
 
-const meta = { title: "Components/Commerce/Plan Catalog Editor", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Pricing/Plan Catalog Editor", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

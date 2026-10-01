@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { stockMovements, stockProducts, stockWarehouses, useAr, wait } from "./_v1-demo";
 
-const meta = { title: "Components/Commerce/Stock Ledger", component: StockLedger, parameters: { layout: "padded" } } satisfies Meta<typeof StockLedger>;
+const meta = { title: "Components/Store Admin/Stock Ledger", component: StockLedger, parameters: { layout: "padded" } } satisfies Meta<typeof StockLedger>;
 export default meta;
 type Story = StoryObj;
 

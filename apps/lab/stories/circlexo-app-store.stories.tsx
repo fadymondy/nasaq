@@ -51,7 +51,7 @@ import {
 } from "./_store";
 
 const meta = {
-  title: "Pages/Store/CircleXO App Store",
+  title: "Components/Storefront/Pages/CircleXO App Store",
   parameters: { layout: "fullscreen", nasaq: { fullBleed: true } },
   globals: { brand: "circlexo" },
 } satisfies Meta;

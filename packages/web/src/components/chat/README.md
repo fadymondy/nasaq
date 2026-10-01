@@ -1,12 +1,12 @@
 ---
 name: chat
 title: ChatThread
-category: collaboration
+category: chat
 status: beta
 summary: Chat UI kit. A bottom-sticking message thread, messages with avatar, time, status and streaming, and an autosizing composer.
 exports: [ChatThread, ChatMessage, ChatComposer, TypingIndicator, ChatThreadProps, ChatMessageProps, ChatComposerProps, TypingIndicatorProps, ChatSide, ChatStatus]
 related: [markdown, code-block, avatar, field, button]
-story: components-collaboration-chat
+story: components-chat-chat
 base-ui: [field]
 keywords: [chat, message, conversation, assistant, ai, composer, streaming, typing]
 ---
@@ -197,4 +197,4 @@ export function Failed({ retry }: { retry: () => void }) {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-collaboration-chat--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-chat-chat--docs

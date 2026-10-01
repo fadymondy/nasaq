@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AttendanceDemo, LeaveDemo, PayrollDemo } from "./_v2-demo";
 
-const meta = { title: "Components/Workflow/HR Attendance", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Projects & Work/HR Attendance", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

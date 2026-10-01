@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChatWidgetDemo } from "./_chat-demo";
 
-const meta = { title: "Components/Collaboration/Chat Widget" } satisfies Meta;
+const meta = { title: "Components/Chat/Chat Widget" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

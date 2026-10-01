@@ -1,12 +1,12 @@
 ---
 name: mcp-connect
 title: McpConnect
-category: developer
+category: integrations
 status: beta
 summary: Install guide for an MCP server with per-client tabs for Claude Code, Claude Desktop, Cursor, VS Code and generic JSON, copyable snippets with a masked token, one-click deep links and a connection test.
 exports: [McpConnect, McpConnectProps, McpConnectLabels, McpTestResult, MCP_CLIENTS, McpClientId, McpServerInfo, McpSnippet, TOKEN_PLACEHOLDER, maskToken, mcpSnippet]
 related: [api-keys, code-block, tabs, copy-button, alert]
-story: components-developer-mcp-connect
+story: components-integrations-mcp-connect
 base-ui: [tabs]
 keywords: [mcp, model context protocol, claude code, claude desktop, cursor, vscode, install, snippet, deep link, token]
 ---
@@ -124,4 +124,4 @@ export const cmd = mcpSnippet("claude-code", { name: "example", url: "https://mc
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-mcp-connect--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-integrations-mcp-connect--docs

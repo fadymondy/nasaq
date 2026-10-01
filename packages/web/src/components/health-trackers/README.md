@@ -1,12 +1,12 @@
 ---
 name: health-trackers
 title: CupTracker
-category: health
+category: wellness
 status: beta
 summary: Daily health trackers. A unit-count cup row, pinned quick-log strip, classified food catalogue, item builder with an entry-completeness ring and a flagged entries disclosure.
 exports: [CupTracker, QuickLogStrip, FoodCatalogue, FoodItemBuilder, FlaggedEntries, CupTrackerProps, QuickLogStripProps, FoodCatalogueProps, FoodItemBuilderProps, FlaggedEntriesProps, HealthTrackersLabels, HealthTrackerResult, QuickLogItem, QuickLogResult, FoodCatalogueItem, FoodFamily, FlaggedEntry]
 related: [entity-list, timer-ring, text-utilities, empty-state]
-story: components-health-health-trackers
+story: components-wellness-health-trackers
 base-ui: [collapsible, alert-dialog]
 keywords: [health, hydration, water, cups, quick log, catalogue, food, trigger, safe, flagged]
 ---
@@ -85,4 +85,4 @@ Items carry `name` and `nameAr`, and the Arabic name shows when the app is Arabi
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-health-trackers--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-wellness-health-trackers--docs

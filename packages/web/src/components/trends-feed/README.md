@@ -1,12 +1,12 @@
 ---
 name: trends-feed
 title: TrendsFeed
-category: analytics
+category: marketing
 status: beta
 summary: A feed of trending news topics with state tabs, day groups, score and reasons, outlets and expandable articles, plus a sources catalogue in three tiers that falls back to the next tier when one has nothing working.
 exports: [TrendsFeedLabels, TrendOutlet, TrendItem, TrendTopic, TrendsFeedProps, TrendsFeed, TrendSource, SourcesCatalogueProps, SourcesCatalogue]
 related: [entity-list, tabs, collapsible, report-filter-bar, context-menu]
-story: pages-analytics-trends
+story: components-marketing-pages-trends
 base-ui: [tabs, collapsible, switch, context-menu]
 keywords: [trends, topics, news, sources, tier, fallback, editorial, feed, review, dismiss, save]
 ---
@@ -145,4 +145,4 @@ Uses Card, Badge, Button, Tabs, Switch and status tokens (`--nq-success`, `--nq-
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-analytics-trends--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-marketing-pages-trends--docs

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { dayRange, gaReport, useAr } from "./_analytics-demo";
 
-const meta = { title: "Components/Analytics/Time Series Panel", component: TimeSeriesPanel, parameters: { layout: "padded" } } satisfies Meta<typeof TimeSeriesPanel>;
+const meta = { title: "Components/Monitoring/Time Series Panel", component: TimeSeriesPanel, parameters: { layout: "padded" } } satisfies Meta<typeof TimeSeriesPanel>;
 export default meta;
 type Story = StoryObj;
 

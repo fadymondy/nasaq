@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 import { testimonialItems, useAr, wait } from "./_r2-demo";
 
-const meta = { title: "Components/Forms/Testimonials", component: TestimonialWall } satisfies Meta<typeof TestimonialWall>;
+const meta = { title: "Components/Website/Testimonials", component: TestimonialWall } satisfies Meta<typeof TestimonialWall>;
 export default meta;
 type Story = StoryObj;
 

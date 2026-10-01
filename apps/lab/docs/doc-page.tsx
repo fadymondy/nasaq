@@ -11,7 +11,7 @@ import { DOCS, docsHref, storyHref, storyId } from "./nav";
  * Links in the Markdown are relative URLs, because react-markdown drops unknown schemes:
  *   ?doc=<component story id>   a component's docs page      (?doc=components-actions-button)
  *   ?page=<story id sans --page>  another docs page          (?page=docs-installation-npm-package)
- *   ?story=<story id>           any story                    (?story=pages-store-journey--default)
+ *   ?story=<story id>           any story                    (?story=components-storefront-pages-journey--default)
  * They open in the top window, not inside the preview iframe. http(s) links open a new tab.
  */
 

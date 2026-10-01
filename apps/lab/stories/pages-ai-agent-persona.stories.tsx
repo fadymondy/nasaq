@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AgentPersonaDemo, T2Page, useAr } from "./_t2-demo";
 
-const meta = { title: "Pages/AI/Agent Persona", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/AI Agents/Pages/Agent Persona", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

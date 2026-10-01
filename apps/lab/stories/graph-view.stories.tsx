@@ -4,7 +4,7 @@ import { Plus, Star } from "lucide-react";
 import { type ComponentProps, useMemo, useState } from "react";
 import { graphData, graphKinds, graphLinkKinds, useAr } from "./_workflow-demo";
 
-const meta = { title: "Components/Data Display/Graph View", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Charts & Maps/Graph View", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

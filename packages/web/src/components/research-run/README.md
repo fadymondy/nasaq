@@ -1,12 +1,12 @@
 ---
 name: research-run
 title: ResearchRun
-category: ai
+category: ai-agents
 status: beta
 summary: A research run with an ask box, live stage progress, an answer whose sentences cite numbered evidence, the evidence list, sources, confidence and failed or cancelled states with retry.
 exports: [ResearchRunLabels, ResearchStatus, ResearchStage, ResearchEvidence, ResearchAnswerBlock, ResearchRunData, ResearchRunResult, ResearchRunProps, ResearchRun]
 related: [copilot-chat, ai-states, run-history, semantic-search]
-story: components-ai-research-run
+story: components-ai-agents-research-run
 keywords: [research, run, evidence, citations, answer, progress]
 ---
 
@@ -89,4 +89,4 @@ Progress is a list with a text state per stage. Citations are buttons named by t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-research-run--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-research-run--docs

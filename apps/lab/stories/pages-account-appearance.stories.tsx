@@ -8,7 +8,7 @@ import { useState } from "react";
 import { PageShell } from "./_team-pages";
 import { useAr, useThemes, useWallpapers } from "./_w3-demo";
 
-const meta = { title: "Pages/Account/Appearance Settings", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Account/Pages/Appearance Settings", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

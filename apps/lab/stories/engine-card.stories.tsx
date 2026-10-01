@@ -2,7 +2,7 @@ import { EngineCard, EngineCardGrid } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { engineVariants, NOW, useEngines, useAr } from "./_health-demo";
 
-const meta = { title: "Components/Health/Engine Card", component: EngineCard, parameters: { layout: "padded" } } satisfies Meta<typeof EngineCard>;
+const meta = { title: "Components/Wellness/Engine Card", component: EngineCard, parameters: { layout: "padded" } } satisfies Meta<typeof EngineCard>;
 export default meta;
 type Story = StoryObj;
 

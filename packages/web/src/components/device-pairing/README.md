@@ -6,7 +6,7 @@ status: beta
 summary: "Approve a device by code with its claims, IP and platform; show an OAuth device-code with a big copyable code and link; and hand a browser sign-in to a native app."
 exports: [DevicePairingLabels, DeviceCodeEntryProps, DeviceCodeEntry, DeviceRequest, DeviceApprovalProps, DeviceApproval, DeviceCodeDisplayProps, DeviceCodeDisplay, HandoffState, DeviceHandoffProps, DeviceHandoff]
 related: [qr-code, copy-button, otp-input, two-factor-challenge]
-story: pages-auth-device-pairing
+story: components-auth-pages-device-pairing
 base-ui: [field, input]
 keywords: [device, pairing, oauth, device code, rfc 8628, handoff, deep link, native app, approve, cli, tv]
 ---
@@ -130,4 +130,4 @@ export function Screen({ status }: { status: "pending" | "approved" | "denied" |
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-auth-device-pairing--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-pages-device-pairing--docs

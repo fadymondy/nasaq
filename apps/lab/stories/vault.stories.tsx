@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VaultDemo } from "./_explorer-demo";
 
-const meta = { title: "Components/Developer/Vault" } satisfies Meta;
+const meta = { title: "Components/Security/Vault" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

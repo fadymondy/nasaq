@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { manyReviews, questions, reviews, useAr, wait } from "./_product-demo";
 import { frame } from "./_frame";
 
-const meta = { title: "Components/Commerce/Product Reviews", component: ProductReviews, decorators: [frame("w-full max-w-3xl p-4")] } satisfies Meta<typeof ProductReviews>;
+const meta = { title: "Components/Storefront/Product Reviews", component: ProductReviews, decorators: [frame("w-full max-w-3xl p-4")] } satisfies Meta<typeof ProductReviews>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

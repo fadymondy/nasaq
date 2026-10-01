@@ -1,12 +1,12 @@
 ---
 name: clinic-schedule
 title: ClinicSchedule
-category: health
+category: healthcare
 status: beta
 summary: A doctor's day on a timeline, with each appointment named and coloured by status, a summary by status, an in-visit card, the next patient with lateness and an overlap warning.
 exports: [ClinicScheduleLabels, ClinicScheduleProps, ClinicSchedule]
 related: [scheduler, booking-pipeline, clinic-queue, current-visit]
-story: components-health-clinic-schedule
+story: components-healthcare-clinic-schedule
 base-ui: []
 keywords: [schedule, day, doctor, appointments, clinic, overlap, late]
 ---
@@ -104,4 +104,4 @@ import { findOverlaps, nextAppointment, summariseAppointments } from "@fadymondy
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-clinic-schedule--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-healthcare-clinic-schedule--docs

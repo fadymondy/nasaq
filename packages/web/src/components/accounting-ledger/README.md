@@ -1,12 +1,12 @@
 ---
 name: accounting-ledger
 title: Accounting Ledger
-category: commerce
+category: billing
 status: beta
 summary: A chart of accounts, a balanced journal-entry editor, a trial balance and an account statement, in exact integer money.
 exports: [accountingBalances, accountingEntryProblems, accountingEntryTotals, accountingNormalSide, accountingSignedBalance, accountingStatement, accountingTree, accountingTrialBalance, AccountingAccount, AccountingAccountType, AccountingBalance, AccountingEntry, AccountingEntryLine, AccountingEntryProblem, AccountingEntryStatus, AccountingEntryTotals, AccountingSide, AccountingStatementRow, AccountingTrialBalance, AccountingTrialRow, AccountingLedgerLabels, useAccountingLedgerStrings, ChartOfAccountsProps, ChartOfAccounts, JournalEntryEditorLine, JournalEntryEditorValue, JournalEntryEditorProps, journalEntryDraft, JournalEntryEditor, TrialBalanceProps, TrialBalance, AccountStatementProps, AccountStatement]
 related: [line-item-editor, data-table, currency-input, invoice-view]
-story: components-commerce-accounting-ledger
+story: components-billing-accounting-ledger
 base-ui: [combobox]
 keywords: [accounting, ledger, chart of accounts, journal entry, double entry, trial balance, debit, credit, general ledger, bookkeeping]
 ---
@@ -124,4 +124,4 @@ Semantic tokens only. Entry lines are cards below 42rem and a grid above. Target
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-accounting-ledger--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-billing-accounting-ledger--docs

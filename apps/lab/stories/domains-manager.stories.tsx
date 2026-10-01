@@ -2,7 +2,7 @@ import { DomainChips } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DomainsDemo, manyDomains } from "./_infra-demo";
 
-const meta = { title: "Components/Developer/Domains Manager" } satisfies Meta;
+const meta = { title: "Components/Server Tools/Domains Manager" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -1,12 +1,12 @@
 ---
 name: brain-list
 title: BrainList
-category: ai
+category: ai-agents
 status: beta
 summary: Zekra-style list of AI brains as a table or cards with status, access, memory and source counts, members, tags and last activity, plus search, filters, bulk select and loading and empty states.
 exports: [BrainListLabels, BrainStatus, BrainVisibility, BrainSummary, BrainCardProps, BrainCard, BrainListProps, BrainList]
 related: [entity-list, project-list, copilot-chat, status]
-story: components-ai-brain-list
+story: components-ai-agents-brain-list
 keywords: [brain, zekra, memory, knowledge base, ai, agents, list, cards, sources]
 ---
 
@@ -109,4 +109,4 @@ decorative; the name is the accessible label of the row and the card.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-brain-list--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-brain-list--docs

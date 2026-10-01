@@ -1,12 +1,12 @@
 ---
 name: chat-widget
 title: ChatWidget
-category: collaboration
+category: chat
 status: beta
 summary: Floating customer chat for a website with a launcher and unread badge, a chat panel with greeting, quick questions, messages, typing and file attachments, and an offline leave-a-message form, driven by async callbacks.
 exports: [ChatWidgetLabels, WidgetMessage, WidgetOfflineForm, ChatWidgetProps, ChatWidget]
 related: [inbox, chat, copilot-chat]
-story: components-collaboration-chat-widget
+story: components-chat-chat-widget
 base-ui: [field, input]
 keywords: [chat widget, live chat, customer chat, launcher, support, offline form, intercom, website chat]
 ---

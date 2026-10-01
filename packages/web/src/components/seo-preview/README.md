@@ -1,12 +1,12 @@
 ---
 name: seo-preview
 title: SeoPreview
-category: analytics
+category: seo
 status: beta
 summary: "How a page looks in Google (desktop and mobile) and as an Open Graph, X, WhatsApp and LinkedIn share card, with title and description length meters."
 exports: [SeoPreviewLabels, SeoPreviewPlatform, SeoMeta, LengthMeterProps, LengthMeter, SeoPreviewProps, SeoPreview]
 related: [seo-pages, keyword-tracker, search-performance-table]
-story: components-analytics-seo-preview
+story: components-seo-seo-preview
 base-ui: [tabs, meter]
 keywords: [seo, snippet, google, open graph, twitter, whatsapp, linkedin, meta title, meta description, share card]
 ---
@@ -144,4 +144,4 @@ Uses `--nq-*` surface, border and status tokens. Meters carry `data-status="empt
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-seo-preview--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-seo-preview--docs

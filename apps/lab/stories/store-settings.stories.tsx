@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { GiftCheckoutDemo, SimulatorDemo, StoreDiscountsPage, StoreSettingsPage } from "./_store-admin-demo";
 
-const meta = { title: "Components/Commerce/Store Settings", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Store Admin/Store Settings", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

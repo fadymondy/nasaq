@@ -1,4 +1,4 @@
-import { Field, FieldDescription, FieldError, FieldLabel, NasaqProvider, PhoneInput, useNasaq } from "@nasaq/web";
+import { Field, FieldDescription, FieldError, FieldLabel, isValidE164, NasaqProvider, PhoneInput, useNasaq } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 
@@ -34,7 +34,7 @@ function Basic() {
   );
 }
 
-/** Gulf and Arab countries come first, then the rest. The value is E.164; a trunk 0 is dropped (`0501234567` gives `+966501234567`). */
+/** Every country, Gulf and Arab first, with its flag, name and calling code. The number is grouped as you type and the placeholder is an example for the country. The value is E.164; a trunk 0 is dropped (`0501234567` gives `+966501234567`). */
 export const Default: Story = { render: () => <Basic /> };
 
 /** Arabic provider: names in Arabic, group mirrored (country at the start edge), digits still left to right. */
@@ -80,7 +80,7 @@ export const Prefilled_: Story = {
 function Validated() {
   const ar = useAr();
   const [value, setValue] = useState("+96650");
-  const bad = value.length < 12;
+  const bad = value !== "" && !isValidE164(value);
   return (
     <div className="w-80 max-w-full">
       <Field invalid={bad}>
@@ -109,6 +109,17 @@ export const Disabled: Story = {
   render: () => (
     <div className="w-80 max-w-full">
       <PhoneInput disabled defaultValue="+201001234567" aria-label="Phone" />
+    </div>
+  ),
+};
+
+/** Codes shared by several countries resolve by number range: `+1 416` is Canada, `+1 202` the United States, `+7 7` Kazakhstan, `+44 1481` Guernsey. */
+export const SharedCodes: Story = {
+  render: () => (
+    <div className="flex w-80 max-w-full flex-col gap-3">
+      {["+14165550123", "+12025550123", "+77011234567", "+441481256789"].map((v) => (
+        <PhoneInput key={v} defaultValue={v} aria-label="Phone" />
+      ))}
     </div>
   ),
 };

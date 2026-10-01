@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { pushDevices, useAr, wait } from "./_lifecycle-demo";
 
-const meta = { title: "Components/Utilities/Install Prompt" } satisfies Meta;
+const meta = { title: "Components/Apps & Platforms/Install Prompt" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

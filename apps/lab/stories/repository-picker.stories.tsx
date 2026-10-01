@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { loadBranches, searchRepos, useAr } from "./_devtools-q3-demo";
 
-const meta = { title: "Components/Pickers/Repository Picker", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Developer Tools/Repository Picker", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

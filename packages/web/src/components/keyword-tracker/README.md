@@ -1,12 +1,12 @@
 ---
 name: keyword-tracker
 title: KeywordTracker
-category: analytics
+category: seo
 status: beta
 summary: "Rank tracking for a keyword list: position and change arrows, best position, URL, volume, difficulty, SERP features, history chart, top 3 / 10 / 100 buckets, add-keywords dialog and competitor comparison."
 exports: [KeywordTrackerProps, KeywordTracker, AddKeywordsDialog, CompetitorComparison, RankChange, RankDistribution, KEYWORD_STRINGS, RANK_BUCKETS, averagePosition, bestPosition, competitorStats, ctrForPosition, difficultyBand, parseKeywordList, rankBucket, rankChange, rankDistribution, topMovers, visibilityShare]
 related: [keyword-planner, seo-pages, search-performance-table, time-series-panel, data-table]
-story: components-analytics-keyword-tracker
+story: components-seo-keyword-tracker
 base-ui: [dialog, tabs]
 keywords: [keywords, rank tracking, serp, position, visibility, competitors, seo, sparkline]
 ---
@@ -150,4 +150,4 @@ Up, down and neutral use the success, danger and muted tokens. Charts use the `-
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-keyword-tracker--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-keyword-tracker--docs

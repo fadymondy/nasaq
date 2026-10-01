@@ -1,12 +1,12 @@
 ---
 name: cookie-consent
 title: CookieConsent
-category: utilities
+category: website
 status: beta
 summary: "Cookie consent banner and preferences dialog with Consent Mode categories. Reject and Accept carry equal weight, and it holds no tracking code."
 exports: [CookieConsentLabels, ConsentSaveResult, CookieConsentProps, CookieConsent]
 related: [dialog, switch, collapsible, alert]
-story: components-utilities-cookie-consent
+story: components-website-cookie-consent
 base-ui: [dialog, switch, collapsible]
 keywords: [cookie, consent, gdpr, consent mode, privacy, banner, preferences, analytics, marketing]
 ---
@@ -139,4 +139,4 @@ export function Footer() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-utilities-cookie-consent--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-website-cookie-consent--docs

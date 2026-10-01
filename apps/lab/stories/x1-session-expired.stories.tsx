@@ -5,7 +5,7 @@ import { useState } from "react";
 import { BrandPanel, DoneScreen, StoryFooter } from "./_auth";
 import { DEMO_PASSWORD, sleep, useAr } from "./_x1-demo";
 
-const meta = { title: "Pages/Auth/Session Expired", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Auth/Pages/Session Expired", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

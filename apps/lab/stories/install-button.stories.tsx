@@ -2,7 +2,7 @@ import { InstallButton, type InstallState } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 
-const meta = { title: "Components/Actions/Install Button", component: InstallButton, args: { appName: "Zekra", state: "available" } } satisfies Meta<typeof InstallButton>;
+const meta = { title: "Components/Apps & Platforms/Install Button", component: InstallButton, args: { appName: "Zekra", state: "available" } } satisfies Meta<typeof InstallButton>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

@@ -1,12 +1,12 @@
 ---
 name: price
 title: Price
-category: commerce
+category: pricing
 status: beta
 summary: A locale-formatted price with currency, billing period suffix, optional struck-through original and a built-in "Free" label.
 exports: [Price, PricePeriod, PriceProps]
 related: [plan-card, product-card, rating, numeric]
-story: components-commerce-price
+story: components-pricing-price
 base-ui: []
 keywords: [price, currency, billing, period, discount, free, plan, subscription]
 ---
@@ -148,4 +148,4 @@ export function ArabicPrices() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-price--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-pricing-price--docs

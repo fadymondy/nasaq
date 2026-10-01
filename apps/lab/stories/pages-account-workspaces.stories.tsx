@@ -8,7 +8,7 @@ import { useState } from "react";
 import { checkSlug, initialWorkspaces, useAr, wait } from "./_team-demo";
 import { PageShell } from "./_team-pages";
 
-const meta = { title: "Pages/Account/Workspaces", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Account/Pages/Workspaces", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

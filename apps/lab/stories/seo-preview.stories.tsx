@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { seoMeta, useAr } from "./_moharrik-demo";
 
-const meta = { title: "Components/Analytics/SEO Preview", component: SeoPreview, parameters: { layout: "padded" } } satisfies Meta<typeof SeoPreview>;
+const meta = { title: "Components/SEO/SEO Preview", component: SeoPreview, parameters: { layout: "padded" } } satisfies Meta<typeof SeoPreview>;
 export default meta;
 type Story = StoryObj;
 

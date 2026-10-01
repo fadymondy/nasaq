@@ -2,7 +2,7 @@ import { SearchPerformanceTable } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { gscReport, useAr } from "./_analytics-demo";
 
-const meta = { title: "Components/Analytics/Search Performance Table", component: SearchPerformanceTable, parameters: { layout: "padded" } } satisfies Meta<typeof SearchPerformanceTable>;
+const meta = { title: "Components/SEO/Search Performance Table", component: SearchPerformanceTable, parameters: { layout: "padded" } } satisfies Meta<typeof SearchPerformanceTable>;
 export default meta;
 type Story = StoryObj;
 

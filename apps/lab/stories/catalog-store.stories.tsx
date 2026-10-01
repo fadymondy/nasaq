@@ -2,7 +2,7 @@ import { CatalogStore } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { marketCategories, marketListings, useAr, wait } from "./_workflow-demo";
 
-const meta = { title: "Components/Commerce/Catalog Store", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Storefront/Catalog Store", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

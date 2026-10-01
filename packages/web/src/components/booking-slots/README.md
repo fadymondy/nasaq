@@ -1,12 +1,12 @@
 ---
 name: booking-slots
 title: BookingSlots
-category: commerce
+category: bookings
 status: beta
 summary: Day calendar beside a grid of time tiles grouped by morning, afternoon and evening, with available, full and held states, a legend and a jump to the next free day.
 exports: [BookingSlotsLabels, BookingSlotsProps, BookingSlots]
 related: [booking-flow, booking-manage, calendar, scheduler]
-story: components-commerce-booking-slots
+story: components-bookings-booking-slots
 base-ui: [radio-group]
 keywords: [slots, time picker, availability, appointment, calendar, held, full]
 ---
@@ -112,4 +112,4 @@ Every `div` prop is passed through unless noted.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-booking-slots--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-booking-slots--docs

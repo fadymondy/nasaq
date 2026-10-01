@@ -1,12 +1,12 @@
 ---
 name: web-vital-gauge
 title: WebVitalGauge
-category: analytics
+category: monitoring
 status: beta
 summary: A gauge for one Core Web Vital (LCP, INP, CLS, FCP, TTFB) with Google's good, needs-improvement and poor bands, the p75 value and the distribution of page loads.
 exports: [WebVitalGauge, WebVitalGaugeProps, WebVitalGaugeGrid, WebVitalGaugeLabels, formatVital]
 related: [time-series-panel, web-vitals-page, status]
-story: components-analytics-web-vital-gauge
+story: components-monitoring-web-vital-gauge
 base-ui: []
 keywords: [core web vitals, lcp, inp, cls, fcp, ttfb, gauge, performance]
 ---
@@ -140,4 +140,4 @@ The arc is an image with a text alternative giving the metric, the value and the
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-web-vital-gauge--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-web-vital-gauge--docs

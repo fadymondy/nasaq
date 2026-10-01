@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { HrPageDemo, useAr, V2Page } from "./_v2-demo";
 
-const meta = { title: "Pages/App/HR Attendance and Leave", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Projects & Work/Pages/HR Attendance and Leave", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

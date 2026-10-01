@@ -1,12 +1,12 @@
 ---
 name: notification-center
 title: NotificationCenter
-category: collaboration
+category: alerts
 status: beta
 summary: Bell button with an unread badge that opens a popover of notifications, with All and Unread tabs, mark all read and an empty state. Controlled.
 exports: [NotificationCenter, NotificationCenterProps, NotificationCenterItem, NotificationCenterLabels]
 related: [notification-item, popover, tabs, states, badge, sheet]
-story: components-collaboration-notification-center
+story: components-alerts-notifications-notification-center
 base-ui: [popover, tabs]
 keywords: [notifications, bell, inbox, unread, badge, mark all read, popover]
 ---
@@ -157,4 +157,4 @@ export function Bell() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-collaboration-notification-center--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-notification-center--docs

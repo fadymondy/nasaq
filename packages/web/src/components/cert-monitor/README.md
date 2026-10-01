@@ -1,12 +1,12 @@
 ---
 name: cert-monitor
 title: CertificateMonitor
-category: health
+category: security
 status: beta
 summary: A TLS certificate monitor - a table of hosts with issuer, expiry date and a days-left badge that turns amber at 30 days and red at 7 or when expired, soonest first, with check again, renew and stop monitoring.
 exports: [CertMonitorLabels, CertResult, CertificateRecord, DaysLeftBadgeProps, DaysLeftBadge, CertificateMonitorProps, CertificateMonitor, byExpiry, CertStatus, CertThresholds, CertTone, certStatus, certTone, DEFAULT_THRESHOLDS, certDaysLeft, isValidCertHost, summarizeCerts]
 related: [domains-manager, proxy-hosts, uptime-monitors, vuln-report, data-table]
-story: components-health-certificate-monitor
+story: components-security-certificate-monitor
 base-ui: [alert-dialog, field]
 keywords: [certificate, tls, ssl, expiry, days left, renew, https, lets encrypt]
 ---
@@ -113,4 +113,4 @@ export const Badge = () => <DaysLeftBadge days={20} thresholds={{ warnDays: 14, 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-certificate-monitor--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-security-certificate-monitor--docs

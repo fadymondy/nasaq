@@ -1,12 +1,12 @@
 ---
 name: server-admin
 title: Server Admin
-category: developer
+category: server-tools
 status: beta
 summary: Four admin panels for one server. A systemd service list with start, stop and restart, a package updates panel, an SSH key manager with a servers by keys matrix, and a job queue monitor with retry and forget.
 exports: [ServerAdminLabels, ServerAdminResult, ServiceUnit, ServiceUnitsListProps, ServiceUnitsList, PackageUpdate, PackageUpdatesPanelProps, PackageUpdatesPanel, SshServer, SshKeyRecord, SshKeyInput, SshKeyManagerProps, SshKeyManager, QueueJob, JobQueueMonitorProps, JobQueueMonitor, canForgetJob, canRetryJob, errorHeadline, isDisruptive, isTransitionalState, JOB_STATUSES, JobStatus, jobCounts, KeyCoverage, keyCoverage, PackageKind, ParsedSshKey, parseSshPublicKey, ServiceAction, ServiceState, serviceActionsFor, shortFingerprint, SshKeyProblem, SshKeyType, summarizeUpdates, UpdateSummary]
 related: [data-table, backup-manager, log-viewer, alerts, api-keys]
-story: components-developer-server-admin
+story: components-server-tools-server-admin
 base-ui: [alert-dialog, checkbox, dialog, tabs]
 keywords: [server, systemd, services, packages, apt, updates, ssh keys, queue, jobs, retry, admin]
 ---

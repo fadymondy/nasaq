@@ -2,7 +2,7 @@ import { IncidentList, UptimeBadge, UptimeBar } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { makeChecks, sampleIncidents, UptimeDemo, useAr } from "./_infra-demo";
 
-const meta = { title: "Components/Health/Uptime Monitors" } satisfies Meta;
+const meta = { title: "Components/Monitoring/Uptime Monitors" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

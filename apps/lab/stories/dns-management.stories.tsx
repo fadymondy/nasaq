@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DnsDemo } from "./_ops-demo";
 
-const meta = { title: "Components/Developer/DNS Management" } satisfies Meta;
+const meta = { title: "Components/Server Tools/DNS Management" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -1,12 +1,12 @@
 ---
 name: current-visit
 title: CurrentVisit
-category: health
+category: healthcare
 status: beta
 summary: The visit in progress - patient card with allergies, earlier visits, a running timer, notes, a prescription list with validation, follow-up choices and a finish that checks the record.
 exports: [CurrentVisitLabels, VisitPatient, VisitHistoryItem, VisitResult, CurrentVisitProps, CurrentVisit]
 related: [clinic-queue, clinic-schedule, timeline, date-picker]
-story: components-health-current-visit
+story: components-healthcare-current-visit
 base-ui: [field]
 keywords: [visit, consultation, prescription, notes, follow-up, patient, timer]
 ---
@@ -110,4 +110,4 @@ onFinish={async ({ followUp }) => {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-current-visit--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-healthcare-current-visit--docs

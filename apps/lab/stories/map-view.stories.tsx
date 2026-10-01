@@ -5,7 +5,7 @@ import { useState } from "react";
 import { CLUSTERED_PINS } from "./_map-cluster-demo";
 import { FLEET_LAYERS, FLEET_PINS, FLEET_ROUTES, t, useAr } from "./_w2-demo";
 
-const meta = { title: "Components/Data Display/Map View", component: MapView, parameters: { layout: "padded" } } satisfies Meta<typeof MapView>;
+const meta = { title: "Components/Charts & Maps/Map View", component: MapView, parameters: { layout: "padded" } } satisfies Meta<typeof MapView>;
 export default meta;
 type Story = StoryObj;
 

@@ -13,6 +13,7 @@ import { NasaqProvider, Toaster, toast } from "@nasaq/web";
 import type { Decorator, Preview } from "@storybook/react-vite";
 import { useGlobals } from "storybook/preview-api";
 import { DocsPage } from "./docs-page";
+import { nasaqLight } from "./theme";
 
 // Arabic renders in Lusail (the products' face, 300/400/500) when its files are present; see main.ts.
 // Alexandria is the OFL fallback. Neither is part of @nasaq/web.
@@ -76,7 +77,8 @@ const preview: Preview = {
   parameters: {
     layout: "fullscreen",
     controls: { expanded: true },
-    docs: { page: DocsPage },
+    // The docs blocks (titles, tables, code, controls) use the Nasaq tokens, not the stock blue.
+    docs: { page: DocsPage, theme: nasaqLight },
     a11y: { test: "error" },
     // The toolbar's viewport menu. Extension sizes follow Chrome's popup and side panel.
     viewport: {
@@ -109,13 +111,10 @@ const preview: Preview = {
           ],
           "Foundations",
           "Brand",
+          // One folder per README `category`, A to Z. Each holds its components, then the full screens
+          // built from them (Pages) and any longer compositions (Patterns).
           "Components",
-          ["Actions", "Forms", "Pickers", "Layout", "Navigation", "Overlays", "Feedback", "Data Display", "Charts", "Collaboration", "Auth", "Account", "Developer", "AI", "Workflow", "Analytics", "CRM", "Editors", "Health", "Commerce", "Typography", "Brand", "Utilities", "*"],
-          // Full screens, by the kind of product surface they show.
-          "Pages",
-          ["Auth", "Account", "App", "Admin", "Developer", "Analytics", "Health", "Billing", "Marketing", "Store", "*"],
-          "Patterns",
-          "Platforms",
+          ["*", ["*", "Pages", "Patterns"]],
         ],
         method: "alphabetical",
       },

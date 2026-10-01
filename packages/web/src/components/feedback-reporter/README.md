@@ -1,12 +1,12 @@
 ---
 name: feedback-reporter
 title: FeedbackReporter
-category: feedback
+category: feedback-sdk
 status: beta
 summary: The interface around the feedback dialog. A floating launcher as a pill, circle or edge tab, a hub of reports already made on this page, a launcher configurator with install code, and a shake-to-report sheet for phones.
 exports: [FeedbackReporterLabels, FeedbackFloatingLauncherProps, FeedbackFloatingLauncher, FeedbackHubProps, FeedbackHub, FeedbackLauncherConfiguratorProps, FeedbackLauncherConfigurator, ShakeToReportOptions, useShakeToReport, ShakeReportSheetProps, ShakeReportSheet]
 related: [sheet, dialog, chat-widget, alert]
-story: components-feedback-feedback-reporter
+story: components-feedback-sdk-feedback-reporter
 base-ui: [dialog, toggle-group, tabs, switch]
 keywords: [feedback, report a problem, floating button, launcher, shake to report, bug report, hub, votes, mahaam]
 ---

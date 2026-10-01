@@ -1,12 +1,12 @@
 ---
 name: env-list
 title: EnvList
-category: developer
+category: developer-tools
 status: stable
 summary: A .env manager with masked values, reveal and copy, add edit delete, import by pasting a .env, export, per-environment tabs and key validation.
 exports: [EnvListLabels, EnvResult, EnvEnvironment, EnvImportOptions, EnvListProps, EnvList, checkEnvKey, conflictingKeys, ENV_KEY, EnvKeyProblem, EnvParseIssue, EnvParseResult, EnvVariable, isValidEnvKey, looksPublic, MASK, parseEnv, quoteEnvValue, serializeEnv]
 related: [api-keys, code-block-variants, dialog, alert-dialog]
-story: components-developer-env-list
+story: components-developer-tools-env-list
 base-ui: [dialog, alert-dialog, tabs]
 keywords: [env, dotenv, environment, variables, secrets, config, import, export, mask, reveal, keys]
 ---
@@ -140,4 +140,4 @@ parseEnv('A=1\nexport B="two words"\nA=3').duplicates; // ["A"], the last value 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-env-list--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-env-list--docs

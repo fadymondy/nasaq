@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { makeContacts, contactExportColumns } from "./_crm-demo";
 import { wait } from "./_profile-demo";
 
-const meta = { title: "Components/Actions/Export Button", component: ExportButton, parameters: { layout: "padded" } } satisfies Meta<typeof ExportButton>;
+const meta = { title: "Components/Files/Export Button", component: ExportButton, parameters: { layout: "padded" } } satisfies Meta<typeof ExportButton>;
 export default meta;
 type Story = StoryObj;
 

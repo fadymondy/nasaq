@@ -13,7 +13,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FolderKanban, Inbox, Plus, Timer } from "lucide-react";
 import { useMemo, useState } from "react";
 
-const meta = { title: "Components/Utilities/Commands", component: CommandProvider, args: { children: null } } satisfies Meta<typeof CommandProvider>;
+const meta = { title: "Components/Keyboard & Commands/Commands", component: CommandProvider, args: { children: null } } satisfies Meta<typeof CommandProvider>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

@@ -1,12 +1,12 @@
 ---
 name: social-composer
 title: SocialComposer
-category: editors
+category: marketing
 status: beta
 summary: One post for several social networks. Each target gets its own limit, counter, preview, media check and optional own version, and a metrics table reports how the posts did.
 exports: [SocialComposer, SocialComposerProps, SocialComposerLabels, SocialAccount, SocialPost, SocialComposerAssistAction, SocialMetricsTable, SocialMetricsTableProps, SocialMetricsTableLabels, SocialMetricsRow]
 related: [ai-states, date-picker, data-table, stat-card, progress]
-story: components-editors-social-composer
+story: components-marketing-social-composer
 base-ui: [progress]
 keywords: [social, post, composer, schedule, x, twitter, bluesky, threads, linkedin, facebook, instagram, tiktok, character limit, hashtags, metrics]
 ---
@@ -174,4 +174,4 @@ Cards, progress tones (`default`, `warning`, `danger`) and stat cards use the st
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-editors-social-composer--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-marketing-social-composer--docs

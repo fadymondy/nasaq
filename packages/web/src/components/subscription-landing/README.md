@@ -1,12 +1,12 @@
 ---
 name: subscription-landing
 title: SubscriptionLanding
-category: crm
+category: marketing
 status: beta
 summary: The three public pages of an email list, subscribe with explicit consent, confirm for double opt-in, and unsubscribe with an optional reason and a way back.
 exports: [SubscriptionLandingLabels, SubscriptionLandingMode, SubscriptionResult, SubscriptionLandingProps, SubscriptionLanding]
 related: [campaign-composer, contact-identities, auth-card]
-story: components-crm-subscription-landing
+story: components-marketing-subscription-landing
 keywords: [subscribe, unsubscribe, confirm, double opt in, newsletter, landing, consent, gdpr]
 ---
 
@@ -88,4 +88,4 @@ Semantic tokens only.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-crm-subscription-landing--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-marketing-subscription-landing--docs

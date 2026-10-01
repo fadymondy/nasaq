@@ -2,7 +2,7 @@ import { AnalyticsConnect } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type DemoKind, useAr, useDemoConnection } from "./_analytics-demo";
 
-const meta = { title: "Components/Analytics/Analytics Connect", component: AnalyticsConnect, parameters: { layout: "padded" } } satisfies Meta<typeof AnalyticsConnect>;
+const meta = { title: "Components/Integrations/Analytics Connect", component: AnalyticsConnect, parameters: { layout: "padded" } } satisfies Meta<typeof AnalyticsConnect>;
 export default meta;
 type Story = StoryObj;
 

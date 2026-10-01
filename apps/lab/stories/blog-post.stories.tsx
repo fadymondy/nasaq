@@ -2,7 +2,7 @@ import { BlogPost, Callout, PostBody, TableOfContents, extractToc } from "@nasaq
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { demoPost, demoPosts, useAr5 } from "./_x5-demo";
 
-const meta = { title: "Components/Layout/Blog Post", component: BlogPost, parameters: { layout: "fullscreen" } } satisfies Meta<typeof BlogPost>;
+const meta = { title: "Components/Website/Blog Post", component: BlogPost, parameters: { layout: "fullscreen" } } satisfies Meta<typeof BlogPost>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

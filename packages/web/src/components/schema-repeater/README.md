@@ -1,12 +1,12 @@
 ---
 name: schema-repeater
 title: SchemaRepeater
-category: forms
+category: form-builders
 status: beta
 summary: A Repeater whose rows are generated from a field schema (text, number, select, switch, date, nested repeater) with built-in validation in English and Arabic.
 exports: [SchemaRepeater, SchemaRepeaterProps]
 related: [repeater, field, select, date-picker]
-story: components-forms-schema-repeater
+story: components-form-builders-schema-repeater
 keywords: [schema, repeater, form builder, dynamic form, validation, rows, nested, line items]
 ---
 

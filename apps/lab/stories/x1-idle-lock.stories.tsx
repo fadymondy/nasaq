@@ -8,7 +8,7 @@ import { useState } from "react";
 import { DEMO_NOW, Wallpaper, demoUser } from "./_onboarding-demo";
 import { sleep, useAr } from "./_x1-demo";
 
-const meta = { title: "Pages/Auth/Idle Lock", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Auth/Pages/Idle Lock", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

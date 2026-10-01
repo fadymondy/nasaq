@@ -105,6 +105,7 @@ DataTablePagination         "1–20 of 143"  ‹ ›
 | `data`, `columns`, `getRowId` | | Required. |
 | `pageSize` | `number` | Omit for no pagination. |
 | `selectable` | `boolean` | Adds the checkbox column. |
+| `density`, `frame`, `bordered`, `striped`, `hover` | see [`Table`](../table/README.md) | Table style, passed straight to `Table`. Default: `density="default"`, hover on. |
 | `defaultSort` | `DataTableSort \| null` | `{ id, direction }`. |
 | `sort`, `query`, `filters`, `page`, `selection`, `hidden` | `{ value, onChange }` | Control any piece of state (URL params, server). |
 | `manual`, `rowCount` | `boolean`, `number` | `data` is already sorted, filtered and paged by the server. |

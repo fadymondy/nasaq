@@ -2,7 +2,7 @@ import { Heatmap, type HeatmapDatum, NasaqProvider, useNasaq } from "@nasaq/web"
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useMemo } from "react";
 
-const meta = { title: "Components/Charts/Heatmap", component: Heatmap } satisfies Meta<typeof Heatmap>;
+const meta = { title: "Components/Charts & Maps/Heatmap", component: Heatmap } satisfies Meta<typeof Heatmap>;
 export default meta;
 type Story = StoryObj;
 

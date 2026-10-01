@@ -1,12 +1,12 @@
 ---
 name: alert
 title: Alert
-category: feedback
+category: alerts
 status: stable
 summary: Quiet inline notice with a tone (info, success, warning, danger), optional title, description, action and dismiss.
 exports: [Alert, AlertProps, AlertTone]
 related: [attention, toast, status, badge, states]
-story: components-feedback-alert
+story: components-alerts-notifications-alert
 base-ui: []
 keywords: [notice, banner, message, callout, warning, error, inline]
 ---
@@ -155,4 +155,4 @@ export function DraftInvoice() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-feedback-alert--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-alert--docs

@@ -4,9 +4,9 @@ title: AppShell
 category: layout
 status: stable
 summary: The product frame every Nasaq app uses - resizable, collapsible sidebar at the inline start, sticky header, main area, mobile sheet, and the command registry.
-exports: [AppShell, AppShellProps, AppHeader, AppMain, SidebarTrigger, Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupProps, SidebarGroupAction, SidebarItem, SidebarItemProps, SidebarNest, SidebarNestProps, SidebarSubItem, SidebarExpandedOnly, useAppShell, useOptionalAppShell, useSidebarCollapsed, SIDEBAR_STORAGE_KEY, SIDEBAR_WIDTH_KEY]
+exports: [AppShell, AppShellProps, SidebarProps, AppHeader, AppMain, AppBreadcrumbs, AppCrumb, AppCrumbProps, AppNav, AppNavProps, AppNavItem, AppNavItemProps, AppPageHeader, AppPageHeaderProps, AppFooter, AppFooterLink, SidebarStatus, SidebarStatusProps, SidebarTrigger, Sidebar, SidebarBrand, SidebarBrandProps, SidebarHeader, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupProps, SidebarGroupAction, SidebarItem, SidebarItemProps, SidebarNest, SidebarNestProps, SidebarSubItem, SidebarExpandedOnly, useAppShell, useOptionalAppShell, useSidebarCollapsed, SIDEBAR_STORAGE_KEY, SIDEBAR_WIDTH_KEY]
 related: [sidebar-layout, workspace-switcher, user-menu, breadcrumb, command-palette, commands, product-switcher, switchers]
-story: pages-app-app-shell
+story: components-layout-pages-app-shell
 base-ui: [dialog, collapsible]
 keywords: [layout, shell, sidebar, header, navigation, rail, collapse, resize, mobile, rtl, frame]
 ---
@@ -25,10 +25,23 @@ The frame every product re-solved: a sidebar at the inline start, a sticky heade
 The sidebar is built from small parts (`Sidebar`, `SidebarGroup`, `SidebarItem`, `SidebarNest`…) that
 know whether they are on the collapsed rail and adapt: labels hide, tooltips and accessible names appear.
 
+Two frames, one component:
+
+- **Sidebar navigation** (pass `sidebar`). Add `variant="inset"` to put the page on its own rounded
+  panel, inset from the sidebar's surface, and `SidebarStatus` for the "All systems normal" line
+  above the user.
+- **Top navigation** (leave `sidebar` out). The header carries the path as `AppBreadcrumbs` with
+  ⇅ switchers and tags (organisation / project / environment), `AppNav` puts section tabs under it,
+  and `AppFooter` closes the page. Good for apps whose sections fit in one row.
+
+Both share `AppPageHeader`: the page's big title, a line under it, and its controls (a time range,
+filters, the main action) at the inline end.
+
 ## When to use
 
 - The root layout of any product with more than one screen.
 - You need a collapsible sidebar with workspace switcher, search, navigation and user menu.
+- A few sections under one resource (a project, a server, a site): top navigation with a path and tabs.
 
 ## When not to use
 
@@ -42,7 +55,7 @@ know whether they are on the collapsed rail and adapt: labels hide, tooltips and
 ```tsx
 import {
   AppShell, AppHeader, AppMain, SidebarTrigger,
-  Sidebar, SidebarHeader, SidebarContent, SidebarFooter,
+  Sidebar, SidebarBrand, SidebarHeader, SidebarContent, SidebarFooter,
   SidebarGroup, SidebarItem, SidebarNest, SidebarSubItem,
 } from "@fadymondy/nasaq/web";
 // inside this monorepo: "@nasaq/web"
@@ -60,6 +73,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   Sidebar,
+  SidebarBrand,
   SidebarContent,
   SidebarGroup,
   SidebarHeader,
@@ -71,7 +85,9 @@ import { Inbox, LayoutDashboard } from "lucide-react";
 function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader />
+      <SidebarHeader>
+        <SidebarBrand href="/" />
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarItem href="/" icon={<LayoutDashboard />} active>
@@ -117,19 +133,31 @@ AppShell                          data-slot="app-shell"      (flex row, min-h-dv
 │  └─ resize handle               data-slot="sidebar-resize-handle" role="separator"
 ├─ mobile sheet (Dialog)          data-slot="app-shell-sheet"   below md, opened by SidebarTrigger / ⌘B
 │  └─ your `sidebar` node         (never collapsed inside the sheet)
-└─ column                         (children)
+└─ column                         (children; inside app-shell-panel when variant="inset")
    ├─ AppHeader                   data-slot="app-header"
-   │  └─ SidebarTrigger first
-   └─ AppMain                     data-slot="app-main"
+   │  ├─ SidebarTrigger first     (sidebar frame)
+   │  └─ AppBreadcrumbs           data-slot="app-breadcrumbs"  (top frame) <nav> > <ol>
+   │     └─ AppCrumb              data-slot="app-crumb"        icon, name, tag, ⇅ switcher
+   ├─ AppNav                      data-slot="app-nav"          (top frame) section tabs, md and up
+   │  ├─ bottom bar               data-slot="app-nav-bar"      below md; fixed, first mobileItems
+   │  │  └─ More                  data-slot="app-nav-more"     opens a Drawer with the rest
+   │  └─ AppNavItem               data-slot="app-nav-item"     <a>, aria-current when active
+   ├─ AppMain                     data-slot="app-main"
+   │  └─ AppPageHeader            data-slot="app-page-header"  h1, description, actions
+   └─ AppFooter                   data-slot="app-footer"       (top frame) start + AppFooterLink[]
+
+Root attributes: data-navigation="sidebar" | "top", data-variant="plain" | "inset".
 
 Sidebar                           data-slot="sidebar"        <nav>, data-collapsed
-├─ SidebarHeader                  data-slot="sidebar-header"  workspace switcher, search trigger
+├─ SidebarHeader                  data-slot="sidebar-header"  logo, workspace switcher, search trigger
+│  └─ SidebarBrand                data-slot="sidebar-brand"   the product logo, a link home
 ├─ SidebarContent                 data-slot="sidebar-content" scrolls; header and footer stay put
 │  └─ SidebarGroup                data-slot="sidebar-group"   label, action, collapsible
 │     ├─ SidebarItem              data-slot="sidebar-item"    <a>, aria-current when active
 │     └─ SidebarNest              data-slot="sidebar-nest"    parent + SidebarSubItem[]
 │        └─ SidebarSubItem        data-slot="sidebar-sub-item"
-└─ SidebarFooter                  data-slot="sidebar-footer"  user menu
+└─ SidebarFooter                  data-slot="sidebar-footer"  support, docs, SidebarStatus, user menu
+   └─ SidebarStatus               data-slot="sidebar-status"  data-tone; a dot on the rail
 ```
 
 ## API
@@ -140,7 +168,8 @@ Extends `ComponentProps<"div">` (extra props land on the root element).
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `sidebar` | `ReactNode` | required | Rendered as a column at md+ and inside a sheet below md. Usually a `<Sidebar>`. It is mounted once per surface, so keep it cheap and idempotent. |
+| `sidebar?` | `ReactNode` | none | Rendered as a column at md+ and inside a sheet below md. Usually a `<Sidebar>`. It is mounted once per surface, so keep it cheap and idempotent. Leave it out for top navigation: no aside, no sheet, and `SidebarTrigger` has nothing to toggle, so don't render one. |
+| `variant?` | `"plain" \| "inset"` | `"plain"` | `"inset"` puts the page on a rounded, bordered panel inset from the sidebar's surface (md+). Below md it is plain. Only meaningful with a `sidebar`. |
 | `defaultCollapsed?` | `boolean` | `false` | Initial rail state when uncontrolled. A saved choice in `localStorage` wins after mount. |
 | `collapsed?` | `boolean` | none | Controlled rail state. When set, nothing is persisted; you own storage. |
 | `onCollapsedChange?` | `(collapsed: boolean) => void` | none | Called on toggle, ⌘B and drag-to-rail. |
@@ -167,10 +196,31 @@ Collapses/expands the rail on desktop and opens the sheet on mobile. Place it fi
 `AppHeader` is `ComponentProps<"header">` (sticky, 48px, blurred background). `AppMain` is
 `ComponentProps<"main">` (`flex-1`, page padding). Neither has its own props.
 
+### `SidebarBrand`
+
+The product logo at the top of the sidebar: a link (default `href="/"`) that shows the brand's `ProductLogo` (mark and
+name) when the sidebar is expanded and only its `ProductMark` when it is collapsed, with the name as its label and
+tooltip. Put it first in `SidebarHeader`. Every `a` prop, plus:
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `brand` | `string` | the provider's brand | Which brand's logo to show. |
+| `logo` | `ReactNode` | `<ProductLogo />` | What shows when expanded, e.g. your own lockup or the logo with an environment badge. |
+| `mark` | `ReactNode` | `<ProductMark />` | What shows when collapsed to the rail. |
+| `label` | `string` | the brand's name | The link's name and tooltip while only the mark shows. Set it when you pass a custom `logo` or `brand`. |
+
+Keep the official mark as it is: do not recolour, mirror or redraw it.
+
 ### `Sidebar`, `SidebarHeader`, `SidebarContent`, `SidebarFooter`
 
-Plain wrappers over `nav` / `div` / `div` / `div`. No own props. `Sidebar` is a `<nav>` with a default
+Plain wrappers over `nav` / `div` / `div` / `div`. `Sidebar` is a `<nav>` with a default
 `aria-label` of "Main" / "الرئيسية" (by locale); pass `aria-label` to override, especially with more than one `nav`.
+
+`Sidebar` has one prop of its own:
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `icons?` | `"always" \| "mobile"` | `"always"` | `mobile` hides the icons of `SidebarItem` and `SidebarNest` on the desktop column, for a quieter text-only list. They stay in the phone sheet, and on the collapsed rail, where the icon is all there is. Still give every item an icon. |
 
 `SidebarContent` is the only part that scrolls. `SidebarHeader` and `SidebarFooter` never shrink, so on a
 short window the nav scrolls between them and never runs under the account menu. Put everything that can
@@ -197,7 +247,7 @@ Extends `ComponentProps<"a">`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `active?` | `boolean` | `false` | Sets `aria-current="page"`, a stronger weight and an accent rule at the inline start. |
+| `active?` | `boolean` | `false` | Sets `aria-current="page"`, the selected background and a stronger weight. |
 | `icon?` | `ReactNode` | none | Leading icon (16px). |
 | `trailing?` | `ReactNode` | none | Count or status at the inline end. Hidden on the rail. |
 | `tooltip?` | `string` | children if a string | Tooltip and `aria-label` on the rail. **Set it when `children` is not a string**; otherwise the rail item falls back to the `aria-label` prop you pass, and has no name if there is none. |
@@ -225,6 +275,89 @@ sub-items below it. Choosing a sub-item closes it; `Esc` returns focus to the ic
 `({ children }: { children: ReactNode }) => ReactElement | null`: renders children only when the sidebar is
 expanded (always in the mobile sheet). Use it for text-only rows such as a storage meter.
 
+### `SidebarStatus`
+
+The service status line at the foot of the sidebar, usually a link to your status page. Extends
+`Omit<ComponentProps<"a">, "children">`.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `tone?` | `"success" \| "warning" \| "danger" \| "info"` | `"success"` | The dot's colour. Anything but success pulses (not under reduced motion). |
+| `children` | `string` | required | The status in words, e.g. "All systems normal". On the rail only the dot shows, and this becomes its tooltip and accessible name. |
+
+The words carry the meaning; the dot is decoration (`aria-hidden`). Never ship a dot without text.
+
+### `AppBreadcrumbs`, `AppCrumb`
+
+The path for top navigation: organisation / project / environment, each with its own switcher.
+`AppBreadcrumbs` is `ComponentProps<"nav">` with a default `aria-label` of "Breadcrumb" / "المسار";
+it renders an `<ol>` with "/" separators. Below md only the last crumb shows.
+
+`AppCrumb`:
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | required | The name. |
+| `icon?` | `ReactNode` | none | An avatar, mark or icon before the name. |
+| `tag?` | `ReactNode` | none | A short uppercase badge after the name: the plan ("Free"), the environment ("Production"). |
+| `tagVariant?` | `Badge` variant | `"outline"` | E.g. `"warning"` for production. |
+| `href?` | `string` | none | Links the name. Ignored when `current`. |
+| `current?` | `boolean` | `false` | The last step: not a link, `aria-current="page"`. |
+| `menu?` | `ReactNode` | none | `DropdownMenuItem`s for the ⇅ switcher beside the name. No `menu`, no switcher. |
+| `menuLabel?` | `string` | "Switch {name}" / "تبديل {name}" | The switcher's accessible name. Set it when `children` is not a string. |
+| `className?` | `string` | none | Classes for the crumb. |
+
+For the sidebar frame, keep using [`Breadcrumb`](../breadcrumb/README.md) and
+[`WorkspaceSwitcher`](../workspace-switcher/README.md); `AppCrumb` is for the header path.
+
+### `AppNav`, `AppNavItem`
+
+Section tabs under the header. Place `AppNav` right after `AppHeader`. From md up it is a row of tabs
+that scrolls sideways when it doesn't fit.
+
+**Below md it becomes a bottom tab bar** within thumb reach, with an icon over a label. The first
+`mobileItems` items sit on the bar, and the rest open from **More** in a bottom `Drawer`. Choosing a
+link closes the drawer. When the current page is in the drawer, More shows as active. The shell pads
+its bottom on phones so the bar never covers the page or the `AppFooter`, and the bar respects the
+safe-area inset.
+
+`AppNav` extends `ComponentProps<"nav">`:
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `mobileItems?` | `number` | `4` | How many items fit on the phone bar. With exactly one more item than this, all of them show and there is no More. |
+| `moreLabel?` | `string` | "More" / "المزيد" | Label and drawer title of the overflow button. |
+| `icons?` | `"always" \| "mobile"` | `"always"` | `mobile` makes the desktop tabs text-only; the phone bar and its drawer keep the icons. |
+| `aria-label?` | `string` | "Sections" / "الأقسام" | Names both the tab row and the bottom bar. |
+
+`AppNavItem` extends `ComponentProps<"a">`:
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `active?` | `boolean` | `false` | `aria-current="page"`, stronger text and a solid underline (never colour alone). |
+| `icon?` | `ReactNode` | none | Leading icon: 16px in the tab row, 20px on the phone bar and in the drawer. **Give every item one**, because the bottom bar relies on it. |
+| `trailing?` | `ReactNode` | none | A count or a `Badge` ("New") after the label. On the phone bar it becomes a dot on the icon; in the drawer it shows in full. |
+
+These are links, not ARIA tabs: each one is a page. For tabs that swap content in place, use `Tabs`.
+
+### `AppPageHeader`
+
+The page's title row. Extends `Omit<ComponentProps<"div">, "title">`.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | `ReactNode` | required | Rendered as the page's `<h1>`. One per page. |
+| `description?` | `ReactNode` | none | A line under the title: the URL, the owner, a count. |
+| `icon?` | `ReactNode` | none | An avatar or mark before the title. |
+| `actions?` | `ReactNode` | none | Controls at the inline end: a time range (`ToggleGroup`), filters, then the one primary action last. Wraps under the title on narrow screens. |
+
+### `AppFooter`, `AppFooterLink`
+
+The quiet last row of a top-navigation app. `AppFooter` is `ComponentProps<"footer">` plus
+`start?: ReactNode` (copyright or status, at the inline start); its children are the links, at the
+inline end. `AppFooterLink` is a styled `<a>`. Don't use it with the sidebar frame: the sidebar
+footer already holds support, docs and status.
+
 ### Hooks and constants
 
 | Export | Signature | Description |
@@ -243,7 +376,7 @@ expanded (always in the mobile sheet). Use it for text-only rows such as a stora
 
 ```tsx
 import {
-  AppShell, DropdownMenuItem, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader,
+  AppShell, DropdownMenuItem, Sidebar, SidebarBrand, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader,
   SidebarItem, SidebarNest, SidebarSubItem, SearchTrigger, UserMenu, WorkspaceSwitcher,
 } from "@fadymondy/nasaq/web";
 import { FolderKanban, Inbox, Settings } from "lucide-react";
@@ -259,6 +392,7 @@ function AppSidebar() {
   return (
     <Sidebar aria-label="Main">
       <SidebarHeader>
+        <SidebarBrand href="/" />
         <WorkspaceSwitcher workspaces={workspaces} value={workspace} onValueChange={setWorkspace} />
         <SearchTrigger />
       </SidebarHeader>
@@ -331,6 +465,85 @@ export const Ar = () => (
 );
 ```
 
+### Inset panel with support, docs and status
+
+```tsx
+<AppShell
+  variant="inset"
+  sidebar={
+    <Sidebar>
+      {/* SidebarHeader, SidebarContent… */}
+      <SidebarFooter>
+        <SidebarItem href="/support" icon={<LifeBuoy />}>Support</SidebarItem>
+        <SidebarItem href="/docs" icon={<BookOpen />}>Documentation</SidebarItem>
+        <SidebarStatus href="https://status.example.com">All systems normal</SidebarStatus>
+        <UserMenu user={user} onSignOut={signOut} />
+      </SidebarFooter>
+    </Sidebar>
+  }
+>
+  <AppHeader>
+    <SidebarTrigger />
+  </AppHeader>
+  <AppMain>{children}</AppMain>
+</AppShell>
+```
+
+### Top navigation: path, tabs, title row, footer
+
+```tsx
+<AppShell>
+  <AppHeader className="gap-3">
+    <a href="/" aria-label="Home"><ProductMark size={22} title="" /></a>
+    <AppBreadcrumbs>
+      <AppCrumb href="/acme" icon={<Avatar name="Acme" size="xs" />} tag="Free"
+        menu={orgs.map((o) => <DropdownMenuItem key={o.id}>{o.name}</DropdownMenuItem>)}>
+        Acme
+      </AppCrumb>
+      <AppCrumb href="/acme/shop" menu={projectItems}>shop</AppCrumb>
+      <AppCrumb current icon={<GitBranch />} tag="Production" tagVariant="warning" menu={branchItems}>
+        main
+      </AppCrumb>
+    </AppBreadcrumbs>
+    <div className="ms-auto flex items-center gap-2">
+      <SearchTrigger className="hidden w-52 lg:flex" />
+      <SearchTrigger variant="icon" className="lg:hidden" />
+      <UserMenu variant="avatar" user={user} onSignOut={signOut} />
+    </div>
+  </AppHeader>
+  <AppNav>
+    {/* Phones: Overview…Logs on the bottom bar, Usage and Settings under More. */}
+    <AppNavItem href="/acme/shop" icon={<LayoutGrid />} active>Overview</AppNavItem>
+    <AppNavItem href="/acme/shop/deployments" icon={<CloudUpload />}>Deployments</AppNavItem>
+    <AppNavItem href="/acme/shop/resources" icon={<Server />}>Resources</AppNavItem>
+    <AppNavItem href="/acme/shop/logs" icon={<ScrollText />} trailing={<Badge variant="accent">New</Badge>}>Logs</AppNavItem>
+    <AppNavItem href="/acme/shop/usage" icon={<ChartColumn />}>Usage</AppNavItem>
+    <AppNavItem href="/acme/shop/settings" icon={<Settings />}>Settings</AppNavItem>
+  </AppNav>
+  <AppMain>
+    <div className="mx-auto flex max-w-5xl flex-col gap-6">
+      <AppPageHeader
+        title="shop"
+        description={<bdi dir="ltr">shop.example.com</bdi>}
+        actions={
+          <>
+            <ToggleGroup value={range} onValueChange={setRange} aria-label="Range">…</ToggleGroup>
+            <Button variant="primary" size="sm">Deploy</Button>
+          </>
+        }
+      />
+      {children}
+    </div>
+  </AppMain>
+  <AppFooter start="© 2026 Acme">
+    <AppFooterLink href="/status">Status</AppFooterLink>
+    <AppFooterLink href="/docs">Docs</AppFooterLink>
+  </AppFooter>
+</AppShell>
+```
+
+An empty page in either frame: one `EmptyState` with an icon, one sentence and one button.
+
 ## Accessibility
 
 | Key | Action |
@@ -346,6 +559,9 @@ export const Ar = () => (
 - `SidebarItem` sets `aria-current="page"` when `active`. The gold rule is decorative; the state is also carried by weight and the attribute.
 - On the rail each item gets `aria-label` from `tooltip`, its string children, or the `aria-label` prop, plus a tooltip on hover/focus. A collapsed `SidebarGroup` is `role="group"` named by its `label` when that is a string (the label row is hidden on the rail).
 - The resize handle is `role="separator"` with `aria-orientation="vertical"`, `aria-valuemin/max/now` (`now` is the current width, the stored one while collapsed) and a label. On the rail the handle is `aria-hidden` and not focusable.
+- Top navigation: `AppBreadcrumbs` and `AppNav` are separate named `<nav>` landmarks ("Breadcrumb", "Sections"); the current crumb and tab carry `aria-current="page"`. Each ⇅ switcher is a menu button named "Switch {name}". `AppFooter` is the `contentinfo` landmark.
+- Only one of the tab row and the phone bar is rendered visibly at a time, so there is only ever one "Sections" landmark. More is a dialog trigger. The drawer has a "More" title, traps focus and closes with Esc, a swipe down or a tap on a link.
+- `SidebarStatus` on the rail keeps its words as the accessible name and tooltip; its dot is `aria-hidden`.
 - **Localise:** `resizeLabel`, `SidebarTrigger.label`, group labels, item text and `tooltip`. Built in and localised by provider locale: the sheet's screen-reader title ("Navigation" / "التنقل"), the `Sidebar` label, and the trigger label and tooltip. Blocked `localStorage` is tolerated: the state simply is not remembered.
 
 ## RTL & i18n
@@ -353,6 +569,7 @@ export const Ar = () => (
 - The sidebar sits at the inline start, so it is on the right in RTL. Borders, resize handle, active rule, nest indent and chevrons all use logical properties and mirror.
 - The chevrons and panel icon are `directional` icons; the mobile sheet slides in from the correct side.
 - The resize drag and keyboard arrows read the computed direction, so dragging toward the page always grows the sidebar.
+- In top navigation the path reads from the inline start (organisation on the right in Arabic), the tab row scrolls from the start, the phone bar runs right to left with More at the far left, and footer links sit at the inline end.
 - Trailing counts use `tabular-nums`; wrap Latin numerals or keys inside Arabic text in `<bdi dir="ltr">`.
 
 ## Styling & tokens
@@ -383,12 +600,15 @@ Menus and the mobile sheet render in portals and follow the document, so set den
 
 ## Do / Don't
 
-- **Do** put `SidebarTrigger` first in `AppHeader`, and the workspace switcher first in `SidebarHeader`.
+- **Do** put `SidebarTrigger` first in `AppHeader`, and `SidebarBrand` first in `SidebarHeader`, then the workspace switcher.
 - **Do** keep the active marker as the gold accent rule plus weight (colour is never the only cue).
 - **Do** use whitespace and headings to group; the shell is flat by default (see `docs/foundations/LAYOUT.md`).
 - **Don't** wrap page content in a card just to fill space.
 - **Don't** add a second `AppShell` or `CommandProvider`; nested providers reuse the outer registry.
-- **Don't** hard-code colours, and don't move settings/help into the footer next to the user menu; they live in the menu.
+- **Do** pick one frame per app: a sidebar for many sections, top navigation for a few sections under one resource.
+- **Do** end `AppPageHeader` actions with the single primary action.
+- **Don't** hard-code colours, and don't move settings into the sidebar footer; they live in the user menu. Support, docs and `SidebarStatus` may sit above it.
+- **Don't** render `SidebarTrigger` or `AppFooter` in the wrong frame: no trigger without a sidebar, no footer with one.
 
 ## Related
 
@@ -399,4 +619,6 @@ Menus and the mobile sheet render in portals and follow the document, so set den
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-app-app-shell--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-pages-app-shell--docs
+
+Frames: `Inset` (rounded panel, support/docs/status footer), `Text-only on desktop` and its mobile sheet, `Top navigation`, `Top navigation, empty page`, `Top navigation, mobile` and `Top navigation, text-only tabs`.

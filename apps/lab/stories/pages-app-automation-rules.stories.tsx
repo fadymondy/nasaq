@@ -5,7 +5,7 @@ import { useState } from "react";
 import { demoRule, ruleActions, ruleEvents, ruleFields, useAr, wait } from "./_automation-demo";
 import { FlowPage } from "./_workflow-demo";
 
-const meta = { title: "Pages/App/Automation Rules", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Workflow/Pages/Automation Rules", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

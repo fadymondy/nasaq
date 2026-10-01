@@ -2,7 +2,7 @@ import { FeatureFlagList } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FlagsDemo, flagEnvironments, featureFlags, useAr } from "./_moharrik-demo";
 
-const meta = { title: "Components/Developer/Feature Flags", component: FeatureFlagList, parameters: { layout: "padded" } } satisfies Meta<typeof FeatureFlagList>;
+const meta = { title: "Components/Developer Tools/Feature Flags", component: FeatureFlagList, parameters: { layout: "padded" } } satisfies Meta<typeof FeatureFlagList>;
 export default meta;
 type Story = StoryObj;
 

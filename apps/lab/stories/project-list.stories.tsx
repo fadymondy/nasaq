@@ -2,7 +2,7 @@ import { ProjectList } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { makeProjects } from "./_crm-demo";
 
-const meta = { title: "Components/Workflow/Project List", component: ProjectList, parameters: { layout: "padded" } } satisfies Meta<typeof ProjectList>;
+const meta = { title: "Components/Projects & Work/Project List", component: ProjectList, parameters: { layout: "padded" } } satisfies Meta<typeof ProjectList>;
 export default meta;
 type Story = StoryObj;
 

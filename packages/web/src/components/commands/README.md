@@ -1,12 +1,12 @@
 ---
 name: commands
 title: CommandProvider
-category: utilities
+category: keyboard
 status: stable
 summary: The command registry behind the palette - components register commands and async sources while mounted; Nasaq ranks, renders and binds shortcuts.
 exports: [CommandProvider, CommandRegistry, useCommandRegistry, useRegisteredCommands, useRegisterCommands, useRegisterCommandSource, useCommandPaletteOpen, parseShortcut, RegistrySnapshot, Command, CommandSource, CommandSection, COMMAND_SECTIONS, DEFAULT_SECTION_LABELS, normalizeForSearch, scoreCommand, sectionOrder]
 related: [command-palette, app-shell, product-switcher]
-story: components-utilities-commands
+story: components-keyboard-commands-commands
 base-ui: []
 keywords: [commands, registry, shortcuts, hotkeys, palette, actions, search, provider, plugin]
 ---
@@ -306,4 +306,4 @@ None: the registry renders nothing. Presentation belongs to [`CommandPalette`](.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-utilities-commands--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-keyboard-commands-commands--docs

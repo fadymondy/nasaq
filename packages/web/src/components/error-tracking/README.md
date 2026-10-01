@@ -1,12 +1,12 @@
 ---
 name: error-tracking
 title: Error tracking
-category: developer
+category: monitoring
 status: beta
 summary: A list of captured errors with a frequency sparkline, and a detail view with stack trace, breadcrumbs, tags, captured screenshot, console and network, plus resolve and ignore.
 exports: [ErrorTracking, BreadcrumbType, ErrorIssueDetail, DiagnosticsViewer, ErrorIssue, ErrorFrame, ErrorBreadcrumb, ErrorDiagnostics, CapturedConsoleEntry, CapturedRequest, ErrorActionResult, ErrorTrackingLabels, ErrorTrackingProps, ErrorIssueDetailProps, DiagnosticsViewerProps]
 related: [entity-list, sparkline, code-block, status, tabs]
-story: components-developer-error-tracking
+story: components-monitoring-error-tracking
 base-ui: []
 keywords: [errors, exceptions, sentry, stack trace, breadcrumbs, diagnostics, console, network, resolve, ignore, issues]
 ---
@@ -121,4 +121,4 @@ Other `EntityList` props (`toolbar`, `empty`, `density`) pass through.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-error-tracking--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-error-tracking--docs

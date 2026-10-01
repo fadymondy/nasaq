@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { RoutingDemo } from "./_usage-demo";
 
-const meta = { title: "Components/AI/Model Routing Editor", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/AI Agents/Model Routing Editor", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -4,7 +4,7 @@ import { FileText } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useDemoCommands, useDemoIssueSource } from "./_demo";
 
-const meta = { title: "Components/Overlays/Command Palette", component: CommandPalette } satisfies Meta<typeof CommandPalette>;
+const meta = { title: "Components/Keyboard & Commands/Command Palette", component: CommandPalette } satisfies Meta<typeof CommandPalette>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

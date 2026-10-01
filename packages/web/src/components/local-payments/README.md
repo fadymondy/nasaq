@@ -1,12 +1,12 @@
 ---
 name: local-payments
 title: Local Payments
-category: commerce
+category: billing
 status: beta
 summary: Manual payment methods such as InstaPay, mobile wallets and bank transfer with copy-ready details, a receipt upload and a verification state.
 exports: [LocalPaymentsLabels, LocalPaymentKind, LocalPaymentDetail, LocalPaymentMethod, LocalPaymentSubmission, PaymentVerificationStatusProps, PaymentVerificationStatus, LocalPaymentInput, LocalPaymentsProps, LocalPayments, PaymentSubmission, PaymentVerificationQueueProps, PaymentVerificationQueue, isFinalVerification]
 related: [checkout-steps, wallet, file-upload, qr-code, price]
-story: components-commerce-local-payments
+story: components-billing-local-payments
 base-ui: [dialog, radio-group]
 keywords: [payment, instapay, vodafone cash, bank transfer, receipt, verification, manual, egypt]
 ---

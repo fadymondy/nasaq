@@ -1,12 +1,12 @@
 ---
 name: keyword-planner
 title: KeywordPlanner
-category: analytics
+category: seo
 status: beta
 summary: "A keyword planning table with search intent, cluster, owning URL and cannibalization: which of your pages compete for the same keyword and which one to keep."
 exports: [KeywordPlannerLabels, PlannerKeyword, KeywordPlannerProps, KeywordPlanner, classifyIntent, clusterKeywords, findCannibalization, keywordTokens, normalizeUrl]
 related: [keyword-tracker, seo-pages, data-table]
-story: components-analytics-keyword-planner
+story: components-seo-keyword-planner
 base-ui: [tabs]
 keywords: [keyword planner, intent, cluster, cannibalization, content plan, seo]
 ---
@@ -124,4 +124,4 @@ Intent badges use the status tokens (info, warning, success, neutral). Logical s
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-keyword-planner--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-keyword-planner--docs

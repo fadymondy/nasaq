@@ -1,12 +1,12 @@
 ---
 name: line-item-editor
 title: Line Item Editor
-category: commerce
+category: billing
 status: beta
 summary: Editable invoice or quote lines with a product picker that fills name, price and tax, free lines, quantity, discount and exact integer totals.
 exports: [LineItemActionsMenu, LineItemDecimalField, LineItemMoney, LineItemActionsMenuProps, LineItemDecimalFieldProps, LineItemMoneyProps, allocateMinor, bpsToPercentText, computeLineItems, lineGross, mulDivRound, quantityMilli, quantityText, taxInside, taxOn, LineItemMathInput, LineItemMathOptions, LineItemResult, LineItemTotals, LineOrderDiscount, LineTaxGroup, LineTaxMode, LineTaxRounding, LineItemEditorLabels, useLineItemEditorStrings, LineItemEditorProduct, LineItemEditorLine, LineItemEditorProps, LineItemEditor]
 related: [currency-input, price, invoice-view, data-table, pos-register]
-story: components-commerce-line-item-editor
+story: components-billing-line-item-editor
 base-ui: [combobox, select]
 keywords: [invoice, quote, line items, basket, tax, discount, totals, product picker, minor units]
 ---
@@ -113,4 +113,4 @@ Semantic tokens only. It uses container queries: a table at wide widths and stac
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-line-item-editor--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-billing-line-item-editor--docs

@@ -1,12 +1,12 @@
 ---
 name: engine-card
 title: Engine Card
-category: health
+category: wellness
 status: beta
 summary: One Health Debug protocol engine's live state as a card, with a state badge, the engine's readout and its log action. Seven engines, one component.
 exports: [EngineCard, EngineCardGrid, EngineCardProps, EngineCardLabels, ENGINE_ICONS]
 related: [engine-details, daily-summary, meter, status, stat-card]
-story: components-health-engine-card
+story: components-wellness-engine-card
 base-ui: []
 keywords: [health, protocol, engine, hydration, caffeine, gerd, medication, triggers, cycle, contraceptive, state, countdown]
 ---

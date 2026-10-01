@@ -1,12 +1,12 @@
 ---
 name: api-reference
 title: API reference
-category: developer
+category: developer-tools
 status: beta
 summary: A reference page for API endpoints or MCP tools with scope, minimum role, an arguments table, an example call and result, and a card catalog of all tools.
 exports: [ApiReference, ApiToolDetail, ApiToolCatalog, ApiTool, ApiArg, ApiExample, ApiReferenceLabels, ApiReferenceProps, ApiToolDetailProps, ApiToolCatalogProps]
 related: [code-block, table, badge, chip-group]
-story: components-developer-api-reference
+story: components-developer-tools-api-reference
 base-ui: []
 keywords: [api, mcp, tool, reference, docs, scope, role, arguments, example, catalog, endpoint]
 ---
@@ -108,4 +108,4 @@ ApiToolCatalog              card grid of tools
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-api-reference--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-api-reference--docs

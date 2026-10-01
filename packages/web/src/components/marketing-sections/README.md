@@ -1,12 +1,12 @@
 ---
 name: marketing-sections
 title: Marketing sections
-category: brand
+category: website
 status: beta
 summary: Building blocks for a product page. How it works steps, a feature grid, a closing call to action banner, credit packs, aurora and grid backgrounds, a hero with an app mockup and a scripted AI session that plays back. They sit beside the existing feature story, plan cards and testimonials.
 exports: [AuroraBackgroundProps, AuroraBackground, GridBackgroundProps, GridBackground, HowItWorksStep, HowItWorksProps, HowItWorks, FeatureGridItem, FeatureGridProps, FeatureGrid, CtaBannerProps, CtaBanner, PricingPack, PricingPacksLabels, PricingPacksProps, PricingPacks, AppMockupHeroProps, AppMockupHero, SessionPlaybackLabels, SessionPlaybackProps, SessionPlayback]
 related: [feature-story, plan-card, testimonials, screenshot-frame, text-effects, subscription-landing]
-story: components-brand-marketing-sections
+story: components-website-marketing-sections
 keywords: [landing page, marketing, how it works, steps, feature grid, call to action, cta, pricing, credit packs, aurora, hero, mockup, ai session, playback, demo]
 ---
 
@@ -208,4 +208,4 @@ Backdrops use `--nq-brand`, the tag colours and `--nq-line`. Panels use `bg-nq-s
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-brand-marketing-sections--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-website-marketing-sections--docs

@@ -1,12 +1,12 @@
 ---
 name: access-grants
 title: AccessGrants
-category: account
+category: security
 status: beta
 summary: Who and what can act for you. Authorized apps and agents per workspace with their scopes and revoke, delegated agent keys, and a matrix of agents by resource with no access, read or read and write.
 exports: [AccessGrants, AccessGrantsProps, AccessGrantsLabels, ConnectedApp, AccessResource, ACCESS_LEVELS, grantCounts, levelOf, setLevel]
 related: [api-keys, connected-accounts, oauth-consent, integration-connector]
-story: components-account-access-grants
+story: components-security-access-grants
 base-ui: [select, alert-dialog]
 keywords: [authorized apps, agents, mcp, oauth, scopes, revoke, grants, permissions, read, write, delegated keys]
 ---
@@ -96,4 +96,4 @@ Built on `SettingsSection`, `ApiKeys`, `Select` and `Badge`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-access-grants--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-security-access-grants--docs

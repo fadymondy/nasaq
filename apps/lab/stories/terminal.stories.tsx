@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { bold, buildOutput, cyan, dim, fakeShell, green, red, useAr, useStreamingOutput, yellow } from "./_developer-demo";
 
-const meta = { title: "Components/Developer/Terminal", component: Terminal, parameters: { layout: "padded" } } satisfies Meta<typeof Terminal>;
+const meta = { title: "Components/Developer Tools/Terminal", component: Terminal, parameters: { layout: "padded" } } satisfies Meta<typeof Terminal>;
 export default meta;
 type Story = StoryObj;
 

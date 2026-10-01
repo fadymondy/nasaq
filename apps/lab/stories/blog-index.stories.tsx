@@ -2,7 +2,7 @@ import { BlogIndex } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { demoPosts, useAr5 } from "./_x5-demo";
 
-const meta = { title: "Components/Layout/Blog Index", component: BlogIndex, parameters: { layout: "fullscreen" } } satisfies Meta<typeof BlogIndex>;
+const meta = { title: "Components/Website/Blog Index", component: BlogIndex, parameters: { layout: "fullscreen" } } satisfies Meta<typeof BlogIndex>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

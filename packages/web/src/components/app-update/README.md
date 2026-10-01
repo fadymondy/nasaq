@@ -1,12 +1,12 @@
 ---
 name: app-update
 title: AppUpdate
-category: feedback
+category: alerts
 status: beta
 summary: An update pill with download progress, an update sheet with release notes and speed, a forced-update gate for unsupported builds, and an admin release manager with the minimum supported build.
 exports: [AppUpdateLabels, UpdatePillProps, UpdatePill, UpdateSheetProps, UpdateSheet, ForcedUpdateGateProps, ForcedUpdateGate, ReleaseStatus, ManagedRelease, ReleaseManagerProps, ReleaseManager]
 related: [progress, sheet, alert, install-prompt]
-story: components-feedback-app-update
+story: components-alerts-notifications-app-update
 base-ui: [dialog, progress]
 keywords: [update, auto update, electron, release notes, download progress, forced update, minimum version, release manager, rollout, restart]
 ---

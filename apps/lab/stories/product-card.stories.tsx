@@ -16,7 +16,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CalendarCheck, CreditCard, ReceiptText, Users } from "lucide-react";
 
 const meta = {
-  title: "Components/Commerce/Product Card",
+  title: "Components/Storefront/Product Card",
   component: ProductCard,
   args: {
     artwork: <ProductArtwork brand="zekra" />,

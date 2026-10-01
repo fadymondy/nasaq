@@ -3,7 +3,7 @@ import { CurrentVisit } from "@nasaq/web";
 import { useState } from "react";
 import { useVisitPatient, wait } from "./_seatfor-demo";
 
-const meta = { title: "Components/Health/Current Visit", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Healthcare/Current Visit", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

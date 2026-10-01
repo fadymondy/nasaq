@@ -1,12 +1,12 @@
 ---
 name: vitals
 title: Vitals
-category: health
+category: wellness
 status: beta
 summary: Body readings from a scale or wearable with BMI and its category, plus progress towards the targets the person set.
 exports: [Vitals, VitalsProps, VitalsData, VitalsLabels, VitalTargetKey]
 related: [daily-summary, health-reports, stat-card, meter]
-story: components-health-vitals
+story: components-wellness-vitals
 base-ui: []
 keywords: [health, vitals, weight, bmi, body water, visceral fat, muscle, metabolic age, heart rate, targets]
 ---

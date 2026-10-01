@@ -1,12 +1,12 @@
 ---
 name: admin-area
 title: AdminArea
-category: layout
+category: admin
 status: beta
 summary: The admin frame. An icon rail plus sub-sidebar with ready-made admin navigation, an environment tag, an account button and an impersonation banner, plus AdminPage for the screen body.
 exports: [AdminArea, AdminPage, defaultAdminSections, AdminAreaProps, AdminAreaLabels, AdminUser, AdminPageProps, AdminBreadcrumb]
 related: [icon-rail-sidebar, admin-users, admin-tenants, app-shell]
-story: components-layout-admin-area
+story: components-admin-admin-area
 base-ui: []
 keywords: [admin, back office, layout, rail, navigation, impersonation, breadcrumb, page]
 ---
@@ -109,4 +109,4 @@ Uses `bg-nq-warning-soft`, `text-nq-warning-text`, `text-h1`. Extend with `class
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-admin-area--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-admin-admin-area--docs

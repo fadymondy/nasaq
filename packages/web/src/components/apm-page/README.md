@@ -1,12 +1,12 @@
 ---
 name: apm-page
 title: ApmPage
-category: analytics
+category: monitoring
 status: beta
 summary: An application performance page - latency percentiles, throughput, error rate with an SLO, slow endpoints and traces with a span waterfall.
 exports: [ApmPage, ApmPageProps, ApmData, ApmPageLabels, ApmTotal]
 related: [apm-panels, metric-tiles, time-series-panel, analytics-connect, log-viewer]
-story: pages-analytics-apm
+story: components-monitoring-pages-apm
 base-ui: []
 keywords: [apm, performance, latency, p95, throughput, error rate, traces, slow endpoints]
 ---
@@ -131,4 +131,4 @@ The page has one `h1`; tabs follow the WAI-ARIA tabs pattern (arrow keys move, t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-analytics-apm--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-pages-apm--docs

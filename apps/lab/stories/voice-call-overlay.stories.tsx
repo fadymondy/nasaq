@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { useSimulatedCall } from "./_t2-demo";
 
-const meta = { title: "Components/AI/Voice Call Overlay", component: VoiceCallOverlay, parameters: { layout: "fullscreen" } } satisfies Meta<typeof VoiceCallOverlay>;
+const meta = { title: "Components/AI Assistant/Voice Call Overlay", component: VoiceCallOverlay, parameters: { layout: "fullscreen" } } satisfies Meta<typeof VoiceCallOverlay>;
 export default meta;
 type Story = StoryObj;
 

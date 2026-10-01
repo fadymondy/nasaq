@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { KillSwitch, PausedBanner } from "@nasaq/web";
 import { useAr, useKillSwitchState } from "./_workflow-p2-demo";
 
-const meta = { title: "Pages/Admin/Automation Safety", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Workflow/Pages/Automation Safety", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

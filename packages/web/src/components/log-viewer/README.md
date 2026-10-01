@@ -1,12 +1,12 @@
 ---
 name: log-viewer
 title: LogViewer
-category: developer
+category: monitoring
 status: stable
 summary: Virtualised log stream with level filters and counts, timestamps, search with highlights and regex, follow tail, detail panel, copy and download.
 exports: [LogViewerLabels, LogViewerProps, LogViewer, compileMatcher, countByLevel, entryText, filterLogs, formatLogTime, LOG_LEVELS, LogEntry, LogLevel, LogTimeOptions, logsToText, normalizeLevel, virtualWindow]
 related: [terminal, deploy-view, data-table]
-story: components-developer-log-viewer
+story: components-monitoring-log-viewer
 base-ui: []
 keywords: [logs, log, viewer, level, filter, search, timestamp, tail, follow, virtualised, stream, debug, error]
 ---
@@ -141,4 +141,4 @@ const entries = raw.map((l, i) => ({ id: i, time: l.ts, level: normalizeLevel(l.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-log-viewer--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-log-viewer--docs

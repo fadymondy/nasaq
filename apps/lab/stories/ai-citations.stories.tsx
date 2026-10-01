@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CitationPartsDemo, CitationsDemo } from "./_t1-demo";
 
-const meta = { title: "Components/AI/AI Citations and Provenance" } satisfies Meta;
+const meta = { title: "Components/AI Assistant/AI Citations and Provenance" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

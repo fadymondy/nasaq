@@ -1,12 +1,12 @@
 ---
 name: finops-cost
 title: FinOps Cost
-category: analytics
+category: server-tools
 status: beta
 summary: A cost page for servers with KPI tiles against last month, a budget meter, per-server price and CPU, memory and disk use with rightsizing hints, cost by category, and manual line items you can add and remove.
 exports: [FinopsCostLabels, FinopsCostResult, CostServer, CostItem, CostItemInput, FinopsCostProps, FinopsCost, budgetState, finopsTotals, monthlyEquivalent, parseAmount, rightsize, roundMoney, validateLineItem]
 related: [metric-tiles, breakdown-table, time-series-panel, usage-meter, data-table, ai-usage-cost]
-story: components-analytics-finops-cost
+story: components-server-tools-finops-cost
 base-ui: [alert-dialog, dialog, meter, select]
 keywords: [finops, cost, billing, budget, rightsizing, servers, savings, infrastructure]
 ---

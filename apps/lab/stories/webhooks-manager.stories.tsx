@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { WebhooksDemo } from "./_infra-admin-demo";
 
-const meta = { title: "Components/Developer/Webhooks Manager" } satisfies Meta;
+const meta = { title: "Components/Developer Tools/Webhooks Manager" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

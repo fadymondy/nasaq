@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { TRASH_NOW, TRASH_TYPES, t, trashItems, useAr, W2Page, wait } from "./_w2-demo";
 
-const meta = { title: "Pages/App/Trash", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Files/Pages/Trash", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

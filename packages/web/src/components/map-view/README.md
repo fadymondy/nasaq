@@ -1,12 +1,12 @@
 ---
 name: map-view
 title: MapView
-category: data-display
+category: charts
 status: stable
 summary: A map of pins and routes without a map library, with layer toggles, a legend, zoom and pan by drag, wheel, buttons or keyboard, a location card and pin clustering; tiles come from a URL template you provide, and without one it draws a coordinate grid.
 exports: [MapView, MapViewLabels, MapTone, MapPin, MapRoute, MapLayer, MapClusterInfo, MapViewProps]
 related: [geo-list, entity-list, context-menu, copy-button]
-story: components-data-display-map-view
+story: components-charts-maps-map-view
 keywords: [map, pins, cluster, clustering, routes, fleet, location, tiles, layers, legend, gps, geo]
 ---
 
@@ -154,4 +154,4 @@ Bubbles use the brand action colour with a card-colour border and a soft ring. S
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-map-view--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-maps-map-view--docs

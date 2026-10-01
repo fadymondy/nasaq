@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { CURRENCY, editorProducts, useAr, VAT_BPS } from "./_v1-demo";
 
-const meta = { title: "Components/Commerce/Line Item Editor", component: LineItemEditor, parameters: { layout: "padded" } } satisfies Meta<typeof LineItemEditor>;
+const meta = { title: "Components/Billing/Line Item Editor", component: LineItemEditor, parameters: { layout: "padded" } } satisfies Meta<typeof LineItemEditor>;
 export default meta;
 type Story = StoryObj;
 

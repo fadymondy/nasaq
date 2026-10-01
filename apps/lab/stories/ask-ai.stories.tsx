@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AskAiDemo, InsightDemo } from "./_t1-demo";
 
-const meta = { title: "Components/AI/Ask AI and Insight Card" } satisfies Meta;
+const meta = { title: "Components/AI Assistant/Ask AI and Insight Card" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

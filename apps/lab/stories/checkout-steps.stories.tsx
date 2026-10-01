@@ -4,7 +4,7 @@ import { useState } from "react";
 import { checkoutPlans } from "./_billing-demo";
 import { useAr, wait } from "./_profile-demo";
 
-const meta = { title: "Components/Commerce/CheckoutSteps", component: CheckoutSteps, parameters: { layout: "padded" } } satisfies Meta<typeof CheckoutSteps>;
+const meta = { title: "Components/Storefront/CheckoutSteps", component: CheckoutSteps, parameters: { layout: "padded" } } satisfies Meta<typeof CheckoutSteps>;
 export default meta;
 type Story = StoryObj;
 

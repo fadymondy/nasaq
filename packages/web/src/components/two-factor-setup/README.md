@@ -1,12 +1,12 @@
 ---
 name: two-factor-setup
 title: TwoFactorSetup
-category: account
+category: security
 status: beta
 summary: Presentational TOTP two-factor flow in three steps (scan the QR code or type the key, confirm a 6-digit code, save recovery codes) plus the enabled state with regenerate and disable, driven by async callbacks.
 exports: [TwoFactorSetup, TwoFactorSetupProps, TwoFactorLabels, TwoFactorResult, groupSecret, normalizeSecret, parseOtpAuthUri, recoveryCodesText, OtpAuthInfo]
 related: [otp-input, copy-button, alert-dialog, password-input, passkey-list, change-password-form]
-story: components-account-two-factor-setup
+story: components-security-two-factor-setup
 base-ui: [alert-dialog, checkbox, field, input]
 keywords: [2fa, two-factor, totp, authenticator, qr, otpauth, recovery codes, security, mfa]
 ---
@@ -168,4 +168,4 @@ export function Enabled() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-two-factor-setup--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-security-two-factor-setup--docs

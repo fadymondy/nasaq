@@ -6,7 +6,7 @@ import { Alert, Card, CardContent, Num, WsStatus } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { GithubActivityDemo, samplePulls, sampleRuns, useAr, useFakeSocket } from "./_ops-demo";
 
-const meta = { title: "Pages/Developer/GitHub Activity", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Developer Tools/Pages/GitHub Activity", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

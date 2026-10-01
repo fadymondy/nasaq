@@ -1,12 +1,12 @@
 ---
 name: toast
 title: Toaster
-category: feedback
+category: alerts
 status: stable
 summary: Transient notifications. A themed, RTL-aware Sonner Toaster plus the re-exported toast() function.
 exports: [Toaster, toast]
 related: [dialog, notification-item, status, button]
-story: components-feedback-toast
+story: components-alerts-notifications-toast
 base-ui: []
 keywords: [toast, notification, snackbar, feedback, sonner, undo]
 ---
@@ -191,4 +191,4 @@ Sonner renders a labelled `<section aria-live="polite">` region; each toast is a
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-feedback-toast--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-toast--docs

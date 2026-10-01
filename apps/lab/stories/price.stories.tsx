@@ -1,7 +1,7 @@
 import { Price } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-const meta = { title: "Components/Commerce/Price", component: Price, args: { amount: 12, period: "seat-month" } } satisfies Meta<typeof Price>;
+const meta = { title: "Components/Pricing/Price", component: Price, args: { amount: 12, period: "seat-month" } } satisfies Meta<typeof Price>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

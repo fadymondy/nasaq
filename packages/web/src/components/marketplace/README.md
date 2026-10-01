@@ -1,12 +1,12 @@
 ---
 name: marketplace
 title: Marketplace
-category: commerce
+category: store
 status: beta
 summary: A store with a featured strip, categories and search, a detail page with install header, tabs, sidebar and permissions, a publish form and a template gallery, built on the catalog store.
 exports: [Marketplace, MarketplaceDetail, PublishForm, TemplateGallery, PermissionList, MarketplaceListing, MarketplaceTemplate, MarketplacePermission, MarketplaceRelease, MarketplaceReview, MarketplaceResult, MarketplaceLabels, MarketplaceProps, MarketplaceDetailProps, PublishFormProps, TemplateGalleryProps, PermissionListProps, ScreenshotPlaceholder]
 related: [catalog-store, workflow-marketplace, install-button, rating, price]
-story: components-commerce-marketplace
+story: components-storefront-marketplace
 base-ui: []
 keywords: [marketplace, store, extensions, plugins, detail, install, permissions, publish, submit, templates, gallery, featured]
 ---
@@ -107,4 +107,4 @@ Marketplace                 data-slot="marketplace"
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-marketplace--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-marketplace--docs

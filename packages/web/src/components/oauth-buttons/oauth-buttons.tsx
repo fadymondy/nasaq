@@ -3,6 +3,7 @@
 import { type ComponentProps, type ReactNode, useState } from "react";
 import { cn } from "../../lib/cn";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { badgeVariants } from "../badge";
 import { Button } from "../button";
 import { AppleLogo, GitHubLogo, GoogleLogo, MicrosoftLogo } from "./oauth-logos";
 
@@ -26,6 +27,8 @@ export interface OAuthButtonsLabels {
   /** Accessible name of the group. Default "Sign in with a provider". */
   group: string;
   divider: string;
+  /** Badge on the provider passed as `lastUsed`. Default "Last used". */
+  lastUsed: string;
 }
 
 const STRINGS: Record<"en" | "ar", OAuthButtonsLabels> = {
@@ -35,6 +38,7 @@ const STRINGS: Record<"en" | "ar", OAuthButtonsLabels> = {
     continue: "Continue with {provider}",
     group: "Sign in with a provider",
     divider: "or",
+    lastUsed: "Last used",
   },
   ar: {
     signin: "تسجيل الدخول باستخدام {provider}",
@@ -42,6 +46,7 @@ const STRINGS: Record<"en" | "ar", OAuthButtonsLabels> = {
     continue: "المتابعة باستخدام {provider}",
     group: "تسجيل الدخول عبر مزوّد",
     divider: "أو",
+    lastUsed: "آخر استخدام",
   },
 };
 
@@ -60,6 +65,11 @@ export interface OAuthButtonsProps extends Omit<ComponentProps<"div">, "onSelect
   /** Keep this provider in the loading state from outside, for redirect flows. */
   pendingProvider?: string | null;
   disabled?: boolean;
+  /**
+   * The provider this person signed in with last time. It gets a "Last used" badge, which stops people creating a
+   * second account with another provider. Read it from your own cookie or session; the component stores nothing.
+   */
+  lastUsed?: string | null;
   labels?: Partial<OAuthButtonsLabels>;
 }
 
@@ -80,6 +90,7 @@ export function OAuthButtons({
   intent = "continue",
   pendingProvider,
   disabled,
+  lastUsed,
   labels: labelsProp,
   className,
   ...props
@@ -153,7 +164,7 @@ export function OAuthButtons({
             disabled={disabled || (active !== null && !loading)}
             onClick={() => select(id)}
             className={cn(
-              !iconOnly && "w-full min-w-0 justify-center gap-3",
+              !iconOnly && "relative w-full min-w-0 justify-center gap-3",
               apple && (dark ? "border-white bg-white text-black hover:bg-white/90" : "border-black bg-black text-white hover:bg-black/90"),
               !custom && !loading && "[&_svg]:size-auto",
             )}
@@ -168,10 +179,26 @@ export function OAuthButtons({
                 {after}
               </span>
             )}
+            {lastUsed === id && !iconOnly ? <LastUsed>{labels.lastUsed}</LastUsed> : null}
           </Button>
         );
       })}
     </div>
+  );
+}
+
+/** A neutral badge at the inline end of the sign-in method used last time. The parent needs `relative`. */
+export function LastUsed({ className, ...props }: ComponentProps<"span">) {
+  return (
+    <span
+      data-slot="last-used"
+      className={cn(
+        badgeVariants({ variant: "neutral" }),
+        "pointer-events-none absolute end-2 top-1/2 -translate-y-1/2",
+        className,
+      )}
+      {...props}
+    />
   );
 }
 

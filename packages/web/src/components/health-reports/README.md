@@ -1,12 +1,12 @@
 ---
 name: health-reports
 title: Health Reports
-category: health
+category: wellness
 status: beta
 summary: Health reports over a period with averages that skip missing days, a one-figure trend chart, meals and caffeine per day, and each engine's days on and off protocol.
 exports: [HealthReport, HealthReportProps, HealthReportLabels, EngineReport]
 related: [daily-summary, engine-details, chart, stat-card]
-story: components-health-health-reports
+story: components-wellness-health-reports
 base-ui: [toggle-group]
 keywords: [health, reports, averages, trend, chart, adherence, streak, export, csv]
 ---

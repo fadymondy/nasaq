@@ -2,7 +2,7 @@ import { FunnelSteps, ProgressRing, SegmentBar, TrendCell, type DataTableColumn,
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { channelSegments, funnelSteps, trendRows, useAr } from "./_s-demo";
 
-const meta = { title: "Components/Charts/Extra Charts", component: SegmentBar, parameters: { layout: "padded" } } satisfies Meta<typeof SegmentBar>;
+const meta = { title: "Components/Charts & Maps/Extra Charts", component: SegmentBar, parameters: { layout: "padded" } } satisfies Meta<typeof SegmentBar>;
 export default meta;
 type Story = StoryObj;
 

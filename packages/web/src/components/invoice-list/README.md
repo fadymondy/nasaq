@@ -1,12 +1,12 @@
 ---
 name: invoice-list
 title: InvoiceList
-category: commerce
+category: billing
 status: beta
 summary: Invoices and payments tables with summary tiles, status filters, search, pagination and per-row download.
 exports: [InvoiceListLabels, InvoiceSummary, PaymentStatus, PaymentRecord, summarizeInvoices, InvoiceListProps, InvoiceList]
 related: [invoice-view, data-table, price, wallet]
-story: components-commerce-invoicelist
+story: components-billing-invoicelist
 base-ui: [tabs]
 keywords: [invoices, payments, billing, history, table, download, status, filter]
 ---
@@ -155,4 +155,4 @@ Composes `DataTable`, `StatCard` and `Tabs`, so it uses their tokens. Target `[d
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-invoicelist--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-billing-invoicelist--docs

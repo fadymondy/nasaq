@@ -1,12 +1,12 @@
 ---
 name: product-reviews
 title: ProductReviews
-category: commerce
+category: store
 status: beta
 summary: "Customer reviews for a product: rating summary with a histogram that filters, sort and filter chips, photo strip, helpful votes, seller replies, report, and a write-review form. Includes ProductQA for questions and answers."
 exports: [ProductReviews, ProductReviewsProps, ProductReviewReportReason]
 related: [product-detail, rating, dialog, select, context-menu]
-story: components-commerce-product-reviews
+story: components-storefront-product-reviews
 base-ui: [radio, radio-group, dialog, select, context-menu]
 keywords: [reviews, ratings, histogram, helpful, verified purchase, photos, seller reply, report, questions, answers, q&a, store]
 ---
@@ -133,4 +133,4 @@ Set the provider locale to `ar`. Strings, digits, dates and the layout follow.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-product-reviews--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-product-reviews--docs

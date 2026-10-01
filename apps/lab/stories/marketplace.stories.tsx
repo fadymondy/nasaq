@@ -2,7 +2,7 @@ import { Marketplace } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { marketCats, marketListings, marketTemplates, permissionOptions, templateCats, useAr, wait } from "./_devtools-q3-demo";
 
-const meta = { title: "Components/Commerce/Marketplace", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Storefront/Marketplace", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

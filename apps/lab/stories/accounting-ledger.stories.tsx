@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { accounts, CURRENCY, journalEntries, t, useAr, wait } from "./_v1-demo";
 
-const meta = { title: "Components/Commerce/Accounting Ledger", component: ChartOfAccounts, parameters: { layout: "padded" } } satisfies Meta<typeof ChartOfAccounts>;
+const meta = { title: "Components/Billing/Accounting Ledger", component: ChartOfAccounts, parameters: { layout: "padded" } } satisfies Meta<typeof ChartOfAccounts>;
 export default meta;
 type Story = StoryObj;
 

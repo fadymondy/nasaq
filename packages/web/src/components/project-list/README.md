@@ -1,12 +1,12 @@
 ---
 name: project-list
 title: ProjectList
-category: workflow
+category: work
 status: beta
 summary: A list of projects as a table or cards with status, progress, members, lead, due date and tags, plus search, status and client and member and tag filters, bulk select, loading skeletons and an empty state.
 exports: [ProjectListLabels, ProjectStatus, Project, ProjectListProps, ProjectList]
 related: [entity-list, kanban-board, progress, export-action]
-story: components-workflow-project-list
+story: components-projects-work-project-list
 keywords: [projects, portfolio, status, progress, members, due date, list, cards, workflow]
 ---
 
@@ -98,4 +98,4 @@ text plus an icon, never colour alone. Overdue dates say "Overdue" in text.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-project-list--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-project-list--docs

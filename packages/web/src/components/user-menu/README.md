@@ -19,7 +19,7 @@ and Language submenus, then Sign out. Nasaq supplies the frame and preferences; 
 
 ## When to use
 
-- The bottom of an [`AppShell`](../app-shell/README.md) sidebar.
+- The bottom of an [`AppShell`](../app-shell/README.md) sidebar, or (`variant="avatar"`) the end of the header in a top-navigation app.
 - You want theme and language switching next to account actions without a separate settings screen.
 
 ## When not to use
@@ -95,6 +95,7 @@ UserMenu
 | `profile?` | `PersonProfile` | none | Turns the menu header into a profile card (role, presence, local time, team) and the trigger avatar into one with a presence dot. |
 | `onViewProfile?` | `(person) => void` | none | Adds View profile to that card. |
 | `onSignOut?` | `() => void` | none | Adds a "Sign out" item. Without it there is no sign-out item and no trailing separator. |
+| `variant?` | `"sidebar" \| "avatar"` | `"sidebar"` | `"sidebar"`: a full-width row with name and email at the foot of the sidebar. `"avatar"`: only the round avatar, for the header of a top-navigation app; the menu opens below it. |
 | `className?` | `string` | none | Classes for the trigger. |
 | `labels?` | `{ theme?: string; language?: string; signOut?: string }` | EN/AR built in | Theme ("Theme"/"المظهر"), Language ("Language"/"اللغة"), Sign out ("Sign out"/"تسجيل الخروج"). |
 
@@ -160,7 +161,8 @@ export const Ar = () => (
 
 ## Do / Don't
 
-- **Do** keep Settings and Help in this menu instead of the sidebar footer.
+- **Do** keep Settings in this menu instead of the sidebar footer. Support, docs and `SidebarStatus` may sit above the trigger.
+- **Do** use `variant="avatar"` at the end of `AppHeader` when the app has no sidebar.
 - **Do** pass `onSignOut` when the product has sessions; without it the menu simply ends after the preferences.
 - **Don't** put navigation to core pages here; those are sidebar items.
 - **Don't** hard-code the theme list; use the built-in submenu.

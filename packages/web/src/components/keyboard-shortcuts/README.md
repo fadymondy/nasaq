@@ -1,12 +1,12 @@
 ---
 name: keyboard-shortcuts
 title: KeyboardShortcuts
-category: utilities
+category: keyboard
 status: stable
 summary: A searchable reference of an app's keyboard shortcuts, grouped, drawn for the reader's keyboard (Command on a Mac, Ctrl elsewhere) with a Mac/Windows switch, plus a dialog that opens with the question mark key.
 exports: [ShortcutsReference, ShortcutsDialog, ShortcutKeys, useShortcutApple, shortcutItemKeys, ShortcutPlatform, ShortcutItem, ShortcutGroup, KeyboardShortcutsLabels, ShortcutKeysProps, ShortcutsReferenceProps, ShortcutsDialogProps]
 related: [commands, kbd, hotkey-recorder, dialog]
-story: components-utilities-keyboard-shortcuts
+story: components-keyboard-commands-keyboard-shortcuts
 keywords: [shortcuts, hotkeys, keyboard, cheat sheet, kbd, mac, windows, help]
 ---
 
@@ -111,4 +111,4 @@ Uses `Kbd`, Dialog and muted text tokens. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-utilities-keyboard-shortcuts--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-keyboard-commands-keyboard-shortcuts--docs

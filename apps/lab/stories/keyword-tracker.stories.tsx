@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { KeywordsDemo, keywordLocations, trackedKeywords, useAr, wait } from "./_moharrik-demo";
 
-const meta = { title: "Components/Analytics/Keyword Tracker", component: KeywordTracker, parameters: { layout: "padded" } } satisfies Meta<typeof KeywordTracker>;
+const meta = { title: "Components/SEO/Keyword Tracker", component: KeywordTracker, parameters: { layout: "padded" } } satisfies Meta<typeof KeywordTracker>;
 export default meta;
 type Story = StoryObj;
 

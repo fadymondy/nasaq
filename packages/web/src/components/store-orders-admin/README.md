@@ -1,12 +1,12 @@
 ---
 name: store-orders-admin
 title: StoreOrdersList
-category: commerce
+category: store-admin
 status: beta
 summary: Store admin orders. A data-table order list with status, payment and fulfilment chips, filters, saved views and bulk actions; an order detail with partial fulfilment and tracking, refunds by line or amount with restock, cancel, a notes timeline and customer cards; printable invoices and packing slips; abandoned carts with a recovery email. The refund, fulfilment and status maths is pure and tested.
 exports: [canSendRecovery, cartIdleMinutes, cartItemCount, cartValue, recoveryDiscount, recoveryStats, recoveryStatus, AbandonedCart, RecoveryBlock, RecoveryRules, RecoveryStats, RecoveryStatus, STORE_ADMIN_STRINGS, useStoreAdminStrings, StoreAdminLabels, StoreAdminStrings, StoreMoney, storeMinorToMajor, allocate, applyCancel, applyFulfilment, applyNote, applyRefund, canCancel, canRefund, deriveOrderStatus, fulfilmentProgress, fulfilmentState, lineCancelled, lineFulfilled, lineOutstanding, linePaidValues, lineRefundable, lineRefunded, lineReturnable, lineReturned, outstandingPicks, paymentAfterRefund, paymentSummary, planCancel, planFulfilment, planRefund, refundRemaining, refundedTotal, restockFor, shippingRefunded, unitsValue, ApplyMeta, CancelPlan, DeliveryStage, FulfilmentInput, FulfilmentIssue, FulfilmentPlan, FulfilmentState, LinePick, OrderLine, RefundInput, RefundIssue, RefundPlan, RefundRecord, Restock, StatusInput, ORDER_CSV_COLUMNS, activeView, csvCell, filterOrders, foldText, matchesOrder, orderFilterValue, orderFulfilment, orderSearchText, ordersToCsv, removeView, sameFilters, storeFormatMinor, upsertView, viewCounts, OrderFilters, OrderView, StoreAbandonedCarts, RecoveryEmail, StoreAbandonedCartsProps, StoreOrderDetail, StoreOrderChange, StoreOrderDetailProps, STORE_DOCUMENT_PRINT_CSS, StoreOrderDocument, StoreOrderPrintView, StoreDocumentSeller, StoreOrderDocumentProps, StoreOrderPrintViewProps, StoreFulfilmentBadge, StoreOrderStatusBadge, StoreOrdersList, StorePaymentBadge, canMarkFulfilled, StoreOrderDocumentKind, StoreOrdersListProps]
 related: [store-order-timeline, store-account, store-dashboard, data-table, dialog]
-story: components-commerce-store-orders-admin
+story: components-store-admin-store-orders-admin
 base-ui: [dialog, alert-dialog, select, toggle-group]
 keywords: [orders, admin, fulfilment, refund, restock, invoice, packing slip, print, abandoned cart, saved views, bulk actions, ecommerce]
 ---
@@ -196,4 +196,4 @@ StoreAbandonedCarts [data-slot="store-abandoned-carts"]
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-store-orders-admin--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-store-orders-admin--docs

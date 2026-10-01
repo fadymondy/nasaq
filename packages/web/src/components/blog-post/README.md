@@ -1,12 +1,12 @@
 ---
 name: blog-post
 title: Blog post
-category: layout
+category: website
 status: beta
 summary: "A post page: cover, byline, reading progress bar, sticky table of contents with scroll-spy, rich Markdown body with callouts and code, share, tags, author, previous and next, related posts and a comments slot."
 exports: [BlogPostLabels, ReadingProgressProps, ReadingProgress, useActiveHeading, TableOfContentsProps, TableOfContents, CalloutProps, Callout, PostBodyProps, PostBody, BlogPostData, BlogPostProps, BlogPost]
 related: [blog-index, markdown, code-block, share-action, timeline]
-story: components-layout-blog-post
+story: components-website-blog-post
 base-ui: []
 keywords: [blog, post, article, toc, reading-progress, callout, markdown]
 ---

@@ -1,12 +1,12 @@
 ---
 name: desktop-os-shell
 title: DesktopShell
-category: layout
+category: platforms
 status: beta
 summary: A desktop for the browser with a wallpaper, menu bar, dock, launchpad and a window manager that drags, resizes, snaps, maximises and minimises. Windows are plain data.
 exports: [DesktopShellLabels, DesktopApp, DesktopMenuItem, DesktopMenu, DesktopAppIcon, DesktopMenuBarProps, DesktopMenuBar, DesktopDockProps, DesktopDock, DesktopLaunchpadProps, DesktopLaunchpad, DesktopShellProps, DesktopShell]
 related: [menubar, context-menu, command-palette, dialog]
-story: pages-app-desktop-os-shell
+story: components-apps-platforms-pages-desktop-os-shell
 base-ui: [menubar, context-menu]
 keywords: [desktop, os, shell, dock, launchpad, window manager, menu bar, wallpaper, windows, snap]
 ---

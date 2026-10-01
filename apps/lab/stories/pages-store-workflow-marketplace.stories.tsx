@@ -3,7 +3,7 @@ import { WorkflowMarketplace } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FlowPage, marketCategories, marketListings, useAr, wait } from "./_workflow-demo";
 
-const meta = { title: "Pages/Store/Workflow Marketplace", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Workflow/Pages/Workflow Marketplace", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

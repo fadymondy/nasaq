@@ -1,12 +1,12 @@
 ---
 name: github-activity
 title: GithubActivity
-category: developer
+category: developer-tools
 status: beta
 summary: A repository activity card with a merged timeline plus commits, pull requests, workflow runs and deployments, each with status, author and a link to GitHub, filterable, with refresh, deploy and re-run callbacks.
 exports: [GithubActivity, GithubActivityProps, GithubActivityLabels, GithubActor, GithubCommit, GithubPull, GithubRun, GithubDeployment, GithubRepo, GithubLabel, ActivityKind, ActivityTone, DeploymentStatus, PullState, RunStatus, commitBody, commitTitle, countBy, deploymentTone, isActive, matches, mergeActivity, pullTone, runTone, shortSha]
 related: [deploy-view, log-viewer, timeline, oauth-buttons, status]
-story: components-developer-github-activity
+story: components-developer-tools-github-activity
 base-ui: [tabs]
 keywords: [github, commits, pull requests, workflow runs, ci, deployments, activity, timeline, repository]
 ---
@@ -136,4 +136,4 @@ export const Pulls = () => <GithubActivity repo={{ owner: "acme", name: "storefr
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-github-activity--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-github-activity--docs

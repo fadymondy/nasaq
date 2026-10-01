@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChecklistDemo } from "./_workflow-p2-demo";
 
-const meta = { title: "Components/Workflow/Checklist", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Projects & Work/Checklist", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -4,7 +4,7 @@ import { Button } from "@nasaq/web";
 import { useState } from "react";
 import { tr, useAr, useDemoQueue } from "./_seatfor-demo";
 
-const meta = { title: "Components/Commerce/Lobby Display", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Bookings/Lobby Display", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

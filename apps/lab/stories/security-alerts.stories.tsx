@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SecurityAlertsDemo } from "./_ops-demo";
 
-const meta = { title: "Components/Analytics/Security Alerts" } satisfies Meta;
+const meta = { title: "Components/Security/Security Alerts" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

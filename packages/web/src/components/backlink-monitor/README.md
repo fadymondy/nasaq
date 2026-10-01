@@ -1,12 +1,12 @@
 ---
 name: backlink-monitor
 title: BacklinkMonitor
-category: analytics
+category: seo
 status: beta
 summary: "Backlink monitoring: new, lost and toxic links, a gained and lost chart, referring domains, and disavow or mark-safe actions."
 exports: [BacklinkMonitorLabels, Backlink, BacklinkMonitorProps, BacklinkMonitor, NEW_LINK_DAYS, TOXIC_SPAM_SCORE, backlinkStatus, dailyLinkSeries, diffBacklinks, domainOf, isToxic, referringDomains, summarizeBacklinks]
 related: [keyword-tracker, seo-pages, metric-tiles, time-series-panel, data-table]
-story: components-analytics-backlink-monitor
+story: components-seo-backlink-monitor
 base-ui: []
 keywords: [backlinks, links, toxic, disavow, referring domains, seo, link building]
 ---
@@ -125,4 +125,4 @@ New, lost and toxic use the info, warning and danger tokens. Chart series use `-
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-backlink-monitor--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-backlink-monitor--docs

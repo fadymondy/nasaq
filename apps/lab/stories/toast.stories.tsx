@@ -1,7 +1,7 @@
 import { Button, toast } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-const meta = { title: "Components/Feedback/Toast" } satisfies Meta;
+const meta = { title: "Components/Alerts & Notifications/Toast" } satisfies Meta;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

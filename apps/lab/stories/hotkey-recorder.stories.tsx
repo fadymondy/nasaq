@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { hotkeyBindings, wait } from "./_w2-demo";
 
-const meta = { title: "Components/Utilities/Hotkey Recorder", component: HotkeyRecorder, parameters: { layout: "padded" } } satisfies Meta<typeof HotkeyRecorder>;
+const meta = { title: "Components/Keyboard & Commands/Hotkey Recorder", component: HotkeyRecorder, parameters: { layout: "padded" } } satisfies Meta<typeof HotkeyRecorder>;
 export default meta;
 type Story = StoryObj;
 

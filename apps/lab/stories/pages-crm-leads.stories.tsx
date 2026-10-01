@@ -22,7 +22,7 @@ function CannedPage() {
   );
 }
 
-const meta = { title: "Pages/CRM/Leads", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/CRM/Pages/Leads", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

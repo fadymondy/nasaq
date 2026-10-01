@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ApprovalDemo, DisplayDemo, EntryFlowDemo, HandoffDemo } from "./_onboarding-demo";
 
-const meta = { title: "Pages/Auth/Device Pairing", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Auth/Pages/Device Pairing", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

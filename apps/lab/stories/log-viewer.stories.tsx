@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useMemo, useState } from "react";
 import { makeLogs, useAr, useLogStream } from "./_developer-demo";
 
-const meta = { title: "Components/Developer/Log Viewer", component: LogViewer, parameters: { layout: "padded" } } satisfies Meta<typeof LogViewer>;
+const meta = { title: "Components/Monitoring/Log Viewer", component: LogViewer, parameters: { layout: "padded" } } satisfies Meta<typeof LogViewer>;
 export default meta;
 type Story = StoryObj;
 

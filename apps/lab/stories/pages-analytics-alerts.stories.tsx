@@ -3,7 +3,7 @@ import { Tabs, TabsList, TabsPanel, TabsTab, WsStatus } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AlertsDemo, SecurityAlertsDemo, useAr, useFakeSocket } from "./_ops-demo";
 
-const meta = { title: "Pages/Analytics/Alerts", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Alerts & Notifications/Pages/Alerts", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

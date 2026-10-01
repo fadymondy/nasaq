@@ -1,12 +1,12 @@
 ---
 name: terminal
 title: Terminal
-category: developer
+category: developer-tools
 status: stable
 summary: Terminal-style output with prompt lines, ANSI colours mapped to tokens, streaming, copy and follow-the-tail mode. Optional command input.
 exports: [TerminalLabels, TerminalLineKind, TerminalLineData, TerminalLine, AnsiText, TerminalProps, Terminal, AnsiSpan, AnsiStyle, ansi256, ansiColor, parseAnsi, parseAnsiRows, stripAnsi, useFollowScroll]
 related: [log-viewer, deploy-view, code-block-variants, code-block]
-story: components-developer-terminal
+story: components-developer-tools-terminal
 base-ui: []
 keywords: [terminal, console, shell, ansi, output, stream, tail, follow, prompt, command, cli, logs]
 ---
@@ -151,4 +151,4 @@ const [lines, setLines] = useState<TerminalLine[]>([{ kind: "command", text: "pn
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-terminal--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-terminal--docs

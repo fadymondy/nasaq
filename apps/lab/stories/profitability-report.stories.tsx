@@ -4,7 +4,7 @@ import { useState } from "react";
 import { REPORT_NOW, t, useAr, wait } from "./_s-demo";
 import { profitRows, SAR } from "./_s-demo-reports";
 
-const meta = { title: "Pages/Analytics/Profitability", component: ProfitabilityReport, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof ProfitabilityReport>;
+const meta = { title: "Components/Analytics/Pages/Profitability", component: ProfitabilityReport, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof ProfitabilityReport>;
 export default meta;
 type Story = StoryObj;
 

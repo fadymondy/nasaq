@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ApiKeysDemo } from "./_connectors-demo";
 
-const meta = { title: "Components/Developer/API Keys" } satisfies Meta;
+const meta = { title: "Components/Developer Tools/API Keys" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

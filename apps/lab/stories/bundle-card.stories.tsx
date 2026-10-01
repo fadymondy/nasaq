@@ -3,7 +3,7 @@ import { frame } from "./_frame";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
-  title: "Components/Commerce/Bundle Card",
+  title: "Components/Pricing/Bundle Card",
   component: BundleCard,
   args: {
     items: [<ProductArtwork key="m" brand="mahaam" markSize={24} />, <ProductArtwork key="z" brand="zekra" markSize={24} />, <ProductArtwork key="o" brand="orchestra" markSize={24} />],

@@ -1,12 +1,12 @@
 ---
 name: command-palette
 title: CommandPalette
-category: overlays
+category: keyboard
 status: stable
 summary: Spotlight-style ⌘K palette that ranks and renders every command registered in the app, with nested pages, async results and a SearchTrigger field.
 exports: [CommandPalette, CommandPaletteProps, SearchTrigger, SearchTriggerProps, CommandItem, CommandGroup]
 related: [commands, app-shell, product-switcher, workspace-switcher]
-story: components-overlays-command-palette
+story: components-keyboard-commands-command-palette
 base-ui: [autocomplete, dialog]
 keywords: [command palette, cmdk, spotlight, search, shortcuts, quick actions, raycast, linear]
 ---
@@ -281,4 +281,4 @@ export const Ar = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-overlays-command-palette--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-keyboard-commands-command-palette--docs

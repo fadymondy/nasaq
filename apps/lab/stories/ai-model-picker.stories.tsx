@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useAr } from "./_profile-demo";
 import { pickerAgents, pickerModels } from "./_usage-demo";
 
-const meta = { title: "Components/AI/AI Model Picker", component: AiModelPicker, parameters: { layout: "padded" } } satisfies Meta<typeof AiModelPicker>;
+const meta = { title: "Components/AI Agents/AI Model Picker", component: AiModelPicker, parameters: { layout: "padded" } } satisfies Meta<typeof AiModelPicker>;
 export default meta;
 type Story = StoryObj;
 

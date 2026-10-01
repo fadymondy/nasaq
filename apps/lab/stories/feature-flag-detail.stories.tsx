@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useMemo, useState } from "react";
 import { featureFlags, flagAudit, flagEnvironments, flagFields, useAr, wait } from "./_moharrik-demo";
 
-const meta = { title: "Components/Developer/Feature Flag Detail", component: FeatureFlagDetail, parameters: { layout: "padded" } } satisfies Meta<typeof FeatureFlagDetail>;
+const meta = { title: "Components/Developer Tools/Feature Flag Detail", component: FeatureFlagDetail, parameters: { layout: "padded" } } satisfies Meta<typeof FeatureFlagDetail>;
 export default meta;
 type Story = StoryObj;
 

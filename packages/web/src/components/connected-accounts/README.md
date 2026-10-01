@@ -1,12 +1,12 @@
 ---
 name: connected-accounts
 title: ConnectedAccounts
-category: account
+category: integrations
 status: beta
 summary: OAuth sign-in methods for an account, each provider with its official logo, the connected email or username, and Connect or Disconnect, and the last remaining sign-in method cannot be disconnected.
 exports: [ConnectedAccounts, ConnectedAccountsProps, ConnectedProvider, ConnectedProviderId, ConnectedAccountsLabels]
 related: [oauth-buttons, alert-dialog, tooltip, passkey-list, card]
-story: components-account-connected-accounts
+story: components-integrations-connected-accounts
 base-ui: [alert-dialog, tooltip, button]
 keywords: [oauth, connected accounts, linked accounts, google, github, apple, microsoft, sign in, disconnect]
 ---
@@ -133,4 +133,4 @@ export function Accounts() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-connected-accounts--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-integrations-connected-accounts--docs

@@ -6,7 +6,7 @@ status: beta
 summary: Show where an AI answer came from. Inline numbered markers that open a quote, source chips, evidence cards with the quoted passage, and a provenance line with model, latency, grounding and confidence.
 exports: [AiCitationsLabels, AiCitationSource, AiEvidenceCard, AiCitedText, AiSourceChips, AiProvenanceInfo, AiProvenance, AiCitedAnswer, AiEvidenceCardProps, AiCitedTextProps, AiSourceChipsProps, AiProvenanceProps, AiCitedAnswerProps, citationHref, parseCitationHref, markerNumbers, linkCitations, citedNumbers, citationCoverage, splitHighlight, latencyParts, HighlightPart]
 related: [ai-states, copilot-chat, markdown, popover, collapsible]
-story: components-ai-ai-citations-and-provenance
+story: components-ai-assistant-ai-citations-and-provenance
 base-ui: [popover, collapsible]
 keywords: [ai, citations, sources, provenance, grounding, evidence, quote, footnote, rag, references]
 ---

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ImportDemo, SAMPLE_CSV } from "./_workflow-p2-demo";
 
-const meta = { title: "Components/Forms/Import Wizard", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Files/Import Wizard", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

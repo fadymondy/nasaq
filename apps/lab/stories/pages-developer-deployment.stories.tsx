@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { ENVIRONMENTS, ENVIRONMENTS_AR, sampleEnv, useAr, useDeployRun, useLogStream, useStreamingOutput, wait } from "./_developer-demo";
 
-const meta = { title: "Pages/Developer/Deployment", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Server Tools/Pages/Deployment", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

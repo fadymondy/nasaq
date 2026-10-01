@@ -1,12 +1,12 @@
 ---
 name: desktop-locations
 title: DesktopLocations
-category: developer
+category: platforms
 status: beta
 summary: Manage the folders a desktop app may use, such as Orchestra workspace roots. Add and remove folders, set read, write and index permissions per folder, see status and the default, plus a DesktopLocationPicker.
 exports: [DesktopLocationsLabels, DesktopLocationStatus, DesktopLocationPermissions, DesktopLocation, LocationResult, DesktopLocationsProps, DesktopLocations, DesktopLocationPickerProps, DesktopLocationPicker, baseName, checkLocationPath, isAbsolutePath, LocationCheck, LocationProblem, LocationWarning, normalizePath, pathContains, samePath, shortenPath]
 related: [file-explorer, select, alert-dialog, status, switch]
-story: components-developer-desktop-locations
+story: components-apps-platforms-desktop-locations
 base-ui: [dialog, alert-dialog, select]
 keywords: [desktop, folders, workspace, roots, orchestra, permissions, sandbox, index, local files, paths]
 ---
@@ -133,4 +133,4 @@ DesktopLocationPicker                 Select of usable locations
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-desktop-locations--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-apps-platforms-desktop-locations--docs

@@ -1,12 +1,12 @@
 ---
 name: personal-widgets
 title: Personal widgets
-category: brand
+category: website
 status: beta
 summary: "Small widgets for a personal site: availability badge, local clock with working-hours state, social links, now list, stats, skills and weather."
 exports: [PersonalWidgetLabels, usePersonalStrings, AvailabilityBadgeProps, AvailabilityBadge, LocalClockProps, LocalClock, SocialLink, SocialLinksProps, SocialLinks, NowItem, NowWidgetProps, NowWidget, ProfileStat, StatsWidgetProps, StatsWidget, Skill, SkillsWidgetProps, SkillsWidget, WeatherCondition, WeatherWidgetProps, WeatherWidget]
 related: [profile-page, badge, card]
-story: components-brand-personal-widgets
+story: components-website-personal-widgets
 base-ui: []
 keywords: [availability, clock, socials, skills, stats, weather, now, widgets]
 ---

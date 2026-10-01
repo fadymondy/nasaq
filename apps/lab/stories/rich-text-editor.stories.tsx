@@ -2,7 +2,7 @@ import { Field, FieldDescription, FieldLabel, RichTextEditor, type RichTextJson 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 
-const meta = { title: "Components/Forms/RichTextEditor", component: RichTextEditor } satisfies Meta<typeof RichTextEditor>;
+const meta = { title: "Components/Editors/RichTextEditor", component: RichTextEditor } satisfies Meta<typeof RichTextEditor>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

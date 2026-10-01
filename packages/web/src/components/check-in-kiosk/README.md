@@ -1,12 +1,12 @@
 ---
 name: check-in-kiosk
 title: CheckInKiosk
-category: commerce
+category: bookings
 status: beta
 summary: Self check-in kiosk - scan or type a booking code, or enter a phone number on a big keypad, find the booking, and print a queue ticket with a QR and an auto reset.
 exports: [CheckInKioskLabels, CheckInRequest, CheckInResult, CheckInKioskProps, CheckInKiosk]
 related: [waiting-screen, lobby-display, booking-manage, qr-code]
-story: components-commerce-check-in-kiosk
+story: components-bookings-check-in-kiosk
 base-ui: [tabs]
 keywords: [kiosk, check-in, scan, phone, keypad, walk-in, queue]
 ---
@@ -109,4 +109,4 @@ Every `div` prop is passed through unless noted.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-check-in-kiosk--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-check-in-kiosk--docs

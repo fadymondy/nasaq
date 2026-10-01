@@ -2,7 +2,7 @@ import { KnowledgeGaps } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { KnowledgeGapsDemo, makeGaps } from "./_t2-demo";
 
-const meta = { title: "Components/AI/Knowledge Gaps", component: KnowledgeGaps, parameters: { layout: "padded" } } satisfies Meta<typeof KnowledgeGaps>;
+const meta = { title: "Components/AI Agents/Knowledge Gaps", component: KnowledgeGaps, parameters: { layout: "padded" } } satisfies Meta<typeof KnowledgeGaps>;
 export default meta;
 type Story = StoryObj;
 

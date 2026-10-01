@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { KeywordsPageDemo, MarketingShell, useAr } from "./_moharrik-demo";
 
-const meta = { title: "Pages/Marketing/Keywords", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/SEO/Pages/Keywords", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

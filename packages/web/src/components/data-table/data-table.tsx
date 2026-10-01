@@ -37,7 +37,7 @@ import { formatDate, formatNumber } from "../numeric";
 import { Spinner } from "../spinner";
 import { EmptyState, ErrorState, Skeleton } from "../states";
 import { Switch } from "../switch";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../table";
+import { Table, TableBody, TableCell, type TableDensity, TableHead, TableHeader, TableRow } from "../table";
 import { type CellEditMove, type CellEditorOption, ChoiceEditor, hueOf, TextEditor } from "./cell-editors";
 import { type CellEditKind, type CellPos, type CellValue, cellKey, coerceEditValue, nextCell, sameCellValue } from "./cell-edit-logic";
 
@@ -427,6 +427,16 @@ export interface DataTableProps<T> extends Omit<ComponentProps<"table">, "childr
   onRetry?: () => void;
   /** Shown when there are no rows and nothing is filtered. */
   empty?: ReactNode;
+  /** Cell padding: `compact`, `default` or `comfortable`. See `Table`. */
+  density?: TableDensity;
+  /** A rounded border around the table, with a tinted header. */
+  frame?: boolean;
+  /** Lines between columns as well as rows. */
+  bordered?: boolean;
+  /** Every other row tinted. */
+  striped?: boolean;
+  /** Highlight the row under the pointer. Default true. */
+  hover?: boolean;
   labels?: Partial<DataTableLabels>;
 }
 
@@ -795,12 +805,12 @@ export function DataTable<T>({
     content = Array.from({ length: Math.min(table.pageSize ?? 5, 8) }, (_, i) => (
       <TableRow key={i} aria-hidden className="hover:bg-transparent">
         {selectable ? (
-          <TableCell className="w-10 ps-4">
+          <TableCell className="w-10 pe-0">
             <Skeleton className="size-4 rounded-[4px]" />
           </TableCell>
         ) : null}
         {visibleColumns.map((c, j) => (
-          <TableCell key={c.id} className={cn(j === 0 && !selectable && "ps-4")}>
+          <TableCell key={c.id}>
             <Skeleton className="h-3" style={{ inlineSize: `${[70, 48, 60, 40, 54][(i + j) % 5]}%` }} />
           </TableCell>
         ))}
@@ -853,7 +863,7 @@ export function DataTable<T>({
           )}
         >
           {selectable ? (
-            <TableCell className="w-10 ps-4 pe-0">
+            <TableCell className="w-10 pe-0">
               <Checkbox
                 tabIndex={tab}
                 checked={selected}
@@ -863,11 +873,10 @@ export function DataTable<T>({
               />
             </TableCell>
           ) : null}
-          {visibleColumns.map((c, j) => {
-            const first = j === 0 && !selectable;
+          {visibleColumns.map((c) => {
             if (!c.edit) {
               return (
-                <TableCell key={c.id} className={cn(alignClass(c.align), first && "ps-4", c.className)}>
+                <TableCell key={c.id} className={cn(alignClass(c.align), c.className)}>
                   {c.cell(row)}
                 </TableCell>
               );
@@ -893,7 +902,6 @@ export function DataTable<T>({
                   editable && "cursor-cell",
                   failed[key] && "bg-nq-danger-soft",
                   alignClass(c.align),
-                  first && "ps-4",
                   c.className,
                 )}
               >
@@ -917,7 +925,7 @@ export function DataTable<T>({
       <TableHeader>
         <TableRow>
           {selectable ? (
-            <TableHead className="w-10 ps-4 pe-0">
+            <TableHead className="w-10 pe-0">
               <Checkbox
                 checked={table.pageSelection === "all"}
                 indeterminate={table.pageSelection === "some"}
@@ -928,8 +936,8 @@ export function DataTable<T>({
               />
             </TableHead>
           ) : null}
-          {visibleColumns.map((c, j) => (
-            <SortHead key={c.id} table={table} column={c} first={j === 0 && !selectable} />
+          {visibleColumns.map((c) => (
+            <SortHead key={c.id} table={table} column={c} />
           ))}
           {rowActions ? (
             <TableHead className="w-12">
@@ -981,9 +989,9 @@ function StateRow({ colSpan, children }: { colSpan: number; children: ReactNode 
   );
 }
 
-function SortHead<T>({ table, column, first }: { table: DataTableInstance<T>; column: DataTableColumn<T>; first: boolean }) {
+function SortHead<T>({ table, column }: { table: DataTableInstance<T>; column: DataTableColumn<T> }) {
   const active = table.sort?.id === column.id ? table.sort.direction : null;
-  const cls = cn(alignClass(column.align), first && "ps-4", column.headerClassName);
+  const cls = cn(alignClass(column.align), column.headerClassName);
   if (!column.sortValue) return <TableHead className={cls}>{column.header}</TableHead>;
   const Icon = active === "asc" ? ArrowUp : active === "desc" ? ArrowDown : ChevronsUpDown;
   return (

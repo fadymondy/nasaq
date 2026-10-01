@@ -1,12 +1,12 @@
 ---
 name: network-rules
 title: NetworkRules
-category: developer
+category: server-tools
 status: beta
 summary: A network rules editor with a firewall tab (allow or deny, protocol, port, source) and an HTTP rules tab (redirects, headers, basic auth, IP allow and deny). Edits are staged until Apply, with move, undo and a lockout warning.
 exports: [NetworkRulesLabels, NetworkRulesResult, NetworkRulesProps, NetworkRules, diffRules, FirewallAction, FirewallError, FirewallProtocol, FirewallRule, formatProtocolPort, HttpError, HttpRule, HttpRuleType, isValidCidr, isValidPort, lockoutRisk, RuleDiff, RuleState, rulesToApply, validateFirewallRule, validateHttpRule]
 related: [server-card, proxy-hosts, data-table, domains-manager, alert]
-story: components-developer-network-rules
+story: components-server-tools-network-rules
 base-ui: [tabs, dialog, field, select]
 keywords: [firewall, network, rules, allow, deny, port, cidr, redirect, headers, basic auth, ip allow]
 ---
@@ -114,4 +114,4 @@ export const FirewallOnly = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-network-rules--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-network-rules--docs

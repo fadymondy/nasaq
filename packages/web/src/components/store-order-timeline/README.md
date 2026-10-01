@@ -1,12 +1,12 @@
 ---
 name: store-order-timeline
 title: StoreOrderTimeline
-category: commerce
+category: store
 status: beta
 summary: The order status timeline shared by the customer account and the store admin. The tracking variant draws placed, paid, shipped, out for delivery and delivered with times and a carrier link. The activity variant lists every event newest first and takes internal notes.
 exports: [StoreOrderTimelineLabels, useStoreTimelineStrings, StoreOrderTimelineProps, StoreOrderTimeline, TRACKING_STEPS, activityKind, sortEventsNewestFirst, trackingModel, trackingUrl, StoreActivityKind, TrackingInput, TrackingModel, TrackingStep, TrackingStepKey, TrackingStepState, TrackingTerminal, FULFILMENT_LABEL, FULFILMENT_VARIANT, ORDER_STATUS_LABEL, ORDER_STATUS_VARIANT, PAYMENT_LABEL, PAYMENT_VARIANT, OrderChipVariant]
 related: [store-account, store-orders-admin, timeline, badge]
-story: components-commerce-store-order-timeline
+story: components-storefront-store-order-timeline
 base-ui: []
 keywords: [order, timeline, tracking, shipment, status, events, notes, carrier, ecommerce]
 ---
@@ -132,4 +132,4 @@ Helpers: `trackingModel({ status, payment, placedAt, events, hasTracking })` ret
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-store-order-timeline--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-store-order-timeline--docs

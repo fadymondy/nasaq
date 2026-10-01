@@ -16,7 +16,7 @@ import { PanelLeft, Search } from "lucide-react";
 // Electron renderer chrome with simulated platforms. The OS draws the real caption buttons; the grey
 // stand-ins here only show where they land, so you can check the reserved inset on each edge and in RTL.
 const meta = {
-  title: "Platforms/Desktop (Electron)/Window chrome",
+  title: "Components/Apps & Platforms/Patterns/Desktop (Electron) Window Chrome",
   parameters: { layout: "padded" },
 } satisfies Meta;
 export default meta;

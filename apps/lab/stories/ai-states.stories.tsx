@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ConfidenceDemo, LoadingDemo, SmartActionsDemo, StreamDemo, SummaryDemo } from "./_x3-demo";
 
-const meta = { title: "Components/AI/AI States" } satisfies Meta;
+const meta = { title: "Components/AI Assistant/AI States" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

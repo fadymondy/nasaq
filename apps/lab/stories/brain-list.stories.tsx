@@ -2,7 +2,7 @@ import { BrainCard, BrainList } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { makeBrains } from "./_builders-demo";
 
-const meta = { title: "Components/AI/Brain List", component: BrainList, parameters: { layout: "padded" } } satisfies Meta<typeof BrainList>;
+const meta = { title: "Components/AI Agents/Brain List", component: BrainList, parameters: { layout: "padded" } } satisfies Meta<typeof BrainList>;
 export default meta;
 type Story = StoryObj;
 

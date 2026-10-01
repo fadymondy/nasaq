@@ -2,7 +2,7 @@ import { SemanticSearch } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SemanticSearchDemo } from "./_t2-demo";
 
-const meta = { title: "Components/AI/Semantic Search", component: SemanticSearch, parameters: { layout: "padded" } } satisfies Meta<typeof SemanticSearch>;
+const meta = { title: "Components/AI Assistant/Semantic Search", component: SemanticSearch, parameters: { layout: "padded" } } satisfies Meta<typeof SemanticSearch>;
 export default meta;
 type Story = StoryObj;
 

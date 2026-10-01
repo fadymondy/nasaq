@@ -4,7 +4,7 @@ title: Table
 category: data-display
 status: stable
 summary: Styled primitives for a native HTML table (rows, heads, cells, caption, footer) inside a horizontally scrolling container. No sorting, selection or pagination.
-exports: [Table, TableProps, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption]
+exports: [Table, TableProps, TableDensity, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption]
 related: [card, badge, status, avatar, numeric, states]
 story: components-data-display-table
 base-ui: []
@@ -95,8 +95,19 @@ Table                         data-slot="table-container" (div, overflow-x-auto)
 
 ## API
 
-All parts forward their remaining props to the underlying element and merge `className`. There are no
-custom props and no variants.
+All parts forward their remaining props to the underlying element and merge `className`. The style props live
+on `Table` and reach every row and cell through context, so you set them once.
+
+| `Table` prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label?` | `string` | none | `aria-label` of the scroll region. Localise it. |
+| `density?` | `TableDensity` (`"compact" \| "default" \| "comfortable"`) | `"default"` | Cell padding: `px-2 py-1`, `px-4 py-3`, `px-5 py-4`. |
+| `frame?` | `boolean` | `false` | A rounded border and card background around the table, with a tinted header. |
+| `bordered?` | `boolean` | `false` | Lines between columns as well as rows. |
+| `striped?` | `boolean` | `false` | Every other body row tinted. Header and footer rows are never striped. |
+| `hover?` | `boolean` | `true` | Highlight the row under the pointer. |
+
+A selected row (`data-state="selected"`) always wins over the stripe and the hover tint.
 
 | Export | Element | Props type | Notes |
 | --- | --- | --- | --- |
@@ -104,9 +115,9 @@ custom props and no variants.
 | `TableHeader` | `thead` | `ComponentProps<"thead">` | Row bottom border; header rows do not highlight on hover. |
 | `TableBody` | `tbody` | `ComponentProps<"tbody">` | Last row has no bottom border. |
 | `TableFooter` | `tfoot` | `ComponentProps<"tfoot">` | Top border, `bg-secondary/50`, medium weight. Use for totals. |
-| `TableRow` | `tr` | `ComponentProps<"tr">` | Bottom border, `hover:bg-nq-hover`, `data-[state=selected]:bg-nq-selected`. `data-state="selected"` also sets `aria-selected`. |
-| `TableHead` | `th` | `ComponentProps<"th">` | Defaults to `scope="col"` (pass `scope="row"` for row headers). `h-row px-3 text-start text-caption font-medium text-muted-foreground`, no wrap. |
-| `TableCell` | `td` | `ComponentProps<"td">` | `h-row px-3 align-middle`, no wrap. |
+| `TableRow` | `tr` | `ComponentProps<"tr">` | Bottom border, `hover:bg-nq-hover` (unless `hover={false}`), `even:bg-secondary/40` when `striped`, `data-[state=selected]:bg-nq-selected`. `data-state="selected"` also sets `aria-selected`. |
+| `TableHead` | `th` | `ComponentProps<"th">` | Defaults to `scope="col"` (pass `scope="row"` for row headers). `h-row text-start text-caption font-medium text-muted-foreground`, padding from `density`, no wrap. |
+| `TableCell` | `td` | `ComponentProps<"td">` | `h-row align-middle`, padding from `density`, no wrap. |
 | `TableCaption` | `caption` | `ComponentProps<"caption">` | Rendered below the table. `text-caption text-muted-foreground`. |
 
 ## Examples
@@ -212,10 +223,25 @@ export function Members({ selected }: { selected: string }) {
 }
 ```
 
+### Framed, striped and bordered
+
+A table that stands on its own on a busy page can carry its own frame. Stripes help follow a row across a wide
+table; column lines help when cells are dense numbers.
+
+```tsx
+<Table label="Invoices" frame striped>
+  …
+</Table>
+
+<Table label="Ledger" frame bordered density="compact">
+  …
+</Table>
+```
+
 ### Inside a card with its own actions
 
 When the table shares a card with a header action (as in the App Shell story), the card owns the outer edge.
-Give the first and last cells `ps-4` / `pe-4` so they line up with the card header padding.
+The default cell padding (`px-4`) already lines up with the card header, so leave `frame` off.
 
 ```tsx
 import {
@@ -236,12 +262,12 @@ export function RecentIssues() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="ps-4">العنوان</TableHead>
+            <TableHead>العنوان</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell className="ps-4">هيكل التطبيق v2</TableCell>
+            <TableCell>هيكل التطبيق v2</TableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -276,7 +302,7 @@ The parts are native table elements, so screen readers get table, row and column
 ## Styling & tokens
 
 - Row height `h-row`, separator `border-border`, hover `bg-nq-hover`, selected `bg-nq-selected`, footer `bg-secondary/50`. Header text is `text-muted-foreground`.
-- State attribute: `data-state="selected"` on `TableRow`.
+- State attribute: `data-state="selected"` on `TableRow`. The `<table>` carries `data-density`, and `data-frame`, `data-bordered`, `data-striped` when on.
 - Target parts with `[data-slot=table-row]`, `[data-slot=table-head]`, `[data-slot=table-cell]`, `[data-slot=table-container]`.
 - Extend through `className` per part. Do not override colours with raw hex; use the tokens above.
 
@@ -287,7 +313,8 @@ The parts are native table elements, so screen readers get table, row and column
 - **Do** end-align and tabulate numbers; keep keys and IDs LTR.
 - **Do** pair a state with a label: use `Status` or `Badge`, never a coloured dot alone.
 - **Don't** put a table inside a card that has nothing else to say.
-- **Don't** hand-tune row height or padding per screen. Change the density instead.
+- **Don't** hand-tune row height or padding per screen. Use `density` instead.
+- **Don't** frame a table that already sits in a card: the card is the frame.
 - **Don't** build sorting, selection or pagination on these primitives when [`DataTable`](../data-table/README.md) covers it.
 
 ## Related

@@ -1,12 +1,12 @@
 ---
 name: store-settings
 title: Store Settings
-category: commerce
+category: store-admin
 status: beta
 summary: "The merchant's store configuration: shipping zones and rates with local pickup, tax rates (inclusive or exclusive), discounts with a basket simulator, and gift cards with issue, ledger history and a checkout redeem field. Pure, tested logic for rate resolution, discount evaluation and gift card balances."
 exports: [DiscountSimulator, SimCollection, DiscountsManager, DiscountsManagerProps, GiftCardField, GiftCardFieldProps, GiftCardLookup, GiftCardsManager, GiftCardsManagerProps, ShippingSettings, ShippingSettingsProps, SettingsResult, StoreSettingsLabels, TaxSettings, TaxSettingsProps]
 related: [store-products-admin, store-checkout, data-table, currency-input]
-story: components-commerce-store-settings
+story: components-store-admin-store-settings
 base-ui: [dialog, select, switch, tabs]
 keywords: [shipping, zones, tax, vat, discounts, coupons, bxgy, gift cards, ledger, settings, admin]
 ---
@@ -144,4 +144,4 @@ Uses `--nq-*` tokens only. Target the `data-slot` names above.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-store-settings--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-store-settings--docs

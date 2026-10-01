@@ -1,12 +1,12 @@
 ---
 name: alerts
 title: AlertList
-category: analytics
+category: alerts
 status: beta
 summary: Alert triage lists, AlertList and SecurityAlerts, with status tabs and counts, search, severity and source filters, sorting, acknowledge, resolve and reopen, and an expandable timeline per alert.
 exports: [AlertList, SecurityAlerts, AlertListProps, SecurityAlertsProps, AlertsLabels, AlertItem, SecurityAlertItem, AlertEvent, AlertEventType, AlertAction, SecurityCategory, AlertCounts, AlertFilter, AlertLike, AlertSeverity, AlertSort, AlertStatus, canAcknowledge, canReopen, canResolve, countAlerts, filterAlerts, SEVERITIES, STATUSES, severityRank, sortAlerts, sourcesOf, urgentCount]
 related: [alert, status, timeline, data-table, ws-status]
-story: components-analytics-alerts
+story: components-alerts-notifications-alerts
 base-ui: [select, tabs]
 keywords: [alerts, incidents, monitoring, severity, acknowledge, resolve, security, threats, on-call]
 ---
@@ -131,4 +131,4 @@ export const Security = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-alerts--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-alerts--docs

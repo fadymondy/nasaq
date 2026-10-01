@@ -6,7 +6,7 @@ status: beta
 summary: A 0 to 100 score badge that opens the reasons behind it, one line per dimension with points, source chips, an inferred mark and confidence.
 exports: [ScoreExplainerLabels, ScoreSource, ScoreDimension, ScoreExplainerProps, ScoreInferredMark, ScoreSourceChip, ScoreExplainer, ScoreBadgeProps, ScoreBadge]
 related: [ai-states, leads-inbox, contact-list]
-story: components-ai-score-explainer
+story: components-ai-assistant-score-explainer
 keywords: [score, lead score, explain, evidence, sources, confidence, inferred, ai, reasons]
 ---
 
@@ -90,4 +90,4 @@ Bands use success, warning and danger tokens. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-score-explainer--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-assistant-score-explainer--docs

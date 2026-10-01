@@ -1,12 +1,12 @@
 ---
 name: youtube-channel-page
 title: YouTubeChannelPage
-category: analytics
+category: marketing
 status: beta
 summary: A YouTube channel report - views, watch time, subscribers and view duration with comparison, a chart, top videos, traffic sources and countries.
 exports: [YouTubeChannelPage, YouTubeChannelPageProps, YouTubeChannelData, YouTubeChannelPageLabels, YouTubeTotal, YouTubeVideo]
 related: [metric-tiles, time-series-panel, breakdown-table, geo-list, analytics-connect]
-story: pages-analytics-youtube
+story: components-marketing-pages-youtube
 base-ui: []
 keywords: [youtube, channel, views, watch time, subscribers, videos]
 ---
@@ -124,4 +124,4 @@ The page has one `h1`; tabs follow the WAI-ARIA tabs pattern (arrow keys move, t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-analytics-youtube--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-marketing-pages-youtube--docs

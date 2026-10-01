@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StatusLabelDemo } from "./_workflow-p2-demo";
 
-const meta = { title: "Components/Workflow/Status Label Manager", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Projects & Work/Status Label Manager", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

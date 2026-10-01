@@ -1,12 +1,12 @@
 ---
 name: integration-connector
 title: IntegrationConnector
-category: account
+category: integrations
 status: beta
 summary: Connections page for OAuth services such as Google Analytics, Search Console, YouTube, GitHub and Slack, with cards, a scope consent dialog, account or property picker, status, reconnect and confirmed disconnect.
 exports: [IntegrationConnector, IntegrationConnectorProps, IntegrationConnectorLabels, IntegrationService, IntegrationScope, IntegrationAccount, IntegrationStatus]
 related: [connected-accounts, oauth-buttons, status, alert-dialog, select]
-story: components-account-integration-connector
+story: components-integrations-integration-connector
 base-ui: [alert-dialog, checkbox, dialog, select]
 keywords: [integration, oauth, connect, scopes, google analytics, search console, youtube, github, slack, connections]
 ---
@@ -130,4 +130,4 @@ export const Picker = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-integration-connector--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-integrations-integration-connector--docs

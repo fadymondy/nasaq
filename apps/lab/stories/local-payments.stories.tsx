@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LocalPaymentsDemo, PaymentQueueDemo } from "./_v2-demo";
 
-const meta = { title: "Components/Commerce/Local Payments", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Billing/Local Payments", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

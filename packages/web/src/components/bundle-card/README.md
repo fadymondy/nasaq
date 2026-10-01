@@ -1,12 +1,12 @@
 ---
 name: bundle-card
 title: BundleCard
-category: commerce
+category: pricing
 status: beta
 summary: "Several apps sold together for less; shows the overlapping artwork stack, what it is for, the computed saving and the price against the separate total."
 exports: [BundleCard, BundleCardProps]
 related: [product-card, spotlight, price, plan-card, product-artwork]
-story: components-commerce-bundle-card
+story: components-pricing-bundle-card
 base-ui: []
 keywords: [bundle, kit, package, saving, discount, price, apps, store]
 ---
@@ -166,4 +166,4 @@ export function YearlyKit() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-bundle-card--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-pricing-bundle-card--docs

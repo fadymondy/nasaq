@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { liveVisitorsAt, storeDashboardDemo } from "./_store-dashboard-demo";
 import { useAr } from "./_s-demo";
 
-const meta = { title: "Components/Commerce/Store Dashboard", component: StoreDashboard, parameters: { layout: "padded" } } satisfies Meta<typeof StoreDashboard>;
+const meta = { title: "Components/Store Admin/Store Dashboard", component: StoreDashboard, parameters: { layout: "padded" } } satisfies Meta<typeof StoreDashboard>;
 export default meta;
 type Story = StoryObj;
 

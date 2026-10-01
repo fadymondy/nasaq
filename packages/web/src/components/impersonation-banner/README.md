@@ -1,12 +1,12 @@
 ---
 name: impersonation-banner
 title: ImpersonationBanner
-category: account
+category: admin
 status: beta
 summary: A sticky bar that says you are viewing as another user, or previewing, with an exit button. It is a status region, pinned so it cannot scroll away, and AdminArea uses it.
 exports: [ImpersonationBanner, ImpersonationBannerProps, ImpersonationBannerLabels]
 related: [admin-area, admin-users, alert]
-story: components-account-impersonation-banner
+story: components-admin-impersonation-banner
 base-ui: []
 keywords: [impersonation, impersonate, view as, preview, support, admin, sticky, banner, exit]
 ---
@@ -91,4 +91,4 @@ Built-in English and Arabic. The email stays left-to-right inside an Arabic sent
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-impersonation-banner--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-admin-impersonation-banner--docs

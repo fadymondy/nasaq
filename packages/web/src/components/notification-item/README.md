@@ -1,12 +1,12 @@
 ---
 name: notification-item
 title: NotificationItem
-category: feedback
+category: alerts
 status: stable
 summary: One row of a notifications list, a full-width button with an actor avatar or icon, title, description, time and an unread marker.
 exports: [NotificationItem, NotificationItemProps]
 related: [avatar, sheet, badge, toast]
-story: components-feedback-notification-item
+story: components-alerts-notifications-notification-item
 base-ui: []
 keywords: [notification, inbox, activity, unread, list item, mention, feed]
 ---
@@ -216,7 +216,7 @@ export function Row() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-feedback-notification-item--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-notification-item--docs
 
 The item has no story of its own; it is demoed by `NotificationsSheet` in `apps/lab/stories/_notifications.tsx`,
-used by the Patterns/App Shell story.
+used by the Layout/App Shell stories.

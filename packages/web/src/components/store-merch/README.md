@@ -1,12 +1,12 @@
 ---
 name: store-merch
 title: Store merchandising
-category: commerce
+category: store
 status: beta
 summary: "Storefront home blocks: category tiles, hero and promo banners, a flash-deal strip with a live countdown and stock progress, a reusable product carousel for related and recently viewed items, and a brand strip."
 exports: [StoreCategoryTile, StoreCategoryTilesProps, StoreCategoryTiles, StoreBanner, StoreHeroBannerProps, StoreHeroBanner, StorePromoBannersProps, StorePromoBanners, StoreCountdownProps, StoreCountdown, StoreFlashDeal, StoreFlashDealsProps, StoreFlashDeals, StoreProductCarouselProps, StoreProductCarousel, StoreBrand, StoreBrandStripProps, StoreBrandStrip]
 related: [store-chrome, store-listing, carousel]
-story: components-commerce-store-merchandising
+story: components-storefront-store-merchandising
 base-ui: []
 keywords: [store, home, merchandising, banner, hero, promo, flash deal, countdown, carousel, related products, recently viewed, brands, categories]
 ---

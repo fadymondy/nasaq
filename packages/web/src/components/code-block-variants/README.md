@@ -1,12 +1,12 @@
 ---
 name: code-block-variants
 title: CodeBlock variants
-category: developer
+category: developer-tools
 status: stable
 summary: Code in tabs (pnpm npm yarn, curl JS Python), a copy menu for AI assistants, and a one-line command with a direct copy button. Composes CodeBlock.
 exports: [CodeVariantLabels, CodeCopyKind, CodeCopyMenuProps, CodeCopyMenu, CodeBlockAIProps, CodeBlockAI, CodeTab, CodeTabsProps, CodeTabs, packageManagerTabs, execTabs, CommandSnippetProps, CommandSnippet, AiTarget, aiLink, buildPrompt, execCommand, InstallOptions, installCommand, PACKAGE_MANAGERS, PackageManager, stripPrompt, toMarkdown]
 related: [code-block, copy-button, tabs, dropdown-menu]
-story: components-developer-code-block-variants
+story: components-developer-tools-code-block-variants
 base-ui: [tabs, menu]
 keywords: [code, tabs, package-manager, pnpm, npm, yarn, curl, copy, ai, prompt, claude, chatgpt, cursor, command, snippet, install]
 ---
@@ -159,4 +159,4 @@ All pure functions.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-code-block-variants--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-code-block-variants--docs

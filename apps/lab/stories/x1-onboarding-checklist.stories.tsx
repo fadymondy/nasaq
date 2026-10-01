@@ -5,7 +5,7 @@ import { FolderPlus, Plug, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { sleep, useAr } from "./_x1-demo";
 
-const meta = { title: "Pages/Onboarding/Checklist", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Onboarding/Pages/Checklist", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

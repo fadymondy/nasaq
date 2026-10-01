@@ -2,7 +2,7 @@ import { Alert, Button, useNasaq } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 
-const meta = { title: "Components/Feedback/Alert", component: Alert } satisfies Meta<typeof Alert>;
+const meta = { title: "Components/Alerts & Notifications/Alert", component: Alert } satisfies Meta<typeof Alert>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

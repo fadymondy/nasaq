@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StatusLabelDemo, useAr } from "./_workflow-p2-demo";
 
-const meta = { title: "Pages/Admin/Statuses and Labels", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Projects & Work/Pages/Statuses and Labels", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

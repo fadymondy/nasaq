@@ -6,7 +6,7 @@ import { ORDERS_NOW, TRACKING_TEMPLATE, ordersSeed, returnsSeed, wishlistSeed } 
 import { STORE_CURRENCY, storeAddresses, storeProducts } from "./_store-demo";
 
 const meta = {
-  title: "Components/Commerce/Store Account",
+  title: "Components/Storefront/Store Account",
   parameters: { layout: "padded" },
 } satisfies Meta;
 export default meta;

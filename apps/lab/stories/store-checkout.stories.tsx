@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { STORE_CURRENCY, ShopFrame, fakePlaceOrder, sampleOrder, storeAddresses, storeCart, storeLocalMethods, storePaymentPolicy, storeShippingMethods, useLocale } from "./_cart-checkout-demo";
 
-const meta = { title: "Components/Commerce/Store Checkout", parameters: { layout: "fullscreen" } } satisfies Meta;
+const meta = { title: "Components/Storefront/Store Checkout", parameters: { layout: "fullscreen" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

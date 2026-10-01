@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type QueueConnection, WaitingScreen } from "@nasaq/web";
 import { tr, useAr, useDemoQueue } from "./_seatfor-demo";
 
-const meta = { title: "Components/Commerce/Waiting Screen", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Bookings/Waiting Screen", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

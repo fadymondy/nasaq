@@ -2,7 +2,7 @@ import { Button, Spinner, useNasaq } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect, useState } from "react";
 
-const meta = { title: "Components/Feedback/Spinner", component: Spinner } satisfies Meta<typeof Spinner>;
+const meta = { title: "Components/Loading & States/Spinner", component: Spinner } satisfies Meta<typeof Spinner>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

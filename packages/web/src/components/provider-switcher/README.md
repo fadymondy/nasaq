@@ -1,12 +1,12 @@
 ---
 name: provider-switcher
 title: ProviderSwitcher
-category: developer
+category: developer-tools
 status: beta
 summary: "Lists an app's swappable capabilities (data, queue, cache, storage…) with the backend each runs on, and switches backends at runtime."
 exports: [ProviderSwitcher, ProviderSwitcherProps, ProviderCapability, ProviderOption, ProviderSwitcherLabels]
 related: [env-list, feature-flags, select, status]
-story: components-developer-provider-switcher
+story: components-developer-tools-provider-switcher
 base-ui: [select]
 keywords: [provider, backend, driver, capability, adapter, switcher, runtime config, database, queue, cache, storage, realtime]
 ---
@@ -135,4 +135,4 @@ Strings ship in English and Arabic. Capability and backend names come from the h
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-provider-switcher--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-provider-switcher--docs

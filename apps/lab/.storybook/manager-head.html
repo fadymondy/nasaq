@@ -1,0 +1,47 @@
+<title>Nasaq design system</title>
+<meta name="description" content="Nasaq: one product language for every surface. Components, tokens, brands and page templates, in English and Arabic." />
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
+<style>
+  /* Inter / JetBrains Mono / Alexandria: the files @fontsource already ships to the preview, served by staticDirs. */
+  @font-face { font-family: Inter; font-weight: 400; font-display: swap; src: url("/brand-fonts/inter/inter-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: Inter; font-weight: 500; font-display: swap; src: url("/brand-fonts/inter/inter-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family: Inter; font-weight: 600; font-display: swap; src: url("/brand-fonts/inter/inter-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 400; font-display: swap; src: url("/brand-fonts/jetbrains-mono/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: Alexandria; font-weight: 400; font-display: swap; src: url("/brand-fonts/alexandria/alexandria-arabic-400-normal.woff2") format("woff2"); unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF; }
+
+  :root { --nq-m-brand: #15694A; --nq-m-brand-soft: rgba(21, 105, 74, 0.1); }
+  :root[data-nq-theme="dark"] { --nq-m-brand: #4CC495; --nq-m-brand-soft: rgba(76, 196, 149, 0.14); }
+  body { font-family: Inter, Alexandria, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  /* Brand block: the mark at a readable size, the name beside it. */
+  img[alt="Nasaq"] { height: 26px !important; width: 26px !important; object-fit: contain; }
+
+  a:has(> img[alt="Nasaq"]) { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+  a:has(> img[alt="Nasaq"])::after { content: "Nasaq"; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; color: var(--nq-m-ink); }
+  :root { --nq-m-ink: #0E1A3C; }
+  :root[data-nq-theme="dark"] { --nq-m-ink: #F0EBE1; }
+
+  /* Sidebar: calmer section labels, tighter rhythm, brand-coloured selection. */
+  #storybook-explorer-tree { padding-inline: 4px; }
+  #storybook-explorer-tree button[data-selected="true"],
+  #storybook-explorer-tree a[data-selected="true"] {
+    background: var(--nq-m-brand) !important;
+    color: #F0EBE1 !important;
+    border-radius: 6px;
+  }
+  :root[data-nq-theme="dark"] #storybook-explorer-tree [data-selected="true"] { color: #0E1A3C !important; }
+  #storybook-explorer-tree [data-selected="true"] svg { color: inherit !important; }
+  #storybook-explorer-tree button[data-nodetype="root"] { letter-spacing: 0.08em; font-weight: 600; }
+
+  /* Things that say "Storybook": the about / what's new / onboarding surfaces and the sidebar's test widget. */
+  #storybook-checklist-widget,
+  [data-testid="sidebar-bottom"],
+  #storybook-explorer-menu ~ [data-testid="whats-new"],
+  [data-testid="whats-new-footer"],
+  [data-testid="onboarding-survey"],
+  a[href*="storybook.js.org"],
+  a[href*="github.com/storybookjs"] { display: none !important; }
+  [data-testid="tooltip"] a[href*="storybook"] { display: none !important; }
+
+  ::selection { background: var(--nq-m-brand-soft); }
+</style>

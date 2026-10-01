@@ -180,6 +180,237 @@
   }
 }
 
+/* Auth screens: a calm, staged entrance so the page settles in rather than popping. The mark, then
+   the card lifts in, then the heading and each form row follow 50ms apart, the footer last.
+   Fill mode is `backwards` so nothing keeps a transform (a containing block) after the entrance.
+   Reduced motion is handled by the global guard above. */
+@keyframes nq-auth-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--nq-auth-rise, 8px));
+  }
+}
+@keyframes nq-auth-fade {
+  from {
+    opacity: 0;
+  }
+}
+[data-slot="auth-layout"] {
+  --nq-auth-ease: var(--nq-ease, cubic-bezier(0.2, 0, 0, 1));
+}
+/* The backdrop: a plain lattice of 2px cubes. The cubes under the pointer light up and the light trails it; nothing
+   else moves. The position is set by AuthBackdrop; the registered properties let it glide instead of jump. */
+@property --nq-auth-x {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+@property --nq-auth-y {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 40%;
+}
+[data-slot="auth-backdrop"] {
+  --nq-auth-cell: 12px;
+  --nq-auth-dot: color-mix(in oklab, var(--foreground) 8%, transparent);
+  --nq-auth-lit: color-mix(in oklab, var(--foreground) 40%, transparent);
+  animation: nq-auth-fade 900ms var(--nq-auth-ease) backwards;
+}
+.dark [data-slot="auth-backdrop"],
+[data-theme="dark"] [data-slot="auth-backdrop"] {
+  --nq-auth-dot: color-mix(in oklab, var(--foreground) 5%, transparent);
+  --nq-auth-lit: color-mix(in oklab, var(--foreground) 30%, transparent);
+}
+[data-slot="auth-backdrop"] > * {
+  position: absolute;
+  inset: 0;
+  background-size: var(--nq-auth-cell) var(--nq-auth-cell);
+  background-position: center;
+}
+[data-auth-layer="cubes"] {
+  background-image: conic-gradient(from 270deg at 2px 2px, var(--nq-auth-dot) 25%, transparent 0);
+}
+[data-auth-layer="pointer"] {
+  background-image: conic-gradient(from 270deg at 2px 2px, var(--nq-auth-lit) 25%, transparent 0);
+  mask-image: radial-gradient(180px circle at var(--nq-auth-x) var(--nq-auth-y), black, transparent);
+  opacity: 0;
+  transition:
+    --nq-auth-x 120ms ease-out,
+    --nq-auth-y 120ms ease-out,
+    opacity 300ms var(--nq-auth-ease);
+}
+[data-slot="auth-backdrop"][data-pointer] [data-auth-layer="pointer"] {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="auth-backdrop"] {
+    animation: none !important;
+  }
+  [data-auth-layer="pointer"] {
+    display: none;
+  }
+}
+/* The identity emblem. The cubes sweep in clockwise around the mark, inner ring first. Then the mark turns into a
+   lock: the mark shrinks away, the lock rises with its shackle open, the shackle clicks shut and one ripple runs out
+   through the rings. After that only the rings move, turning very slowly in alternate directions. While a sign-in
+   request runs (an aria-busy control anywhere in the layout) a bright arc scans round the rings.
+   The resting state is the finished one (lock shown, mark hidden), so with motion off people see the lock at once. */
+@keyframes nq-emblem-in {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+}
+@keyframes nq-emblem-ripple {
+  45% {
+    filter: brightness(1.35) saturate(1.2);
+    opacity: 1;
+    scale: 1.4;
+  }
+}
+@keyframes nq-emblem-scan {
+  0%,
+  100% {
+    filter: none;
+  }
+  12% {
+    filter: brightness(1.35) saturate(1.2);
+    opacity: 1;
+    scale: 1.35;
+  }
+}
+@keyframes nq-emblem-turn {
+  to {
+    rotate: var(--nq-emblem-turn, 1turn);
+  }
+}
+@keyframes nq-emblem-mark-out {
+  from {
+    opacity: 1;
+    scale: 1;
+    filter: none;
+  }
+  to {
+    opacity: 0;
+    scale: 0.7;
+    filter: blur(2px);
+  }
+}
+@keyframes nq-emblem-lock-in {
+  from {
+    opacity: 0;
+    scale: 0.7;
+    filter: blur(2px);
+  }
+}
+@keyframes nq-emblem-shackle {
+  from {
+    translate: 0 -3.5px;
+  }
+}
+[data-emblem-ring] {
+  /* Each ring is symmetric about the mark, so the centre of its own box is the centre of the emblem. */
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: nq-emblem-turn 120s linear infinite;
+}
+[data-emblem-ring="1"] {
+  --nq-emblem-turn: -1turn;
+  animation-duration: 150s;
+}
+[data-emblem-ring="2"] {
+  animation-duration: 180s;
+}
+[data-emblem-ring="3"] {
+  --nq-emblem-turn: -1turn;
+  animation-duration: 220s;
+}
+[data-emblem-cell] {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation:
+    nq-emblem-in 520ms var(--nq-auth-ease, ease-out) backwards,
+    nq-emblem-ripple 640ms ease-in-out;
+  animation-delay:
+    calc(160ms + var(--nq-emblem-t) * 520ms + var(--nq-emblem-ring) * 70ms),
+    calc(2000ms + var(--nq-emblem-ring) * 90ms);
+}
+[data-emblem-core][data-lock] [data-emblem-mark] {
+  opacity: 0;
+  animation: nq-emblem-mark-out 320ms var(--nq-auth-ease, ease-out) 1500ms backwards;
+}
+[data-emblem-lock] {
+  animation: nq-emblem-lock-in 380ms var(--nq-auth-ease, ease-out) 1700ms backwards;
+}
+[data-emblem-shackle] {
+  animation: nq-emblem-shackle 260ms cubic-bezier(0.5, 0, 0.75, 1.6) 1960ms backwards;
+}
+[data-slot="auth-layout"]:has([aria-busy="true"]) [data-emblem-cell],
+[data-slot="auth-emblem"][data-busy] [data-emblem-cell] {
+  animation: nq-emblem-scan 1400ms linear infinite;
+  animation-delay: calc(var(--nq-emblem-t) * 1400ms - 1400ms + var(--nq-emblem-ring) * 40ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-emblem-ring],
+  [data-emblem-cell],
+  [data-emblem-mark],
+  [data-emblem-lock],
+  [data-emblem-shackle] {
+    animation: none !important;
+  }
+}
+[data-slot="auth-layout"] [data-auth-card] {
+  --nq-auth-rise: 12px;
+  box-shadow: 0 24px 48px -24px color-mix(in oklab, var(--foreground) 18%, transparent);
+  animation: nq-auth-rise 560ms var(--nq-auth-ease) 80ms backwards;
+}
+[data-slot="auth-layout-panel"] {
+  animation: nq-auth-fade 700ms var(--nq-auth-ease) backwards;
+}
+.dark [data-slot="auth-layout"] [data-auth-card],
+[data-theme="dark"] [data-slot="auth-layout"] [data-auth-card] {
+  box-shadow: 0 32px 64px -24px color-mix(in oklab, black 70%, transparent);
+}
+/* A form is staggered row by row rather than as one block. */
+[data-auth-stagger] > :not(form, [data-slot="sign-in-flow"]),
+[data-auth-stagger] > form > *,
+[data-slot="sign-in-flow-step"] > :not(form),
+[data-slot="sign-in-flow-step"] > form > * {
+  animation: nq-auth-rise 440ms var(--nq-auth-ease) backwards;
+  animation-delay: calc(var(--nq-auth-base, 180ms) + (var(--nq-auth-i, 0) + var(--nq-auth-j, 0)) * 50ms);
+}
+/* The split variant has no card lifting in first, so its rows start sooner. */
+[data-variant="split"] [data-auth-stagger] {
+  --nq-auth-base: 60ms;
+}
+[data-auth-stagger] > :nth-child(2),
+[data-auth-stagger] > form > :nth-child(1) { --nq-auth-i: 1; }
+[data-auth-stagger] > :nth-child(3),
+[data-auth-stagger] > form > :nth-child(2) { --nq-auth-i: 2; }
+[data-auth-stagger] > :nth-child(4),
+[data-auth-stagger] > form > :nth-child(3) { --nq-auth-i: 3; }
+[data-auth-stagger] > :nth-child(5),
+[data-auth-stagger] > form > :nth-child(4) { --nq-auth-i: 4; }
+[data-auth-stagger] > :nth-child(6),
+[data-auth-stagger] > form > :nth-child(5) { --nq-auth-i: 5; }
+[data-auth-stagger] > :nth-child(n + 7),
+[data-auth-stagger] > form > :nth-child(n + 6) { --nq-auth-i: 6; }
+/* SignInFlow: its rows continue the page's count; after the first step change they start at once. */
+[data-slot="sign-in-flow-step"] > :nth-child(2),
+[data-slot="sign-in-flow-step"] > form > :nth-child(2) { --nq-auth-j: 1; }
+[data-slot="sign-in-flow-step"] > :nth-child(3),
+[data-slot="sign-in-flow-step"] > form > :nth-child(3) { --nq-auth-j: 2; }
+[data-slot="sign-in-flow-step"] > :nth-child(n + 4),
+[data-slot="sign-in-flow-step"] > form > :nth-child(n + 4) { --nq-auth-j: 3; }
+[data-slot="sign-in-flow"][data-moved] {
+  --nq-auth-base: 0ms;
+  --nq-auth-i: 0;
+  --nq-auth-rise: 6px;
+}
+[data-slot="auth-layout-footer"] {
+  animation: nq-auth-fade 500ms var(--nq-auth-ease) 520ms backwards;
+}
+
 /* Workflow network: connectors draw in (pathLength is normalised to 1 on the path). */
 .nq-net-draw {
   stroke-dasharray: 1;

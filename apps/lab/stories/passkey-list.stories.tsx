@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { ArabicScope, useAr, wait } from "./_account-demo";
 
-const meta = { title: "Components/Account/Passkey List" } satisfies Meta;
+const meta = { title: "Components/Security/Passkey List" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

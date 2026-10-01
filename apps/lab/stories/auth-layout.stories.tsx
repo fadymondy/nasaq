@@ -1,6 +1,6 @@
 import { AuthLayout, LoginForm } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BrandPanel, StoryFooter, fakeLogin, useAr } from "./_auth";
+import { BrandPanel, ForgotLink, SignUpPrompt, StoryFooter, fakeLogin, useAr } from "./_auth";
 
 const meta = { title: "Components/Auth/Auth Layout", component: AuthLayout, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof AuthLayout>;
 export default meta;
@@ -8,13 +8,13 @@ type Story = StoryObj;
 
 function Form() {
   const ar = useAr();
-  return <LoginForm onSubmit={(v) => fakeLogin(v.password, ar)} oauthProviders={["google", "github"]} />;
+  return <LoginForm onSubmit={(v) => fakeLogin(v.password, ar)} forgotPassword={<ForgotLink />} oauthProviders={["google", "github"]} />;
 }
 
 function Card() {
   const ar = useAr();
   return (
-    <AuthLayout title={ar ? "مرحبًا بعودتك" : "Welcome back"} description={ar ? "سجّل الدخول إلى حسابك." : "Sign in to your account."} footer={<StoryFooter />}>
+    <AuthLayout title={ar ? "مرحبًا بعودتك" : "Welcome back"} description={ar ? "سجّل الدخول إلى حسابك." : "Sign in to your account."} prompt={<SignUpPrompt />} footer={<StoryFooter />}>
       <Form />
     </AuthLayout>
   );
@@ -23,7 +23,7 @@ function Card() {
 function Split() {
   const ar = useAr();
   return (
-    <AuthLayout variant="split" panel={<BrandPanel />} title={ar ? "مرحبًا بعودتك" : "Welcome back"} description={ar ? "سجّل الدخول إلى حسابك." : "Sign in to your account."} footer={<StoryFooter />}>
+    <AuthLayout variant="split" panel={<BrandPanel />} title={ar ? "مرحبًا بعودتك" : "Welcome back"} description={ar ? "سجّل الدخول إلى حسابك." : "Sign in to your account."} prompt={<SignUpPrompt />} footer={<StoryFooter />}>
       <Form />
     </AuthLayout>
   );

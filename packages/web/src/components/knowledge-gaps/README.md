@@ -1,12 +1,12 @@
 ---
 name: knowledge-gaps
 title: KnowledgeGaps
-category: ai
+category: ai-agents
 status: beta
 summary: Queries a knowledge base could not answer, grouped as open, indexed or dismissed, with hit counts, first and last asked, and actions to mark indexed, dismiss or reopen.
 exports: [KnowledgeGapsLabels, KnowledgeGap, KnowledgeGapResult, KnowledgeGapsProps, KnowledgeGaps]
 related: [semantic-search, brain-list, copilot-chat]
-story: components-ai-knowledge-gaps
+story: components-ai-agents-knowledge-gaps
 keywords: [knowledge gap, unanswered, memory, brain, triage, search]
 ---
 
@@ -96,4 +96,4 @@ Status is text plus an icon, never colour alone. Action buttons carry the query 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-knowledge-gaps--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-knowledge-gaps--docs

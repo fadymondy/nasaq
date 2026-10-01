@@ -2,7 +2,7 @@ import { KanbanBoard, type KanbanCardData, type KanbanColumnData, NasaqProvider,
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 
-const meta = { title: "Components/Collaboration/Kanban board", component: KanbanBoard } satisfies Meta<typeof KanbanBoard>;
+const meta = { title: "Components/Projects & Work/Kanban board", component: KanbanBoard } satisfies Meta<typeof KanbanBoard>;
 export default meta;
 type Story = StoryObj;
 

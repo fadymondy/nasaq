@@ -2,7 +2,7 @@ import { CupTracker } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Builder, Catalogue, Cups, Flagged, Strip } from "./_w4-health";
 
-const meta = { title: "Components/Health/Health Trackers", component: CupTracker, parameters: { layout: "padded" } } satisfies Meta<typeof CupTracker>;
+const meta = { title: "Components/Wellness/Health Trackers", component: CupTracker, parameters: { layout: "padded" } } satisfies Meta<typeof CupTracker>;
 export default meta;
 type Story = StoryObj;
 

@@ -2,7 +2,7 @@ import { CampaignComposer } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CampaignComposerDemo, makeAudiences } from "./_crm-r1-demo";
 
-const meta = { title: "Components/CRM/Campaign Composer", component: CampaignComposer, parameters: { layout: "padded" } } satisfies Meta<typeof CampaignComposer>;
+const meta = { title: "Components/Marketing/Campaign Composer", component: CampaignComposer, parameters: { layout: "padded" } } satisfies Meta<typeof CampaignComposer>;
 export default meta;
 type Story = StoryObj;
 

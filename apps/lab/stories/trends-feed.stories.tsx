@@ -4,7 +4,7 @@ import { useState } from "react";
 import { t, useAr, wait } from "./_s-demo";
 import { trendSources, trendTopics } from "./_s-demo-reports";
 
-const meta = { title: "Pages/Analytics/Trends", component: TrendsFeed, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof TrendsFeed>;
+const meta = { title: "Components/Marketing/Pages/Trends", component: TrendsFeed, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof TrendsFeed>;
 export default meta;
 type Story = StoryObj;
 

@@ -6,7 +6,7 @@ status: beta
 summary: Full-screen voice call with an AI agent showing who, how long, a level-driven visualiser, the listening, thinking or speaking state, live captions and mute, captions and hang-up controls.
 exports: [VoiceCallLabels, VoiceVisualizerProps, VoiceVisualizer, VoiceCaption, VoiceAgent, VoiceCallOverlayProps, VoiceCallOverlay, voiceLevelFromSamples, formatVoiceCallTime, VoiceCallState]
 related: [ai-states, copilot-chat, focus-status]
-story: components-ai-voice-call-overlay
+story: components-ai-assistant-voice-call-overlay
 keywords: [voice, call, agent, audio, visualizer, level, listening, speaking, captions]
 ---
 
@@ -100,4 +100,4 @@ The state is spoken text, not only motion. Mute and captions are toggle buttons 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-voice-call-overlay--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-assistant-voice-call-overlay--docs

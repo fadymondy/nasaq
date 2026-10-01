@@ -1,12 +1,12 @@
 ---
 name: admin-users
 title: AdminUsers
-category: layout
+category: admin
 status: beta
 summary: User management for an admin area. Summary tiles, a filterable users table, an add-user dialog and per-row actions to verify, disable, reset password, impersonate and edit roles.
 exports: [AdminUsers, AddUserDialog, UserRolesDialog, AdminUsersProps, AdminUsersLabels, AddUserDialogProps, UserRolesDialogProps, ManagedUser, ManagedRole, ManagedUserStatus, NewUserValues, AdminActionResult, AddUserResult]
 related: [admin-area, admin-tenants, data-table, stat-card]
-story: components-layout-admin-users
+story: components-admin-admin-users
 base-ui: [dialog, alert-dialog, checkbox]
 keywords: [admin, users, table, verify, disable, reset password, impersonate, roles, invite]
 ---
@@ -118,4 +118,4 @@ Uses StatCard, DataTable and Badge styles. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-admin-users--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-admin-admin-users--docs

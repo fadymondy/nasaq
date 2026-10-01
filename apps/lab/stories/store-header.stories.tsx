@@ -17,7 +17,7 @@ import {
   wait,
 } from "./_store-chrome-demo";
 
-const meta = { title: "Components/Commerce/Store Header", component: StoreHeader, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof StoreHeader>;
+const meta = { title: "Components/Storefront/Store Header", component: StoreHeader, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof StoreHeader>;
 export default meta;
 type Story = StoryObj;
 

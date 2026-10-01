@@ -1,12 +1,12 @@
 ---
 name: engine-details
 title: Engine Details
-category: health
+category: wellness
 status: beta
 summary: One protocol engine's own page with its live card, per-day history, record timeline and the fixed protocol it follows.
 exports: [EngineDetails, EngineDetailsProps, EngineDetailsLabels, EngineRecordEntry]
 related: [engine-card, daily-summary, chart, timeline, stat-card]
-story: components-health-engine-details
+story: components-wellness-engine-details
 base-ui: [toggle-group]
 keywords: [health, engine, history, streak, protocol, timeline, verdict, hydration, caffeine, gerd]
 ---

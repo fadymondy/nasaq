@@ -1,12 +1,12 @@
 ---
 name: agent-steps
 title: Agent Steps and Confirm
-category: ai
+category: ai-agents
 status: beta
 summary: The tool calls an agent made and a human-in-the-loop confirm before it acts. A step list with arguments, results and retry, plus a diff review with per-change ticks, risk, and Apply or Reject.
 exports: [AgentStepsLabels, AgentSteps, AgentDiff, AgentConfirm, AgentStepsProps, AgentDiffProps, AgentConfirmProps, AgentStep, AgentStepStatus, AgentChange, AgentRisk, AgentChangeKind, AgentRunState, AgentStepCounts, agentRunState, agentStepCounts, currentStep, totalDurationMs, AGENT_MASK, redactDeep, stringifyArgs, resultLanguage, agentChangeKind, agentHighestRisk, selectedChangeIds, toggleId]
 related: [ai-states, copilot-chat, approval-queue, run-history, step-editor, version-history, code-block]
-story: components-ai-agent-steps-and-confirm
+story: components-ai-agents-agent-steps-and-confirm
 base-ui: [collapsible, checkbox, dialog]
 keywords: [agent, tool call, steps, confirm, approval, human in the loop, diff, apply, reject, risk]
 ---

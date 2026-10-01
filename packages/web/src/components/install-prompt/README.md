@@ -1,12 +1,12 @@
 ---
 name: install-prompt
 title: InstallPrompt
-category: utilities
+category: platforms
 status: beta
 summary: A PWA install dialog with a hook for the browser's install event and an iPhone walkthrough, plus a per-device push opt-in that reuses the notification permission prompt and lists subscribed devices.
 exports: [InstallPromptLabels, useInstallPrompt, InstallPromptProps, InstallPrompt, PushDevice, PushOptInProps, PushOptIn]
 related: [desktop-notification, install-button, app-update, chrome-extension-install]
-story: components-utilities-install-prompt
+story: components-apps-platforms-install-prompt
 base-ui: [dialog, switch]
 keywords: [pwa, install, add to home screen, beforeinstallprompt, push, web push, notifications, opt in, devices, ios]
 ---

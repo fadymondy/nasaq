@@ -2,7 +2,7 @@ import { Wallet, WalletBalance, type WalletTransaction, WalletTransactions } fro
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useAr, wait } from "./_profile-demo";
 
-const meta = { title: "Components/Commerce/Wallet", component: Wallet, parameters: { layout: "padded" } } satisfies Meta<typeof Wallet>;
+const meta = { title: "Components/Billing/Wallet", component: Wallet, parameters: { layout: "padded" } } satisfies Meta<typeof Wallet>;
 export default meta;
 type Story = StoryObj;
 

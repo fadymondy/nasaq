@@ -1,12 +1,12 @@
 ---
 name: ai-model-picker
 title: AiModelPicker
-category: ai
+category: ai-agents
 status: beta
 summary: Choose the model, its reasoning effort and a required agent or skill, as cards or one compact toolbar row, plus a PersonaPicker with prompt starters and the compact AiModelSelect that CopilotChat uses.
 exports: [AiModelSelect, AiModelSelectProps, AiModelPicker, AiModelPickerProps, AiModelPickerLabels, AiModel, AiModelTier, AiAgentOption, AiModelSelection, PersonaPicker, PersonaPickerProps, AiPersona]
 related: [copilot-chat, model-routing-editor, ai-usage-cost, radio-group, select]
-story: components-ai-ai-model-picker
+story: components-ai-agents-ai-model-picker
 base-ui: [radio-group, select, toggle-group, field]
 keywords: [ai, model, reasoning, effort, agent, skill, persona, prompt starters, picker, llm]
 ---
@@ -148,4 +148,4 @@ Models are a radio group (arrow keys move and select). Effort is a segmented con
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-ai-model-picker--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-ai-model-picker--docs

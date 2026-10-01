@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { vitalsReport } from "./_analytics-demo";
 
-const meta = { title: "Components/Analytics/Web Vital Gauge", component: WebVitalGauge, parameters: { layout: "padded" } } satisfies Meta<typeof WebVitalGauge>;
+const meta = { title: "Components/Monitoring/Web Vital Gauge", component: WebVitalGauge, parameters: { layout: "padded" } } satisfies Meta<typeof WebVitalGauge>;
 export default meta;
 type Story = StoryObj;
 

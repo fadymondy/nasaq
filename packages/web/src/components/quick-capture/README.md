@@ -1,12 +1,12 @@
 ---
 name: quick-capture
 title: QuickCapture
-category: workflow
+category: productivity
 status: beta
 summary: A capture window opened by a global shortcut to jot a note or clip a page, with tags, a destination and save with Ctrl or Cmd plus Enter.
 exports: [QuickCaptureLabels, QuickCaptureDestination, QuickCapturePage, QuickCaptureProps, QuickCapture]
 related: [dialog, command-palette, notes, chrome-extension-install]
-story: components-workflow-quick-capture
+story: components-productivity-quick-capture
 base-ui: [dialog]
 keywords: [quick capture, clipper, web clipper, inbox, shortcut, global hotkey, note, jot]
 ---
@@ -152,4 +152,4 @@ Uses the dialog, control and `--nq-*` selected and focus tokens. Target `data-sl
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-quick-capture--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-productivity-quick-capture--docs

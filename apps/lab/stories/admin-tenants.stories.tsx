@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useTenantsDemo } from "./_admin-demo";
 import { ArabicScope, useAr } from "./_profile-demo";
 
-const meta = { title: "Components/Layout/Admin Tenants", component: AdminWorkspaces, parameters: { layout: "padded" } } satisfies Meta<typeof AdminWorkspaces>;
+const meta = { title: "Components/Admin/Admin Tenants", component: AdminWorkspaces, parameters: { layout: "padded" } } satisfies Meta<typeof AdminWorkspaces>;
 export default meta;
 type Story = StoryObj;
 

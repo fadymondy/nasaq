@@ -1,12 +1,12 @@
 ---
 name: graph-view
 title: Graph view
-category: data-display
+category: charts
 status: beta
 summary: One knowledge graph in four views, a live force-directed graph with draggable shaped nodes, a schema of columns with connectors, a card grid and a sortable list, with shared search, type filters and a node inspector.
 exports: [GraphView, GraphViewMode, GraphLabelPosition, GraphViewNode, GraphViewLink, GraphViewKind, GraphViewLinkKind, GraphNodeRenderContext, GraphViewLabels, GraphViewProps]
 related: [tree-view, entity-list, data-table, workflow-network]
-story: components-data-display-graph-view
+story: components-charts-maps-graph-view
 base-ui: [toggle-group]
 keywords: [graph, knowledge graph, network, nodes, links, relations, brain, mindmap, inspector, grid, list, schema, force, simulation, drag, shapes]
 ---
@@ -174,4 +174,4 @@ One column per type, with the count in the header and a card per node. Cards are
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-graph-view--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-maps-graph-view--docs

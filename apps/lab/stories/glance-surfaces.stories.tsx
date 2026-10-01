@@ -2,7 +2,7 @@ import { TrayPopover } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { GlanceDemo, WidgetGalleryDemo } from "./_w1-demo";
 
-const meta = { title: "Components/Layout/Glance Surfaces", component: TrayPopover, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof TrayPopover>;
+const meta = { title: "Components/Apps & Platforms/Glance Surfaces", component: TrayPopover, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof TrayPopover>;
 export default meta;
 type Story = StoryObj;
 

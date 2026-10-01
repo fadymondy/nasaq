@@ -1,12 +1,12 @@
 ---
 name: proxy-hosts
 title: ProxyHosts
-category: developer
+category: server-tools
 status: beta
 summary: A reverse-proxy host editor - a table of hosts with upstream, TLS mode and websockets, an enabled switch per host, and a dialog to add or edit one. Domains reuse DomainChips.
 exports: [ProxyHostsLabels, ProxyHostsResult, ProxyHost, ProxyHostInput, ProxyHostsProps, ProxyHosts, isValidUpstream, parseHosts, ProxyHostError, TlsMode, tlsModeAllowsWebsockets, validateProxyHost]
 related: [domains-manager, network-rules, cert-monitor, data-table]
-story: components-developer-proxy-hosts
+story: components-server-tools-proxy-hosts
 base-ui: [dialog, alert-dialog, field, select, switch]
 keywords: [reverse proxy, proxy host, upstream, tls, websockets, nginx, ssl]
 ---
@@ -110,4 +110,4 @@ const errors = validateProxyHost({ hosts: parseHosts("a.example.com, b.example.c
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-proxy-hosts--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-proxy-hosts--docs

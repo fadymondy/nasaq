@@ -1,12 +1,12 @@
 ---
 name: import-wizard
 title: ImportWizard
-category: forms
+category: files
 status: beta
 summary: A four step wizard that imports rows from a CSV or pasted text. It maps columns to fields, previews and validates rows, then commits the valid ones.
 exports: [ImportWizard, ImportWizardProps, ImportWizardLabels, ImportResult, ImportField, ImportFieldType, ColumnMapping, IssueCode, RowIssue, ParsedRow, ParsedCsv, parseCsv, detectDelimiter, guessMapping, checkType, buildRows, unmappedRequired, summarize]
 related: [file-upload, stepper, table, progress]
-story: components-forms-import-wizard
+story: components-files-import-wizard
 base-ui: [checkbox, select]
 keywords: [import, csv, upload, column mapping, preview, validation, spreadsheet, bulk, contacts]
 ---
@@ -95,4 +95,4 @@ Uses `Table`, `Progress`, `Alert` and `Badge` tokens; nothing custom.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-import-wizard--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-files-import-wizard--docs

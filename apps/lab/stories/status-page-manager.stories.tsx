@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StatusManagerDemo } from "./_infra-demo";
 
-const meta = { title: "Components/Health/Status Page Manager" } satisfies Meta;
+const meta = { title: "Components/Monitoring/Status Page Manager" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

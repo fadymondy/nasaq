@@ -2,7 +2,7 @@ import { CodeBlock, InlineCode, useNasaq } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
-  title: "Components/Data Display/Code Block",
+  title: "Components/Developer Tools/Code Block",
   component: CodeBlock,
   args: {
     language: "tsx",

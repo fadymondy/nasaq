@@ -1,12 +1,12 @@
 ---
 name: canned-replies
 title: CannedRepliesManager
-category: crm
+category: chat
 status: beta
 summary: The library behind a reply composer's slash menu, with search, add, edit, duplicate and delete, variable buttons, a live preview and validation of duplicate shortcuts.
 exports: [CannedRepliesLabels, CannedRepliesLabelOverrides, CannedReply, CannedReplyVariable, CannedReplyResult, CannedRepliesManagerProps, CannedRepliesManager]
 related: [inbox, leads-inbox, email-templates, entity-list]
-story: components-crm-canned-replies
+story: components-chat-canned-replies
 keywords: [canned replies, snippets, saved replies, shortcuts, templates, macros, inbox]
 ---
 
@@ -87,4 +87,4 @@ Semantic tokens only.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-crm-canned-replies--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-chat-canned-replies--docs

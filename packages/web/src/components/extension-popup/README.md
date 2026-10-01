@@ -1,12 +1,12 @@
 ---
 name: extension-popup
 title: ExtensionPopup
-category: layout
+category: platforms
 status: beta
 summary: Browser extension surfaces, a popup with connect and pair, mini status cards, a pause switch and quick actions, plus an options page with a save bar.
 exports: [ExtensionPopupLabels, ExtensionStatus, isServerAddress, ExtensionPopupProps, ExtensionPopup, ExtensionConnectValues, ExtensionConnectProps, ExtensionConnect, ExtensionMiniCardProps, ExtensionMiniCard, ExtensionQuickAction, ExtensionQuickActionsProps, ExtensionQuickActions, ExtensionOptionsSection, ExtensionOptionsPageProps, ExtensionOptionsPage, ExtensionOptionRowProps, ExtensionOptionRow]
 related: [switch, field, button, badge, glance-surfaces]
-story: pages-app-extension-popup
+story: components-apps-platforms-pages-extension-popup
 base-ui: [switch]
 keywords: [extension, popup, browser, chrome, connect, pair, options, quick actions, pause]
 ---

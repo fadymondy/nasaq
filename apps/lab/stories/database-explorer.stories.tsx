@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DatabaseDemo } from "./_explorer-demo";
 
-const meta = { title: "Components/Developer/Database Explorer" } satisfies Meta;
+const meta = { title: "Components/Server Tools/Database Explorer" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

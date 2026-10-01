@@ -6,7 +6,7 @@ status: beta
 summary: The states of an AI feature. Smart actions (sparkle button, split button, suggestion chips, Cmd or Ctrl J menu), loading (thinking indicator, shimmer, step labels), generating (streaming text with a caret, stop and regenerate, safe partial Markdown) and summarized (TL;DR card with key points, sources, confidence, feedback).
 exports: [AiStatesLabels, AiAction, AiSparkleButton, AiSplitButton, AiSuggestionChips, AiActionMenu, AiThinking, AiShimmer, AiStreamingText, AiStreamState, AiStreamControls, AiGeneratedLabel, AiConfidenceMeter, AiFeedback, AiSummary, usePrefersReducedMotion, confidenceLevel, confidencePercent, stepState, cycleIndex, nextRevealLength, safePartialMarkdown, scoreAction, groupAiActions, summaryToText, AiSparkleButtonProps, AiSplitButtonProps, AiSuggestionChipsProps, AiActionMenuProps, AiThinkingProps, AiShimmerProps, AiStreamingTextProps, AiStreamControlsProps, AiGeneratedLabelProps, AiConfidenceMeterProps, AiFeedbackProps, AiSummaryProps, AiActionGroups, AiActionLike, AiConfidence, AiStepState]
 related: [copilot-chat, markdown, spinner, states, chat, command-palette]
-story: components-ai-ai-states
+story: components-ai-assistant-ai-states
 base-ui: [autocomplete, dialog, menu, collapsible]
 keywords: [ai, sparkle, streaming, typing, caret, thinking, shimmer, summary, tldr, citations, confidence, regenerate, action menu]
 ---

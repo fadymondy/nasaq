@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { BackupDemo } from "./_ops-demo";
 
-const meta = { title: "Components/Developer/Backup Manager" } satisfies Meta;
+const meta = { title: "Components/Server Tools/Backup Manager" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

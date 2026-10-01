@@ -1,12 +1,12 @@
 ---
 name: server-card
 title: ServerCard
-category: developer
+category: server-tools
 status: beta
 summary: One server on a card - status, address, hardware, live CPU, memory and disk meters with a sparkline, last deploy, power controls that follow the state, snapshots to take, roll back and delete, and a resource limits editor.
 exports: [ServerCardLabels, ServerCardResult, ServerSnapshot, ServerMetrics, ServerDeploy, ServerInfo, ServerCardProps, ServerCard, formatDisk, formatMemory, isTransitional, LIMIT_RANGES, LimitError, ServerLimitField, PowerAction, powerActionsFor, ServerLimits, ServerStatus, validateLimits]
 related: [network-rules, backup-manager, deploy-view, metric-tiles, sparkline, alert-dialog]
-story: components-developer-server-card
+story: components-server-tools-server-card
 base-ui: [alert-dialog, dialog, menu, context-menu, meter]
 keywords: [server, vps, power, restart, snapshot, rollback, resource limits, cpu, memory, disk]
 ---
@@ -126,4 +126,4 @@ export const Stopped = () => <ServerCard server={{ ...server, status: "stopped",
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-server-card--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-server-card--docs

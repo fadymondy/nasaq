@@ -1,12 +1,12 @@
 ---
 name: product-card
 title: ProductCard
-category: commerce
+category: store
 status: beta
 summary: "Store card for a product (artwork, name, pitch, rating, price, install action) with no border; switches between tile and row by container width. Includes ProductGrid and a compact ProductList."
 exports: [ProductCard, ProductGrid, ProductList, ProductListItem, ProductCardProps, ProductListItemProps]
 related: [bundle-card, spotlight, product-artwork, price, rating, install-button, section-header]
-story: components-commerce-product-card
+story: components-storefront-product-card
 base-ui: []
 keywords: [product, store, catalogue, app, card, grid, shelf, install, price, container-query]
 ---
@@ -231,4 +231,4 @@ export function Modules() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-product-card--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-product-card--docs

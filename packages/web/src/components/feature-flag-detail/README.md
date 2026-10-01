@@ -1,12 +1,12 @@
 ---
 name: feature-flag-detail
 title: FeatureFlagDetail
-category: developer
+category: developer-tools
 status: beta
 summary: "One feature flag in full: on/off and percentage rollout per environment, targeting rules built with the rule builder, weighted variants, a kill switch and the audit history."
 exports: [FeatureFlagDetailLabels, FeatureFlagDetailProps, FeatureFlagDetail, FlagAuditHistory]
 related: [feature-flags, rule-builder, slider, switch, timeline, kill-switch]
-story: components-developer-feature-flag-detail
+story: components-developer-tools-feature-flag-detail
 base-ui: [tabs, switch, slider, alert-dialog]
 keywords: [feature flag, rollout, targeting, variants, kill switch, audit, environments]
 ---
@@ -133,4 +133,4 @@ State and the killed banner use the danger, success, warning and neutral tokens.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-feature-flag-detail--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-feature-flag-detail--docs

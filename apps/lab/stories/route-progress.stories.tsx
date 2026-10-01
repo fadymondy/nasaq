@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { useAr, wait } from "./_lifecycle-demo";
 
-const meta = { title: "Components/Feedback/Route Progress" } satisfies Meta;
+const meta = { title: "Components/Loading & States/Route Progress" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

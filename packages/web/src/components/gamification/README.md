@@ -1,12 +1,12 @@
 ---
 name: gamification
 title: Gamification
-category: data-display
+category: gamification
 status: beta
 summary: A kit for progress and rewards. Leaderboard with period tabs, podium, movement arrows and your rank pinned, a badge grid with earned, in-progress and locked states and rarity, achievement card, XP and level progress, streak counter with calendar, reward cards and an unlock toast that respects reduced motion.
 exports: [GamificationLabels, RarityBadge, Achievement, AchievementMedal, BadgeGrid, AchievementCard, XpProgress, StreakCounter, StreakCalendar, StreakCard, LeaderboardEntry, LeaderboardPeriod, Leaderboard, RewardStatus, RewardCard, AchievementUnlockToast, achievementStatus, achievementPercent, filterAchievements, achievementCounts, rankEntries, movement, splitPodium, pinnedEntry, xpForLevel, levelProgress, streakStats, monthGrid, RARITIES, rarityRank, RarityBadgeProps, AchievementMedalProps, BadgeGridProps, AchievementCardProps, XpProgressProps, StreakCounterProps, StreakCalendarProps, StreakCardProps, LeaderboardProps, RewardCardProps, AchievementUnlockToastProps, dayKey, toDayKey, AchievementFilter, AchievementLike, AchievementStatus, CalendarCell, LeaderboardEntryLike, LevelCurve, LevelProgress, MovementDirection, Ranked, Rarity, StreakStats]
 related: [progress, badge, card, tabs, avatar, toast]
-story: components-data-display-gamification
+story: components-gamification-gamification
 base-ui: [tabs, progress]
 keywords: [gamification, leaderboard, badges, achievements, xp, level, streak, rewards, collectibles, podium, rarity]
 ---

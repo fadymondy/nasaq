@@ -1,12 +1,12 @@
 ---
 name: checkout-steps
 title: CheckoutSteps
-category: commerce
+category: store
 status: beta
 summary: A five-step subscription checkout (plan, billing details, payment method, review, success) with a presentational card form, order summary and Intl money.
 exports: [CheckoutLabels, CheckoutInterval, CheckoutStep, PaymentMethodKind, CheckoutPlan, CheckoutBilling, CheckoutCountry, CheckoutPaymentSummary, CheckoutOrder, CheckoutResult, planTotal, PaymentFormValue, emptyPaymentForm, PaymentFormErrors, validatePaymentForm, PaymentMethodFormProps, PaymentMethodForm, CheckoutStepsProps, CheckoutSteps]
 related: [plan-card, price, stepper, invoice-view, wallet]
-story: components-commerce-checkoutsteps
+story: components-storefront-checkoutsteps
 base-ui: [radio-group, select, checkbox, field]
 keywords: [checkout, subscription, billing, payment, card, plan, stepper, vat, order]
 ---
@@ -202,4 +202,4 @@ composes. Target `[data-slot="checkout-steps"]`; extend with `className`. Do not
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-checkoutsteps--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-checkoutsteps--docs

@@ -3,7 +3,7 @@ import { Tabs, TabsIndicator, TabsList, TabsPanel, TabsTab } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MailDomainsDemo, SmtpSettingsDemo, useAr } from "./_infra-admin-demo";
 
-const meta = { title: "Pages/Admin/Mail Settings", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Server Tools/Pages/Mail Settings", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

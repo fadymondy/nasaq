@@ -2,7 +2,7 @@ import { ApiReference } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { apiTools, useAr } from "./_devtools-q3-demo";
 
-const meta = { title: "Components/Developer/API Reference", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Developer Tools/API Reference", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { TRASH_NOW, TRASH_TYPES, trashItems, wait } from "./_w2-demo";
 
-const meta = { title: "Components/Data Display/Trash Bin", component: TrashBin, parameters: { layout: "padded" } } satisfies Meta<typeof TrashBin>;
+const meta = { title: "Components/Files/Trash Bin", component: TrashBin, parameters: { layout: "padded" } } satisfies Meta<typeof TrashBin>;
 export default meta;
 type Story = StoryObj;
 

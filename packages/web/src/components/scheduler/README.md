@@ -1,12 +1,12 @@
 ---
 name: scheduler
 title: Scheduler
-category: collaboration
+category: productivity
 status: beta
 summary: Read-only day, week and month schedule with overlap-aware event blocks, plus SlotPicker, a booking-style Calendar and radio list of available times.
 exports: [Scheduler, SlotPicker, SchedulerProps, SlotPickerProps, SchedulerSlot, layoutDayEvents, eventBox, timeSlots]
 related: [calendar, date-picker, popover, toggle-group, radio-group]
-story: components-collaboration-scheduler
+story: components-productivity-scheduler
 base-ui: [toggle-group, popover, radio, radio-group]
 keywords: [schedule, calendar, agenda, events, booking, slots, week, month, day, appointments, rtl]
 ---
@@ -201,4 +201,4 @@ tokens (`nq-success`, `nq-warning`, `nq-danger`, `nq-info`) and `nq-brand` for e
 - [ToggleGroup](../toggle-group/README.md)
 
 ## Lab
-https://nasaq-ui.fadymondy.com/?path=/docs/components-collaboration-scheduler--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-productivity-scheduler--docs

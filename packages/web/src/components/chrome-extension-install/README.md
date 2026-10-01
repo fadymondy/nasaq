@@ -1,12 +1,12 @@
 ---
 name: chrome-extension-install
 title: ChromeExtensionInstall
-category: developer
+category: platforms
 status: beta
 summary: Three-step install flow for a Chrome extension (add from the Web Store, pin, sign in) with a detected state, re-check, sign-in action and a notice for unsupported browsers.
 exports: [ChromeExtensionInstall, ChromeExtensionInstallProps, ChromeExtensionInstallLabels]
 related: [whatsapp-qr-connect, integration-connector, status, alert]
-story: components-developer-chrome-extension-install
+story: components-apps-platforms-chrome-extension-install
 base-ui: []
 keywords: [chrome, extension, web store, install, pin, sign in, onboarding, browser]
 ---
@@ -120,4 +120,4 @@ export const Firefox = () => <ChromeExtensionInstall storeUrl="https://example.c
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-chrome-extension-install--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-apps-platforms-chrome-extension-install--docs

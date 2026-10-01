@@ -1,12 +1,12 @@
 ---
 name: stock-ledger
 title: Stock Ledger
-category: commerce
+category: store-admin
 status: beta
 summary: On-hand stock per warehouse computed from receive, issue and adjust movements, with a running-balance trail and a record dialog.
 exports: [stockCanIssue, stockCellKey, stockLevel, stockMatrix, stockOnHand, stockSignedQuantity, stockStatement, stockSum, stockTransfer, StockLevel, StockMatrix, StockMatrixRow, StockMovement, StockMovementType, StockProduct, StockStatementRow, StockWarehouse, StockLedgerLabels, useStockLedgerStrings, StockOnHandProps, StockOnHand, StockMovementListProps, StockMovementList, StockLedgerProps, StockLedger]
 related: [pos-register, data-table, line-item-editor, accounting-ledger]
-story: components-commerce-stock-ledger
+story: components-store-admin-stock-ledger
 base-ui: [dialog, select, toggle-group]
 keywords: [stock, inventory, warehouse, on hand, movement, receive, issue, adjust, transfer, reorder, ledger]
 ---
@@ -106,4 +106,4 @@ Semantic tokens only. Tables scroll sideways on narrow widths. Target `[data-slo
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-stock-ledger--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-stock-ledger--docs

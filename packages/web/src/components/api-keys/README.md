@@ -1,12 +1,12 @@
 ---
 name: api-keys
 title: ApiKeys
-category: developer
+category: developer-tools
 status: beta
 summary: API key management with a create form (name, scopes, expiry), a one-time secret reveal with copy, a masked list with scopes and last used, and confirmed rotate and revoke, driven by async callbacks.
 exports: [ApiKeys, ApiKeysProps, ApiKeysLabels, ApiKeyScope, ApiKeyRecord, ApiKeyCreateInput, ApiKeySecretResult, ApiKeyStatus, DateLike, EXPIRING_DAYS, daysLeft, expiryFromDays, keyStatus, maskKey, toggleScope]
 related: [mcp-connect, copy-button, alert-dialog, dialog, status]
-story: components-developer-api-keys
+story: components-developer-tools-api-keys
 base-ui: [alert-dialog, checkbox, dialog, field, input, select]
 keywords: [api key, token, secret, scopes, expiry, rotate, revoke, developer, credentials]
 ---
@@ -142,4 +142,4 @@ export const Rotating = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-api-keys--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-api-keys--docs

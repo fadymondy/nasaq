@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { accounts, CURRENCY, journalEntries, t, useAr, V1Page, wait } from "./_v1-demo";
 
-const meta = { title: "Pages/Finance/Accounting", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Billing/Pages/Accounting", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

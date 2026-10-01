@@ -2,7 +2,7 @@ import { KeywordPlanner } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { PlannerDemo } from "./_moharrik-demo";
 
-const meta = { title: "Components/Analytics/Keyword Planner", component: KeywordPlanner, parameters: { layout: "padded" } } satisfies Meta<typeof KeywordPlanner>;
+const meta = { title: "Components/SEO/Keyword Planner", component: KeywordPlanner, parameters: { layout: "padded" } } satisfies Meta<typeof KeywordPlanner>;
 export default meta;
 type Story = StoryObj;
 

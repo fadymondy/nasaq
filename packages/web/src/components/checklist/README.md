@@ -1,12 +1,12 @@
 ---
 name: checklist
 title: Checklist
-category: workflow
+category: work
 status: beta
 summary: A checklist with one level of subtasks, a progress bar, attachments and a row menu. A parent follows its subtasks and ticking a parent ticks them all.
 exports: [Checklist, ChecklistProps, ChecklistLabels, ChecklistItem, ChecklistAttachment, ChecklistProgress, isItemDone, subtaskState, checklistProgress, toggleItem, attachmentSize]
 related: [approval-queue, progress, checkbox, context-menu]
-story: components-workflow-checklist
+story: components-projects-work-checklist
 base-ui: [checkbox, context-menu]
 keywords: [checklist, subtasks, todo, progress, attachments, tasks]
 ---
@@ -88,4 +88,4 @@ Semantic tokens only.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-checklist--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-checklist--docs

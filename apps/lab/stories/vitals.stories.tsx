@@ -2,7 +2,7 @@ import { Vitals } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { demoVitals } from "./_health-demo";
 
-const meta = { title: "Components/Health/Vitals", component: Vitals, parameters: { layout: "padded" } } satisfies Meta<typeof Vitals>;
+const meta = { title: "Components/Wellness/Vitals", component: Vitals, parameters: { layout: "padded" } } satisfies Meta<typeof Vitals>;
 export default meta;
 type Story = StoryObj;
 

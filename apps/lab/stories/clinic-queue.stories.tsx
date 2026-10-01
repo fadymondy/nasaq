@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ClinicQueue, type QueueConnection } from "@nasaq/web";
 import { useDemoQueue } from "./_seatfor-demo";
 
-const meta = { title: "Components/Health/Clinic Queue", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Healthcare/Clinic Queue", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

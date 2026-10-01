@@ -6,7 +6,7 @@ status: beta
 summary: Semantic memory search with a query box, mode and limit, results with facet chips, highlighted words and a score with a level word.
 exports: [SemanticSearchLabels, SemanticHit, SemanticSearchOptions, SemanticSearchProps, SemanticSearch]
 related: [knowledge-gaps, brain-list, copilot-chat, command-palette]
-story: components-ai-semantic-search
+story: components-ai-assistant-semantic-search
 keywords: [semantic search, memory, recall, facets, score, brain, retrieval]
 ---
 
@@ -92,4 +92,4 @@ The score is shown as a word (strong, good, weak) as well as a bar. Facet chips 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-semantic-search--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-assistant-semantic-search--docs

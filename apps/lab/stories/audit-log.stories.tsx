@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArabicScope } from "./_team-demo";
 import { AuditDemo } from "./_team-pages";
 
-const meta = { title: "Components/Account/Audit Log", component: AuditLog, parameters: { layout: "padded" } } satisfies Meta<typeof AuditLog>;
+const meta = { title: "Components/Security/Audit Log", component: AuditLog, parameters: { layout: "padded" } } satisfies Meta<typeof AuditLog>;
 export default meta;
 type Story = StoryObj;
 

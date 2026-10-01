@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { NotificationsDemo, useAr } from "./_team-demo";
 import { PageShell } from "./_team-pages";
 
-const meta = { title: "Pages/Account/Notifications", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Account/Pages/Notifications", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

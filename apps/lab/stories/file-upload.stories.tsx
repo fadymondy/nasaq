@@ -2,7 +2,7 @@ import { Dropzone, FileUpload, type FileUploadControls, ImageUpload, NasaqProvid
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 
-const meta = { title: "Components/Pickers/File upload", component: FileUpload } satisfies Meta<typeof FileUpload>;
+const meta = { title: "Components/Files/File upload", component: FileUpload } satisfies Meta<typeof FileUpload>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

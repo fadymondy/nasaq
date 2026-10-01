@@ -1,12 +1,12 @@
 ---
 name: product-detail
 title: ProductDetail
-category: commerce
+category: store
 status: beta
 summary: "A complete product page from one CommerceProduct: gallery with zoom and swipe, availability-aware variant picker, quantity, price with percent off, stock and delivery lines, add to cart, buy now, sticky mobile bar, size guide and content sections."
 exports: [ProductDetail, ProductDetailProps, ProductBreadcrumb, ProductSpec, ProductDeliveryCity, ProductDeliveryConfig, ProductTrustIcon, ProductTrustBadge, ProductActionResult]
 related: [product-reviews, product-card, price, rating, dialog, tabs, accordion]
-story: components-commerce-product-detail
+story: components-storefront-product-detail
 base-ui: [radio, radio-group, dialog, tabs, accordion, select]
 keywords: [product, pdp, product page, gallery, variant, size, colour, swatch, quantity, add to cart, buy now, wishlist, delivery, store]
 ---
@@ -161,4 +161,4 @@ Set the provider locale to `ar`; everything, including numbers and dates, follow
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-product-detail--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-product-detail--docs

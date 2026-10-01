@@ -25,7 +25,7 @@ const withNative: Decorator = (Story, { globals }) => (
 );
 
 const meta = {
-  title: "Platforms/Mobile (Native)/Foundation",
+  title: "Components/Apps & Platforms/Patterns/Mobile (Native) Foundation",
   decorators: [withNative],
   parameters: { layout: "padded" },
 } satisfies Meta;

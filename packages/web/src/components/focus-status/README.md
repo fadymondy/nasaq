@@ -1,12 +1,12 @@
 ---
 name: focus-status
 title: FocusStatusChip
-category: health
+category: productivity
 status: beta
 summary: Focus presence, a header status chip with the time left, an avatar with an in-focus dot, and a do not disturb switch. focusStateOf derives the state from a pomodoro.
 exports: [FocusStatusLabels, FocusStatusChipProps, FocusStatusChip, FocusAvatarProps, FocusAvatar, DoNotDisturbToggleProps, DoNotDisturbToggle]
 related: [pomodoro, avatar, status, countdown, badge]
-story: components-health-focus-status
+story: components-productivity-focus-status
 base-ui: [switch, avatar]
 keywords: [focus, presence, status, do not disturb, dnd, avatar, busy, break, chip]
 ---
@@ -159,4 +159,4 @@ Tokens only (`bg-nq-success`, `bg-primary`, `bg-nq-warning-soft`, `border-backgr
 
 ## Lab
 
-`https://nasaq-ui.fadymondy.com/?path=/docs/components-health-focus-status--docs`
+`https://nasaq-ui.fadymondy.com/?path=/docs/components-productivity-focus-status--docs`

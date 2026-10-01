@@ -9,7 +9,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseFrontmatter } from "../../../packages/mcp/src/catalog.mjs";
+import { CATEGORIES, parseFrontmatter } from "../../../packages/mcp/src/catalog.mjs";
 
 const site = join(dirname(fileURLToPath(import.meta.url)), "..");
 const root = join(site, "..", "..");
@@ -17,8 +17,57 @@ const componentsDir = join(root, "packages/web/src/components");
 const out = join(site, "content/docs/components");
 const REGISTRY = "https://nasaq-ui.fadymondy.com/r";
 const LAB = "https://nasaq-ui.fadymondy.com";
-const CATEGORIES = ["layout", "navigation", "actions", "forms", "data-display", "feedback", "overlays", "brand", "typography", "utilities"];
-const label = (c) => c.replace(/(^|-)(\w)/g, (_, s, ch) => (s ? " " : "") + ch.toUpperCase());
+const LABELS = {
+  account: "Account",
+  actions: "Actions",
+  admin: "Admin",
+  ai: "AI Assistant",
+  "ai-agents": "AI Agents",
+  alerts: "Alerts & Notifications",
+  analytics: "Analytics",
+  auth: "Auth",
+  billing: "Billing",
+  bookings: "Bookings",
+  brand: "Brand",
+  charts: "Charts & Maps",
+  chat: "Chat",
+  collaboration: "Collaboration",
+  crm: "CRM",
+  "data-display": "Data Display",
+  "developer-tools": "Developer Tools",
+  editors: "Editors",
+  feedback: "Loading & States",
+  "feedback-sdk": "Feedback SDK",
+  files: "Files",
+  "form-builders": "Form Builders",
+  forms: "Forms",
+  gamification: "Gamification",
+  healthcare: "Healthcare",
+  integrations: "Integrations",
+  keyboard: "Keyboard & Commands",
+  layout: "Layout",
+  marketing: "Marketing",
+  monitoring: "Monitoring",
+  navigation: "Navigation",
+  onboarding: "Onboarding",
+  overlays: "Overlays",
+  pickers: "Pickers",
+  platforms: "Apps & Platforms",
+  pricing: "Pricing",
+  productivity: "Productivity",
+  security: "Security",
+  seo: "SEO",
+  "server-tools": "Server Tools",
+  store: "Storefront",
+  "store-admin": "Store Admin",
+  typography: "Typography",
+  utilities: "Utilities",
+  website: "Website",
+  wellness: "Wellness",
+  work: "Projects & Work",
+  workflow: "Workflow",
+};
+const label = (c) => LABELS[c] ?? c.replace(/(^|-)(\w)/g, (_, s, ch) => (s ? " " : "") + ch.toUpperCase());
 const registryItems = new Set(
   existsSync(join(root, "apps/lab/.registry/r")) ? readdirSync(join(root, "apps/lab/.registry/r")).map((f) => f.replace(/\.json$/, "")) : [],
 );
@@ -54,7 +103,8 @@ for (const name of readdirSync(componentsDir).sort()) {
 }
 
 const pages = ["index"];
-for (const [category, names] of byCategory) {
+// Sidebar groups run alphabetically by their label, like the Lab.
+for (const [category, names] of [...byCategory].sort(([a], [b]) => label(a).localeCompare(label(b)))) {
   if (!names.length) continue;
   pages.push(`---${label(category)}---`, ...names);
 }

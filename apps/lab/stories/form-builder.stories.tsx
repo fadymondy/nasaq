@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 import { wait } from "./_r2-demo";
 
-const meta = { title: "Components/Forms/Form builder", component: FormBuilder } satisfies Meta<typeof FormBuilder>;
+const meta = { title: "Components/Form Builders/Form builder", component: FormBuilder } satisfies Meta<typeof FormBuilder>;
 export default meta;
 type Story = StoryObj;
 

@@ -1,12 +1,12 @@
 ---
 name: setup-wizard
 title: SetupWizard
-category: workflow
+category: onboarding
 status: beta
 summary: "Multi-step first-run wizard with a server-decided completion gate, plus a guided connect step that waits live for an agent to enroll."
 exports: [SetupWizardLabels, SetupStep, SetupWizardProps, SetupWizard, AgentEnrollStatus, EnrolledAgent, AgentEnrollWaitProps, AgentEnrollWait]
 related: [stepper, progress, copy-field, alert]
-story: pages-app-setup-wizard
+story: components-onboarding-pages-setup-wizard
 base-ui: []
 keywords: [setup, onboarding, wizard, first run, stepper, gate, agent, enroll, connect]
 ---
@@ -133,4 +133,4 @@ export const step = (status: "waiting" | "connected"): SetupStep => ({
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-app-setup-wizard--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-onboarding-pages-setup-wizard--docs

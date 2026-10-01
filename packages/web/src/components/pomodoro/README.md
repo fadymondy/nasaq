@@ -1,12 +1,12 @@
 ---
 name: pomodoro
 title: PomodoroCard
-category: health
+category: productivity
 status: beta
 summary: A pomodoro with focus, short and long breaks. usePomodoro runs the cycle drift-free, PomodoroCard shows the ring, dots and linked task, and BreakLockScreen is the full-screen break.
 exports: [PomodoroLabels, UsePomodoroOptions, PomodoroController, usePomodoro, PomodoroTask, PomodoroCardProps, PomodoroCard, BreakSuggestionKind, BreakSuggestion, BreakLockScreenProps, BreakLockScreen]
 related: [countdown, focus-status, time-tracker, lock-screen, daily-summary]
-story: components-health-pomodoro-card
+story: components-productivity-pomodoro-card
 base-ui: [dialog, select, progress]
 keywords: [pomodoro, focus, break, timer, cycle, lock screen, stretch, water, task, session]
 ---
@@ -195,4 +195,4 @@ the card and `data-phase`, `data-confirming` on the break screen. The screen sit
 
 ## Lab
 
-`https://nasaq-ui.fadymondy.com/?path=/docs/components-health-pomodoro-card--docs`
+`https://nasaq-ui.fadymondy.com/?path=/docs/components-productivity-pomodoro-card--docs`

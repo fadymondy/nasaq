@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { summaryFor, TODAY } from "./_health-demo";
 
-const meta = { title: "Components/Health/Daily Summary", component: DailySummary, parameters: { layout: "padded" } } satisfies Meta<typeof DailySummary>;
+const meta = { title: "Components/Wellness/Daily Summary", component: DailySummary, parameters: { layout: "padded" } } satisfies Meta<typeof DailySummary>;
 export default meta;
 type Story = StoryObj;
 

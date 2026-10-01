@@ -4,7 +4,7 @@ import { useState } from "react";
 import { t, useAr } from "./_s-demo";
 import { pipelineStages, SAR } from "./_s-demo-reports";
 
-const meta = { title: "Pages/Analytics/CRM Pipeline", component: PipelineReport, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof PipelineReport>;
+const meta = { title: "Components/CRM/Pages/CRM Pipeline", component: PipelineReport, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof PipelineReport>;
 export default meta;
 type Story = StoryObj;
 

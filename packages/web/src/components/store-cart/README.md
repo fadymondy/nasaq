@@ -1,12 +1,12 @@
 ---
 name: store-cart
 title: Store Cart
-category: commerce
+category: store
 status: beta
 summary: A mini cart drawer and a full cart page with quantity limits, undo, save for later, promo code, shipping estimate, savings and live announcements.
 exports: [StoreCartAnnouncerProps, StoreCartAnnouncer, StoreCartButtonProps, StoreCartButton, StoreQuantityStepperProps, StoreQuantityStepper, StoreCartLineItemProps, StoreCartLineItem, StoreFreeShippingBarProps, StoreFreeShippingBar, StoreCartEmptyProps, StoreCartEmpty, StoreMiniCartProps, StoreMiniCart, StoreCartSummaryProps, StoreCartSummary, StoreShippingSelection, StoreShippingEstimatorProps, StoreShippingEstimator, StoreCrossSellProps, StoreCrossSell, StoreCartPromo, StoreCartPageProps, StoreCartPage]
 related: [store-checkout, loyalty-promo, price, product-card, sheet]
-story: components-commerce-store-cart
+story: components-storefront-store-cart
 base-ui: [dialog, progress]
 keywords: [cart, basket, mini cart, drawer, quantity, promo, shipping estimate, save for later, ecommerce]
 ---

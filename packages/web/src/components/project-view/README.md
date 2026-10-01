@@ -1,12 +1,12 @@
 ---
 name: project-view
 title: Project View
-category: workflow
+category: work
 status: beta
 summary: A project page with a header, progress and members, and tabs for overview, board, list, timeline, activity, time, AI cost, files, memory, vault, GitHub and settings.
 exports: [ProjectView, ProjectViewLabels, ProjectDetails, ProjectPatch, ProjectFile, NewIssueInput, ProjectTab, ProjectGithub, ProjectVault, ProjectSettingsExtras, ProjectViewProps]
 related: [issue-view, kanban-board, data-table, timeline, time-tracker, ai-usage-cost, project-list, vault, env-list, github-activity, repository-picker, members-manager, settings-sections, status-label-manager]
-story: components-workflow-project-view
+story: components-projects-work-project-view
 base-ui: [tabs, dialog, select, switch]
 keywords: [project, board, backlog, burndown, budget, kanban, project management]
 ---
@@ -112,4 +112,4 @@ Semantic tokens only. The tab list scrolls sideways on narrow screens; the setti
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-project-view--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-project-view--docs

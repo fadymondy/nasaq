@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { useAr, wait } from "./_profile-demo";
 
-const meta = { title: "Components/Feedback/Desktop Notification" } satisfies Meta;
+const meta = { title: "Components/Alerts & Notifications/Desktop Notification" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

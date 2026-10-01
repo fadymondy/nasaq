@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FileExplorerDemo } from "./_explorer-demo";
 
-const meta = { title: "Components/Data Display/File Explorer" } satisfies Meta;
+const meta = { title: "Components/Files/File Explorer" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

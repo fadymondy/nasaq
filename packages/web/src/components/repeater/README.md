@@ -1,12 +1,12 @@
 ---
 name: repeater
 title: Repeater
-category: forms
+category: form-builders
 status: beta
 summary: A list of rows the user can add, remove, duplicate, reorder by drag or keyboard and collapse, with min and max limits. Bring your own row content.
 exports: [Repeater, RepeaterProps, RepeaterRowContext, RepeaterLabels]
 related: [schema-repeater, field, sortable-list, button]
-story: components-forms-repeater
+story: components-form-builders-repeater
 keywords: [repeater, list, rows, add, remove, duplicate, reorder, drag, sortable, collapse, form, dynamic]
 ---
 

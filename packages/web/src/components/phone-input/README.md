@@ -3,9 +3,9 @@ name: phone-input
 title: PhoneInput
 category: forms
 status: beta
-summary: Phone number field with a searchable country combobox (flag, dial code, name; Gulf and Arab countries first) and a left-to-right digits input. The value is E.164.
-exports: [PhoneInput, PhoneInputProps, PhoneCountry, PHONE_COUNTRIES, PHONE_PREFERRED, countryFlag, parsePhone, formatE164]
-related: [input-group, combobox, field, otp-input]
+summary: Phone number field with a searchable country list (SVG flag, name in English or Arabic, calling code; Gulf and Arab countries first) and a digits input that groups the number as you type. The value is E.164.
+exports: [PhoneInput, PhoneInputProps, PhoneCountry, PHONE_COUNTRIES, PHONE_PREFERRED, phoneCountryName, countryFlag, parsePhone, formatE164, formatNational, phoneExample, isValidE164]
+related: [input-group, combobox, field, otp-input, country-flag]
 story: components-forms-phone-input
 base-ui: [combobox, field, input]
 keywords: [phone, tel, mobile, country code, dial code, e164, flag]
@@ -14,9 +14,13 @@ keywords: [phone, tel, mobile, country code, dial code, e164, flag]
 # PhoneInput
 
 One bordered control for a phone number. The start edge holds a country trigger (flag and calling code) that opens
-a searchable list; the rest is the digits field. The component emits a canonical E.164 string such as
-`+966501234567`. It ships its own small country list (no libphonenumber), so it validates nothing about the
-number itself: it only splits country and digits.
+a searchable list of every country, each with its flag, its name in English or Arabic and its calling code. The rest
+is the digits field, which groups the number the way it is written in that country (`50 123 4567`) and shows an
+example number as the placeholder. The component emits a canonical E.164 string such as `+966501234567`.
+
+Calling codes, grouping and examples come from [libphonenumber-js](https://gitlab.com/catamphetamine/libphonenumber-js)
+(about 19 KB gzipped). Flags are SVGs from [country-flag-icons](https://gitlab.com/catamphetamine/country-flag-icons),
+drawn by [`CountryFlag`](../country-flag/README.md), so they look the same on Windows, where flag emoji do not render.
 
 ## When to use
 
@@ -25,7 +29,7 @@ number itself: it only splits country and digits.
 
 ## When not to use
 
-- Validating length or number type per country: use a dedicated library on the E.164 value.
+- Checking that a number really exists or can receive SMS: that needs a lookup service. `isValidE164` only checks the numbering plan.
 - A one-time code: use [`OtpInput`](../otp-input/README.md).
 - A plain text field: use `Input`.
 
@@ -60,7 +64,9 @@ when no digits are typed. While the digits are empty the selected country is sti
 
 - A leading `0` in the digits is a trunk prefix and is dropped: `0501234567` with Saudi Arabia selected gives `+966501234567`. Italy keeps its leading 0.
 - Spaces, dashes and brackets are removed as you type; at most 15 digits in total (E.164 limit).
-- Typing or pasting a number that starts with `+` (or a browser autofill) picks the country by its calling code (longest match) and puts the rest in the digits field. For shared codes the first list entry wins, so `+1` selects the United States.
+- Arabic-Indic (`٠١٢`) and Persian (`۰۱۲`) digits are read as `0-9`.
+- The field shows the digits grouped for the country (`50 123 4567`, `416 555 0123`); the caret stays after the digit you typed.
+- Typing or pasting a number that starts with `+` (or a browser autofill) picks the country from the number. Shared codes resolve by number range: `+1 416…` selects Canada, `+1 202…` the United States. A bare `+1` selects the main country, the United States.
 - Passing a `value` (or `defaultValue`) selects its country the same way.
 
 ## Anatomy
@@ -70,7 +76,7 @@ PhoneInput                  InputGroup                       data-slot="phone-in
 ├─ country trigger          Base UI Combobox.Trigger         data-slot="phone-input-country"
 │  └─ popup                 search + list                    data-slot="phone-input-content"
 │     ├─ search input       data-slot="phone-input-search"
-│     └─ items              flag, name, +dial
+│     └─ items              CountryFlag, name, +dial
 ├─ digits input             InputGroupInput (Field control)  dir="ltr" inputMode="tel" autoComplete="tel"
 └─ hidden input             only when `name` is set
 ```
@@ -91,7 +97,7 @@ PhoneInput                  InputGroup                       data-slot="phone-in
 | `invalid?` | `boolean` | `false` | Sets `aria-invalid` and the danger border. |
 | `name?` | `string` | none | Renders a hidden input with the E.164 value, for native form posts. |
 | `id?` | `string` | none | Id of the digits input. |
-| `placeholder?` | `string` | "Phone number" | Placeholder of the digits input. |
+| `placeholder?` | `string` | an example number | Placeholder of the digits input. Default is an example mobile number for the selected country (`50 123 4567`), or "Phone number". |
 | `locale?` / `dir?` | `string` / `"ltr" \| "rtl"` | from the provider | Override for strings, country names and popup direction. |
 | `aria-label?` | `string` | none | Name of the digits input when there is no `FieldLabel`. |
 | `className?` | `string` | none | Merged onto the group. |
@@ -101,11 +107,15 @@ PhoneInput                  InputGroup                       data-slot="phone-in
 | Export | Description |
 | --- | --- |
 | `PhoneCountry` | `{ iso: string; dial: string; en: string; ar: string }`. `dial` has no plus. |
-| `PHONE_COUNTRIES` | The 22 Arab League countries plus about 30 major ones. |
+| `PHONE_COUNTRIES` | Every country and territory with a calling code (about 245), from libphonenumber, with Intl region names in English and Arabic. |
 | `PHONE_PREFERRED` | `["SA", "AE", "EG", "KW", "QA", "BH", "OM", "JO"]`. |
-| `countryFlag(iso)` | Flag emoji for an ISO code. |
-| `parsePhone(value, countries?)` | `{ country, national } \| null` from an E.164 string. |
-| `formatE164(country, national)` | E.164 string, or `""` when there are no digits. |
+| `phoneCountryName(iso, locale?)` | A country's name in any locale (Intl region names, with Palestine as "Palestine" / "فلسطين"). |
+| `parsePhone(value, countries?)` | `{ country, national } \| null` from an E.164 string. Shared codes resolve by number range. |
+| `formatE164(country, national)` | E.164 string, or `""` when there are no digits. Drops a trunk prefix where the country uses one. |
+| `formatNational(country, national)` | The digits grouped as written after the calling code: `50 123 4567`. |
+| `phoneExample(country)` | An example mobile number, grouped the same way, for placeholders. |
+| `isValidE164(value)` | True when the value is a complete number that fits its country's numbering plan. |
+| `countryFlag(iso)` | Flag emoji, for plain text only (a title, a notification). In UI use `CountryFlag`. |
 
 ## Examples
 
@@ -130,12 +140,12 @@ export const GulfOnly = () => <PhoneInput countries={gcc} preferred={[]} aria-la
 ### Arabic and validation in a Field
 
 ```tsx
-import { Field, FieldError, FieldLabel, NasaqProvider, PhoneInput } from "@fadymondy/nasaq/web";
+import { Field, FieldError, FieldLabel, isValidE164, NasaqProvider, PhoneInput } from "@fadymondy/nasaq/web";
 import { useState } from "react";
 
 export function PhoneAr() {
   const [phone, setPhone] = useState("");
-  const bad = phone.length > 0 && phone.length < 12;
+  const bad = phone !== "" && !isValidE164(phone);
   return (
     <NasaqProvider locale="ar" target="scope">
       <Field invalid={bad}>
@@ -162,15 +172,15 @@ describe it. The country list is inside its own Field scope so it does not take 
 | `Enter` | Selects the country and moves focus to the digits input. |
 | `Esc` | Closes the list. |
 
-- The flag emoji is decorative (`aria-hidden`); the name and code are always text. Some platforms, such as Windows, show two letters instead of a flag.
+- The flag is decorative (`aria-hidden`); the name and code are always text.
 - Caller must localise `aria-label` and any `FieldLabel`. Built-in strings and country names come in English and Arabic.
 
 ## RTL & i18n
 
 - The group mirrors: in Arabic the country trigger sits at the right (start) edge.
 - The digits input is always `dir="ltr"` and start-aligned, and dial codes are isolated with `bdi dir="ltr"`, so `+966` never reverses.
-- Country names follow the active language (English or Arabic) and search matches both.
-- Digits are Western (`0-9`). Arabic-Indic digits typed by the user are not converted.
+- Country names follow the active language (English or Arabic, from `Intl.DisplayNames`) and search matches both.
+- Digits are shown Western (`0-9`). Arabic-Indic and Persian digits typed or pasted by the user are converted.
 
 ## Styling & tokens
 
@@ -182,13 +192,13 @@ describe it. The country list is inside its own Field scope so it does not take 
 ## Do / Don't
 
 - **Do** store and send the E.164 value, and format it for display separately.
-- **Do** validate the full number on the server or with a phone library.
+- **Do** check the number with `isValidE164` before submit, and again on the server.
 - **Don't** put your own `+966` in the digits; pick the country or paste the full number.
 - **Don't** rely on the flag alone to tell countries apart.
 
 ## Related
 
-- [InputGroup](../input-group/README.md) · [Combobox](../combobox/README.md) · [Field](../field/README.md) · [OtpInput](../otp-input/README.md)
+- [CountryFlag](../country-flag/README.md) · [InputGroup](../input-group/README.md) · [Combobox](../combobox/README.md) · [Field](../field/README.md) · [OtpInput](../otp-input/README.md)
 
 ## Lab
 

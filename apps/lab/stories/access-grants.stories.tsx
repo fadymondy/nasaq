@@ -2,7 +2,7 @@ import { AccessGrants } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArabicScope } from "./_team-demo";
 import { AccessDemo } from "./_team-pages";
-const meta = { title: "Components/Account/Access Grants", component: AccessGrants, parameters: { layout: "padded" } } satisfies Meta<typeof AccessGrants>;
+const meta = { title: "Components/Security/Access Grants", component: AccessGrants, parameters: { layout: "padded" } } satisfies Meta<typeof AccessGrants>;
 export default meta;
 type Story = StoryObj;
 

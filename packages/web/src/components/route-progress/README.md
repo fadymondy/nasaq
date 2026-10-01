@@ -6,7 +6,7 @@ status: beta
 summary: A thin progress bar along the top edge for navigation and background jobs. It creeps while work runs, jumps to full when it ends, and a hook counts overlapping jobs.
 exports: [RouteProgressTone, RouteProgressLabels, RouteProgressProps, RouteProgress, useRouteProgress]
 related: [progress, spinner, toast]
-story: components-feedback-route-progress
+story: components-loading-states-route-progress
 base-ui: []
 keywords: [route progress, top bar, nprogress, navigation, loading bar, page transition, background job]
 ---

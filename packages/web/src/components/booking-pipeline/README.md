@@ -1,12 +1,12 @@
 ---
 name: booking-pipeline
 title: BookingPipeline
-category: commerce
+category: bookings
 status: beta
 summary: Staff status pipeline for a booking - requested, confirmed, checked in, in visit and done, with next-action buttons, confirm on no-show and cancel, and a timeline of every move.
 exports: [BOOKING_STATUS_LABELS, useBookingStatusLabel, BookingStatusBadgeProps, BookingStatusBadge, BookingPipelineLabels, BookingPipelineProps, BookingPipeline]
 related: [booking-manage, clinic-schedule, kanban-board, stepper, timeline]
-story: components-commerce-booking-pipeline
+story: components-bookings-booking-pipeline
 base-ui: [alert-dialog]
 keywords: [status, workflow, pipeline, check-in, no-show, timeline, booking]
 ---
@@ -113,4 +113,4 @@ import { BookingStatusBadge } from "@fadymondy/nasaq/web";
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-booking-pipeline--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-booking-pipeline--docs

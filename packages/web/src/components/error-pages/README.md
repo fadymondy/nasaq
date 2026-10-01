@@ -6,7 +6,7 @@ status: beta
 summary: Full-page states for 404, 500, offline, maintenance, no access, unknown workspace and a module that is coming soon, with sensible actions, an error ID to quote and English and Arabic copy.
 exports: [ErrorPageLabels, useOnlineStatus, ErrorPageProps, ErrorPage, NotFoundPage, ServerErrorPage, OfflinePage, MaintenancePage, ForbiddenPage, UnknownWorkspacePage, ComingSoonPage]
 related: [states, alert, impersonation-banner]
-story: pages-system-error-pages
+story: components-loading-states-pages-error-pages
 base-ui: []
 keywords: [404, 500, 403, 503, error page, not found, offline, maintenance, forbidden, no access, unknown workspace, coming soon]
 ---

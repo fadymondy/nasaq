@@ -1,12 +1,12 @@
 ---
 name: store-products-admin
 title: Store Products Admin
-category: commerce
+category: store-admin
 status: beta
 summary: "The merchant side of the catalogue: a product list with bulk edit, a product editor with a generated variant matrix, media manager and search preview, and a collections manager with manual and rule-based collections."
 exports: [CollectionsManager, CollectionsManagerProps, MediaManager, MediaManagerProps, ProductEditor, ProductEditorProps, ProductAdminList, ProductAdminListProps, ProductAdminResult, StoreProductsAdminLabels, OptionsEditor, OptionsEditorProps, VariantMatrix, VariantMatrixProps]
 related: [store-settings, data-table, rule-builder, seo-preview, currency-input, rich-text-editor]
-story: components-commerce-store-products-admin
+story: components-store-admin-store-products-admin
 base-ui: [dialog, select, switch, tabs]
 keywords: [products, catalogue, variants, inventory, collections, bulk edit, sku, margin, seo, admin]
 ---
@@ -164,4 +164,4 @@ Uses `--nq-*` tokens only. Target `data-slot` names above; `data-dragging` marks
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-store-products-admin--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-store-products-admin--docs

@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { vitalsReport, useAr, useDemoConnection, useDemoReport, wait } from "./_analytics-demo";
 
-const meta = { title: "Pages/Analytics/Web Vitals", component: WebVitalsPage, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof WebVitalsPage>;
+const meta = { title: "Components/Monitoring/Pages/Web Vitals", component: WebVitalsPage, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof WebVitalsPage>;
 export default meta;
 type Story = StoryObj;
 

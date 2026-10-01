@@ -3,7 +3,7 @@ import { ApiReference } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { apiTools, FlowPage, useAr } from "./_devtools-q3-demo";
 
-const meta = { title: "Pages/Developer/API Reference", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Developer Tools/Pages/API Reference", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

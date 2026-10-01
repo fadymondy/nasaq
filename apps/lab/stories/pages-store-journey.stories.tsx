@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { JourneyStore } from "./_journey-demo";
 
 const meta = {
-  title: "Pages/Store/Journey",
+  title: "Components/Storefront/Pages/Journey",
   parameters: { layout: "fullscreen", nasaq: { fullBleed: true } },
 } satisfies Meta;
 export default meta;

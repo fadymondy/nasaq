@@ -1,6 +1,6 @@
 # Nasaq (نسق)
 
-One product language for every surface: 351 React components, a token system, eleven brand themes and full page templates, built on Base UI and Tailwind CSS v4, with Arabic and right-to-left layout treated as a first-class case. Install it as a shadcn registry (you own the source) or, once the first release is out, as an npm package.
+One product language for every surface: 354 React components, a token system, eleven brand themes and full page templates, built on Base UI and Tailwind CSS v4, with Arabic and right-to-left layout treated as a first-class case. Install it as a shadcn registry (you own the source) or, once the first release is out, as an npm package.
 
 | | |
 | --- | --- |

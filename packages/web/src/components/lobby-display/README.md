@@ -1,12 +1,12 @@
 ---
 name: lobby-display
 title: LobbyDisplay
-category: commerce
+category: bookings
 status: beta
 summary: Large-screen now-serving board with one card per room, up next and recent calls, a clock, and a chime plus flash for each new call, sized from its own width.
 exports: [LobbyDisplayLabels, LobbyDisplayProps, LobbyDisplay]
 related: [waiting-screen, clinic-queue, check-in-kiosk]
-story: components-commerce-lobby-display
+story: components-bookings-lobby-display
 base-ui: [switch]
 keywords: [tv, display, lobby, board, now serving, chime, queue, kiosk]
 ---
@@ -105,4 +105,4 @@ Every `div` prop is passed through unless noted.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-lobby-display--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-lobby-display--docs

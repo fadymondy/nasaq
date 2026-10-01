@@ -6,7 +6,7 @@ status: beta
 summary: Generative UI from a schema. Turns an agent's JSON into a card, table, chart, Markdown, code, stats, action buttons or picker, validated and safe. HTML is off by default and only shown in a sandboxed frame.
 exports: [ArtifactRendererLabels, ActionsArtifact, ArtifactCell, ArtifactTone, ArtifactVariant, CardArtifact, ChartArtifact, CodeArtifact, ExtractedArtifacts, HtmlArtifact, MarkdownArtifact, PickerArtifact, StatsArtifact, TableArtifact, ArtifactView, ArtifactRenderer, ArtifactList, ArtifactViewProps, ArtifactRendererProps, ArtifactListProps, Artifact, ArtifactText, ArtifactAction, ArtifactParse, ArtifactKind, ARTIFACT_KINDS, ARTIFACT_LIMITS, parseArtifact, safeColor, localize, frameHeight, frameDocument, extractArtifacts]
 related: [ai-states, copilot-chat, markdown, code-block, chart-container, table, stat-card]
-story: components-ai-artifact-renderer
+story: components-ai-assistant-artifact-renderer
 base-ui: [dialog, checkbox, radio]
 keywords: [artifact, generative ui, a2ui, agent, schema, json, render, sandbox, iframe, safe]
 ---

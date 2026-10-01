@@ -3,83 +3,27 @@
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import { Field as BaseField } from "@base-ui/react/field";
 import { ChevronsUpDown } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
 import { useCalendarLocale } from "../calendar";
 import { ComboboxEmpty, ComboboxItem, ComboboxList } from "../combobox";
 import { normalizeForSearch } from "../commands";
 import { InputGroup, InputGroupInput } from "../input-group";
+import { CountryFlag } from "../country-flag";
+import { formatE164, formatNational, parsePhone, PHONE_COUNTRIES, toDigits, PHONE_PREFERRED, type PhoneCountry, phoneExample } from "./phone-data";
 
-/** One dialling country. Kept inline so the component has no dependency; not a full numbering plan. */
-export interface PhoneCountry {
-  /** ISO 3166-1 alpha-2, upper case. */
-  iso: string;
-  /** Country calling code without the plus: "966". */
-  dial: string;
-  en: string;
-  ar: string;
-}
-
-/** The Arab League plus about 30 major countries. Order matters for shared codes: the first entry for a code wins when parsing (`+1` is the United States). */
-export const PHONE_COUNTRIES: readonly PhoneCountry[] = [
-  { iso: "SA", dial: "966", en: "Saudi Arabia", ar: "السعودية" },
-  { iso: "AE", dial: "971", en: "United Arab Emirates", ar: "الإمارات" },
-  { iso: "EG", dial: "20", en: "Egypt", ar: "مصر" },
-  { iso: "KW", dial: "965", en: "Kuwait", ar: "الكويت" },
-  { iso: "QA", dial: "974", en: "Qatar", ar: "قطر" },
-  { iso: "BH", dial: "973", en: "Bahrain", ar: "البحرين" },
-  { iso: "OM", dial: "968", en: "Oman", ar: "عمان" },
-  { iso: "JO", dial: "962", en: "Jordan", ar: "الأردن" },
-  { iso: "LB", dial: "961", en: "Lebanon", ar: "لبنان" },
-  { iso: "SY", dial: "963", en: "Syria", ar: "سوريا" },
-  { iso: "IQ", dial: "964", en: "Iraq", ar: "العراق" },
-  { iso: "YE", dial: "967", en: "Yemen", ar: "اليمن" },
-  { iso: "PS", dial: "970", en: "Palestine", ar: "فلسطين" },
-  { iso: "LY", dial: "218", en: "Libya", ar: "ليبيا" },
-  { iso: "SD", dial: "249", en: "Sudan", ar: "السودان" },
-  { iso: "TN", dial: "216", en: "Tunisia", ar: "تونس" },
-  { iso: "DZ", dial: "213", en: "Algeria", ar: "الجزائر" },
-  { iso: "MA", dial: "212", en: "Morocco", ar: "المغرب" },
-  { iso: "MR", dial: "222", en: "Mauritania", ar: "موريتانيا" },
-  { iso: "SO", dial: "252", en: "Somalia", ar: "الصومال" },
-  { iso: "DJ", dial: "253", en: "Djibouti", ar: "جيبوتي" },
-  { iso: "KM", dial: "269", en: "Comoros", ar: "جزر القمر" },
-  { iso: "US", dial: "1", en: "United States", ar: "الولايات المتحدة" },
-  { iso: "CA", dial: "1", en: "Canada", ar: "كندا" },
-  { iso: "GB", dial: "44", en: "United Kingdom", ar: "المملكة المتحدة" },
-  { iso: "FR", dial: "33", en: "France", ar: "فرنسا" },
-  { iso: "DE", dial: "49", en: "Germany", ar: "ألمانيا" },
-  { iso: "ES", dial: "34", en: "Spain", ar: "إسبانيا" },
-  { iso: "IT", dial: "39", en: "Italy", ar: "إيطاليا" },
-  { iso: "NL", dial: "31", en: "Netherlands", ar: "هولندا" },
-  { iso: "SE", dial: "46", en: "Sweden", ar: "السويد" },
-  { iso: "CH", dial: "41", en: "Switzerland", ar: "سويسرا" },
-  { iso: "TR", dial: "90", en: "Türkiye", ar: "تركيا" },
-  { iso: "RU", dial: "7", en: "Russia", ar: "روسيا" },
-  { iso: "IR", dial: "98", en: "Iran", ar: "إيران" },
-  { iso: "IN", dial: "91", en: "India", ar: "الهند" },
-  { iso: "PK", dial: "92", en: "Pakistan", ar: "باكستان" },
-  { iso: "BD", dial: "880", en: "Bangladesh", ar: "بنغلاديش" },
-  { iso: "CN", dial: "86", en: "China", ar: "الصين" },
-  { iso: "JP", dial: "81", en: "Japan", ar: "اليابان" },
-  { iso: "KR", dial: "82", en: "South Korea", ar: "كوريا الجنوبية" },
-  { iso: "ID", dial: "62", en: "Indonesia", ar: "إندونيسيا" },
-  { iso: "MY", dial: "60", en: "Malaysia", ar: "ماليزيا" },
-  { iso: "SG", dial: "65", en: "Singapore", ar: "سنغافورة" },
-  { iso: "PH", dial: "63", en: "Philippines", ar: "الفلبين" },
-  { iso: "AU", dial: "61", en: "Australia", ar: "أستراليا" },
-  { iso: "BR", dial: "55", en: "Brazil", ar: "البرازيل" },
-  { iso: "MX", dial: "52", en: "Mexico", ar: "المكسيك" },
-  { iso: "NG", dial: "234", en: "Nigeria", ar: "نيجيريا" },
-  { iso: "ZA", dial: "27", en: "South Africa", ar: "جنوب أفريقيا" },
-];
-
-/** Listed first in the country list, in this order. */
-export const PHONE_PREFERRED = ["SA", "AE", "EG", "KW", "QA", "BH", "OM", "JO"] as const;
-
-const MAX_DIGITS = 15;
-/** Countries whose national numbers legitimately begin with 0. Every other leading 0 is a trunk prefix and is dropped. */
-const KEEPS_LEADING_ZERO = new Set(["IT"]);
+export {
+  countryFlag,
+  formatE164,
+  formatNational,
+  isValidE164,
+  PHONE_COUNTRIES,
+  PHONE_PREFERRED,
+  type PhoneCountry,
+  parsePhone,
+  phoneCountryName,
+  phoneExample,
+} from "./phone-data";
 
 const STRINGS = {
   en: { country: "Country", search: "Search countries", empty: "No country found.", placeholder: "Phone number" },
@@ -87,28 +31,7 @@ const STRINGS = {
 } as const;
 const strings = (locale: string) => STRINGS[locale.split("-")[0] === "ar" ? "ar" : "en"];
 
-/** Flag emoji from an ISO code (regional indicator letters). Platforms without flag glyphs show the two letters. */
-export function countryFlag(iso: string) {
-  return String.fromCodePoint(...[...iso.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
-}
-
-/** Splits an E.164 string into its country (longest matching calling code) and national digits. Null when nothing matches. */
-export function parsePhone(value: string, countries: readonly PhoneCountry[] = PHONE_COUNTRIES): { country: PhoneCountry; national: string } | null {
-  const digits = value.replace(/\D/g, "");
-  if (!value.trim().startsWith("+") || !digits) return null;
-  let best: PhoneCountry | null = null;
-  for (const country of countries) {
-    if (digits.startsWith(country.dial) && (!best || country.dial.length > best.dial.length)) best = country;
-  }
-  return best ? { country: best, national: digits.slice(best.dial.length) } : null;
-}
-
-/** Country plus typed digits as E.164 (`+9665…`), or "" when there are no digits. A trunk 0 is dropped. */
-export function formatE164(country: PhoneCountry, national: string) {
-  let digits = national.replace(/\D/g, "");
-  if (!KEEPS_LEADING_ZERO.has(country.iso)) digits = digits.replace(/^0+/, "");
-  return digits ? `+${country.dial}${digits}` : "";
-}
+const MAX_DIGITS = 15;
 
 interface Item {
   value: string;
@@ -203,6 +126,18 @@ export function PhoneInput({
 
   const [group, setGroup] = useState<HTMLDivElement | null>(null);
   const digitsRef = useRef<HTMLInputElement>(null);
+  const shown = formatNational(country, national);
+  // Grouping adds spaces as you type; keep the caret after the same digit instead of jumping to the end.
+  const caretDigits = useRef<number | null>(null);
+  useLayoutEffect(() => {
+    const el = digitsRef.current;
+    const want = caretDigits.current;
+    caretDigits.current = null;
+    if (!el || want === null || document.activeElement !== el) return;
+    let pos = 0;
+    for (let seen = 0; pos < shown.length && seen < want; pos++) if (/\d/.test(shown[pos]!)) seen++;
+    el.setSelectionRange(pos, pos);
+  }, [shown]);
   const selected = items.find((i) => i.value === country.iso) ?? null;
 
   const onDigits = (text: string) => {
@@ -211,7 +146,7 @@ export function PhoneInput({
       const parsed = parsePhone(text, countries);
       if (parsed) return emit(parsed.country, parsed.national.slice(0, MAX_DIGITS - parsed.country.dial.length));
     }
-    emit(country, text.replace(/\D/g, "").slice(0, MAX_DIGITS - country.dial.length));
+    emit(country, toDigits(text).slice(0, MAX_DIGITS - country.dial.length));
   };
 
   return (
@@ -239,9 +174,7 @@ export function PhoneInput({
               "disabled:cursor-not-allowed",
             )}
           >
-            <span aria-hidden="true" className="text-[1.125rem] leading-none">
-              {countryFlag(country.iso)}
-            </span>
+            <CountryFlag code={country.iso} className="text-[1.125rem]" />
             <bdi dir="ltr" className="tabular-nums">
               +{country.dial}
             </bdi>
@@ -271,9 +204,7 @@ export function PhoneInput({
                     {(item: Item) => (
                       <ComboboxItem key={item.value} value={item}>
                         <span className="flex items-center gap-2">
-                          <span aria-hidden="true" className="text-[1.125rem] leading-none">
-                            {countryFlag(item.country.iso)}
-                          </span>
+                          <CountryFlag code={item.country.iso} className="text-[1rem]" />
                           <span className="min-w-0 flex-1 truncate">{item.label}</span>
                           <bdi dir="ltr" className="shrink-0 text-muted-foreground tabular-nums">
                             +{item.country.dial}
@@ -299,9 +230,14 @@ export function PhoneInput({
         disabled={disabled}
         aria-label={ariaLabel}
         aria-invalid={invalid || undefined}
-        placeholder={placeholder ?? t.placeholder}
-        value={national}
-        onChange={(e) => onDigits(e.target.value)}
+        placeholder={placeholder ?? (phoneExample(country) || t.placeholder)}
+        value={shown}
+        onChange={(e) => {
+          const el = e.target;
+          const end = el.selectionStart ?? el.value.length;
+          caretDigits.current = end >= el.value.length ? null : toDigits(el.value.slice(0, end)).length;
+          onDigits(el.value);
+        }}
       />
       {name ? <input type="hidden" name={name} value={e164} /> : null}
     </InputGroup>

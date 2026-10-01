@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Briefcase, Download, ExternalLink, Mail, MapPin, Quote } from "lucide-react";
+import { ArrowRight, Blocks, Briefcase, CalendarDays, Download, ExternalLink, Globe, Lock, Mail, MapPin, Quote, Store } from "lucide-react";
 import { type ComponentProps, type ReactNode, useId, useMemo, useState } from "react";
 import { cn } from "../../lib/cn";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
@@ -13,7 +13,9 @@ import { Card } from "../card";
 import { FeatureStory } from "../feature-story";
 import { Icon } from "../icon";
 import { Markdown } from "../markdown";
-import { formatDateRange, formatNumber } from "../numeric";
+import { formatDate, formatDateRange, formatNumber } from "../numeric";
+import { GitHubLogo } from "../oauth-buttons";
+import { type Product, ProductIcon } from "../product-switcher";
 import {
   AvailabilityBadge,
   LocalClock,
@@ -29,6 +31,8 @@ import {
   WeatherWidget,
 } from "../personal-widgets";
 import { SectionHeader } from "../section-header";
+import { EmptyState } from "../states";
+import { Separator } from "../separator";
 import { Tabs, TabsIndicator, TabsList, TabsPanel, TabsTab } from "../tabs";
 import { Timeline, TimelineItem } from "../timeline";
 import { type ProfileAvailability, distinct, tenureBetween, totalExperience, type ProfileWorkingHours } from "../personal-widgets/personal-model";
@@ -62,6 +66,17 @@ const STRINGS = {
     contactBody: "Tell me about your project. I usually reply within two working days.",
     projectsNav: "Project categories",
     sections: "Profile sections",
+    editProfile: "Edit profile",
+    joined: "Joined {date}",
+    profileDetails: "Profile details",
+    apps: "Apps",
+    appsHint: "The apps you use with this account.",
+    browseApps: "Browse apps",
+    noApps: "No apps yet",
+    noAppsHint: "Apps you sign in to with this account show up here.",
+    lastUsed: "Used {date}",
+    account: "Account",
+    accountHint: "Only you can see this.",
   },
   ar: {
     contact: "تواصل معي",
@@ -91,6 +106,17 @@ const STRINGS = {
     contactBody: "أخبرني عن مشروعك. أرد عادةً خلال يومي عمل.",
     projectsNav: "تصنيفات المشاريع",
     sections: "أقسام الملف",
+    editProfile: "تعديل الملف",
+    joined: "انضم في {date}",
+    profileDetails: "تفاصيل الملف",
+    apps: "التطبيقات",
+    appsHint: "التطبيقات التي تستخدمها بهذا الحساب.",
+    browseApps: "تصفّح التطبيقات",
+    noApps: "لا تطبيقات بعد",
+    noAppsHint: "تظهر هنا التطبيقات التي تسجّل الدخول إليها بهذا الحساب.",
+    lastUsed: "استُخدم {date}",
+    account: "الحساب",
+    accountHint: "لا يراه غيرك.",
   },
 };
 
@@ -156,7 +182,13 @@ export interface ProfileWeather {
 
 export interface ProfileData {
   name: string;
+  /** "@fadymondy": shown under the name, always left to right. */
+  handle?: string;
   headline: string;
+  /** A short plain-text bio for the identity column. Falls back to the headline. */
+  bio?: string;
+  /** ISO date the account was created: "Joined January 2023". */
+  joined?: string;
   avatar?: string;
   location?: string;
   /** IANA zone, for the clock. */
@@ -187,14 +219,28 @@ export interface ProfileSectionProps extends Omit<ComponentProps<"section">, "ti
   title: ReactNode;
   description?: ReactNode;
   action?: ReactNode;
+  /** How many items the section holds, shown as a badge beside the title. `0` is shown too. */
+  count?: number;
 }
 
 /** A titled block of the profile: `SectionHeader` plus content, labelled by its heading. */
-export function ProfileSection({ title, description, action, className, children, ...props }: ProfileSectionProps) {
+export function ProfileSection({ title, description, action, count, className, children, ...props }: ProfileSectionProps) {
   const id = useId();
+  const locale = useOptionalNasaq()?.locale ?? "en";
+  const heading =
+    count === undefined ? (
+      title
+    ) : (
+      <span className="inline-flex items-center gap-2">
+        {title}
+        <Badge variant="neutral" className="tabular-nums">
+          {formatNumber(count, locale)}
+        </Badge>
+      </span>
+    );
   return (
     <section data-slot="profile-section" aria-labelledby={id} className={cn("flex flex-col gap-4", className)} {...props}>
-      <SectionHeader headingId={id} title={title} description={description} action={action} />
+      <SectionHeader headingId={id} title={heading} description={description} action={action} />
       {children}
     </section>
   );
@@ -252,6 +298,157 @@ export function ProfileHero({ profile, onContact, labels, className, ...props }:
         </div>
         {profile.links && profile.links.length > 0 && <SocialLinks links={profile.links} />}
       </div>
+    </header>
+  );
+}
+
+/* ------------------------------------------------------------ identity column */
+
+export interface ProfileSidebarProps extends Omit<ComponentProps<"header">, "title"> {
+  profile: Pick<
+    ProfileData,
+    "name" | "handle" | "headline" | "bio" | "joined" | "avatar" | "location" | "availability" | "availabilityNote" | "links" | "cvHref" | "email"
+  >;
+  /** Called by the contact button. Without it the button opens `mailto:` to `profile.email`. */
+  onContact?: () => void;
+  /** The owner is looking: an "Edit profile" button replaces contact and CV. */
+  onEdit?: () => void;
+  /** Same as `onEdit`, as a link to the settings page. */
+  editHref?: string;
+  /** Replaces the action buttons. */
+  action?: ReactNode;
+  labels?: Partial<ProfilePageLabels>;
+}
+
+const metaRow = "flex min-w-0 items-center gap-2 text-body-sm text-foreground";
+const metaIcon = "size-4 shrink-0 text-muted-foreground";
+
+function linkText(l: SocialLink) {
+  if (l.handle) return l.handle;
+  if (l.kind === "email") return l.href.replace(/^mailto:/i, "");
+  if (l.kind === "website") return l.href.replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, "");
+  return l.label;
+}
+
+/**
+ * The identity column of a profile: a large avatar, name and handle, location and links, one full-width action,
+ * then the bio and when the member joined. Beside the content from 64rem of container width, above it on narrower ones.
+ */
+export function ProfileSidebar({ profile, onContact, onEdit, editHref, action, labels, className, children, ...props }: ProfileSidebarProps) {
+  const { t, locale } = useProfileStrings(labels);
+  const p = profile;
+  const bio = p.bio ?? p.headline;
+  const owner = Boolean(onEdit || editHref);
+  const actions =
+    action ??
+    (owner ? (
+      editHref ? (
+        <Button variant="secondary" className="w-full" nativeButton={false} render={<a href={editHref} />}>
+          {t.editProfile}
+        </Button>
+      ) : (
+        <Button variant="secondary" className="w-full" onClick={onEdit}>
+          {t.editProfile}
+        </Button>
+      )
+    ) : (
+      <>
+        {onContact ? (
+          <Button variant="primary" className="w-full" onClick={onContact}>
+            <Icon icon={Mail} />
+            {t.contact}
+          </Button>
+        ) : p.email ? (
+          <Button variant="primary" className="w-full" nativeButton={false} render={<a href={`mailto:${p.email}`} />}>
+            <Icon icon={Mail} />
+            {t.contact}
+          </Button>
+        ) : null}
+        {p.cvHref && (
+          <Button variant="secondary" className="w-full" nativeButton={false} render={<a href={p.cvHref} download />}>
+            <Icon icon={Download} />
+            {t.downloadCv}
+          </Button>
+        )}
+      </>
+    ));
+  return (
+    <header data-slot="profile-sidebar" className={cn("flex min-w-0 flex-col gap-5", className)} {...props}>
+      <div className="flex items-center gap-4 @4xl:flex-col @4xl:items-start">
+        <Avatar name={p.name} src={p.avatar} className="size-20 shrink-0 text-h1 ring-1 ring-border @2xl:size-28 @4xl:size-56 @4xl:text-display" />
+        <div className="flex min-w-0 flex-col gap-1">
+          <h1 dir="auto" className="text-balance text-h1 text-foreground">
+            {p.name}
+          </h1>
+          {p.handle && (
+            <p dir="ltr" className="truncate text-start font-mono text-body-sm text-muted-foreground">
+              {p.handle}
+            </p>
+          )}
+        </div>
+      </div>
+      {(p.availability || p.location || p.links?.length) && (
+        <ul aria-label={t.profileDetails} className="flex list-none flex-col gap-2 p-0">
+          {p.availability && (
+            <li>
+              {/* the sidebar is narrow: let the note wrap under the status instead of running out of the column */}
+              <AvailabilityBadge status={p.availability} note={p.availabilityNote} className="h-auto min-h-6 max-w-full flex-wrap py-0.5 text-start whitespace-normal" />
+            </li>
+          )}
+          {p.location && (
+            <li className={metaRow}>
+              <Icon icon={MapPin} className={metaIcon} />
+              <bdi className="truncate">{p.location}</bdi>
+            </li>
+          )}
+          {p.links?.map((l) => {
+            const external = /^https?:\/\//i.test(l.href);
+            return (
+              <li key={`${l.kind}-${l.href}`} className={metaRow}>
+                {/* GitHub shows its official mark; brands without one show their name, never a stand-in icon. */}
+                {l.kind === "github" ? (
+                  <GitHubLogo className="size-4 shrink-0" />
+                ) : l.kind === "website" ? (
+                  <Icon icon={Globe} className={metaIcon} />
+                ) : l.kind === "email" ? (
+                  <Icon icon={Mail} className={metaIcon} />
+                ) : (
+                  <span className="shrink-0 text-muted-foreground">{l.label}</span>
+                )}
+                <a
+                  href={l.href}
+                  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  aria-label={l.kind === "github" || l.kind === "website" || l.kind === "email" ? `${l.label}: ${linkText(l)}` : undefined}
+                  dir="ltr"
+                  className="truncate rounded-[2px] outline-none hover:underline hover:decoration-nq-line-strong hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"
+                >
+                  {linkText(l)}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {actions && <div className="flex flex-col gap-2">{actions}</div>}
+      {(bio || p.joined) && (
+        <>
+          <Separator />
+          <div className="flex flex-col gap-3">
+            {bio && (
+              <p dir="auto" className="text-pretty text-body-sm text-nq-fg-body">
+                {bio}
+              </p>
+            )}
+            {p.joined && (
+              <p className="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+                <Icon icon={CalendarDays} className="size-3.5" />
+                {fill(t.joined, { date: formatDate(p.joined, locale, { month: "long", year: "numeric" }) })}
+              </p>
+            )}
+          </div>
+        </>
+      )}
+      {children}
     </header>
   );
 }
@@ -444,7 +641,7 @@ export function ProfileProjects({ projects, labels, ...props }: ProfileProjectsP
   const [category, setCategory] = useState("");
   const shown = category ? rest.filter((p) => p.category === category) : rest;
   return (
-    <ProfileSection title={t.projects} description={t.projectsHint} {...props}>
+    <ProfileSection title={t.projects} description={t.projectsHint} count={projects.length} {...props}>
       {featured && (
         <FeatureStory
           titleAs="h3"
@@ -513,6 +710,7 @@ export function ProfileWriting({ posts, limit = 3, postHref, allHref, labels, ..
     <ProfileSection
       title={t.writing}
       description={t.writingHint}
+      count={posts.length}
       action={
         allHref ? (
           <Button variant="link" nativeButton={false} render={<a href={allHref} />}>
@@ -540,7 +738,7 @@ export interface ProfileTestimonialsProps extends Omit<ComponentProps<"section">
 export function ProfileTestimonials({ testimonials, labels, ...props }: ProfileTestimonialsProps) {
   const { t } = useProfileStrings(labels);
   return (
-    <ProfileSection title={t.testimonials} description={t.testimonialsHint} {...props}>
+    <ProfileSection title={t.testimonials} description={t.testimonialsHint} count={testimonials.length} {...props}>
       <ul className="grid grid-cols-1 gap-4 @2xl:grid-cols-2">
         {testimonials.map((q) => (
           <li key={q.name} className="flex">
@@ -602,35 +800,170 @@ export function ProfileContact({ email, availability, availabilityNote, onContac
   );
 }
 
+/* ------------------------------------------------------------ owner: apps, account */
+
+/** An app the member uses with this account: a `Product` (official mark, localised name) plus how they use it. */
+export interface ProfileApp extends Product {
+  /** Their role in it: "Owner", "Admin", "Member". */
+  role?: string;
+  /** The organisation it is installed for. */
+  org?: string;
+  /** The plan, e.g. "Pro". */
+  plan?: string;
+  /** ISO date. */
+  lastUsed?: string;
+}
+
+/** One line of the owner's account details. */
+export interface ProfileAccountDetail {
+  label: ReactNode;
+  value: ReactNode;
+}
+
+export interface ProfileAppsProps extends Omit<ProfileSectionProps, "title" | "children"> {
+  apps: ProfileApp[];
+  /** Where to find more apps: shown in the header and in the empty state. */
+  browseHref?: string;
+  labels?: Partial<ProfilePageLabels>;
+}
+
+/** The apps the member uses, with their official marks, role, organisation and when they last opened each one. */
+export function ProfileApps({ apps, browseHref, labels, ...props }: ProfileAppsProps) {
+  const { t, locale } = useProfileStrings(labels);
+  const browse = browseHref ? (
+    <Button variant="ghost" size="sm" nativeButton={false} render={<a href={browseHref} />}>
+      <Icon icon={Store} />
+      {t.browseApps}
+    </Button>
+  ) : undefined;
+  return (
+    <ProfileSection title={t.apps} description={t.appsHint} count={apps.length} action={apps.length ? browse : undefined} {...props}>
+      {apps.length ? (
+        <ul className="grid list-none grid-cols-1 gap-3 p-0 @2xl:grid-cols-2">
+          {apps.map((app) => {
+            const meta = [app.org, app.lastUsed && fill(t.lastUsed, { date: formatDate(app.lastUsed, locale, { day: "numeric", month: "short" }) })].filter(Boolean);
+            const body = (
+              <>
+                <ProductIcon product={app} size={36} />
+                <span className="flex min-w-0 flex-1 flex-col gap-1">
+                  <span className="flex min-w-0 items-center gap-2">
+                    <span className="truncate text-label text-foreground">{app.name}</span>
+                    {app.plan && <Badge variant="accent">{app.plan}</Badge>}
+                    {app.role && <Badge variant="neutral">{app.role}</Badge>}
+                  </span>
+                  {app.description && <span className="truncate text-body-sm text-muted-foreground">{app.description}</span>}
+                  {meta.length > 0 && <span className="truncate text-caption text-muted-foreground">{meta.join(" · ")}</span>}
+                </span>
+                {app.badge !== undefined && app.badge !== null && (
+                  <Badge variant="neutral" className="shrink-0 tabular-nums">
+                    {app.badge}
+                  </Badge>
+                )}
+              </>
+            );
+            const cls = "flex min-w-0 flex-1 items-start gap-3 rounded-card border border-border bg-card p-4";
+            return (
+              <li key={app.id} className="flex">
+                {app.href ? (
+                  <a href={app.href} className={cn(cls, "transition-colors hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus")}>
+                    {body}
+                  </a>
+                ) : (
+                  <div className={cls}>{body}</div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <EmptyState icon={Blocks} title={t.noApps} description={t.noAppsHint} actions={browse} className="rounded-card border border-border bg-card py-12" />
+      )}
+    </ProfileSection>
+  );
+}
+
+export interface ProfileAccountProps extends Omit<ProfileSectionProps, "title" | "children"> {
+  details: ProfileAccountDetail[];
+  /** Replaces the default "Only you can see this." */
+  description?: ReactNode;
+  labels?: Partial<ProfilePageLabels>;
+}
+
+/** The owner's account at a glance: email, language, time zone, organisations, member since. Only shown to them. */
+export function ProfileAccount({ details, description, labels, ...props }: ProfileAccountProps) {
+  const { t } = useProfileStrings(labels);
+  return (
+    <ProfileSection
+      title={t.account}
+      description={
+        description ?? (
+          <span className="inline-flex items-center gap-1.5">
+            <Icon icon={Lock} className="size-3.5" />
+            {t.accountHint}
+          </span>
+        )
+      }
+      {...props}
+    >
+      <dl className="flex flex-col divide-y divide-border rounded-card border border-border bg-card">
+        {details.map((d, i) => (
+          <div key={i} className="flex min-w-0 flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-3">
+            <dt className="text-body-sm text-muted-foreground">{d.label}</dt>
+            <dd className="min-w-0 text-body-sm text-foreground">{d.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </ProfileSection>
+  );
+}
+
 /* ------------------------------------------------------------ page */
 
 export interface ProfilePageProps extends Omit<ComponentProps<"div">, "title"> {
   profile: ProfileData;
   onContact?: () => void;
+  /** The owner is looking at their own page: "Edit profile" replaces contact, and the closing call to action is left out. */
+  onEdit?: () => void;
+  /** Same as `onEdit`, as a link to the settings page. */
+  editHref?: string;
   postHref?: (post: BlogPostSummary) => string;
   /** Link to the blog archive, shown next to the latest writing. */
   blogHref?: string;
   /** Fixed "now" for the clock and tenure, for stories and tests. */
   now?: Date | number;
-  /** Show the widgets column (clock, weather, numbers, now). Default true. */
+  /** Show the personal widgets under the identity column (clock, weather, numbers, now). Default true. */
   widgets?: boolean;
+  /** The owner's apps, shown first to them only (needs `onEdit` or `editHref`). An empty list shows an empty state. */
+  apps?: ProfileApp[];
+  /** Where to find more apps, for the apps section. */
+  appsHref?: string;
+  /** The owner's account details (email, language, time zone…), shown to them only after the apps. */
+  account?: ProfileAccountDetail[];
+  /** Your own sections, shown first in the content column: `<ProfileSection title="Orders" count={3}>`. */
+  children?: ReactNode;
   labels?: Partial<ProfilePageLabels>;
 }
 
 /**
- * A public profile page: hero, about, experience timeline, skills, projects with a featured story and category tabs,
- * latest writing, testimonials and a contact call to action, with a side column of personal widgets (local time, weather,
- * numbers, "now"). Every block is also exported to compose your own layout. Sections without data are left out.
- * The widgets column is shown beside the content from 64rem of width and above it on narrower ones.
+ * A public profile page in two columns. The identity column holds the avatar, name, handle, location and links, one
+ * full-width action, the bio and the join date, with personal widgets below (local time, weather, numbers, "now").
+ * The content column holds your own sections, then about, experience, skills, projects, writing and testimonials, each
+ * with a count where it lists things. Sections without data are left out. Every block is also exported. The columns sit
+ * side by side from 64rem of container width; on narrower ones the identity comes first and the widgets last.
  */
-export function ProfilePage({ profile, onContact, postHref, blogHref, now, widgets = true, labels, className, ...props }: ProfilePageProps) {
+export function ProfilePage({ profile, onContact, onEdit, editHref, postHref, blogHref, now, widgets = true, apps, appsHref, account, children, labels, className, ...props }: ProfilePageProps) {
+  const { t } = useProfileStrings(labels);
   const p = profile;
+  const owner = Boolean(onEdit || editHref);
   const hasWidgets = widgets && Boolean(p.timeZone || p.weather || p.stats?.length || p.now?.length);
   return (
     <div data-slot="profile-page" className={cn("@container mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 @2xl:px-6 @2xl:py-12", className)} {...props}>
-      <ProfileHero profile={p} onContact={onContact} labels={labels} />
-      <div className={cn("grid grid-cols-1 gap-x-10 gap-y-10", hasWidgets && "@4xl:grid-cols-[minmax(0,1fr)_18rem]")}>
-        <div className="flex min-w-0 flex-col gap-12">
+      <div className="grid grid-cols-1 gap-10 @4xl:grid-cols-[17rem_minmax(0,1fr)] @4xl:grid-rows-[auto_1fr] @4xl:gap-x-12">
+        <ProfileSidebar profile={p} onContact={onContact} onEdit={onEdit} editHref={editHref} labels={labels} className="@4xl:col-start-1 @4xl:row-start-1" />
+        <div className="flex min-w-0 flex-col gap-12 @4xl:col-start-2 @4xl:row-span-2 @4xl:row-start-1">
+          {children}
+          {owner && apps && <ProfileApps apps={apps} browseHref={appsHref} labels={labels} />}
+          {owner && account && account.length > 0 && <ProfileAccount details={account} labels={labels} />}
           {p.about && <ProfileAbout about={p.about} labels={labels} />}
           {p.experience && p.experience.length > 0 && <ProfileExperience experience={p.experience} now={now} labels={labels} />}
           {p.skills && p.skills.length > 0 && <ProfileSkills skills={p.skills} labels={labels} />}
@@ -639,17 +972,15 @@ export function ProfilePage({ profile, onContact, postHref, blogHref, now, widge
           {p.testimonials && p.testimonials.length > 0 && <ProfileTestimonials testimonials={p.testimonials} labels={labels} />}
         </div>
         {hasWidgets && (
-          <aside aria-label={STRINGS.en.sections} className="order-first flex flex-col gap-4 @4xl:order-last @4xl:self-start @4xl:sticky @4xl:top-6">
-            <div className="grid grid-cols-1 gap-4 @xl:grid-cols-2 @4xl:grid-cols-1">
-              {p.timeZone && <LocalClock timeZone={p.timeZone} city={p.location} workingHours={p.workingHours} now={now} />}
-              {p.weather && <WeatherWidget {...p.weather} />}
-              {p.stats && p.stats.length > 0 && <StatsWidget stats={p.stats} />}
-              {p.now && p.now.length > 0 && <NowWidget items={p.now} updated={p.nowUpdated} />}
-            </div>
+          <aside aria-label={t.sections} className="grid grid-cols-1 content-start gap-4 @xl:grid-cols-2 @4xl:col-start-1 @4xl:row-start-2 @4xl:grid-cols-1">
+            {p.timeZone && <LocalClock timeZone={p.timeZone} city={p.location} workingHours={p.workingHours} now={now} />}
+            {p.weather && <WeatherWidget {...p.weather} />}
+            {p.stats && p.stats.length > 0 && <StatsWidget stats={p.stats} />}
+            {p.now && p.now.length > 0 && <NowWidget items={p.now} updated={p.nowUpdated} />}
           </aside>
         )}
       </div>
-      <ProfileContact email={p.email} availability={p.availability} availabilityNote={p.availabilityNote} onContact={onContact} labels={labels} />
+      {!owner && <ProfileContact email={p.email} availability={p.availability} availabilityNote={p.availabilityNote} onContact={onContact} labels={labels} />}
     </div>
   );
 }

@@ -10,6 +10,7 @@ import {
   SidebarCustomize,
   SidebarFooter,
   SidebarGroup,
+  SidebarBrand,
   SidebarHeader,
   SidebarItem,
   type SidebarLayout,
@@ -28,10 +29,13 @@ import {
   WorkspaceSwitcher,
 } from "@nasaq/web";
 import { Bell, CreditCard, type LucideIcon, SlidersHorizontal, UserRound } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { createContext, type ReactNode, use, useState } from "react";
 import { ICONS, type StringKey, USER, useDemoCommands, useDemoIssueSource, useProducts, useT, useWorkspaces } from "./_demo";
 
 type NavItem = { id: string; label: string; icon: ReactNode; required?: boolean; render?: () => ReactNode };
+
+/** Extra content for the sidebar footer, above the user menu (an upgrade card). Wrap the `AppShell` in it. */
+export const DemoSidebarFooter = createContext<ReactNode>(null);
 
 /** Which main-nav destination the page is on. */
 export type DemoPage = "dashboard" | "inbox" | "my-issues" | "store";
@@ -54,16 +58,24 @@ export function DemoSidebar({
   active = "dashboard",
   product = "mahaam",
   nav,
+  icons,
 }: {
   active?: DemoPage | (string & {});
   /** The product whose screen this is: marked current in the switcher and the apps list. */
   product?: string;
   /** Replaces Mahaam's main and workspace navigation with the product's own. */
   nav?: ProductNav;
+  /** Passed to `Sidebar`: `mobile` keeps the desktop column text-only. */
+  icons?: "always" | "mobile";
 }) {
-  if (nav) return <ProductSidebar active={active} product={product} nav={nav} />;
-  return <MahaamSidebar active={active} />;
+  return (
+    <SidebarIconsContext.Provider value={icons}>
+      {nav ? <ProductSidebar active={active} product={product} nav={nav} /> : <MahaamSidebar active={active} />}
+    </SidebarIconsContext.Provider>
+  );
 }
+
+const SidebarIconsContext = createContext<"always" | "mobile" | undefined>(undefined);
 
 function ProductSidebar({ active, product, nav }: { active: string; product: string; nav: ProductNav }) {
   const toItem = (i: ProductNavItem): NavItem => ({
@@ -158,8 +170,9 @@ function ShellSidebar({ product, main, work, workLabel }: { product: string; mai
   };
 
   return (
-    <Sidebar>
+    <Sidebar icons={use(SidebarIconsContext)}>
       <SidebarHeader>
+        <SidebarBrand href="#home" />
         <WorkspaceSwitcher
           workspaces={workspaces}
           value={workspace}
@@ -195,6 +208,7 @@ function ShellSidebar({ product, main, work, workLabel }: { product: string; mai
         />
       </SidebarContent>
       <SidebarFooter>
+        {use(DemoSidebarFooter)}
         {/* Settings and help live in the user menu; the footer is just the user. */}
         <UserMenu user={USER} onSignOut={() => toast("Signed out")}>
           <DropdownMenuItem>

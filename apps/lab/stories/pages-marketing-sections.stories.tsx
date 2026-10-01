@@ -23,7 +23,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FileEdit, Search, Send } from "lucide-react";
 import { LOGO_NAMES, MockApp, useAr, useFeatures, useSessionEvents, useTestimonials } from "./_w3-demo";
 
-const meta = { title: "Pages/Marketing/Marketing Sections", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Website/Pages/Marketing Sections", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

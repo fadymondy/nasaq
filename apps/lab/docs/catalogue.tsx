@@ -10,29 +10,54 @@ import { docsHref, storyHref } from "./nav";
  */
 
 const CATEGORY_LABEL: Record<string, string> = {
-  layout: "Layout",
-  navigation: "Navigation",
-  actions: "Actions",
-  forms: "Forms",
-  pickers: "Pickers",
-  "data-display": "Data display",
-  charts: "Charts",
-  commerce: "Commerce",
-  collaboration: "Collaboration",
-  auth: "Auth",
   account: "Account",
-  developer: "Developer",
-  ai: "AI",
-  workflow: "Workflow",
+  actions: "Actions",
+  admin: "Admin",
+  ai: "AI Assistant",
+  "ai-agents": "AI Agents",
+  alerts: "Alerts & Notifications",
   analytics: "Analytics",
-  crm: "CRM",
-  editors: "Editors",
-  health: "Health",
-  feedback: "Feedback",
-  overlays: "Overlays",
+  auth: "Auth",
+  billing: "Billing",
+  bookings: "Bookings",
   brand: "Brand",
+  charts: "Charts & Maps",
+  chat: "Chat",
+  collaboration: "Collaboration",
+  crm: "CRM",
+  "data-display": "Data Display",
+  "developer-tools": "Developer Tools",
+  editors: "Editors",
+  feedback: "Loading & States",
+  "feedback-sdk": "Feedback SDK",
+  files: "Files",
+  "form-builders": "Form Builders",
+  forms: "Forms",
+  gamification: "Gamification",
+  healthcare: "Healthcare",
+  integrations: "Integrations",
+  keyboard: "Keyboard & Commands",
+  layout: "Layout",
+  marketing: "Marketing",
+  monitoring: "Monitoring",
+  navigation: "Navigation",
+  onboarding: "Onboarding",
+  overlays: "Overlays",
+  pickers: "Pickers",
+  platforms: "Apps & Platforms",
+  pricing: "Pricing",
+  productivity: "Productivity",
+  security: "Security",
+  seo: "SEO",
+  "server-tools": "Server Tools",
+  store: "Storefront",
+  "store-admin": "Store Admin",
   typography: "Typography",
   utilities: "Utilities",
+  website: "Website",
+  wellness: "Wellness",
+  work: "Projects & Work",
+  workflow: "Workflow",
 };
 const label = (c: string) => CATEGORY_LABEL[c] ?? c.replace(/(^|-)(\w)/g, (_, s, ch: string) => (s ? " " : "") + ch.toUpperCase());
 
@@ -105,7 +130,7 @@ interface IndexEntry {
   type: "story" | "docs";
 }
 
-/** Every `Pages/<group>/<name>` template, grouped, read from the story index of whichever build is running. */
+/** Every `Components/<category>/Pages/<name>` template, grouped by category, read from the story index of whichever build is running. */
 export function PageTemplates() {
   const [entries, setEntries] = useState<IndexEntry[] | null>(null);
   const [failed, setFailed] = useState(false);
@@ -123,18 +148,19 @@ export function PageTemplates() {
   const groups = useMemo(() => {
     const first = new Map<string, IndexEntry>();
     for (const e of entries ?? []) {
-      if (e.type !== "story" || !e.title.startsWith("Pages/") || first.has(e.title)) continue;
+      if (e.type !== "story" || !/^Components\/[^/]+\/Pages\//.test(e.title) || first.has(e.title)) continue;
       first.set(e.title, e);
     }
     const byGroup = new Map<string, { title: string; name: string; id: string }[]>();
     for (const [title, e] of first) {
-      const [, group = "Other", ...rest] = title.split("/");
+      // Components/<category>/Pages/<name>: grouped by the category that owns the page.
+      const [, group = "Other", , ...rest] = title.split("/");
       byGroup.set(group, [...(byGroup.get(group) ?? []), { title, name: rest.join(" / ") || group, id: e.id }]);
     }
     return [...byGroup].sort(([a], [b]) => a.localeCompare(b));
   }, [entries]);
 
-  if (failed) return <p className="mt-6 text-body-sm text-muted-foreground">The page list could not be loaded. Open the Pages section in the sidebar instead.</p>;
+  if (failed) return <p className="mt-6 text-body-sm text-muted-foreground">The page list could not be loaded. Open a category in the sidebar and its Pages folder instead.</p>;
   if (!entries) return <p className="mt-6 text-body-sm text-muted-foreground">Loading the page list</p>;
   const total = groups.reduce((n, [, l]) => n + l.length, 0);
   return (

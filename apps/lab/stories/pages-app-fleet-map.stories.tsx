@@ -5,7 +5,7 @@ import { useState } from "react";
 import { CLUSTERED_PINS } from "./_map-cluster-demo";
 import { FLEET_LAYERS, FLEET_ROUTES, t, useAr, W2Page } from "./_w2-demo";
 
-const meta = { title: "Pages/App/Fleet Map", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Charts & Maps/Pages/Fleet Map", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

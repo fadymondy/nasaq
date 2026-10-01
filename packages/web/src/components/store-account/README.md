@@ -1,12 +1,12 @@
 ---
 name: store-account
 title: StoreOrderHistory
-category: commerce
+category: store
 status: beta
 summary: The customer's store account. Order history with status filters and reorder, an order page with the tracking timeline and a carrier link, a return and refund request flow with RMA status, a wishlist with move to cart and back-in-stock notify, an address book and recently viewed products. The reorder, return and wishlist rules are pure and tested.
 exports: [LOW_STOCK, ORDER_GROUPS, addressLines, backInStock, filterCustomerOrders, newestOrdersFirst, orderGroup, orderGroupCounts, pushRecentlyViewed, removeAddress, removeRecent, removeWishlistItem, reorderPlan, setDefaultAddress, toggleNotify, upsertAddress, validateAddress, wishlistEntries, AddressField, OrderGroup, ReorderLine, ReorderPlan, WishlistAvailability, WishlistEntry, WishlistItem, STORE_ACCOUNT_STRINGS, useStoreAccountStrings, StoreAccountLabels, StoreAccountStrings, RETURN_REASONS, RMA_FLOW, deliveredAt, inRequestQuantities, nextRmaStatuses, planReturn, reasonNeedsPhotos, refundEstimate, refundMethodsFor, returnWindow, returnableLines, rmaIsOpen, rmaSteps, RefundMethod, ReturnInput, ReturnIssue, ReturnPlan, ReturnReason, ReturnRequest, RmaStatus, RmaStep, StoreAccountLayout, StoreAccountNav, StoreAccountNavProps, StoreAccountSection, StoreAccountOrder, StoreAccountOrderProps, StoreAddressBook, StoreAddressBookProps, ReorderNotice, StoreOrderHistory, StoreOrderHistoryProps, StoreRecentlyViewed, StoreRecentlyViewedProps, StoreReturnRequest, ReturnSubmission, StoreReturnRequestProps, StoreReturnStatus, StoreReturnStatusProps, StoreWishlist, StoreWishlistProps]
 related: [store-order-timeline, store-orders-admin, store-listing, product-detail, file-upload]
-story: components-commerce-store-account
+story: components-storefront-store-account
 base-ui: [dialog, alert-dialog, select, radio-group, checkbox, toggle-group]
 keywords: [account, orders, reorder, returns, refund, rma, wishlist, addresses, recently viewed, ecommerce]
 ---
@@ -179,4 +179,4 @@ plan.ok; // true, plan.refundAmount is the estimate in minor units
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-store-account--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-store-account--docs

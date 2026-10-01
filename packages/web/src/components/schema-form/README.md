@@ -1,12 +1,12 @@
 ---
 name: schema-form
 title: SchemaForm
-category: forms
+category: form-builders
 status: stable
 summary: A form generated from a JSON Schema, with enums, booleans, dates, objects nested to any depth, lists of values and lists of objects (add, remove, reorder, collapse), foreign keys, show and hide rules by path, client validation and server field errors on nested paths.
 exports: [SchemaForm, SchemaFormLabels, SchemaFormRelationSource, SchemaFormSubmitResult, SchemaFormProps]
 related: [schema-repeater, relation-picker, rule-builder, public-form, infolist, field]
-story: components-forms-schema-form
+story: components-form-builders-schema-form
 keywords: [json schema, form generator, dynamic form, validation, rules, relation, admin, nested, array, repeater, tags]
 ---
 
@@ -161,4 +161,4 @@ Field, Alert and Button tokens. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-schema-form--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-form-builders-schema-form--docs

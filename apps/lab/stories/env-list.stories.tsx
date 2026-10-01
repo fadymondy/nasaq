@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { ENVIRONMENTS, ENVIRONMENTS_AR, sampleEnv, useAr, wait } from "./_developer-demo";
 
-const meta = { title: "Components/Developer/Env List", component: EnvList, parameters: { layout: "padded" } } satisfies Meta<typeof EnvList>;
+const meta = { title: "Components/Developer Tools/Env List", component: EnvList, parameters: { layout: "padded" } } satisfies Meta<typeof EnvList>;
 export default meta;
 type Story = StoryObj;
 

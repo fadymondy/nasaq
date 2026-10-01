@@ -1,12 +1,12 @@
 ---
 name: hr-attendance
 title: HR Attendance and Leave
-category: workflow
+category: work
 status: beta
 summary: An attendance marker with breaks, leave balances and requests that check overlap and balance, and payroll runs in whole minor units.
 exports: [HrAttendanceLabels, AttendancePunchKind, AttendancePunch, AttendanceMarkerProps, AttendanceMarker, LeaveType, LeaveBalancesProps, LeaveBalances, LeaveRequestInput, LeaveRequestDialogProps, LeaveRequestDialog, LeaveRequestRow, LeaveRequestListProps, LeaveRequestList, PayrollRunStatus, PayrollLine, PayrollRun, PayrollRunsProps, PayrollRuns]
 related: [calendar, time-tracker, data-table, approval-queue, price]
-story: components-workflow-hr-attendance
+story: components-projects-work-hr-attendance
 base-ui: [dialog, progress, switch]
 keywords: [hr, attendance, clock in, leave, vacation, payroll, shift, timesheet]
 ---

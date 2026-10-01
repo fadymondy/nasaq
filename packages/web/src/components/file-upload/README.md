@@ -1,12 +1,12 @@
 ---
 name: file-upload
 title: FileUpload
-category: pickers
+category: files
 status: beta
 summary: Dropzone with type, size and count validation, a file list with per-file progress, remove and retry, and a single-image upload with a thumbnail. You run the upload; it holds the state.
 exports: [FileUpload, Dropzone, UploadList, UploadListItem, ImageUpload, useObjectUrl, formatFileSize, matchesAccept, UploadFile, UploadStatus, FileUploadControls, FileUploadProps, DropzoneProps, FileRejection, RejectionCode, FileRules, UploadListProps, UploadListItemProps, ImageUploadProps]
 related: [progress, button, field, alert]
-story: components-pickers-file-upload
+story: components-files-file-upload
 base-ui: []
 keywords: [upload, file, dropzone, drag, drop, image, avatar, attachment, progress]
 ---
@@ -221,4 +221,4 @@ Uses `border-input`, `bg-card`, `bg-nq-hover`, `bg-nq-selected`, `border-nq-focu
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pickers-file-upload--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-files-file-upload--docs

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { demoHistory, useAr, wait } from "./_automation-demo";
 
-const meta = { title: "Components/Collaboration/Version History", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Files/Version History", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -1,12 +1,12 @@
 ---
 name: version-history
 title: VersionHistory
-category: collaboration
+category: files
 status: beta
 summary: Saved versions newest first with a read-only preview, a line diff against the previous, current or any other version, and a confirmed restore that saves as a new version.
 exports: [VersionHistory, HistoryVersion, VersionHistoryProps, VersionHistoryLabels]
 related: [workflow-canvas, step-editor, rule-builder, code-block, run-history]
-story: components-collaboration-version-history
+story: components-files-version-history
 base-ui: [alert-dialog, tabs, select]
 keywords: [versions, history, diff, restore, revisions, changelog, compare, rollback, audit]
 ---
@@ -116,4 +116,4 @@ Versions are toggle buttons. The diff is a table whose added and removed rows ar
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-collaboration-version-history--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-files-version-history--docs

@@ -1,12 +1,12 @@
 ---
 name: webhooks-manager
 title: Webhooks Manager
-category: developer
+category: developer-tools
 status: beta
 summary: Manage outgoing webhooks with endpoints, event selection, a signing secret shown once, a per-endpoint test, a delivery log with replay, inbound sources with a poll interval, and a push endpoint card shown once.
 exports: [canReplay, deliveryStats, deliveryStatus, groupEvents, groupState, isSourceStale, isSuccessCode, maskSecret, pollUnit, prettyJson, setEvents, validateEndpoint, validateEndpointUrl, verifySnippet, WebhooksManagerLabels, WebhooksResult, WebhooksSecretResult, WebhookEvent, WebhookEndpoint, EndpointInput, WebhookDelivery, WebhookTestResult, InboundSource, PushEndpoint, WebhooksManagerProps, WebhooksManager]
 related: [api-keys, run-history, log-viewer, data-table, code-block, copy-button]
-story: components-developer-webhooks-manager
+story: components-developer-tools-webhooks-manager
 base-ui: [alert-dialog, checkbox, dialog, select, switch, tabs]
 keywords: [webhook, endpoint, signing secret, delivery, replay, retry, events, inbound, polling]
 ---

@@ -1,12 +1,12 @@
 ---
 name: vault
 title: Vault
-category: developer
+category: security
 status: beta
 summary: A secrets manager UI with grouped secrets, masked values fetched only on reveal or copy, auto-hide, expiry badges, add, edit and delete, and an access log.
 exports: [VaultLabels, VaultSecretKind, VaultAccessAction, VaultSecret, VaultAccessEvent, VaultSecretInput, VaultResult, VaultRevealResult, VaultProps, Vault, daysUntil, ExpiryState, expiryState, groupSecrets, matchesSecret, VAULT_MASK]
 related: [api-keys, copy-button, data-table, alert-dialog, dialog]
-story: components-developer-vault
+story: components-security-vault
 base-ui: [tabs, dialog, alert-dialog]
 keywords: [vault, secrets, credentials, passwords, api keys, tokens, certificates, access log, expiry, rotation]
 ---
@@ -121,4 +121,4 @@ Every `section` prop except `children` and `title`, plus:
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-vault--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-security-vault--docs

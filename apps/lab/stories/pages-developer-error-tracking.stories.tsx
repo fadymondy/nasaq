@@ -3,7 +3,7 @@ import { ErrorTracking } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { errorIssues, FlowPage, useAr, wait } from "./_devtools-q3-demo";
 
-const meta = { title: "Pages/Developer/Error Tracking", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Monitoring/Pages/Error Tracking", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

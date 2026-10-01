@@ -6,7 +6,7 @@ status: beta
 summary: "Locks the app after a period of inactivity: a Still there countdown dialog first, then your LockScreen over the inert app."
 exports: [IdleLockLabels, IdleLockReason, UseIdleLockOptions, IdleLockControls, useIdleLock, IdleWarningDialogProps, IdleWarningDialog, IdleLockContext, IdleLockProps, IdleLock]
 related: [lock-screen, session-expired, alert-dialog]
-story: pages-auth-idle-lock
+story: components-auth-pages-idle-lock
 base-ui: [alert-dialog]
 keywords: [idle, timeout, auto lock, inactivity, session, warning, countdown, lock screen]
 ---
@@ -118,4 +118,4 @@ export function App() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-auth-idle-lock--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-pages-idle-lock--docs

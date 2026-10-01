@@ -3,12 +3,12 @@ name: switchers
 title: ThemeSwitcher
 category: actions
 status: stable
-summary: Theme (light / dark / system) and language controls - a segmented switcher, a language dropdown, and menu-item variants for embedding in other menus.
-exports: [ThemeSwitcher, ThemeSwitcherProps, ThemeMenuItems, LocaleSwitcher, LocaleSwitcherProps, LocaleMenuItems, useThemeLabels, ThemeLabels, THEME_OPTIONS]
+summary: Theme (light / dark / system) and language controls - a segmented switcher, a one-icon light/dark toggle with a click, a language dropdown, and menu-item variants for embedding in other menus.
+exports: [ThemeSwitcher, ThemeSwitcherProps, ThemeToggle, ThemeToggleProps, ThemeMenuItems, LocaleSwitcher, LocaleSwitcherProps, LocaleMenuItems, useThemeLabels, ThemeLabels, THEME_OPTIONS]
 related: [user-menu, app-shell]
 story: components-actions-switchers
 base-ui: [toggle, toggle-group, menu]
-keywords: [theme, dark mode, light, system, language, locale, rtl, arabic, switcher, preferences]
+keywords: [theme, dark mode, toggle, sun, moon, sound, light, system, language, locale, rtl, arabic, switcher, preferences]
 ---
 
 # ThemeSwitcher
@@ -17,6 +17,7 @@ Standalone controls for the two global preferences. Both talk to `NasaqProvider`
 choosing Arabic flips the whole document to RTL and choosing a theme updates every token.
 
 - **`ThemeSwitcher`**: a segmented Light / Dark / System control.
+- **`ThemeToggle`**: one icon button that flips light and dark, with an animated sun/moon swap and a soft click.
 - **`LocaleSwitcher`**: a language dropdown, icon-only or with the current language name.
 - **`ThemeMenuItems` / `LocaleMenuItems`**: the same choices as radio items for use inside your own `DropdownMenu` (this is what `UserMenu` uses).
 - **`useThemeLabels`** and **`THEME_OPTIONS`**: the localised labels and option list.
@@ -35,7 +36,7 @@ choosing Arabic flips the whole document to RTL and choosing a theme updates eve
 
 ```tsx
 import {
-  ThemeSwitcher, LocaleSwitcher, ThemeMenuItems, LocaleMenuItems, useThemeLabels, THEME_OPTIONS,
+  ThemeSwitcher, ThemeToggle, LocaleSwitcher, ThemeMenuItems, LocaleMenuItems, useThemeLabels, THEME_OPTIONS,
 } from "@fadymondy/nasaq/web";
 // inside this monorepo: "@nasaq/web"
 ```
@@ -43,12 +44,12 @@ import {
 ## Quick start
 
 ```tsx
-import { LocaleSwitcher, ThemeSwitcher } from "@fadymondy/nasaq/web";
+import { LocaleSwitcher, ThemeToggle } from "@fadymondy/nasaq/web";
 
 export function Preferences() {
   return (
     <div className="flex items-center gap-3">
-      <ThemeSwitcher />
+      <ThemeToggle />
       <LocaleSwitcher showLabel />
     </div>
   );
@@ -62,6 +63,10 @@ Must render inside `NasaqProvider`.
 ```
 ThemeSwitcher                  data-slot="theme-switcher"  (ToggleGroup, aria-label = labels.group)
 └─ Toggle × 3                  Sun / Moon / Monitor, tooltip + aria-label; data-pressed on the active one
+
+ThemeToggle                    data-slot="theme-toggle", data-state="light" | "dark" (ghost Button, icon-sm)
+├─ Sun                         shown in light; rotates out on switch
+└─ Moon                        shown in dark; rotates in
 
 LocaleSwitcher                 DropdownMenu
 ├─ trigger                     ghost Button (icon-sm, or sm with the language name)
@@ -79,6 +84,20 @@ Extends `Omit<ComponentProps<typeof ToggleGroup>, "value" | "onValueChange">` (s
 | `labels?` | `Partial<ThemeLabels>` | EN/AR by locale | Overrides for `light`, `dark`, `system`, `group`. |
 
 The value is read from and written to `useNasaq()` (`theme`, `setTheme`). Clicking the active option does nothing (one option is always selected).
+
+### `ThemeToggle`
+
+Extends the `Button` props except `onClick` and `children`.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `labels?` | `Partial<ThemeLabels>` | EN/AR by locale | Overrides for `toDark` and `toLight` (the button's name and tooltip). |
+| `sound?` | `boolean` | `true` | A soft click on switch. Always silent under `prefers-reduced-motion`. |
+
+Reads `resolvedTheme` and sets an explicit `"light"` or `"dark"`, so the first click leaves "System". Use it where
+space is tight (auth pages, marketing headers); use `ThemeSwitcher` or `ThemeMenuItems` where people should be able
+to go back to "System". The click is "Metal click" by Kenney (CC0), bundled as a data URI (about 5 KB) and played
+through Web Audio; it never throws if the browser blocks audio.
 
 ### `LocaleSwitcher`
 
@@ -108,7 +127,7 @@ Returns the built-in labels for the provider locale (Arabic for `ar*`, otherwise
 
 ### `ThemeLabels`
 
-`{ light: string; dark: string; system: string; group: string }`. Defaults: EN "Light", "Dark", "System", "Theme"; AR "فاتح", "داكن", "النظام", "المظهر".
+`{ light; dark; system; group; toDark; toLight }` (all strings). Defaults: EN "Light", "Dark", "System", "Theme", "Switch to dark theme", "Switch to light theme"; AR "فاتح", "داكن", "النظام", "المظهر", "التبديل إلى المظهر الداكن", "التبديل إلى المظهر الفاتح".
 
 ### `THEME_OPTIONS`
 
@@ -172,6 +191,8 @@ export const Custom = () => <ThemeSwitcher labels={{ group: "Appearance", system
 | `Esc` | Closes. |
 
 - Each theme toggle has an `aria-label` and a tooltip; the group is named by `labels.group`.
+- `ThemeToggle` is named for the action ("Switch to dark theme"), so its name changes after each press; the icons are `aria-hidden`.
+- The sound is decoration only: nothing depends on hearing it, and it is off under reduced motion.
 - The icon-only `LocaleSwitcher` is named `"<label>: <current language>"`.
 - Language names carry `lang` so screen readers switch voice.
 - **Localise:** `labels` (built-ins cover `en` and `ar`) and `LocaleSwitcher.label`.
@@ -185,7 +206,8 @@ export const Custom = () => <ThemeSwitcher labels={{ group: "Appearance", system
 ## Styling & tokens
 
 - `ThemeSwitcher`: `border-border`, `bg-card`; active option `data-pressed:bg-nq-selected`, focus `nq-focus`.
-- Target `[data-slot=theme-switcher]`; extend with `className`.
+- `ThemeToggle`: the ghost icon `Button`; the icons swap with `opacity`, `rotate` and `scale` over 300ms `ease-nq` (no transition under reduced motion).
+- Target `[data-slot=theme-switcher]` or `[data-slot=theme-toggle]`; extend with `className`.
 
 ## Do / Don't
 

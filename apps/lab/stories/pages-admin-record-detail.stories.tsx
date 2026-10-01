@@ -6,7 +6,7 @@ import { useState } from "react";
 import { NESTED_RULES, NESTED_SCHEMA, NESTED_VALUE, saveNested } from "./_nested-form-demo";
 import { createPerson, customerSections, resolvePeople, searchPeople, t, useAr, W2Page } from "./_w2-demo";
 
-const meta = { title: "Pages/Admin/Record Detail", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Data Display/Pages/Record Detail", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

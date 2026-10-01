@@ -6,7 +6,7 @@ status: beta
 summary: Small charts that Recharts does not give you, a proportion bar with a legend of values, a progress ring, a centred funnel with step conversion and a table-row trend cell with a sparkline or mini bar.
 exports: [ChartExtrasLabels, SegmentBarSegment, SegmentBarProps, SegmentBar, ProgressRingProps, ProgressRing, FunnelStepsStep, FunnelStepsProps, FunnelSteps, TrendCellProps, TrendCell]
 related: [chart, funnel-chart, stat-card, progress, data-table, usage-meter]
-story: components-charts-extra-charts
+story: components-charts-maps-extra-charts
 base-ui: []
 keywords: [segment bar, proportion, stacked bar, legend, progress ring, donut, funnel, conversion, sparkline, mini bar, trend cell, table cell]
 ---
@@ -227,4 +227,4 @@ biggest drop is a badge with an icon and text. `TrendCell` has a visually hidden
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-extra-charts--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-maps-extra-charts--docs

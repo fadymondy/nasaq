@@ -2,7 +2,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CertsDemo, useAr, VulnDemo } from "./_infra-demo";
 
-const meta = { title: "Pages/Infra/Certificates and Vulnerabilities", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Security/Pages/Certificates and Vulnerabilities", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

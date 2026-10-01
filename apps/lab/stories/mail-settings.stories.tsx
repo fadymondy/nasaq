@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MailDomainsDemo, SmtpSettingsDemo } from "./_infra-admin-demo";
 
-const meta = { title: "Components/Developer/Mail Settings" } satisfies Meta;
+const meta = { title: "Components/Server Tools/Mail Settings" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

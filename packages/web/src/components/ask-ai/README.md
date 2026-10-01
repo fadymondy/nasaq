@@ -6,7 +6,7 @@ status: beta
 summary: Ask AI about selected text with a popover that appears on selection, quick actions and a question box. Plus an inline AI insight card with finding, metric, reasoning, sources, confidence and next actions.
 exports: [AskAiLabels, AskAiRequest, AskAiSelection, AskAiSelectionProps, AiInsightCard, AiInsightAction, AiInsightMetric, AiInsightCardProps, normalizeSelection, shortenMiddle, isIgnoredTarget, readOutcome, deltaTone, AskAiOutcome, NormalizedSelection]
 related: [ai-states, ai-citations, copilot-chat, popover, markdown]
-story: components-ai-ask-ai-and-insight-card
+story: components-ai-assistant-ask-ai-and-insight-card
 base-ui: [popover]
 keywords: [ask ai, selection, highlight, explain, summarize, translate, insight, popover, inline ai]
 ---

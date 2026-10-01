@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { DEMO_SPEED, useAr } from "./_focus-demo";
 
-const meta = { title: "Components/Health/Break Lock Screen", component: BreakLockScreen, parameters: { layout: "padded" } } satisfies Meta<typeof BreakLockScreen>;
+const meta = { title: "Components/Productivity/Break Lock Screen", component: BreakLockScreen, parameters: { layout: "padded" } } satisfies Meta<typeof BreakLockScreen>;
 export default meta;
 type Story = StoryObj;
 

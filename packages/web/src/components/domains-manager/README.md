@@ -1,12 +1,12 @@
 ---
 name: domains-manager
 title: DomainsManager
-category: developer
+category: server-tools
 status: beta
 summary: Custom domains for a site - add a domain, see its DNS check state, check again, make one primary, remove with a confirm, with the CNAME target to copy. Also DomainChips, compact chips with a +N overflow chip.
 exports: [DomainsManagerLabels, DomainsResult, DomainRecord, DomainChipsProps, DomainChips, DomainsManagerProps, DomainsManager, DomainCheck, DomainSummary, isValidHostname, normalizeHost, splitOverflow, summarizeDomains]
 related: [dns-management, proxy-hosts, cert-monitor, data-table]
-story: components-developer-domains-manager
+story: components-server-tools-domains-manager
 base-ui: [alert-dialog, field, popover]
 keywords: [domain, custom domain, cname, dns check, verify, primary, chips]
 ---
@@ -125,4 +125,4 @@ export const Cell = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-domains-manager--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-domains-manager--docs

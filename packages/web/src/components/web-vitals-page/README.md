@@ -1,12 +1,12 @@
 ---
 name: web-vitals-page
 title: WebVitalsPage
-category: analytics
+category: monitoring
 status: beta
 summary: A web vitals report - a Core Web Vitals verdict, gauges for LCP, INP, CLS, FCP and TTFB with distributions, a trend chart with Google's limits, and pages to fix.
 exports: [WebVitalsPage, WebVitalsPageProps, WebVitalsData, WebVitalsPageLabels, WebVitalReading, WebVitalsPageRow, WebVitalsDevice]
 related: [web-vital-gauge, time-series-panel, status, analytics-connect]
-story: pages-analytics-web-vitals
+story: components-monitoring-pages-web-vitals
 base-ui: []
 keywords: [web vitals, core web vitals, lcp, inp, cls, fcp, ttfb, performance, crux]
 ---
@@ -124,4 +124,4 @@ The page has one `h1`; tabs follow the WAI-ARIA tabs pattern (arrow keys move, t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-analytics-web-vitals--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-pages-web-vitals--docs

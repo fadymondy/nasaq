@@ -1,12 +1,12 @@
 ---
 name: feature-flags
 title: FeatureFlagList
-category: developer
+category: developer-tools
 status: beta
 summary: "A feature flag list with a key, an on/off switch per environment, rollout percentage, state and last update, plus the pure bucketing and evaluation logic behind percentage rollouts."
 exports: [ruleMatcher, FeatureFlagsLabels, FeatureFlagListProps, FeatureFlagList, bucketFor, clampRollout, evaluateFlag, flagKeyFromName, flagState, hash32, isInRollout, isValidFlagKey, normalizeWeights, pickVariant, ruleVariant]
 related: [feature-flag-detail, rule-builder, kill-switch, data-table, switch]
-story: components-developer-feature-flags
+story: components-developer-tools-feature-flags
 base-ui: [switch]
 keywords: [feature flags, toggles, rollout, environments, targeting, release, kill switch]
 ---
@@ -134,4 +134,4 @@ State uses the success, warning, danger and neutral tokens. Logical spacing only
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-feature-flags--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-feature-flags--docs

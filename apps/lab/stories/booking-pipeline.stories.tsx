@@ -3,7 +3,7 @@ import { advance, type BookingStatus, type BookingTransition, BookingPipeline } 
 import { useState } from "react";
 import { wait } from "./_seatfor-demo";
 
-const meta = { title: "Components/Commerce/Booking Pipeline", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Bookings/Booking Pipeline", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

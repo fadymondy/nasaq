@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ClinicSchedule } from "@nasaq/web";
 import { NOW_DATE, useClinicAppointments } from "./_seatfor-demo";
 
-const meta = { title: "Components/Health/Clinic Schedule", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Healthcare/Clinic Schedule", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

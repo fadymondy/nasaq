@@ -1,12 +1,12 @@
 ---
 name: desktop-notification
 title: DesktopNotification
-category: feedback
+category: alerts
 status: beta
 summary: Notification cards drawn like macOS and Windows system alerts for Electron apps and previews, a corner stack with auto dismiss, and the notification permission flow with a soft ask, waiting, granted and blocked steps.
 exports: [DesktopNotificationLabels, DesktopPlatform, DesktopNotificationAction, DesktopNotificationProps, DesktopNotification, DesktopNotificationEntry, DesktopNotificationStackProps, DesktopNotificationStack, DesktopPermission, DesktopPermissionStep, permissionStep, useNotificationPermission, NotificationPermissionPromptProps, NotificationPermissionPrompt]
 related: [toast, notification-item, notification-center]
-story: components-feedback-desktop-notification
+story: components-alerts-notifications-desktop-notification
 base-ui: []
 keywords: [desktop notification, electron, macos, windows, system notification, permission, push, native, toast]
 ---

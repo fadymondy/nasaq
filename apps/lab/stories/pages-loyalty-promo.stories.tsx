@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LoyaltyPageDemo, useAr, V2Page } from "./_v2-demo";
 
-const meta = { title: "Pages/App/Loyalty and Promo", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Gamification/Pages/Loyalty and Promo", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

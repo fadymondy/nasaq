@@ -1,12 +1,12 @@
 ---
 name: status-label-manager
 title: StatusLabelManager
-category: workflow
+category: work
 status: beta
 summary: An admin screen to manage workflow statuses grouped by stage and flat labels, with colour, reorder, edit and delete that warns when in use.
 exports: [StatusLabelManager, StatusLabelManagerProps, StatusLabelManagerLabels, StatusDraft, LabelDraft, WorkStatus, WorkLabel, StatusHue, StatusStage, NameError, STATUS_STAGES, STATUS_HUES, NAME_MAX, validateName, groupByStage, moveWithinStage, sortByStage, hasDoneStage]
 related: [color-picker, badge, tabs, alert-dialog]
-story: components-workflow-status-label-manager
+story: components-projects-work-status-label-manager
 base-ui: [tabs, dialog, alert-dialog, select, context-menu]
 keywords: [status, label, tag, workflow, stage, color, reorder, settings]
 ---
@@ -88,4 +88,4 @@ Hues map to `--nq-tag-*`. Cards fill their cell.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-status-label-manager--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-status-label-manager--docs

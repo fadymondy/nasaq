@@ -1,12 +1,12 @@
 ---
 name: search-console-page
 title: SearchConsolePage
-category: analytics
+category: seo
 status: beta
 summary: A Search Console report - clicks, impressions, CTR and position tiles that drive the chart, plus queries, pages, countries and devices.
 exports: [SearchConsolePage, SearchConsolePageProps, SearchConsoleData, SearchConsolePageLabels, SearchConsoleTotal]
 related: [metric-tiles, time-series-panel, search-performance-table, geo-list, breakdown-table, analytics-connect]
-story: pages-analytics-search-console
+story: components-seo-pages-search-console
 base-ui: []
 keywords: [search console, seo, clicks, impressions, ctr, position, queries]
 ---
@@ -137,4 +137,4 @@ The page has one `h1`; tabs follow the WAI-ARIA tabs pattern (arrow keys move, t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-analytics-search-console--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-pages-search-console--docs

@@ -20,8 +20,8 @@ Nasaq is served from three hosts, each with one job, plus the repository and the
 | --- | --- |
 | Docs | These pages |
 | Foundations | Colour, typography, icons and bidi, motion, layout |
-| Components | One entry per component, each with its manual and stories |
-| Pages | Full-screen templates, including the commerce kit |
+| Brand | Brand matrix and product marks |
+| Components | One folder per category, A to Z. Each holds its components (manual and stories), then a **Pages** folder of full screens built from them and, where there are any, **Patterns** |
 
 Story URLs are stable and worth linking to: `/?path=/story/<id>` opens a story, `/?path=/docs/<id>--docs` opens a component's docs page, and `/iframe.html?id=<id>&viewMode=story` is the bare canvas without the Storybook chrome, useful for embedding or screenshots. Add `&globals=theme:dark;locale:ar` to a canvas URL to pick the theme and locale.
 

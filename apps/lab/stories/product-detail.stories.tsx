@@ -5,7 +5,7 @@ import { useState } from "react";
 import { STORE_CURRENCY, breadcrumbs, delivery, demoProduct, relatedProducts, shippingInfo, sizeGuide, specs, useAr, wait } from "./_product-demo";
 import { frame } from "./_frame";
 
-const meta = { title: "Components/Commerce/Product Detail", component: ProductDetail, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof ProductDetail>;
+const meta = { title: "Components/Storefront/Product Detail", component: ProductDetail, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof ProductDetail>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

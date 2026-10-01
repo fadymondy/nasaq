@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { apmReport, useAr, useDemoConnection, useDemoReport, wait } from "./_analytics-demo";
 
-const meta = { title: "Pages/Analytics/APM", component: ApmPage, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof ApmPage>;
+const meta = { title: "Components/Monitoring/Pages/APM", component: ApmPage, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof ApmPage>;
 export default meta;
 type Story = StoryObj;
 

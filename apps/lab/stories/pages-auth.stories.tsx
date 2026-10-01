@@ -7,9 +7,9 @@
 import { AuthLayout, buttonVariants, ForgotPasswordForm, LoginForm, OAuthConsent, RegisterForm, ResetPasswordForm, TwoFactorChallenge, VerifyOtpForm } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { BrandPanel, consentScopes, DEMO_CODE, DoneScreen, fakeCode, fakeLogin, sleep, StoryFooter, useAr } from "./_auth";
+import { BrandPanel, consentScopes, DEMO_CODE, DoneScreen, fakeCode, fakeLogin, ForgotLink, SignInPrompt, SignUpPrompt, sleep, StoryFooter, useAr } from "./_auth";
 
-const meta = { title: "Pages/Auth/Flow", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Auth/Pages/Flow", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 
@@ -27,7 +27,7 @@ function SignInFlow() {
     done: [ar ? "تم تسجيل الدخول" : "You are signed in", ""],
   } as const;
   return (
-    <AuthLayout variant="split" panel={<BrandPanel />} title={titles[step][0]} description={titles[step][1] || undefined} footer={<StoryFooter />}>
+    <AuthLayout variant="split" panel={<BrandPanel />} title={titles[step][0]} description={titles[step][1] || undefined} prompt={step === "login" ? <SignUpPrompt /> : undefined} footer={<StoryFooter />}>
       {step === "login" ? (
         <LoginForm
           oauthProviders={["google", "github", "apple"]}
@@ -93,7 +93,7 @@ function SignUpFlow() {
     done: [ar ? "حسابك جاهز" : "Your account is ready", ""],
   } as const;
   return (
-    <AuthLayout title={heading[step][0]} description={heading[step][1] || undefined} footer={<StoryFooter />}>
+    <AuthLayout title={heading[step][0]} description={heading[step][1] || undefined} prompt={step === "register" ? <SignInPrompt /> : undefined} footer={<StoryFooter />}>
       {step === "register" ? (
         <RegisterForm
           oauthProviders={["google", "github"]}
@@ -192,8 +192,8 @@ function Consent() {
 function LoginCard() {
   const ar = useAr();
   return (
-    <AuthLayout title={ar ? "مرحبًا بعودتك" : "Welcome back"} description={ar ? "سجّل الدخول إلى حسابك." : "Sign in to your account."} footer={<StoryFooter />}>
-      <LoginForm onSubmit={(v) => fakeLogin(v.password, ar)} oauthProviders={["google", "github"]} onOAuth={() => sleep(1500)} />
+    <AuthLayout title={ar ? "مرحبًا بعودتك" : "Welcome back"} description={ar ? "سجّل الدخول إلى حسابك." : "Sign in to your account."} prompt={<SignUpPrompt />} footer={<StoryFooter />}>
+      <LoginForm onSubmit={(v) => fakeLogin(v.password, ar)} forgotPassword={<ForgotLink />} oauthProviders={["google", "github"]} onOAuth={() => sleep(1500)} />
     </AuthLayout>
   );
 }

@@ -2,7 +2,7 @@ import { Button, Meter, Progress, useNasaq } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect, useState } from "react";
 
-const meta = { title: "Components/Feedback/Progress", component: Progress, args: { value: 40 } } satisfies Meta<typeof Progress>;
+const meta = { title: "Components/Loading & States/Progress", component: Progress, args: { value: 40 } } satisfies Meta<typeof Progress>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

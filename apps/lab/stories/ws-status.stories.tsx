@@ -2,7 +2,7 @@ import { Button, WsStatus } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useFakeSocket } from "./_ops-demo";
 
-const meta = { title: "Components/Feedback/WS Status" } satisfies Meta;
+const meta = { title: "Components/Loading & States/WS Status" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ServerDemo } from "./_infra-demo";
 
-const meta = { title: "Components/Developer/Server Card" } satisfies Meta;
+const meta = { title: "Components/Server Tools/Server Card" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

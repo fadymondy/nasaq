@@ -1,12 +1,12 @@
 ---
 name: booking-flow
 title: BookingFlow
-category: commerce
+category: bookings
 status: beta
 summary: Online booking flow with branch, service, doctor with ratings, day and time grid, guest or signed-in details, notes and files, payment choice, review and a QR ticket confirmation.
 exports: [BookingStepId, BookingFlowLabels, BookingDetailsValue, BookingSubmission, BookingSlotQuery, BookingFlowProps, BookingFlow]
 related: [booking-slots, booking-manage, booking-pipeline, checkout-steps, stepper, qr-code]
-story: components-commerce-booking-flow
+story: components-bookings-booking-flow
 base-ui: [radio-group, field]
 keywords: [booking, appointment, reservation, clinic, seatfor, steps, wizard, time slot]
 ---
@@ -136,4 +136,4 @@ onSubmit={async (booking) => {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-booking-flow--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-booking-flow--docs

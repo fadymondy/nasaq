@@ -5,7 +5,7 @@ import { frame } from "./_frame";
 import { useAr, wait } from "./_lifecycle-demo";
 
 const meta = {
-  title: "Components/Developer/Provider Switcher",
+  title: "Components/Developer Tools/Provider Switcher",
   decorators: [frame("w-full max-w-3xl")],
 } satisfies Meta;
 export default meta;

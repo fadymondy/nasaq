@@ -1,12 +1,12 @@
 ---
 name: attention
 title: Attention
-category: data-display
+category: alerts
 status: beta
 summary: A short, domain-independent list of things the user should act on now (unread conversations, failed deployments, approvals, setup steps), ordered by urgency.
 exports: [Attention, AttentionProps, AttentionRow, AttentionRowProps, AttentionItem, AttentionTone]
 related: [status, notification-item, button, product-mark]
-story: components-data-display-attention
+story: components-alerts-notifications-attention
 base-ui: []
 keywords: [attention, inbox, todo, action items, needs attention, checklist, setup, onboarding, dashboard, overview, alerts]
 ---
@@ -159,4 +159,4 @@ hover `bg-nq-hover`, focus ring `nq-focus`. Tone colours: `text-nq-{danger,warni
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-attention--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-attention--docs

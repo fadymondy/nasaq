@@ -1,12 +1,12 @@
 ---
 name: store-dashboard
 title: StoreDashboard
-category: analytics
+category: store-admin
 status: beta
 summary: Store admin home with sales, orders, average order value, conversion and returning customers against the previous period, a sales chart, conversion funnel, top products, categories, channels and cities, low stock alerts, recent orders and live visitors on a customisable board.
 exports: [StoreDashboardLabels, StoreBreakdownRow, StoreTopProduct, StoreLiveVisitors, StoreDashboardProps, STORE_DASHBOARD_LAYOUT, StoreDashboard]
 related: [stat-card, charts, funnel-chart, time-range-picker, dashboard-board, report-filter-bar, chart-extras]
-story: components-commerce-store-dashboard
+story: components-store-admin-store-dashboard
 base-ui: []
 keywords: [store, dashboard, sales, orders, aov, conversion, funnel, low stock, live visitors, ecommerce]
 ---
@@ -131,4 +131,4 @@ StoreDashboard
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-store-dashboard--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-store-dashboard--docs

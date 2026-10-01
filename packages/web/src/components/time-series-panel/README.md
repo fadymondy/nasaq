@@ -1,12 +1,12 @@
 ---
 name: time-series-panel
 title: TimeSeriesPanel
-category: analytics
+category: monitoring
 status: beta
 summary: A chart card for one metric at a time, with a previous-period comparison line, a metric switcher and threshold lines. Also exports PeriodToggle.
 exports: [TimeSeriesPanel, TimeSeriesPanelProps, TimeSeriesMetric, TimeSeriesPoint, TimeSeriesReferenceLine, TimeSeriesPanelLabels, PeriodToggle, PeriodToggleProps]
 related: [chart, metric-tiles, stat-card, web-vital-gauge]
-story: components-analytics-time-series-panel
+story: components-monitoring-time-series-panel
 base-ui: []
 keywords: [chart, time series, period comparison, trend, analytics, area chart]
 ---
@@ -186,4 +186,4 @@ The chart has a text alternative naming the metric and range, and the switcher a
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-time-series-panel--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-time-series-panel--docs

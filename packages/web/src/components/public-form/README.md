@@ -1,12 +1,12 @@
 ---
 name: public-form
 title: PublicForm
-category: forms
+category: form-builders
 status: beta
 summary: Renders a form definition for visitors, with rules that show hide or require fields, validation in Arabic and English, a hidden honeypot and a thank-you. Includes a ready contact form with a topic.
 exports: [PublicForm, PublicFormProps, PublicFormLabels, ContactForm, ContactFormProps]
 related: [form-builder, testimonials, field, phone-input]
-story: components-forms-public-form
+story: components-form-builders-public-form
 base-ui: [field, select, radio-group, checkbox]
 keywords: [form, public form, contact, inquiry, subscribe, embed, honeypot, spam, topic, allowed origins, conditional fields]
 ---
@@ -159,4 +159,4 @@ Uses `Field`, `Input`, `Select`, `Button` tokens. `className` goes on the form; 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-public-form--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-form-builders-public-form--docs

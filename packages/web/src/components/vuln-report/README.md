@@ -1,12 +1,12 @@
 ---
 name: vuln-report
 title: VulnReport
-category: health
+category: security
 status: beta
 summary: A vulnerability scan report - CVE counts per severity, the worst findings with the version that fixes them, the trend against the previous scan and a stacked history of the last scans.
 exports: [VulnReportLabels, VulnFinding, VulnScan, SeverityCountsProps, SeverityTiles, VulnReportProps, VulnReport, countBySeverity, emptyCounts, isCveId, riskTone, RankableFinding, VULN_SEVERITIES, Severity, SeverityCounts, topFindings, totalCount, trend, RiskTone]
 related: [cert-monitor, uptime-monitors, alerts, metric-tiles]
-story: components-health-vulnerability-report
+story: components-security-vulnerability-report
 base-ui: []
 keywords: [vulnerability, cve, security scan, severity, cvss, patch, report]
 ---
@@ -111,4 +111,4 @@ export const Tiles = () => <SeverityTiles counts={{ critical: 1, high: 4, medium
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-health-vulnerability-report--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-security-vulnerability-report--docs

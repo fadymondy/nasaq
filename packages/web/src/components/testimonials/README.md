@@ -1,12 +1,12 @@
 ---
 name: testimonials
 title: Testimonials
-category: forms
+category: website
 status: beta
 summary: A public form for people to leave a testimonial with a rating and consent, and a display as masonry wall, equal grid or spotlight, with a menu for moderation.
 exports: [TestimonialForm, TestimonialFormProps, TestimonialSubmission, TestimonialWall, TestimonialWallProps, TestimonialLayout, TestimonialLabels]
 related: [public-form, form-builder, avatar, rating]
-story: components-forms-testimonials
+story: components-website-testimonials
 base-ui: [field, checkbox]
 keywords: [testimonial, review, quote, social proof, wall, spotlight, rating, consent, submit]
 ---
@@ -120,4 +120,4 @@ Cards use `--nq-card`/border tokens; stars use the accent token. The wall uses C
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-testimonials--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-website-testimonials--docs

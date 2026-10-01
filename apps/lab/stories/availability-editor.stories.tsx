@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AvailabilityEditor } from "@nasaq/web";
 import { useDemoAvailability, wait } from "./_seatfor-demo";
 
-const meta = { title: "Components/Health/Availability Editor", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Bookings/Availability Editor", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

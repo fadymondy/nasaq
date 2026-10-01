@@ -1,21 +1,24 @@
 "use client";
 
-import { CircleCheck, CircleX, MailCheck, TriangleAlert } from "lucide-react";
-import { type ComponentProps, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { CircleCheck, CircleX, ExternalLink, Globe, MailCheck, MapPin, TriangleAlert } from "lucide-react";
+import { type ComponentProps, type FormEvent, type ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
 import { DEFAULT_LOCALES, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Alert } from "../alert";
+import { Avatar } from "../avatar";
 import { AvatarUpload, type AvatarUploadProps } from "../avatar-upload";
 import { Badge } from "../badge";
 import { Button } from "../button";
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "../combobox";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../dialog";
 import { Field, FieldDescription, FieldError, FieldLabel, Input, Textarea } from "../field";
+import { Icon } from "../icon";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "../input-group";
 import { formatNumber } from "../numeric";
 import { PasswordInput } from "../password-input";
 import { PhoneInput } from "../phone-input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select";
+import { Separator } from "../separator";
 import { Spinner } from "../spinner";
 
 /* ------------------------------------------------------------------ strings */
@@ -68,6 +71,19 @@ const STRINGS = {
     saved: "Profile updated.",
     saveFailed: "Your profile could not be saved. Try again.",
     dismiss: "Dismiss",
+    publicProfile: "Public profile",
+    publicProfileHint: "Everyone can see this on your profile page.",
+    account: "Account",
+    accountHint: "Private. Used to sign in and to recover your account.",
+    preferences: "Preferences",
+    preferencesHint: "How dates, times and the interface are shown to you.",
+    location: "Location",
+    locationHelp: "City and country, as you want it shown.",
+    website: "Website",
+    websiteHelp: "Your site or portfolio.",
+    websiteInvalid: "Enter a full link that starts with https://.",
+    viewProfile: "View public profile",
+    preview: "Profile preview",
   },
   ar: {
     name: "الاسم المعروض",
@@ -116,6 +132,19 @@ const STRINGS = {
     saved: "تم تحديث الملف الشخصي.",
     saveFailed: "تعذّر حفظ ملفك الشخصي. حاول مرة أخرى.",
     dismiss: "تجاهل",
+    publicProfile: "الملف العام",
+    publicProfileHint: "يراه الجميع في صفحة ملفك الشخصي.",
+    account: "الحساب",
+    accountHint: "خاص. يُستخدم لتسجيل الدخول واستعادة حسابك.",
+    preferences: "التفضيلات",
+    preferencesHint: "كيف تظهر لك التواريخ والأوقات والواجهة.",
+    location: "الموقع",
+    locationHelp: "المدينة والبلد، كما تريد أن يظهرا.",
+    website: "الموقع الإلكتروني",
+    websiteHelp: "موقعك أو معرض أعمالك.",
+    websiteInvalid: "أدخل رابطًا كاملًا يبدأ بـ https://.",
+    viewProfile: "عرض الملف العام",
+    preview: "معاينة الملف",
   },
 };
 
@@ -134,6 +163,10 @@ export interface ProfileValues {
   locale: string;
   /** An IANA time zone such as "Asia/Riyadh". */
   timezone: string;
+  /** Shown on the public profile. Include the key (even as "") to show the field. */
+  location?: string;
+  /** A full https:// link shown on the public profile. Include the key (even as "") to show the field. */
+  website?: string;
 }
 
 export type ProfileFieldErrors = Partial<Record<keyof ProfileValues | "password", string>>;
@@ -180,6 +213,8 @@ export interface ProfileFormProps extends Omit<ComponentProps<"form">, "onSubmit
   /** Country preselected in the phone field when there is no number. Default "SA". */
   defaultCountry?: string;
   disabled?: boolean;
+  /** Link to the public profile, shown under the preview as "View public profile". */
+  profileHref?: string;
   /** Override any built-in English or Arabic string. */
   labels?: Partial<ProfileLabels>;
 }
@@ -188,7 +223,8 @@ export interface ProfileFormProps extends Omit<ComponentProps<"form">, "onSubmit
 
 const USERNAME = /^[a-z0-9][a-z0-9._-]{1,28}[a-z0-9]$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const DIRTY_KEYS = ["name", "username", "phone", "bio", "locale", "timezone"] as const;
+const WEBSITE = /^https?:\/\/[^\s.]+\.[^\s]+$/i;
+const DIRTY_KEYS = ["name", "username", "phone", "bio", "locale", "timezone", "location", "website"] as const;
 
 const FALLBACK_ZONES = ["Africa/Cairo", "Asia/Riyadh", "Asia/Dubai", "Asia/Kuwait", "Asia/Qatar", "Europe/London", "Europe/Paris", "America/New_York", "America/Los_Angeles", "Asia/Tokyo", "UTC"];
 
@@ -213,10 +249,12 @@ type UsernameState = { status: "idle" | "checking" | "available" | "taken" | "er
 /* ------------------------------------------------------------------ component */
 
 /**
- * The "Profile" settings form: photo, display name, username with a live availability check, email with
- * verification and a password-protected change, phone, bio, language and time zone. It tracks changes and
- * shows a sticky Save / Discard bar only while something differs from the saved values. Nothing is sent
- * by the component: every action is an async callback you provide.
+ * The "Profile" settings form, laid out like the public profile page: an identity column with the photo and a live
+ * preview of the name, username, location, website and bio, beside grouped fields: Public profile (display name,
+ * username with a live availability check, bio, and optional location and website), Account (email with verification
+ * and a password-protected change, phone) and Preferences (language, time zone). The columns stack below 48rem of
+ * container width. It tracks changes and shows a sticky Save / Discard bar only while something differs from the saved
+ * values. Nothing is sent by the component: every action is an async callback you provide.
  */
 export function ProfileForm({
   values,
@@ -232,6 +270,7 @@ export function ProfileForm({
   bioMaxLength = 160,
   defaultCountry,
   disabled,
+  profileHref,
   labels,
   className,
   ...props
@@ -304,6 +343,7 @@ export function ProfileForm({
   if (draft.username && draft.username !== baseline.username && !USERNAME.test(draft.username)) localErrors.username = t.usernameFormat;
   if (attempted && !draft.username) localErrors.username = t.usernameFormat;
   if (username.status === "taken") localErrors.username = username.message ?? t.usernameTaken;
+  if (attempted && draft.website && !WEBSITE.test(draft.website.trim())) localErrors.website = t.websiteInvalid;
   const errors: ProfileFieldErrors = { ...serverErrors, ...localErrors };
 
   const blocked = username.status === "checking" || username.status === "taken" || !!localErrors.username;
@@ -319,7 +359,7 @@ export function ProfileForm({
     event.preventDefault();
     if (!dirty || saving) return;
     setAttempted(true);
-    if (blocked || !draft.name.trim() || !draft.username) return;
+    if (blocked || !draft.name.trim() || !draft.username || (draft.website && !WEBSITE.test(draft.website.trim()))) return;
     setSaving(true);
     setFormError(null);
     setNotice(null);
@@ -354,20 +394,20 @@ export function ProfileForm({
   const zone = zoneOptions.find((z) => z.value === draft.timezone) ?? null;
 
   const bioLength = Array.from(draft.bio).length;
+  const hasLocation = draft.location !== undefined;
+  const hasWebsite = draft.website !== undefined;
+  const shownName = draft.name.trim() || baseline.name;
+  const site = draft.website?.trim().replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, "");
 
   return (
     <form
       data-slot="profile-form"
       noValidate
       aria-busy={saving || undefined}
-      className={cn("flex flex-col gap-6", className)}
+      className={cn("@container flex flex-col gap-6", className)}
       onSubmit={submit}
       {...props}
     >
-      {avatar?.onChange ? (
-        <AvatarUpload name={draft.name || baseline.name} disabled={disabled || saving} {...avatar} onChange={avatar.onChange} />
-      ) : null}
-
       {formError ? (
         <Alert tone="danger" onDismiss={() => setFormError(null)} dismissLabel={t.dismiss}>
           {formError}
@@ -379,163 +419,259 @@ export function ProfileForm({
         </Alert>
       ) : null}
 
-      <div className="grid gap-x-4 gap-y-5 sm:grid-cols-2">
-        <Field invalid={!!errors.name}>
-          <FieldLabel>{t.name}</FieldLabel>
-          <Input
-            name="name"
-            autoComplete="name"
-            required
-            disabled={disabled}
-            value={draft.name}
-            onChange={(e) => set("name", e.target.value)}
-          />
-          {errors.name ? <FieldError match>{errors.name}</FieldError> : <FieldDescription>{t.nameHelp}</FieldDescription>}
-        </Field>
-
-        <Field invalid={!!errors.username}>
-          <FieldLabel>{t.username}</FieldLabel>
-          <InputGroup dir="ltr">
-            <InputGroupAddon>
-              <InputGroupText>@</InputGroupText>
-            </InputGroupAddon>
-            <InputGroupInput
-              ltr
-              name="username"
-              autoComplete="username"
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck={false}
-              maxLength={30}
-              disabled={disabled}
-              value={draft.username}
-              onChange={(e) => set("username", e.target.value.toLowerCase().replace(/[^a-z0-9._-]/g, ""))}
-            />
-            {username.status !== "idle" && username.status !== "error" ? (
-              <InputGroupAddon align="end">
-                {username.status === "checking" ? (
-                  <Spinner />
-                ) : username.status === "available" ? (
-                  <CircleCheck aria-hidden="true" className="text-nq-success-text" />
-                ) : (
-                  <CircleX aria-hidden="true" className="text-nq-danger-text" />
-                )}
-              </InputGroupAddon>
+      <div className="grid grid-cols-1 gap-8 @3xl:grid-cols-[16rem_minmax(0,1fr)] @3xl:gap-10">
+        {/* The identity column: the photo and a live preview of what the public profile shows. */}
+        <aside aria-label={t.preview} data-slot="profile-form-preview" className="flex min-w-0 flex-col gap-4 @3xl:sticky @3xl:top-6 @3xl:self-start">
+          {avatar?.onChange ? (
+            <AvatarUpload layout="stacked" name={shownName} disabled={disabled || saving} {...avatar} onChange={avatar.onChange} />
+          ) : (
+            <Avatar name={shownName} src={avatar?.src} className="size-32 text-h1 ring-1 ring-border @3xl:size-56 @3xl:text-display" />
+          )}
+          <div className="flex min-w-0 flex-col gap-1">
+            <p dir="auto" className="truncate text-h2 text-foreground">
+              {shownName}
+            </p>
+            {draft.username ? (
+              <p dir="ltr" className="truncate text-start font-mono text-body-sm text-muted-foreground">
+                @{draft.username}
+              </p>
             ) : null}
-          </InputGroup>
-          {errors.username ? <FieldError match>{errors.username}</FieldError> : null}
-          <FieldDescription aria-live="polite" className={cn(username.status === "available" && "text-nq-success-text")}>
-            {errors.username
-              ? null
-              : username.status === "checking"
-                ? t.usernameChecking
-                : username.status === "available"
-                  ? (username.message ?? t.usernameAvailable(`@${draft.username}`))
-                  : username.status === "error"
-                    ? t.usernameCheckFailed
-                    : t.usernameHelp}
-          </FieldDescription>
-        </Field>
-      </div>
+          </div>
+          {draft.location?.trim() || site ? (
+            <ul className="flex list-none flex-col gap-2 p-0 text-body-sm text-foreground">
+              {draft.location?.trim() ? (
+                <li className="flex min-w-0 items-center gap-2">
+                  <Icon icon={MapPin} className="size-4 shrink-0 text-muted-foreground" />
+                  <bdi className="truncate">{draft.location.trim()}</bdi>
+                </li>
+              ) : null}
+              {site ? (
+                <li className="flex min-w-0 items-center gap-2">
+                  <Icon icon={Globe} className="size-4 shrink-0 text-muted-foreground" />
+                  <span dir="ltr" className="truncate">
+                    {site}
+                  </span>
+                </li>
+              ) : null}
+            </ul>
+          ) : null}
+          {profileHref ? (
+            <Button variant="secondary" className="w-full" nativeButton={false} render={<a href={profileHref} />}>
+              {t.viewProfile}
+              <Icon icon={ExternalLink} />
+            </Button>
+          ) : null}
+          {draft.bio.trim() ? (
+            <>
+              <Separator />
+              <p dir="auto" className="whitespace-pre-line text-pretty text-body-sm text-nq-fg-body">
+                {draft.bio.trim()}
+              </p>
+            </>
+          ) : null}
+        </aside>
 
-      <EmailField
-        email={baseline.email}
-        verified={emailVerified}
-        pending={pendingEmail}
-        disabled={disabled}
-        t={t}
-        onResend={onResendVerification}
-        onChange={
-          onChangeEmail
-            ? async (input) => {
-                const result = await onChangeEmail(input);
-                if (!result || (!result.error && !result.fieldErrors)) setPendingEmail(input.email);
-                return result;
+        <div className="flex min-w-0 flex-col gap-6">
+          <FormGroup title={t.publicProfile} description={t.publicProfileHint}>
+            <div className="grid grid-cols-1 gap-x-4 gap-y-5 @xl:grid-cols-2">
+              <Field invalid={!!errors.name}>
+                <FieldLabel>{t.name}</FieldLabel>
+                <Input
+                  name="name"
+                  autoComplete="name"
+                  required
+                  disabled={disabled}
+                  value={draft.name}
+                  onChange={(e) => set("name", e.target.value)}
+                />
+                {errors.name ? <FieldError match>{errors.name}</FieldError> : <FieldDescription>{t.nameHelp}</FieldDescription>}
+              </Field>
+
+              <Field invalid={!!errors.username}>
+                <FieldLabel>{t.username}</FieldLabel>
+                <InputGroup dir="ltr">
+                  <InputGroupAddon>
+                    <InputGroupText>@</InputGroupText>
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    ltr
+                    name="username"
+                    autoComplete="username"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    maxLength={30}
+                    disabled={disabled}
+                    value={draft.username}
+                    onChange={(e) => set("username", e.target.value.toLowerCase().replace(/[^a-z0-9._-]/g, ""))}
+                  />
+                  {username.status !== "idle" && username.status !== "error" ? (
+                    <InputGroupAddon align="end">
+                      {username.status === "checking" ? (
+                        <Spinner />
+                      ) : username.status === "available" ? (
+                        <CircleCheck aria-hidden="true" className="text-nq-success-text" />
+                      ) : (
+                        <CircleX aria-hidden="true" className="text-nq-danger-text" />
+                      )}
+                    </InputGroupAddon>
+                  ) : null}
+                </InputGroup>
+                {errors.username ? <FieldError match>{errors.username}</FieldError> : null}
+                <FieldDescription aria-live="polite" className={cn(username.status === "available" && "text-nq-success-text")}>
+                  {errors.username
+                    ? null
+                    : username.status === "checking"
+                      ? t.usernameChecking
+                      : username.status === "available"
+                        ? (username.message ?? t.usernameAvailable(`@${draft.username}`))
+                        : username.status === "error"
+                          ? t.usernameCheckFailed
+                          : t.usernameHelp}
+                </FieldDescription>
+              </Field>
+            </div>
+
+            <Field invalid={!!errors.bio}>
+              <FieldLabel>{t.bio}</FieldLabel>
+              <Textarea
+                name="bio"
+                autoComplete="off"
+                rows={3}
+                disabled={disabled}
+                maxLength={bioMaxLength}
+                value={draft.bio}
+                onChange={(e) => set("bio", e.target.value)}
+              />
+              <div className="flex items-start justify-between gap-3">
+                {errors.bio ? <FieldError match>{errors.bio}</FieldError> : <FieldDescription>{t.bioHelp}</FieldDescription>}
+                <span data-slot="profile-form-counter" dir="ltr" className="shrink-0 text-caption text-muted-foreground tabular-nums">
+                  {formatNumber(bioLength, locale)}/{formatNumber(bioMaxLength, locale)}
+                </span>
+              </div>
+            </Field>
+
+            {hasLocation || hasWebsite ? (
+              <div className="grid grid-cols-1 gap-x-4 gap-y-5 @xl:grid-cols-2">
+                {hasLocation ? (
+                  <Field invalid={!!errors.location}>
+                    <FieldLabel>{t.location}</FieldLabel>
+                    <Input
+                      name="location"
+                      autoComplete="address-level2"
+                      disabled={disabled}
+                      value={draft.location ?? ""}
+                      onChange={(e) => set("location", e.target.value)}
+                    />
+                    {errors.location ? <FieldError match>{errors.location}</FieldError> : <FieldDescription>{t.locationHelp}</FieldDescription>}
+                  </Field>
+                ) : null}
+                {hasWebsite ? (
+                  <Field invalid={!!errors.website}>
+                    <FieldLabel>{t.website}</FieldLabel>
+                    <Input
+                      ltr
+                      type="url"
+                      name="website"
+                      autoComplete="url"
+                      inputMode="url"
+                      spellCheck={false}
+                      placeholder="https://"
+                      disabled={disabled}
+                      value={draft.website ?? ""}
+                      onChange={(e) => set("website", e.target.value)}
+                    />
+                    {errors.website ? <FieldError match>{errors.website}</FieldError> : <FieldDescription>{t.websiteHelp}</FieldDescription>}
+                  </Field>
+                ) : null}
+              </div>
+            ) : null}
+          </FormGroup>
+
+          <FormGroup title={t.account} description={t.accountHint}>
+            <EmailField
+              email={baseline.email}
+              verified={emailVerified}
+              pending={pendingEmail}
+              disabled={disabled}
+              t={t}
+              onResend={onResendVerification}
+              onChange={
+                onChangeEmail
+                  ? async (input) => {
+                      const result = await onChangeEmail(input);
+                      if (!result || (!result.error && !result.fieldErrors)) setPendingEmail(input.email);
+                      return result;
+                    }
+                  : undefined
               }
-            : undefined
-        }
-      />
+            />
+            <div className="grid grid-cols-1 gap-x-4 gap-y-5 @xl:grid-cols-2">
+              <Field invalid={!!errors.phone}>
+                <FieldLabel>{t.phone}</FieldLabel>
+                <PhoneInput
+                  name="phone"
+                  disabled={disabled}
+                  invalid={!!errors.phone}
+                  defaultCountry={defaultCountry}
+                  value={draft.phone}
+                  onValueChange={(value) => set("phone", value)}
+                />
+                {errors.phone ? <FieldError match>{errors.phone}</FieldError> : <FieldDescription>{t.phoneHelp}</FieldDescription>}
+              </Field>
+            </div>
+          </FormGroup>
 
-      <div className="grid gap-x-4 gap-y-5 sm:grid-cols-2">
-        <Field invalid={!!errors.phone}>
-          <FieldLabel>{t.phone}</FieldLabel>
-          <PhoneInput
-            name="phone"
-            disabled={disabled}
-            invalid={!!errors.phone}
-            defaultCountry={defaultCountry}
-            value={draft.phone}
-            onValueChange={(value) => set("phone", value)}
-          />
-          {errors.phone ? <FieldError match>{errors.phone}</FieldError> : <FieldDescription>{t.phoneHelp}</FieldDescription>}
-        </Field>
-      </div>
+          <FormGroup title={t.preferences} description={t.preferencesHint}>
+            <div className="grid grid-cols-1 gap-x-4 gap-y-5 @xl:grid-cols-2">
+              <Field>
+                <FieldLabel>{t.language}</FieldLabel>
+                <Select
+                  name="locale"
+                  items={languageOptions as ProfileOption[]}
+                  value={draft.locale}
+                  disabled={disabled}
+                  onValueChange={(value) => value && set("locale", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {languageOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
 
-      <Field invalid={!!errors.bio}>
-        <FieldLabel>{t.bio}</FieldLabel>
-        <Textarea
-          name="bio"
-          autoComplete="off"
-          rows={3}
-          disabled={disabled}
-          maxLength={bioMaxLength}
-          value={draft.bio}
-          onChange={(e) => set("bio", e.target.value)}
-        />
-        <div className="flex items-start justify-between gap-3">
-          {errors.bio ? <FieldError match>{errors.bio}</FieldError> : <FieldDescription>{t.bioHelp}</FieldDescription>}
-          <span data-slot="profile-form-counter" dir="ltr" className="shrink-0 text-caption text-muted-foreground tabular-nums">
-            {formatNumber(bioLength, locale)}/{formatNumber(bioMaxLength, locale)}
-          </span>
+              <Field>
+                <FieldLabel>{t.timezone}</FieldLabel>
+                <Combobox
+                  items={zoneOptions as ProfileOption[]}
+                  value={zone}
+                  disabled={disabled}
+                  isItemEqualToValue={(a: ProfileOption, b: ProfileOption) => a.value === b.value}
+                  onValueChange={(next: ProfileOption | null) => next && set("timezone", next.value)}
+                >
+                  <ComboboxInput clearable={false} placeholder={t.timezoneSearch} triggerLabel={t.open} clearLabel={t.clear} />
+                  <ComboboxContent>
+                    <ComboboxEmpty>{t.timezoneEmpty}</ComboboxEmpty>
+                    <ComboboxList>
+                      {(item: ProfileOption) => (
+                        <ComboboxItem key={item.value} value={item}>
+                          <bdi>{item.label}</bdi>
+                        </ComboboxItem>
+                      )}
+                    </ComboboxList>
+                  </ComboboxContent>
+                </Combobox>
+                <input type="hidden" name="timezone" value={draft.timezone} />
+              </Field>
+            </div>
+          </FormGroup>
         </div>
-      </Field>
-
-      <div className="grid gap-x-4 gap-y-5 sm:grid-cols-2">
-        <Field>
-          <FieldLabel>{t.language}</FieldLabel>
-          <Select
-            name="locale"
-            items={languageOptions as ProfileOption[]}
-            value={draft.locale}
-            disabled={disabled}
-            onValueChange={(value) => value && set("locale", value)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {languageOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </Field>
-
-        <Field>
-          <FieldLabel>{t.timezone}</FieldLabel>
-          <Combobox
-            items={zoneOptions as ProfileOption[]}
-            value={zone}
-            disabled={disabled}
-            isItemEqualToValue={(a: ProfileOption, b: ProfileOption) => a.value === b.value}
-            onValueChange={(next: ProfileOption | null) => next && set("timezone", next.value)}
-          >
-            <ComboboxInput clearable={false} placeholder={t.timezoneSearch} triggerLabel={t.open} clearLabel={t.clear} />
-            <ComboboxContent>
-              <ComboboxEmpty>{t.timezoneEmpty}</ComboboxEmpty>
-              <ComboboxList>
-                {(item: ProfileOption) => (
-                  <ComboboxItem key={item.value} value={item}>
-                    <bdi>{item.label}</bdi>
-                  </ComboboxItem>
-                )}
-              </ComboboxList>
-            </ComboboxContent>
-          </Combobox>
-          <input type="hidden" name="timezone" value={draft.timezone} />
-        </Field>
       </div>
 
       <span role="status" className="sr-only">
@@ -563,6 +699,22 @@ export function ProfileForm({
         </div>
       ) : null}
     </form>
+  );
+}
+
+/** A titled card of related fields, labelled by its heading. */
+function FormGroup({ title, description, children }: { title: ReactNode; description?: ReactNode; children: ReactNode }) {
+  const id = useId();
+  return (
+    <section aria-labelledby={id} data-slot="profile-form-group" className="flex flex-col gap-5 rounded-card border border-border bg-card p-4 @xl:p-6">
+      <div className="flex flex-col gap-1">
+        <h3 id={id} className="text-h3 text-foreground">
+          {title}
+        </h3>
+        {description ? <p className="text-body-sm text-muted-foreground">{description}</p> : null}
+      </div>
+      {children}
+    </section>
   );
 }
 

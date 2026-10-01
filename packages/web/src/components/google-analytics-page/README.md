@@ -6,7 +6,7 @@ status: beta
 summary: A Google Analytics report - KPI tiles with comparison, traffic chart, live users, and tabs for sources, pages and audience, with a connect-account screen.
 exports: [GoogleAnalyticsPage, GoogleAnalyticsPageProps, GoogleAnalyticsData, GoogleAnalyticsPageLabels, AnalyticsTotal]
 related: [metric-tiles, time-series-panel, breakdown-table, geo-list, realtime-counter, analytics-connect, heatmap]
-story: pages-analytics-google-analytics
+story: components-analytics-pages-google-analytics
 base-ui: []
 keywords: [google analytics, ga4, traffic, users, sessions, audience, realtime]
 ---
@@ -147,4 +147,4 @@ The page has one `h1`; tabs follow the WAI-ARIA tabs pattern (arrow keys move, t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-analytics-google-analytics--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-pages-google-analytics--docs

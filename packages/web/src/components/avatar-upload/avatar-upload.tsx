@@ -179,6 +179,11 @@ export interface AvatarUploadProps extends Omit<ComponentProps<"div">, "onChange
   /** Largest zoom of the crop. Default 4. */
   maxZoom?: number;
   disabled?: boolean;
+  /**
+   * `row` a small photo beside the buttons (default). `stacked` a large photo with the buttons under it, for the
+   * identity column of a profile editor; the crop editor stacks too.
+   */
+  layout?: "row" | "stacked";
   /** Override any built-in English or Arabic string. */
   labels?: Partial<Labels>;
 }
@@ -201,6 +206,7 @@ export function AvatarUpload({
   shape = "circle",
   maxZoom = MAX_ZOOM,
   disabled,
+  layout = "row",
   labels,
   className,
   ...props
@@ -406,7 +412,7 @@ export function AvatarUpload({
           role="group"
           aria-label={t.adjust}
           data-slot="avatar-upload-editor"
-          className="flex flex-col gap-4 rounded-floating border border-border bg-card p-4 sm:flex-row"
+          className={cn("flex flex-col gap-4 rounded-floating border border-border bg-card p-4", layout === "row" && "sm:flex-row")}
         >
           <div className="flex flex-col items-center gap-2">
             {/* The window is always left to right: pan and zoom maths are physical. */}
@@ -511,7 +517,7 @@ export function AvatarUpload({
           </div>
         </div>
       ) : (
-        <div data-slot="avatar-upload-idle" className="flex items-center gap-4">
+        <div data-slot="avatar-upload-idle" className={cn("flex gap-4", layout === "row" ? "items-center" : "flex-col items-start gap-3")}>
           <button
             type="button"
             data-slot="avatar-upload-trigger"
@@ -526,7 +532,12 @@ export function AvatarUpload({
               "disabled:cursor-not-allowed disabled:opacity-50",
             )}
           >
-            <Avatar name={name} src={current} shape={shape} className="size-20 text-h3" />
+            <Avatar
+              name={name}
+              src={current}
+              shape={shape}
+              className={layout === "row" ? "size-20 text-h3" : "size-32 text-h1 ring-1 ring-border @3xl:size-56 @3xl:text-display"}
+            />
             <span
               aria-hidden="true"
               className={cn(

@@ -3,7 +3,7 @@ import { Button, StoreCartButton, StoreCartPage, StoreCrossSell, StoreMiniCart, 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { STORE_CURRENCY, ShopFrame, useDemoPromo, storeCart, storeProducts, storeZones, useLocale } from "./_cart-checkout-demo";
 
-const meta = { title: "Components/Commerce/Store Cart", parameters: { layout: "fullscreen" } } satisfies Meta;
+const meta = { title: "Components/Storefront/Store Cart", parameters: { layout: "fullscreen" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

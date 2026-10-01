@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { ArabicScope, useAr } from "./_profile-demo";
 
-const meta = { title: "Components/Forms/Repeater", component: Repeater, parameters: { layout: "padded" } } satisfies Meta<typeof Repeater>;
+const meta = { title: "Components/Form Builders/Repeater", component: Repeater, parameters: { layout: "padded" } } satisfies Meta<typeof Repeater>;
 export default meta;
 type Story = StoryObj;
 

@@ -1,12 +1,12 @@
 ---
 name: rates-subscriptions
 title: Rates and Subscriptions
-category: commerce
+category: billing
 status: beta
 summary: Effective-dated bill and cost rates, per-project recurring subscriptions with month-end clamping, and an organisation billing overview.
 exports: [RatesSubscriptionsLabels, Rate, RateScheduleProps, RateSchedule, SubscriptionStatus, SubscriptionSchedule, Subscription, SubscriptionInput, subscriptionCharges, subscriptionMonthly, RecurringSubscriptionsProps, RecurringSubscriptions, BillingOverviewProps, BillingOverview]
 related: [cron-builder, usage-meter, plan-card, time-tracker, stat-card]
-story: components-commerce-rates-and-subscriptions
+story: components-billing-rates-and-subscriptions
 base-ui: [dialog, select, switch]
 keywords: [rates, bill rate, cost rate, subscription, recurring, billing, mrr, proration]
 ---

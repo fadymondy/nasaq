@@ -1,12 +1,12 @@
 ---
 name: mail-settings
 title: Mail Settings
-category: developer
+category: server-tools
 status: beta
 summary: SMTP settings with a write-only password and a test send that reports each step, plus mail domains with an SPF, DKIM and DMARC checklist, mailboxes with quota and aliases.
 exports: [analyzeDmarc, analyzeSpf, defaultSmtpPort, domainHealth, firstFailure, formatMegabytes, isLocalPart, quotaFraction, stepStates, validateAlias, validateMailbox, validateSmtp, MailSettingsLabels, MailResult, SmtpConfig, SmtpSaveInput, SmtpTestInput, SmtpSettingsProps, SmtpSettings, DnsCheck, Mailbox, MailAlias, MailDomain, MailboxInput, AliasInput, MailDomainsProps, MailDomains]
 related: [settings-sections, copy-button, data-table, dns-management, alerts, vault]
-story: components-developer-mail-settings
+story: components-server-tools-mail-settings
 base-ui: [alert-dialog, dialog, field, meter, select]
 keywords: [smtp, mail, email, spf, dkim, dmarc, mailbox, alias, dns, deliverability]
 ---

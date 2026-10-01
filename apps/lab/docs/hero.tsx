@@ -64,7 +64,7 @@ export function Hero() {
           Install with the shadcn CLI
         </a>
         <a
-          href={storyHref("pages-store-journey--default")}
+          href={storyHref("components-storefront-pages-journey--default")}
           target="_top"
           className="inline-flex h-10 items-center rounded-[var(--nq-radius-control)] border border-border px-4 text-label outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"
         >

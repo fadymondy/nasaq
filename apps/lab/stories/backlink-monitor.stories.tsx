@@ -2,7 +2,7 @@ import { BacklinkMonitor } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { BacklinksDemo, NOW } from "./_moharrik-demo";
 
-const meta = { title: "Components/Analytics/Backlink Monitor", component: BacklinkMonitor, parameters: { layout: "padded" } } satisfies Meta<typeof BacklinkMonitor>;
+const meta = { title: "Components/SEO/Backlink Monitor", component: BacklinkMonitor, parameters: { layout: "padded" } } satisfies Meta<typeof BacklinkMonitor>;
 export default meta;
 type Story = StoryObj;
 

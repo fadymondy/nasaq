@@ -6,7 +6,7 @@ import { McpConnect } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ApiKeysDemo, DEMO_MCP_TOKEN, DEMO_MCP_URL, useAr, wait } from "./_connectors-demo";
 
-const meta = { title: "Pages/Developer/API Keys & MCP", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Developer Tools/Pages/API Keys & MCP", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { useAr } from "./_developer-demo";
 
-const meta = { title: "Components/Developer/Code Block Variants", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Developer Tools/Code Block Variants", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

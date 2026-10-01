@@ -4,7 +4,7 @@ import { useState } from "react";
 import { demoEntries, timeProjects } from "./_billing-demo";
 import { useAr, wait } from "./_profile-demo";
 
-const meta = { title: "Components/Workflow/TimeTracker", component: TimeTracker, parameters: { layout: "padded" } } satisfies Meta<typeof TimeTracker>;
+const meta = { title: "Components/Productivity/TimeTracker", component: TimeTracker, parameters: { layout: "padded" } } satisfies Meta<typeof TimeTracker>;
 export default meta;
 type Story = StoryObj;
 

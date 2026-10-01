@@ -2,7 +2,7 @@ import { type LockMethod, type LockReason, LockScreen } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DEMO_NOW, Wallpaper, demoUser, sleep, useAr } from "./_onboarding-demo";
 
-const meta = { title: "Pages/Auth/Lock Screen", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Auth/Pages/Lock Screen", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -1,12 +1,12 @@
 ---
 name: form-builder
 title: FormBuilder
-category: forms
+category: form-builders
 status: beta
 summary: Build an embeddable public form in English and Arabic. Add and order fields, write show hide or require rules, choose which sites may embed it, and copy the snippet.
 exports: [FormBuilder, FormBuilderProps, FormBuilderLabels]
 related: [public-form, rule-builder, tag-input, code-block]
-story: components-forms-form-builder
+story: components-form-builders-form-builder
 base-ui: [tabs, field, select, switch]
 keywords: [form builder, embed, iframe, allowed origins, snippet, contact form, conditional logic, honeypot]
 ---
@@ -113,4 +113,4 @@ Cards, tabs and inputs use the standard tokens. The Fields tab is two columns fr
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-form-builder--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-form-builders-form-builder--docs

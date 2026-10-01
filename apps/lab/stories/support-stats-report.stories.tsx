@@ -4,7 +4,7 @@ import { useState } from "react";
 import { t, useAr } from "./_s-demo";
 import { supportAgents, supportStatus, supportSummary, supportVolume } from "./_s-demo-reports";
 
-const meta = { title: "Pages/Analytics/Support Stats", component: SupportStatsReport, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof SupportStatsReport>;
+const meta = { title: "Components/Analytics/Pages/Support Stats", component: SupportStatsReport, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof SupportStatsReport>;
 export default meta;
 type Story = StoryObj;
 

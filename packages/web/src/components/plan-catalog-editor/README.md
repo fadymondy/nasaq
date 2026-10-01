@@ -1,12 +1,12 @@
 ---
 name: plan-catalog-editor
 title: PlanCatalogEditor
-category: commerce
+category: pricing
 status: beta
 summary: Admin editor for a product catalog (plans, features, apps, pay-as-you-go prices and bundles) that edits a draft and publishes it through a sync preview dry run and an apply step.
 exports: [PlanCatalogEditor, PlanCatalogEditorProps, PlanCatalogEditorLabels, CatalogPreviewResult, CatalogApplyResult]
 related: [admin-tenants, plan-card, price, repeater, limits-editor]
-story: components-commerce-plan-catalog-editor
+story: components-pricing-plan-catalog-editor
 base-ui: [tabs, dialog, checkbox, switch, select, field]
 keywords: [catalog, plans, pricing, features, apps, bundles, payg, sync, dry run, admin]
 ---
@@ -129,4 +129,4 @@ Tabs are Base UI Tabs with arrow-key navigation; each tab carries a badge with i
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-plan-catalog-editor--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-pricing-plan-catalog-editor--docs

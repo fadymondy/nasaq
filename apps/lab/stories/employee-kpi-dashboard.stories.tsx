@@ -4,7 +4,7 @@ import { useState } from "react";
 import { t, useAr } from "./_s-demo";
 import { employeeKpis } from "./_s-demo-reports";
 
-const meta = { title: "Pages/Analytics/Employee KPIs", component: EmployeeKpiDashboard, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof EmployeeKpiDashboard>;
+const meta = { title: "Components/Analytics/Pages/Employee KPIs", component: EmployeeKpiDashboard, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof EmployeeKpiDashboard>;
 export default meta;
 type Story = StoryObj;
 

@@ -6,7 +6,7 @@ status: stable
 summary: Small rotating loader icon for inline pending work; decorative, stops under reduced motion.
 exports: [Spinner, SpinnerProps]
 related: [states, status, badge]
-story: components-feedback-spinner
+story: components-loading-states-spinner
 base-ui: []
 keywords: [spinner, loader, loading, busy, pending, progress]
 ---
@@ -135,6 +135,6 @@ export function Syncing() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-feedback-spinner--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-loading-states-spinner--docs
 
 The spinner has no story of its own; it appears under the `Primitives` story of Components/States.

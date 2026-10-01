@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { shortcutGroups, useAr } from "./_w2-demo";
 
-const meta = { title: "Components/Utilities/Keyboard Shortcuts", component: ShortcutsReference, parameters: { layout: "padded" } } satisfies Meta<typeof ShortcutsReference>;
+const meta = { title: "Components/Keyboard & Commands/Keyboard Shortcuts", component: ShortcutsReference, parameters: { layout: "padded" } } satisfies Meta<typeof ShortcutsReference>;
 export default meta;
 type Story = StoryObj;
 

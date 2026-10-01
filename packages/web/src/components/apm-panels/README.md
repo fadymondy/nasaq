@@ -1,12 +1,12 @@
 ---
 name: apm-panels
 title: APM panels
-category: analytics
+category: monitoring
 status: beta
 summary: Latency percentiles (p50, p95, p99), an error-rate panel with an SLO, a slow-endpoints table and a trace list with a span waterfall.
 exports: [LatencyPercentiles, LatencyPercentilesProps, LatencyPoint, LatencySummary, ErrorRatePanel, ErrorRatePanelProps, ErrorRatePoint, TopError, EndpointTable, EndpointTableProps, EndpointRow, TraceList, TraceListProps, TraceSummary, TraceSpan, ApmPanelsLabels]
 related: [time-series-panel, log-viewer, data-table, apm-page]
-story: components-analytics-apm-panels
+story: components-monitoring-apm-panels
 base-ui: []
 keywords: [apm, latency, p95, p99, error rate, slo, traces, spans, endpoints]
 ---
@@ -166,4 +166,4 @@ Charts have text alternatives and the percentile chips are text. Tables are real
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-apm-panels--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-apm-panels--docs

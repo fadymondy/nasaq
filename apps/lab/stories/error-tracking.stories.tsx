@@ -2,7 +2,7 @@ import { ErrorTracking } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { errorIssues, useAr, wait } from "./_devtools-q3-demo";
 
-const meta = { title: "Components/Developer/Error Tracking", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Monitoring/Error Tracking", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

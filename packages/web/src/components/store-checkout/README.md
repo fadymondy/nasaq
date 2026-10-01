@@ -1,12 +1,12 @@
 ---
 name: store-checkout
 title: Store Checkout
-category: commerce
+category: store
 status: beta
 summary: One-page checkout for physical goods with contact, country-aware address, delivery, payment, summary sidebar and an order confirmation page.
 exports: [StoreAddressFormProps, StoreAddressForm, StoreOrderSummaryProps, StoreOrderSummary, StoreCheckoutDraft, StorePlaceOrderResult, StoreCheckoutProps, StoreCheckout, StoreOrderConfirmationProps, StoreOrderConfirmation]
 related: [store-cart, checkout-steps, local-payments, loyalty-promo, price]
-story: components-commerce-store-checkout
+story: components-storefront-store-checkout
 base-ui: [radio-group, select, tabs, switch, checkbox]
 keywords: [checkout, address, shipping method, payment, cash on delivery, wallet, order confirmation, ecommerce]
 ---

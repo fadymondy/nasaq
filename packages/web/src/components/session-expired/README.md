@@ -6,7 +6,7 @@ status: beta
 summary: "Re-authentication form for a session that ended: the same person, a password (and code) or a passkey away, with switch account and sign out."
 exports: [SessionExpiredLabels, SessionExpiredReason, SessionExpiredValues, SessionExpiredProps, SessionExpired]
 related: [lock-screen, idle-lock, auth-layout, login-form]
-story: pages-auth-session-expired
+story: components-auth-pages-session-expired
 base-ui: [field]
 keywords: [session expired, re-authenticate, sign in again, revoked, password changed, passkey, timeout]
 ---
@@ -122,4 +122,4 @@ declare const api: { passkey(): Promise<void> };
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-auth-session-expired--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-pages-session-expired--docs

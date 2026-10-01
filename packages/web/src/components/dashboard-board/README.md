@@ -6,7 +6,7 @@ category: layout
 summary: A customisable dashboard grid where people drag to reorder cards, resize them, pin favourites, add or remove widgets and change each widget's settings, with an edit mode that saves or cancels as one change.
 exports: [DashboardBoardLabels, BoardSettingField, DashboardWidgetContext, DashboardWidgetDef, DashboardBoardProps, DashboardBoard]
 related: [stat-card, time-series-panel, chart-extras, context-menu, dialog, repeater]
-story: pages-app-dashboard-board
+story: components-layout-pages-dashboard-board
 base-ui: [dialog, context-menu, select, switch]
 keywords: [dashboard, widgets, grid, drag, reorder, resize, pin, customise, layout, settings, edit mode, dnd-kit]
 ---
@@ -147,4 +147,4 @@ Cards are `Card`; the editing outline uses `border` and `ring` tokens. Target `[
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/pages-app-dashboard-board--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-pages-dashboard-board--docs

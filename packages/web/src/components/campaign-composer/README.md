@@ -1,12 +1,12 @@
 ---
 name: campaign-composer
 title: CampaignComposer
-category: crm
+category: marketing
 status: beta
 summary: Compose an email or WhatsApp broadcast with a live audience count, a rich or plain editor, a preview, a test send, pre-send checks, a confirmation and a send progress bar.
 exports: [CampaignComposerLabels, CampaignAudience, CampaignDraft, CampaignResult, CampaignSendProgress, CampaignComposerProps, CampaignComposer]
 related: [email-templates, rich-text-editor, subscription-landing, contact-list]
-story: components-crm-campaign-composer
+story: components-marketing-campaign-composer
 keywords: [campaign, broadcast, newsletter, email, whatsapp, audience, composer, send, preview, test send]
 ---
 
@@ -97,4 +97,4 @@ Semantic tokens only. Channels are text, no brand mark is drawn.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-crm-campaign-composer--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-marketing-campaign-composer--docs

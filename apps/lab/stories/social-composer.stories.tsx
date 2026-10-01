@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 import { socialAccounts, socialMetrics, socialPost, useAr, wait } from "./_r2-demo";
 
-const meta = { title: "Components/Editors/Social composer", component: SocialComposer } satisfies Meta<typeof SocialComposer>;
+const meta = { title: "Components/Marketing/Social composer", component: SocialComposer } satisfies Meta<typeof SocialComposer>;
 export default meta;
 type Story = StoryObj;
 

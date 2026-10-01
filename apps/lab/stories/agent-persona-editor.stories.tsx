@@ -2,7 +2,7 @@ import { AgentPersonaEditor } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AgentPersonaDemo, PERSONA_MODELS, makePersona } from "./_t2-demo";
 
-const meta = { title: "Components/AI/Agent Persona Editor", component: AgentPersonaEditor, parameters: { layout: "padded" } } satisfies Meta<typeof AgentPersonaEditor>;
+const meta = { title: "Components/AI Agents/Agent Persona Editor", component: AgentPersonaEditor, parameters: { layout: "padded" } } satisfies Meta<typeof AgentPersonaEditor>;
 export default meta;
 type Story = StoryObj;
 

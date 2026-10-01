@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LoyaltyCardDemo, PointsHistoryDemo, PromoFieldDemo, PromoManagerDemo, VisitHistoryDemo } from "./_v2-demo";
 
-const meta = { title: "Components/CRM/Loyalty and Promo", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Gamification/Loyalty and Promo", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

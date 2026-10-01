@@ -33,7 +33,14 @@ const isBuild = process.argv.includes("build");
 const LUSAIL_DIR = process.env.NASAQ_LUSAIL_DIR ?? (isBuild ? "" : resolve(import.meta.dirname, "../../../../booki/web/public/fonts/lusail"));
 const hasLusail = LUSAIL_DIR !== "" && existsSync(LUSAIL_DIR);
 // Files under apps/lab/public (the store demo images). Vite's own public dir is off in Storybook.
+const FONTSOURCE = resolve(import.meta.dirname, "../node_modules/@fontsource");
 const staticDirs = [
+  // The official Nasaq mark and favicon, unchanged, for the manager (manager.ts, manager-head.html).
+  { from: resolve(import.meta.dirname, "../../../packages/brands/assets"), to: "/brand" },
+  // The same @fontsource files the preview already bundles, so the manager chrome uses Nasaq's faces too.
+  { from: resolve(FONTSOURCE, "inter/files"), to: "/brand-fonts/inter" },
+  { from: resolve(FONTSOURCE, "jetbrains-mono/files"), to: "/brand-fonts/jetbrains-mono" },
+  { from: resolve(FONTSOURCE, "alexandria/files"), to: "/brand-fonts/alexandria" },
   ...(isBuild ? [{ from: resolve(import.meta.dirname, "../public"), to: "/" }] : []),
   ...(hasLusail ? [{ from: LUSAIL_DIR, to: "/fonts/lusail" }] : []),
 ];
@@ -96,7 +103,7 @@ const config: StorybookConfig = {
   stories: ["../docs/**/*.stories.@(ts|tsx)", "../stories/**/*.mdx", "../stories/**/*.stories.@(ts|tsx)"],
   addons: ["@storybook/addon-docs", "@storybook/addon-a11y"],
   staticDirs,
-  core: { disableTelemetry: true, allowedHosts: HOSTS },
+  core: { disableTelemetry: true, disableWhatsNewNotifications: true, allowedHosts: HOSTS },
   async viteFinal(cfg) {
     cfg.plugins = [...(await skipDocgen(cfg.plugins, /[\/]packages[\/]native[\/]/)), tailwindcss(), lusailFaces(), catalogue(), noEdgeCache()];
     // Keep Storybook's `hmr.server`: HMR must share the Storybook HTTP server. With it, Vite's client

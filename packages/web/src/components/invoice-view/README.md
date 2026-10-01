@@ -1,12 +1,12 @@
 ---
 name: invoice-view
 title: InvoiceView
-category: commerce
+category: billing
 status: beta
 summary: A printable invoice document with parties, line items, tax, discount, payments and balance, plus download, print and pay actions.
 exports: [InvoiceLabels, useInvoiceStrings, InvoiceStatus, InvoiceParty, InvoiceLine, InvoicePayment, InvoiceData, InvoiceTotals, computeInvoice, InvoiceStatusBadgeProps, InvoiceStatusBadge, InvoiceViewProps, InvoiceView]
 related: [invoice-list, price, checkout-steps, numeric]
-story: components-commerce-invoiceview
+story: components-billing-invoiceview
 base-ui: []
 keywords: [invoice, print, pdf, billing, tax, vat, receipt, payments]
 ---
@@ -173,4 +173,4 @@ and text tokens. Extend with `className`; do not use raw hex.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-invoiceview--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-billing-invoiceview--docs

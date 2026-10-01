@@ -3,7 +3,7 @@ import { Alert, WsStatus } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { BackupDemo, useAr, useFakeSocket } from "./_ops-demo";
 
-const meta = { title: "Pages/Admin/Backups", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Server Tools/Pages/Backups", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

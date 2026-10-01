@@ -1,12 +1,12 @@
 ---
 name: booking-manage
 title: BookingManage
-category: commerce
+category: bookings
 status: beta
 summary: A patient's own booking page - QR ticket with code, add to calendar, reschedule in a dialog and cancel with the late fee stated, all following a cancel and reschedule policy.
 exports: [BookingManageLabels, BookingTicketProps, BookingTicket, BookingManageProps, BookingManage]
 related: [booking-flow, booking-slots, booking-pipeline, qr-code]
-story: components-commerce-booking-manage
+story: components-bookings-booking-manage
 base-ui: [dialog, alert-dialog]
 keywords: [booking, reschedule, cancel, ticket, ics, calendar, policy]
 ---
@@ -112,4 +112,4 @@ import { BookingTicket } from "@fadymondy/nasaq/web";
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-booking-manage--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-booking-manage--docs

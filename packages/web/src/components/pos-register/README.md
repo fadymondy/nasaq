@@ -1,12 +1,12 @@
 ---
 name: pos-register
 title: POS Register
-category: commerce
+category: store-admin
 status: beta
 summary: A touch point-of-sale register with a product grid, basket, held sales, split payment across cash card and wallet, cash-drawer session and walk-in sale, in exact integer money.
 exports: [posCanAddTender, posChange, posDrawerSummary, posQuickTenders, posRemaining, posRoundMinor, posSaleParts, posSettle, posTenderLimit, posVariance, PosDrawerSale, PosDrawerSummary, PosPaymentMethod, PosSettlement, PosTender, PosRegisterLabels, PosProduct, PosCategory, PosBasketLine, PosSession, PosSale, PosSaleRecord, PosParkedSale, PosCloseReport, PosRegisterProps, usePosRegisterStrings, PosRegister]
 related: [line-item-editor, wallet, price, product-card, barcode]
-story: components-commerce-pos-register
+story: components-store-admin-pos-register
 base-ui: [dialog, alert-dialog, toggle-group]
 keywords: [pos, point of sale, register, till, cashier, cash drawer, basket, checkout, walk-in, barcode, hold, park, split payment, tender]
 ---
@@ -165,4 +165,4 @@ below that. Target `[data-slot="pos-register"]`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-commerce-pos-register--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-pos-register--docs

@@ -3,7 +3,7 @@ import { EMPTY_LISTING_FILTERS, StoreListing } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { STORE_CURRENCY, StoreShell, chromeCategoryTree, chromePopular, storeProducts, useAr } from "./_store-chrome-demo";
 
-const meta = { title: "Pages/Store/Search", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Storefront/Pages/Search", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

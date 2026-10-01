@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { fakeSecret, wait } from "./_connectors-demo";
 
-const meta = { title: "Components/Developer/WhatsApp QR Connect" } satisfies Meta;
+const meta = { title: "Components/Integrations/WhatsApp QR Connect" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

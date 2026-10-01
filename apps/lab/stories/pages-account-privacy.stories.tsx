@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useAr } from "./_team-demo";
 import { PageShell, PrivacyDemo } from "./_team-pages";
 
-const meta = { title: "Pages/Account/Privacy", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Security/Pages/Privacy", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

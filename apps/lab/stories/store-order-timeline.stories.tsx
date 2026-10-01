@@ -5,7 +5,7 @@ import { useAr } from "./_s-demo";
 import { TRACKING_TEMPLATE, ordersSeed } from "./_orders-demo";
 
 const meta = {
-  title: "Components/Commerce/Store Order Timeline",
+  title: "Components/Storefront/Store Order Timeline",
   parameters: { layout: "padded" },
 } satisfies Meta;
 export default meta;

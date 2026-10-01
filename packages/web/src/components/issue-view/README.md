@@ -1,12 +1,12 @@
 ---
 name: issue-view
 title: Issue View
-category: workflow
+category: work
 status: beta
 summary: One issue as a page or a quick-view drawer with an inline title, a rich description, a properties sidebar, checklist, sub-issues, linked pull requests, comments, activity, time and AI cost.
 exports: [IssueView, IssueQuickView, IssueViewLabels, IssueActivityProps, IssueTimeProps, IssueAiProps, IssueViewProps, IssueQuickViewProps]
 related: [project-view, comment-thread, activity-composer, checklist, time-tracker, ai-usage-cost, github-activity]
-story: components-workflow-issue-view
+story: components-projects-work-issue-view
 base-ui: [select, popover, sheet, tabs]
 keywords: [issue, ticket, task, properties, drawer, quick view, project management]
 ---
@@ -103,4 +103,4 @@ Semantic tokens only. Overdue dates use the danger tokens.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-issue-view--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-issue-view--docs

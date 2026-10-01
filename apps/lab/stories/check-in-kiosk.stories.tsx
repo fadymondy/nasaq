@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CheckInKiosk, estimateWaitMinutes, positionInQueue } from "@nasaq/web";
 import { tr, useAr, useDemoQueue, useKioskBookings, wait } from "./_seatfor-demo";
 
-const meta = { title: "Components/Commerce/Check-in Kiosk", parameters: { layout: "padded" } } satisfies Meta;
+const meta = { title: "Components/Bookings/Check-in Kiosk", parameters: { layout: "padded" } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

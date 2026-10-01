@@ -2,7 +2,7 @@ import { EngineDetails } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { engineSnapshots, historyFor, NOW, recordsFor, useAr } from "./_health-demo";
 
-const meta = { title: "Components/Health/Engine Details", component: EngineDetails, parameters: { layout: "padded" } } satisfies Meta<typeof EngineDetails>;
+const meta = { title: "Components/Wellness/Engine Details", component: EngineDetails, parameters: { layout: "padded" } } satisfies Meta<typeof EngineDetails>;
 export default meta;
 type Story = StoryObj;
 

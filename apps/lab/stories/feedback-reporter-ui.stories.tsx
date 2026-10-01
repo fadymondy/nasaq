@@ -18,7 +18,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { pageIssues, useAr, wait } from "./_lifecycle-demo";
 
-const meta = { title: "Components/Feedback/Feedback Reporter" } satisfies Meta;
+const meta = { title: "Components/Feedback SDK/Feedback Reporter" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { wait } from "./_connectors-demo";
 
-const meta = { title: "Components/Developer/Chrome Extension Install" } satisfies Meta;
+const meta = { title: "Components/Apps & Platforms/Chrome Extension Install" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

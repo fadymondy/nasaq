@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { hotkeyBindings, shortcutGroups, t, useAr, W2Page, wait } from "./_w2-demo";
 
-const meta = { title: "Pages/Account/Keyboard Shortcuts", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Keyboard & Commands/Pages/Keyboard Shortcuts", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

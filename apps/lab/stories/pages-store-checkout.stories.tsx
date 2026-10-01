@@ -3,7 +3,7 @@ import { StoreCheckout } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { STORE_CURRENCY, ShopFrame, fakePlaceOrder, storeAddresses, storeCart, storeLocalMethods, storePaymentPolicy, storeShippingMethods, useLocale } from "./_cart-checkout-demo";
 
-const meta = { title: "Pages/Store/Checkout", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Storefront/Pages/Checkout", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

@@ -2,7 +2,7 @@ import { McpConnect } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DEMO_MCP_TOKEN, DEMO_MCP_URL, wait } from "./_connectors-demo";
 
-const meta = { title: "Components/Developer/MCP Connect" } satisfies Meta;
+const meta = { title: "Components/Integrations/MCP Connect" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 

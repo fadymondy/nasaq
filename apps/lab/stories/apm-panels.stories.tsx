@@ -2,7 +2,7 @@ import { EndpointTable, ErrorRatePanel, LatencyPercentiles, TraceList } from "@n
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { apmReport } from "./_analytics-demo";
 
-const meta = { title: "Components/Analytics/APM Panels", component: LatencyPercentiles, parameters: { layout: "padded" } } satisfies Meta<typeof LatencyPercentiles>;
+const meta = { title: "Components/Monitoring/APM Panels", component: LatencyPercentiles, parameters: { layout: "padded" } } satisfies Meta<typeof LatencyPercentiles>;
 export default meta;
 type Story = StoryObj;
 

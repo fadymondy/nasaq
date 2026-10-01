@@ -1,12 +1,12 @@
 ---
 name: search-performance-table
 title: SearchPerformanceTable
-category: analytics
+category: seo
 status: beta
 summary: Queries or pages with clicks, impressions, CTR and average position, sortable, filterable and paginated, with change against the previous period.
 exports: [SearchPerformanceTable, SearchPerformanceTableProps, SearchPerformanceRow, SearchPerformanceTableLabels]
 related: [data-table, breakdown-table, search-console-page]
-story: components-analytics-search-performance-table
+story: components-seo-search-performance-table
 base-ui: []
 keywords: [search console, queries, pages, clicks, impressions, ctr, position, seo]
 ---
@@ -116,4 +116,4 @@ Built on `DataTable`: a real table, sortable headers with `aria-sort`, a labelle
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-search-performance-table--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-search-performance-table--docs

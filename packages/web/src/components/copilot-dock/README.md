@@ -6,7 +6,7 @@ status: beta
 summary: "App-wide assistant: a floating launcher that opens CopilotChat in a non-modal panel docked to the inline-end edge, toggled with ⌘J / Ctrl+J."
 exports: [CopilotDock, CopilotDockProps, CopilotDockLabels]
 related: [copilot-chat, chat, ask-ai, feedback-reporter, app-shell]
-story: components-ai-copilot-dock
+story: components-ai-assistant-copilot-dock
 base-ui: []
 keywords: [copilot, assistant, ai, dock, side panel, launcher, floating button, chat, cmd j, ctrl j]
 ---
@@ -111,4 +111,4 @@ The launcher and panel sit at the inline end, so they move to the left in Arabic
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-copilot-dock--docs
+https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-assistant-copilot-dock--docs

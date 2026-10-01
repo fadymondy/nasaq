@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 import { useMemo } from "react";
 import { FlowPage, graphData, graphKinds, graphLinkKinds, useAr } from "./_workflow-demo";
 
-const meta = { title: "Pages/App/Knowledge Graph", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
+const meta = { title: "Components/Charts & Maps/Pages/Knowledge Graph", parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 
