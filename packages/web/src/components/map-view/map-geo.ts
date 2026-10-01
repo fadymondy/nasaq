@@ -354,3 +354,15 @@ export function mapClusterExpand<T extends MapLatLng & { id: string }>(
   const again = mapCluster(pins, zoom, { radius, maxZoom });
   return { view: next, list: again.length === 1 && again[0]?.type === "cluster" };
 }
+
+/** True when the point lies inside the ring (even-odd rule). Works in any flat space: screen px or lat/lng. */
+export function mapPointInPolygon(point: { x: number; y: number }, ring: readonly { x: number; y: number }[]): boolean {
+  if (ring.length < 3) return false;
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const a = ring[i]!;
+    const b = ring[j]!;
+    if (a.y > point.y !== b.y > point.y && point.x < ((b.x - a.x) * (point.y - a.y)) / (b.y - a.y) + a.x) inside = !inside;
+  }
+  return inside;
+}

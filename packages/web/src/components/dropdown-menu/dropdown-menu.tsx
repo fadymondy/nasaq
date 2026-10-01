@@ -2,14 +2,22 @@
 
 import { Menu } from "@base-ui/react/menu";
 import { Check, ChevronRight } from "lucide-react";
-import type { ComponentProps, ReactNode } from "react";
+import { type ComponentProps, createContext, type ReactNode, useContext } from "react";
 import { cn } from "../../lib/cn";
 import { Icon } from "../icon";
 import { menuItemClass, menuPopupClass } from "./menu-styles";
 
 export const DropdownMenu = Menu.Root;
 export const DropdownMenuTrigger = Menu.Trigger;
-export const DropdownMenuGroup = Menu.Group;
+const InGroup = createContext(false);
+
+export function DropdownMenuGroup(props: ComponentProps<typeof Menu.Group>) {
+  return (
+    <InGroup.Provider value>
+      <Menu.Group {...props} />
+    </InGroup.Provider>
+  );
+}
 export const DropdownMenuRadioGroup = Menu.RadioGroup;
 export const DropdownMenuSub = Menu.SubmenuRoot;
 
@@ -74,9 +82,16 @@ export function DropdownMenuRadioItem({ className, children, ...props }: Compone
   );
 }
 
-/** Must be rendered inside a DropdownMenuGroup (Base UI GroupLabel reads the group context). */
+/**
+ * A heading in the menu. Inside a DropdownMenuGroup it names the group (Base UI GroupLabel); anywhere else it is a plain
+ * heading, so it never throws for a missing group.
+ */
 export function DropdownMenuLabel({ className, ...props }: ComponentProps<typeof Menu.GroupLabel>) {
-  return <Menu.GroupLabel data-slot="dropdown-menu-label" className={cn("px-2.5 pt-1.5 pb-1 text-caption font-medium text-muted-foreground", className as string)} {...props} />;
+  const grouped = useContext(InGroup);
+  const classes = cn("px-2.5 pt-1.5 pb-1 text-caption font-medium text-muted-foreground", className as string);
+  if (grouped) return <Menu.GroupLabel data-slot="dropdown-menu-label" className={classes} {...props} />;
+  const { render: _render, ...rest } = props;
+  return <div data-slot="dropdown-menu-label" role="presentation" className={classes} {...(rest as ComponentProps<"div">)} />;
 }
 
 export function DropdownMenuSeparator({ className, ...props }: ComponentProps<typeof Menu.Separator>) {

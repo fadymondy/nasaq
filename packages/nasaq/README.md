@@ -59,6 +59,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
+Under a strict Content Security Policy an inline script needs a nonce or a hash. Two options:
+
+```tsx
+// 1. A nonce: spread the props and pass the per-request nonce (it must be in script-src).
+import { nasaqThemeScriptProps } from "@fadymondy/nasaq/web";
+<script {...nasaqThemeScriptProps("system", { nonce })} />
+
+// 2. A static file, allowed by script-src 'self': no nonce, no inline code.
+<script src="/nasaq-theme.js" data-default-theme="system" />
+```
+
+The static file ships as `@fadymondy/nasaq/theme-script.js`. Copy it to your public folder (or serve it from
+`node_modules/@fadymondy/nasaq/dist/theme-script.js`). It reads the default theme from `data-default-theme` and must be a
+classic, synchronous script in `<head>` (no `async` or `defer`) so it runs before first paint.
+
 `NasaqProvider` sets `data-brand`, `data-theme`, `data-density`, `data-expression`, `dir` and `lang` on `<html>` and persists the theme.
 
 ### Fonts
@@ -117,13 +132,16 @@ Built-in strings ship in English and Arabic; components take a `labels` prop to 
 <NasaqProvider brand="mahaam" density="comfortable" expression="native" defaultTheme="dark">
 ```
 
-Brands: `nasaq`, `fadymondy`, `mahaam`, `zekra`, `moharrik`, `seatfor`, `health-debug`, `circlexo`, `hosbah`, `yes-delivery`, `orchestra`. A brand changes identity and action colour only; status colours keep their meaning. Every pair is contrast-tested. Read the manifests and draw marks from `@fadymondy/nasaq/brands`.
+Brands: `nasaq`, `fadymondy`, `mahaam`, `zekra`, `moharrik`, `seatfor`, `health-debug`, `circlexo`, `hosbah`, `orchestra`. A brand changes identity and action colour only; status colours keep their meaning. Every pair is contrast-tested. Read the manifests and draw marks from `@fadymondy/nasaq/brands`.
+
+Not one of them? Theme Nasaq with your own colours, no registration: `<NasaqProvider brandColors={{ brand: "#C8283A", accent: "#C9A227" }}>` (each role is "#RRGGBB" or `{ light, dark }`; dark steps and on-colours are derived for contrast; `data-brand="custom"`). Pass your own `logo` to `SidebarBrand`, `AuthLayout` or `ProductMark src`. The native `NasaqProvider` takes the same `brandColors`. See Theming in the lab docs.
 
 ## Subpaths
 
 | Import | What |
 | --- | --- |
-| `@fadymondy/nasaq/web` | React DOM components, `NasaqProvider`, `nasaqThemeScript`, `cn`, commerce helpers |
+| `@fadymondy/nasaq/web` | React DOM components, `NasaqProvider`, `nasaqThemeScript`, `nasaqThemeScriptProps`, `cn`, commerce helpers |
+| `@fadymondy/nasaq/theme-script.js` | The no-flash theme script as a static file, for strict CSPs |
 | `@fadymondy/nasaq/tokens` | Typed token values (colour, space, type, density, contrast helpers) |
 | `@fadymondy/nasaq/brands` | Brand manifests, mark specs, `markSvg()` |
 | `@fadymondy/nasaq/native` | React Native kit (StyleSheet, no styling runtime): provider, `Text`, `Button`, `Screen`, `ProductMark` |

@@ -3,14 +3,14 @@
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import { Field as BaseField } from "@base-ui/react/field";
 import { ChevronsUpDown } from "lucide-react";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { type FocusEventHandler, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
 import { useCalendarLocale } from "../calendar";
 import { ComboboxEmpty, ComboboxItem, ComboboxList } from "../combobox";
 import { normalizeForSearch } from "../commands";
 import { InputGroup, InputGroupInput } from "../input-group";
 import { CountryFlag } from "../country-flag";
-import { formatE164, formatNational, parsePhone, PHONE_COUNTRIES, toDigits, PHONE_PREFERRED, type PhoneCountry, phoneExample } from "./phone-data";
+import { formatE164, formatNational, parsePhone, parsePhoneLenient, PHONE_COUNTRIES, toDigits, PHONE_PREFERRED, type PhoneCountry, phoneExample } from "./phone-data";
 
 export {
   countryFlag,
@@ -21,6 +21,7 @@ export {
   PHONE_PREFERRED,
   type PhoneCountry,
   parsePhone,
+  parsePhoneLenient,
   phoneCountryName,
   phoneExample,
 } from "./phone-data";
@@ -41,7 +42,11 @@ interface Item {
 }
 
 export interface PhoneInputProps {
-  /** Controlled E.164 value: `+966501234567`, or "" when empty. */
+  /**
+   * Controlled E.164 value: `+966501234567`, or "" when empty. A local number such as `0591234567` is accepted too: it
+   * is kept as national digits of `defaultCountry` (and `00966…` is read as `+966…`), never dropped. `onValueChange`
+   * then reports E.164.
+   */
   value?: string;
   defaultValue?: string;
   /** Called with the E.164 value ("" when the number is empty) and the selected country. */
@@ -58,6 +63,9 @@ export interface PhoneInputProps {
   name?: string;
   id?: string;
   placeholder?: string;
+  /** Focus and blur of the digits field, for form libraries that validate on blur. */
+  onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   className?: string;
   locale?: string;
   dir?: "ltr" | "rtl";
@@ -80,6 +88,8 @@ export function PhoneInput({
   name,
   id,
   placeholder,
+  onFocus,
+  onBlur,
   className,
   locale: localeProp,
   dir: dirProp,
@@ -101,7 +111,7 @@ export function PhoneInput({
     return [...first, ...rest].map(toItem);
   }, [countries, preferred, lang, locale]);
 
-  const initial = parsePhone(valueProp ?? defaultValue, countries);
+  const initial = parsePhoneLenient(valueProp ?? defaultValue, countries, defaultCountry);
   const fallback = countries.find((c) => c.iso === defaultCountry) ?? countries[0]!;
   const [country, setCountry] = useState<PhoneCountry>(initial?.country ?? fallback);
   const [national, setNational] = useState(initial?.national ?? "");
@@ -110,7 +120,7 @@ export function PhoneInput({
   // A controlled value that differs from what is shown (reset, load from the server) replaces the state.
   useEffect(() => {
     if (valueProp === undefined || valueProp === e164) return;
-    const parsed = parsePhone(valueProp, countries);
+    const parsed = parsePhoneLenient(valueProp, countries, defaultCountry);
     if (parsed) {
       setCountry(parsed.country);
       setNational(parsed.national);
@@ -231,6 +241,8 @@ export function PhoneInput({
         aria-label={ariaLabel}
         aria-invalid={invalid || undefined}
         placeholder={placeholder ?? (phoneExample(country) || t.placeholder)}
+        onFocus={onFocus}
+        onBlur={onBlur}
         value={shown}
         onChange={(e) => {
           const el = e.target;

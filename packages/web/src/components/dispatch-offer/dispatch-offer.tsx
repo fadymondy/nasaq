@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, HandCoins, MapPin, Package, Store, X } from "lucide-react";
+import { Check, HandCoins, MapPin, Package, Send, Store, X } from "lucide-react";
 import { type ComponentProps, type ReactNode, useEffect, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
 import { DELIVERY_DEFAULT_CURRENCY, deliveryDistance, deliveryDuration, deliveryMoney, offerFraction, offerSecondsLeft, offerTone } from "../../lib/delivery";
@@ -23,6 +23,10 @@ const STRINGS = {
     seconds: "s",
     secondsLeft: (n: number) => (n === 1 ? "1 second left to answer" : `${n} seconds left to answer`),
     stops: (n: number) => (n === 1 ? "1 order" : `${n} orders`),
+    dispatcherTitle: "Offer to a driver",
+    dispatcherFee: "Driver earns",
+    offerToDriver: "Offer to driver",
+    cancel: "Cancel",
   },
   ar: {
     title: "عرض توصيل جديد",
@@ -38,6 +42,10 @@ const STRINGS = {
     seconds: "ث",
     secondsLeft: (n: number) => (n === 1 ? "بقيت ثانية واحدة للرد" : n === 2 ? "بقيت ثانيتان للرد" : n <= 10 ? `بقيت ${n} ثوانٍ للرد` : `بقيت ${n} ثانية للرد`),
     stops: (n: number) => (n === 1 ? "طلب واحد" : n === 2 ? "طلبان" : n <= 10 ? `${n} طلبات` : `${n} طلبًا`),
+    dispatcherTitle: "عرض على سائق",
+    dispatcherFee: "يربح السائق",
+    offerToDriver: "عرض على السائق",
+    cancel: "إلغاء",
   },
 };
 export type DispatchOfferLabels = Partial<(typeof STRINGS)["en"]>;
@@ -62,8 +70,19 @@ export interface DispatchOfferProps extends Omit<ComponentProps<"section">, "chi
   etaSeconds?: number;
   /** Orders in this offer when it is a multi-order trip. */
   orderCount?: number;
-  /** When the offer lapses, in ms since epoch. The ring drains to it. */
-  expiresAt: number;
+  /**
+   * When the offer lapses, in ms since epoch. The ring drains to it. Optional: without it (or with
+   * `mode="dispatcher"`) there is no countdown and the offer never expires.
+   */
+  expiresAt?: number;
+  /**
+   * `"courier"` (default): the courier's card with a countdown, Accept and Decline. `"dispatcher"`: the dispatcher's
+   * view of an offer about to be sent, with no countdown, an "Offer to driver" action (`onOffer`) and Cancel
+   * (`onDecline`).
+   */
+  mode?: "courier" | "dispatcher";
+  /** Dispatcher mode: the "Offer to driver" action. */
+  onOffer?: () => void;
   /** Length of the offer window in seconds, for the ring. Default 30. */
   windowSeconds?: number;
   /** Clock for stories and tests. Default `Date.now`. */
@@ -95,6 +114,8 @@ export function DispatchOffer({
   etaSeconds,
   orderCount,
   expiresAt,
+  mode = "courier",
+  onOffer,
   windowSeconds = 30,
   now = Date.now,
   onAccept,
@@ -117,7 +138,9 @@ export function DispatchOffer({
   const expireRef = useRef(onExpire);
   expireRef.current = onExpire;
 
+  const timed = mode === "courier" && expiresAt !== undefined;
   useEffect(() => {
+    if (!timed || expiresAt === undefined) return;
     expiredFired.current = false;
     setTick(nowRef.current());
     const id = setInterval(() => {
@@ -132,14 +155,15 @@ export function DispatchOffer({
       }
     }, 250);
     return () => clearInterval(id);
-  }, [expiresAt]);
+  }, [timed, expiresAt]);
 
-  const left = offerSecondsLeft(expiresAt, tick);
-  const expired = left === 0;
-  const fraction = offerFraction(expiresAt, tick, windowSeconds);
+  const dispatcher = mode === "dispatcher";
+  const left = timed ? offerSecondsLeft(expiresAt, tick) : windowSeconds;
+  const expired = timed && left === 0;
+  const fraction = timed ? offerFraction(expiresAt, tick, windowSeconds) : 1;
   const tone = expired ? "neutral" : offerTone(left, windowSeconds);
   // Announce at the start and at 10..1; stay silent in between.
-  const announce = !expired && (left <= 10 || left >= windowSeconds - 1) ? t.secondsLeft(left) : "";
+  const announce = timed && !expired && (left <= 10 || left >= windowSeconds - 1) ? t.secondsLeft(left) : "";
 
   const place = (kind: "pickup" | "dropoff", p: OfferPlace) => {
     const Icon = kind === "pickup" ? Store : MapPin;
@@ -168,19 +192,26 @@ export function DispatchOffer({
     <section
       data-slot="dispatch-offer"
       data-expired={expired || undefined}
-      aria-label={t.title}
+      data-mode={mode}
+      aria-label={dispatcher ? t.dispatcherTitle : t.title}
       className={cn("flex flex-col gap-4 rounded-card border border-border bg-card p-4 shadow-md sm:p-5", expired && "opacity-80", className)}
       {...props}
     >
       <header className="flex items-center gap-4">
-        <TimerRing fraction={fraction} tone={tone === "danger" ? "warning" : tone} size={64} thickness={6} aria-hidden>
-          <span className={cn("text-label tabular-nums", timerToneText[tone === "danger" ? "warning" : tone])}>
-            <bdi>{left}</bdi>
-            <span className="text-caption">{t.seconds}</span>
+        {timed ? (
+          <TimerRing fraction={fraction} tone={tone === "danger" ? "warning" : tone} size={64} thickness={6} aria-hidden>
+            <span className={cn("text-label tabular-nums", timerToneText[tone === "danger" ? "warning" : tone])}>
+              <bdi>{left}</bdi>
+              <span className="text-caption">{t.seconds}</span>
+            </span>
+          </TimerRing>
+        ) : (
+          <span aria-hidden className="flex size-12 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-foreground [&_svg]:size-5">
+            <Package />
           </span>
-        </TimerRing>
+        )}
         <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <h2 className="text-h3 text-foreground">{expired ? t.expired : t.title}</h2>
+          <h2 className="text-h3 text-foreground">{expired ? t.expired : dispatcher ? t.dispatcherTitle : t.title}</h2>
           <div className="flex flex-wrap items-center gap-x-3 text-body-sm text-muted-foreground">
             {orderCount && orderCount > 1 ? (
               <span className="inline-flex items-center gap-1">
@@ -201,7 +232,7 @@ export function DispatchOffer({
           </div>
         </div>
         <div className="flex flex-col items-end">
-          <span className="text-caption text-muted-foreground">{t.fee}</span>
+          <span className="text-caption text-muted-foreground">{dispatcher ? t.dispatcherFee : t.fee}</span>
           <bdi data-slot="offer-fee" className="text-h3 tabular-nums text-foreground">
             {deliveryMoney(feeMinor, currency, locale)}
           </bdi>
@@ -230,12 +261,19 @@ export function DispatchOffer({
       <footer className="grid grid-cols-2 gap-2">
         <Button type="button" variant="secondary" size="lg" onClick={onDecline}>
           <X aria-hidden />
-          {t.decline}
+          {dispatcher ? t.cancel : t.decline}
         </Button>
-        <Button type="button" variant="primary" size="lg" onClick={onAccept} disabled={expired}>
-          <Check aria-hidden />
-          {t.accept}
-        </Button>
+        {dispatcher ? (
+          <Button type="button" variant="primary" size="lg" onClick={onOffer}>
+            <Send aria-hidden />
+            {t.offerToDriver}
+          </Button>
+        ) : (
+          <Button type="button" variant="primary" size="lg" onClick={onAccept} disabled={expired}>
+            <Check aria-hidden />
+            {t.accept}
+          </Button>
+        )}
       </footer>
     </section>
   );

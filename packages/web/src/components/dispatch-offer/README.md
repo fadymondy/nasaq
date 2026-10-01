@@ -65,7 +65,9 @@ DispatchOffer  data-slot="dispatch-offer"  data-expired
 | `currency` | `string` | `"ILS"` | ISO currency. |
 | `distanceMeters` / `etaSeconds` | `number` | none | Trip size. |
 | `orderCount` | `number` | `1` | More than one shows a multi-order badge. |
-| `expiresAt` | `number` | required | Epoch ms when the offer lapses. |
+| `expiresAt` | `number` | none | Epoch ms when the offer lapses. Optional: without it there is no countdown and the offer never expires. |
+| `mode` | `"courier" \| "dispatcher"` | `"courier"` | `"dispatcher"` is the dispatcher's view of an offer about to be sent: no countdown, "Driver earns" as the fee label, a Cancel button (`onDecline`) and an "Offer to driver" button (`onOffer`). |
+| `onOffer` | `() => void` | none | Dispatcher mode: the "Offer to driver" action. |
 | `windowSeconds` | `number` | `30` | Full window, for the ring fraction. |
 | `now` | `number` | clock | Override the clock, for tests. |
 | `onAccept` / `onDecline` / `onExpire` | `() => void` | none | Outcomes. |

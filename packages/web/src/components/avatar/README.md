@@ -4,7 +4,7 @@ title: Avatar
 category: data-display
 status: stable
 summary: Person or workspace image with an initials fallback, in four sizes and circle or square shapes.
-exports: [Avatar, avatarVariants, initials, AvatarProps]
+exports: [Avatar, AvatarImage, AvatarFallback, avatarVariants, initials, AvatarProps]
 related: [notification-item, table, badge]
 story: components-data-display-avatar
 base-ui: [avatar]
@@ -61,12 +61,23 @@ Avatar                data-slot="avatar"    Base UI Avatar.Root, <span>
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `name` | `string` | required | Alt text for the image and the source of the initials. |
+| `name?` | `string` | none | Alt text for the image and the source of the initials. Optional when you pass `fallback` or `children`. |
+| `fallback?` | `ReactNode` | initials | Content shown when there is no image. |
+| `children?` | `ReactNode` | none | Compose with `AvatarImage` and `AvatarFallback`; replaces the `src` image and the default fallback. |
 | `src?` | `string` | none | Image URL. Without it the initials are shown at once. |
 | `size?` | `"xs" \| "sm" \| "md" \| "lg"` | `"md"` | `xs` 20px (9px text), `sm` 24px (10px), `md` 32px (caption), `lg` 40px (label). |
 | `shape?` | `"circle" \| "square"` | `"circle"` | `circle` is `rounded-full` (people). `square` is `rounded-control` (workspaces, organisations). |
 | `className?` | `string \| ((state) => string)` | none | Merged after the variant classes. A Base UI state function is supported. |
 | `...props` | Base UI `Avatar.Root` props minus `children` | none | Forwarded to the root. |
+
+### `AvatarImage` and `AvatarFallback`
+
+```tsx
+<Avatar><AvatarImage src={url} alt="Fady" /><AvatarFallback>FM</AvatarFallback></Avatar>
+```
+
+`AvatarImage` renders nothing until the image has loaded, so the fallback shows meanwhile and on error
+(`data-slot="avatar-image"`, `"avatar-fallback"`).
 
 ### `avatarVariants`
 

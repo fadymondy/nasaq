@@ -94,7 +94,7 @@ SidebarProducts
 | --- | --- | --- |
 | `id` | `string` | Stable id. Compared with `current`. |
 | `name` | `string` | Display name, already localised by the host. |
-| `brand?` | `string` | A Nasaq brand key (`mahaam`, `zekra`, `nasaq`, `moharrik`, `seatfor`, `health-debug`, `circlexo`, `hosbah`, `yes-delivery`, `orchestra`, `fadymondy`). Draws the official mark and supplies the accent. |
+| `brand?` | `string` | A Nasaq brand key (`mahaam`, `zekra`, `nasaq`, `moharrik`, `seatfor`, `health-debug`, `circlexo`, `hosbah`, `orchestra`, `fadymondy`). Draws the official mark and supplies the accent. |
 | `logo?` | `ReactNode` | For products without a Nasaq brand: the product's own official logo (e.g. an `<img>` of the supplied file). Never a generic icon. |
 | `accent?` | `string` | Accent colour when `brand` is not a Nasaq brand. Used only for the current marker. |
 | `description?` | `string` | Shown as the tile's tooltip (`title`). |

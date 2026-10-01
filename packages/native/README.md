@@ -67,7 +67,8 @@ All are token-driven, brand-aware through the provider, RTL-correct (start/end, 
 | `Sheet` | `visible`, `onClose`, `title`, `snapPoints` (fractions of the window, the largest is the max height), `bottomInset`. |
 | `Switch` | `value`, `onValueChange`, `label`, `description`. |
 | `ListRow`, `Separator` | `title`, `subtitle`, `leading`, `trailing`, `chevron` (mirrors in RTL), `onPress`. |
-| `AppHeader` | `title`, `canGoBack`, `onBack`, `trailing`, `topInset`. The back chevron points to the start edge. |
+| `AppHeader` | `title`, `logo` (your own node), `canGoBack`, `onBack`, `trailing`, `topInset`. The back chevron points to the start edge. |
+| `IconButton` | `accessibilityLabel` (required), `icon` (`bell`, ...) or `children` for your own icon, `count` (badge at the end-top corner, `99+` above `maxCount`). Put it in `AppHeader trailing`. |
 | `useTabBarOptions()`, `tabBarOptions()` | Tab-bar `screenOptions` for expo-router / React Navigation: tints, surface, hairline, label font. |
 | `useNasaqStatusBarStyle()` | `"light"` or `"dark"` for expo-status-bar. |
 | `EmptyState` | `icon`, `title`, `description`, `action`. |
@@ -75,10 +76,20 @@ All are token-driven, brand-aware through the provider, RTL-correct (start/end, 
 | `MoneyText` | `cents` (integer minor units), `currency` (ILS), `tone` (`"sign"` colours by sign), `showPlus`, `arabicIndic`. Tabular numerals. |
 | `StepProgress` | `steps` (labels), `current`. |
 | `OfferCountdown` | `seconds`, `total`, `onExpire` (fires once), `variant` ring or bar. Danger at 10 seconds or fewer. |
-| `OfferCard` | `pickup`, `dropoff`, `zone`, `feeCents`, `distanceMeters`, `etaSeconds`, `seconds`, `total`, `onAccept` (success haptic), `onDecline`, `loading`. |
+| `OfferCard` | `pickup`, `dropoff`, `zone`, `feeCents`, `orderTotalMinor` (shows the cash to collect: total plus fee), `distanceMeters`, `etaSeconds`, `seconds`, `total`, `onAccept` (success haptic), `onDecline`, `loading`. |
 | `RouteStops` | `stops[{ kind, label, address, done }]`, `onNavigate`, `renderActions`. The first pending stop is current. |
 | `CashCollect` | `amountDue`, `breakdown`, `value`, `onChange`, `onConfirm`, `currency`, `allowShort`. Shows change or what is still owed. |
-| `PinInput` | `value`, `onChange`, `length` (4), `error`, `onComplete`, `secure`, `readOnly`. One hidden field, so autofill and paste work; boxes always run left to right. |
+| `PinInput` | `value`, `onChange`, `length` (4), `error`, `onComplete`, `secure`, `readOnly`. One hidden field, so autofill and paste work; boxes always run left to right, while the error line and the label follow the layout direction. |
+
+### Client brand and appearance
+
+`NasaqProvider` takes `brandColors={{ brand, action, onAction, accent }}` (each "#RRGGBB" or `{ light, dark }`) or a
+`brand` object, so an app can apply its own colours (for example from `GET /api/brand`) without a registered brand.
+Missing dark steps and the on-colours are derived for contrast (`resolveCustomBrandColors` in `@nasaq/tokens`).
+
+`useSchemePreference({ storage, storageKey })` returns `{ preference, setPreference, scheme, ready }` for a
+system / light / dark choice. `storage` is any `{ getItem, setItem }` (AsyncStorage, MMKV, SecureStore), injected by
+the app, so the kit adds no dependency. Pass `scheme` to `NasaqProvider`; `system` is `undefined`, so the OS decides.
 
 ### Shared logic
 
@@ -87,7 +98,7 @@ imports) and are re-exported from `@nasaq/native`, so a phone and the web agree 
 pure helpers (`parseAmountMinor`, `sanitizePin`, `countdownTone`, `alpha`, digit conversion) are in `src/logic.ts`
 and covered by `pnpm --filter @nasaq/native test`.
 
-Not yet in the kit: photo capture, a map wrapper, and scheme-preference persistence. Haptics need the optional
+Not yet in the kit: photo capture and a map wrapper. Haptics need the optional
 `expo-haptics` peer; icons draw with `react-native-svg`, already a peer.
 
 ## RTL

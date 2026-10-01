@@ -62,3 +62,5 @@ export const Logos: Story = {
     </div>
   ),
 };
+
+export const CustomLogo: Story = { render: () => <ProductMark src="/__missing-logo__.png" size={48} /> };

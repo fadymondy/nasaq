@@ -92,7 +92,8 @@ ColorPicker
 | `value?` | `string \| null` | none | Controlled value (hex or `--var` name). |
 | `defaultValue?` | `string \| null` | `null` | Initial value when uncontrolled. |
 | `onValueChange?` | `(value: string) => void` | none | Called with the chosen swatch value, or a lower-case 6 digit hex. |
-| `swatches?` | `readonly ColorSwatch[]` | `tagSwatches(locale)` | Choices in the grid. |
+| `swatches?` | `readonly ColorSwatch[]` | `tagSwatches(locale)` | Choices in the grid. `[]` hides the grid cleanly. |
+| `mode?` | `"swatches" \| "hex"` | `"swatches"` | `"hex"` is hex-only: no swatch grid, only the hex field and the "Custom" button. |
 | `columns?` | `number` | `5` | Swatches per row. |
 | `allowHex?` | `boolean` | `true` | Show the hex field. |
 | `allowNative?` | `boolean` | `true` | Show the "Custom" button for the native colour input. |

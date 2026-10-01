@@ -5,7 +5,7 @@ import { Badge } from "./badge";
 import { Button } from "./button";
 import { Card } from "./card";
 import { useHaptics } from "./haptics";
-import { clockLabel, countdownTone, deliveryDistance, deliveryDuration } from "./logic";
+import { clockLabel, countdownTone, deliveryDistance, deliveryDuration, offerAmountDue } from "./logic";
 import { MoneyText } from "./money-text";
 import { useNasaq } from "./provider";
 import { Text } from "./text";
@@ -86,6 +86,11 @@ export interface OfferCardProps {
   zone?: string;
   /** Delivery fee the courier earns, integer minor units. */
   feeCents: number;
+  /**
+   * What the customer owes for the order itself, integer minor units. When set, the card shows the cash the courier
+   * collects: this plus the delivery fee. Leave it out for prepaid orders.
+   */
+  orderTotalMinor?: number;
   currency?: string;
   distanceMeters?: number;
   etaSeconds?: number;
@@ -96,12 +101,12 @@ export interface OfferCardProps {
   onDecline: () => void;
   /** Blocks both buttons and spins the accept button while the answer is in flight. */
   loading?: boolean;
-  labels?: { pickup?: string; dropoff?: string; accept?: string; decline?: string; title?: string };
+  labels?: { pickup?: string; dropoff?: string; accept?: string; decline?: string; title?: string; cashDue?: string };
   style?: StyleProp<ViewStyle>;
 }
 
-const EN = { pickup: "Pickup", dropoff: "Drop-off", accept: "Accept", decline: "Decline", title: "New delivery offer" };
-const AR = { pickup: "الاستلام", dropoff: "التسليم", accept: "قبول", decline: "رفض", title: "عرض توصيل جديد" };
+const EN = { pickup: "Pickup", dropoff: "Drop-off", accept: "Accept", decline: "Decline", title: "New delivery offer", cashDue: "Cash to collect" };
+const AR = { pickup: "الاستلام", dropoff: "التسليم", accept: "قبول", decline: "رفض", title: "عرض توصيل جديد", cashDue: "المبلغ المطلوب تحصيله" };
 
 /** An incoming dispatch offer: route, zone, fee, distance and time, the countdown, and accept / decline. */
 export function OfferCard({
@@ -109,6 +114,7 @@ export function OfferCard({
   dropoff,
   zone,
   feeCents,
+  orderTotalMinor,
   currency,
   distanceMeters,
   etaSeconds,
@@ -154,6 +160,14 @@ export function OfferCard({
           </Text>
           <Text variant="body">{dropoff}</Text>
         </View>
+        {orderTotalMinor != null ? (
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: nq.space[2] }}>
+            <Text variant="caption" tone="muted">
+              {t.cashDue}
+            </Text>
+            <MoneyText cents={offerAmountDue(orderTotalMinor, feeCents)} currency={currency} variant="label" />
+          </View>
+        ) : null}
       </View>
       <View style={{ flexDirection: "row", gap: nq.space[2] }}>
         <Button variant="secondary" size="lg" style={{ flex: 1 }} disabled={loading || expired} onPress={onDecline}>

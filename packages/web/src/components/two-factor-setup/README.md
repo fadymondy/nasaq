@@ -78,8 +78,8 @@ TwoFactorSetup                     data-slot="two-factor-setup", data-state="ste
 | `otpauthUri` | `string` | required | The `otpauth://totp/...` URI the QR encodes. |
 | `secret` | `string` | read from the URI | Base32 secret shown for manual entry. |
 | `enabled` | `boolean` | internal | Show the enabled state. Omit to let it switch after step 3. |
-| `onVerify` | `(code) => Promise<void \| { error?; recoveryCodes? }>` | required | Verify the 6-digit code. `{ error }` keeps step 2 open with that message. `{ recoveryCodes }` feeds step 3. |
-| `recoveryCodes` | `readonly string[]` | | Codes for step 3 when you already have them. |
+| `onVerify` | `(code) => Promise<void \| { error?; recoveryCodes? }>` | required | Verify the 6-digit code. `{ error }` keeps step 2 open with that message. `{ recoveryCodes }` feeds step 3. Recovery codes are optional: when neither `onVerify` nor `recoveryCodes` supplies any, step 3 is skipped and setup finishes (`onComplete` fires). |
+| `recoveryCodes` | `readonly string[]` | | Codes for step 3 when you already have them. Set before `onVerify` resolves. |
 | `onComplete` | `() => void` | | The user confirmed they saved the codes and pressed Finish. |
 | `recoveryCodesRemaining` | `number` | | Enabled state: unused codes. Fewer than 3 shows a warning. |
 | `confirmWith` | `"password" \| "code"` | `"password"` | What regenerate and disable ask for. |

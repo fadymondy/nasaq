@@ -74,3 +74,47 @@ function Zones() {
 }
 export const ZonesAndLiveDriver: Story = { render: () => <Zones /> };
 export const ZonesAndLiveDriverArabic: Story = { globals: { locale: "ar" }, render: () => <Zones /> };
+
+/* Tap the map (or drag the pin) to choose a location; the layers panel stays collapsed. */
+function PinPicker() {
+  const ar = useAr();
+  const [point, setPoint] = useState<{ lat: number; lng: number } | null>(null);
+  return (
+    <div className="flex flex-col gap-2">
+      <MapView
+        label={t(ar, "Pick a drop-off", "اختر موقع التسليم")}
+        className="h-[24rem]"
+        layersPanel="hidden"
+        pickedPoint={point}
+        onMapClick={setPoint}
+        onPickedPointChange={setPoint}
+      />
+      <p className="text-body-sm text-muted-foreground">{point ? `${point.lat.toFixed(5)}, ${point.lng.toFixed(5)}` : t(ar, "Tap the map", "اضغط على الخريطة")}</p>
+    </div>
+  );
+}
+export const PinPickerStory: Story = { name: "Pin picker", render: () => <PinPicker /> };
+export const PinPickerArabic: Story = { name: "Pin picker (Arabic)", globals: { locale: "ar" }, render: () => <PinPicker /> };
+
+/* Draw a zone: tap to add vertices, drag or arrow-key them, then Finish shape. */
+function AreaEditor() {
+  const ar = useAr();
+  const [points, setPoints] = useState<{ lat: number; lng: number }[]>([]);
+  return (
+    <div className="flex flex-col gap-2">
+      <MapView
+        label={t(ar, "Zone editor", "محرر المنطقة")}
+        className="h-[24rem]"
+        layersPanel="hidden"
+        editing
+        editPoints={points}
+        onAreaChange={setPoints}
+        onAreaDone={() => undefined}
+      />
+      <p className="text-body-sm text-muted-foreground">{points.length} {t(ar, "points", "نقاط")}</p>
+    </div>
+  );
+}
+export const AreaEditing: Story = { render: () => <AreaEditor /> };
+export const AreaEditingArabic: Story = { globals: { locale: "ar" }, render: () => <AreaEditor /> };
+export const LayersExpanded: Story = { render: () => <MapView label="Fleet" className="h-80" layers={FLEET_LAYERS} pins={FLEET_PINS} layersPanel="expanded" /> };

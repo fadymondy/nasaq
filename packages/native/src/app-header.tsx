@@ -6,6 +6,8 @@ import { Text } from "./text";
 
 export interface AppHeaderProps {
   title?: string;
+  /** Your own logo (an Image, an SVG) at the start, instead of or beside the title. The kit draws no brand mark here. */
+  logo?: ReactNode;
   /** Shows the back control at the start edge. */
   canGoBack?: boolean;
   onBack?: () => void;
@@ -23,7 +25,7 @@ export interface AppHeaderProps {
  * The nav bar for tab and stack screens. The back chevron points toward the start edge, so it points left in
  * LTR and right in RTL. Height follows the density's `header` token.
  */
-export function AppHeader({ title, canGoBack, onBack, backLabel, trailing, topInset = 0, centered, style }: AppHeaderProps) {
+export function AppHeader({ title, logo, canGoBack, onBack, backLabel, trailing, topInset = 0, centered, style }: AppHeaderProps) {
   const nq = useNasaq();
   const c = nq.colors;
   const label = backLabel ?? (nq.script === "arabic" ? "رجوع" : "Back");
@@ -51,6 +53,7 @@ export function AppHeader({ title, canGoBack, onBack, backLabel, trailing, topIn
         ) : (
           <View style={{ width: nq.space[2] }} />
         )}
+        {logo}
         <Text variant="h3" numberOfLines={1} style={{ flex: 1, textAlign: centered ? "center" : nq.isRtl ? "right" : "left" }}>
           {title}
         </Text>

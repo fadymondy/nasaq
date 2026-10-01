@@ -62,7 +62,10 @@ MapView                       data-slot="map-view"  dir="ltr"  role="group" (map
 ├─ svg                        routes: casing + line + start and end dots
 ├─ button[data-pin]           one per visible pin, in a ContextMenuActions when pinActions is set
 ├─ button[data-cluster]       a count bubble for pins that are close together (see Clustering)
-├─ legend                     layer toggles and routes with their length
+├─ legend                     layers panel (collapsed by default): toggles, zones, routes with their length
+├─ [data-picked-point]        draggable pin while `pickedPoint` is set
+├─ svg + [data-vertex]        dashed shape and draggable vertices while `editing` (data-slot="map-edit-shape")
+├─ toolbar                    Remove last point, Finish shape (data-slot="map-edit-toolbar")
 ├─ zoom in, zoom out, fit     buttons at the inline end
 ├─ scale bar, attribution
 ├─ section                    location card of the selected pin
@@ -88,7 +91,15 @@ MapView                       data-slot="map-view"  dir="ltr"  role="group" (map
 | `cluster` | `boolean` | on above 30 visible pins | Group close pins into count bubbles. Set `true` or `false` to force it. |
 | `clusterRadius` | `number` | `60` | Distance in px under which pins share a bubble. |
 | `renderCluster` | `(cluster: MapClusterInfo) => ReactNode` | the count | Contents of a bubble: `{ count, pins, lat, lng, size }`. The button, size, focus and click stay. |
-| `legend` | `boolean` | `true` | |
+| `legend` | `boolean` | `true` | Legacy switch; `false` is the same as `layersPanel="hidden"`. |
+| `layersPanel` | `"collapsed" \| "expanded" \| "hidden"` | `"collapsed"` | The layers panel starts as a small button over the map; `expanded` opens it, `hidden` removes it. Behaviour change: it used to start open. |
+| `onMapClick` | `(point: {lat, lng}) => void` | none | A tap on empty map (not a drag, pin, area or control). |
+| `onAreaClick` | `(area: MapArea) => void` | none | A tap inside a zone, topmost first. Legend zone rows become buttons. |
+| `onPinClick` | `(pin: MapPin) => void` | none | Fires on pin activation, next to `onSelect`. |
+| `pickedPoint` / `defaultPickedPoint` / `onPickedPointChange` | `{lat, lng} \| null` | none | A draggable pin for choosing a location. Drag it, or focus it and use the arrow keys (Shift for larger steps). |
+| `editing` | `boolean` | `false` | Area editing mode: a tap adds a vertex, vertices are draggable, a toolbar offers Remove last point and Finish shape. |
+| `editPoints` / `defaultEditPoints` / `onAreaChange` / `onAreaDone` | `MapLatLng[]` | `[]` | The ring being edited. `onAreaChange` fires after every add, move or removal; `onAreaDone` from Finish shape (three points or more). |
+| `editTone` | `MapTone` | `"brand"` | Tone of the shape being edited. |
 | `label`, `locale`, `labels`, `className` | | | Height comes from `className` (default 28rem). |
 
 ### Clustering
@@ -111,7 +122,7 @@ merges them again.
 ### Geometry helpers (no React)
 
 `mapProject`, `mapUnproject`, `mapToScreen`, `mapFromScreen`, `mapFit`, `mapPanBy`, `mapZoomAt`, `mapDistance`,
-`mapRouteLength`, `mapFormatCoordinates`, `mapBounds`, and for clustering `mapCluster(pins, zoom, { radius, maxZoom,
+`mapPointInPolygon(point, ring)` (even-odd hit test), `mapRouteLength`, `mapFormatCoordinates`, `mapBounds`, and for clustering `mapCluster(pins, zoom, { radius, maxZoom,
 selectedId })` and `mapClusterExpand(pins, view, size)` (the view to move to and whether to list the pins).
 
 ## Accessibility
@@ -123,6 +134,9 @@ selectedId })` and `mapClusterExpand(pins, view, size)` (the view to move to and
 | Home or `0` | Show everything. |
 | Tab | Moves through the pins and cluster bubbles. Enter or Space selects a pin, or zooms into a bubble. |
 | Escape | Clears the selection. |
+| Arrow keys, Shift+arrows (pin or vertex focused) | Move the picked pin or a vertex by 8 px, or 32 px with Shift. |
+| Delete, Backspace (vertex focused) | Removes the vertex. |
+| Enter (map focused, `editing`) | Adds a vertex at the centre of the view. |
 | Shift+F10, Menu key | Opens the pin's menu. |
 
 - Every pin is a button named by its label; the selected one says so and has `aria-pressed`.

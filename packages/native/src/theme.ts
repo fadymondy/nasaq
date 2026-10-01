@@ -1,5 +1,16 @@
 import { type BrandKey, BRANDS, type BrandManifest, resolveBrand } from "@nasaq/brands";
-import { densities, type Density, type Expression, expressions, space, type ThemeName, themes, typography } from "@nasaq/tokens";
+import {
+  type CustomBrandColors,
+  densities,
+  type Density,
+  type Expression,
+  expressions,
+  resolveCustomBrandColors,
+  space,
+  type ThemeName,
+  themes,
+  typography,
+} from "@nasaq/tokens";
 
 type Kebab<S extends string> = S extends `${infer H}-${infer T}` ? `${H}${Capitalize<Kebab<T>>}` : S;
 type ThemeColors = { [K in keyof (typeof themes)["light"] as Kebab<K & string>]: string };
@@ -35,9 +46,26 @@ export const TOUCH_MIN = 44;
 /** The ceiling Text applies to the OS font scale, so headings still fit at the largest settings. */
 export const MAX_FONT_SCALE = 1.4;
 
+/** A client's own brand for an app that is not a registered Nasaq brand. Missing parts fall back to Nasaq. */
+export interface CustomBrand {
+  key?: string;
+  name?: BrandManifest["name"];
+  wordmark?: BrandManifest["wordmark"];
+  mark?: BrandManifest["mark"];
+  typography?: BrandManifest["typography"];
+  tagline?: BrandManifest["tagline"];
+  links?: BrandManifest["links"];
+  color?: CustomBrandColors;
+}
+
 export interface ResolveThemeOptions {
-  /** Brand key or legacy alias. */
-  brand?: BrandKey | (string & {});
+  /** A registered brand key or legacy alias, or a `CustomBrand` object. */
+  brand?: BrandKey | (string & {}) | CustomBrand;
+  /**
+   * Your own colours over the brand (for example the admin colours from your API). Give `brand` and `action` as
+   * "#RRGGBB" or `{ light, dark }`; dark steps and the on-colours are derived for contrast.
+   */
+  brandColors?: CustomBrandColors;
   scheme?: ThemeName;
   expression?: Expression;
   density?: Density;
@@ -45,11 +73,19 @@ export interface ResolveThemeOptions {
 
 export function resolveTheme({
   brand = "nasaq",
+  brandColors,
   scheme = "light",
   expression = "native",
   density = "comfortable",
 }: ResolveThemeOptions = {}): NasaqTheme {
-  const manifest = resolveBrand(brand) ?? BRANDS.nasaq;
+  const custom = typeof brand === "object" && brand !== null ? brand : null;
+  const registered = typeof brand === "string" ? (resolveBrand(brand) ?? BRANDS.nasaq) : BRANDS.nasaq;
+  const colorInput = brandColors ?? custom?.color;
+  let manifest: BrandManifest = registered;
+  if (custom || colorInput) {
+    const { key: _key, color: _color, ...rest } = custom ?? {};
+    manifest = { ...registered, ...rest, color: resolveCustomBrandColors(colorInput, registered.color) };
+  }
   const base = Object.fromEntries(Object.entries(themes[scheme]).map(([k, v]) => [camel(k), v])) as ThemeColors;
   return {
     brand: manifest,

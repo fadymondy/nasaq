@@ -27,11 +27,6 @@ const meta: Record<BrandKey, Pick<BrandManifest, "name" | "typography" | "taglin
   "health-debug": { name: { en: "Health Debug", ar: "شفرة التعافي الصحي" }, typography: { latin: "lusail" } },
   circlexo: { name: { en: "CircleXO", ar: "سيركل إكس أو" }, typography: { latin: "lusail" } },
   hosbah: { name: { en: "Hosbah", ar: "حوسبة" }, typography: { latin: "inter" } },
-  "yes-delivery": {
-    name: { en: "Yes Delivery", ar: "يس دليفري" },
-    typography: { latin: "lusail" },
-    tagline: { en: "Yes — it's on its way.", ar: "نعم، طلبك في الطريق" },
-  },
   orchestra: { name: { en: "Orchestra", ar: "اوركيسترا" }, typography: { latin: "lusail" } },
   togo: { name: { en: "ToGO" }, typography: { latin: "lusail" }, site: "https://to-go.dev" },
 };

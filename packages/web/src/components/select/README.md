@@ -80,7 +80,8 @@ Select                     Base UI Select.Root (pass items so the trigger can sh
 ## API
 
 `Select` = `Select.Root` (`value?`, `defaultValue?`, `onValueChange?`, `items?`, `name?`, `disabled?`,
-`required?`, `multiple?`). `SelectGroup` = `Select.Group`.
+`required?`, `multiple?`). `SelectGroup` = `Select.Group`. `items` is optional: when it is omitted, the trigger label is
+derived from the inline `<SelectItem>` children (value and text), so the selected label shows without a list.
 
 ### `SelectContent`
 

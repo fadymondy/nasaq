@@ -18,6 +18,8 @@ export interface AuthLayoutProps extends Omit<ComponentProps<"div">, "title"> {
   description?: ReactNode;
   /** Brand or illustration content for the split panel. Hidden below the `lg` breakpoint. */
   panel?: ReactNode;
+  /** Your own logo for the default split panel (an `img`, an SVG, a lockup), when you pass no `panel`. Default: the brand's `ProductLogo`. */
+  logo?: ReactNode;
   /** One line under the form that points to the other auth page: "Don't have an account? Create one" on sign-in, "Already have an account? Sign in" on sign-up. */
   prompt?: ReactNode;
   /** Legal links, a locale switch or any small print below the form. See `AuthFooter`. */
@@ -214,7 +216,7 @@ export function AuthEmblem({ size = 112, children, lock = true, busy, className,
  * The page frame for sign-in, sign-up and recovery screens. It owns the page structure (`<main>`, the
  * `h1`, the footer) and leaves the form itself to `children`, so every auth form drops into either variant.
  */
-export function AuthLayout({ variant = "card", mark, title, description, panel, prompt, footer, backdrop = true, origin, className, children, ...props }: AuthLayoutProps) {
+export function AuthLayout({ variant = "card", mark, title, description, panel, logo, prompt, footer, backdrop = true, origin, className, children, ...props }: AuthLayoutProps) {
   const centred = variant === "card";
   const defaultMark = <AuthEmblem size={centred ? 112 : 104} />;
   const markNode = mark === undefined ? defaultMark : mark;
@@ -251,7 +253,7 @@ export function AuthLayout({ variant = "card", mark, title, description, panel, 
           className="relative isolate hidden flex-col justify-between gap-8 overflow-hidden border-e border-border bg-muted p-10 text-foreground lg:flex"
         >
           {backdrop ? <AuthBackdrop /> : null}
-          {panel ?? <div className="flex flex-1 items-center justify-center">{markNode ? <ProductLogo size={56} /> : null}</div>}
+          {panel ?? <div className="flex flex-1 items-center justify-center">{markNode ? (logo ?? <ProductLogo size={56} />) : null}</div>}
         </aside>
         <div className="flex min-w-0 flex-col p-6 sm:p-10">
           <main data-slot="auth-layout-main" data-auth-stagger="" className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 py-8">

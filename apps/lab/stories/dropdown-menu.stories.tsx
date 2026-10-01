@@ -64,3 +64,16 @@ function Demo() {
 }
 
 export const Default: Story = { render: () => <Demo /> };
+
+/** A label used directly in the content, with no Group around it. */
+export const LabelWithoutGroup: Story = {
+  render: () => (
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<Button />}>Account</DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Signed in as fady@example.com</DropdownMenuLabel>
+        <DropdownMenuItem>Profile</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ),
+};

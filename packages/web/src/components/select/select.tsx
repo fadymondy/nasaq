@@ -2,14 +2,34 @@
 
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { Check, ChevronsUpDown } from "lucide-react";
-import type { ComponentProps } from "react";
+import { Children, type ComponentProps, isValidElement, type ReactNode } from "react";
 import { cn } from "../../lib/cn";
 
+type SelectItemEntry = { value: unknown; label: ReactNode };
+
+/** Reads `<SelectItem value>` elements out of an element tree: through groups and content, not through components. */
+function collectItems(node: ReactNode, out: SelectItemEntry[] = []): SelectItemEntry[] {
+  Children.forEach(node, (child) => {
+    if (!isValidElement(child)) return;
+    const props = child.props as { value?: unknown; children?: ReactNode };
+    if (child.type === SelectItem) {
+      if (props.value !== undefined) out.push({ value: props.value, label: props.children });
+    } else if (props.children) collectItems(props.children, out);
+  });
+  return out;
+}
+
 /**
- * Root. Pass `items` (`{ value, label }[]` or a value→label record) so the trigger shows the label
- * rather than the raw value before the list has ever opened.
+ * Root. The trigger shows the selected item's label, not its raw value, even before the list has opened: pass `items`
+ * (`{ value, label }[]` or a value→label record), or leave it out and the labels are read from the `SelectItem`s
+ * written inline in the children (not from items inside your own sub-components: pass `items` for those).
  */
-export const Select = BaseSelect.Root;
+export function Select<Value, Multiple extends boolean | undefined = false>(props: BaseSelect.Root.Props<Value, Multiple>) {
+  const { items, children } = props;
+  const derived = items === undefined ? collectItems(children as ReactNode) : [];
+  const rootProps = items === undefined && derived.length > 0 ? { ...props, items: derived as unknown as BaseSelect.Root.Props<Value, Multiple>["items"] } : props;
+  return <BaseSelect.Root {...rootProps} />;
+}
 export const SelectGroup = BaseSelect.Group;
 
 export function SelectTrigger({ className, children, ...props }: ComponentProps<typeof BaseSelect.Trigger>) {
@@ -107,7 +127,7 @@ export function SelectItem({ className, children, ...props }: ComponentProps<typ
   );
 }
 
-/** Must be rendered inside a SelectGroup. */
+/** Put it inside a SelectGroup, which names the group for assistive tech. */
 export function SelectLabel({ className, ...props }: ComponentProps<typeof BaseSelect.GroupLabel>) {
   return (
     <BaseSelect.GroupLabel

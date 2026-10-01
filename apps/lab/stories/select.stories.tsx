@@ -88,3 +88,17 @@ function Demo() {
 }
 
 export const Default: Story = { render: () => <Demo /> };
+
+export const WithoutItems: Story = {
+  render: () => (
+    <Select defaultValue="high">
+      <SelectTrigger>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="low">Low priority</SelectItem>
+        <SelectItem value="high">High priority</SelectItem>
+      </SelectContent>
+    </Select>
+  ),
+};

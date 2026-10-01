@@ -1,7 +1,7 @@
 "use client";
 
 import { type BrandKey, BRANDS, markGeometry, type MarkSpec, resolveBrand } from "@nasaq/brands";
-import type { ComponentProps } from "react";
+import { type ComponentProps, useState } from "react";
 import { cn } from "../../lib/cn";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 
@@ -25,6 +25,13 @@ export interface ProductMarkProps extends Omit<ComponentProps<"svg">, "children"
   onDark?: boolean;
   /** Accessible name. Defaults to the brand name; pass "" when a visible name sits beside it. */
   title?: string;
+  /**
+   * A custom logo image (an admin-uploaded brand logo) shown instead of the mark. When it fails to load, the mark
+   * is drawn instead. It is sized to `size` and never recoloured or mirrored.
+   */
+  src?: string;
+  /** Alias of `src`. */
+  logoUrl?: string;
 }
 
 /**
@@ -32,7 +39,9 @@ export interface ProductMarkProps extends Omit<ComponentProps<"svg">, "children"
  * transformed: the dark variant is the spec's own bodyOnDark. SVG geometry is not affected by dir,
  * so RTL layouts never flip it.
  */
-export function ProductMark({ brand, mark: markProp, size = 24, onDark, title, className, ...props }: ProductMarkProps) {
+export function ProductMark({ brand, mark: markProp, size = 24, onDark, title, src, logoUrl, className, ...props }: ProductMarkProps) {
+  const customSrc = src ?? logoUrl;
+  const [failed, setFailed] = useState<string | null>(null);
   const nasaq = useOptionalNasaq();
   const resolved = brand ? resolveBrand(brand) : undefined;
   if (brand && !resolved && !markProp) warnUnknownBrand(brand);
@@ -42,6 +51,24 @@ export function ProductMark({ brand, mark: markProp, size = 24, onDark, title, c
   const showAccent = size >= MARK_ACCENT_MIN_SIZE;
   const { unit, rects } = markGeometry(mark);
   const label = title ?? mark.name;
+
+  if (customSrc && failed !== customSrc) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        data-slot="product-mark"
+        data-custom=""
+        src={customSrc}
+        alt={label}
+        width={size}
+        height={size}
+        draggable={false}
+        onError={() => setFailed(customSrc)}
+        className={cn("shrink-0 object-contain", className)}
+        {...(props as ComponentProps<"img">)}
+      />
+    );
+  }
 
   return (
     <svg

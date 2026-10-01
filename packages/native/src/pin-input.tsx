@@ -35,7 +35,7 @@ export function PinInput({ value, onChange, length = 4, error, onComplete, secur
   const active = pinFocusIndex(value, length);
   const label = accessibilityLabel ?? (nq.script === "arabic" ? "رمز التحقق" : "PIN");
   return (
-    <View style={[{ gap: nq.space[1] }, style]}>
+    <View style={[{ gap: nq.space[1], alignItems: "stretch" }, style]}>
       <Pressable accessible={false} onPress={() => ref.current?.focus()} disabled={readOnly}>
         <View accessible={!!readOnly} accessibilityLabel={readOnly ? `${label}: ${value.split("").join(" ")}` : undefined} style={{ flexDirection: "row", direction: "ltr", gap: nq.space[2], justifyContent: "center" }}>
           {Array.from({ length }, (_, i) => {
@@ -87,7 +87,7 @@ export function PinInput({ value, onChange, length = 4, error, onComplete, secur
         />
       )}
       {error ? (
-        <Text variant="caption" tone="danger" style={{ textAlign: "center" }} accessibilityLiveRegion="polite">
+        <Text variant="caption" tone="danger" style={{ textAlign: "center", writingDirection: nq.isRtl ? "rtl" : "ltr" }} accessibilityLiveRegion="polite">
           {error}
         </Text>
       ) : null}

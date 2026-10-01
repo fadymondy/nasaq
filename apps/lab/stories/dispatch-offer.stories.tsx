@@ -36,3 +36,21 @@ export const MultiOrder: Story = { render: () => <Demo multi /> };
 export const NoCash: Story = { render: () => <Demo cash={false} /> };
 export const NearlyExpired: Story = { render: () => <Demo seconds={8} /> };
 export const Expired: Story = { render: () => <Demo seconds={0} /> };
+
+/* Dispatcher view: no countdown, "Offer to driver" action. */
+export const Dispatcher: Story = {
+  render: () => (
+    <div className="max-w-md">
+      <DispatchOffer
+        mode="dispatcher"
+        pickup={{ name: "Al-Quds Bakery", address: "Al-Masyoun, Ramallah" }}
+        dropoff={{ name: "Sara Odeh", address: "Al-Tireh, Building 14" }}
+        feeMinor={1500}
+        distanceMeters={3400}
+        etaSeconds={420}
+        onOffer={() => undefined}
+        onDecline={() => undefined}
+      />
+    </div>
+  ),
+};

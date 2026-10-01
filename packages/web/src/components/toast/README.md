@@ -52,6 +52,17 @@ export function App() {
 
 `Toaster` is not mounted for you by `NasaqProvider` or `AppShell`; render it yourself, exactly once (two mounted Toasters show every toast twice).
 
+## Apps that already use Sonner
+
+Nasaq depends on `sonner` (exact version `2.0.8`); it is not a peer dependency, so that the toast works with no setup. A
+`<Toaster>` only shows toasts from the same copy of Sonner, so an app that also imports `sonner` itself can end up with
+two stores and need two Toasters. Pick one:
+
+- **Use Nasaq's `toast` everywhere.** Import `toast` from `@fadymondy/nasaq/web` instead of `sonner`, and mount only Nasaq's
+  `Toaster`. This always works.
+- **Share one copy.** Pin your own `sonner` dependency to the same version (`2.0.8`) so the package manager installs one
+  copy; then `toast` from either import reaches either `Toaster`. Check with `npm ls sonner` or `pnpm why sonner`.
+
 ## Anatomy
 
 ```

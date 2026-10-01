@@ -13,6 +13,10 @@ export interface WindowChromeOptions {
   kind?: WindowKind;
   /** Windows 11 gets Mica; older Windows a solid ground. Defaults to detecting build 22000+. */
   windows11?: boolean;
+  /** Override the default size of the window kind (any of these keys; the rest keep their defaults). */
+  size?: Pick<BrowserWindowConstructorOptions, "width" | "height" | "minWidth" | "minHeight" | "maxWidth" | "maxHeight" | "maximizable" | "fullscreenable" | "resizable">;
+  /** Extra BrowserWindow options merged last. `webPreferences` is merged key by key so the chrome argument survives. */
+  overrides?: BrowserWindowConstructorOptions;
 }
 
 declare const process: { platform: string; getSystemVersion?: () => string };
@@ -53,10 +57,17 @@ function overlay(info: ChromeInfo, theme: Theme) {
  * the system menu keep working) over Mica on Windows 11. Linux: the OS frame.
  * The chrome info is passed to the preload as a process argument; read it there with exposeChrome().
  */
-export function windowChrome({ platform, theme = "light", kind = "main", windows11 }: WindowChromeOptions = {}): BrowserWindowConstructorOptions {
+export function windowChrome({ size, overrides, ...options }: WindowChromeOptions = {}): BrowserWindowConstructorOptions {
+  const result = chromeOptions(options, size);
+  if (!overrides) return result;
+  return { ...result, ...overrides, webPreferences: { ...result.webPreferences, ...overrides.webPreferences } };
+}
+
+function chromeOptions({ platform, theme = "light", kind = "main", windows11 }: Omit<WindowChromeOptions, "size" | "overrides">, size?: WindowChromeOptions["size"]): BrowserWindowConstructorOptions {
   const info = chromeInfo({ platform, windows11 });
   const base: BrowserWindowConstructorOptions = {
     ...SIZES[kind],
+    ...size,
     show: false,
     webPreferences: { additionalArguments: [ARG_PREFIX + JSON.stringify(info)] },
   };

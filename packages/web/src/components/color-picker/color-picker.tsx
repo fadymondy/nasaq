@@ -94,8 +94,10 @@ export interface ColorPickerProps {
   defaultValue?: string | null;
   /** Called with a lower-case 6 digit hex string, or the swatch's own value (which may be a `--var` name). */
   onValueChange?: (value: string) => void;
-  /** Choices in the grid. Default: the nine `--nq-tag-*` hues (see `tagSwatches`). */
+  /** Choices in the grid. Default: the nine `--nq-tag-*` hues (see `tagSwatches`). An empty array hides the grid. */
   swatches?: readonly ColorSwatch[];
+  /** `"hex"` is a hex-only picker: no swatch grid, the hex field (and the native "Custom" button) only. Default `"swatches"`. */
+  mode?: "swatches" | "hex";
   /** Swatches per row. Default 5. */
   columns?: number;
   /** Show the hex input. Default true. */
@@ -124,6 +126,7 @@ export function ColorPicker({
   defaultValue = null,
   onValueChange,
   swatches: swatchesProp,
+  mode = "swatches",
   columns = 5,
   allowHex = true,
   allowNative = true,
@@ -140,6 +143,7 @@ export function ColorPicker({
   const { locale, dir } = useCalendarLocale({ locale: localeProp, dir: dirProp });
   const t = strings(locale);
   const swatches = swatchesProp ?? tagSwatches(locale);
+  const showSwatches = mode !== "hex" && swatches.length > 0;
   const [inner, setInner] = useState<string | null>(defaultValue);
   const value = valueProp !== undefined ? valueProp : inner;
   const [open, setOpen] = useState(false);
@@ -206,6 +210,7 @@ export function ColorPicker({
       <PopoverContent align="start" dir={dir} lang={locale} aria-label={t.choose} className="w-64 p-3">
         {/* A fresh Field scope: without it the swatches inherit the outer Field's label and description. */}
         <BaseField.Root render={<div />} className="flex flex-col gap-3">
+          {showSwatches ? (
           <BaseRadioGroup
             aria-label={t.swatches}
             value={match?.value ?? null}
@@ -232,6 +237,7 @@ export function ColorPicker({
               />
             ))}
           </BaseRadioGroup>
+          ) : null}
 
           {allowHex ? (
             <div className="flex flex-col gap-1">

@@ -1,6 +1,6 @@
 import Svg, { Circle, Path } from "react-native-svg";
 
-export type IconName = "chevron-right" | "chevron-down" | "close" | "check" | "eye" | "eye-off" | "navigate" | "alert" | "inbox" | "clock";
+export type IconName = "chevron-right" | "chevron-down" | "close" | "check" | "eye" | "eye-off" | "navigate" | "alert" | "inbox" | "clock" | "bell";
 
 const PATHS: Record<IconName, string[]> = {
   "chevron-right": ["M9 6l6 6-6 6"],
@@ -13,6 +13,7 @@ const PATHS: Record<IconName, string[]> = {
   alert: ["M12 8v5M12 16.5v.5", "M10.3 4.2L2.8 17.5A2 2 0 004.5 20.5h15a2 2 0 001.7-3L13.7 4.2a2 2 0 00-3.4 0z"],
   inbox: ["M3 13l3-8h12l3 8v6H3v-6z", "M3 13h5l1 3h6l1-3h5"],
   clock: ["M12 7v5l3 2"],
+  bell: ["M6 9a6 6 0 1112 0c0 6 2 7.5 2 7.5H4S6 15 6 9z", "M10 20a2 2 0 004 0"],
 };
 
 export interface IconProps {

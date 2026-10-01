@@ -92,3 +92,27 @@ export function countdownTone(secondsLeft: number, total: number): "primary" | "
   if (secondsLeft <= 10) return "danger";
   return secondsLeft <= total / 4 ? "warning" : "primary";
 }
+
+export type SchemePreference = "system" | "light" | "dark";
+
+/** A stored value to a scheme preference; anything unknown (or missing) is "system". */
+export function parseSchemePreference(raw: unknown): SchemePreference {
+  return raw === "light" || raw === "dark" ? raw : "system";
+}
+
+/** The `scheme` prop for NasaqProvider: undefined follows the OS, so "system" maps to undefined. */
+export function schemeFromPreference(preference: SchemePreference): "light" | "dark" | undefined {
+  return preference === "system" ? undefined : preference;
+}
+
+/** What a delivery customer pays, and what the courier collects in cash: order total plus the delivery fee (minor units). */
+export function offerAmountDue(orderTotalMinor: number, feeMinor: number): number {
+  return Math.max(0, Math.round(orderTotalMinor)) + Math.max(0, Math.round(feeMinor));
+}
+
+/** The text in a count badge: "" for zero or less, the number up to `max`, then "99+". Arabic-Indic digits when asked. */
+export function badgeCountLabel(count: number, max = 99, arabicIndic = false): string {
+  if (!(count > 0)) return "";
+  const text = count > max ? `${max}+` : String(Math.floor(count));
+  return arabicIndic ? toArabicIndic(text) : text;
+}

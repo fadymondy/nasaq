@@ -125,3 +125,6 @@ export const Disabled: Story = {
     </div>
   ),
 };
+
+export const HexOnly: Story = { render: () => <ColorPicker aria-label="Brand colour" mode="hex" defaultValue="#2f6df6" /> };
+export const NoSwatches: Story = { render: () => <ColorPicker aria-label="Brand colour" swatches={[]} defaultValue="#2f6df6" /> };
