@@ -116,6 +116,13 @@ const FOUNDATIONS = [
   { id: "color", title: "Colour: surfaces, interaction, roles, status collisions", path: "docs/foundations/COLOR.md" },
   { id: "layout", title: "Layout: whitespace vs cards, borders, density, no filler", path: "docs/foundations/LAYOUT.md" },
   { id: "architecture", title: "Architecture: packages, tokens pipeline, brands, platforms", path: "docs/ARCHITECTURE.md" },
+  { id: "frameworks", title: "Choosing a stack: React, shadcn, Inertia, Vue, HTML, Alpine, Laravel/Filament", path: "docs/frameworks/README.md" },
+  { id: "setup-html", title: "Set up Nasaq with plain HTML and CSS (no framework, CDN or bundler)", path: "docs/frameworks/html.md" },
+  { id: "setup-vue", title: "Set up Nasaq with Vue 3 and Nuxt", path: "docs/frameworks/vue.md" },
+  { id: "setup-alpine", title: "Set up Nasaq with Alpine.js", path: "docs/frameworks/alpine.md" },
+  { id: "setup-laravel", title: "Set up Nasaq with Laravel Blade, Livewire, FilamentPHP and TomatoPHP", path: "docs/frameworks/filament.md" },
+  { id: "setup-inertia", title: "Set up Nasaq with Laravel + Inertia (React or Vue)", path: "docs/frameworks/inertia.md" },
+  { id: "framework-kit", title: "Component kit: each component in React, shadcn, HTML, Alpine, Vue and Blade", path: "docs/frameworks/kit.md" },
   // docs/audits/** is deliberately NOT published: it is an internal audit of the owner's other products
   // (private repo paths, open decisions). The logo rules are summarised in the server instructions.
 ];
@@ -168,7 +175,63 @@ Nasaq is also a shadcn registry (namespace \`@nasaq\`). Add the namespace to \`c
 Install the preset once (\`npx shadcn@latest add @nasaq/nasaq\`), then any component by name
 (\`npx shadcn@latest add @nasaq/button\`). Each item is also a plain URL, e.g. ${URLS.registry.replace("{name}", "button")}.
 Registry index: ${URLS.registryIndex}. Docs and live examples: ${URLS.docs}.
+
+## Not on React?
+
+The core components also exist for Laravel + Inertia, Vue 3, plain HTML, Alpine.js and Laravel Blade / Livewire /
+FilamentPHP / TomatoPHP, with the same look. Call get_setup({ framework }) for that stack's guide and
+get_component({ name, framework }) for its markup.
 `;
+
+/**
+ * Stacks get_setup / get_component accept. React is the main package; shadcn copies the same React source.
+ * Laravel-family names read the Blade snippets; Inertia reads React (the Vue adapter reads Vue).
+ */
+export const FRAMEWORKS = ["react", "shadcn", "inertia", "inertia-vue", "html", "alpine", "vue", "blade", "livewire", "filament", "laravel", "tomatophp"];
+const SNIPPET_STACK = { inertia: "react", "inertia-vue": "vue", livewire: "blade", filament: "blade", laravel: "blade", tomatophp: "blade" };
+/** The kit snippet a framework reads, e.g. "filament" → "blade". */
+export const snippetStack = (framework) => SNIPPET_STACK[framework] ?? framework;
+/** The get_foundation id holding a framework's setup guide. */
+export const setupTopic = (framework) =>
+  ({ react: "setup", shadcn: "setup", inertia: "setup-inertia", "inertia-vue": "setup-inertia", html: "setup-html", vue: "setup-vue", alpine: "setup-alpine" })[
+    framework
+  ] ?? "setup-laravel";
+
+/**
+ * Parses docs/frameworks/kit.md: "## <component>", a summary paragraph, then "### react|html|alpine|vue|blade" sections.
+ * Returns { [component]: { summary, snippets: { react, html, … } } }.
+ */
+export function parseKit(markdown) {
+  const kit = {};
+  const text = (markdown ?? "").replace(/\r\n/g, "\n").replace(/<!--[\s\S]*?-->/g, "");
+  for (const block of text.split(/^## /m).slice(1)) {
+    const [head, ...rest] = block.split("\n");
+    const parts = rest.join("\n").split(/^### /m);
+    const snippets = {};
+    for (const part of parts.slice(1)) {
+      const [stack, ...body] = part.split("\n");
+      snippets[stack.trim().toLowerCase()] = body.join("\n").trim();
+    }
+    kit[head.trim()] = { summary: parts[0].trim(), snippets };
+  }
+  return kit;
+}
+
+/**
+ * The shadcn version of a React snippet: the same JSX, importing from the copied files (@/components/ui/<file>).
+ * `files` maps an export name to the component folder that defines it; unknown names use `name`.
+ */
+export function shadcnSnippet(name, react, files = {}) {
+  if (!react) return null;
+  const body = react.replace(/import\s*\{([^}]+)\}\s*from\s*"@fadymondy\/nasaq\/web";?/g, (_, names) => {
+    const byFile = {};
+    for (const n of names.split(",").map((x) => x.trim()).filter(Boolean)) (byFile[files[n.replace(/^type\s+/, "")] ?? name] ??= []).push(n);
+    return Object.entries(byFile)
+      .map(([file, ns]) => `import { ${ns.join(", ")} } from "@/components/ui/${file}";`)
+      .join("\n");
+  });
+  return ["```bash", `npx shadcn@latest add @nasaq/${name}`, "```", "", body].join("\n");
+}
 
 /** Reads everything. `problems` lists components that break the README spec. */
 export function buildCatalog(root = findRoot()) {
@@ -220,7 +283,9 @@ export function buildCatalog(root = findRoot()) {
   const foundations = FOUNDATIONS.map((f) => ({ id: f.id, title: f.title, content: f.inline ? SETUP : read(join(root, f.path)) })).filter((f) => f.content);
   const tokensCss = read(join(root, "packages", "tokens", "dist", "tokens.css"));
   const tokens = tokensCss ? parseTokens(tokensCss) : [];
-  return { generatedAt: new Date().toISOString(), urls: URLS, components, foundations, tokens, problems };
+  const kit = parseKit(read(join(root, "docs", "frameworks", "kit.md")));
+  for (const name of Object.keys(kit)) if (!components.some((c) => c.name === name)) problems.push({ name, problem: "kit.md section has no matching component" });
+  return { generatedAt: new Date().toISOString(), urls: URLS, components, foundations, tokens, frameworks: { kit }, problems };
 }
 
 /** Live catalogue inside the repo, else the snapshot shipped with the package. `snapshot: true` reads only catalog.json. */

@@ -1,14 +1,24 @@
 # Nasaq framework kit
 
-The components that exist outside React, with the same snippet in each stack. Each `## name` matches the React
+The kit shows each component in React (the main package), shadcn, plain HTML, Alpine, Vue and Blade, with the same snippet in each stack. Each `## name` matches the React
 component of the same name (`get_component("button")`). Setup is covered per stack: [HTML](./html.md), [Vue](./vue.md),
 [Alpine](./alpine.md), [Laravel / Livewire / Filament](./filament.md).
 
-<!-- Format (read by packages/mcp): "## <react component name>", a one-line summary, then "### html", "### alpine",
-     "### vue", "### blade" sections, each holding one fenced block. A missing section means "use the html snippet". -->
+<!-- Format (read by packages/mcp): "## <react component name>", a one-line summary, then "### react", "### html", "### alpine",
+     "### vue", "### blade" sections, each holding one fenced block. A missing section means "use the html snippet".
+     "### shadcn" is generated: the react snippet with imports from @/components/ui/<file> after `npx shadcn@latest add @nasaq/<name>`. -->
 
 ## button
 Actions. Variants primary, secondary (default), ghost, danger, link; sizes sm, md, lg, icon, icon-sm.
+
+### react
+```tsx
+import { Button } from "@fadymondy/nasaq/web";
+
+<Button variant="primary">Save</Button>
+<Button size="icon" aria-label="Archive">…</Button>
+<Button variant="primary" loading>Saving</Button>
+```
 
 ### html
 ```html
@@ -34,6 +44,14 @@ Actions. Variants primary, secondary (default), ghost, danger, link; sizes sm, m
 ## badge
 Status and tags. Variants secondary, outline, brand, accent, success, warning, danger, info; or a tag colour.
 
+### react
+```tsx
+import { Badge } from "@fadymondy/nasaq/web";
+
+<Badge variant="success">Paid</Badge>
+<Badge variant="tag" hue="teal">New</Badge>
+```
+
 ### html
 ```html
 <span class="nq-badge" data-variant="success">Paid</span>
@@ -54,6 +72,20 @@ Status and tags. Variants secondary, outline, brand, accent, success, warning, d
 
 ## card
 A surface with header, content and footer.
+
+### react
+```tsx
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@fadymondy/nasaq/web";
+
+<Card>
+  <CardHeader>
+    <CardTitle as="h3">Profile</CardTitle>
+    <CardDescription>Shown on invoices.</CardDescription>
+  </CardHeader>
+  <CardContent>…</CardContent>
+  <CardFooter><Button variant="primary">Save</Button></CardFooter>
+</Card>
+```
 
 ### html
 ```html
@@ -84,6 +116,15 @@ A surface with header, content and footer.
 ## alert
 An inline message. Tones info, success, warning, danger.
 
+### react
+```tsx
+import { Alert } from "@fadymondy/nasaq/web";
+
+<Alert tone="warning" title="Payment overdue">
+  Invoice #1042 is 5 days late.
+</Alert>
+```
+
 ### html
 ```html
 <div class="nq-alert" data-tone="warning" role="status">
@@ -103,6 +144,21 @@ An inline message. Tones info, success, warning, danger.
 
 ## field
 Label, control, hint and error, wired for screen readers. Covers input, textarea and select.
+
+### react
+```tsx
+import { Field, FieldError, FieldLabel, Input, Textarea } from "@fadymondy/nasaq/web";
+
+<Field invalid>
+  <FieldLabel>Email</FieldLabel>
+  <Input type="email" aria-invalid />
+  <FieldError match>Enter a full email address.</FieldError>
+</Field>
+<Field>
+  <FieldLabel>Notes</FieldLabel>
+  <Textarea rows={3} />
+</Field>
+```
 
 ### html
 ```html
@@ -144,6 +200,15 @@ Label, control, hint and error, wired for screen readers. Covers input, textarea
 ## checkbox
 A checkbox with its label.
 
+### react
+```tsx
+import { Checkbox } from "@fadymondy/nasaq/web";
+
+<label className="flex items-center gap-2">
+  <Checkbox /> Send receipts
+</label>
+```
+
 ### html
 ```html
 <label class="nq-choice"><input type="checkbox" class="nq-checkbox"> <span>Send receipts</span></label>
@@ -161,6 +226,15 @@ A checkbox with its label.
 
 ## switch
 An on/off setting.
+
+### react
+```tsx
+import { Switch } from "@fadymondy/nasaq/web";
+
+<label className="flex items-center gap-2">
+  <Switch /> Weekly digest
+</label>
+```
 
 ### html
 ```html
@@ -180,6 +254,16 @@ An on/off setting.
 ## radio-group
 One choice from a few.
 
+### react
+```tsx
+import { Radio, RadioGroup } from "@fadymondy/nasaq/web";
+
+<RadioGroup defaultValue="team" aria-label="Plan">
+  <label className="flex items-center gap-2"><Radio value="starter" /> Starter</label>
+  <label className="flex items-center gap-2"><Radio value="team" /> Team</label>
+</RadioGroup>
+```
+
 ### html
 ```html
 <div role="radiogroup" aria-label="Plan">
@@ -197,7 +281,26 @@ One choice from a few.
 ```
 
 ## dialog
-A modal on the native dialog element. `variant="sheet"` makes it a side sheet.
+A modal with a title, body and footer actions. In HTML, Vue and Blade `variant="sheet"` makes it a side sheet.
+
+### react
+```tsx
+import {
+  Button, Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger,
+} from "@fadymondy/nasaq/web";
+
+<Dialog>
+  <DialogTrigger render={<Button />}>Invite people</DialogTrigger>
+  <DialogContent>
+    <DialogHeader><DialogTitle>Invite people</DialogTitle></DialogHeader>
+    …
+    <DialogFooter>
+      <DialogClose render={<Button />}>Cancel</DialogClose>
+      <DialogClose render={<Button variant="primary" />}>Send invite</DialogClose>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
 
 ### html
 ```html
@@ -245,6 +348,22 @@ A modal on the native dialog element. `variant="sheet"` makes it a side sheet.
 ## dropdown-menu
 A dropdown of actions.
 
+### react
+```tsx
+import {
+  Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
+} from "@fadymondy/nasaq/web";
+
+<DropdownMenu>
+  <DropdownMenuTrigger render={<Button />}>Actions</DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Edit</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="danger">Delete</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
 ### html
 ```html
 <button class="nq-button" data-nq="menu" aria-controls="row-actions">Actions</button>
@@ -284,6 +403,21 @@ A dropdown of actions.
 
 ## tabs
 Switches between panels. `data-variant="underline"` on the list for the line style.
+
+### react
+```tsx
+import { Tabs, TabsIndicator, TabsList, TabsPanel, TabsTab } from "@fadymondy/nasaq/web";
+
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTab value="overview">Overview</TabsTab>
+    <TabsTab value="items">Items</TabsTab>
+    <TabsIndicator />
+  </TabsList>
+  <TabsPanel value="overview">…</TabsPanel>
+  <TabsPanel value="items">…</TabsPanel>
+</Tabs>
+```
 
 ### html
 ```html
@@ -332,6 +466,22 @@ Switches between panels. `data-variant="underline"` on the list for the line sty
 ## accordion
 Collapsible sections on native details elements.
 
+### react
+```tsx
+import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@fadymondy/nasaq/web";
+
+<Accordion defaultValue={["plans"]}>
+  <AccordionItem value="plans">
+    <AccordionTrigger>Can I change plans later?</AccordionTrigger>
+    <AccordionPanel>Yes, any time.</AccordionPanel>
+  </AccordionItem>
+  <AccordionItem value="sar">
+    <AccordionTrigger>Do you invoice in SAR?</AccordionTrigger>
+    <AccordionPanel>Yes.</AccordionPanel>
+  </AccordionItem>
+</Accordion>
+```
+
 ### html
 ```html
 <div data-nq="accordion">
@@ -349,6 +499,15 @@ Collapsible sections on native details elements.
 ## tooltip
 A short label on hover and focus.
 
+### react
+```tsx
+import { Button, Tooltip } from "@fadymondy/nasaq/web";
+
+<Tooltip content="Archive">
+  <Button size="icon" aria-label="Archive">…</Button>
+</Tooltip>
+```
+
 ### html
 ```html
 <button class="nq-button" data-size="icon" aria-label="Archive" data-nq-tooltip="Archive">…</button>
@@ -361,6 +520,14 @@ A short label on hover and focus.
 
 ## toast
 Brief, polite notifications. Tones success, warning, danger, info.
+
+### react
+```tsx
+import { Button, Toaster, toast } from "@fadymondy/nasaq/web";
+
+<Button onClick={() => toast.success("Saved")}>Save</Button>
+<Toaster /> {/* mount once, near the root */}
+```
 
 ### html
 ```html
@@ -389,6 +556,20 @@ $this->dispatch('nq-toast', title: 'Saved', tone: 'success');
 
 ## table
 A data table with numeric columns.
+
+### react
+```tsx
+import { Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@fadymondy/nasaq/web";
+
+<Table label="Orders">
+  <TableHeader>
+    <TableRow><TableHead>Order</TableHead><TableHead className="text-end">Total</TableHead></TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow><TableCell>#1042</TableCell><TableCell className="text-end tabular-nums"><Price amount={1280} /></TableCell></TableRow>
+  </TableBody>
+</Table>
+```
 
 ### html
 ```html
@@ -420,6 +601,16 @@ A data table with numeric columns.
 ## pagination
 Page links.
 
+### react
+```tsx
+import { useState } from "react";
+import { Pagination } from "@fadymondy/nasaq/web";
+
+const [page, setPage] = useState(2);
+
+<Pagination page={page} pageCount={12} onPageChange={setPage} />
+```
+
 ### html
 ```html
 <nav class="nq-pagination" aria-label="Pages">
@@ -437,6 +628,23 @@ Page links.
 ## breadcrumb
 Where the page sits.
 
+### react
+```tsx
+import {
+  Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
+} from "@fadymondy/nasaq/web";
+
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem><BreadcrumbLink href="/orders">Orders</BreadcrumbLink></BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem><BreadcrumbPage>#1042</BreadcrumbPage></BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
 ### html
 ```html
 <nav aria-label="Breadcrumb"><ol class="nq-breadcrumb">
@@ -451,6 +659,14 @@ Where the page sits.
 
 ## avatar
 A person's photo or initials.
+
+### react
+```tsx
+import { Avatar } from "@fadymondy/nasaq/web";
+
+<Avatar name="Layla Haddad" />
+<Avatar name="Layla Haddad" src="/u/layla.jpg" size="sm" />
+```
 
 ### html
 ```html
@@ -470,6 +686,13 @@ A person's photo or initials.
 ## progress
 Progress toward a goal.
 
+### react
+```tsx
+import { Progress } from "@fadymondy/nasaq/web";
+
+<Progress value={64} label="Goal" />
+```
+
 ### html
 ```html
 <div class="nq-progress" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" aria-label="Goal" style="--value:64%"><span></span></div>
@@ -483,6 +706,13 @@ Progress toward a goal.
 ## spinner
 Busy indicator.
 
+### react
+```tsx
+import { Spinner } from "@fadymondy/nasaq/web";
+
+<Spinner />
+```
+
 ### html
 ```html
 <span class="nq-spinner" aria-hidden="true"></span>
@@ -495,6 +725,18 @@ Busy indicator.
 
 ## states
 Empty and loading states.
+
+### react
+```tsx
+import { Button, EmptyState, Skeleton } from "@fadymondy/nasaq/web";
+
+<EmptyState
+  title="No orders yet"
+  description="Orders show up here once customers check out."
+  actions={<Button variant="primary">Create order</Button>}
+/>
+<Skeleton className="h-4 w-32" />
+```
 
 ### html
 ```html
@@ -524,6 +766,15 @@ Empty and loading states.
 ## price
 Money. USD by default, SAR in Arabic, Latin digits.
 
+### react
+```tsx
+import { Price } from "@fadymondy/nasaq/web";
+
+<Price amount={1280} />
+<Price amount={79} compareAt={99} />
+<Price amount={12} period="seat-month" />
+```
+
 ### html
 ```html
 <span data-nq-money="1280"></span>
@@ -551,6 +802,17 @@ Money. USD by default, SAR in Arabic, Latin digits.
 ## stat-card
 A labelled number.
 
+### react
+```tsx
+import { StatCard } from "@fadymondy/nasaq/web";
+
+<StatCard
+  label="Revenue"
+  value={48250}
+  format={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }}
+/>
+```
+
 ### html
 ```html
 <div class="nq-card"><div class="nq-card-content nq-stat">
@@ -561,6 +823,13 @@ A labelled number.
 
 ## separator
 A divider.
+
+### react
+```tsx
+import { Separator } from "@fadymondy/nasaq/web";
+
+<Separator />
+```
 
 ### html
 ```html

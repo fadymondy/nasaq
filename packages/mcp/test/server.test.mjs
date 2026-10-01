@@ -65,6 +65,46 @@ test("foundations, tokens and setup", async () => {
   assert.match((await call("get_setup")).body, /NasaqProvider/);
 });
 
+test("get_setup per framework", async () => {
+  assert.match((await call("get_setup", { framework: "vue" })).body, /app\.use\(Nasaq\)|use\(Nasaq\)/);
+  assert.match((await call("get_setup", { framework: "filament" })).body, /anonymousComponentPath/);
+  assert.match((await call("get_setup", { framework: "tomatophp" })).body, /FilamentAsset/);
+  assert.match((await call("get_setup", { framework: "inertia" })).body, /createInertiaApp/);
+  assert.match((await call("get_setup", { framework: "alpine" })).body, /Alpine\.plugin\(nasaq\)/);
+  assert.match((await call("get_setup", { framework: "html" })).body, /nq-button/);
+  assert.match((await call("get_setup", { framework: "react" })).body, /NasaqProvider/);
+});
+
+test("list_components per framework lists only the kit", async () => {
+  const vue = JSON.parse((await call("list_components", { framework: "vue" })).body);
+  const names = Object.values(vue.categories).flat().map((c) => c.name);
+  assert.ok(names.includes("dialog") && names.includes("button"));
+  assert.ok(!names.includes("app-shell"));
+  assert.match(vue.next, /framework: "vue"/);
+  const react = JSON.parse((await call("list_components", { framework: "react" })).body);
+  assert.ok(react.count > vue.count);
+});
+
+test("get_component returns the framework's markup", async () => {
+  assert.match((await call("get_component", { name: "dialog", framework: "alpine" })).body, /x-data="nqDialog"/);
+  assert.match((await call("get_component", { name: "dialog", framework: "vue" })).body, /<NqDialog/);
+  assert.match((await call("get_component", { name: "button", framework: "livewire" })).body, /<x-nq\.button/);
+  assert.match((await call("get_component", { name: "DropdownMenu", framework: "html" })).body, /class="nq-menu"/);
+  // Alpine has no own tooltip snippet: it falls back to the plain markup.
+  assert.match((await call("get_component", { name: "tooltip", framework: "alpine" })).body, /data-nq-tooltip/);
+  // Inertia reads the React snippet.
+  assert.match((await call("get_component", { name: "button", framework: "inertia" })).body, /@fadymondy\/nasaq\/web/);
+  const shadcn = (await call("get_component", { name: "dialog", framework: "shadcn" })).body;
+  assert.match(shadcn, /npx shadcn@latest add @nasaq\/dialog/);
+  assert.match(shadcn, /from "@\/components\/ui\/button"/);
+  assert.doesNotMatch(shadcn, /from "@fadymondy\/nasaq\/web"/);
+  const react = (await call("get_component", { name: "dialog" })).body;
+  assert.match(react, /other stacks: shadcn, html, alpine, vue, blade/);
+  const missing = await call("get_component", { name: "app-shell", framework: "vue" });
+  assert.ok(missing.isError);
+  assert.match(missing.body, /React-only/);
+});
+
 test("resources", async () => {
   const { resources } = await client.listResources();
   assert.ok(resources.some((r) => r.uri === "nasaq://components/app-shell"));

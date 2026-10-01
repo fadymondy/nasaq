@@ -104,7 +104,7 @@ const preview: Preview = {
             "Guides",
             ["Theming and brands", "Dark mode", "RTL and Arabic", "Tokens", "Accessibility", "MCP server"],
             "Frameworks",
-            ["Plain HTML", "Vue", "Alpine", "Laravel and Filament", "Component kit"],
+            ["Overview", "Plain HTML", "Vue", "Alpine", "Laravel and Filament", "Laravel and Inertia", "Component kit"],
             "Catalogue",
             ["Components", "Page templates"],
             "Project",

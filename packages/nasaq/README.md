@@ -162,7 +162,7 @@ Not one of them? Theme Nasaq with your own colours, no registration: `<NasaqProv
 
 ESM only, with TypeScript declarations. Heavy libraries (recharts, shiki, tiptap, xyflow, dnd-kit) are regular dependencies and are loaded only when the components that use them are imported; use a bundler that tree-shakes ESM (Next, Vite, esbuild, Rspack).
 
-## Vue, Alpine, plain HTML and Laravel
+## Not on React? Inertia, Vue, Alpine, plain HTML and Laravel
 
 The same look without React. Each stack renders the same `.nq-*` markup, so a screen looks the same in all of them:
 
@@ -184,6 +184,8 @@ createApp(App).use(Nasaq).mount("#app");
 // Laravel: <x-nq.button>, <x-nq.dialog>, … in Blade, Livewire and Filament
 Blade::anonymousComponentPath(base_path("node_modules/@fadymondy/nasaq/dist/blade"));
 ```
+
+Laravel + Inertia uses this React package (or the Vue kit) directly: see the [Inertia guide](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/inertia.md). Which stack gets what: [choosing a stack](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/README.md).
 
 Guides: [plain HTML](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/html.md), [Vue](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/vue.md), [Alpine](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/alpine.md), [Laravel, Livewire, Filament and TomatoPHP](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/filament.md), and the [component kit](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/kit.md) with each component in every stack. The MCP server serves them too: `get_setup({ framework: "vue" })`, `get_component({ name: "dialog", framework: "alpine" })`.
 
