@@ -8,6 +8,7 @@ export interface DocEntry {
 
 export const DOCS: DocEntry[] = [
   { title: "Docs/Introduction", label: "Introduction" },
+  { title: "Docs/Installation/Get started", label: "Get started on your stack" },
   { title: "Docs/Installation/shadcn CLI", label: "Install with the shadcn CLI" },
   { title: "Docs/Installation/npm package", label: "Install from npm" },
   { title: "Docs/Installation/Project setup", label: "Project setup" },
@@ -17,13 +18,6 @@ export const DOCS: DocEntry[] = [
   { title: "Docs/Guides/Tokens", label: "The token system" },
   { title: "Docs/Guides/Accessibility", label: "Accessibility" },
   { title: "Docs/Guides/MCP server", label: "The MCP server" },
-  { title: "Docs/Frameworks/Overview", label: "Choosing a stack" },
-  { title: "Docs/Frameworks/Plain HTML", label: "Plain HTML and CSS" },
-  { title: "Docs/Frameworks/Vue", label: "Vue" },
-  { title: "Docs/Frameworks/Alpine", label: "Alpine.js" },
-  { title: "Docs/Frameworks/Laravel and Filament", label: "Laravel, Livewire and Filament" },
-  { title: "Docs/Frameworks/Laravel and Inertia", label: "Laravel and Inertia (React or Vue)" },
-  { title: "Docs/Frameworks/Component kit", label: "Component kit by framework" },
   { title: "Docs/Catalogue/Components", label: "Component catalogue" },
   { title: "Docs/Catalogue/Page templates", label: "Page templates" },
   { title: "Docs/Project/Contributing", label: "Contributing" },

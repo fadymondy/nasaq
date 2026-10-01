@@ -1,4 +1,5 @@
 import { Controls, Markdown, Primary, Stories, Subtitle, Title, useOf } from "@storybook/addon-docs/blocks";
+import { StackTabs } from "./stack-tabs";
 
 /**
  * Every component ships a README.md manual next to its source. The lab's Docs page renders it, so the
@@ -40,11 +41,12 @@ for (const raw of Object.values(files)) {
   });
 }
 
-/** Drops the H1 (the page title already shows it) and the "Lab" section (you are in it). */
+/** Drops the H1 (the page title already shows it), the Quick start (the stack tabs show it) and the "Lab" section (you are in it). */
 function prepare(body: string) {
   return (
     body
       .replace(/^# .*\r?\n/m, "")
+      .replace(/\n## Quick start\b[\s\S]*?(?=\n## |$)/, "\n")
       .replace(/\n## Lab\b[\s\S]*?(?=\n## |$)/, "\n")
       // Links between manuals point at sibling READMEs; in the lab they go to that component's Docs page.
       .replace(/\]\(\.\.\/([\w-]+)\/README\.md(#[\w-]+)?\)/g, (all, name: string) => {
@@ -53,9 +55,6 @@ function prepare(body: string) {
       })
   );
 }
-
-/** Every component page opens with the command that adds it (a copyable code block). */
-const installBlock = (name: string) => "```bash\nnpx shadcn@latest add @nasaq/" + name + "\n```";
 
 export function DocsPage() {
   const { preparedMeta } = useOf("meta", ["meta"]);
@@ -78,9 +77,9 @@ export function DocsPage() {
       <div dir="ltr" lang="en">
         <Title>{manual.title}</Title>
         <Subtitle>{manual.summary}</Subtitle>
-        {manual.name ? <Markdown>{installBlock(manual.name)}</Markdown> : null}
       </div>
-      <Primary />
+      {/* React, shadcn, Vue, Blade and HTML + Alpine: the same component, its code and a live preview for each stack. */}
+      <StackTabs name={manual.name} body={manual.body} react={<Primary />} />
       <div dir="ltr" lang="en">
         <Markdown>{prepare(manual.body)}</Markdown>
       </div>

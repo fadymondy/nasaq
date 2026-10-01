@@ -100,11 +100,9 @@ const preview: Preview = {
           [
             "Introduction",
             "Installation",
-            ["shadcn CLI", "npm package", "Project setup"],
+            ["Get started", "shadcn CLI", "npm package", "Project setup"],
             "Guides",
             ["Theming and brands", "Dark mode", "RTL and Arabic", "Tokens", "Accessibility", "MCP server"],
-            "Frameworks",
-            ["Overview", "Plain HTML", "Vue", "Alpine", "Laravel and Filament", "Laravel and Inertia", "Component kit"],
             "Catalogue",
             ["Components", "Page templates"],
             "Project",

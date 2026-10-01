@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
+import vue from "@vitejs/plugin-vue";
 import type { StorybookConfig } from "@storybook/react-vite";
 import type { Plugin, PluginOption } from "vite";
 import { catalogue } from "./catalogue-plugin";
@@ -8,9 +9,8 @@ import { catalogue } from "./catalogue-plugin";
 // Served publicly through win-tunnel at nasaq-ui.fadymondy.com.
 // An absolute path: packages/native sits outside apps/lab, so the bare name does not resolve from there in a build.
 const RN_WEB = resolve(import.meta.dirname, "../node_modules/react-native-web");
-// The Frameworks/Vue stories compile their `template` strings in the browser (the same text the docs show),
-// so every "vue" import, @nasaq/vue's included, gets the build that carries the template compiler.
-const VUE_FULL = resolve(import.meta.dirname, "../node_modules/vue/dist/vue.esm-bundler.js");
+// Every component Docs page mounts its Vue example live (stack-tabs.tsx); the examples import the published path.
+const NASAQ_VUE = resolve(import.meta.dirname, "../../../packages/vue/src/index.ts");
 const HOSTS = ["nasaq-ui.fadymondy.com", "localhost", "127.0.0.1"];
 
 const BASE_UI = [
@@ -108,7 +108,7 @@ const config: StorybookConfig = {
   staticDirs,
   core: { disableTelemetry: true, disableWhatsNewNotifications: true, allowedHosts: HOSTS },
   async viteFinal(cfg) {
-    cfg.plugins = [...(await skipDocgen(cfg.plugins, /[\/]packages[\/]native[\/]/)), tailwindcss(), lusailFaces(), catalogue(), noEdgeCache()];
+    cfg.plugins = [...(await skipDocgen(cfg.plugins, /[\/]packages[\/]native[\/]/)), vue(), tailwindcss(), lusailFaces(), catalogue(), noEdgeCache()];
     // Keep Storybook's `hmr.server`: HMR must share the Storybook HTTP server. With it, Vite's client
     // connects to the page's own host, port and protocol, so it works on localhost:6106 and through
     // the tunnel (wss on 443) alike. Replacing `hmr` moved the socket to :24678, which nothing
@@ -119,15 +119,15 @@ const config: StorybookConfig = {
     // Pre-bundle everything up front and force a single React.
     cfg.resolve = {
       ...cfg.resolve,
-      dedupe: ["react", "react-dom"],
+      dedupe: ["react", "react-dom", "vue"],
       // @nasaq/native stories run on react-native-web; react-native-svg picks its DOM build by .web.js.
-      alias: [...toAliasArray(cfg.resolve?.alias), { find: /^react-native$/, replacement: RN_WEB }, { find: /^vue$/, replacement: VUE_FULL }],
+      alias: [...toAliasArray(cfg.resolve?.alias), { find: /^react-native$/, replacement: RN_WEB }, { find: /^@fadymondy\/nasaq\/vue$/, replacement: NASAQ_VUE }],
       extensions: WEB_EXTENSIONS,
     };
     cfg.define = {
       ...cfg.define,
       __DEV__: JSON.stringify(process.env.NODE_ENV !== "production"),
-      // Vue's esm-bundler build reads these compile-time flags.
+      // Vue reads these compile-time flags.
       __VUE_OPTIONS_API__: "true",
       __VUE_PROD_DEVTOOLS__: "false",
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false",
@@ -151,6 +151,9 @@ const config: StorybookConfig = {
         "react-native-web",
         "react-native-svg",
         "alpinejs",
+        "vue",
+        "@nasaq/vue > reka-ui",
+        "@nasaq/vue > lucide-vue-next",
       ],
     };
     return cfg;
