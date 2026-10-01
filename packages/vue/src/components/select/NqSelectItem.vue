@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Check } from "lucide-vue-next";
-import { SelectItem, SelectItemIndicator, SelectItemText } from "reka-ui";
-import type { HTMLAttributes } from "vue";
+import { injectSelectRootContext, SelectItem, SelectItemIndicator, SelectItemText } from "reka-ui";
+import { computed, type HTMLAttributes } from "vue";
 import { cn } from "../../lib/cn";
 
 // One choice. `value` must not be an empty string.
@@ -11,6 +11,12 @@ interface Props {
   class?: HTMLAttributes["class"];
 }
 const props = defineProps<Props>();
+const root = injectSelectRootContext();
+// Base UI marks the chosen item with data-selected (Reka only has data-state="checked").
+const selected = computed(() => {
+  const v = root.modelValue.value;
+  return Array.isArray(v) ? v.includes(props.value) : v === props.value;
+});
 </script>
 
 <template>
@@ -18,6 +24,7 @@ const props = defineProps<Props>();
     data-slot="select-item"
     :value="props.value"
     :disabled="props.disabled"
+    :data-selected="selected ? '' : undefined"
     :class="
       cn(
         'relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none',

@@ -210,7 +210,7 @@ export function normalizeForSearch(text: string) {
   return text
     .toLowerCase()
     .normalize("NFKD")
-    .replace(/[̀-ًͯ-ٰٟـ]/g, "")
+    .replace(/[̀-ًͯ-ٰٟـ]/g, "")
     .replace(/[أإآٱ]/g, "ا")
     .replace(/ى/g, "ي")
     .replace(/ة/g, "ه")

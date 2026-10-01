@@ -60,4 +60,52 @@ describe("NqSelect", () => {
     expect(d.find('[data-slot="select-trigger"]').attributes("data-invalid")).toBe("");
     d.unmount();
   });
+
+  it("marks the chosen item data-selected and the focused one data-highlighted", async () => {
+    const w = mount(Demo, { attachTo: document.body });
+    await flushPromises();
+    await w.find('[data-slot="select-trigger"]').trigger("pointerdown", { button: 0, ctrlKey: false, pointerType: "mouse" });
+    await flushPromises();
+    const items = [...document.querySelectorAll<HTMLElement>('[data-slot="select-item"]')];
+    expect(items[0]!.hasAttribute("data-selected")).toBe(true);
+    expect(items[1]!.hasAttribute("data-selected")).toBe(false);
+    expect(items[0]!.hasAttribute("data-highlighted")).toBe(true);
+    expect(items[1]!.hasAttribute("data-highlighted")).toBe(false);
+    items[1]!.focus();
+    await flushPromises();
+    expect(items[1]!.hasAttribute("data-highlighted")).toBe(true);
+    expect(items[0]!.hasAttribute("data-highlighted")).toBe(false);
+    w.unmount();
+  });
+
+  it("enters with data-starting-style and exits with data-ending-style before unmounting", async () => {
+    const style = document.createElement("style");
+    style.textContent = '[data-slot="select-content"]{transition-duration:150ms}';
+    document.head.append(style);
+    let sawStarting = false;
+    let sawEnding = false;
+    const watcher = new MutationObserver((records) => {
+      for (const r of records) if (r.attributeName === "data-starting-style" && (r.target as Element).hasAttribute("data-starting-style")) sawStarting = true;
+      for (const r of records) if (r.attributeName === "data-ending-style" && (r.target as Element).hasAttribute("data-ending-style")) sawEnding = true;
+    });
+    watcher.observe(document.body, { attributes: true, subtree: true });
+    const w = mount(Demo, { attachTo: document.body });
+    await flushPromises();
+    const trigger = w.find('[data-slot="select-trigger"]');
+    await trigger.trigger("pointerdown", { button: 0, ctrlKey: false, pointerType: "mouse" });
+    await flushPromises();
+    await new Promise((r) => setTimeout(r, 80));
+    const content = document.querySelector<HTMLElement>('[data-slot="select-content"]')!;
+    expect(sawStarting).toBe(true);
+    expect(content.hasAttribute("data-starting-style")).toBe(false);
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    content.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    await flushPromises();
+    watcher.disconnect();
+    expect(sawEnding).toBe(true);
+    await new Promise((r) => setTimeout(r, 300));
+    expect(document.querySelector('[data-slot="select-content"]')).toBeNull();
+    w.unmount();
+    style.remove();
+  });
 });

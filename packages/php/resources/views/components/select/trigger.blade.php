@@ -1,9 +1,9 @@
 {{-- <x-nq::select.trigger> <x-nq::select.value /> </x-nq::select.trigger>
      The Field-style button that opens the list. invalid: marks it invalid (data-invalid + aria-invalid). --}}
 @props(['invalid' => false])
-<button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+<button data-slot="{{ $attributes->get('data-slot', 'select-trigger') }}" x-ref="trigger" x-bind="trigger"
     @if ($invalid) data-invalid aria-invalid="true" @endif
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         'flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground',
         'min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq',
         'focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus',

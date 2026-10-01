@@ -1,0 +1,135 @@
+<div data-slot="provider-switcher" x-data="nqProviderSwitcher(JSON.parse('{\u0022data\u0022:{\u0022active\u0022:\u0022postgres\u0022,\u0022isDefault\u0022:true},\u0022queue\u0022:{\u0022active\u0022:\u0022redis\u0022,\u0022isDefault\u0022:false}}'))" class="overflow-hidden rounded-card border border-border bg-card">
+        <div aria-hidden="true" class="hidden grid-cols-[minmax(0,1fr)_minmax(10rem,14rem)] gap-4 border-b border-border px-4 py-2 text-caption text-muted-foreground sm:grid">
+            <span>Capability</span>
+            <span>Backend</span>
+        </div>
+        <ul class="divide-y divide-border">
+                                            <li data-slot="provider-switcher-row" data-capability="data" :aria-busy="busy === 'data' ? 'true' : undefined"
+                    class="grid gap-2 px-4 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(10rem,14rem)] sm:items-center sm:gap-4">
+                    <div class="flex min-w-0 flex-col gap-0.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-label text-foreground">Data</span>
+                                                            <span x-show="rows['data'].isDefault === true" x-cloak  class="contents"><span data-slot="status" data-tone="neutral" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+</svg>        <span class="truncate"  title="Default" >Default</span>
+</span>
+</span>
+                                <span x-show="rows['data'].isDefault === false" x-cloak  style="display: none"  class="contents"><span data-slot="status" data-tone="info" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-info-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>        <span class="truncate"  title="Overridden" >Overridden</span>
+</span>
+</span>
+                                                    </div>
+                                            </div>
+                    <div data-slot="select" x-data="nqSelect('postgres', false)" x-modelable="value" x-id="['nq-select']" x-model="rows[&#039;data&#039;].active" class="contents">
+    <button data-slot="provider-switcher-select" x-ref="trigger" x-bind="trigger" aria-label="Backend for Data"
+                            :disabled="busy === 'data'"                             class="flex h-control min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] w-full">
+                            <span data-slot="select-value" x-text="JSON.parse('{\u0022postgres\u0022:\u0022postgres\u0022,\u0022sqlite\u0022:\u0022sqlite\u0022}')[value] ?? value" class="min-w-0 flex-1 truncate text-start">postgres</span>
+                            <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+                        </button>
+                        <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('postgres', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('postgres')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><span class="flex flex-col">
+                                        <span>postgres</span>
+                                                                            </span></span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('sqlite', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('sqlite')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><span class="flex flex-col">
+                                        <span>sqlite</span>
+                                                                            </span></span>
+</div>
+    </div>
+</template>
+    </div>
+                </li>
+                                            <li data-slot="provider-switcher-row" data-capability="queue" :aria-busy="busy === 'queue' ? 'true' : undefined"
+                    class="grid gap-2 px-4 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(10rem,14rem)] sm:items-center sm:gap-4">
+                    <div class="flex min-w-0 flex-col gap-0.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-label text-foreground">Queue</span>
+                                                            <span x-show="rows['queue'].isDefault === true" x-cloak  style="display: none"  class="contents"><span data-slot="status" data-tone="neutral" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+</svg>        <span class="truncate"  title="Default" >Default</span>
+</span>
+</span>
+                                <span x-show="rows['queue'].isDefault === false" x-cloak  class="contents"><span data-slot="status" data-tone="info" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-info-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>        <span class="truncate"  title="Overridden" >Overridden</span>
+</span>
+</span>
+                                                    </div>
+                                            </div>
+                    <div data-slot="select" x-data="nqSelect('redis', false)" x-modelable="value" x-id="['nq-select']" x-model="rows[&#039;queue&#039;].active" class="contents">
+    <button data-slot="provider-switcher-select" x-ref="trigger" x-bind="trigger" aria-label="Backend for Queue"
+                            :disabled="busy === 'queue'"                             class="flex h-control min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] w-full">
+                            <span data-slot="select-value" x-text="JSON.parse('{\u0022redis\u0022:\u0022redis\u0022,\u0022nats\u0022:\u0022nats\u0022,\u0022database\u0022:\u0022database\u0022}')[value] ?? value" class="min-w-0 flex-1 truncate text-start">redis</span>
+                            <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+                        </button>
+                        <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('redis', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('redis')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><span class="flex flex-col">
+                                        <span>redis</span>
+                                                                            </span></span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('nats', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('nats')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><span class="flex flex-col">
+                                        <span>nats</span>
+                                                                            </span></span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('database', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('database')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><span class="flex flex-col">
+                                        <span>database</span>
+                                                                            </span></span>
+</div>
+    </div>
+</template>
+    </div>
+                </li>
+                    </ul>
+    </div>

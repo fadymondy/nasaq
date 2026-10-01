@@ -43,6 +43,12 @@ class ComponentsTest extends TestCase
         $this->assertMatchesRegularExpression('/class="[^"]*\bh-12\b/', $html);
     }
 
+    public function test_date_time_accepts_iso_strings_with_an_offset(): void
+    {
+        $this->assertStringContainsString('datetime="2026-03-01T09:30:00+00:00"', Blade::render('<x-nq::numeric.date-time value="2026-03-01T09:30:00Z" />'));
+        $this->assertStringContainsString('data-slot="date-time"', Blade::render('<x-nq::numeric.date-time value="2026-03-01T09:30:00+03:00" time-style="short" />'));
+    }
+
     public function test_arabic_currency_is_sar(): void
     {
         app()->setLocale('ar');

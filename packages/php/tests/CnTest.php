@@ -20,6 +20,13 @@ class CnTest extends Base
         $this->assertSame('h-[calc(var(--nq-control)+8px)] px-5', Cn::merge('h-control', 'h-[calc(var(--nq-control)+8px)] px-5'));
     }
 
+    public function test_ring_width_and_colour_are_separate(): void
+    {
+        $this->assertSame('ring-2 ring-primary/30', Cn::merge('ring-2', 'ring-primary/30'));
+        $this->assertSame('ring-primary ring-4', Cn::merge('ring-2 ring-primary', 'ring-4'));
+        $this->assertSame('ring-offset-2 ring-offset-background', Cn::merge('ring-offset-2', 'ring-offset-background'));
+    }
+
     public function test_unknown_classes_are_kept(): void
     {
         $this->assertSame('data-[open]:x [&_svg]:size-4 custom', Cn::merge('data-[open]:x [&_svg]:size-4', 'custom'));

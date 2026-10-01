@@ -12,6 +12,7 @@ const key = (code: string, target: EventTarget = window) => target.dispatchEvent
 describe("matching", () => {
   it("folds Arabic variants and scores prefix > word > substring > keyword", () => {
     expect(normalizeForSearch("إدارة")).toBe(normalizeForSearch("اداره"));
+    expect(normalizeForSearch("مَرحبا")).toBe("مرحبا"); // letters stay, only marks go
     const c: Command = { id: "a", label: "New issue", keywords: ["add"] };
     expect(scoreCommand(c, "new")).toBe(4);
     expect(scoreCommand(c, "iss")).toBe(3);

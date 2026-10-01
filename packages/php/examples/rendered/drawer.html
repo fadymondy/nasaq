@@ -1,0 +1,28 @@
+<div data-slot="drawer" x-data="nqDrawer(false)" x-modelable="open" x-id="['nq-dialog']" class="contents">
+    <button data-slot="drawer-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Open drawer</button>
+    <template x-teleport="body">
+    <div data-slot="drawer-portal">
+        <div data-slot="drawer-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 motion-reduce:transition-none dark:bg-nq-bg/60"></div>
+        <div data-slot="drawer-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            :data-dragging="dragAttr" :style="shift"
+            class="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[85dvh] w-full max-w-xl flex-col rounded-t-floating border border-b-0 border-border bg-popover text-popover-foreground shadow-floating outline-none transition-[translate,opacity] duration-200 ease-nq data-starting-style:translate-y-8 data-starting-style:opacity-0 data-ending-style:translate-y-8 data-ending-style:opacity-0 data-dragging:transition-none motion-reduce:transition-none">
+                            <div data-slot="drawer-handle" aria-hidden="true" x-bind="handle" class="flex h-6 shrink-0 cursor-grab touch-none items-center justify-center active:cursor-grabbing">
+                    <span class="h-1 w-10 rounded-full bg-nq-line-strong"></span>
+                </div>
+                        <div data-slot="drawer-header" class="flex flex-col gap-1 border-b border-border px-4 pb-3.5 pe-12"><h2 data-slot="drawer-title" :id="$id('nq-dialog', 'title')" class="text-label text-foreground">Edit project</h2>
+            <p data-slot="drawer-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground">Drag the handle down to dismiss.</p></div>
+        <div data-slot="drawer-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4">Content</div>
+        <div data-slot="drawer-footer" class="flex items-center gap-2 border-t border-border px-4 py-3 justify-end"><button data-slot="drawer-close"
+     type="button"                     x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button></div>
+                            <button type="button" data-slot="drawer-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>

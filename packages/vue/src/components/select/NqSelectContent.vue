@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { injectSelectRootContext, SelectContent, SelectPortal, SelectViewport } from "reka-ui";
-import { nextTick, useId, watch, type HTMLAttributes } from "vue";
+import { nextTick, ref, watch, type HTMLAttributes } from "vue";
 import { cn } from "../../lib/cn";
+import { presence } from "../../lib/presence";
 
 // The list. Opens below the trigger and as wide as it; `alignItemWithTrigger` overlays the selected item on it.
+// Enter and exit use Base UI's model (lib/presence): data-starting-style on mount, data-ending-style until the
+// fade ends. While closed Reka keeps the items registered offscreen so the trigger can show the chosen label.
 interface Props {
   side?: "top" | "right" | "bottom" | "left";
   align?: "start" | "center" | "end";
@@ -14,18 +17,31 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), { side: "bottom", align: "start", sideOffset: 4, alignItemWithTrigger: false });
 const root = injectSelectRootContext();
-const id = useId();
+const content = ref<{ $el: HTMLElement } | null>(null);
+// Held true past the close until the exit transition ends, so Reka keeps the list mounted while it fades.
+const keep = ref(root.open.value);
 
-// Base UI's enter state: mounted with data-starting-style, removed two frames later so the fade runs.
 watch(
   () => root.open.value,
   async (open) => {
-    if (!open) return;
-    await nextTick();
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.setAttribute("data-starting-style", "");
-    requestAnimationFrame(() => requestAnimationFrame(() => el.removeAttribute("data-starting-style")));
+    if (open) {
+      keep.value = true;
+      await nextTick();
+      const el = content.value?.$el;
+      if (!el) return;
+      el.removeAttribute("data-ending-style");
+      presence.onBeforeEnter(el);
+      presence.onEnter(el, () => {});
+      return;
+    }
+    const el = content.value?.$el;
+    if (!el) {
+      keep.value = false;
+      return;
+    }
+    presence.onLeave(el, () => {
+      if (!root.open.value) keep.value = false;
+    });
   },
 );
 </script>
@@ -33,7 +49,8 @@ watch(
 <template>
   <SelectPortal>
     <SelectContent
-      :id="id"
+      ref="content"
+      :force-mount="keep"
       data-slot="select-content"
       :position="props.alignItemWithTrigger ? 'item-aligned' : 'popper'"
       :side="props.side"

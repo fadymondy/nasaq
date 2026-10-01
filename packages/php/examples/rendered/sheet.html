@@ -1,0 +1,32 @@
+<div data-slot="sheet" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" class="contents">
+    <button data-slot="sheet-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Edit project</button>
+    <template x-teleport="body">
+    <div data-slot="sheet-portal">
+        <div data-slot="sheet-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 dark:bg-nq-bg/60"></div>
+        <div data-slot="sheet-content" data-side="end" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed z-50 flex flex-col bg-popover text-popover-foreground outline-none shadow-floating transition-[translate,opacity] duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 inset-y-0 end-0 h-dvh w-[min(24rem,100vw)] border-s border-border data-starting-style:translate-x-8 data-ending-style:translate-x-8 rtl:data-starting-style:-translate-x-8 rtl:data-ending-style:-translate-x-8">
+            <div data-slot="sheet-header" class="flex flex-col gap-1 border-b border-border px-4 py-3.5 pe-12"><h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-label text-foreground">Edit project</h2>
+            <p data-slot="sheet-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground">Changes save when you press Save.</p></div>
+        <div data-slot="sheet-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain flex flex-col gap-4 p-4"><div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Name</label>
+                <input data-slot="input" type="text"
+                    value="Nasaq" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+</div></div>
+        <div data-slot="sheet-footer" class="flex items-center gap-2 border-t border-border px-4 py-3 justify-end"><button data-slot="sheet-close"
+     type="button"                     x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+            <button data-slot="sheet-close"
+     type="button"                     x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Save</button></div>
+                            <button type="button" data-slot="sheet-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>

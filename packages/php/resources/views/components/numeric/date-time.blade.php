@@ -6,13 +6,16 @@
 @php
     $locale ??= app()->getLocale();
     $date = $value instanceof \DateTimeInterface ? \Carbon\Carbon::instance($value) : (is_numeric($value) ? \Carbon\Carbon::createFromTimestamp($value) : \Carbon\Carbon::parse($value));
+    // ICU wants an IANA name or GMT±hh:mm; ISO strings parse to "Z" or "+03:00".
+    $tz = $date->getTimezone()->getName();
+    $tz = $tz === 'Z' ? 'UTC' : (preg_match('/^[+-]\d/', $tz) ? 'GMT'.$tz : $tz);
     $style = ['none' => \IntlDateFormatter::NONE, 'short' => \IntlDateFormatter::SHORT, 'medium' => \IntlDateFormatter::MEDIUM, 'long' => \IntlDateFormatter::LONG, 'full' => \IntlDateFormatter::FULL];
     if (class_exists(\IntlDateFormatter::class)) {
         $absolute = (new \IntlDateFormatter(
             str_replace('_', '-', $locale).'@numbers=latn',
             $style[$dateStyle ?? ($timeStyle === null ? 'medium' : 'none')] ?? \IntlDateFormatter::MEDIUM,
             $style[$timeStyle ?? 'none'] ?? \IntlDateFormatter::NONE,
-            $date->getTimezone()->getName(),
+            $tz,
         ))->format($date);
     } else {
         $absolute = $date->format('M j, Y');

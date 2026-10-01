@@ -101,6 +101,13 @@ class Cn
         if (preg_match('/^rounded(-(s|e|t|b|l|r|ss|se|es|ee|tl|tr|bl|br))?(-|$)/', $u, $m)) {
             return [$variants, 'rounded'.(isset($m[2]) && $m[2] !== '' ? '-'.$m[2] : '')];
         }
+        // ring-2 (width) and ring-primary/30 (colour) are separate groups, as are ring-offset-2 and ring-offset-background.
+        if (preg_match('/^(ring|ring-offset)(-(\d+|\[\d[^\]]*\]|inset))?$/', $u, $m)) {
+            return [$variants, $m[1].'-w'];
+        }
+        if (preg_match('/^(ring-offset|ring)-/', $u, $m)) {
+            return [$variants, $m[1].'-color'];
+        }
         if (preg_match('/^flex-(row|col|row-reverse|col-reverse)$/', $u)) {
             return [$variants, 'flex-direction'];
         }

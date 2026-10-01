@@ -25,7 +25,7 @@ export interface Magics {
   $root: HTMLElement;
   $refs: Record<string, HTMLElement>;
   $id(name: string, key?: string | number): string;
-  $watch<T>(key: string, fn: (value: T) => void): void;
+  $watch<T>(key: string, fn: (value: T, oldValue: T) => void): void;
   $nextTick(fn?: () => void): Promise<void>;
   $dispatch(event: string, detail?: unknown): void;
 }
