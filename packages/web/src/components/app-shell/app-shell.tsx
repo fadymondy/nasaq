@@ -794,7 +794,7 @@ type AppNavPlacement = "tabs" | "bar" | "sheet";
 const AppNavContext = createContext<{ placement: AppNavPlacement; onNavigate?: () => void; icons?: boolean }>({ placement: "tabs" });
 
 export interface AppNavProps extends ComponentProps<"nav"> {
-  /** Below md the tabs become a bottom bar. This many items fit on it; the rest open from "More". Default 4. */
+  /** Below md the tabs become a bottom bar. This many items fit on it; the rest open behind the "More" button. Default 4. */
   mobileItems?: number;
   /** Label of the bar's overflow button. Default "More" / "المزيد". */
   moreLabel?: string;
@@ -804,7 +804,7 @@ export interface AppNavProps extends ComponentProps<"nav"> {
 
 /**
  * Section tabs under the header, for apps without a sidebar. Below md they move to a bottom bar
- * (thumb reach): the first `mobileItems` sit on it and the rest open in a drawer from "More".
+ * (thumb reach): the first `mobileItems` sit on it and the rest open in a drawer behind "More".
  */
 export function AppNav({ className, children, mobileItems = 4, moreLabel, icons = "always", "aria-label": ariaLabel, ...props }: AppNavProps) {
   const ar = useOptionalNasaq()?.locale.startsWith("ar") ?? false;
