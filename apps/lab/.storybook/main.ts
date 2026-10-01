@@ -8,6 +8,9 @@ import { catalogue } from "./catalogue-plugin";
 // Served publicly through win-tunnel at nasaq-ui.fadymondy.com.
 // An absolute path: packages/native sits outside apps/lab, so the bare name does not resolve from there in a build.
 const RN_WEB = resolve(import.meta.dirname, "../node_modules/react-native-web");
+// The Frameworks/Vue stories compile their `template` strings in the browser (the same text the docs show),
+// so every "vue" import, @nasaq/vue's included, gets the build that carries the template compiler.
+const VUE_FULL = resolve(import.meta.dirname, "../node_modules/vue/dist/vue.esm-bundler.js");
 const HOSTS = ["nasaq-ui.fadymondy.com", "localhost", "127.0.0.1"];
 
 const BASE_UI = [
@@ -118,10 +121,17 @@ const config: StorybookConfig = {
       ...cfg.resolve,
       dedupe: ["react", "react-dom"],
       // @nasaq/native stories run on react-native-web; react-native-svg picks its DOM build by .web.js.
-      alias: [...toAliasArray(cfg.resolve?.alias), { find: /^react-native$/, replacement: RN_WEB }],
+      alias: [...toAliasArray(cfg.resolve?.alias), { find: /^react-native$/, replacement: RN_WEB }, { find: /^vue$/, replacement: VUE_FULL }],
       extensions: WEB_EXTENSIONS,
     };
-    cfg.define = { ...cfg.define, __DEV__: JSON.stringify(process.env.NODE_ENV !== "production") };
+    cfg.define = {
+      ...cfg.define,
+      __DEV__: JSON.stringify(process.env.NODE_ENV !== "production"),
+      // Vue's esm-bundler build reads these compile-time flags.
+      __VUE_OPTIONS_API__: "true",
+      __VUE_PROD_DEVTOOLS__: "false",
+      __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false",
+    };
     cfg.optimizeDeps = {
       ...cfg.optimizeDeps,
       // The pre-bundler resolves on its own; without these it takes react-native-svg's native build.
@@ -140,6 +150,7 @@ const config: StorybookConfig = {
         "@nasaq/feedback > html-to-image",
         "react-native-web",
         "react-native-svg",
+        "alpinejs",
       ],
     };
     return cfg;

@@ -8,7 +8,7 @@ Working branch `feat/frameworks` in the worktree `E:\Sites\nasaq-wt-frameworks`.
 - [x] `packages/vue`: Vue 3 components rendering the same classes, `NasaqProvider` / `useNasaq` / `useCurrency`
 - [x] `@fadymondy/nasaq` exports: `./html`, `./html.css`, `./alpine`, `./vue`, IIFE/CDN builds, Blade component stubs
 - [x] Tests: core logic plus DOM behaviours (html 31, vue 11)
-- [ ] Lab stories: Frameworks/HTML, Frameworks/Alpine, Frameworks/Vue
+- [x] Lab stories: Frameworks/HTML, Frameworks/Alpine, Frameworks/Vue
 - [ ] Docs: `docs/frameworks/{html,vue,alpine,filament}.md`, package README, component README sections
 - [ ] MCP: `get_setup({ framework })`, `get_component` returns framework snippets, `list_components({ framework })`
 - [ ] Changeset, PR, merge, release, redeploy docs

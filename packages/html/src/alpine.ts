@@ -228,6 +228,12 @@ export default function nasaq(Alpine: AlpineLike): void {
     close() {
       this.open = false;
     },
+    /** Positions the open menu under its trigger and focuses the first item. */
+    nqPlace(el: HTMLElement) {
+      const anchor = el.parentElement?.querySelector<HTMLElement>('[aria-haspopup="menu"]');
+      if (anchor) place(el, anchor);
+      el.querySelector<HTMLElement>('[role="menuitem"]')?.focus();
+    },
     trigger: {
       "aria-haspopup": "menu",
       ":aria-expanded"(this: { open: boolean }) {
@@ -243,18 +249,9 @@ export default function nasaq(Alpine: AlpineLike): void {
     menu: {
       role: "menu",
       class: "nq-menu",
-      "x-show"(this: { open: boolean }) {
-        return this.open;
-      },
-      "x-effect"(this: { open: boolean; $el: HTMLElement; $nextTick: (fn: () => void) => void }) {
-        if (!this.open) return;
-        const el = this.$el;
-        this.$nextTick(() => {
-          const anchor = el.parentElement?.querySelector<HTMLElement>('[aria-haspopup="menu"]');
-          if (anchor) place(el, anchor);
-          el.querySelector<HTMLElement>('[role="menuitem"]')?.focus();
-        });
-      },
+      // String expressions: a function-valued x-show inside an x-bind object did not re-run when `open` changed.
+      "x-show": "open",
+      "x-effect": "open && $nextTick(() => nqPlace($el))",
       "@click.outside"(this: { open: boolean }) {
         this.open = false;
       },
