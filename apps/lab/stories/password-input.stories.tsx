@@ -1,4 +1,4 @@
-import { Button, Field, FieldDescription, FieldLabel, NasaqProvider, PasswordInput, estimatePasswordStrength, useNasaq } from "@nasaq/web";
+import { Button, Field, FieldDescription, FieldLabel, NasaqProvider, PasswordInput, computePasswordRules, computeRuleScore, estimatePasswordStrength, useNasaq } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState, type ReactNode } from "react";
 
@@ -106,3 +106,58 @@ export const ArabicRtl: Story = {
     </ArabicScope>
   ),
 };
+
+/** A policy checklist under the field. Each rule ticks as it is met; the meter follows the rules through `computeRuleScore`. */
+export const WithRules: Story = {
+  name: "With requirements",
+  render: () => {
+    const ar = useAr();
+    const [value, setValue] = useState("");
+    const rules = computePasswordRules(value, { minLength: 10 });
+    return (
+      <div className="max-w-sm">
+        <Field>
+          <FieldLabel>{ar ? "كلمة مرور جديدة" : "New password"}</FieldLabel>
+          <PasswordInput
+            autoComplete="new-password"
+            showStrength
+            score={computeRuleScore(rules)}
+            rules={rules}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+        </Field>
+      </div>
+    );
+  },
+};
+
+/** Your own rules: pass `PasswordRule[]` and a label for each id. */
+export const CustomRules: Story = {
+  name: "Custom requirements",
+  render: () => {
+    const ar = useAr();
+    const [value, setValue] = useState("");
+    const rules = [
+      { id: "length", met: value.length >= 8, min: 8 },
+      { id: "no-name", met: value.length > 0 && !/nasaq/i.test(value) },
+      { id: "no-space", met: value.length > 0 && !/\s/.test(value) },
+    ];
+    return (
+      <div className="max-w-sm">
+        <Field>
+          <FieldLabel>{ar ? "كلمة مرور جديدة" : "New password"}</FieldLabel>
+          <PasswordInput
+            autoComplete="new-password"
+            rules={rules}
+            ruleLabels={ar ? { "no-name": "لا تحتوي على اسم المنتج", "no-space": "بدون مسافات" } : { "no-name": "Does not contain the product name", "no-space": "No spaces" }}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+        </Field>
+      </div>
+    );
+  },
+};
+
+export const RulesArabic: Story = { name: "Requirements (Arabic)", globals: { locale: "ar" }, render: WithRules.render };

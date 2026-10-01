@@ -3,12 +3,12 @@ name: password-input
 title: PasswordInput
 category: forms
 status: beta
-summary: Password field built on InputGroup with a show/hide toggle (aria-pressed) and an optional strength meter driven by a score or a built-in estimator.
-exports: [PasswordInput, PasswordInputProps, estimatePasswordStrength, PasswordScore]
+summary: "Password field built on InputGroup with a show/hide toggle (aria-pressed), an optional strength meter and an optional requirement checklist."
+exports: [PasswordInput, PasswordInputProps, estimatePasswordStrength, PasswordScore, computePasswordRules, computeRuleScore, passwordMeetsPolicy, PasswordRule, PasswordPolicy]
 related: [input-group, field, progress, otp-input]
 story: components-forms-password-input
 base-ui: [input, meter]
-keywords: [password, secret, reveal, show, hide, strength, meter, auth, sign in, sign up]
+keywords: [password, secret, reveal, show, hide, strength, meter, policy, requirements, checklist, auth, sign in, sign up]
 ---
 
 # PasswordInput
@@ -58,9 +58,11 @@ PasswordInput                     data-slot="password-input"
 │  ├─ InputGroupInput             type="password" | "text"
 │  └─ InputGroupAddon (end)
 │     └─ Button                   data-slot="password-input-toggle", aria-pressed
-└─ strength (only with showStrength)   data-slot="password-input-strength", data-score="0".."4"
-   ├─ Meter                       data-slot="meter"
-   └─ level word                  aria-live="polite"
+├─ strength (only with showStrength)   data-slot="password-input-strength", data-score="0".."4"
+│  ├─ Meter                       data-slot="meter"
+│  └─ level word                  aria-live="polite"
+└─ ul (only with rules)           data-slot="password-input-rules", aria-label="Password requirements"
+   └─ li × n                      data-met when met, Check or Minus icon, sr-only "met" / "not met"
 ```
 
 ## API
@@ -78,6 +80,8 @@ PasswordInput                     data-slot="password-input"
 | `score` | `number` | estimator | Strength from 0 to 4. Rounded and clamped. Omit to use `estimatePasswordStrength`. |
 | `strengthLabel` | `string` | "Password strength" / "قوة كلمة المرور" | Name of the meter. |
 | `strengthLevels` | `[string, string, string, string, string]` | English or Arabic words | Words for scores 0 to 4. |
+| `rules` | `boolean \| PasswordPolicy \| readonly PasswordRule[]` | | Show a requirement checklist. `true` is 12 characters plus upper, lower, digit and symbol; a policy changes that; an array is shown as is. |
+| `ruleLabels` | `Record<string, string>` | English or Arabic | Text per rule id. Needed for custom ids. |
 | `className` | `string` | | Class for the outer wrapper. |
 | `inputClassName` | `string` | | Class for the `<input>`. |
 
@@ -93,6 +97,15 @@ Returns 0 to 4. `PasswordScore` is `0 | 1 | 2 | 3 | 4`. It is a hint, not a poli
 | 4 | 12 or more with four classes, or 16 or more with three |
 
 Classes are lower case, upper case, digit, symbol, and uncased letters such as Arabic.
+
+**computePasswordRules(password, policy?): PasswordRule[]**: the `length` rule (with `min`) then one rule per class in
+`policy.require` (default upper, lower, digit, symbol). `PasswordPolicy` is `{ minLength?: number; require?: ("upper" |
+"lower" | "digit" | "symbol")[] }`, minimum 12 by default. `PasswordRule` is `{ id; met: boolean; min?: number }`.
+
+**computeRuleScore(rules): PasswordScore**: 0 until `length` passes, then 1 plus one per other rule met, capped at 4.
+Pass it as `score` so the meter follows your policy instead of the estimate.
+
+**passwordMeetsPolicy(rules): boolean**: true when every rule is met. Use it to block submit.
 
 ## Examples
 
@@ -127,6 +140,23 @@ export function Custom() {
 }
 ```
 
+**A policy checklist**
+
+```tsx
+import { PasswordInput, computePasswordRules, computeRuleScore, passwordMeetsPolicy } from "@fadymondy/nasaq/web";
+import { useState } from "react";
+
+export function Policy() {
+  const [value, setValue] = useState("");
+  const rules = computePasswordRules(value, { minLength: 10 });
+  return (
+    <form onSubmit={(e) => passwordMeetsPolicy(rules) || e.preventDefault()}>
+      <PasswordInput autoComplete="new-password" showStrength score={computeRuleScore(rules)} rules={rules} value={value} onChange={(e) => setValue(e.target.value)} />
+    </form>
+  );
+}
+```
+
 **Arabic**
 
 ```tsx
@@ -154,6 +184,9 @@ export function ArabicPassword() {
 - The meter is `role="meter"` with `aria-valuenow` 0 to 4 and an `aria-label`. The level word sits in an
   `aria-live="polite"` region, so it is spoken when it changes.
 - Caller must localise: `toggleLabel`, `strengthLabel` and `strengthLevels` when not using English or Arabic.
+- The checklist is a labelled list. Each item ends with a visually hidden ", met" or ", not met", so the state is not
+  carried by the tick or the colour alone. It is not live: re-reading on every key would be noisy. Show the unmet rule
+  in the field error on submit.
 - Set `autoComplete` so password managers work: `current-password` to sign in, `new-password` to create one.
 - The input sets `autoCapitalize="none"`, `autoCorrect="off"` and `spellCheck={false}`.
 
