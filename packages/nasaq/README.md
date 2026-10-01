@@ -152,8 +152,40 @@ Not one of them? Theme Nasaq with your own colours, no registration: `<NasaqProv
 | `@fadymondy/nasaq/theme.css` | Tailwind v4 `@theme` mapping |
 | `@fadymondy/nasaq/web/styles.css` | Web base styles |
 | `@fadymondy/nasaq/electron/chrome.css` | Electron drag-region CSS |
+| `@fadymondy/nasaq/html` | Vanilla JS for the plain-HTML layer: `start()`, `toast()`, `formatMoney()`, dialogs, menus, tabs, tooltips |
+| `@fadymondy/nasaq/html.css` | Tokens + `.nq-*` component classes + base, for any stack |
+| `@fadymondy/nasaq/html.unlayered.css` | The same classes without cascade layers or base, for Filament and Tailwind v3 apps |
+| `@fadymondy/nasaq/alpine` | Alpine.js plugin: `nqTabs`, `nqMenu`, `nqDialog`, `$nq`, `x-nq-money` |
+| `@fadymondy/nasaq/vue` | Vue 3 components (`NqButton`, `NqDialog`, …), `NasaqProvider`, `useToast` |
+| `@fadymondy/nasaq/cdn/nasaq.js`, `…/cdn/nasaq-alpine.js` | Script-tag builds (`window.Nasaq`; the Alpine one registers itself) |
+| `@fadymondy/nasaq/blade/*` | Laravel Blade components (`<x-nq.button>`, …) |
 
 ESM only, with TypeScript declarations. Heavy libraries (recharts, shiki, tiptap, xyflow, dnd-kit) are regular dependencies and are loaded only when the components that use them are imported; use a bundler that tree-shakes ESM (Next, Vite, esbuild, Rspack).
+
+## Vue, Alpine, plain HTML and Laravel
+
+The same look without React. Each stack renders the same `.nq-*` markup, so a screen looks the same in all of them:
+
+```html
+<!-- Any page, no build step -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fadymondy/nasaq/dist/html.css">
+<script src="https://cdn.jsdelivr.net/npm/@fadymondy/nasaq/dist/cdn/nasaq-alpine.global.js"></script>
+<button class="nq-button" data-variant="primary">Save</button>
+```
+
+```ts
+// Vue 3
+import Nasaq from "@fadymondy/nasaq/vue";
+import "@fadymondy/nasaq/html.css";
+createApp(App).use(Nasaq).mount("#app");
+```
+
+```php
+// Laravel: <x-nq.button>, <x-nq.dialog>, … in Blade, Livewire and Filament
+Blade::anonymousComponentPath(base_path("node_modules/@fadymondy/nasaq/dist/blade"));
+```
+
+Guides: [plain HTML](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/html.md), [Vue](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/vue.md), [Alpine](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/alpine.md), [Laravel, Livewire, Filament and TomatoPHP](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/filament.md), and the [component kit](https://github.com/fadymondy/nasaq/blob/main/docs/frameworks/kit.md) with each component in every stack. The MCP server serves them too: `get_setup({ framework: "vue" })`, `get_component({ name: "dialog", framework: "alpine" })`.
 
 ## Prefer to own the code? Use the shadcn registry
 

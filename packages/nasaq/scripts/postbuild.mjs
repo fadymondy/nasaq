@@ -31,6 +31,48 @@ writeFileSync(
   ["/* @fadymondy/nasaq/html.css: tokens, base, components */", read("tokens/dist/tokens.css"), read("html/src/base.css"), read("html/src/components.css")].join("\n"),
 );
 
+// html.unlayered.css: tokens + components without @layer and without base, for Tailwind v3 hosts (FilamentPHP v3).
+// Tailwind v3's preflight is unlayered, and unlayered rules beat every layer, so `button { background: transparent }`
+// would win over a layered .nq-button. Unlayered, the class selectors win again; the host keeps its own preflight.
+const unlayer = (source) => {
+  const css = source.replace(/\/\*[\s\S]*?\*\//g, "");
+  let out = "";
+  let i = 0;
+  const closers = [];
+  let depth = 0;
+  while (i < css.length) {
+    const statement = /^@layer\s+[\w-]+(\s*,\s*[\w-]+)*\s*;/.exec(css.slice(i));
+    if (statement) {
+      i += statement[0].length;
+      continue;
+    }
+    const block = /^@layer\s+[\w-]+\s*\{/.exec(css.slice(i));
+    if (block) {
+      closers.push(depth);
+      depth++;
+      i += block[0].length;
+      continue;
+    }
+    const ch = css[i];
+    if (ch === "{") depth++;
+    if (ch === "}") {
+      depth--;
+      if (closers.length && closers[closers.length - 1] === depth) {
+        closers.pop();
+        i++;
+        continue;
+      }
+    }
+    out += ch;
+    i++;
+  }
+  return out;
+};
+writeFileSync(
+  join(root, "dist/html.unlayered.css"),
+  ["/* @fadymondy/nasaq/html.unlayered.css: tokens and components, no layers, no base (Tailwind v3 / Filament v3) */", read("tokens/dist/tokens.css"), unlayer(read("html/src/components.css"))].join("\n"),
+);
+
 // Script-tag builds (no bundler): window.Nasaq, and window.NasaqAlpine which registers itself with Alpine.
 const { build } = await import("esbuild");
 for (const [entry, out] of [["cdn.ts", "nasaq.global.js"], ["cdn-alpine.ts", "nasaq-alpine.global.js"]]) {

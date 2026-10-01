@@ -9,6 +9,6 @@ Working branch `feat/frameworks` in the worktree `E:\Sites\nasaq-wt-frameworks`.
 - [x] `@fadymondy/nasaq` exports: `./html`, `./html.css`, `./alpine`, `./vue`, IIFE/CDN builds, Blade component stubs
 - [x] Tests: core logic plus DOM behaviours (html 31, vue 11)
 - [x] Lab stories: Frameworks/HTML, Frameworks/Alpine, Frameworks/Vue
-- [ ] Docs: `docs/frameworks/{html,vue,alpine,filament}.md`, package README, component README sections
+- [x] Docs: `docs/frameworks/{html,vue,alpine,filament,kit}.md`, package README, lab "Docs/Frameworks" pages. Per-component snippets live in `kit.md` (one source) instead of every README; MCP appends them to `get_component`
 - [ ] MCP: `get_setup({ framework })`, `get_component` returns framework snippets, `list_components({ framework })`
 - [ ] Changeset, PR, merge, release, redeploy docs
