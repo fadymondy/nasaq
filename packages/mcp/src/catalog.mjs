@@ -116,13 +116,13 @@ const FOUNDATIONS = [
   { id: "color", title: "Colour: surfaces, interaction, roles, status collisions", path: "docs/foundations/COLOR.md" },
   { id: "layout", title: "Layout: whitespace vs cards, borders, density, no filler", path: "docs/foundations/LAYOUT.md" },
   { id: "architecture", title: "Architecture: packages, tokens pipeline, brands, platforms", path: "docs/ARCHITECTURE.md" },
-  { id: "frameworks", title: "Choosing a stack: React, shadcn, Inertia, Vue, HTML, Alpine, Laravel/Filament", path: "docs/frameworks/README.md" },
-  { id: "setup-html", title: "Set up Nasaq with plain HTML and CSS (no framework, CDN or bundler)", path: "docs/frameworks/html.md" },
-  { id: "setup-vue", title: "Set up Nasaq with Vue 3 and Nuxt", path: "docs/frameworks/vue.md" },
-  { id: "setup-alpine", title: "Set up Nasaq with Alpine.js", path: "docs/frameworks/alpine.md" },
-  { id: "setup-laravel", title: "Set up Nasaq with Laravel Blade, Livewire, FilamentPHP and TomatoPHP", path: "docs/frameworks/filament.md" },
-  { id: "setup-inertia", title: "Set up Nasaq with Laravel + Inertia (React or Vue)", path: "docs/frameworks/inertia.md" },
-  { id: "framework-kit", title: "Component kit: each component in React, shadcn, HTML, Alpine, Vue and Blade", path: "docs/frameworks/kit.md" },
+  { id: "get-started", title: "Get started: pick your stack (React, shadcn, Inertia, Vue, Laravel, HTML + Alpine)", path: "apps/lab/docs/content/get-started.md" },
+  { id: "setup-react", title: "Set up Nasaq with React (Next.js, Vite, Remix)", path: "apps/lab/docs/content/get-started/react.md" },
+  { id: "setup-shadcn", title: "Set up Nasaq with the shadcn CLI", path: "apps/lab/docs/content/get-started/shadcn.md" },
+  { id: "setup-inertia", title: "Set up Nasaq with Laravel + Inertia (React or Vue)", path: "apps/lab/docs/content/get-started/inertia.md" },
+  { id: "setup-vue", title: "Set up Nasaq with Vue 3 and Nuxt", path: "apps/lab/docs/content/get-started/vue.md" },
+  { id: "setup-laravel", title: "Set up Nasaq with Laravel Blade, Livewire, FilamentPHP and TomatoPHP", path: "apps/lab/docs/content/get-started/laravel.md" },
+  { id: "setup-html", title: "Set up Nasaq with plain HTML and Alpine.js (CDN, no bundler)", path: "apps/lab/docs/content/get-started/html.md" },
   // docs/audits/** is deliberately NOT published: it is an internal audit of the owner's other products
   // (private repo paths, open decisions). The logo rules are summarised in the server instructions.
 ];
@@ -178,59 +178,88 @@ Registry index: ${URLS.registryIndex}. Docs and live examples: ${URLS.docs}.
 
 ## Not on React?
 
-The core components also exist for Laravel + Inertia, Vue 3, plain HTML, Alpine.js and Laravel Blade / Livewire /
-FilamentPHP / TomatoPHP, with the same look. Call get_setup({ framework }) for that stack's guide and
-get_component({ name, framework }) for its markup.
+Components are being ported to Vue 3, Laravel Blade / Livewire / FilamentPHP / TomatoPHP and plain HTML + Alpine.js, with the same
+look. Call get_setup({ framework }) for that stack's guide and get_component({ name, framework }) for a ported component's code.
 `;
 
 /**
  * Stacks get_setup / get_component accept. React is the main package; shadcn copies the same React source.
- * Laravel-family names read the Blade snippets; Inertia reads React (the Vue adapter reads Vue).
+ * Laravel-family names read the Blade examples; Inertia reads React (the Vue adapter reads Vue); nuxt reads Vue.
  */
-export const FRAMEWORKS = ["react", "shadcn", "inertia", "inertia-vue", "html", "alpine", "vue", "blade", "livewire", "filament", "laravel", "tomatophp"];
-const SNIPPET_STACK = { inertia: "react", "inertia-vue": "vue", livewire: "blade", filament: "blade", laravel: "blade", tomatophp: "blade" };
-/** The kit snippet a framework reads, e.g. "filament" → "blade". */
-export const snippetStack = (framework) => SNIPPET_STACK[framework] ?? framework;
+export const FRAMEWORKS = ["react", "shadcn", "inertia", "inertia-vue", "html", "alpine", "vue", "nuxt", "blade", "livewire", "filament", "laravel", "tomatophp"];
+const EXAMPLE_STACK = { inertia: "react", "inertia-vue": "vue", nuxt: "vue", livewire: "blade", filament: "blade", laravel: "blade", tomatophp: "blade", alpine: "html" };
+/** The example stack a framework reads: react, shadcn, vue, blade or html. */
+export const snippetStack = (framework) => EXAMPLE_STACK[framework] ?? framework;
 /** The get_foundation id holding a framework's setup guide. */
 export const setupTopic = (framework) =>
-  ({ react: "setup", shadcn: "setup", inertia: "setup-inertia", "inertia-vue": "setup-inertia", html: "setup-html", vue: "setup-vue", alpine: "setup-alpine" })[
-    framework
-  ] ?? "setup-laravel";
+  ({ react: "setup-react", shadcn: "setup-shadcn", inertia: "setup-inertia", "inertia-vue": "setup-inertia", html: "setup-html", alpine: "setup-html", vue: "setup-vue", nuxt: "setup-vue" })[framework] ??
+  "setup-laravel";
 
-/**
- * Parses docs/frameworks/kit.md: "## <component>", a summary paragraph, then "### react|html|alpine|vue|blade" sections.
- * Returns { [component]: { summary, snippets: { react, html, … } } }.
- */
-export function parseKit(markdown) {
-  const kit = {};
-  const text = (markdown ?? "").replace(/\r\n/g, "\n").replace(/<!--[\s\S]*?-->/g, "");
-  for (const block of text.split(/^## /m).slice(1)) {
-    const [head, ...rest] = block.split("\n");
-    const parts = rest.join("\n").split(/^### /m);
-    const snippets = {};
-    for (const part of parts.slice(1)) {
-      const [stack, ...body] = part.split("\n");
-      snippets[stack.trim().toLowerCase()] = body.join("\n").trim();
-    }
-    kit[head.trim()] = { summary: parts[0].trim(), snippets };
-  }
-  return kit;
+/** The first ```tsx block of a README's "Quick start" section, without fences. */
+export function quickStart(readme) {
+  const sec = section(readme, "Quick start");
+  return sec ? (/```tsx\n([\s\S]*?)\n```/.exec(sec)?.[1] ?? null) : null;
 }
 
-/**
- * The shadcn version of a React snippet: the same JSX, importing from the copied files (@/components/ui/<file>).
- * `files` maps an export name to the component folder that defines it; unknown names use `name`.
- */
-export function shadcnSnippet(name, react, files = {}) {
+/** Export name → "@/components/ui/<file>", from each component's index.ts (`export * from "./file"`) and those files' exports. */
+export function exportFileMap(componentsDir) {
+  const out = {};
+  for (const name of readdirSync(componentsDir)) {
+    const index = read(join(componentsDir, name, "index.ts"));
+    if (index === null) continue;
+    for (const [, file] of index.matchAll(/export \* from "\.\/([\w-]+)"/g)) {
+      const src = read(join(componentsDir, name, `${file}.tsx`)) ?? read(join(componentsDir, name, `${file}.ts`)) ?? "";
+      for (const n of sourceExports(src)) if (!(n in out)) out[n] = `@/components/ui/${file}`;
+    }
+  }
+  return out;
+}
+
+/** The shadcn version of a React snippet: the same JSX importing from the copied files. `files` is exportFileMap(); unknown names use `@/components/ui/<name>`. */
+export function shadcnCode(name, react, files = {}) {
   if (!react) return null;
-  const body = react.replace(/import\s*\{([^}]+)\}\s*from\s*"@fadymondy\/nasaq\/web";?/g, (_, names) => {
+  return react.replace(/import\s*(type\s+)?\{([^}]+)\}\s*from\s*"@fadymondy\/nasaq\/web";?/g, (_, typeOnly, names) => {
     const byFile = {};
-    for (const n of names.split(",").map((x) => x.trim()).filter(Boolean)) (byFile[files[n.replace(/^type\s+/, "")] ?? name] ??= []).push(n);
+    for (const n of names.split(",").map((x) => x.trim()).filter(Boolean))
+      (byFile[files[n.replace(/^type\s+/, "")] ?? `@/components/ui/${name}`] ??= []).push(n);
     return Object.entries(byFile)
-      .map(([file, ns]) => `import { ${ns.join(", ")} } from "@/components/ui/${file}";`)
+      .map(([file, ns]) => `import ${typeOnly ?? ""}{ ${ns.join(", ")} } from "${file}";`)
       .join("\n");
   });
-  return ["```bash", `npx shadcn@latest add @nasaq/${name}`, "```", "", body].join("\n");
+}
+
+/** Globs the ported examples: { [name]: { react?, shadcn?, vue?, blade?, html? } }. Nothing is hard-coded: new files appear on the next build. */
+function buildExamples(root, components, problems) {
+  const files = exportFileMap(join(root, "packages", "web", "src", "components"));
+  const phpDir = join(root, "packages", "php", "examples");
+  const sources = {
+    vue: [join(root, "packages", "vue", "examples"), ".vue"],
+    blade: [phpDir, ".blade.php"],
+    html: [join(phpDir, "rendered"), ".html"],
+  };
+  const names = new Set();
+  for (const [dir, suffix] of Object.values(sources))
+    if (existsSync(dir)) for (const f of readdirSync(dir)) if (f.endsWith(suffix)) names.add(f.slice(0, -suffix.length));
+  for (const c of components) if (quickStart(c.readme)) names.add(c.name);
+  for (const c of components) if (quickStart(c.readme)) names.add(c.name);
+  const examples = {};
+  for (const name of [...names].sort()) {
+    const entry = {};
+    for (const [stack, [dir, suffix]] of Object.entries(sources)) {
+      const code = read(join(dir, name + suffix));
+      if (code !== null) entry[stack] = code.trimEnd();
+    }
+    const c = components.find((x) => x.name === name);
+    if (c) {
+      const react = quickStart(c.readme);
+      if (react) {
+        entry.react = react.trimEnd();
+        entry.shadcn = shadcnCode(name, entry.react, files);
+      }
+    } else problems.push({ name, problem: "vue/blade/html example has no matching web component" });
+    examples[name] = entry;
+  }
+  return examples;
 }
 
 /** Reads everything. `problems` lists components that break the README spec. */
@@ -283,9 +312,8 @@ export function buildCatalog(root = findRoot()) {
   const foundations = FOUNDATIONS.map((f) => ({ id: f.id, title: f.title, content: f.inline ? SETUP : read(join(root, f.path)) })).filter((f) => f.content);
   const tokensCss = read(join(root, "packages", "tokens", "dist", "tokens.css"));
   const tokens = tokensCss ? parseTokens(tokensCss) : [];
-  const kit = parseKit(read(join(root, "docs", "frameworks", "kit.md")));
-  for (const name of Object.keys(kit)) if (!components.some((c) => c.name === name)) problems.push({ name, problem: "kit.md section has no matching component" });
-  return { generatedAt: new Date().toISOString(), urls: URLS, components, foundations, tokens, frameworks: { kit }, problems };
+  const examples = buildExamples(root, components, problems);
+  return { generatedAt: new Date().toISOString(), urls: URLS, components, foundations, tokens, frameworks: { examples }, problems };
 }
 
 /** Live catalogue inside the repo, else the snapshot shipped with the package. `snapshot: true` reads only catalog.json. */

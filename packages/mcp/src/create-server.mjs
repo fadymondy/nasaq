@@ -3,7 +3,7 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { readFileSync } from "node:fs";
 import { z } from "zod";
-import { CATEGORIES, FRAMEWORKS, findComponent, loadCatalog, searchComponents, section, setupTopic, shadcnSnippet, snippetStack } from "./catalog.mjs";
+import { CATEGORIES, FRAMEWORKS, findComponent, loadCatalog, searchComponents, section, setupTopic, snippetStack } from "./catalog.mjs";
 
 export const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 
@@ -30,26 +30,21 @@ const frameworkArg = z
   .optional()
   .describe(
     "Default react (@fadymondy/nasaq/web). shadcn: the same React components copied by the shadcn CLI. inertia / inertia-vue: Laravel + Inertia. " +
-      "html: plain classes, no framework. alpine, vue. blade / livewire / filament / laravel / tomatophp: Laravel Blade components.",
+      "vue / nuxt / inertia-vue: Vue 3. blade / livewire / filament / laravel / tomatophp: Laravel Blade components. html / alpine: rendered HTML run by Alpine.",
   );
 
-/** The kit (component → snippets per stack) from the catalogue; older snapshots have none. */
-const kitOf = (cat) => cat.frameworks?.kit ?? {};
+/** Per-stack examples from the catalogue: { [name]: { react, shadcn, vue, blade, html } }. Older snapshots have none. */
+const examplesOf = (cat) => cat.frameworks?.examples ?? {};
 
-/** Export name → component folder, so shadcn imports point at the file that defines each name. */
-const exportFiles = (cat) => Object.fromEntries(cat.components.flatMap((c) => c.exports.map((e) => [e, c.name])));
+const STACK_LABEL = { react: "React", shadcn: "shadcn", vue: "Vue", blade: "Blade", html: "HTML + Alpine" };
 
-/** One component's snippet for a stack. Alpine, Blade and Vue templates fall back to the plain HTML markup, which both can use. */
-function kitSnippet(cat, name, framework) {
-  const entry = kitOf(cat)[name];
-  if (!entry) return null;
-  const stack = snippetStack(framework);
-  if (stack === "shadcn") return { stack, snippet: shadcnSnippet(name, entry.snippets.react, exportFiles(cat)), summary: entry.summary };
-  if (entry.snippets[stack]) return { stack, snippet: entry.snippets[stack], summary: entry.summary };
-  if (["alpine", "blade", "vue"].includes(stack) && entry.snippets.html)
-    return { stack: "html", snippet: entry.snippets.html, summary: entry.summary, fallback: true };
-  return { stack, snippet: null, summary: entry.summary, available: Object.keys(entry.snippets) };
+/** Names that have an example in a stack. */
+function portedNames(cat, stack) {
+  const ex = examplesOf(cat);
+  return Object.keys(ex).filter((n) => ex[n][stack]);
 }
+
+const fence = (lang, code) => ["```" + lang, code, "```"].join("\n");
 
 export function createNasaqServer(catalog) {
   function notFound(name) {
@@ -66,8 +61,9 @@ export function createNasaqServer(catalog) {
       "then get_component for its manual (props, examples, accessibility, RTL rules). Use only props the manual documents.",
       "Colours come from tokens (bg-nq-*, text-nq-*); never hard-code hex. Never recolour, mirror or redraw a product logo.",
       "Docs: https://nasaq-ui.fadymondy.com. Components can also be added with the shadcn CLI: npx shadcn@latest add @nasaq/<name>.",
-      "Not on React? Pass `framework` (shadcn, inertia, inertia-vue, html, alpine, vue, blade, livewire, filament, laravel, tomatophp) to get_setup,",
-      "list_components and get_component: the core components exist in every stack with the same look, and get_component returns that stack's markup.",
+      "Not on React? Pass `framework` (shadcn, inertia, inertia-vue, vue, nuxt, blade, livewire, filament, laravel, tomatophp, html, alpine) to get_setup,",
+      "list_components and get_component: get_setup returns that stack's guide and get_component a component's code for it.",
+      "Components are ported to Vue, Blade and HTML + Alpine one by one; an unported one says so, and React or shadcn cover it meanwhile.",
     ].join(" "),
   },
 );
@@ -91,9 +87,8 @@ server.registerTool(
     let items = cat.components;
     const stack = framework ? snippetStack(framework) : "react";
     if (stack !== "react" && stack !== "shadcn") {
-      const kit = kitOf(cat);
-      items = items.filter((c) => kit[c.name]);
-      if (!items.length) return fail("This catalogue has no framework kit. Update @fadymondy/nasaq-mcp.");
+      const ported = new Set(portedNames(cat, stack));
+      items = items.filter((c) => ported.has(c.name));
     }
     if (category) items = items.filter((c) => c.category === category);
     if (query) {
@@ -145,35 +140,44 @@ server.registerTool(
     const cat = catalog();
     const c = findComponent(cat, name);
     if (!c) return notFound(name);
-    const stacks = Object.keys(kitOf(cat)[c.name]?.snippets ?? {});
+    const ex = examplesOf(cat)[c.name] ?? {};
+    const stacks = ["vue", "blade", "html"].filter((k) => ex[k]);
     const stack = framework ? snippetStack(framework) : "react";
     if (stack !== "react") {
-      const hit = kitSnippet(cat, c.name, framework);
-      if (stack !== "shadcn" && !hit?.snippet) {
-        const kit = Object.keys(kitOf(cat));
+      const code = ex[stack];
+      if (!code) {
+        const label = STACK_LABEL[stack] ?? framework;
+        const ported = portedNames(cat, stack);
         return fail(
-          `${c.title} is React-only for now, so there is no ${framework} version.` +
-            (kit.length ? ` Components available in ${framework}: ${kit.join(", ")}.` : "") +
-            ` Build it from those parts, or use React for this screen.`,
+          `${c.title} (${c.name}) is not ported yet to ${label}. Use React (get_component({ name: "${c.name}" })) or shadcn (framework: "shadcn") meanwhile. ` +
+            `Components ported to ${label} so far: ${ported.length ? ported.join(", ") : "none"}.`,
         );
       }
-      const out = [
-        `# ${c.title} (${c.name}) for ${framework}`,
-        hit?.summary ?? c.summary,
-        `setup: get_setup({ framework: "${framework}" })`,
-      ];
+      const out = [`# ${c.title} (${c.name}) for ${framework}`, c.summary, `setup: get_setup({ framework: "${framework}" })`];
       if (stack === "shadcn") {
         out.push(
           "",
-          `Install: ${c.registry?.command ?? `npx shadcn@latest add @nasaq/${c.name}`}. The files land in components/ui and import from "@/components/ui/<file>";`,
-          "props and behaviour are the same as the React manual below.",
+          `Install: ${c.registry?.command ?? `npx shadcn@latest add @nasaq/${c.name}`}. The files land in components/ui and import from "@/components/ui/<file>"; props and behaviour match the React manual.`,
+          "",
+          fence("tsx", code),
         );
-        if (hit?.snippet) out.push("", hit.snippet);
-        if (c.readme) out.push("", c.readme.replaceAll('"@fadymondy/nasaq/web"', `"@/components/ui/${c.name}"`));
-        return text(out.join("\n"));
+      } else if (stack === "vue") {
+        out.push("", 'Components are `Nq*` from "@fadymondy/nasaq/vue".', "", fence("vue", code));
+      } else if (stack === "blade") {
+        out.push("", "Blade components `<x-nq::name>` from the Composer package fadymondy/nasaq-php.");
+        if (framework === "livewire")
+          out.push('For Livewire, `wire:model` works on stateful roots (dialog and tabs are x-modelable), e.g. `<x-nq::dialog wire:model="open">`.');
+        out.push("", fence("blade", code));
+        if (ex.html) out.push("", "What it renders (HTML, run by Alpine):", "", fence("html", ex.html));
+      } else {
+        out.push(
+          "",
+          "The HTML Blade renders for this component. It runs with the Alpine plugin (@fadymondy/nasaq/alpine) or the CDN script dist/cdn/nasaq-alpine.js.",
+          "",
+          fence("html", code),
+        );
       }
-      if (hit.fallback) out.push("", `No dedicated ${framework} wrapper: use the plain HTML markup below, which ${framework} renders as is.`);
-      out.push("", hit.snippet, "", `Behaviour, accessibility and content rules are shared with React: get_component({ name: "${c.name}" }).`);
+      out.push("", `Behaviour, accessibility and content rules are shared with React: get_component({ name: "${c.name}" }).`);
       return text(out.join("\n"));
     }
     const want = new Set(include?.length ? include : ["readme"]);
@@ -186,7 +190,7 @@ server.registerTool(
       `install (shadcn registry): ${c.registry?.command ?? `npx shadcn@latest add @nasaq/${c.name}`}  (${c.registry?.url ?? `https://nasaq-ui.fadymondy.com/r/${c.name}.json`})`,
       c.related.length ? `related: ${c.related.join(", ")}` : null,
       c.story ? `lab: ${c.story.url}` : null,
-      stacks.length ? `other stacks: ${["shadcn", ...stacks.filter((s) => s !== "react")].join(", ")}; get_component({ name: "${c.name}", framework })` : null,
+      stacks.length ? `other stacks: shadcn, ${stacks.map((k) => ({ vue: "vue", blade: "blade", html: "html/alpine" })[k]).join(", ")}; get_component({ name: "${c.name}", framework })` : null,
     ].filter(Boolean);
     if (!c.readme) out.push("", "⚠ This component has no README yet; rely on its source.");
     if (c.readme && (all || want.has("readme"))) out.push("", c.readme);
@@ -248,10 +252,10 @@ server.registerTool(
   },
   async ({ framework } = {}) => {
     const { foundations } = catalog();
-    const topic = setupTopic(framework ?? "react");
+    const topic = framework ? setupTopic(framework) : "setup";
     const guide = foundations.find((f) => f.id === topic);
     if (!guide) return fail(`No ${framework} guide in this catalogue. Update @fadymondy/nasaq-mcp.`);
-    const others = foundations.filter((f) => f.id.startsWith("setup-") || f.id === "framework-kit").map((f) => f.id);
+    const others = foundations.filter((f) => f.id.startsWith("setup-") || f.id === "get-started").map((f) => f.id);
     return text(`${guide.content}\n\n---\nOther stacks: get_foundation({ topic }) with ${others.join(", ")}, or get_setup({ framework }).`);
   },
 );
