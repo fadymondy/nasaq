@@ -28,6 +28,13 @@ class NasaqServiceProvider extends ServiceProvider
 
             return (new ComponentAttributeBag(['class' => $merged]))->merge($this->except('class')->getAttributes());
         });
+        // $attributes->flag('disabled') : a boolean attribute is on for `disabled`, `disabled="disabled"` and `:disabled="true"`, off for `:disabled="false"`.
+        ComponentAttributeBag::macro('flag', function (string $name): bool {
+            /** @var ComponentAttributeBag $this */
+            $v = $this->get($name, false);
+
+            return $v === true || $v === '' || $v === $name || $v === 1 || $v === '1' || $v === 'true';
+        });
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'nasaq');
 
         Blade::directive('nasaqStyles', fn () => '<?php echo \Nasaq\Nasaq::styles(); ?>');

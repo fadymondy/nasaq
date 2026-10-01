@@ -7,7 +7,7 @@
 <div role="radiogroup" data-slot="radio-group" aria-orientation="{{ $orientation }}" x-data="nqRadioGroup(@js($defaultValue))" x-modelable="value" x-bind="root"
     @if ($required) aria-required="true" @endif
     @if ($invalid) data-invalid aria-invalid="true" @endif
-    @if ($disabled || $attributes->has('disabled')) aria-disabled="true" data-disabled @endif
+    @if (($disabled ?? false) || $attributes->flag('disabled')) aria-disabled="true" data-disabled @endif
     {{ $attributes->except('disabled')->cn('flex flex-col gap-2') }}>
     {{ $slot }}
     @if ($name)<input type="hidden" name="{{ $name }}" x-bind:value="value ?? ''" value="{{ $defaultValue }}" @if ($defaultValue === null) disabled @endif x-bind:disabled="value == null">@endif

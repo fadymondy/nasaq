@@ -1,0 +1,261 @@
+<div class="flex flex-col gap-10">
+    <div data-slot="pricing-table" x-data="nqPricingTable('month')" x-modelable="period" x-on:nq-plan-select="console.log(&#039;checkout&#039;, $event.detail.planId, $event.detail.period)" class="flex flex-col items-center gap-8">
+            <div data-slot="billing-period-switch" class="flex items-center gap-2">
+    <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022month\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Billing period" x-model="sel" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('month')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs px-3">Monthly</button>
+        <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('year')"             class="inline-flex h-7 shrink-0 items-center justify-center whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs gap-2 px-3">Yearly
+            <span data-slot="badge"     class="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text h-5 px-1.5">Save 20%</span></button>
+</div>
+</div>
+        <div class="w-full">
+        <div data-slot="plan-grid" class="@container">
+    <div class="grid grid-cols-1 gap-x-4 gap-y-7 pt-3 @3xl:auto-cols-fr @3xl:grid-flow-col"><article data-slot="plan-card"   aria-labelledby="nq-plan-free"
+    class="relative flex min-w-0 flex-col gap-5 rounded-card p-6 bg-nq-surface">
+        <div class="flex flex-col gap-1">
+        <h3 id="nq-plan-free" class="text-h3 text-foreground">Free</h3>
+                    <p class="text-body-sm text-muted-foreground">For trying it out.</p>
+            </div>
+    <div class="flex flex-col gap-1">
+        <span data-slot="price" data-free="" class="text-foreground text-body-sm">
+        <span class="text-h2 font-semibold tracking-tight">Free</span>
+    </span>
+            </div>
+            <div class="flex flex-col gap-2">
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="isBlocked(&#039;free&#039;)" x-bind:data-disabled="isBlocked(&#039;free&#039;)" x-bind:aria-busy="pending === &#039;free&#039;" x-on:click="select(&#039;free&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        Get started</button>
+                    </div>
+                <div class="flex flex-col gap-3 border-t border-border pt-5">
+                        <ul class="flex flex-col gap-2.5">
+                                    <li  data-included  class="flex items-start gap-2 text-body-sm text-foreground">
+                                                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-brand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                                <span>
+                                                            3 projects
+                                                                                </span>
+                    </li>
+                                    <li  data-included  class="flex items-start gap-2 text-body-sm text-foreground">
+                                                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-brand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                                <span>
+                                                            Community support
+                                                                                </span>
+                    </li>
+                            </ul>
+        </div>
+    </article>
+                                            <article data-slot="plan-card"  data-highlighted   aria-labelledby="nq-plan-pro"
+    class="relative flex min-w-0 flex-col gap-5 rounded-card p-6 bg-[color-mix(in_oklab,var(--nq-brand)_9%,var(--nq-surface))] shadow-lg ring-2 ring-nq-brand/50">
+            <span data-slot="plan-card-badge"
+            class="absolute -top-3 start-6 inline-flex h-6 items-center rounded-full border px-2.5 text-caption font-medium whitespace-nowrap border-transparent bg-primary text-primary-foreground">Most popular</span>
+        <div class="flex flex-col gap-1">
+        <h3 id="nq-plan-pro" class="text-h3 text-foreground">Pro</h3>
+                    <p class="text-body-sm text-muted-foreground">For growing teams.</p>
+            </div>
+    <div class="flex flex-col gap-1">
+        <span class="contents" x-show="period === 'month'" >            <span data-slot="price" class="inline-flex flex-wrap items-baseline gap-x-1.5 text-foreground text-body-sm">
+        <span>
+            <bdi class="tabular-nums text-h2 font-semibold tracking-tight">$15</bdi>
+            <span class="text-muted-foreground">/mo</span>        </span>
+            </span>
+        </span>        <span class="contents" x-show="period === 'year'"  style="display: none" >            <span data-slot="price" class="inline-flex flex-wrap items-baseline gap-x-1.5 text-foreground text-body-sm">
+        <span>
+            <bdi class="tabular-nums text-h2 font-semibold tracking-tight">$12</bdi>
+            <span class="text-muted-foreground">/mo</span>        </span>
+                    <s class="text-caption text-muted-foreground decoration-muted-foreground/60">
+                <span class="sr-only">was </span>
+                <bdi class="tabular-nums">$15</bdi>
+            </s>
+            </span>
+        </span>
+                    <p class="text-caption text-muted-foreground"><span x-show="period === 'month'" >Billed monthly</span>
+                            <span x-show="period === 'year'"  style="display: none" >Billed $144 yearly</span></p>
+            </div>
+            <div class="flex flex-col gap-2">
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="isBlocked(&#039;pro&#039;)" x-bind:data-disabled="isBlocked(&#039;pro&#039;)" x-bind:aria-busy="pending === &#039;pro&#039;" x-on:click="select(&#039;pro&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        Start 14-day free trial</button>
+                    </div>
+                <div class="flex flex-col gap-3 border-t border-border pt-5">
+                            <p class="text-label text-foreground">Everything in Free, plus</p>
+                        <ul class="flex flex-col gap-2.5">
+                                    <li  data-included  class="flex items-start gap-2 text-body-sm text-foreground">
+                                                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-brand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                                <span>
+                                                            Unlimited projects
+                                                                                </span>
+                    </li>
+                                    <li  data-included  class="flex items-start gap-2 text-body-sm text-foreground">
+                                                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-brand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                                <span>
+                                                            Priority support
+                                                                                </span>
+                    </li>
+                            </ul>
+        </div>
+    </article>
+                                            <article data-slot="plan-card"   aria-labelledby="nq-plan-enterprise"
+    class="relative flex min-w-0 flex-col gap-5 rounded-card p-6 bg-nq-surface">
+        <div class="flex flex-col gap-1">
+        <h3 id="nq-plan-enterprise" class="text-h3 text-foreground">Enterprise</h3>
+            </div>
+    <div class="flex flex-col gap-1">
+        <span class="text-foreground text-h2 font-semibold tracking-tight">Custom</span>
+            </div>
+            <div class="flex flex-col gap-2">
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="isBlocked(&#039;enterprise&#039;)" x-bind:data-disabled="isBlocked(&#039;enterprise&#039;)" x-bind:aria-busy="pending === &#039;enterprise&#039;" x-on:click="select(&#039;enterprise&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        Contact sales</button>
+                    </div>
+                <div class="flex flex-col gap-3 border-t border-border pt-5">
+                        <ul class="flex flex-col gap-2.5">
+                                    <li  data-included  class="flex items-start gap-2 text-body-sm text-foreground">
+                                                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-brand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                                <span>
+                                                            SSO
+                                                                                </span>
+                    </li>
+                                    <li  data-included  class="flex items-start gap-2 text-body-sm text-foreground">
+                                                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-brand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                                <span>
+                                                            SLA
+                                                                                </span>
+                    </li>
+                            </ul>
+        </div>
+    </article></div>
+</div>
+    </div>
+            <p class="text-center text-caption text-muted-foreground">Prices in USD, excluding VAT. Cancel anytime.</p>
+    </div>
+    <div data-slot="plan-comparison"  class="w-full overflow-x-auto">
+    <table class="w-full min-w-[40rem] border-separate border-spacing-0 text-start">
+        <caption class="sr-only">Plan comparison</caption>        <thead class="sticky top-0 z-1 bg-background">
+            <tr>
+                <th scope="col" class="w-[28%] border-b border-border p-3 text-start align-bottom text-label text-muted-foreground">Feature</th>
+                                                        <th scope="col"  class="border-b border-border p-3 text-center align-bottom font-normal">
+                        <div class="flex flex-col items-center gap-2">
+                            <span class="text-h4 text-foreground">Free</span>
+                            <span data-slot="price" data-free="" class="text-foreground text-body-sm">
+        <span class="font-medium">Free</span>
+    </span>
+                                                            </div>
+                    </th>
+                                                        <th scope="col"  data-highlighted="true"  class="border-b border-border p-3 text-center align-bottom font-normal bg-[color-mix(in_oklab,var(--nq-brand)_7%,transparent)]">
+                        <div class="flex flex-col items-center gap-2">
+                            <span class="text-h4 text-foreground">Pro</span>
+                            <span data-slot="price" class="inline-flex flex-wrap items-baseline gap-x-1.5 text-foreground text-body-sm">
+        <span>
+            <bdi class="tabular-nums font-medium">$15</bdi>
+            <span class="text-muted-foreground">/mo</span>        </span>
+            </span>
+                                                            </div>
+                    </th>
+                                                        <th scope="col"  class="border-b border-border p-3 text-center align-bottom font-normal">
+                        <div class="flex flex-col items-center gap-2">
+                            <span class="text-h4 text-foreground">Enterprise</span>
+                            <span class="text-foreground font-medium">Custom</span>
+                                                            </div>
+                    </th>
+                            </tr>
+        </thead>
+        <tbody>
+                                                <tr><th scope="colgroup" colspan="4" class="px-3 pt-6 pb-2 text-start text-label text-foreground">Projects</th></tr>
+                                                    <tr class="hover:bg-nq-hover/50">
+                        <th scope="row" class="border-b border-border px-3 py-2.5 text-start text-body-sm font-normal text-foreground">
+                                                            Projects
+                                                    </th>
+                                                                                <td class="border-b border-border px-3 py-2.5 text-center">
+                                                                    <span class="text-body-sm text-foreground">3</span>
+                                                            </td>
+                                                                                <td class="border-b border-border px-3 py-2.5 text-center bg-[color-mix(in_oklab,var(--nq-brand)_7%,transparent)]">
+                                                                    <span class="text-body-sm text-foreground">Unlimited</span>
+                                                            </td>
+                                                                                <td class="border-b border-border px-3 py-2.5 text-center">
+                                                                    <span class="text-body-sm text-foreground">Unlimited</span>
+                                                            </td>
+                                            </tr>
+                                    <tr class="hover:bg-nq-hover/50">
+                        <th scope="row" class="border-b border-border px-3 py-2.5 text-start text-body-sm font-normal text-foreground">
+                                                            SSO
+                                                    </th>
+                                                                                <td class="border-b border-border px-3 py-2.5 text-center">
+                                                                    <svg aria-hidden="true" class="mx-auto size-4 text-muted-foreground/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>                                    <span class="sr-only">Not included</span>
+                                                            </td>
+                                                                                <td class="border-b border-border px-3 py-2.5 text-center bg-[color-mix(in_oklab,var(--nq-brand)_7%,transparent)]">
+                                                                    <svg aria-hidden="true" class="mx-auto size-4 text-muted-foreground/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>                                    <span class="sr-only">Not included</span>
+                                                            </td>
+                                                                                <td class="border-b border-border px-3 py-2.5 text-center">
+                                                                    <svg aria-hidden="true" class="mx-auto size-4 text-nq-brand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span class="sr-only">Included</span>
+                                                            </td>
+                                            </tr>
+                                    </tbody>
+    </table>
+</div>
+    <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('pro')" x-modelable="value" x-bind="root"
+                data-slot="plan-picker" class="flex flex-col gap-2 max-w-md">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('free')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         x-bind:disabled="false" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('free')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex flex-wrap items-center gap-2">
+                Free
+                            </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">For trying it out.</span>    </span>
+    <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground"><span data-slot="price" data-free="" class="text-foreground text-body-sm">
+        <span class="font-medium">Free</span>
+    </span>
+        </span></button>
+                    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('pro')"
+    aria-checked="true" tabindex="0"
+     data-checked         x-bind:disabled="false" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('pro')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex flex-wrap items-center gap-2">
+                Pro
+                                    <span data-slot="badge"     class="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border text-caption font-medium [&_svg]:size-3 border-nq-brand/40 bg-[color-mix(in_oklab,var(--nq-brand)_14%,transparent)] text-foreground h-5 px-1.5">Most popular</span>
+                            </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">For growing teams.</span>    </span>
+    <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground"><span data-slot="price" class="inline-flex flex-wrap items-baseline gap-x-1.5 text-foreground text-body-sm">
+        <span>
+            <bdi class="tabular-nums font-medium">$15</bdi>
+            <span class="text-muted-foreground">/mo</span>        </span>
+            </span>
+        </span></button>
+                    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('enterprise')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         x-bind:disabled="false" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('enterprise')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex flex-wrap items-center gap-2">
+                Enterprise
+                            </span></span>
+            </span>
+    <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground"><span class="text-foreground font-medium">Custom</span>
+        </span></button>
+    </div>
+</div>

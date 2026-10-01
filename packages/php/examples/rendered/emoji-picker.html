@@ -1,0 +1,50 @@
+<div x-data="{ text: '' }" class="flex items-center gap-2">
+    <input x-model="text" aria-label="Message" class="h-control rounded-control border border-input bg-card px-3 text-body-sm" />
+    <div data-slot="popover" x-data="nqPopover(false)" x-modelable="open" x-id="['nq-popover']" class="contents">
+    <button data-slot="popover-trigger"
+     type="button"                     x-bind:data-popup-open="open ? &#039;&#039; : undefined" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" :aria-expanded="open" aria-label="Choose emoji" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+  <line x1="9" x2="9.01" y1="9" y2="9"/>
+  <line x1="15" x2="15.01" y1="9" y2="9"/>
+</svg></button>
+    <template x-teleport="body">
+    <div data-slot="popover-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+        class="z-50 max-w-[var(--available-width)] rounded-floating border border-border bg-popover text-body-sm text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 w-auto overflow-hidden p-0"><div data-slot="emoji-picker" x-data="nqEmojiPicker('none', 8)" x-on:keydown="onKey($event)"
+    x-on:emoji-select="close(); text += $event.detail.emoji" class="isolate flex h-80 w-72 flex-col bg-popover text-popover-foreground">
+    <div class="flex items-center gap-2 border-b border-border p-2">
+        <div class="relative min-w-0 flex-1">
+            <svg data-slot="icon" aria-hidden="true" class="pointer-events-none absolute inset-y-0 start-2.5 my-auto size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>            <input x-model="query" type="search" data-slot="emoji-picker-search" aria-label="Search emoji" placeholder="Search emoji"
+                class="h-control-sm w-full min-w-0 rounded-control border border-input bg-card ps-8 pe-2 text-body-sm text-foreground outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus">
+        </div>
+        <button type="button" data-slot="emoji-picker-skin-tone" aria-label="Change skin tone" x-on:click="cycleTone()" x-text="toneGlyph"
+            class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-body outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">✋</button>
+    </div>
+    <div data-slot="emoji-picker-viewport" class="relative flex-1 overflow-y-auto outline-none">
+        <div x-show="! data" role="status" class="absolute inset-0 flex items-center justify-center text-body-sm text-muted-foreground">Loading emoji…</div>
+        <div x-show="data &amp;&amp; ! count" style="display:none" role="status" class="absolute inset-0 flex items-center justify-center px-4 text-center text-body-sm text-muted-foreground"
+            x-text="`No emoji found for “:q”.`.replace(`:q`, query)"></div>
+        <div x-show="data &amp;&amp; count > 0" style="display:none" role="grid" class="select-none pb-1">
+            <template x-for="s in sections" x-bind:key="s.index">
+                <section>
+                    <div data-slot="emoji-picker-category" class="sticky top-0 bg-popover px-3 py-1.5 text-start text-caption font-medium text-muted-foreground" x-text="s.label"></div>
+                    <div data-slot="emoji-picker-row" class="grid scroll-my-1 px-1.5" style="grid-template-columns: repeat(8, minmax(0, 1fr)); justify-items: center">
+                        <template x-for="item in s.items" x-bind:key="item.emoji.emoji">
+                            <button type="button" data-slot="emoji-picker-emoji" role="gridcell"
+                                x-bind:aria-label="item.emoji.label" x-bind:data-index="item.flat" x-bind:data-active="item.flat === active ? '' : null"
+                                x-bind:tabindex="item.flat === active ? 0 : -1" x-on:click="pick(item.emoji)" x-on:focus="active = item.flat" x-text="glyph(item.emoji)"
+                                class="flex size-8 items-center justify-center rounded-control text-[20px] leading-none outline-none hover:bg-nq-hover data-[active]:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus"></button>
+                        </template>
+                    </div>
+                </section>
+            </template>
+        </div>
+    </div>
+</div></div>
+</template>
+</div>
+</div>

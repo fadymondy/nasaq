@@ -1,0 +1,55 @@
+<div class="flex flex-col items-start gap-6">
+    <nav data-slot="pagination" aria-label="Pagination"
+    x-data="nqPagination(3, 24, 1, 1)" x-modelable="page"
+    class="w-fit max-w-full">
+    <ul class="flex flex-wrap items-center gap-1">
+        <li>
+            <button data-slot="button"
+     type="button"                     aria-label="Previous" x-on:click="go(page - 1)" x-bind:disabled="page &lt;= 1" x-bind:data-disabled="page &lt;= 1 ? &#039;&#039; : undefined" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg></button>
+        </li>
+                                    <li data-ssr><button type="button" aria-label="Page 1"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 tabular-nums border-transparent">1</button></li>
+                                                <li data-ssr><button type="button" aria-label="Page 2"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 tabular-nums border-transparent">2</button></li>
+                                                <li data-ssr><button type="button" aria-label="Page 3"  aria-current="page"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 tabular-nums border-primary bg-nq-selected">3</button></li>
+                                                <li data-ssr><button type="button" aria-label="Page 4"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 tabular-nums border-transparent">4</button></li>
+                                                <li data-ssr><button type="button" aria-label="Page 5"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 tabular-nums border-transparent">5</button></li>
+                                                <li data-ssr data-slot="pagination-ellipsis" class="flex size-control-sm items-center justify-center text-muted-foreground"><span aria-hidden="true">…</span><span class="sr-only">More pages</span></li>
+                                                <li data-ssr><button type="button" aria-label="Page 24"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 tabular-nums border-transparent">24</button></li>
+                            <template x-for="item in items()" :key="item">
+            <li :data-slot="typeof item === 'number' ? undefined : 'pagination-ellipsis'" :class="typeof item === 'number' ? '' : 'flex size-control-sm items-center justify-center text-muted-foreground'">
+                <button type="button" x-show="typeof item === 'number'" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 tabular-nums" :class="item === page ? 'border-primary bg-nq-selected' : 'border-transparent'"
+                    :aria-label="pageLabel(item)" :aria-current="item === page ? 'page' : undefined" x-text="num(item)" x-on:click="go(item)"></button>
+                <span x-show="typeof item !== 'number'" class="contents"><span aria-hidden="true">…</span><span class="sr-only">More pages</span></span>
+            </li>
+        </template>
+        <li>
+            <button data-slot="button"
+     type="button"                     aria-label="Next" x-on:click="go(page + 1)" x-bind:disabled="page &gt;= pageCount" x-bind:data-disabled="page &gt;= pageCount ? &#039;&#039; : undefined" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></button>
+        </li>
+    </ul>
+</nav>
+    <nav data-slot="cursor-pager" aria-label="Pagination" class="flex w-full items-center justify-between gap-3">
+    <p class="text-body-sm text-muted-foreground tabular-nums"><bdi>Showing 21–40 of 95</bdi></p>
+    <div class="flex items-center gap-2">
+        <button data-slot="cursor-pager-previous"
+     type="button"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg>            Previous</button>
+        <button data-slot="cursor-pager-next"
+     type="button"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Next
+            <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></button>
+    </div>
+</nav>
+    <button data-slot="load-more"
+     type="button"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Load more</button>
+</div>

@@ -47,6 +47,21 @@ describe("NqToggleGroup", () => {
     multi.unmount();
   });
 
+  it("v-model is the source of truth: the parent can clear the group", async () => {
+    const w = mount(
+      defineComponent({
+        components: { NqToggle, NqToggleGroup },
+        data: () => ({ v: ["list"] as string[] }),
+        template: `<NqToggleGroup v-model="v" aria-label="View"><NqToggle value="list">List</NqToggle><NqToggle value="grid">Grid</NqToggle></NqToggleGroup>`,
+      }),
+    );
+    const pressed = () => w.findAll("button").map((b) => b.attributes("aria-pressed"));
+    expect(pressed()).toEqual(["true", "false"]);
+    (w.vm as unknown as { v: string[] }).v = [];
+    await flushPromises();
+    expect(pressed()).toEqual(["false", "false"]);
+  });
+
   it("a standalone toggle looks like an outline button and toggles", async () => {
     const w = mount(NqToggle, { slots: { default: "Bold" } });
     expect(btn(w).classes()).toContain("rounded-control");

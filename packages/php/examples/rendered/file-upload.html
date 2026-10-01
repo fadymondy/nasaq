@@ -1,0 +1,118 @@
+<div class="w-96" x-data="{
+    send(item, controls) {
+        let progress = 0;
+        controls.update(item.id, { status: 'uploading', progress });
+        const timer = setInterval(() => {
+            progress = Math.min(100, progress + 20);
+            controls.update(item.id, progress < 100 ? { status: 'uploading', progress } : { status: 'done', progress: 100 });
+            if (progress >= 100) clearInterval(timer);
+        }, 400);
+    },
+}">
+    <div data-slot="file-upload" x-data="nqFileUpload(JSON.parse(&#039;{\u0022accept\u0022:\u0022image\\\/*,.pdf\u0022,\u0022maxSize\u0022:5242880,\u0022maxFiles\u0022:4}&#039;))" x-modelable="items" x-id="['nq-upload']"
+    @files="$event.detail.added.forEach((f) =&gt; send(f, $event.detail.controls))" @retry="send($event.detail.item, $event.detail.controls)" class="flex flex-col gap-3">
+    <div data-slot="dropzone" x-bind="zone" :aria-describedby="limitsText() ? $id('nq-upload', 'hint') : undefined"
+    class="flex min-h-32 cursor-pointer flex-col items-center justify-center gap-2 rounded-floating border border-dashed border-input bg-card p-6 text-center transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-dragging:border-nq-focus data-dragging:bg-nq-selected data-invalid:border-nq-danger data-disabled:cursor-not-allowed data-disabled:opacity-50 data-disabled:hover:bg-card">
+    <span aria-hidden="true" class="flex [&_svg]:size-6 text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v12"/>
+  <path d="m17 8-5-5-5 5"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+</svg></span>
+    <span class="text-label text-foreground">
+                    <span x-text="dragging ? $nq.t('Drop to add', 'أفلت لإضافة الملفات') : $nq.t('Drag files here or click to browse', 'اسحب الملفات إلى هنا أو انقر للاستعراض')">Drag files here or click to browse</span>
+            </span>
+    <span x-show="limitsText()" x-cloak style="display: none" :id="$id('nq-upload', 'hint')" dir="auto" class="text-caption text-muted-foreground" x-text="limitsText()"></span>
+    <input type="file" class="sr-only" tabindex="-1" x-ref="input" x-bind="picker" :accept="accept" :multiple="multiple" :disabled="disabled" >
+</div>
+    <ul x-show="rejections.length" x-cloak style="display: none" data-slot="file-upload-errors" role="alert" class="flex flex-col gap-1 text-caption text-nq-danger-text">
+        <template x-for="(r, i) in rejections" :key="r.file.name + '-' + i"><li x-text="r.message"></li></template>
+    </ul>
+    <ul x-show="items.length" x-cloak style="display: none" data-slot="file-list" aria-label="Files" class="flex flex-col gap-2">
+        <template x-for="item in items" :key="item.id">
+            <li data-slot="file-list-item" :data-status="item.status" class="flex flex-col gap-2 rounded-control border border-border bg-card p-3 data-[status=error]:border-nq-danger">
+                <div class="flex items-center gap-3">
+                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control bg-nq-surface-soft text-muted-foreground">
+                        <span x-show="item.status === 'error'" aria-hidden="true" class="flex text-nq-danger-text [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg></span>
+                        <span x-show="item.status !== 'error' && item.file.type.startsWith('image/')" aria-hidden="true" class="flex [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+  <circle cx="9" cy="9" r="2"/>
+  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+</svg></span>
+                        <span x-show="item.status !== 'error' && !item.file.type.startsWith('image/')" aria-hidden="true" class="flex [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+</svg></span>
+                    </span>
+                    <div class="flex min-w-0 flex-1 flex-col">
+                        <bdi data-slot="file-list-name" class="truncate text-label text-foreground" :title="item.file.name" x-text="item.file.name"></bdi>
+                        <span class="text-caption text-muted-foreground tabular-nums" x-text="fileSize(item.file.size) + ' · ' + statusText(item)"></span>
+                    </div>
+                    <button data-slot="button"
+     type="button"                     x-show="item.status === &#039;error&#039;" :aria-label="$nq.t(&#039;Retry &#039; + item.file.name, &#039;إعادة محاولة &#039; + item.file.name)" x-on:click="retry(item)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Remove &#039; + item.file.name, &#039;إزالة &#039; + item.file.name)" x-on:click="removeItem(item)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                </div>
+                <div x-show="item.status === 'uploading' || item.status === 'pending'" data-slot="progress" data-tone="default" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                    :aria-valuenow="item.status === 'pending' ? 0 : (item.progress ?? undefined)" :aria-valuetext="item.progress === null && item.status !== 'pending' ? 'indeterminate progress' : percent(item) + '%'"
+                    :aria-label="item.file.name + ' · ' + statusText(item)" :data-indeterminate="item.progress === null && item.status !== 'pending' ? '' : undefined"
+                    class="flex w-full flex-col gap-1.5">
+                    <div data-slot="progress-track" class="relative block h-1 w-full overflow-hidden rounded-full bg-nq-surface-soft">
+                        <div data-slot="progress-indicator" :style="item.progress === null && item.status !== 'pending' ? 'inset-inline-start:0' : 'inset-inline-start:0;width:' + percent(item) + '%'"
+                            :class="item.progress === null && item.status !== 'pending' ? 'w-full motion-safe:animate-pulse' : ''"
+                            class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none"></div>
+                    </div>
+                </div>
+                <p x-show="item.status === 'error' && item.error" x-text="item.error" class="text-caption text-nq-danger-text"></p>
+            </li>
+        </template>
+    </ul>
+</div>
+</div>
+<div class="mt-6">
+    <div data-slot="image-upload" x-data="nqImageUpload(JSON.parse(&#039;{\u0022accept\u0022:\u0022image\\\/*\u0022}&#039;))" x-modelable="file" x-id="['nq-upload']"
+    class="flex flex-col items-start gap-2">
+    <div x-show="preview()" x-cloak style="display: none" data-slot="image-upload-preview" class="relative size-32 overflow-hidden rounded-floating border border-border bg-nq-surface-soft">
+        <img :src="preview()" alt="Profile picture" class="size-full object-cover">
+        <div x-show="showProgress()" x-cloak style="display: none" class="absolute inset-x-0 bottom-0 bg-card/80 p-2">
+            <div data-slot="progress" data-tone="default" role="progressbar" aria-valuemin="0" aria-valuemax="100" :aria-valuenow="progress ?? undefined"
+                :aria-label="file ? file.name : 'Profile picture'" class="flex w-full flex-col gap-1.5">
+                <div data-slot="progress-track" class="relative block h-1 w-full overflow-hidden rounded-full bg-nq-surface-soft">
+                    <div data-slot="progress-indicator" :style="'inset-inline-start:0;width:' + (progress ?? 0) + '%'" class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none"></div>
+                </div>
+            </div>
+        </div>
+        <button data-slot="button"
+     type="button"                     :disabled="disabled" aria-label="Remove image" x-on:click="removeImage()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover size-control-sm p-0 absolute end-1 top-1">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+    </div>
+    <div data-slot="dropzone" x-bind="zone" :aria-describedby="limitsText() ? $id('nq-upload', 'hint') : undefined"
+    :class="preview() ? &#039;w-32&#039; : &#039;size-32&#039;" class="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-floating border border-dashed border-input bg-card text-center transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-dragging:border-nq-focus data-dragging:bg-nq-selected data-invalid:border-nq-danger data-disabled:cursor-not-allowed data-disabled:opacity-50 data-disabled:hover:bg-card min-h-0 p-3">
+    <span aria-hidden="true" class="flex [&_svg]:size-6 text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v12"/>
+  <path d="m17 8-5-5-5 5"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+</svg></span>
+    <span class="text-label text-foreground">
+                    <span x-text="preview() ? $nq.t('Replace image', 'استبدال الصورة') : $nq.t('Add an image', 'أضف صورة')">Add an image</span>
+            </span>
+    <span x-show="limitsText()" x-cloak style="display: none" :id="$id('nq-upload', 'hint')" dir="auto" class="text-caption text-muted-foreground" x-text="limitsText()"></span>
+    <input type="file" class="sr-only" tabindex="-1" x-ref="input" x-bind="picker" :accept="accept" :multiple="multiple" :disabled="disabled" >
+</div>
+    <p x-show="rejections.length" x-cloak style="display: none" role="alert" class="text-caption text-nq-danger-text" x-text="rejections[0] ? rejections[0].message : ''"></p>
+</div>
+</div>

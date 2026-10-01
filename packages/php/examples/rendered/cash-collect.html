@@ -1,0 +1,68 @@
+<div class="flex max-w-sm flex-col gap-2">
+    <section data-slot="cash-collect" x-bind:data-state="state" data-state="unpaid" aria-labelledby="nq-cash-6e203bb8-title" x-data="nqCashCollect(JSON.parse('{\u0022due\u0022:10000,\u0022currency\u0022:\u0022USD\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022change\u0022:\u0022Change to return\u0022,\u0022shortBy\u0022:\u0022Still owed\u0022,\u0022exact\u0022:\u0022Exact amount\u0022,\u0022unpaid\u0022:\u0022Nothing received yet\u0022}}'))" x-modelable="collected"
+    class="flex flex-col gap-4 rounded-card border border-border bg-card p-4 sm:p-5">
+    <h2 id="nq-cash-6e203bb8-title" class="text-h3 text-foreground">Cash on delivery</h2>
+    <dl data-slot="cash-breakdown" class="flex flex-col gap-2">
+                    <div class="flex items-baseline justify-between gap-3">
+                <dt class="text-body-sm text-muted-foreground">Order total</dt>
+                <dd class="tabular-nums text-body-sm text-foreground"><bdi>$85.00</bdi></dd>
+            </div>
+                    <div class="flex items-baseline justify-between gap-3">
+                <dt class="text-body-sm text-muted-foreground">Delivery fee</dt>
+                <dd class="tabular-nums text-body-sm text-foreground"><bdi>$15.00</bdi></dd>
+            </div>
+                <div class="border-t border-border pt-2">
+            <div class="flex items-baseline justify-between gap-3">
+                <dt class="text-label text-foreground">Amount due</dt>
+                <dd class="tabular-nums text-h3 text-foreground"><bdi>$100.00</bdi></dd>
+            </div>
+        </div>
+    </dl>
+            <div class="flex flex-col gap-2">
+            <label for="nq-cash-6e203bb8-input" class="text-label text-foreground">Cash received</label>
+            <div data-slot="currency-input" data-currency="USD" x-data="nqCurrencyInput(null, JSON.parse('{\u0022currency\u0022:\u0022USD\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022min\u0022:0}'))" x-modelable="minor" x-id="['nq-currency']"
+    x-model="collected" class="flex w-full min-w-0 flex-col gap-1">
+    <div role="group" data-slot="input-group"
+    x-bind="group" class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><div data-slot="currency-symbol" data-align="start" x-bind="symbolAddon"
+            class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&amp;_svg]:size-4 order-first ps-3 pe-1">
+            <span data-slot="input-group-text" class="select-none whitespace-nowrap"><bdi dir="ltr" x-text="mark()"></bdi></span>
+        </div>
+        <input data-slot="input-group-input" dir="ltr" x-bind="field" autocomplete="off" spellcheck="false"                           id="nq-cash-6e203bb8-input" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start tabular-nums"></div>
+    <span x-show="out()" x-cloak style="display: none" :id="rangeId()" class="sr-only">Amount out of range</span>
+    </div>
+                            <div class="flex flex-wrap gap-2" role="group" aria-label="Cash received">
+                                            <button data-slot="button"
+     type="button"                     x-bind:aria-pressed="collected === 10000" aria-pressed="false" x-on:click="pick(10000)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 aria-pressed:border-transparent aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:hover:bg-primary">
+        <bdi class="tabular-nums">$100.00</bdi></button>
+                                    </div>
+                    </div>
+        <p role="status" data-slot="cash-status" x-bind:data-tone="tone" data-tone="idle"
+            class="flex items-center gap-2 rounded-control border px-3 py-2 text-body-sm data-[tone=short]:border-nq-warning/40 data-[tone=short]:bg-nq-warning-soft data-[tone=short]:text-nq-warning-text data-[tone=over]:border-nq-info/40 data-[tone=over]:bg-nq-info-soft data-[tone=over]:text-nq-info-text data-[tone=exact]:border-nq-success/40 data-[tone=exact]:bg-nq-success-soft data-[tone=exact]:text-nq-success-text data-[tone=idle]:border-border data-[tone=idle]:bg-secondary data-[tone=idle]:text-muted-foreground">
+            <span x-show="tone === 'over'" aria-hidden="true" class="flex shrink-0 [&_svg]:size-4"  style="display: none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 14 4 9l5-5"/>
+  <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>
+</svg></span>
+            <span x-show="tone === 'short'" aria-hidden="true" class="flex shrink-0 [&_svg]:size-4"  style="display: none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg></span>
+            <span x-show="tone === 'exact'" aria-hidden="true" class="flex shrink-0 [&_svg]:size-4"  style="display: none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+            <span x-show="tone === 'idle'" aria-hidden="true" class="flex shrink-0 [&_svg]:size-4" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="12" x="2" y="6" rx="2"/>
+  <circle cx="12" cy="12" r="2"/>
+  <path d="M6 12h.01M18 12h.01"/>
+</svg></span>
+            <span><span x-text="statusText">Nothing received yet</span><bdi x-show="statusAmount" x-text="statusAmount" class="font-medium tabular-nums"  style="display: none" ></bdi></span>
+                            <span x-show="tone === 'short'" class="sr-only"  style="display: none" >The amount is less than what is due.</span>
+                    </p>
+        <button data-slot="button" type="button" x-bind:disabled="! canConfirm" x-bind:data-disabled="! canConfirm"  disabled data-disabled  x-on:click="confirm()"
+            class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>            Confirm cash collected
+        </button>
+    </section>
+</div>

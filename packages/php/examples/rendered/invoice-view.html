@@ -1,0 +1,135 @@
+<section data-slot="invoice-view" data-status="open" aria-labelledby="nq-invoice-INV-2026-0042" x-data="nqInvoiceView(JSON.parse('{\u0022failed\u0022:\u0022The file could not be prepared. Try again.\u0022}'))" class="flex flex-col gap-4">
+    <style>
+@media print {
+  @page { margin: 14mm; }
+  body * { visibility: hidden !important; }
+  [data-slot="invoice-sheet"], [data-slot="invoice-sheet"] * { visibility: visible !important; }
+  [data-slot="invoice-sheet"] {
+    position: absolute !important; inset-block-start: 0; inset-inline: 0; width: 100% !important; max-width: none !important;
+    margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+    background: white !important; color: black !important; color-scheme: light;
+    --foreground: black; --muted-foreground: oklch(0.4 0 0); --border: oklch(0.82 0 0); --card: white; --nq-surface: white;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  [data-slot="invoice-sheet"] tr, [data-slot="invoice-sheet"] [data-keep-together] { break-inside: avoid; }
+  [data-slot="invoice-sheet"] thead { display: table-header-group; }
+}
+</style>
+            <div role="toolbar" aria-label="Invoice actions" data-slot="invoice-actions" class="flex flex-wrap items-center justify-end gap-2 print:hidden">
+            <p x-show="error" x-text="error" role="alert" style="display: none" class="me-auto text-body-sm text-nq-danger-text"></p>
+                                        <button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-bind:aria-busy="busy" x-on:click="download()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                    <svg aria-hidden="true" x-show="!busy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>                    Download PDF</button>
+                        <button data-slot="button"
+     type="button"                     x-on:click="print()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/>
+  <rect x="6" y="14" width="12" height="8" rx="1"/>
+</svg>                Print</button>
+                            <button data-slot="button"
+     type="button"                     x-on:click="pay()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Pay now</button>
+                    </div>
+    <article data-slot="invoice-sheet" class="mx-auto flex w-full max-w-3xl flex-col gap-8 rounded-card border border-border bg-card p-6 text-card-foreground @container sm:p-10">
+        <header class="flex flex-wrap items-start justify-between gap-4">
+            <div class="flex min-w-0 flex-col gap-2">
+                                <h1 id="nq-invoice-INV-2026-0042" class="text-h1 text-foreground">Invoice</h1>
+                <p class="text-body-sm text-muted-foreground">
+                    Invoice number <bdi dir="ltr" class="font-mono text-foreground">INV-2026-0042</bdi>
+                </p>
+            </div>
+            <span data-slot="invoice-status" data-status="open"
+    class="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text h-6 px-2">
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>    Open
+</span>
+        </header>
+        <dl class="grid grid-cols-2 gap-4 text-body-sm sm:grid-cols-3">
+            <div>
+                <dt class="text-caption text-muted-foreground">Issued</dt>
+                <dd class="text-foreground"><time data-slot="date-time" datetime="2026-09-01T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 1, 2026</time>
+</dd>
+            </div>
+                            <div>
+                    <dt class="text-caption text-muted-foreground">Due</dt>
+                    <dd class="text-foreground"><time data-slot="date-time" datetime="2026-09-30T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 30, 2026</time>
+</dd>
+                </div>
+                        <div>
+                <dt class="text-caption text-muted-foreground">Currency</dt>
+                <dd class="text-foreground"><bdi dir="ltr">USD</bdi></dd>
+            </div>
+        </dl>
+        <div class="grid gap-6 sm:grid-cols-2" data-keep-together>
+                            <div class="flex min-w-0 flex-col gap-1 text-body-sm">
+                    <p class="text-caption font-medium uppercase tracking-wide text-muted-foreground">From</p>
+                    <p class="text-label text-foreground">Nasaq Ltd</p>
+                                            <p class="text-muted-foreground">1 King Fahd Rd</p>
+                                            <p class="text-muted-foreground">Riyadh</p>
+                                                                                                        <p class="text-muted-foreground">Tax number: <bdi dir="ltr">300000000000003</bdi></p>
+                                    </div>
+                            <div class="flex min-w-0 flex-col gap-1 text-body-sm">
+                    <p class="text-caption font-medium uppercase tracking-wide text-muted-foreground">Billed to</p>
+                    <p class="text-label text-foreground">Acme Co</p>
+                                                                <bdi dir="ltr" class="text-start text-muted-foreground">billing@acme.test</bdi>
+                                                                            </div>
+                    </div>
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-body-sm">
+                <thead>
+                    <tr class="border-b border-border text-caption text-muted-foreground">
+                        <th scope="col" class="pb-2 pe-3 text-start font-medium">Description</th>
+                        <th scope="col" class="px-3 pb-2 text-end font-medium">Qty</th>
+                        <th scope="col" class="px-3 pb-2 text-end font-medium">Unit price</th>
+                        <th scope="col" class="ps-3 pb-2 text-end font-medium">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                            <tr class="border-b border-border align-top">
+                            <td class="py-3 pe-3">
+                                <p class="text-foreground">Team plan</p>
+                                                                    <p class="text-caption text-muted-foreground">Sep 2026</p>
+                                                            </td>
+                            <td class="px-3 py-3 text-end text-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">5</bdi>
+</td>
+                            <td class="px-3 py-3 text-end text-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">$49.00</bdi>
+</td>
+                            <td class="ps-3 py-3 text-end text-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">$245.00</bdi>
+</td>
+                        </tr>
+                                    </tbody>
+            </table>
+        </div>
+        <dl data-keep-together class="ms-auto flex w-full max-w-72 flex-col gap-2">
+                            <div class="flex justify-between gap-6 text-body-sm text-muted-foreground">
+                    <dt>Subtotal</dt>
+                    <dd class="text-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">$245.00</bdi>
+</dd>
+                </div>
+                            <div class="flex justify-between gap-6 text-body-sm text-muted-foreground">
+                    <dt>Tax</dt>
+                    <dd class="text-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">$36.75</bdi>
+</dd>
+                </div>
+                            <div class="flex justify-between gap-6 border-t border-border pt-2 text-label text-foreground">
+                    <dt>Total</dt>
+                    <dd class=""><bdi data-slot="num" data-numeric="" class="tabular-nums">$281.75</bdi>
+</dd>
+                </div>
+                            <div class="flex justify-between gap-6 border-t border-border pt-2 text-label text-foreground">
+                    <dt>Amount due</dt>
+                    <dd class=""><bdi data-slot="num" data-numeric="" class="tabular-nums">$281.75</bdi>
+</dd>
+                </div>
+                    </dl>
+            </article>
+</section>

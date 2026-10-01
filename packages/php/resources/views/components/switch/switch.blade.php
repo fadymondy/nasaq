@@ -6,7 +6,7 @@
 @aware(['disabled' => false, 'invalid' => false])
 @php
     $checked = (bool) $checked;
-    $off = $disabled || $attributes->has('disabled');
+    $off = ($disabled ?? false) || $attributes->flag('disabled');
 @endphp
 <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(@js($checked))" x-modelable="checked" x-bind="root"
     aria-checked="{{ $checked ? 'true' : 'false' }}"

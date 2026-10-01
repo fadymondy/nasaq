@@ -20,6 +20,13 @@ class CnTest extends Base
         $this->assertSame('h-[calc(var(--nq-control)+8px)] px-5', Cn::merge('h-control', 'h-[calc(var(--nq-control)+8px)] px-5'));
     }
 
+    public function test_axis_utilities_do_not_collide_with_their_shorthand(): void
+    {
+        $this->assertSame('gap-y-1 gap-x-4', Cn::merge('gap-x-2 gap-y-1', 'gap-x-4'));
+        $this->assertSame('gap-3', Cn::merge('gap-x-2', 'gap-3'));
+        $this->assertSame('overflow-y-hidden overflow-x-scroll', Cn::merge('overflow-x-auto overflow-y-hidden', 'overflow-x-scroll'));
+    }
+
     public function test_ring_width_and_colour_are_separate(): void
     {
         $this->assertSame('ring-2 ring-primary/30', Cn::merge('ring-2', 'ring-primary/30'));

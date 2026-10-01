@@ -8,7 +8,7 @@
     $checked = (bool) $checked;
     $indeterminate = (bool) $indeterminate;
     $mark = $checked || $indeterminate;
-    $off = $disabled || $attributes->has('disabled');
+    $off = ($disabled ?? false) || $attributes->flag('disabled');
 @endphp
 <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(@js($checked), @js($indeterminate))" x-modelable="checked" x-bind="root"
     aria-checked="{{ $indeterminate ? 'mixed' : ($checked ? 'true' : 'false') }}"

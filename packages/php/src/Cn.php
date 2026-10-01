@@ -114,7 +114,7 @@ class Cn
         if (preg_match('/^flex-(wrap|nowrap|wrap-reverse)$/', $u)) {
             return [$variants, 'flex-wrap'];
         }
-        if (preg_match('/^(size|w|h|min-w|min-h|max-w|max-h|p|px|py|ps|pe|pt|pb|pl|pr|m|mx|my|ms|me|mt|mb|ml|mr|gap|gap-x|gap-y|space-x|space-y|inset|inset-x|inset-y|top|bottom|start|end|left|right|z|opacity|shadow|leading|tracking|items|justify|self|place-items|place-content|content|overflow|overflow-x|overflow-y|bg|fill|stroke|outline-offset|ring-offset|ring|cursor|grid-cols|grid-rows|col-span|row-span|order|basis|grow|shrink|whitespace|truncate|line-clamp|aspect|object|duration|ease|delay|translate-x|translate-y|scale|rotate|underline-offset|decoration)(-|$)/', $u, $m)) {
+        if (preg_match('/^(size|w|h|min-w|min-h|max-w|max-h|p|px|py|ps|pe|pt|pb|pl|pr|m|mx|my|ms|me|mt|mb|ml|mr|gap-x|gap-y|gap|space-x|space-y|inset-x|inset-y|inset|top|bottom|start|end|left|right|z|opacity|shadow|leading|tracking|items|justify|self|place-items|place-content|content|overflow-x|overflow-y|overflow|bg|fill|stroke|outline-offset|ring-offset|ring|cursor|grid-cols|grid-rows|col-span|row-span|order|basis|grow|shrink|whitespace|truncate|line-clamp|aspect|object|duration|ease|delay|translate-x|translate-y|scale|rotate|underline-offset|decoration)(-|$)/', $u, $m)) {
             return [$variants, $m[1]];
         }
 

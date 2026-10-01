@@ -1,0 +1,52 @@
+<div data-slot="menubar" x-data="nqMenubar()" x-bind="bar"
+    aria-label="Application" class="flex h-control w-fit items-center gap-0.5 rounded-control border border-border bg-card p-0.5 text-foreground"><div data-slot="menubar-menu" x-data="nqMenubarMenu(false)" x-modelable="open" class="contents"><button type="button" data-slot="menubar-trigger" x-ref="trigger" x-bind="trigger"
+        class="inline-flex h-full min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center rounded-control px-2.5 text-label text-foreground outline-none hover:bg-nq-hover data-popup-open:bg-nq-selected focus-visible:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50">File</button>
+        <template x-teleport="body">
+    <div data-slot="menubar-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-56"><div data-slot="menubar-item" role="menuitem" data-variant="default" x-bind="item"
+        class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">New file<span data-slot="menubar-shortcut" dir="ltr" class="ms-auto inline-flex items-center gap-1 ps-6">
+            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Ctrl</kbd>
+<kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">N</kbd>
+    </span>
+</div>
+            <div data-slot="menubar-item" role="menuitem" data-variant="default" x-bind="item"
+        class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Save<span data-slot="menubar-shortcut" dir="ltr" class="ms-auto inline-flex items-center gap-1 ps-6">
+            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Ctrl</kbd>
+<kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">S</kbd>
+    </span>
+</div>
+            <div data-slot="menubar-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+            <div data-slot="menubar-item" role="menuitem" data-variant="danger" x-bind="item"
+        class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current">Quit</div></div>
+</template></div>
+    <div data-slot="menubar-menu" x-data="nqMenubarMenu(false)" x-modelable="open" class="contents"><button type="button" data-slot="menubar-trigger" x-ref="trigger" x-bind="trigger"
+        class="inline-flex h-full min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center rounded-control px-2.5 text-label text-foreground outline-none hover:bg-nq-hover data-popup-open:bg-nq-selected focus-visible:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50">View</button>
+        <template x-teleport="body">
+    <div data-slot="menubar-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-56"><div data-slot="menubar-checkbox-item" role="menuitemcheckbox" x-data="{ checked: true }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Show grid
+</div>
+            <div data-slot="menubar-sub" role="none" x-data="nqMenubarSub()" class="contents"><div data-slot="menubar-sub-trigger" role="menuitem" x-ref="subtrigger" x-bind="subTrigger"
+        class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground data-popup-open:bg-nq-selected">Zoom<svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100 ms-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></div>
+                <template x-teleport="body">
+    <div data-slot="menubar-sub-content" x-bind="subPopup" x-init="subPopupEl = $el" x-nq-presence="subOpen" x-anchor.right-start.offset.-4="$refs.subtrigger"
+        class="z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><div data-slot="menubar-item" role="menuitem" data-variant="default" x-bind="item"
+        class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Zoom in</div>
+                    <div data-slot="menubar-item" role="menuitem" data-variant="default" x-bind="item"
+        class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Zoom out</div></div>
+</template></div></div>
+</template></div></div>

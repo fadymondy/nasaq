@@ -1,0 +1,426 @@
+<div data-slot="app-shell" data-variant="plain" data-navigation="sidebar"
+    x-data="nqAppShell(JSON.parse('{\u0022collapsed\u0022:false,\u0022persist\u0022:true,\u0022sidebar\u0022:true,\u0022width\u0022:256,\u0022minWidth\u0022:208,\u0022maxWidth\u0022:420}'))" x-modelable="collapsed" x-id="['nq-shell']" x-bind="root"
+        class="flex bg-background text-foreground has-data-[slot=app-nav-bar]:max-md:pb-[calc(3.5rem+env(safe-area-inset-bottom))] min-h-96">
+    <a href="#app-main" class="sr-only rounded-control border border-border bg-popover text-label text-foreground shadow-md focus:not-sr-only focus:fixed focus:start-3 focus:top-2 focus:z-50 focus:px-3 focus:py-2 focus-visible:outline-2 focus-visible:outline-nq-focus">Skip to content</a>
+            <aside data-slot="app-sidebar"             :data-collapsed="collapsed ? '' : undefined" :data-resizing="resizing ? '' : undefined"
+            style="--nq-sidebar-width: 256px" :style="{ '--nq-sidebar-width': width + 'px' }"
+            class="group/sidebar sticky top-[var(--nasaq-shell-offset,0px)] hidden h-[calc(100dvh_-_var(--nasaq-shell-offset,0px))] w-(--nq-sidebar-width) shrink-0 border-e border-border bg-sidebar transition-[width] duration-200 ease-nq data-collapsed:w-[calc(var(--nq-control)+2*var(--nq-shell-pad))] data-resizing:transition-none md:block ">
+            <div x-data="{ rail: true }" class="h-full overflow-hidden"><nav data-slot="sidebar" data-icons="always"
+    aria-label="Main" class="flex h-full flex-col gap-shell overflow-y-auto overflow-x-hidden p-shell"><div data-slot="sidebar-header" class="flex shrink-0 flex-col gap-2"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-brand" href="/" x-bind:aria-label="(rail && collapsed) ? 'Nasaq' : null"
+        class="flex h-control shrink-0 items-center gap-2 rounded-control px-2 outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span class="contents group-data-collapsed/sidebar:hidden">
+            <span data-slot="product-logo" class="inline-flex items-center gap-2">
+    <svg data-slot="product-mark" viewBox="0 0 100 100" width="20" height="20"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+            <g class="dark:hidden">
+                            <rect x="0" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="80" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="20" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="60" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+        <g class="hidden dark:block">
+                            <rect x="0" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="80" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="20" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="60" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+    </svg>
+            <span dir="ltr" class="font-mono font-medium tracking-[0.14em] uppercase text-foreground" style="font-size: 12px">NASAQ</span>
+    </span>
+        </span>
+        <span class="hidden group-data-collapsed/sidebar:contents">
+            <svg data-slot="product-mark" viewBox="0 0 100 100" width="20" height="20"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+            <g class="dark:hidden">
+                            <rect x="0" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="80" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="20" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="60" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+        <g class="hidden dark:block">
+                            <rect x="0" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="80" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="20" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="60" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+    </svg>
+        </span>
+    </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Nasaq</div>
+    </template>
+</div></div>
+            <div data-slot="sidebar-content" class="-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]"><div data-slot="sidebar-group" role="group"  x-bind:aria-label="(rail && collapsed) ? 'Workspace' : null"         class="flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0">
+                    <div class="group/label flex h-[calc(var(--spacing-nav-row)-4px)] items-center gap-1 ps-2 pe-1 group-data-collapsed/sidebar:hidden">
+                <div class="min-w-0 flex-1 truncate text-caption font-medium text-muted-foreground">Workspace</div>
+                            </div>
+                <div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"  aria-current="page"          x-bind:aria-label="(rail && collapsed) ? 'Overview' : null"         href="#" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0 bg-nq-selected font-medium text-foreground">
+        <span data-slot="sidebar-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+  <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Overview</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Overview</div>
+    </template>
+</div>
+                    <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Inbox' : null"         href="#" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Inbox</span>
+        <span class="ms-auto text-caption text-muted-foreground tabular-nums group-data-collapsed/sidebar:hidden">3</span>    </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Inbox</div>
+    </template>
+</div>
+                    <div data-slot="sidebar-nest" class="contents">
+    <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     class="group/nest flex flex-col group-data-collapsed/sidebar:hidden">
+    <button type="button" x-on:click="toggle()" x-bind:aria-expanded="open"
+            class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 ">
+            <span data-slot="sidebar-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+</svg></span>            <span class="min-w-0 flex-1 truncate">Projects</span>
+            <svg aria-hidden="true" class="ms-auto size-3.5! text-muted-foreground transition-[rotate] duration-200 ease-nq group-data-open/nest:rotate-90 rtl:-scale-x-100 rtl:group-data-open/nest:-rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>        </button>
+        <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><div class="ms-4 mt-0.5 flex flex-col gap-0.5 border-s border-border ps-2"><a data-slot="sidebar-sub-item"  href="#" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Website</a>
+                        <a data-slot="sidebar-sub-item"  href="#" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Mobile app</a></div></div>
+</div>
+    <div data-slot="sidebar-nest-rail" x-data="nqRailFlyout" x-id="['nq-flyout']" class="hidden group-data-collapsed/sidebar:contents">
+        <button type="button" x-ref="trigger" aria-label="Projects" aria-haspopup="dialog" x-bind:aria-expanded="open"
+            x-on:click="toggle()" x-on:pointerenter="hover(true)" x-on:pointerleave="hover(false)" x-bind:data-popup-open="open ? '' : undefined"
+            class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 justify-center px-0 size-control data-popup-open:bg-nq-hover data-popup-open:text-foreground ">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+</svg>
+        </button>
+        <template x-teleport="body">
+            <div data-slot="sidebar-nest-flyout" x-bind="popup" x-nq-presence="open" x-anchor.right-start.offset.8="$refs.trigger"
+                class="z-50 w-auto min-w-44 rounded-floating border border-border bg-popover p-1 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                <div :id="$id('nq-flyout', 'title')" class="px-2 pt-1 pb-1.5 text-caption font-medium text-muted-foreground">Projects</div>
+                <div class="flex flex-col gap-0.5"><a data-slot="sidebar-sub-item"  href="#" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Website</a>
+                        <a data-slot="sidebar-sub-item"  href="#" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Mobile app</a></div>
+            </div>
+        </template>
+    </div>
+</div></div>
+    </div></div>
+            <div data-slot="sidebar-footer" class="mt-auto flex shrink-0 flex-col gap-1 pt-2"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Settings' : null"         href="#" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Settings</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Settings</div>
+    </template>
+</div>
+                <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-status" data-tone="success"  x-bind:aria-label="(rail && collapsed) ? 'All systems normal' : null"         href="#" class="flex h-nav-row items-center gap-2 rounded-control px-2 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span aria-hidden="true" class="size-2 shrink-0 rounded-full bg-nq-success "></span>
+        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">All systems normal</span>
+    </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">All systems normal</div>
+    </template>
+</div></div></nav></div>
+                            <div role="separator" aria-orientation="vertical" aria-label="Resize sidebar"
+                    aria-valuemin="208" aria-valuemax="420" aria-valuenow="256" tabindex="0"
+                    data-slot="sidebar-resize-handle" x-bind="handle"
+                    class="absolute inset-y-0 -end-[5px] z-20 w-[9px] cursor-col-resize touch-none outline-none after:absolute after:inset-y-0 after:start-1 after:w-0.5 after:bg-transparent after:transition-colors after:duration-150 hover:after:bg-nq-line-strong focus-visible:after:bg-nq-focus"></div>
+                    </aside>
+        <template x-teleport="body">
+            <div data-slot="app-shell-sheet-portal">
+                <div data-slot="app-shell-sheet-backdrop" x-nq-presence="mobileOpen" x-on:click="mobileOpen = false"
+                    class="fixed inset-0 z-40 bg-nq-fg/15 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 md:hidden dark:bg-nq-bg/70"></div>
+                <div data-slot="app-shell-sheet" role="dialog" aria-modal="true" :aria-labelledby="$id('nq-shell', 'title')" tabindex="-1"
+                    x-nq-presence="mobileOpen" x-trap.noscroll="mobileOpen" x-on:keydown.escape.prevent.stop="mobileOpen = false"
+                    class="fixed inset-y-0 start-0 z-50 w-[min(18rem,85vw)] border-e border-border bg-sidebar outline-none transition-[translate,opacity] duration-200 ease-nq data-ending-style:-translate-x-8 data-ending-style:opacity-0 data-starting-style:-translate-x-8 data-starting-style:opacity-0 rtl:data-ending-style:translate-x-8 rtl:data-starting-style:translate-x-8 md:hidden">
+                    <h2 :id="$id('nq-shell', 'title')" class="sr-only">Navigation</h2>
+                    <div x-data="{ rail: false }" class="h-full" x-on:click="if ($event.target.closest('a')) mobileOpen = false"><nav data-slot="sidebar" data-icons="always"
+    aria-label="Main" class="flex h-full flex-col gap-shell overflow-y-auto overflow-x-hidden p-shell"><div data-slot="sidebar-header" class="flex shrink-0 flex-col gap-2"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-brand" href="/" x-bind:aria-label="(rail && collapsed) ? 'Nasaq' : null"
+        class="flex h-control shrink-0 items-center gap-2 rounded-control px-2 outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span class="contents group-data-collapsed/sidebar:hidden">
+            <span data-slot="product-logo" class="inline-flex items-center gap-2">
+    <svg data-slot="product-mark" viewBox="0 0 100 100" width="20" height="20"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+            <g class="dark:hidden">
+                            <rect x="0" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="80" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="20" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="60" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+        <g class="hidden dark:block">
+                            <rect x="0" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="80" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="20" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="60" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+    </svg>
+            <span dir="ltr" class="font-mono font-medium tracking-[0.14em] uppercase text-foreground" style="font-size: 12px">NASAQ</span>
+    </span>
+        </span>
+        <span class="hidden group-data-collapsed/sidebar:contents">
+            <svg data-slot="product-mark" viewBox="0 0 100 100" width="20" height="20"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+            <g class="dark:hidden">
+                            <rect x="0" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="80" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="20" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="60" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+        <g class="hidden dark:block">
+                            <rect x="0" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="80" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="20" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="60" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+    </svg>
+        </span>
+    </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Nasaq</div>
+    </template>
+</div></div>
+            <div data-slot="sidebar-content" class="-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]"><div data-slot="sidebar-group" role="group"  x-bind:aria-label="(rail && collapsed) ? 'Workspace' : null"         class="flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0">
+                    <div class="group/label flex h-[calc(var(--spacing-nav-row)-4px)] items-center gap-1 ps-2 pe-1 group-data-collapsed/sidebar:hidden">
+                <div class="min-w-0 flex-1 truncate text-caption font-medium text-muted-foreground">Workspace</div>
+                            </div>
+                <div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"  aria-current="page"          x-bind:aria-label="(rail && collapsed) ? 'Overview' : null"         href="#" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0 bg-nq-selected font-medium text-foreground">
+        <span data-slot="sidebar-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+  <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Overview</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Overview</div>
+    </template>
+</div>
+                    <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Inbox' : null"         href="#" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Inbox</span>
+        <span class="ms-auto text-caption text-muted-foreground tabular-nums group-data-collapsed/sidebar:hidden">3</span>    </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Inbox</div>
+    </template>
+</div>
+                    <div data-slot="sidebar-nest" class="contents">
+    <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     class="group/nest flex flex-col group-data-collapsed/sidebar:hidden">
+    <button type="button" x-on:click="toggle()" x-bind:aria-expanded="open"
+            class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 ">
+            <span data-slot="sidebar-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+</svg></span>            <span class="min-w-0 flex-1 truncate">Projects</span>
+            <svg aria-hidden="true" class="ms-auto size-3.5! text-muted-foreground transition-[rotate] duration-200 ease-nq group-data-open/nest:rotate-90 rtl:-scale-x-100 rtl:group-data-open/nest:-rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>        </button>
+        <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><div class="ms-4 mt-0.5 flex flex-col gap-0.5 border-s border-border ps-2"><a data-slot="sidebar-sub-item"  href="#" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Website</a>
+                        <a data-slot="sidebar-sub-item"  href="#" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Mobile app</a></div></div>
+</div>
+    <div data-slot="sidebar-nest-rail" x-data="nqRailFlyout" x-id="['nq-flyout']" class="hidden group-data-collapsed/sidebar:contents">
+        <button type="button" x-ref="trigger" aria-label="Projects" aria-haspopup="dialog" x-bind:aria-expanded="open"
+            x-on:click="toggle()" x-on:pointerenter="hover(true)" x-on:pointerleave="hover(false)" x-bind:data-popup-open="open ? '' : undefined"
+            class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 justify-center px-0 size-control data-popup-open:bg-nq-hover data-popup-open:text-foreground ">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+</svg>
+        </button>
+        <template x-teleport="body">
+            <div data-slot="sidebar-nest-flyout" x-bind="popup" x-nq-presence="open" x-anchor.right-start.offset.8="$refs.trigger"
+                class="z-50 w-auto min-w-44 rounded-floating border border-border bg-popover p-1 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                <div :id="$id('nq-flyout', 'title')" class="px-2 pt-1 pb-1.5 text-caption font-medium text-muted-foreground">Projects</div>
+                <div class="flex flex-col gap-0.5"><a data-slot="sidebar-sub-item"  href="#" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Website</a>
+                        <a data-slot="sidebar-sub-item"  href="#" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Mobile app</a></div>
+            </div>
+        </template>
+    </div>
+</div></div>
+    </div></div>
+            <div data-slot="sidebar-footer" class="mt-auto flex shrink-0 flex-col gap-1 pt-2"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Settings' : null"         href="#" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Settings</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Settings</div>
+    </template>
+</div>
+                <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-status" data-tone="success"  x-bind:aria-label="(rail && collapsed) ? 'All systems normal' : null"         href="#" class="flex h-nav-row items-center gap-2 rounded-control px-2 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span aria-hidden="true" class="size-2 shrink-0 rounded-full bg-nq-success "></span>
+        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">All systems normal</span>
+    </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">All systems normal</div>
+    </template>
+</div></div></nav></div>
+                </div>
+            </div>
+        </template>
+                <div class="flex min-w-0 flex-1 flex-col"><header data-slot="app-header" class="sticky top-0 z-30 flex h-header shrink-0 items-center gap-2 border-b border-border bg-background/95 px-3 backdrop-blur-sm md:px-4 in-data-[slot=app-shell-panel]:md:rounded-t-xl"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><button data-slot="button"
+     type="button"                     aria-label="Toggle sidebar" x-on:click="toggle()" x-bind:aria-expanded="desktop ? !collapsed : mobileOpen" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 -ms-1 text-muted-foreground">
+        <svg class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="M9 3v18"/>
+</svg></button></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.top.offset.6="triggerEl"
+            class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Toggle sidebar</div>
+    </template>
+</div>
+        <nav data-slot="app-breadcrumbs" aria-label="Breadcrumb" class="min-w-0">
+    <ol class="flex min-w-0 items-center gap-1"><li class="group/crumb flex min-w-0 items-center gap-1 max-md:not-last:hidden">
+    <span aria-hidden="true" class="select-none px-0.5 text-body text-nq-line-strong group-first/crumb:hidden max-md:hidden">/</span>
+    <span data-slot="app-crumb" class="flex min-w-0 items-center gap-1">
+                    <a href="#" class="flex h-8 min-w-0 items-center gap-2 rounded-control px-1.5 text-label text-foreground outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus transition-colors duration-150 ease-nq hover:bg-nq-hover">
+                                <span class="truncate">Acme</span>
+            </a>
+                            </span>
+</li>
+            <li class="group/crumb flex min-w-0 items-center gap-1 max-md:not-last:hidden">
+    <span aria-hidden="true" class="select-none px-0.5 text-body text-nq-line-strong group-first/crumb:hidden max-md:hidden">/</span>
+    <span data-slot="app-crumb" class="flex min-w-0 items-center gap-1">
+                    <span  aria-current="page"  class="flex h-8 min-w-0 items-center gap-2 rounded-control px-1.5 text-label text-foreground outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                                <span class="truncate">Website</span>
+            </span>
+                            </span>
+</li></ol>
+</nav></header>
+    <main id="app-main" tabindex="-1" data-slot="app-main" class="flex-1 px-4 py-page outline-none md:px-page"><div data-slot="app-page-header" class="flex flex-wrap items-center gap-x-4 gap-y-3">
+    <div class="flex min-w-0 flex-1 items-center gap-3">
+                <div class="grid min-w-0 gap-1">
+            <h1 class="truncate text-h2 text-foreground">Overview</h1>
+            <div class="text-body-sm text-muted-foreground">What happened in the last 7 days.</div>        </div>
+    </div>
+</div></main></div>
+    </div>
+<div data-slot="app-shell" data-variant="plain" data-navigation="top"
+    x-data="nqAppShell(JSON.parse('{\u0022collapsed\u0022:false,\u0022persist\u0022:true,\u0022sidebar\u0022:false,\u0022width\u0022:256,\u0022minWidth\u0022:208,\u0022maxWidth\u0022:420}'))" x-modelable="collapsed" x-id="['nq-shell']" x-bind="root"
+        class="flex bg-background text-foreground has-data-[slot=app-nav-bar]:max-md:pb-[calc(3.5rem+env(safe-area-inset-bottom))] mt-6 min-h-72">
+    <a href="#app-main" class="sr-only rounded-control border border-border bg-popover text-label text-foreground shadow-md focus:not-sr-only focus:fixed focus:start-3 focus:top-2 focus:z-50 focus:px-3 focus:py-2 focus-visible:outline-2 focus-visible:outline-nq-focus">Skip to content</a>
+                <div class="flex min-w-0 flex-1 flex-col"><header data-slot="app-header" class="sticky top-0 z-30 flex h-header shrink-0 items-center gap-2 border-b border-border bg-background/95 px-3 backdrop-blur-sm md:px-4 in-data-[slot=app-shell-panel]:md:rounded-t-xl"><nav data-slot="app-breadcrumbs" aria-label="Breadcrumb" class="min-w-0">
+    <ol class="flex min-w-0 items-center gap-1"><li class="group/crumb flex min-w-0 items-center gap-1 max-md:not-last:hidden">
+    <span aria-hidden="true" class="select-none px-0.5 text-body text-nq-line-strong group-first/crumb:hidden max-md:hidden">/</span>
+    <span data-slot="app-crumb" class="flex min-w-0 items-center gap-1">
+                    <a href="#" class="flex h-8 min-w-0 items-center gap-2 rounded-control px-1.5 text-label text-foreground outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus transition-colors duration-150 ease-nq hover:bg-nq-hover">
+                                <span class="truncate">Acme</span>
+            </a>
+                            </span>
+</li>
+            <li class="group/crumb flex min-w-0 items-center gap-1 max-md:not-last:hidden">
+    <span aria-hidden="true" class="select-none px-0.5 text-body text-nq-line-strong group-first/crumb:hidden max-md:hidden">/</span>
+    <span data-slot="app-crumb" class="flex min-w-0 items-center gap-1">
+                    <span  aria-current="page"  class="flex h-8 min-w-0 items-center gap-2 rounded-control px-1.5 text-label text-foreground outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                                <span class="truncate">Billing</span>
+            </span>
+                            </span>
+</li></ol>
+</nav></header>
+    <nav data-slot="app-nav" aria-label="Sections" class="shrink-0 border-b border-border bg-background max-md:hidden">
+    <div class="flex items-center gap-1 overflow-x-auto px-2 [scrollbar-width:none]"><a data-slot="app-nav-item" aria-current="page" href="#" class="relative flex h-11 shrink-0 items-center gap-2 px-2 text-body-sm whitespace-nowrap outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:rounded-full focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-nq-focus font-medium text-foreground after:bg-foreground"><span data-slot="app-nav-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+  <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+</svg></span>Overview</a><a data-slot="app-nav-item"  href="#" class="relative flex h-11 shrink-0 items-center gap-2 px-2 text-body-sm whitespace-nowrap text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:rounded-full after:bg-transparent focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-nq-focus"><span data-slot="app-nav-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="14" x="2" y="5" rx="2"/>
+  <line x1="2" x2="22" y1="10" y2="10"/>
+</svg></span>Billing</a><a data-slot="app-nav-item"  href="#" class="relative flex h-11 shrink-0 items-center gap-2 px-2 text-body-sm whitespace-nowrap text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:rounded-full after:bg-transparent focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-nq-focus"><span data-slot="app-nav-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg></span>Team</a><a data-slot="app-nav-item"  href="#" class="relative flex h-11 shrink-0 items-center gap-2 px-2 text-body-sm whitespace-nowrap text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:rounded-full after:bg-transparent focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-nq-focus"><span data-slot="app-nav-icon" class="contents"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg></span>Settings</a></div>
+</nav>
+<nav data-slot="app-nav-bar" aria-label="Sections" class="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-sm md:hidden">
+    <div class="flex items-stretch px-1">
+        <a data-slot="app-nav-item" aria-current="page"  data-active  href="#" class="relative flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-control px-1 py-1.5 text-caption outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus font-medium text-foreground"><span class="relative inline-flex"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+  <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+</svg></span><span class="max-w-full truncate">Overview</span></a><a data-slot="app-nav-item"   href="#" class="relative flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-control px-1 py-1.5 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus"><span class="relative inline-flex"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="14" x="2" y="5" rx="2"/>
+  <line x1="2" x2="22" y1="10" y2="10"/>
+</svg></span><span class="max-w-full truncate">Billing</span></a>
+                    <div data-slot="drawer" x-data="nqDrawer(false)" x-modelable="open" x-id="['nq-dialog']" class="contents">
+    <button type="button" data-slot="app-nav-more" aria-haspopup="dialog" x-on:click="show()" x-bind:aria-expanded="open"                     class="relative flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-control px-1 py-1.5 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus ">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg>                    <span class="max-w-full truncate">More</span>
+                </button>
+                <template x-teleport="body">
+    <div data-slot="drawer-portal">
+        <div data-slot="drawer-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 motion-reduce:transition-none dark:bg-nq-bg/60"></div>
+        <div data-slot="drawer-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            :data-dragging="dragAttr" :style="shift"
+            class="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[85dvh] w-full max-w-xl flex-col rounded-t-floating border border-b-0 border-border bg-popover text-popover-foreground shadow-floating outline-none transition-[translate,opacity] duration-200 ease-nq data-starting-style:translate-y-8 data-starting-style:opacity-0 data-ending-style:translate-y-8 data-ending-style:opacity-0 data-dragging:transition-none motion-reduce:transition-none">
+                            <div data-slot="drawer-handle" aria-hidden="true" x-bind="handle" class="flex h-6 shrink-0 cursor-grab touch-none items-center justify-center active:cursor-grabbing">
+                    <span class="h-1 w-10 rounded-full bg-nq-line-strong"></span>
+                </div>
+                        <div data-slot="drawer-header" class="flex flex-col gap-1 border-b border-border px-4 pb-3.5 pe-12"><h2 data-slot="drawer-title" :id="$id('nq-dialog', 'title')" class="text-label text-foreground">More</h2></div>
+                    <div data-slot="drawer-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain"><div class="grid gap-0.5 pb-2" x-on:click="if ($event.target.closest('a')) close()"><a data-slot="app-nav-item"   href="#" class="flex h-11 items-center gap-3 rounded-control px-3 text-body text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover [&_svg]:size-5 [&_svg]:text-muted-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg><span class="min-w-0 flex-1 truncate">Team</span></a><a data-slot="app-nav-item"   href="#" class="flex h-11 items-center gap-3 rounded-control px-3 text-body text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover [&_svg]:size-5 [&_svg]:text-muted-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg><span class="min-w-0 flex-1 truncate">Settings</span></a></div></div>
+                            <button type="button" data-slot="drawer-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+            </div>
+</nav>
+    <main id="app-main" tabindex="-1" data-slot="app-main" class="flex-1 px-4 py-page outline-none md:px-page"><div data-slot="app-page-header" class="flex flex-wrap items-center gap-x-4 gap-y-3">
+    <div class="flex min-w-0 flex-1 items-center gap-3">
+                <div class="grid min-w-0 gap-1">
+            <h1 class="truncate text-h2 text-foreground">Billing</h1>
+                    </div>
+    </div>
+</div></main>
+    <footer data-slot="app-footer" class="mt-auto flex shrink-0 flex-wrap items-center gap-x-6 gap-y-2 border-t border-border px-4 py-3 text-caption text-muted-foreground md:px-page">
+    <div class="flex min-w-0 items-center gap-2">Acme Inc.</div>    <div class="ms-auto flex flex-wrap items-center gap-x-5 gap-y-1"><a data-slot="app-footer-link" href="#" class="rounded-xs outline-none transition-colors duration-150 ease-nq hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">Terms</a></div>
+</footer></div>
+    </div>

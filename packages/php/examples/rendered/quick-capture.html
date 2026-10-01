@@ -1,0 +1,82 @@
+<div x-data="nqQuickCapture(JSON.parse('{\u0022presentation\u0022:\u0022dialog\u0022,\u0022shortcut\u0022:\u0022Mod+Shift+K\u0022,\u0022suggestedTags\u0022:[\u0022idea\u0022,\u0022todo\u0022]}'))" x-modelable="open" x-id="['nq-qc']" class="contents">
+        <template x-teleport="body">
+            <div data-slot="quick-capture-portal">
+                <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+                <div data-slot="quick-capture" data-presentation="dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+                    class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-w-xl">
+                    <div x-bind="form" class="flex min-w-0 flex-col gap-4">
+    <div class="flex flex-col gap-1">
+                    <h2 data-slot="dialog-title" :id="$id('nq-qc', 'title')" class="text-h3 flex items-center gap-2 text-h4 font-semibold">
+                <svg data-slot="icon" aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/>
+</svg>Quick capture
+            </h2>
+            <p data-slot="dialog-description" :id="$id('nq-qc', 'description')" class="text-body-sm text-muted-foreground">Jot it down now, sort it later.</p>
+            </div>
+    <div class="flex flex-col gap-1.5">
+        <textarea data-slot="textarea"
+                x-ref="area" x-model="text" autofocus="autofocus" rows="5" dir="auto" x-on:input="edited()" :readonly="pending" placeholder="What is on your mind? Use #tags to file it." aria-label="Quick capture" :aria-invalid="error ? &#039;true&#039; : null" :aria-describedby="error ? $id(&#039;nq-qc&#039;, &#039;error&#039;) : null" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] py-2 min-h-0 resize-none"></textarea>
+        <p x-show="error" x-cloak style="display: none" :id="$id('nq-qc', 'error')" role="alert" x-text="error" class="text-caption text-nq-danger-text"></p>
+    </div>
+    <div x-show="typedTags.length || offeredTags.length"  class="flex flex-wrap items-center gap-1.5" role="group" aria-label="Tags">
+        <svg data-slot="icon" aria-hidden="true" class="size-3.5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="4" x2="20" y1="9" y2="9"/>
+  <line x1="4" x2="20" y1="15" y2="15"/>
+  <line x1="10" x2="8" y1="3" y2="21"/>
+  <line x1="16" x2="14" y1="3" y2="21"/>
+</svg>        <template x-for="tag in typedTags" :key="'typed-' + tag"><span data-slot="badge"  style="--tag-solid: var(--nq-tag-gray); --tag-soft: var(--nq-tag-gray-soft)"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-transparent bg-[var(--tag-soft)] text-[var(--tag-solid)]"><bdi x-text="'#' + tag"></bdi></span>
+</template>
+        <template x-for="tag in offeredTags" :key="tag">
+            <button type="button" :aria-pressed="picked.includes(tag)" x-on:click="toggleTag(tag)"
+                :class="picked.includes(tag) ? 'border-transparent bg-nq-selected text-foreground' : 'border-border text-muted-foreground hover:bg-nq-hover hover:text-foreground'"
+                class="inline-flex h-6 items-center gap-1 rounded-full border px-2.5 text-caption outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-nq-focus">
+                <svg x-show="picked.includes(tag)" x-cloak="1" style="display: none" aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                <bdi x-text="'#' + tag"></bdi>
+            </button>
+        </template>
+    </div>
+    <p role="status" x-text="saved ?? ''" :class="saved ? '' : 'sr-only'" class="text-caption text-nq-success-text sr-only"></p>
+    <div class="flex flex-wrap items-center gap-2 ">
+                    <p class="me-auto flex flex-wrap items-center gap-x-1.5 text-caption text-muted-foreground" dir="ltr">
+                <span class="inline-flex items-center gap-0.5"><kbd data-slot="kbd"  dir="ltr"
+    x-text="modKey" class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Ctrl</kbd>
+<kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Enter</kbd>
+</span>
+                <span>to save</span>
+                <span aria-hidden="true">·</span>
+                <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Esc</kbd>
+                <span>to close</span>
+                <template x-if="hintKeys.length">
+                    <span class="inline-flex items-center gap-1.5"><span aria-hidden="true">·</span>
+                        <span class="inline-flex items-center gap-0.5" title="Opens from anywhere with">
+                            <template x-for="k in hintKeys" :key="k"><kbd data-slot="kbd"  dir="ltr"
+    x-text="k" class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground"></kbd>
+</template>
+                        </span>
+                    </span>
+                </template>
+            </p>
+                <div class="flex gap-2 ">
+            <button data-slot="button"
+     type="button"                     x-on:click="cancel()" :disabled="pending" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+            <button data-slot="button"
+     type="button"                     x-on:click="save()" :disabled="!canSave" :aria-busy="pending ? &#039;true&#039; : null" :data-disabled="(pending || !canSave) ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="pending" x-cloak="1" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                <span x-text="pending ? 'Saving' : 'Save'">Save</span></button>
+        </div>
+    </div>
+</div>
+                    <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                        class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                </div>
+            </div>
+        </template>
+    </div>

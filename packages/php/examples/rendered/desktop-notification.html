@@ -1,0 +1,134 @@
+<div class="flex flex-col gap-6">
+    <div role="alert" data-slot="desktop-notification" data-platform="windows"
+    x-data="nqDesktopNotification(0)"
+    x-on:mouseenter="pause()" x-on:mouseleave="resume()" x-on:focusin="pause()" x-on:focusout="resume()"
+    class="group/dn relative flex w-[22rem] max-w-full gap-2 border border-border text-foreground shadow-floating flex-col p-3 rounded-card bg-card">
+    <div class="flex min-w-0 flex-1 gap-3 items-start">
+        <span class="shrink-0 self-start size-6">
+                            <span aria-hidden="true" class="grid size-full place-items-center bg-primary text-label text-primary-foreground rounded-control">N</span>
+                    </span>
+        <button type="button"  disabled  x-on:click="activate()"
+            class="flex min-w-0 flex-1 flex-col items-start gap-0.5 rounded-control text-start outline-none focus-visible:outline-2 focus-visible:outline-nq-focus cursor-default disabled:opacity-100">
+                            <span class="flex w-full items-center gap-2 text-caption text-muted-foreground"><span class="truncate">Nasaq</span></span>
+                        <span dir="auto" class="w-full truncate text-label">Deploy finished</span>
+            <span dir="auto" class="line-clamp-3 w-full text-body-sm text-nq-fg-body">Production is on v1.4.2.</span>        </button>
+                    <span class="flex shrink-0 items-center gap-0.5 text-muted-foreground">
+                <span class="me-1 text-caption">now</span>
+                <button data-slot="button"
+     type="button"                     aria-label="Options" tabindex="-1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                <button data-slot="button"
+     type="button"                     aria-label="Close" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+            </span>
+            </div>
+                <div class="flex gap-2 " role="group" aria-label="Nasaq">
+                            <button data-slot="button"
+     type="button"                     data-action="open" x-on:click="act($el.dataset.action)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 flex-1">
+        Open</button>
+                    </div>
+        </div>
+    <div role="group" aria-labelledby="nq-dn-perm-4f29315a" data-slot="desktop-notification-permission" data-step="ask"
+    x-data="nqNotificationPermission('default', JSON.parse('{\u0022ask\u0022:[\u0022Turn on desktop notifications?\u0022,\u0022Get a quiet alert when something needs you, even when this window is in the background.\u0022],\u0022asking\u0022:[\u0022Waiting for your system\u0022,\u0022Choose Allow in the system dialog to finish.\u0022],\u0022granted\u0022:[\u0022Desktop notifications are on\u0022,\u0022You will see alerts here. You can turn them off in system settings.\u0022],\u0022denied\u0022:[\u0022Notifications are blocked\u0022,\u0022This app is not allowed to show alerts. Allow it in your system settings, then come back.\u0022],\u0022unsupported\u0022:[\u0022Not available here\u0022,\u0022Your system does not support desktop notifications.\u0022]}'))" x-effect="$el.setAttribute('data-step', step)"
+    class="flex w-full max-w-md flex-col gap-3 rounded-card border border-border bg-card p-4">
+    <div class="flex items-start gap-3">
+        <span aria-hidden="true" class="grid size-9 shrink-0 place-items-center rounded-full bg-secondary"
+            x-bind:class="step === 'denied' ? 'bg-nq-warning-soft' : 'bg-secondary'">
+            <svg x-show="! off" style="" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M22 8c0-2.3-.8-4.3-2-6"/>
+  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
+  <path d="M4 2C2.8 3.7 2 5.7 2 8"/>
+</svg>            <svg x-show="off" style="display: none" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M17 17H4a1 1 0 0 1-.74-1.673C4.59 13.956 6 12.499 6 8a6 6 0 0 1 .258-1.742"/>
+  <path d="m2 2 20 20"/>
+  <path d="M8.668 3.01A6 6 0 0 1 18 8c0 2.687.77 4.653 1.707 6.05"/>
+</svg>        </span>
+        <div class="flex min-w-0 flex-col gap-1" aria-live="polite">
+            <h3 id="nq-dn-perm-4f29315a" class="text-label" x-text="copy[step][0]">Turn on desktop notifications?</h3>
+            <p class="text-body-sm text-muted-foreground" x-text="copy[step][1]">Get a quiet alert when something needs you, even when this window is in the background.</p>
+        </div>
+    </div>
+    <div class="flex flex-wrap justify-end gap-2">
+                    <button data-slot="button"
+     type="button"                     x-show="step === &#039;ask&#039; || step === &#039;asking&#039;" x-on:click="dismiss()" x-bind:disabled="step === &#039;asking&#039;" x-bind:data-disabled="step === &#039;asking&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Not now</button>
+                <button data-slot="button"
+     type="button"                     x-show="step === &#039;ask&#039; || step === &#039;asking&#039;" x-on:click="request()" x-bind:aria-busy="step === &#039;asking&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="step === &#039;asking&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>Turn on</button>
+                    <button data-slot="button"
+     type="button"                     x-show="step === &#039;granted&#039;" x-on:click="test()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Send a test</button>
+                            <button data-slot="button"
+     type="button"                     x-show="step === &#039;denied&#039;" x-on:click="openSettings()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Open settings</button>
+            </div>
+</div>
+    <div class="relative h-56 overflow-hidden rounded-card border border-border">
+        <div role="region" aria-label="Notifications" data-slot="desktop-notification-stack"
+    class="pointer-events-none z-50 flex w-[22rem] max-w-[calc(100%-1.5rem)] flex-col gap-2 p-3 absolute end-0 top-0">
+            <div data-stack-entry="b" x-data="nqDesktopNotificationEntry" x-bind:class="shown ? 'translate-x-0 translate-y-0 opacity-100' : 'opacity-0 ltr:translate-x-6 rtl:-translate-x-6'"
+            class="transition-[opacity,translate] duration-200 ease-nq motion-reduce:transition-none">
+            <div role="alert" data-slot="desktop-notification" data-platform="macos"
+    x-data="nqDesktopNotification(0)"
+    x-on:mouseenter="pause()" x-on:mouseleave="resume()" x-on:focusin="pause()" x-on:focusout="resume()"
+    class="group/dn relative flex max-w-full gap-2 border border-border text-foreground shadow-floating flex-col p-3 rounded-[1.1rem] bg-popover/90 backdrop-blur-xl pointer-events-auto w-full">
+    <div class="flex min-w-0 flex-1 gap-3 ">
+        <span class="shrink-0 self-start size-10">
+                            <span aria-hidden="true" class="grid size-full place-items-center bg-primary text-label text-primary-foreground rounded-[22%]">N</span>
+                    </span>
+        <button type="button"  disabled  x-on:click="activate()"
+            class="flex min-w-0 flex-1 flex-col items-start gap-0.5 rounded-control text-start outline-none focus-visible:outline-2 focus-visible:outline-nq-focus cursor-default disabled:opacity-100">
+                        <span dir="auto" class="w-full truncate text-label">New comment</span>
+            <span dir="auto" class="line-clamp-3 w-full text-body-sm text-nq-fg-body">Sara replied to your thread.</span>        </button>
+                    <span class="flex shrink-0 flex-col items-end gap-1 text-caption text-muted-foreground">
+                <span>now</span>
+                            </span>
+            </div>
+                    <button data-slot="button"
+     type="button"                     aria-label="Close" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border font-sans text-label transition-colors min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover p-0 absolute -start-2 -top-2 size-5 rounded-full opacity-0 transition-opacity duration-150 ease-nq focus-visible:opacity-100 group-hover/dn:opacity-100">
+        <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+    </div>
+        </div>
+            <div data-stack-entry="a" x-data="nqDesktopNotificationEntry" x-bind:class="shown ? 'translate-x-0 translate-y-0 opacity-100' : 'opacity-0 ltr:translate-x-6 rtl:-translate-x-6'"
+            class="transition-[opacity,translate] duration-200 ease-nq motion-reduce:transition-none">
+            <div role="alert" data-slot="desktop-notification" data-platform="macos"
+    x-data="nqDesktopNotification(0)"
+    x-on:mouseenter="pause()" x-on:mouseleave="resume()" x-on:focusin="pause()" x-on:focusout="resume()"
+    class="group/dn relative flex max-w-full gap-2 border border-border text-foreground shadow-floating flex-col p-3 rounded-[1.1rem] bg-popover/90 backdrop-blur-xl pointer-events-auto w-full">
+    <div class="flex min-w-0 flex-1 gap-3 ">
+        <span class="shrink-0 self-start size-10">
+                            <span aria-hidden="true" class="grid size-full place-items-center bg-primary text-label text-primary-foreground rounded-[22%]">N</span>
+                    </span>
+        <button type="button"  disabled  x-on:click="activate()"
+            class="flex min-w-0 flex-1 flex-col items-start gap-0.5 rounded-control text-start outline-none focus-visible:outline-2 focus-visible:outline-nq-focus cursor-default disabled:opacity-100">
+                        <span dir="auto" class="w-full truncate text-label">Build passed</span>
+                    </button>
+                    <span class="flex shrink-0 flex-col items-end gap-1 text-caption text-muted-foreground">
+                <span>now</span>
+                            </span>
+            </div>
+                    <button data-slot="button"
+     type="button"                     aria-label="Close" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border font-sans text-label transition-colors min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover p-0 absolute -start-2 -top-2 size-5 rounded-full opacity-0 transition-opacity duration-150 ease-nq focus-visible:opacity-100 group-hover/dn:opacity-100">
+        <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+    </div>
+        </div>
+    </div>
+    </div>
+</div>

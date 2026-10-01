@@ -1,0 +1,532 @@
+<div data-slot="presentation-editor" role="group" aria-label="Presentation editor"
+    x-data="nqPresentation(JSON.parse('{\u0022title\u0022:\u0022Q3 review\u0022,\u0022slides\u0022:[{\u0022id\u0022:\u0022s1\u0022,\u0022layout\u0022:\u0022title\u0022,\u0022title\u0022:\u0022Q3 review\u0022,\u0022subtitle\u0022:\u0022Product team\u0022}]}'), Object.assign({}, { save: (async (deck) => { /* await fetch('/decks/1', { method: 'PUT', body: JSON.stringify(deck) }) */ }) }))" x-modelable="deck" x-id="['nq-presentation']"
+    class="flex min-w-0 flex-col gap-3">
+    <div class="flex flex-wrap items-center gap-2">
+        <input data-slot="input" type="text"
+                    x-model="deck.title" aria-label="Deck title" placeholder="Untitled presentation" dir="auto" :readonly="readOnly" class="w-full rounded-control border border-input bg-card px-3 text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control min-w-40 flex-1 text-label sm:max-w-sm">
+        <span class="text-caption text-muted-foreground" x-text="countText()"></span>
+        <div class="ms-auto flex flex-wrap items-center gap-2">
+                            <span x-show="saveState.status === 'saving'" x-cloak style="display: none"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Saving…</span>
+</span>
+                <span x-show="saveState.status === 'error'" x-cloak style="display: none" role="alert"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"><span x-text="saveState.message"></span></span>
+</span>
+                <span x-show="saveState.status === 'idle' && dirty" x-cloak style="display: none"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Unsaved changes</span>
+</span>
+                <span x-show="saveState.status === 'idle' && !dirty"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Saved</span>
+</span>
+                                        <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>Add slide</button>
+                    <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addSlide(&#039;title&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 12h8"/>
+  <path d="M4 18V6"/>
+  <path d="M12 18V6"/>
+  <path d="m17 12 3-2v8"/>
+</svg>Title</div>
+                                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addSlide(&#039;section&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
+</svg>Section</div>
+                                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addSlide(&#039;content&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 5h.01"/>
+  <path d="M3 12h.01"/>
+  <path d="M3 19h.01"/>
+  <path d="M8 5h13"/>
+  <path d="M8 12h13"/>
+  <path d="M8 19h13"/>
+</svg>Content</div>
+                                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addSlide(&#039;two-column&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="M12 3v18"/>
+</svg>Two columns</div>
+                                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addSlide(&#039;quote&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>
+  <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>
+</svg>Quote</div>
+                                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addSlide(&#039;image&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+  <circle cx="9" cy="9" r="2"/>
+  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+</svg>Image</div>
+                                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addSlide(&#039;blank&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+</svg>Blank</div></div>
+</template></div>
+                <button data-slot="button"
+     type="button"                     aria-label="Duplicate slide" title="Duplicate slide" :disabled="!slide" x-on:click="duplicate()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg></button>
+                <button data-slot="button"
+     type="button"                     aria-label="Move earlier" title="Move earlier" :disabled="!slide || index === 0" x-on:click="move(index, index - 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg></button>
+                <button data-slot="button"
+     type="button"                     aria-label="Move later" title="Move later" :disabled="!slide || index === count - 1" x-on:click="move(index, index + 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg></button>
+                <button data-slot="button"
+     type="button"                     aria-label="Delete slide" title="Delete slide" :disabled="!slide" x-on:click="remove()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                                    <button data-slot="button"
+     type="button"                     :disabled="!dirty || saveState.status === &#039;saving&#039;" :aria-busy="saveState.status === &#039;saving&#039;" x-on:click="save()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Save</button>
+                                        <button data-slot="button"
+     type="button"                     :disabled="count === 0" x-on:click="present()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>
+</svg>Present</button>
+        </div>
+    </div>
+    <div x-show="!slide" x-cloak style="display: none">
+        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 3h20"/>
+  <path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/>
+  <path d="m7 21 5-5 5 5"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No slides yet</p>
+                    <p class="text-body-sm text-muted-foreground">Add a slide to start building your presentation.</p>
+            </div>
+            <div class="mt-1 flex flex-wrap items-center justify-center gap-2"><button data-slot="button"
+     type="button"                     x-on:click="addSlide(&#039;title&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>Add slide</button></div>
+    </div>
+    </div>
+    <div x-show="slide" x-cloak style="display: none" class="grid min-w-0 gap-3 lg:grid-cols-[11rem_minmax(0,1fr)_16rem]">
+        <nav aria-label="Slides" class="min-w-0 overflow-x-auto pb-1 lg:max-h-[38rem] lg:overflow-y-auto lg:overflow-x-hidden lg:pb-0">
+            <ol aria-label="Slides" :aria-describedby="$id('nq-presentation', 'hint')" class="flex gap-1 lg:flex-col">
+                <template x-for="(s, i) in deck.slides" :key="s.id">
+                    <li :data-slide-id="s.id" :data-dragging="isDragging(s.id) ? '' : undefined" :data-over="isOver(i, s.id) ? '' : undefined" :style="thumbStyle(s.id)"
+                        class="relative w-36 shrink-0 data-dragging:z-10 data-over:rounded-control data-over:outline-2 data-over:outline-nq-focus lg:w-full"
+                        x-on:pointerdown="onThumbDown($event, i, s.id)">
+                        <button type="button" :aria-current="slide && s.id === slide.id ? 'true' : undefined" :aria-label="n(i + 1) + '. ' + slideName(s)" :data-index="i"
+                            :class="slide && s.id === slide.id ? 'bg-nq-selected' : 'hover:bg-nq-hover'"
+                            class="group flex w-full items-start gap-2 rounded-control p-1.5 text-start outline-none focus-visible:outline-2 focus-visible:outline-nq-focus"
+                            x-on:click="select(s.id)">
+                            <span class="w-4 shrink-0 pt-0.5 text-caption tabular-nums text-muted-foreground" x-text="n(i + 1)"></span>
+                            <span :class="slide && s.id === slide.id ? 'border-primary' : 'border-border'" class="block min-w-0 flex-1 overflow-hidden rounded-[6px] border">
+                                <div data-slot="slide" :data-layout="s.layout"  aria-hidden="true"     :class="themeClass(s)"
+    class="@container relative aspect-video w-full overflow-hidden pointer-events-none">
+    <div class="absolute inset-0 p-[6cqw]">
+        <template x-if="s.layout === 'title'">
+            <div class="flex h-full flex-col justify-center gap-[2cqw]">
+                <template x-if="lines(s.title).length"><p dir="auto" class="whitespace-pre-line text-start text-[6.4cqw] leading-[1.1] font-semibold" x-text="s.title"></p></template>
+                <template x-if="lines(s.subtitle).length"><p dir="auto" class="whitespace-pre-line text-start text-[2.8cqw] leading-snug opacity-75" x-text="s.subtitle"></p></template>
+            </div>
+        </template>
+        <template x-if="s.layout === 'section'">
+            <div class="flex h-full flex-col justify-end gap-[1.5cqw]">
+                <template x-if="lines(s.title).length"><p dir="auto" class="whitespace-pre-line text-start text-[5.6cqw] leading-[1.1] font-semibold" x-text="s.title"></p></template>
+                <template x-if="lines(s.subtitle).length"><p dir="auto" class="whitespace-pre-line text-start text-[2.4cqw] leading-snug opacity-75" x-text="s.subtitle"></p></template>
+            </div>
+        </template>
+        <template x-if="s.layout === 'content'">
+            <div class="flex h-full flex-col gap-[3cqw]">
+                <template x-if="lines(s.title).length"><p dir="auto" class="whitespace-pre-line text-start text-[4.2cqw] leading-[1.15] font-semibold" x-text="s.title"></p></template>
+                <template x-if="lines(s.body).length"><ul dir="auto" class="list-disc space-y-[1cqw] ps-[3cqw] text-start marker:opacity-60 text-[2.6cqw] leading-snug"><template x-for="(l, i) in lines(s.body)" :key="i + l"><li x-text="l"></li></template></ul></template>
+            </div>
+        </template>
+        <template x-if="s.layout === 'two-column'">
+            <div class="flex h-full flex-col gap-[3cqw]">
+                <template x-if="lines(s.title).length"><p dir="auto" class="whitespace-pre-line text-start text-[4.2cqw] leading-[1.15] font-semibold" x-text="s.title"></p></template>
+                <div class="grid min-h-0 flex-1 grid-cols-2 gap-[4cqw]">
+                    <template x-if="lines(s.body).length"><ul dir="auto" class="list-disc space-y-[1cqw] ps-[3cqw] text-start marker:opacity-60 text-[2.3cqw] leading-snug"><template x-for="(l, i) in lines(s.body)" :key="i + l"><li x-text="l"></li></template></ul></template>
+                    <template x-if="lines(s.body2).length"><ul dir="auto" class="list-disc space-y-[1cqw] ps-[3cqw] text-start marker:opacity-60 text-[2.3cqw] leading-snug"><template x-for="(l, i) in lines(s.body2)" :key="i + l"><li x-text="l"></li></template></ul></template>
+                </div>
+            </div>
+        </template>
+        <template x-if="s.layout === 'quote'">
+            <div class="flex h-full flex-col justify-center gap-[3cqw] ps-[3cqw]">
+                <template x-if="lines(s.body).length"><p dir="auto" class="whitespace-pre-line text-start text-[3.8cqw] leading-[1.25] font-medium" x-text="s.body"></p></template>
+                <template x-if="lines(s.subtitle).length"><p dir="auto" class="whitespace-pre-line text-start text-[2.2cqw] opacity-70" x-text="s.subtitle"></p></template>
+            </div>
+        </template>
+        <template x-if="s.layout === 'image'">
+            <div class="flex h-full flex-col gap-[2.5cqw]">
+                <template x-if="lines(s.title).length"><p dir="auto" class="whitespace-pre-line text-start text-[4.2cqw] leading-[1.15] font-semibold" x-text="s.title"></p></template>
+                <div class="relative min-h-0 flex-1 overflow-hidden rounded-[1cqw] border border-current/15 bg-current/5">
+                    <template x-if="safeImage(s.image)">
+                        <img :src="safeImage(s.image)" :alt="s.imageAlt ?? ''" class="size-full object-cover" draggable="false">
+                    </template>
+                    <template x-if="!safeImage(s.image)">
+                        <div class="flex size-full flex-col items-center justify-center gap-[1cqw] text-[2cqw] opacity-50">
+                            <svg aria-hidden="true" class="size-[4cqw]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="2" x2="22" y1="2" y2="22"/>
+  <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/>
+  <line x1="13.5" x2="6" y1="13.5" y2="21"/>
+  <line x1="18" x2="21" y1="12" y2="15"/>
+  <path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"/>
+  <path d="M21 15V5a2 2 0 0 0-2-2H9"/>
+</svg>                            No image yet
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>
+                            </span>
+                        </button>
+                    </li>
+                </template>
+            </ol>
+            <p :id="$id('nq-presentation', 'hint')" class="sr-only">Drag a thumbnail to reorder, or use the move buttons.</p>
+        </nav>
+        <div class="flex min-w-0 flex-col gap-3">
+            <div class="rounded-card border border-border bg-secondary/40 p-2 sm:p-4">
+                <template x-for="cur in [slide]" :key="cur && cur.id">
+                    <div data-slot="slide" :data-layout="cur.layout"     :class="themeClass(cur)"
+    class="@container relative aspect-video w-full overflow-hidden rounded-control shadow-xs">
+    <div class="absolute inset-0 p-[6cqw]">
+        <template x-if="cur.layout === 'title'">
+            <div class="flex h-full flex-col justify-center gap-[2cqw]">
+                <textarea rows="1" dir="auto" x-model="cur.title" placeholder="Slide title" aria-label="Slide title" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[6.4cqw] leading-[1.1] font-semibold"></textarea>
+                <textarea rows="1" dir="auto" x-model="cur.subtitle" placeholder="Subtitle" aria-label="Subtitle" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[2.8cqw] leading-snug opacity-75"></textarea>
+            </div>
+        </template>
+        <template x-if="cur.layout === 'section'">
+            <div class="flex h-full flex-col justify-end gap-[1.5cqw]">
+                <textarea rows="1" dir="auto" x-model="cur.title" placeholder="Slide title" aria-label="Slide title" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[5.6cqw] leading-[1.1] font-semibold"></textarea>
+                <textarea rows="1" dir="auto" x-model="cur.subtitle" placeholder="Subtitle" aria-label="Subtitle" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[2.4cqw] leading-snug opacity-75"></textarea>
+            </div>
+        </template>
+        <template x-if="cur.layout === 'content'">
+            <div class="flex h-full flex-col gap-[3cqw]">
+                <textarea rows="1" dir="auto" x-model="cur.title" placeholder="Slide title" aria-label="Slide title" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[4.2cqw] leading-[1.15] font-semibold"></textarea>
+                <textarea rows="1" dir="auto" x-model="cur.body" placeholder="One bullet per line" aria-label="One bullet per line" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[2.6cqw] leading-snug"></textarea>
+            </div>
+        </template>
+        <template x-if="cur.layout === 'two-column'">
+            <div class="flex h-full flex-col gap-[3cqw]">
+                <textarea rows="1" dir="auto" x-model="cur.title" placeholder="Slide title" aria-label="Slide title" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[4.2cqw] leading-[1.15] font-semibold"></textarea>
+                <div class="grid min-h-0 flex-1 grid-cols-2 gap-[4cqw]">
+                    <textarea rows="1" dir="auto" x-model="cur.body" placeholder="Left column, one bullet per line" aria-label="Left column, one bullet per line" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[2.3cqw] leading-snug"></textarea>
+                    <textarea rows="1" dir="auto" x-model="cur.body2" placeholder="Right column, one bullet per line" aria-label="Right column, one bullet per line" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[2.3cqw] leading-snug"></textarea>
+                </div>
+            </div>
+        </template>
+        <template x-if="cur.layout === 'quote'">
+            <div class="flex h-full flex-col justify-center gap-[3cqw] ps-[3cqw]">
+                <textarea rows="1" dir="auto" x-model="cur.body" placeholder="The quote" aria-label="The quote" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[3.8cqw] leading-[1.25] font-medium"></textarea>
+                <textarea rows="1" dir="auto" x-model="cur.subtitle" placeholder="Who said it" aria-label="Who said it" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start leading-[inherit] [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[2.2cqw] opacity-70"></textarea>
+            </div>
+        </template>
+        <template x-if="cur.layout === 'image'">
+            <div class="flex h-full flex-col gap-[2.5cqw]">
+                <textarea rows="1" dir="auto" x-model="cur.title" placeholder="Slide title" aria-label="Slide title" class="block w-full min-w-0 resize-none rounded-[0.6cqw] border-0 bg-transparent p-0 text-start [field-sizing:content] placeholder:text-current placeholder:opacity-40 outline-none focus-visible:outline-2 focus-visible:outline-offset-[0.6cqw] focus-visible:outline-nq-focus text-[4.2cqw] leading-[1.15] font-semibold"></textarea>
+                <div class="relative min-h-0 flex-1 overflow-hidden rounded-[1cqw] border border-current/15 bg-current/5">
+                    <template x-if="safeImage(cur.image)">
+                        <img :src="safeImage(cur.image)" :alt="cur.imageAlt ?? ''" class="size-full object-cover" draggable="false">
+                    </template>
+                    <template x-if="!safeImage(cur.image)">
+                        <div class="flex size-full flex-col items-center justify-center gap-[1cqw] text-[2cqw] opacity-50">
+                            <svg aria-hidden="true" class="size-[4cqw]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="2" x2="22" y1="2" y2="22"/>
+  <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/>
+  <line x1="13.5" x2="6" y1="13.5" y2="21"/>
+  <line x1="18" x2="21" y1="12" y2="15"/>
+  <path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"/>
+  <path d="M21 15V5a2 2 0 0 0-2-2H9"/>
+</svg>                            No image yet
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>
+                </template>
+            </div>
+            <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Presenter notes</label>
+                <textarea data-slot="textarea"
+                rows="3" dir="auto" x-model="slide.notes" placeholder="What to say on this slide" :readonly="readOnly" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+</div>
+        </div>
+        <div class="flex min-w-0 flex-col gap-4 rounded-card border border-border bg-card p-3">
+            <p class="text-label text-foreground" x-text="$nq.t('Slide ' + n(index + 1), 'الشريحة ' + n(index + 1))"></p>
+            <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Layout</label>
+                <div data-slot="native-select" class="relative w-full min-w-0">
+    <select           class="w-full min-w-0 appearance-none rounded-control border border-input bg-card ps-3 pe-9 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control" x-model="slide.layout" :disabled="readOnly">
+                        <option value="title">Title</option>
+                                            <option value="section">Section</option>
+                                            <option value="content">Content</option>
+                                            <option value="two-column">Two columns</option>
+                                            <option value="quote">Quote</option>
+                                            <option value="image">Image</option>
+                                            <option value="blank">Blank</option>
+    </select>
+    <svg aria-hidden="true" class="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></div>
+</div>
+            <div class="flex flex-col gap-1.5">
+                <span :id="$id('nq-presentation', 'theme')" class="text-label text-foreground">Theme</span>
+                <div role="group" :aria-labelledby="$id('nq-presentation', 'theme')" class="flex flex-wrap gap-1">
+                                            <button data-slot="button"
+     type="button"                     :variant="&#039;light&#039; === (slide.theme ?? &#039;light&#039;) ? &#039;primary&#039; : &#039;secondary&#039;" :aria-pressed="&#039;light&#039; === (slide.theme ?? &#039;light&#039;)" :disabled="readOnly" x-on:click="slide.theme = &#039;light&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Light</button>
+                                            <button data-slot="button"
+     type="button"                     :variant="&#039;dark&#039; === (slide.theme ?? &#039;light&#039;) ? &#039;primary&#039; : &#039;secondary&#039;" :aria-pressed="&#039;dark&#039; === (slide.theme ?? &#039;light&#039;)" :disabled="readOnly" x-on:click="slide.theme = &#039;dark&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Dark</button>
+                                            <button data-slot="button"
+     type="button"                     :variant="&#039;brand&#039; === (slide.theme ?? &#039;light&#039;) ? &#039;primary&#039; : &#039;secondary&#039;" :aria-pressed="&#039;brand&#039; === (slide.theme ?? &#039;light&#039;)" :disabled="readOnly" x-on:click="slide.theme = &#039;brand&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Brand</button>
+                                    </div>
+            </div>
+            <div x-show="slide && slide.layout === 'image'" x-cloak style="display: none" class="flex flex-col gap-4">
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Image URL</label>
+                    <input data-slot="input" type="text"
+     dir="ltr"                 x-model="slide.image" placeholder="https://" :readonly="readOnly" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                    <p class="mt-1 text-caption text-muted-foreground">Use an https address or a site-relative path.</p>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Image description</label>
+                    <input data-slot="input" type="text"
+                    dir="auto" x-model="slide.imageAlt" :readonly="readOnly" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+</div>
+            </div>
+        </div>
+    </div>
+    <div class="sr-only" role="status" aria-live="polite" x-text="announce"></div>
+    <template x-teleport="body">
+    <div data-slot="deck-player" x-show="playing" x-cloak style="display: none" role="dialog" aria-modal="true" aria-label="Presentation player"
+        dir="ltr" tabindex="-1" x-trap.noscroll="playing"
+        x-on:keydown="onPlayerKey($event)" x-on:pointermove="wake()"
+        class="fixed inset-0 z-[70] flex flex-col bg-nq-fg text-nq-bg outline-none">
+        <p class="sr-only">Arrow keys move between slides, N shows notes, F toggles full screen, Esc exits.</p>
+        <div role="progressbar" aria-label="Presentation progress" aria-valuemin="1" :aria-valuemax="Math.max(1, count)" :aria-valuenow="count ? pIndex + 1 : 0" :aria-valuetext="slideOfText()"
+            class="h-1 w-full shrink-0 bg-nq-bg/15">
+            <div class="h-full bg-primary transition-[width] duration-200 ease-nq" :style="'width: ' + progress()"></div>
+        </div>
+        <div data-slot="deck-player-stage" tabindex="-1" style="touch-action: pan-y"
+            class="relative flex min-h-0 flex-1 items-center justify-center p-3 outline-none sm:p-6"
+            x-on:pointerdown="swipeStart($event)" x-on:pointerup="swipeEnd($event)" x-on:pointercancel="swipeCancel()">
+            <template x-for="cur in [playerSlide()]" :key="cur.id + pIndex">
+                <div x-show="count > 0" class="w-full" :style="stageStyle()">
+                    <div data-slot="slide" :data-layout="cur.layout"     :class="themeClass(cur)"
+    class="@container relative aspect-video w-full overflow-hidden rounded-card shadow-floating">
+    <div class="absolute inset-0 p-[6cqw]">
+        <template x-if="cur.layout === 'title'">
+            <div class="flex h-full flex-col justify-center gap-[2cqw]">
+                <template x-if="lines(cur.title).length"><p dir="auto" class="whitespace-pre-line text-start text-[6.4cqw] leading-[1.1] font-semibold" x-text="cur.title"></p></template>
+                <template x-if="lines(cur.subtitle).length"><p dir="auto" class="whitespace-pre-line text-start text-[2.8cqw] leading-snug opacity-75" x-text="cur.subtitle"></p></template>
+            </div>
+        </template>
+        <template x-if="cur.layout === 'section'">
+            <div class="flex h-full flex-col justify-end gap-[1.5cqw]">
+                <template x-if="lines(cur.title).length"><p dir="auto" class="whitespace-pre-line text-start text-[5.6cqw] leading-[1.1] font-semibold" x-text="cur.title"></p></template>
+                <template x-if="lines(cur.subtitle).length"><p dir="auto" class="whitespace-pre-line text-start text-[2.4cqw] leading-snug opacity-75" x-text="cur.subtitle"></p></template>
+            </div>
+        </template>
+        <template x-if="cur.layout === 'content'">
+            <div class="flex h-full flex-col gap-[3cqw]">
+                <template x-if="lines(cur.title).length"><p dir="auto" class="whitespace-pre-line text-start text-[4.2cqw] leading-[1.15] font-semibold" x-text="cur.title"></p></template>
+                <template x-if="lines(cur.body).length"><ul dir="auto" class="list-disc space-y-[1cqw] ps-[3cqw] text-start marker:opacity-60 text-[2.6cqw] leading-snug"><template x-for="(l, i) in lines(cur.body)" :key="i + l"><li x-text="l"></li></template></ul></template>
+            </div>
+        </template>
+        <template x-if="cur.layout === 'two-column'">
+            <div class="flex h-full flex-col gap-[3cqw]">
+                <template x-if="lines(cur.title).length"><p dir="auto" class="whitespace-pre-line text-start text-[4.2cqw] leading-[1.15] font-semibold" x-text="cur.title"></p></template>
+                <div class="grid min-h-0 flex-1 grid-cols-2 gap-[4cqw]">
+                    <template x-if="lines(cur.body).length"><ul dir="auto" class="list-disc space-y-[1cqw] ps-[3cqw] text-start marker:opacity-60 text-[2.3cqw] leading-snug"><template x-for="(l, i) in lines(cur.body)" :key="i + l"><li x-text="l"></li></template></ul></template>
+                    <template x-if="lines(cur.body2).length"><ul dir="auto" class="list-disc space-y-[1cqw] ps-[3cqw] text-start marker:opacity-60 text-[2.3cqw] leading-snug"><template x-for="(l, i) in lines(cur.body2)" :key="i + l"><li x-text="l"></li></template></ul></template>
+                </div>
+            </div>
+        </template>
+        <template x-if="cur.layout === 'quote'">
+            <div class="flex h-full flex-col justify-center gap-[3cqw] ps-[3cqw]">
+                <template x-if="lines(cur.body).length"><p dir="auto" class="whitespace-pre-line text-start text-[3.8cqw] leading-[1.25] font-medium" x-text="cur.body"></p></template>
+                <template x-if="lines(cur.subtitle).length"><p dir="auto" class="whitespace-pre-line text-start text-[2.2cqw] opacity-70" x-text="cur.subtitle"></p></template>
+            </div>
+        </template>
+        <template x-if="cur.layout === 'image'">
+            <div class="flex h-full flex-col gap-[2.5cqw]">
+                <template x-if="lines(cur.title).length"><p dir="auto" class="whitespace-pre-line text-start text-[4.2cqw] leading-[1.15] font-semibold" x-text="cur.title"></p></template>
+                <div class="relative min-h-0 flex-1 overflow-hidden rounded-[1cqw] border border-current/15 bg-current/5">
+                    <template x-if="safeImage(cur.image)">
+                        <img :src="safeImage(cur.image)" :alt="cur.imageAlt ?? ''" class="size-full object-cover" draggable="false">
+                    </template>
+                    <template x-if="!safeImage(cur.image)">
+                        <div class="flex size-full flex-col items-center justify-center gap-[1cqw] text-[2cqw] opacity-50">
+                            <svg aria-hidden="true" class="size-[4cqw]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="2" x2="22" y1="2" y2="22"/>
+  <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/>
+  <line x1="13.5" x2="6" y1="13.5" y2="21"/>
+  <line x1="18" x2="21" y1="12" y2="15"/>
+  <path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"/>
+  <path d="M21 15V5a2 2 0 0 0-2-2H9"/>
+</svg>                            No image yet
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>
+                </div>
+            </template>
+            <p x-show="count === 0" x-cloak style="display: none" class="text-body text-nq-bg/70">This presentation has no slides.</p>
+        </div>
+        <div class="sr-only" role="status" aria-live="polite" x-text="announceText()"></div>
+        <section x-show="notes" x-cloak style="display: none" aria-label="Presenter notes"
+            class="grid max-h-[13rem] shrink-0 grid-cols-[minmax(0,1fr)] gap-4 overflow-y-auto border-t border-nq-bg/15 bg-nq-fg p-4 sm:grid-cols-[minmax(0,1fr)_14rem]">
+            <div class="min-w-0">
+                <p class="mb-1 text-caption font-medium text-nq-bg/60">Presenter notes</p>
+                <p dir="auto" class="whitespace-pre-line text-start text-body text-nq-bg" x-show="(playerSlide().notes ?? '').trim() !== ''" x-text="playerSlide().notes"></p>
+                <p dir="auto" class="text-start text-body text-nq-bg/50" x-show="(playerSlide().notes ?? '').trim() === ''">No notes for this slide.</p>
+            </div>
+            <div class="hidden min-w-0 sm:block">
+                <p class="mb-1 text-caption font-medium text-nq-bg/60">Up next</p>
+                <template x-for="nx in [upNext()]" :key="nx ? nx.id : 'end'">
+                    <div>
+                        <div x-show="nx"><div data-slot="slide" :data-layout="(upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).layout"  aria-hidden="true"     :class="themeClass((upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }))"
+    class="@container relative aspect-video w-full overflow-hidden rounded-control border border-nq-bg/20">
+    <div class="absolute inset-0 p-[6cqw]">
+        <template x-if="(upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).layout === 'title'">
+            <div class="flex h-full flex-col justify-center gap-[2cqw]">
+                <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).title).length"><p dir="auto" class="whitespace-pre-line text-start text-[6.4cqw] leading-[1.1] font-semibold" x-text="(upNext() ?? { layout: 'blank', title: '' }).title"></p></template>
+                <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).subtitle).length"><p dir="auto" class="whitespace-pre-line text-start text-[2.8cqw] leading-snug opacity-75" x-text="(upNext() ?? { layout: 'blank', title: '' }).subtitle"></p></template>
+            </div>
+        </template>
+        <template x-if="(upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).layout === 'section'">
+            <div class="flex h-full flex-col justify-end gap-[1.5cqw]">
+                <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).title).length"><p dir="auto" class="whitespace-pre-line text-start text-[5.6cqw] leading-[1.1] font-semibold" x-text="(upNext() ?? { layout: 'blank', title: '' }).title"></p></template>
+                <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).subtitle).length"><p dir="auto" class="whitespace-pre-line text-start text-[2.4cqw] leading-snug opacity-75" x-text="(upNext() ?? { layout: 'blank', title: '' }).subtitle"></p></template>
+            </div>
+        </template>
+        <template x-if="(upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).layout === 'content'">
+            <div class="flex h-full flex-col gap-[3cqw]">
+                <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).title).length"><p dir="auto" class="whitespace-pre-line text-start text-[4.2cqw] leading-[1.15] font-semibold" x-text="(upNext() ?? { layout: 'blank', title: '' }).title"></p></template>
+                <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).body).length"><ul dir="auto" class="list-disc space-y-[1cqw] ps-[3cqw] text-start marker:opacity-60 text-[2.6cqw] leading-snug"><template x-for="(l, i) in lines((upNext() ?? { layout: 'blank', title: '' }).body)" :key="i + l"><li x-text="l"></li></template></ul></template>
+            </div>
+        </template>
+        <template x-if="(upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).layout === 'two-column'">
+            <div class="flex h-full flex-col gap-[3cqw]">
+                <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).title).length"><p dir="auto" class="whitespace-pre-line text-start text-[4.2cqw] leading-[1.15] font-semibold" x-text="(upNext() ?? { layout: 'blank', title: '' }).title"></p></template>
+                <div class="grid min-h-0 flex-1 grid-cols-2 gap-[4cqw]">
+                    <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).body).length"><ul dir="auto" class="list-disc space-y-[1cqw] ps-[3cqw] text-start marker:opacity-60 text-[2.3cqw] leading-snug"><template x-for="(l, i) in lines((upNext() ?? { layout: 'blank', title: '' }).body)" :key="i + l"><li x-text="l"></li></template></ul></template>
+                    <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).body2).length"><ul dir="auto" class="list-disc space-y-[1cqw] ps-[3cqw] text-start marker:opacity-60 text-[2.3cqw] leading-snug"><template x-for="(l, i) in lines((upNext() ?? { layout: 'blank', title: '' }).body2)" :key="i + l"><li x-text="l"></li></template></ul></template>
+                </div>
+            </div>
+        </template>
+        <template x-if="(upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).layout === 'quote'">
+            <div class="flex h-full flex-col justify-center gap-[3cqw] ps-[3cqw]">
+                <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).body).length"><p dir="auto" class="whitespace-pre-line text-start text-[3.8cqw] leading-[1.25] font-medium" x-text="(upNext() ?? { layout: 'blank', title: '' }).body"></p></template>
+                <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).subtitle).length"><p dir="auto" class="whitespace-pre-line text-start text-[2.2cqw] opacity-70" x-text="(upNext() ?? { layout: 'blank', title: '' }).subtitle"></p></template>
+            </div>
+        </template>
+        <template x-if="(upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).layout === 'image'">
+            <div class="flex h-full flex-col gap-[2.5cqw]">
+                <template x-if="lines((upNext() ?? { layout: 'blank', title: '' }).title).length"><p dir="auto" class="whitespace-pre-line text-start text-[4.2cqw] leading-[1.15] font-semibold" x-text="(upNext() ?? { layout: 'blank', title: '' }).title"></p></template>
+                <div class="relative min-h-0 flex-1 overflow-hidden rounded-[1cqw] border border-current/15 bg-current/5">
+                    <template x-if="safeImage((upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).image)">
+                        <img :src="safeImage((upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).image)" :alt="(upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).imageAlt ?? ''" class="size-full object-cover" draggable="false">
+                    </template>
+                    <template x-if="!safeImage((upNext() ?? { layout: &#039;blank&#039;, title: &#039;&#039; }).image)">
+                        <div class="flex size-full flex-col items-center justify-center gap-[1cqw] text-[2cqw] opacity-50">
+                            <svg aria-hidden="true" class="size-[4cqw]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="2" x2="22" y1="2" y2="22"/>
+  <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/>
+  <line x1="13.5" x2="6" y1="13.5" y2="21"/>
+  <line x1="18" x2="21" y1="12" y2="15"/>
+  <path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"/>
+  <path d="M21 15V5a2 2 0 0 0-2-2H9"/>
+</svg>                            No image yet
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>
+</div>
+                        <div x-show="!nx" x-cloak style="display: none" class="flex aspect-video items-center justify-center rounded-control border border-dashed border-nq-bg/30 text-caption text-nq-bg/60">End of the presentation</div>
+                    </div>
+                </template>
+            </div>
+        </section>
+        <div :class="chrome ? 'opacity-100' : 'opacity-0 focus-within:opacity-100 hover:opacity-100'" class="flex shrink-0 items-center gap-2 px-3 py-2 transition-opacity duration-200 ease-nq sm:px-4">
+            <button data-slot="button"
+     type="button"                     aria-label="Close player" title="Close player" x-on:click="closePlayer()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 size-control-sm p-0 text-nq-bg hover:bg-nq-bg/10">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+            <span dir="ltr" class="text-caption tabular-nums text-nq-bg/60" aria-label="Elapsed time" x-text="elapsedText()"></span>
+            <div class="mx-auto flex items-center gap-2">
+                <button data-slot="button"
+     type="button"                     aria-label="Previous slide" :disabled="atStart()" x-on:click="go(pIndex - 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 size-control-sm p-0 text-nq-bg hover:bg-nq-bg/10">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg></button>
+                <span class="min-w-16 text-center text-label tabular-nums text-nq-bg" aria-hidden="true" x-text="counterText()"></span>
+                <button data-slot="button"
+     type="button"                     aria-label="Next slide" :disabled="atEnd()" x-on:click="go(pIndex + 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 size-control-sm p-0 text-nq-bg hover:bg-nq-bg/10">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></button>
+            </div>
+            <button data-slot="button"
+     type="button"                     :aria-label="notes ? $nq.t(&#039;Hide notes&#039;, &#039;إخفاء الملاحظات&#039;) : $nq.t(&#039;Show notes&#039;, &#039;إظهار الملاحظات&#039;)" :aria-pressed="notes" :class="notes ? &#039;bg-nq-bg/15&#039; : &#039;&#039;" x-on:click="notes = !notes" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 size-control-sm p-0 text-nq-bg hover:bg-nq-bg/10">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 6h4"/>
+  <path d="M2 10h4"/>
+  <path d="M2 14h4"/>
+  <path d="M2 18h4"/>
+  <rect width="16" height="20" x="4" y="2" rx="2"/>
+  <path d="M9.5 8h5"/>
+  <path d="M9.5 12H16"/>
+  <path d="M9.5 16H14"/>
+</svg></button>
+            <button data-slot="button"
+     type="button"                     :aria-label="isFull ? $nq.t(&#039;Exit full screen&#039;, &#039;الخروج من ملء الشاشة&#039;) : $nq.t(&#039;Full screen&#039;, &#039;ملء الشاشة&#039;)" x-on:click="toggleFullscreen()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 size-control-sm p-0 text-nq-bg hover:bg-nq-bg/10">
+        <svg x-show="isFull" x-cloak="1" style="display: none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m14 10 7-7"/>
+  <path d="M20 10h-6V4"/>
+  <path d="m3 21 7-7"/>
+  <path d="M4 14h6v6"/>
+</svg>                <svg x-show="!isFull" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="m21 3-7 7"/>
+  <path d="m3 21 7-7"/>
+  <path d="M9 21H3v-6"/>
+</svg></button>
+        </div>
+    </div>
+</template>
+</div>

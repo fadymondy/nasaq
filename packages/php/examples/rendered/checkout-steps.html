@@ -1,0 +1,492 @@
+<div x-data="{ async charge({ order, resolve, reject }) {
+        try {
+            await fetch('/api/subscribe', { method: 'POST', body: JSON.stringify(order) });
+            resolve({ reference: 'SUB-1042' });
+        } catch (e) {
+            reject(e);
+        }
+    } }"
+    x-on:nq-checkout-complete.prevent="charge($event.detail)">
+    <div data-slot="checkout-steps" data-step="plan" x-effect="$el.setAttribute('data-step', step)" x-data="nqCheckoutSteps(JSON.parse('{\u0022plans\u0022:[{\u0022id\u0022:\u0022starter\u0022,\u0022name\u0022:\u0022Starter\u0022,\u0022monthlyPrice\u0022:19,\u0022yearlyPrice\u0022:190,\u0022features\u0022:[\u00223 projects\u0022]},{\u0022id\u0022:\u0022team\u0022,\u0022name\u0022:\u0022Team\u0022,\u0022monthlyPrice\u0022:49,\u0022yearlyPrice\u0022:490,\u0022badge\u0022:\u0022Most popular\u0022,\u0022highlighted\u0022:true}],\u0022currency\u0022:\u0022USD\u0022,\u0022taxRate\u0022:0.15,\u0022taxLabel\u0022:\u0022VAT\u0022,\u0022defaultPlanId\u0022:\u0022team\u0022,\u0022defaultInterval\u0022:\u0022month\u0022,\u0022defaultBilling\u0022:{\u0022name\u0022:\u0022\u0022,\u0022email\u0022:\u0022\u0022,\u0022company\u0022:\u0022\u0022,\u0022taxId\u0022:\u0022\u0022,\u0022country\u0022:\u0022SA\u0022,\u0022address\u0022:\u0022\u0022,\u0022city\u0022:\u0022\u0022,\u0022postalCode\u0022:\u0022\u0022},\u0022countries\u0022:[{\u0022value\u0022:\u0022SA\u0022,\u0022label\u0022:\u0022Saudi Arabia\u0022},{\u0022value\u0022:\u0022AE\u0022,\u0022label\u0022:\u0022United Arab Emirates\u0022},{\u0022value\u0022:\u0022EG\u0022,\u0022label\u0022:\u0022Egypt\u0022},{\u0022value\u0022:\u0022KW\u0022,\u0022label\u0022:\u0022Kuwait\u0022},{\u0022value\u0022:\u0022US\u0022,\u0022label\u0022:\u0022United States\u0022},{\u0022value\u0022:\u0022GB\u0022,\u0022label\u0022:\u0022United Kingdom\u0022}],\u0022paymentMethods\u0022:[\u0022card\u0022,\u0022bank\u0022],\u0022defaultStep\u0022:\u0022plan\u0022}'))" x-id="['nq-checkout']"
+    class="@container flex flex-col gap-6">
+    <nav aria-label="Checkout steps" class="flex flex-col gap-2">
+        <ol data-slot="stepper" data-orientation="horizontal" class="m-0 flex list-none flex-row items-start p-0">
+                            <li data-slot="stepper-item" data-status="current" x-effect="$el.setAttribute('data-status', status(0))" class="group/step flex flex-1 items-start last:flex-none">
+                    <button type="button" data-slot="stepper-step"  aria-current="step"  x-effect="$el.disabled = ! canGo(0); status(0) === 'current' ? $el.setAttribute('aria-current', 'step') : $el.removeAttribute('aria-current')"
+                         disabled  x-on:click="goTo(0)"
+                        class="flex shrink-0 items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5 border-border bg-background text-muted-foreground group-data-[status=complete]/step:border-transparent group-data-[status=complete]/step:bg-primary group-data-[status=complete]/step:text-primary-foreground group-data-[status=current]/step:border-nq-focus group-data-[status=current]/step:bg-background group-data-[status=current]/step:text-foreground group-data-[status=current]/step:ring-2 group-data-[status=current]/step:ring-nq-focus/30 group-data-[status=upcoming]/step:border-border group-data-[status=upcoming]/step:bg-background group-data-[status=upcoming]/step:text-muted-foreground">
+                            <svg aria-hidden="true" x-show="status(0) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <span x-show="status(0) !== 'complete'" ><bdi data-slot="num" data-numeric="" class="tabular-nums">1</bdi>
+</span>
+                        </span>
+                        <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                            <span class="text-label text-foreground">
+                                <span class="max-sm:sr-only">Plan</span>
+                                <span class="sr-only" x-text="' (' + statusText(0) + ')'"> (Current step)</span>
+                            </span>
+                        </span>
+                    </button>
+                    <span aria-hidden="true" data-slot="stepper-connector"
+                        class="mx-3 mt-3.5 h-px min-w-6 flex-1 rounded-full bg-border transition-colors duration-150 ease-nq group-last/step:hidden group-data-[status=complete]/step:bg-primary"></span>
+                </li>
+                            <li data-slot="stepper-item" data-status="upcoming" x-effect="$el.setAttribute('data-status', status(1))" class="group/step flex flex-1 items-start last:flex-none">
+                    <button type="button" data-slot="stepper-step"  x-effect="$el.disabled = ! canGo(1); status(1) === 'current' ? $el.setAttribute('aria-current', 'step') : $el.removeAttribute('aria-current')"
+                         disabled  x-on:click="goTo(1)"
+                        class="flex shrink-0 items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5 border-border bg-background text-muted-foreground group-data-[status=complete]/step:border-transparent group-data-[status=complete]/step:bg-primary group-data-[status=complete]/step:text-primary-foreground group-data-[status=current]/step:border-nq-focus group-data-[status=current]/step:bg-background group-data-[status=current]/step:text-foreground group-data-[status=current]/step:ring-2 group-data-[status=current]/step:ring-nq-focus/30 group-data-[status=upcoming]/step:border-border group-data-[status=upcoming]/step:bg-background group-data-[status=upcoming]/step:text-muted-foreground">
+                            <svg aria-hidden="true" x-show="status(1) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <span x-show="status(1) !== 'complete'" ><bdi data-slot="num" data-numeric="" class="tabular-nums">2</bdi>
+</span>
+                        </span>
+                        <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                            <span class="text-label text-foreground">
+                                <span class="max-sm:sr-only">Billing details</span>
+                                <span class="sr-only" x-text="' (' + statusText(1) + ')'"> (Upcoming)</span>
+                            </span>
+                        </span>
+                    </button>
+                    <span aria-hidden="true" data-slot="stepper-connector"
+                        class="mx-3 mt-3.5 h-px min-w-6 flex-1 rounded-full bg-border transition-colors duration-150 ease-nq group-last/step:hidden group-data-[status=complete]/step:bg-primary"></span>
+                </li>
+                            <li data-slot="stepper-item" data-status="upcoming" x-effect="$el.setAttribute('data-status', status(2))" class="group/step flex flex-1 items-start last:flex-none">
+                    <button type="button" data-slot="stepper-step"  x-effect="$el.disabled = ! canGo(2); status(2) === 'current' ? $el.setAttribute('aria-current', 'step') : $el.removeAttribute('aria-current')"
+                         disabled  x-on:click="goTo(2)"
+                        class="flex shrink-0 items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5 border-border bg-background text-muted-foreground group-data-[status=complete]/step:border-transparent group-data-[status=complete]/step:bg-primary group-data-[status=complete]/step:text-primary-foreground group-data-[status=current]/step:border-nq-focus group-data-[status=current]/step:bg-background group-data-[status=current]/step:text-foreground group-data-[status=current]/step:ring-2 group-data-[status=current]/step:ring-nq-focus/30 group-data-[status=upcoming]/step:border-border group-data-[status=upcoming]/step:bg-background group-data-[status=upcoming]/step:text-muted-foreground">
+                            <svg aria-hidden="true" x-show="status(2) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <span x-show="status(2) !== 'complete'" ><bdi data-slot="num" data-numeric="" class="tabular-nums">3</bdi>
+</span>
+                        </span>
+                        <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                            <span class="text-label text-foreground">
+                                <span class="max-sm:sr-only">Payment method</span>
+                                <span class="sr-only" x-text="' (' + statusText(2) + ')'"> (Upcoming)</span>
+                            </span>
+                        </span>
+                    </button>
+                    <span aria-hidden="true" data-slot="stepper-connector"
+                        class="mx-3 mt-3.5 h-px min-w-6 flex-1 rounded-full bg-border transition-colors duration-150 ease-nq group-last/step:hidden group-data-[status=complete]/step:bg-primary"></span>
+                </li>
+                            <li data-slot="stepper-item" data-status="upcoming" x-effect="$el.setAttribute('data-status', status(3))" class="group/step flex flex-1 items-start last:flex-none">
+                    <button type="button" data-slot="stepper-step"  x-effect="$el.disabled = ! canGo(3); status(3) === 'current' ? $el.setAttribute('aria-current', 'step') : $el.removeAttribute('aria-current')"
+                         disabled  x-on:click="goTo(3)"
+                        class="flex shrink-0 items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5 border-border bg-background text-muted-foreground group-data-[status=complete]/step:border-transparent group-data-[status=complete]/step:bg-primary group-data-[status=complete]/step:text-primary-foreground group-data-[status=current]/step:border-nq-focus group-data-[status=current]/step:bg-background group-data-[status=current]/step:text-foreground group-data-[status=current]/step:ring-2 group-data-[status=current]/step:ring-nq-focus/30 group-data-[status=upcoming]/step:border-border group-data-[status=upcoming]/step:bg-background group-data-[status=upcoming]/step:text-muted-foreground">
+                            <svg aria-hidden="true" x-show="status(3) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <span x-show="status(3) !== 'complete'" ><bdi data-slot="num" data-numeric="" class="tabular-nums">4</bdi>
+</span>
+                        </span>
+                        <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                            <span class="text-label text-foreground">
+                                <span class="max-sm:sr-only">Review</span>
+                                <span class="sr-only" x-text="' (' + statusText(3) + ')'"> (Upcoming)</span>
+                            </span>
+                        </span>
+                    </button>
+                    <span aria-hidden="true" data-slot="stepper-connector"
+                        class="mx-3 mt-3.5 h-px min-w-6 flex-1 rounded-full bg-border transition-colors duration-150 ease-nq group-last/step:hidden group-data-[status=complete]/step:bg-primary"></span>
+                </li>
+                    </ol>
+        <p class="text-caption text-muted-foreground sm:hidden" x-show="step !== 'success'" x-text="stepOfText()">Step 1 of 4 · Plan</p>
+    </nav>
+    <section aria-live="polite" x-show="step === 'success'" style="display: none"
+        class="mx-auto flex w-full max-w-lg flex-col items-center gap-4 rounded-card bg-nq-surface px-6 py-12 text-center">
+        <span class="inline-flex size-12 items-center justify-center rounded-full bg-nq-success-soft text-nq-success-text">
+            <svg aria-hidden="true" class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        </span>
+        <h2 x-ref="successHeading" tabindex="-1" class="text-h2 text-foreground outline-none">You are all set</h2>
+        <p class="text-body text-muted-foreground" x-text="text('successDescription', plan.name)">Your Team subscription is active. A receipt is on its way to your email.</p>
+        <p class="text-body-sm text-muted-foreground" x-show="reference" style="display: none">
+            Reference: <bdi dir="ltr" class="font-mono text-foreground" x-text="reference"></bdi>
+        </p>
+        <p class="text-body-sm text-foreground">
+            <bdi class="tabular-nums" x-text="money(total)">$56.35</bdi> · <span x-text="interval === 'year' ? text('perYear') : text('perMonth')">per month</span>
+        </p>
+        <button data-slot="button"
+     type="button"                     x-show="config.done" x-on:click="done()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Go to dashboard</button>
+    </section>
+    <div x-show="step !== 'success'" class="grid gap-6 @3xl:grid-cols-[minmax(0,1fr)_20rem]">
+        <section class="flex min-w-0 flex-col gap-5" x-bind:aria-labelledby="$id('nq-checkout') + '-h'">
+            <header class="flex flex-col gap-1">
+                <h2 x-bind:id="$id('nq-checkout') + '-h'" x-ref="heading" tabindex="-1" class="text-h2 text-foreground outline-none" x-text="heading">Choose your plan</h2>
+                <p class="text-body-sm text-muted-foreground" x-text="description">You can change or cancel it at any time.</p>
+            </header>
+            <div x-show="step === 'plan'"  class="flex flex-col gap-5">
+                <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022month\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Billing period" x-model="intervalValue" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('month')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Monthly</button>
+                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('year')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Yearly
+                                                    <span data-slot="badge"     x-text="saveText" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text ms-1">Save 17%</span></button>
+</div>
+                <div data-slot="plan-grid" class="@container">
+    <div class="grid grid-cols-1 gap-x-4 gap-y-7 pt-3 @3xl:auto-cols-fr @3xl:grid-flow-col"><article data-slot="plan-card"   aria-labelledby="nq-plan-starter"
+    class="relative flex min-w-0 flex-col gap-5 rounded-card p-6 bg-nq-surface">
+        <div class="flex flex-col gap-1">
+        <h3 id="nq-plan-starter" class="text-h3 text-foreground">Starter</h3>
+            </div>
+    <div class="flex flex-col gap-1">
+        <span data-slot="price" class="inline-flex flex-wrap items-baseline gap-x-1.5 text-foreground text-body-sm">
+                                    <span>
+                                        <bdi class="tabular-nums text-h2 font-semibold tracking-tight" x-text="money(planAmount('starter'))">$19.00</bdi>
+                                        <span class="text-muted-foreground">/mo</span>
+                                    </span>
+                                </span>
+                                <p class="text-caption text-muted-foreground" x-text="planNote('starter')">Billed monthly</p>
+            </div>
+            <div class="flex flex-col gap-2">
+            <button data-slot="button"
+     type="button"                     aria-pressed="true" data-plan="starter" x-show="planId === $el.dataset.plan" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Selected</button>
+                                <button data-slot="button"
+     type="button"                     aria-pressed="false" data-plan="starter" x-show="planId !== $el.dataset.plan" x-on:click="choose($el.dataset.plan)" style="" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Choose plan</button>
+                    </div>
+                <div class="flex flex-col gap-3 border-t border-border pt-5">
+                        <ul class="flex flex-col gap-2.5">
+                                    <li  data-included  class="flex items-start gap-2 text-body-sm text-foreground">
+                                                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-brand" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                                <span>
+                                                            3 projects
+                                                                                </span>
+                    </li>
+                            </ul>
+        </div>
+    </article>
+                                                                    <article data-slot="plan-card"  data-highlighted   aria-labelledby="nq-plan-team"
+    class="relative flex min-w-0 flex-col gap-5 rounded-card p-6 bg-[color-mix(in_oklab,var(--nq-brand)_9%,var(--nq-surface))] shadow-lg ring-2 ring-nq-brand/50">
+            <span data-slot="plan-card-badge"
+            class="absolute -top-3 start-6 inline-flex h-6 items-center rounded-full border px-2.5 text-caption font-medium whitespace-nowrap border-transparent bg-primary text-primary-foreground">Most popular</span>
+        <div class="flex flex-col gap-1">
+        <h3 id="nq-plan-team" class="text-h3 text-foreground">Team</h3>
+            </div>
+    <div class="flex flex-col gap-1">
+        <span data-slot="price" class="inline-flex flex-wrap items-baseline gap-x-1.5 text-foreground text-body-sm">
+                                    <span>
+                                        <bdi class="tabular-nums text-h2 font-semibold tracking-tight" x-text="money(planAmount('team'))">$49.00</bdi>
+                                        <span class="text-muted-foreground">/mo</span>
+                                    </span>
+                                </span>
+                                <p class="text-caption text-muted-foreground" x-text="planNote('team')">Billed monthly</p>
+            </div>
+            <div class="flex flex-col gap-2">
+            <button data-slot="button"
+     type="button"                     aria-pressed="true" data-plan="team" x-show="planId === $el.dataset.plan" style="" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Selected</button>
+                                <button data-slot="button"
+     type="button"                     aria-pressed="false" data-plan="team" x-show="planId !== $el.dataset.plan" x-on:click="choose($el.dataset.plan)" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Choose plan</button>
+                    </div>
+        </article></div>
+</div>
+            </div>
+            <form novalidate x-show="step === 'billing'"  style="display: none"  x-on:submit.prevent="next()" class="grid gap-x-4 gap-y-5 sm:grid-cols-2">
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="billingErrors.name" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Full name</label>
+                    <input data-slot="input" type="text"
+         name="name"             autocomplete="name" x-model="billing.name" x-on:input="clearBilling(&#039;name&#039;)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="billingErrors.name" class="text-caption text-nq-danger-text"></div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="billingErrors.email" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Billing email</label>
+                    <input data-slot="input" type="email"
+     dir="ltr"      name="email"             inputmode="email" autocomplete="email" x-model="billing.email" x-on:input="clearBilling(&#039;email&#039;)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="billingErrors.email" class="text-caption text-nq-danger-text"></div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="billingErrors.company" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Company (optional)</label>
+                    <input data-slot="input" type="text"
+         name="company"             autocomplete="organization" x-model="billing.company" x-on:input="clearBilling(&#039;company&#039;)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="billingErrors.company" class="text-caption text-nq-danger-text"></div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="billingErrors.taxId" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Tax number (optional)</label>
+                    <input data-slot="input" type="text"
+     dir="ltr"      name="taxId"             x-model="billing.taxId" x-on:input="clearBilling(&#039;taxId&#039;)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="billingErrors.taxId" class="text-caption text-nq-danger-text"></div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="billingErrors.country" class="flex flex-col gap-1.5 sm:col-span-2">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Country</label>
+                    <div data-slot="select" x-data="nqSelect('SA', false)" x-modelable="value" x-id="['nq-select']" x-model="billing.country" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                        <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('SA', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('SA')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Saudi Arabia</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('AE', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('AE')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">United Arab Emirates</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('EG', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('EG')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Egypt</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('KW', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('KW')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Kuwait</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('US', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('US')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">United States</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('GB', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('GB')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">United Kingdom</span>
+</div>
+    </div>
+</template>
+    </div>
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="billingErrors.country" class="text-caption text-nq-danger-text"></div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="billingErrors.address" class="flex flex-col gap-1.5 sm:col-span-2">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Street address</label>
+                    <input data-slot="input" type="text"
+         name="address"             autocomplete="street-address" x-model="billing.address" x-on:input="clearBilling(&#039;address&#039;)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="billingErrors.address" class="text-caption text-nq-danger-text"></div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="billingErrors.city" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">City</label>
+                    <input data-slot="input" type="text"
+         name="city"             autocomplete="address-level2" x-model="billing.city" x-on:input="clearBilling(&#039;city&#039;)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="billingErrors.city" class="text-caption text-nq-danger-text"></div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="billingErrors.postalCode" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Postal code</label>
+                    <input data-slot="input" type="text"
+     dir="ltr"      name="postalCode"             autocomplete="postal-code" x-model="billing.postalCode" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="billingErrors.postalCode" class="text-caption text-nq-danger-text"></div>
+</div>
+                <button type="submit" hidden></button>
+            </form>
+            <div x-show="step === 'payment'"  style="display: none" >
+                <div data-slot="payment-method-form"
+        class="flex flex-col gap-5">
+            <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('card')" x-modelable="value" x-bind="root"
+                x-model="payment.method" aria-label="Payment method" class="flex flex-col gap-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('card')"
+    aria-checked="true" tabindex="0"
+     data-checked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('card')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground">Credit or debit card</span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Visa, Mastercard, American Express and mada.</span>    </span>
+    </button>
+                                        <button type="button" role="radio" data-slot="radio-card" x-bind="radio('bank')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('bank')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground">Bank transfer</span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">We email the bank details and activate the plan when the transfer lands.</span>    </span>
+    </button>
+    </div>
+    <div x-show="payment.method === 'card'"  class="grid gap-x-4 gap-y-5 sm:grid-cols-2">
+        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="paymentErrors.number" class="flex flex-col gap-1.5 sm:col-span-2">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Card number</label>
+            <div class="relative">
+                <input data-slot="input" type="text"
+     dir="ltr"      name="cc-number"             inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" x-bind:value="payment.number" x-on:input="onNumber($event)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start pe-28">
+                <span data-slot="payment-brand" x-show="brand !== 'unknown'" style="display: none" x-text="brandName"
+                    class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground pointer-events-none absolute end-2 top-1/2 -translate-y-1/2"></span>
+            </div>
+            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="paymentErrors.number" class="text-caption text-nq-danger-text"></div>
+</div>
+        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="paymentErrors.holder" class="flex flex-col gap-1.5 sm:col-span-2">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Name on card</label>
+            <input data-slot="input" type="text"
+         name="cc-name"             autocomplete="cc-name" x-bind:value="payment.holder" x-on:input="onHolder($event)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="paymentErrors.holder" class="text-caption text-nq-danger-text"></div>
+</div>
+        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="paymentErrors.expiry" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Expiry (MM/YY)</label>
+            <input data-slot="input" type="text"
+     dir="ltr"      name="cc-exp"             inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" maxlength="5" x-bind:value="payment.expiry" x-on:input="onExpiry($event)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="paymentErrors.expiry" class="text-caption text-nq-danger-text"></div>
+</div>
+        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="paymentErrors.cvc" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Security code</label>
+            <input data-slot="input" type="text"
+     dir="ltr"      name="cc-csc"             inputmode="numeric" autocomplete="cc-csc" maxlength="4" placeholder="123" x-effect="$el.placeholder = cvcPlaceholder" x-bind:value="payment.cvc" x-on:input="onCvc($event)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="paymentErrors.cvc" class="text-caption text-nq-danger-text"></div>
+</div>
+        <p class="flex items-start gap-2 text-caption text-muted-foreground sm:col-span-2">
+            <svg aria-hidden="true" class="mt-0.5 size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</svg>            Card details are entered here for display only. Nasaq never stores or sends them.
+        </p>
+    </div>
+    <div x-show="payment.method === 'bank'"  style="display: none"  class="flex flex-col gap-3 rounded-card bg-nq-surface p-4">
+        <p class="flex items-start gap-2 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 18v-7"/>
+  <path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/>
+  <path d="M14 18v-7"/>
+  <path d="M18 18v-7"/>
+  <path d="M3 22h18"/>
+  <path d="M6 18v-7"/>
+</svg>            Your plan starts as soon as the transfer is received, usually within one working day.
+        </p>
+    </div>
+</div>
+            </div>
+            <div x-show="step === 'review'"  style="display: none"  class="flex flex-col gap-4">
+                                    <div data-slot="card" class="flex flex-col rounded-card border border-border bg-card py-4 text-card-foreground gap-3"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Plan</h3>
+                            <div class="col-start-2 row-span-2 row-start-1 self-start justify-self-end">
+                                <button data-slot="button"
+     type="button"                     x-bind:disabled="busy" data-step="plan" x-on:click="setStep($el.dataset.step)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Edit</button>
+                            </div></div>
+                        <div data-slot="card-content" class="px-4 text-body-sm text-foreground"><div class="flex items-center justify-between gap-3">
+                                    <span x-text="plan.name + ' · ' + (interval === 'year' ? text('yearly') : text('monthly'))">Team · Monthly</span>
+                                    <bdi class="tabular-nums" x-text="money(subtotal)">$49.00</bdi>
+                                </div></div></div>
+                                    <div data-slot="card" class="flex flex-col rounded-card border border-border bg-card py-4 text-card-foreground gap-3"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Billing details</h3>
+                            <div class="col-start-2 row-span-2 row-start-1 self-start justify-self-end">
+                                <button data-slot="button"
+     type="button"                     x-bind:disabled="busy" data-step="billing" x-on:click="setStep($el.dataset.step)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Edit</button>
+                            </div></div>
+                        <div data-slot="card-content" class="px-4 text-body-sm text-foreground"><address class="flex flex-col not-italic">
+                                    <span x-text="billing.name"></span>
+                                    <span x-show="billing.company" x-text="billing.company"  style="display: none" ></span>
+                                    <bdi dir="ltr" class="text-start text-muted-foreground" x-text="billing.email"></bdi>
+                                    <span class="text-muted-foreground" x-text="billingLine">Saudi Arabia</span>
+                                    <bdi dir="ltr" class="text-start text-muted-foreground" x-show="billing.taxId" x-text="billing.taxId"  style="display: none" ></bdi>
+                                </address></div></div>
+                                    <div data-slot="card" class="flex flex-col rounded-card border border-border bg-card py-4 text-card-foreground gap-3"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Payment method</h3>
+                            <div class="col-start-2 row-span-2 row-start-1 self-start justify-self-end">
+                                <button data-slot="button"
+     type="button"                     x-bind:disabled="busy" data-step="payment" x-on:click="setStep($el.dataset.step)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Edit</button>
+                            </div></div>
+                        <div data-slot="card-content" class="px-4 text-body-sm text-foreground"><span x-text="paymentLine">Card ending in ⁦⁩</span></div></div>
+                                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="termsError" class="flex flex-col gap-1.5">
+    <label class="flex items-start gap-2 text-body-sm text-foreground">
+                        <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="accepted" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 mt-0.5">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+                        <span>I agree to the terms of service and the billing policy.</span>
+                    </label>
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="termsError" class="text-caption text-nq-danger-text"></div>
+</div>
+                <p role="alert" x-show="error" x-text="error" style="display: none" class="rounded-control border border-nq-danger/40 bg-nq-danger-soft px-3 py-2 text-body-sm text-nq-danger-text"></p>
+                <span role="status" class="sr-only" x-text="busy ? text('paying') : ''"></span>
+            </div>
+            <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-between">
+                <button data-slot="button"
+     type="button"                     x-show="index &gt; 0" x-bind:disabled="busy" x-on:click="back()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Back</button>
+                <span x-show="index === 0" ></span>
+                <button data-slot="button"
+     type="button"                     x-show="step === &#039;review&#039;" x-bind:disabled="busy" x-bind:aria-busy="busy" x-on:click="pay()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <span x-show="busy" style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                    <span x-text="text('pay', money(total))">Pay $56.35</span></button>
+                <button data-slot="button"
+     type="button"                     x-show="step !== &#039;review&#039;" x-on:click="next()" style="" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Continue</button>
+            </div>
+        </section>
+        <aside data-slot="checkout-summary" aria-label="Order summary">
+            <div data-slot="card" class="flex flex-col rounded-card border border-border bg-card py-4 text-card-foreground h-fit gap-3"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground">Order summary</h2></div>
+                <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0">
+                            <p class="text-label text-foreground" x-text="plan.name">Team</p>
+                            <p class="text-caption text-muted-foreground" x-text="interval === 'year' ? text('yearly') : text('monthly')">Monthly</p>
+                        </div>
+                        <bdi class="text-label text-foreground tabular-nums" x-text="money(subtotal)">$49.00</bdi>
+                    </div>
+                    <dl class="flex flex-col gap-2 border-t border-border pt-3 text-body-sm">
+                        <div class="flex justify-between gap-3" x-show="tax > 0" >
+                            <dt class="text-muted-foreground" x-text="taxLabel">VAT</dt>
+                            <dd><bdi class="tabular-nums" x-text="money(tax)">$7.35</bdi></dd>
+                        </div>
+                        <div class="flex justify-between gap-3 text-label text-foreground">
+                            <dt>Total due today</dt>
+                            <dd><bdi class="tabular-nums" x-text="money(total)">$56.35</bdi></dd>
+                        </div>
+                    </dl></div></div>
+        </aside>
+    </div>
+</div>
+</div>

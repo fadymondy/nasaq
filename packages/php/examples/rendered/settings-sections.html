@@ -1,0 +1,144 @@
+<div x-data="{ saved: false, draft: false }"
+    x-on:nq-settings-save="$event.detail.waitUntil(new Promise((done) => setTimeout(() => { saved = draft; done(); }, 300)))"
+    x-on:nq-settings-discard="draft = saved">
+    <div data-slot="settings-sections" x-data="nqSettingsSections(JSON.parse('{\u0022groups\u0022:[{\u0022id\u0022:\u0022general\u0022,\u0022label\u0022:\u0022General\u0022,\u0022pages\u0022:[{\u0022id\u0022:\u0022notifications\u0022,\u0022label\u0022:\u0022Notifications\u0022,\u0022icon\u0022:\u0022bell\u0022,\u0022entries\u0022:[{\u0022id\u0022:\u0022email\u0022,\u0022label\u0022:\u0022Email digest\u0022}]},{\u0022id\u0022:\u0022security\u0022,\u0022label\u0022:\u0022Security\u0022,\u0022icon\u0022:\u0022shield\u0022}]}],\u0022value\u0022:\u0022notifications\u0022,\u0022dirty\u0022:0,\u0022labels\u0022:{\u0022title\u0022:\u0022Settings\u0022,\u0022description\u0022:\u0022Manage your workspace, grouped by topic.\u0022,\u0022nav\u0022:\u0022Settings sections\u0022,\u0022search\u0022:\u0022Search settings\\u2026\u0022,\u0022searchLabel\u0022:\u0022Search settings\u0022,\u0022clear\u0022:\u0022Clear search\u0022,\u0022results\u0022:\u0022{n} results\u0022,\u0022resultsOne\u0022:\u00221 result\u0022,\u0022noResults\u0022:\u0022No settings match\u0022,\u0022unsaved\u0022:\u0022{n} unsaved changes\u0022,\u0022unsavedOne\u0022:\u00221 unsaved change\u0022,\u0022unsavedSome\u0022:\u0022You have unsaved changes\u0022,\u0022save\u0022:\u0022Save changes\u0022,\u0022discard\u0022:\u0022Discard\u0022,\u0022saving\u0022:\u0022Saving\\u2026\u0022,\u0022saved\u0022:\u0022All changes saved\u0022,\u0022failed\u0022:\u0022Could not save your changes. Try again.\u0022,\u0022section\u0022:\u0022Section\u0022}}'))" x-modelable="value" x-id="['nq-settings']"
+    class="mx-auto flex w-full max-w-6xl flex-col gap-6">
+    <header class="flex flex-col gap-1">
+        <h1 class="text-h1 text-foreground">Settings</h1>
+        <p class="text-body text-muted-foreground">Manage your workspace, grouped by topic.</p>    </header>
+    <div class="grid grid-cols-[minmax(0,1fr)] gap-6 md:grid-cols-[16rem_minmax(0,1fr)] md:items-start md:gap-10">
+        <div data-slot="settings-sections-nav" class="flex min-w-0 flex-col gap-3 md:sticky md:top-4">
+                            <div class="relative">
+                    <svg aria-hidden="true" class="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                    <input data-slot="input" type="search"
+                    x-model="query" x-on:keydown.escape="clearSearch($event)" aria-label="Search settings" placeholder="Search settings…" autocomplete="off" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control ps-8 pe-8 text-body-sm [&::-webkit-search-cancel-button]:hidden">
+                    <button type="button" x-show="query" x-cloak x-on:click="query = ''" aria-label="Clear search"
+                        class="absolute end-1.5 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center rounded-control text-muted-foreground outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                    </button>
+                </div>
+            <div data-slot="settings-sections-results" x-show="q" x-cloak class="flex flex-col gap-1">
+                <p role="status" class="px-1 text-caption text-muted-foreground" x-text="resultsText"></p>
+                <ul class="flex max-h-[60vh] flex-col gap-0.5 overflow-y-auto">
+                    <template x-for="hit in hits" :key="hit.key">
+                        <li>
+                            <button type="button" x-on:click="pick(hit)"
+                                class="flex w-full flex-col items-start gap-0.5 rounded-control px-3 py-2 text-start outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span class="text-body-sm font-medium text-foreground" x-text="hit.title"></span>
+                                <span class="text-caption text-muted-foreground" x-text="hit.path"></span>
+                            </button>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+            <div x-show="!q" class="flex min-w-0 flex-col gap-3">
+                <div class="md:hidden">
+                    <div data-slot="select" x-data="nqSelect('notifications', false)" x-modelable="value" x-id="['nq-select']" x-model="value" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Section" class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                        <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-group" role="group" ><div data-slot="select-label" class="px-2.5 pt-1.5 pb-1 text-caption font-medium text-muted-foreground">General</div>
+                                                                            <div data-slot="select-item" x-bind="item('notifications', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('notifications')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Notifications</span>
+</div>
+                                                                            <div data-slot="select-item" x-bind="item('security', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('security')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Security</span>
+</div></div>
+    </div>
+</template>
+    </div>
+                </div>
+                <nav aria-label="Settings sections" class="hidden flex-col gap-4 md:flex">
+                                            <div role="group" aria-labelledby="nq-settings-01adab-general" class="flex flex-col gap-0.5">
+                            <div id="nq-settings-01adab-general" class="px-3 pb-1 text-caption font-medium text-muted-foreground">General</div>
+                                                                                            <button type="button" x-bind="nav('notifications')" data-active="true"
+                                     aria-current="page"                                                                         class="flex h-nav-row w-full min-h-[var(--nq-touch-min,0px)] items-center gap-2.5 rounded-control px-3 text-start text-body-sm text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:font-medium data-[active=true]:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
+</svg>                                    <span class="min-w-0 flex-1 truncate">Notifications</span>
+                                </button>
+                                                                                            <button type="button" x-bind="nav('security')" data-active="false"
+                                                                                                            class="flex h-nav-row w-full min-h-[var(--nq-touch-min,0px)] items-center gap-2.5 rounded-control px-3 text-start text-body-sm text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:font-medium data-[active=true]:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+</svg>                                    <span class="min-w-0 flex-1 truncate">Security</span>
+                                </button>
+                                                    </div>
+                                    </nav>
+            </div>
+        </div>
+        <div data-slot="settings-sections-content" class="flex min-w-0 flex-col gap-6">
+            <div data-section="notifications" x-bind="page('notifications')"
+        class="flex min-w-0 flex-col gap-6"><div data-slot="setting-row" data-setting-id="email"
+    class="flex flex-col gap-2 rounded-control py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6 data-[highlight=true]:bg-nq-selected data-[highlight=true]:outline-2 data-[highlight=true]:outline-offset-4 data-[highlight=true]:outline-nq-focus">
+    <div class="flex min-w-0 flex-col gap-0.5">
+        <span class="text-label text-foreground">Email digest</span>
+        <span class="text-body-sm text-muted-foreground">A weekly summary.</span>    </div>
+    <div class="flex shrink-0 items-center gap-2 sm:max-w-[50%]"><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="draft" x-effect="$dispatch(&#039;nq-settings-dirty&#039;, draft !== saved ? 1 : 0)" aria-label="Email digest" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button></div></div></div>
+        <div data-section="security" x-bind="page('security')"
+     hidden     class="flex min-w-0 flex-col gap-6"><div data-slot="setting-row" data-setting-id="two-factor"
+    class="flex flex-col gap-2 rounded-control py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6 data-[highlight=true]:bg-nq-selected data-[highlight=true]:outline-2 data-[highlight=true]:outline-offset-4 data-[highlight=true]:outline-nq-focus">
+    <div class="flex min-w-0 flex-col gap-0.5">
+        <span class="text-label text-foreground">Two-factor sign-in</span>
+        <span class="text-body-sm text-muted-foreground">Ask for a code on new devices.</span>    </div>
+    </div></div>
+            <div data-slot="settings-save-bar" :data-state="status" :hidden="!barShown"  x-cloak                 class="sticky bottom-4 z-10 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-floating border bg-card px-4 py-3 shadow-floating"
+                :class="status === 'error' ? 'border-nq-danger/50' : 'border-border'">
+                <div role="status" aria-live="polite" class="flex min-w-0 flex-1 items-center gap-2 text-body-sm">
+                    <svg x-show="status === 'saved'" x-cloak="1" aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                    <svg x-show="status === 'error'" x-cloak="1" aria-hidden="true" class="size-4 shrink-0 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>                    <span x-show="status === 'idle'" aria-hidden="true" class="size-2 shrink-0 rounded-full bg-nq-accent"></span>
+                    <span x-text="message"
+                        :class="status === 'error' ? 'text-nq-danger-text' : status === 'saving' ? 'text-muted-foreground' : 'text-foreground'">0 unsaved changes</span>
+                </div>
+                <div x-show="status !== 'saved'" class="flex items-center gap-2">
+                    <button data-slot="button"
+     type="button"                     x-on:click="discard()" x-bind:disabled="status === &#039;saving&#039;" x-bind:data-disabled="status === &#039;saving&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Discard</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="save()" x-bind:disabled="status === &#039;saving&#039;" x-bind:data-disabled="status === &#039;saving&#039; ? &#039;&#039; : null" x-bind:aria-busy="status === &#039;saving&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="status === 'saving'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                        Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

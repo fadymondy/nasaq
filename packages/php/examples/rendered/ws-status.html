@@ -1,0 +1,126 @@
+<div class="flex flex-col items-start gap-3">
+    <div data-slot="ws-status" data-variant="badge" data-state="connected" x-data="nqWsStatus(JSON.parse('{\u0022state\u0022:\u0022connected\u0022,\u0022latencyMs\u0022:42,\u0022retryAt\u0022:null,\u0022attempt\u0022:null,\u0022showLatency\u0022:true}'))" x-modelable="state" x-bind="root"
+        class="inline-flex h-7 max-w-full items-center gap-2 rounded-full border border-border bg-card ps-2.5 text-body-sm pe-3"
+         :class="canRetry() ? 'pe-1' : 'pe-3'" >
+        <span aria-hidden="true" class="relative flex size-2 shrink-0">
+            <span x-show="state === 'connected'" x-cloak  class="absolute inline-flex size-full rounded-full opacity-60 motion-safe:animate-ping bg-nq-success"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-nq-success" :class="dotClass()"></span>
+        </span>
+        <span role="status" aria-label="Live connection status" class="text-body-sm text-foreground">
+            <span x-show="state === 'connected'" x-cloak >Live</span><span x-show="state === 'connecting'" x-cloak style="display: none">Connecting</span><span x-show="state === 'reconnecting'" x-cloak style="display: none">Reconnecting</span><span x-show="state === 'offline'" x-cloak style="display: none">Offline</span>        </span>
+        <span class="text-caption text-muted-foreground" x-show="countdownText()" x-cloak style="display: none"><span data-slot="ws-countdown" class="tabular-nums" x-text="countdownText()"></span></span>
+        <span class="text-caption text-muted-foreground" x-show="hasLatency()" x-cloak ><span data-slot="ws-latency" x-show="hasLatency()" x-cloak     :title="latencyTitle()" title="Latency: Fast"
+    class="inline-flex items-center gap-1.5">
+    <span aria-hidden="true" data-slot="ws-signal" class="inline-flex h-3 items-end gap-0.5">
+                    <span :class="barClass(1)" class="w-0.5 rounded-full bg-nq-success" style="height: 4px"></span>
+                    <span :class="barClass(2)" class="w-0.5 rounded-full bg-nq-success" style="height: 8px"></span>
+                    <span :class="barClass(3)" class="w-0.5 rounded-full bg-nq-success" style="height: 12px"></span>
+            </span>
+    <bdi dir="ltr" class="tabular-nums" x-text="latencyText()">42 ms</bdi>
+</span>
+</span>            </div>
+    <div data-slot="ws-status" data-variant="badge" data-state="connecting" x-data="nqWsStatus(JSON.parse('{\u0022state\u0022:\u0022connecting\u0022,\u0022latencyMs\u0022:null,\u0022retryAt\u0022:null,\u0022attempt\u0022:null,\u0022showLatency\u0022:true}'))" x-modelable="state" x-bind="root"
+        class="inline-flex h-7 max-w-full items-center gap-2 rounded-full border border-border bg-card ps-2.5 text-body-sm pe-3"
+         :class="canRetry() ? 'pe-1' : 'pe-3'" >
+        <span aria-hidden="true" class="relative flex size-2 shrink-0">
+            <span x-show="state === 'connected'" x-cloak style="display: none" class="absolute inline-flex size-full rounded-full opacity-60 motion-safe:animate-ping bg-nq-success"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-nq-info" :class="dotClass()"></span>
+        </span>
+        <span role="status" aria-label="Live connection status" class="text-body-sm text-foreground">
+            <span x-show="state === 'connected'" x-cloak style="display: none">Live</span><span x-show="state === 'connecting'" x-cloak >Connecting</span><span x-show="state === 'reconnecting'" x-cloak style="display: none">Reconnecting</span><span x-show="state === 'offline'" x-cloak style="display: none">Offline</span>        </span>
+        <span class="text-caption text-muted-foreground" x-show="countdownText()" x-cloak style="display: none"><span data-slot="ws-countdown" class="tabular-nums" x-text="countdownText()"></span></span>
+        <span class="text-caption text-muted-foreground" x-show="hasLatency()" x-cloak style="display: none"><span data-slot="ws-latency" x-show="hasLatency()" x-cloak  style="display: none"     :title="latencyTitle()" title="Latency: Fast"
+    class="inline-flex items-center gap-1.5">
+    <span aria-hidden="true" data-slot="ws-signal" class="inline-flex h-3 items-end gap-0.5">
+                    <span :class="barClass(1)" class="w-0.5 rounded-full bg-nq-line-strong" style="height: 4px"></span>
+                    <span :class="barClass(2)" class="w-0.5 rounded-full bg-nq-line-strong" style="height: 8px"></span>
+                    <span :class="barClass(3)" class="w-0.5 rounded-full bg-nq-line-strong" style="height: 12px"></span>
+            </span>
+    <bdi dir="ltr" class="tabular-nums" x-text="latencyText()">-</bdi>
+</span>
+</span>            </div>
+    <div data-slot="ws-status" data-variant="inline" data-state="offline" x-data="nqWsStatus(JSON.parse('{\u0022state\u0022:\u0022offline\u0022,\u0022latencyMs\u0022:null,\u0022retryAt\u0022:null,\u0022attempt\u0022:null,\u0022showLatency\u0022:true}'))" x-modelable="state" x-bind="root"
+        class="inline-flex flex-wrap items-center gap-2"
+        >
+        <span aria-hidden="true" class="relative flex size-2 shrink-0">
+            <span x-show="state === 'connected'" x-cloak style="display: none" class="absolute inline-flex size-full rounded-full opacity-60 motion-safe:animate-ping bg-nq-success"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-nq-danger" :class="dotClass()"></span>
+        </span>
+        <span role="status" aria-label="Live connection status" class="text-body-sm text-foreground">
+            <span x-show="state === 'connected'" x-cloak style="display: none">Live</span><span x-show="state === 'connecting'" x-cloak style="display: none">Connecting</span><span x-show="state === 'reconnecting'" x-cloak style="display: none">Reconnecting</span><span x-show="state === 'offline'" x-cloak >Offline</span>        </span>
+        <span class="text-caption text-muted-foreground" x-show="countdownText()" x-cloak style="display: none"><span data-slot="ws-countdown" class="tabular-nums" x-text="countdownText()"></span></span>
+        <span class="text-caption text-muted-foreground" x-show="hasLatency()" x-cloak style="display: none"><span data-slot="ws-latency" x-show="hasLatency()" x-cloak  style="display: none"     :title="latencyTitle()" title="Latency: Fast"
+    class="inline-flex items-center gap-1.5">
+    <span aria-hidden="true" data-slot="ws-signal" class="inline-flex h-3 items-end gap-0.5">
+                    <span :class="barClass(1)" class="w-0.5 rounded-full bg-nq-line-strong" style="height: 4px"></span>
+                    <span :class="barClass(2)" class="w-0.5 rounded-full bg-nq-line-strong" style="height: 8px"></span>
+                    <span :class="barClass(3)" class="w-0.5 rounded-full bg-nq-line-strong" style="height: 12px"></span>
+            </span>
+    <bdi dir="ltr" class="tabular-nums" x-text="latencyText()">-</bdi>
+</span>
+</span>                                    <button data-slot="button"
+     type="button"                     x-bind="retryButton" x-show="canRetry()" x-cloak="x-cloak" style="" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        Retry now</button>
+                        </div>
+    <div data-slot="ws-status" data-variant="banner" data-state="reconnecting" x-data="nqWsStatus(JSON.parse('{\u0022state\u0022:\u0022reconnecting\u0022,\u0022latencyMs\u0022:null,\u0022retryAt\u0022:null,\u0022attempt\u0022:2,\u0022showLatency\u0022:true}'))" x-modelable="state" x-bind="root"
+        class="group/ws flex flex-col gap-3 rounded-card border p-3 sm:flex-row sm:items-center sm:justify-between border-nq-warning/40 bg-nq-warning-soft"
+        :class="boxClass()">
+        <div class="flex min-w-0 items-start gap-3">
+            <span aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-warning-text" :class="textClass()">
+                <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="state === &#039;connecting&#039;" x-cloak="1" class="animate-spin motion-reduce:animate-none size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                <svg x-show="state === 'reconnecting'" x-cloak="1" style="" class="size-4 motion-safe:animate-spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>                <svg x-show="state === 'offline'" x-cloak="1" style="display: none" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 20h.01"/>
+  <path d="M8.5 16.429a5 5 0 0 1 7 0"/>
+  <path d="M5 12.859a10 10 0 0 1 5.17-2.69"/>
+  <path d="M19 12.859a10 10 0 0 0-2.007-1.523"/>
+  <path d="M2 8.82a15 15 0 0 1 4.177-2.643"/>
+  <path d="M22 8.82a15 15 0 0 0-11.288-3.764"/>
+  <path d="m2 2 20 20"/>
+</svg>                <svg x-show="state === 'connected'" x-cloak="1" style="display: none" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 20h.01"/>
+  <path d="M2 8.82a15 15 0 0 1 20 0"/>
+  <path d="M5 12.859a10 10 0 0 1 14 0"/>
+  <path d="M8.5 16.429a5 5 0 0 1 7 0"/>
+</svg>            </span>
+            <div class="flex min-w-0 flex-col gap-0.5">
+                <p role="status" aria-label="Live connection status" class="text-label text-foreground">
+                    <span x-show="state === 'connected'" x-cloak style="display: none">Live</span><span x-show="state === 'connecting'" x-cloak style="display: none">Connecting</span><span x-show="state === 'reconnecting'" x-cloak >Reconnecting</span><span x-show="state === 'offline'" x-cloak style="display: none">Offline</span>                </p>
+                <p class="text-body-sm text-muted-foreground">
+                    <span x-show="state === 'connected'" x-cloak style="display: none">Live updates are on.</span><span x-show="state === 'connecting'" x-cloak style="display: none">Opening the live connection.</span><span x-show="state === 'reconnecting'" x-cloak >The live connection dropped. Trying again.</span><span x-show="state === 'offline'" x-cloak style="display: none">You are offline. Live updates are paused.</span>                </p>
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                    <span data-slot="ws-countdown" class="tabular-nums" x-show="countdownText()" x-cloak x-text="countdownText()" style="display: none"></span>
+                    <span x-show="state === 'reconnecting' && attempt" x-cloak x-text="attemptText()" >Attempt 2</span>
+                    <span data-slot="ws-latency" x-show="hasLatency()" x-cloak  style="display: none"     :title="latencyTitle()" title="Latency: Fast"
+    class="inline-flex items-center gap-1.5">
+    <span aria-hidden="true" data-slot="ws-signal" class="inline-flex h-3 items-end gap-0.5">
+                    <span :class="barClass(1)" class="w-0.5 rounded-full bg-nq-line-strong" style="height: 4px"></span>
+                    <span :class="barClass(2)" class="w-0.5 rounded-full bg-nq-line-strong" style="height: 8px"></span>
+                    <span :class="barClass(3)" class="w-0.5 rounded-full bg-nq-line-strong" style="height: 12px"></span>
+            </span>
+    <bdi dir="ltr" class="tabular-nums" x-text="latencyText()">-</bdi>
+</span>
+                    <span class="inline-flex gap-1" x-show="state === 'reconnecting' || state === 'offline'" x-cloak style="display: none">
+                        Last connected
+                                            </span>
+                </div>
+                <p class="text-caption text-muted-foreground" x-show="state === 'offline' || state === 'reconnecting'" x-cloak >Data may be out of date.</p>
+            </div>
+        </div>
+                    <button data-slot="button"
+     type="button"                     x-bind="retryButton" x-show="canRetry()" x-cloak="x-cloak" style="" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 shrink-0">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="retrying" x-cloak="1" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                <svg x-show="!retrying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>                Retry now</button>
+            </div>
+</div>

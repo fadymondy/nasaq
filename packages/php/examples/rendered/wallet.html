@@ -1,0 +1,222 @@
+<div data-slot="wallet" x-data="nqWallet()" x-on:nq-wallet-open="open($event.detail && $event.detail.dialog)" class="flex flex-col gap-6">
+    <div data-slot="wallet-balance" x-data="nqWalletBalance()"     class="flex flex-col gap-4 rounded-card border border-border bg-card px-0 py-4 text-card-foreground">
+    <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 11h3.75a2 2 0 0 1 1.6.8l.45.6a4 4 0 0 0 6.4 0l.45-.6a2 2 0 0 1 1.6-.8H21"/>
+  <path d="M3 7h18"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+</svg>            Available balance</h2>
+        <div data-slot="card-action" class="col-start-2 row-span-2 row-start-1 self-start justify-self-end"><button data-slot="button"
+     type="button"                     x-bind:aria-pressed="hidden" x-bind:aria-label="hidden ? `Show balance` : `Hide balance`" x-on:click="toggle()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" x-show="!hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg>                <svg aria-hidden="true" x-show="hidden" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg></button></div></div>
+    <div data-slot="card-content" class="px-4 flex flex-wrap items-end justify-between gap-4"><div class="flex min-w-0 flex-col gap-1">
+                            <p x-show="hidden" style="display: none" class="text-h1 tracking-tight text-foreground" aria-label="Balance hidden"><span aria-hidden="true">••••••</span></p>
+                <p x-show="!hidden" class="text-h1 font-semibold tracking-tight text-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">$1,250.50</bdi></p>
+                                    <p class="text-body-sm text-muted-foreground">Pending: <span x-show="hidden" style="display: none" aria-hidden="true">••••</span><bdi data-slot="num" data-numeric="" x-show="!hidden" class="tabular-nums">+$100.00</bdi></p>
+                                    </div></div>
+            <div data-slot="card-content" class="px-4 flex flex-wrap gap-2"><button data-slot="button"
+     type="button"                     x-on:click="$dispatch(&#039;nq-wallet-open&#039;, { dialog: &#039;topup&#039; })" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>Add funds</button>
+                                        <button data-slot="button"
+     type="button"                     x-on:click="$dispatch(&#039;nq-wallet-open&#039;, { dialog: &#039;payout&#039; })" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 18v-7"/>
+  <path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/>
+  <path d="M14 18v-7"/>
+  <path d="M18 18v-7"/>
+  <path d="M3 22h18"/>
+  <path d="M6 18v-7"/>
+</svg>Withdraw</button></div>
+    </div>
+    <section data-slot="wallet-transactions" aria-labelledby="nq-wallet-c6b864cd" x-data="nqWalletTransactions(JSON.parse('{\u00222024-03-05\u0022:[\u0022in\u0022]}'))"
+    class="flex flex-col gap-4">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <h2 id="nq-wallet-c6b864cd" class="text-h3 text-foreground">Transactions</h2>
+        <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022all\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Filter transactions" x-model="dir" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('all')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">All</button>
+            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('in')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Money in</button>
+            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('out')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Money out</button>
+</div>
+    </div>
+            <div x-show="empty"  style="display: none" >
+            <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 11h3.75a2 2 0 0 1 1.6.8l.45.6a4 4 0 0 0 6.4 0l.45-.6a2 2 0 0 1 1.6-.8H21"/>
+  <path d="M3 7h18"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No transactions yet</p>
+                    <p class="text-body-sm text-muted-foreground">Top-ups, payments and withdrawals will show here.</p>
+            </div>
+    </div>
+        </div>
+                    <div class="flex flex-col gap-1" x-show="shown('2024-03-05')">
+                <h3 class="text-caption font-medium text-muted-foreground">Mar 5, 2024</h3>
+                <ul class="flex flex-col divide-y divide-border rounded-card bg-nq-surface">
+                                                                    <li data-status="completed" data-dir="in" x-show="rowShown('in')" class="flex items-center gap-3 px-4 py-3">
+                            <span aria-hidden="true" class="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-card text-muted-foreground [&_svg]:size-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 7 7 17"/>
+  <path d="M17 17H7V7"/>
+</svg>                            </span>
+                            <div class="flex min-w-0 flex-1 flex-col">
+                                <p class="truncate text-body-sm text-foreground">Top-up</p>
+                                <p class="flex flex-wrap items-center gap-x-2 text-caption text-muted-foreground">
+                                    <span>Top-up</span>
+                                    <time data-slot="date-time" datetime="2024-03-05T10:30:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">10:30 AM</time>
+                                                                    </p>
+                            </div>
+                            <div class="flex shrink-0 flex-col items-end gap-0.5">
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums text-label text-nq-success-text">+$200.00</bdi>
+                                                            </div>
+                        </li>
+                                    </ul>
+            </div>
+            </section>
+            <div data-slot="wallet-dialog" data-kind="topup" x-data="nqWalletDialog(JSON.parse('{\u0022kind\u0022:\u0022topup\u0022,\u0022open\u0022:false,\u0022currency\u0022:\u0022USD\u0022,\u0022min\u0022:10,\u0022max\u0022:null,\u0022accountId\u0022:\u0022visa\u0022,\u0022idle\u0022:\u0022Add\u0022,\u0022strings\u0022:{\u0022confirm\u0022:\u0022Add {amount}\u0022,\u0022invalid\u0022:\u0022Enter an amount greater than zero.\u0022,\u0022min\u0022:\u0022The minimum is {amount}.\u0022,\u0022max\u0022:\u0022The maximum is {amount}.\u0022,\u0022failed\u0022:\u0022That did not go through. Try again.\u0022}}'))" x-modelable="isOpen"
+    x-on:nq-wallet-error.window="fail($event.detail && $event.detail.message)"
+    x-model="topupOpen" class="contents">
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="isOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form novalidate class="grid gap-4" x-on:submit.prevent="submit()">
+                <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Add funds</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Choose an amount and where the money comes from.</p></div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="hasProblem" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Pay with</label>
+                                            <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('visa')" x-modelable="value" x-bind="root"
+                aria-label="Pay with" x-model="accountId" class="flex flex-col gap-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('visa')"
+    aria-checked="true" tabindex="0"
+     data-checked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('visa')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground">Visa ending 4242</span>
+            </span>
+    </button>
+    </div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="hasProblem" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Amount (USD)</label>
+                    <input data-slot="input" type="text"
+     dir="ltr"      name="amount"             inputmode="decimal" autocomplete="off" placeholder="0.00" x-model="text" x-on:input="clearProblem()" x-bind:disabled="busy" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="problem"></span></div>
+                                            <div role="group" aria-label="Quick amounts" class="flex flex-wrap gap-2">
+                                                            <button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-on:click="preset(50)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <bdi data-slot="num" data-numeric="" class="tabular-nums">$50</bdi></button>
+                                                            <button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-on:click="preset(100)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <bdi data-slot="num" data-numeric="" class="tabular-nums">$100</bdi></button>
+                                                            <button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-on:click="preset(250)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <bdi data-slot="num" data-numeric="" class="tabular-nums">$250</bdi></button>
+                                                            <button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-on:click="preset(500)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <bdi data-slot="num" data-numeric="" class="tabular-nums">$500</bdi></button>
+                                                    </div>
+</div>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="submit"                     x-bind:disabled="busy || false" x-bind:aria-busy="busy" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <span x-text="label">Add</span></button></div>
+            </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</div>
+                <div data-slot="wallet-dialog" data-kind="payout" x-data="nqWalletDialog(JSON.parse('{\u0022kind\u0022:\u0022payout\u0022,\u0022open\u0022:false,\u0022currency\u0022:\u0022USD\u0022,\u0022min\u0022:10,\u0022max\u0022:1250.5,\u0022accountId\u0022:\u0022bank\u0022,\u0022idle\u0022:\u0022Withdraw\u0022,\u0022strings\u0022:{\u0022confirm\u0022:\u0022Withdraw {amount}\u0022,\u0022invalid\u0022:\u0022Enter an amount greater than zero.\u0022,\u0022min\u0022:\u0022The minimum is {amount}.\u0022,\u0022max\u0022:\u0022The maximum is {amount}.\u0022,\u0022failed\u0022:\u0022That did not go through. Try again.\u0022}}'))" x-modelable="isOpen"
+    x-on:nq-wallet-error.window="fail($event.detail && $event.detail.message)"
+    x-model="payoutOpen" class="contents">
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="isOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form novalidate class="grid gap-4" x-on:submit.prevent="submit()">
+                <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Withdraw to your bank</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">You can withdraw up to $1,250.50.</p></div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="hasProblem" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Withdraw to</label>
+                                            <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('bank')" x-modelable="value" x-bind="root"
+                aria-label="Withdraw to" x-model="accountId" class="flex flex-col gap-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('bank')"
+    aria-checked="true" tabindex="0"
+     data-checked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('bank')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground">Al Rajhi Bank</span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">SA03 **** 1234</span>    </span>
+    </button>
+    </div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="hasProblem" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Amount (USD)</label>
+                    <input data-slot="input" type="text"
+     dir="ltr"      name="amount"             inputmode="decimal" autocomplete="off" placeholder="0.00" x-model="text" x-on:input="clearProblem()" x-bind:disabled="busy" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="problem"></span></div>
+                                                                <button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-on:click="preset(1250.5)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0 self-start">
+        Withdraw all</button>
+</div>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="submit"                     x-bind:disabled="busy || false" x-bind:aria-busy="busy" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <span x-text="label">Withdraw</span></button></div>
+            </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</div>
+    </div>

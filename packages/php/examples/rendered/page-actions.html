@@ -1,0 +1,49 @@
+<div class="flex items-center gap-3">
+    <div data-slot="page-actions" class="flex items-center gap-1.5 ms-auto">
+            <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="More actions" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.top.offset.6="triggerEl"
+            class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">More actions</div>
+    </template>
+</div>
+            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-52"><div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="$dispatch(`issues-export`)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>                                <span class="min-w-0 flex-1 truncate">Export CSV</span></div></div>
+                                    <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                    <div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="$dispatch(`issue-delete`)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>                                <span class="min-w-0 flex-1 truncate">Delete</span></div></div></div>
+</template></div>
+                                    <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><button data-slot="button"
+     type="button"                     aria-label="New issue" aria-keyshortcuts="C" x-on:click="$dispatch(`issue-new`)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>                    <span class="hidden sm:inline">New issue</span></button></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.top.offset.6="triggerEl"
+            class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><span class="flex items-center gap-2">New issue<span dir="ltr" class="flex gap-1"><kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">C</kbd>
+</span></span></div>
+    </template>
+</div>
+            </div>
+</div>

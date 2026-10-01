@@ -1,0 +1,59 @@
+<div class="flex items-center gap-3">
+    <div x-data="nqThemePref()" class="contents">
+    <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><button data-slot="theme-toggle"
+     type="button"                     x-on:click="toggle()" x-bind:data-state="dark ? &#039;dark&#039; : &#039;light&#039;" x-bind:aria-label="dark ? `Switch to light theme` : `Switch to dark theme`" aria-label="Switch to dark theme" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 relative overflow-hidden text-muted-foreground hover:text-foreground">
+        <svg data-slot="icon" aria-hidden="true" x-bind:class="dark ? &#039;rotate-90 scale-50 opacity-0&#039; : &#039;rotate-0 scale-100 opacity-100&#039;" class="absolute inset-0 m-auto transition-[opacity,rotate,scale] duration-300 ease-nq motion-reduce:transition-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="4"/>
+  <path d="M12 2v2"/>
+  <path d="M12 20v2"/>
+  <path d="m4.93 4.93 1.41 1.41"/>
+  <path d="m17.66 17.66 1.41 1.41"/>
+  <path d="M2 12h2"/>
+  <path d="M20 12h2"/>
+  <path d="m6.34 17.66-1.41 1.41"/>
+  <path d="m19.07 4.93-1.41 1.41"/>
+</svg>            <svg data-slot="icon" aria-hidden="true" x-bind:class="dark ? &#039;rotate-0 scale-100 opacity-100&#039; : &#039;-rotate-90 scale-50 opacity-0&#039;" class="absolute inset-0 m-auto transition-[opacity,rotate,scale] duration-300 ease-nq motion-reduce:transition-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>
+</svg></button></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.top.offset.6="triggerEl"
+            class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><span x-text="dark ? 'Switch to light theme' : 'Switch to dark theme'">Switch to dark theme</span></div>
+    </template>
+</div>
+</div>
+    <div x-data="nqLocalePref(JSON.parse('{\u0022en\u0022:\u0022English\u0022,\u0022ar\u0022:\u0022\\u0627\\u0644\\u0639\\u0631\\u0628\\u064a\\u0629\u0022}'))" class="contents">
+    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm px-2.5 text-muted-foreground">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 8 6 6"/>
+  <path d="m4 14 6-6 2-3"/>
+  <path d="M2 5h12"/>
+  <path d="M7 2h1"/>
+  <path d="m22 22-5-10-5 10"/>
+  <path d="M14 18h6"/>
+</svg>            <span x-text="name" x-bind:lang="locale">English</span></button>
+        <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-40"><div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-label" role="presentation" class="px-2.5 pt-1.5 pb-1 text-caption font-medium text-muted-foreground">Language</div></div>
+            <div data-slot="dropdown-menu-radio-group" role="group" x-data="{ value: null }" x-modelable="value" x-model="locale"><div data-slot="dropdown-menu-radio-item" role="menuitemradio" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) value = 'en'"
+    x-bind:aria-checked="value === 'en' ? 'true' : 'false'" x-bind:data-checked="value === 'en' ? '' : undefined" x-bind:data-unchecked="value === 'en' ? undefined : ''"
+     data-keep-open         class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="value === 'en'" style="display:none" class="block size-1.5 rounded-full bg-current"></span>
+    </span>
+    <span lang="en" dir="ltr">English</span>
+</div>
+            <div data-slot="dropdown-menu-radio-item" role="menuitemradio" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) value = 'ar'"
+    x-bind:aria-checked="value === 'ar' ? 'true' : 'false'" x-bind:data-checked="value === 'ar' ? '' : undefined" x-bind:data-unchecked="value === 'ar' ? undefined : ''"
+     data-keep-open         class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="value === 'ar'" style="display:none" class="block size-1.5 rounded-full bg-current"></span>
+    </span>
+    <span lang="ar" dir="rtl">العربية</span>
+</div></div></div>
+</template></div>
+</div>
+</div>

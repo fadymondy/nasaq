@@ -1,0 +1,191 @@
+<div class="flex flex-col gap-6">
+    <div data-slot="profile-hover-card" x-data="nqProfileHoverCard(300, 150, false)" class="contents">
+    <button x-ref="trigger" x-bind="trigger"
+         type="button"         data-slot="profile-hover-card-trigger">Sara Nasser</button>
+    <template x-teleport="body">
+        <div data-slot="profile-hover-card-content" role="dialog" aria-label="Profile of Sara Nasser"
+            x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+            class="z-50 w-80 max-w-[var(--available-width)] rounded-floating border border-border bg-popover p-4 text-body-sm text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="profile-card"  data-presence="online"  class="flex min-w-0 flex-col gap-3 text-start">
+    <div class="flex items-start gap-3">
+        <span data-slot="presence-avatar" class="relative inline-flex shrink-0">
+    <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-10 text-label rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Sara Nasser" >SN</span>
+    </span>
+            <span data-slot="presence-dot" data-presence="online"
+     role="img" aria-label="Online"     class="inline-block size-2.5 shrink-0 rounded-full bg-nq-success absolute -end-0.5 -bottom-0.5 border-2 border-popover"></span>
+    </span>
+        <div class="flex min-w-0 flex-1 flex-col">
+            <p class="truncate text-label text-foreground">Sara Nasser</p>
+            <bdi dir="ltr" class="truncate text-caption text-muted-foreground">@sara</bdi>            <p class="truncate text-caption text-muted-foreground">Design lead</p>        </div>
+    </div>
+    <dl class="m-0 flex flex-col gap-1.5 text-caption text-muted-foreground">
+                    <div class="flex items-center gap-2">
+                <dt class="sr-only">Online</dt>
+                <dd class="m-0 flex min-w-0 items-center gap-2">
+                    <span data-slot="presence-dot" data-presence="online"
+     aria-hidden="true"     class="inline-block size-2.5 shrink-0 rounded-full bg-nq-success"></span>
+                    <span class="truncate text-foreground">In a meeting until 3</span>
+                </dd>
+            </div>
+                            <div class="flex items-baseline gap-2">
+                <dt class="sr-only">Local time</dt>
+                <dd class="m-0 flex min-w-0 flex-wrap items-baseline gap-x-2">
+                    <span dir="ltr" class="text-foreground tabular-nums">3:00 PM</span>
+                    <span>3h ahead of you</span>
+                </dd>
+            </div>
+                            <div class="flex items-center gap-2">
+                <dt class="sr-only">Teams</dt>
+                <dd class="m-0 flex min-w-0 items-center gap-2">
+                    <svg aria-hidden="true" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg>                    <span class="truncate">Design · Brand</span>
+                </dd>
+            </div>
+                    </dl>
+            <div data-slot="profile-card-actions" class="flex flex-wrap gap-2">
+                            <button data-slot="button"
+     type="button"                     data-id="u1" x-on:click="$dispatch(`nq-message`, { id: $el.dataset.id })" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/>
+</svg>                    Message</button>
+                                                    <button data-slot="button"
+     type="button"                     data-id="u1" x-on:click="$dispatch(`nq-view-profile`, { id: $el.dataset.id })" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="8" r="5"/>
+  <path d="M20 21a8 8 0 0 0-16 0"/>
+</svg>                    View profile</button>
+                    </div>
+    </div>
+        </div>
+    </template>
+</div>
+    <div class="w-80 rounded-floating border border-border bg-popover p-4">
+        <div data-slot="profile-card"  data-presence="away"  class="flex min-w-0 flex-col gap-3 text-start">
+    <div class="flex items-start gap-3">
+        <span data-slot="presence-avatar" class="relative inline-flex shrink-0">
+    <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-10 text-label rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Omar Haddad" >OH</span>
+    </span>
+            <span data-slot="presence-dot" data-presence="away"
+     role="img" aria-label="Away"     class="inline-block size-2.5 shrink-0 rounded-full bg-nq-warning absolute -end-0.5 -bottom-0.5 border-2 border-popover"></span>
+    </span>
+        <div class="flex min-w-0 flex-1 flex-col">
+            <p class="truncate text-label text-foreground">Omar Haddad</p>
+                        <p class="truncate text-caption text-muted-foreground">Engineer</p>        </div>
+    </div>
+    <dl class="m-0 flex flex-col gap-1.5 text-caption text-muted-foreground">
+                    <div class="flex items-center gap-2">
+                <dt class="sr-only">Away</dt>
+                <dd class="m-0 flex min-w-0 items-center gap-2">
+                    <span data-slot="presence-dot" data-presence="away"
+     aria-hidden="true"     class="inline-block size-2.5 shrink-0 rounded-full bg-nq-warning"></span>
+                    <span class="truncate text-foreground">Away</span>
+                </dd>
+            </div>
+                            <div class="flex items-baseline gap-2">
+                <dt class="sr-only">Local time</dt>
+                <dd class="m-0 flex min-w-0 flex-wrap items-baseline gap-x-2">
+                    <span dir="ltr" class="text-foreground tabular-nums">7:00 AM</span>
+                    <span>5h behind you</span>
+                </dd>
+            </div>
+                                    <div>
+                <dt class="sr-only">Email</dt>
+                <dd class="m-0 truncate"><bdi dir="ltr">omar@example.com</bdi></dd>
+            </div>
+            </dl>
+            <div data-slot="profile-card-actions" class="flex flex-wrap gap-2">
+                            <button data-slot="button"
+     type="button"                     data-id="u2" x-on:click="$dispatch(`nq-message`, { id: $el.dataset.id })" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/>
+</svg>                    Message</button>
+                                        <button data-slot="button"
+     type="button"                     data-id="u2" x-on:click="$dispatch(`nq-mention`, { id: $el.dataset.id })" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="4"/>
+  <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>
+</svg>                    Mention</button>
+                                        <button data-slot="button"
+     type="button"                     data-id="u2" x-on:click="$dispatch(`nq-view-profile`, { id: $el.dataset.id })" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="8" r="5"/>
+  <path d="M20 21a8 8 0 0 0-16 0"/>
+</svg>                    View profile</button>
+                    </div>
+    </div>
+    </div>
+    <p data-slot="mention-text" class="whitespace-pre-wrap text-body text-foreground">
+            <span>Thanks </span>                                    <div data-slot="profile-hover-card" x-data="nqProfileHoverCard(300, 150, false)" class="contents">
+    <span x-ref="trigger" x-bind="trigger"
+         tabindex="0" role="button"         data-slot="mention-chip" class="inline-flex max-w-full items-center gap-1 rounded-control bg-nq-selected px-1.5 py-px align-baseline text-body-sm font-medium text-foreground outline-none [&amp;_svg]:size-3.5 [&amp;_svg]:shrink-0 cursor-pointer hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus" data-kind="person"><span class="truncate">@Sara Nasser</span></span>
+    <template x-teleport="body">
+        <div data-slot="profile-hover-card-content" role="dialog" aria-label="Profile of Sara Nasser"
+            x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+            class="z-50 w-80 max-w-[var(--available-width)] rounded-floating border border-border bg-popover p-4 text-body-sm text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="profile-card"  data-presence="online"  class="flex min-w-0 flex-col gap-3 text-start">
+    <div class="flex items-start gap-3">
+        <span data-slot="presence-avatar" class="relative inline-flex shrink-0">
+    <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-10 text-label rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Sara Nasser" >SN</span>
+    </span>
+            <span data-slot="presence-dot" data-presence="online"
+     role="img" aria-label="Online"     class="inline-block size-2.5 shrink-0 rounded-full bg-nq-success absolute -end-0.5 -bottom-0.5 border-2 border-popover"></span>
+    </span>
+        <div class="flex min-w-0 flex-1 flex-col">
+            <p class="truncate text-label text-foreground">Sara Nasser</p>
+            <bdi dir="ltr" class="truncate text-caption text-muted-foreground">@sara</bdi>            <p class="truncate text-caption text-muted-foreground">Design lead</p>        </div>
+    </div>
+    <dl class="m-0 flex flex-col gap-1.5 text-caption text-muted-foreground">
+                    <div class="flex items-center gap-2">
+                <dt class="sr-only">Online</dt>
+                <dd class="m-0 flex min-w-0 items-center gap-2">
+                    <span data-slot="presence-dot" data-presence="online"
+     aria-hidden="true"     class="inline-block size-2.5 shrink-0 rounded-full bg-nq-success"></span>
+                    <span class="truncate text-foreground">In a meeting until 3</span>
+                </dd>
+            </div>
+                            <div class="flex items-baseline gap-2">
+                <dt class="sr-only">Local time</dt>
+                <dd class="m-0 flex min-w-0 flex-wrap items-baseline gap-x-2">
+                    <span dir="ltr" class="text-foreground tabular-nums">3:00 PM</span>
+                    <span>3h ahead of you</span>
+                </dd>
+            </div>
+                            <div class="flex items-center gap-2">
+                <dt class="sr-only">Teams</dt>
+                <dd class="m-0 flex min-w-0 items-center gap-2">
+                    <svg aria-hidden="true" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg>                    <span class="truncate">Design · Brand</span>
+                </dd>
+            </div>
+                    </dl>
+    </div>
+        </div>
+    </template>
+</div>
+                    <span>, and cc </span>                                    <span data-slot="mention-chip" data-kind="team" class="inline-flex max-w-full items-center gap-1 rounded-control bg-nq-selected px-1.5 py-px align-baseline text-body-sm font-medium text-foreground outline-none [&_svg]:size-3.5 [&_svg]:shrink-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg>        <span class="truncate">@Design</span>
+    </span>
+            </p>
+</div>

@@ -1,0 +1,304 @@
+<div class="flex w-full max-w-2xl flex-col gap-8">
+    <div data-slot="ai-model-picker" data-variant="cards" x-data="nqAiModelPicker(JSON.parse('{\u0022models\u0022:[{\u0022id\u0022:\u0022opus-5.5\u0022,\u0022efforts\u0022:[\u0022low\u0022,\u0022medium\u0022,\u0022high\u0022,\u0022max\u0022]},{\u0022id\u0022:\u0022sonnet-5.5\u0022,\u0022efforts\u0022:[\u0022low\u0022,\u0022medium\u0022,\u0022high\u0022]},{\u0022id\u0022:\u0022haiku-4.5\u0022,\u0022efforts\u0022:[]}],\u0022value\u0022:{\u0022model\u0022:\u0022opus-5.5\u0022,\u0022effort\u0022:\u0022high\u0022,\u0022agent\u0022:null},\u0022agentRequired\u0022:true,\u0022effortNames\u0022:{\u0022low\u0022:\u0022Low\u0022,\u0022medium\u0022:\u0022Medium\u0022,\u0022high\u0022:\u0022High\u0022,\u0022max\u0022:\u0022Max\u0022},\u0022agents\u0022:{\u0022review\u0022:\u0022Reads the diff and leaves comments.\u0022,\u0022triage\u0022:\u0022Labels and routes new issues.\u0022}}'))" x-modelable="sel" x-id="['nq-ai-model']"
+    x-on:click.capture="if ($event.target.closest('[data-slot=ai-agent-select]')) started = true"
+    x-on:pointerdown.document="if (started && ! $el.contains($event.target) && ! $event.target.closest('[data-slot=select-content]')) touched = true"
+    class="flex flex-col gap-5">
+            <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('opus-5.5')" x-modelable="value" x-bind="root"
+                aria-label="Models" x-model="sel.model" class="flex-col grid gap-2 sm:grid-cols-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('opus-5.5')"
+    aria-checked="true" tabindex="0"
+     data-checked         x-bind:disabled="false" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('opus-5.5')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <bdi dir="ltr">Opus 5.5</bdi>
+                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text">Most capable</span>
+                                            </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground"><span class="flex flex-col gap-1"><span>Best for hard, multi-step work.</span><span class="flex flex-wrap gap-x-3 text-caption text-muted-foreground"><bdi dir="ltr">Anthropic</bdi><span>1M context</span><span>$5 in, $25 out per 1M tokens</span></span></span></span>    </span>
+    </button>
+                                            <button type="button" role="radio" data-slot="radio-card" x-bind="radio('sonnet-5.5')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         x-bind:disabled="false" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('sonnet-5.5')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <bdi dir="ltr">Sonnet 5.5</bdi>
+                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Balanced</span>
+                                            </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground"><span class="flex flex-col gap-1"><span class="flex flex-wrap gap-x-3 text-caption text-muted-foreground"><bdi dir="ltr">Anthropic</bdi><span>500K context</span><span>$3 in, $15 out per 1M tokens</span></span></span></span>    </span>
+    </button>
+                                            <button type="button" role="radio" data-slot="radio-card" x-bind="radio('haiku-4.5')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         x-bind:disabled="false" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('haiku-4.5')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <bdi dir="ltr">Haiku 4.5</bdi>
+                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Fastest</span>
+                                            </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground"><span class="flex flex-col gap-1"><span class="flex flex-wrap gap-x-3 text-caption text-muted-foreground"><bdi dir="ltr">Anthropic</bdi><span>200K context</span><span>$1 in, $5 out per 1M tokens</span></span></span></span>    </span>
+    </button>
+    </div>
+        <div class="flex flex-col gap-1.5" x-show="efforts().length" >
+            <span class="text-label text-foreground">Reasoning effort</span>
+            <div role="group" aria-label="Reasoning effort" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+                 class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+                <template x-for="e in efforts()" :key="e">
+                    <button type="button" data-slot="toggle" x-bind="effortToggle(e)"  class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"></button>
+                </template>
+            </div>
+            <span class="text-caption text-muted-foreground">Higher effort thinks longer and costs more.</span>
+        </div>
+                    <div data-slot="field" class="flex flex-col gap-1.5" x-bind:data-invalid="agentInvalid() ? '' : undefined">
+                <label data-slot="field-label" x-bind:for="$id('nq-ai-model', 'agent')" class="text-label text-foreground">Agent<span class="ms-1.5 text-caption text-muted-foreground">(Required)</span></label>
+                <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="sel.agent" class="contents">
+    <button data-slot="ai-agent-select" x-ref="trigger" x-bind="trigger"
+        aria-label="Agent" x-bind:id="$id(&#039;nq-ai-model&#039;, &#039;agent&#039;)" x-bind:data-invalid="agentInvalid() ? &#039;&#039; : undefined" class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? 'Choose an agent'" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                    <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('review', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('review')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Code review</span>
+</div>
+                                                    <div data-slot="select-item" x-bind="item('triage', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('triage')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Triage</span>
+</div>
+    </div>
+</template>
+    </div>
+                <span role="alert" x-show="agentInvalid()" style="display: none" class="inline-flex items-center gap-1 text-caption text-nq-danger-text"><svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>Choose the agent that will run this.</span>
+                <span x-show="! agentInvalid()" class="text-caption text-muted-foreground" x-text="agentDescription()"></span>
+            </div>
+                        <input type="hidden" name="run[model]" x-bind:value="sel.model ?? ''" value="opus-5.5">
+        <input type="hidden" name="run[effort]" x-bind:value="sel.effort ?? ''" x-bind:disabled="! sel.effort" value="high" >
+        <input type="hidden" name="run[agent]" x-bind:value="sel.agent ?? ''" x-bind:disabled="! sel.agent" value=""  disabled >
+    </div>
+    <div data-slot="ai-model-picker" data-variant="compact" x-data="nqAiModelPicker(JSON.parse('{\u0022models\u0022:[{\u0022id\u0022:\u0022opus-5.5\u0022,\u0022efforts\u0022:[\u0022low\u0022,\u0022medium\u0022,\u0022high\u0022,\u0022max\u0022]},{\u0022id\u0022:\u0022sonnet-5.5\u0022,\u0022efforts\u0022:[\u0022low\u0022,\u0022medium\u0022,\u0022high\u0022]},{\u0022id\u0022:\u0022haiku-4.5\u0022,\u0022efforts\u0022:[]}],\u0022value\u0022:{\u0022model\u0022:\u0022sonnet-5.5\u0022,\u0022effort\u0022:\u0022medium\u0022,\u0022agent\u0022:null},\u0022agentRequired\u0022:false,\u0022effortNames\u0022:{\u0022low\u0022:\u0022Low\u0022,\u0022medium\u0022:\u0022Medium\u0022,\u0022high\u0022:\u0022High\u0022,\u0022max\u0022:\u0022Max\u0022},\u0022agents\u0022:{\u0022review\u0022:\u0022Reads the diff and leaves comments.\u0022,\u0022triage\u0022:\u0022Labels and routes new issues.\u0022}}'))" x-modelable="sel" x-id="['nq-ai-model']"
+    x-on:click.capture="if ($event.target.closest('[data-slot=ai-agent-select]')) started = true"
+    x-on:pointerdown.document="if (started && ! $el.contains($event.target) && ! $event.target.closest('[data-slot=select-content]')) touched = true"
+    class="flex flex-wrap items-center gap-2">
+            <div data-slot="select" x-data="nqSelect('sonnet-5.5', false)" x-modelable="value" x-id="['nq-select']" x-model="sel.model" class="contents">
+    <button data-slot="ai-model-select" x-ref="trigger" x-bind="trigger"
+        aria-label="Model" class="flex items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm w-auto min-w-40">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+    <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('opus-5.5', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('opus-5.5')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Opus 5.5</span>
+</div>
+                    <div data-slot="select-item" x-bind="item('sonnet-5.5', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('sonnet-5.5')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Sonnet 5.5</span>
+</div>
+                    <div data-slot="select-item" x-bind="item('haiku-4.5', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('haiku-4.5')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Haiku 4.5</span>
+</div>
+    </div>
+</template>
+    </div>
+        <div role="group" aria-label="Reasoning effort" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal" x-show="efforts().length"              class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+            <template x-for="e in efforts()" :key="e">
+                <button type="button" data-slot="toggle" x-bind="effortToggle(e)"  class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"></button>
+            </template>
+        </div>
+                    <div data-slot="field" class="flex w-auto min-w-40 flex-col gap-1.5" x-bind:data-invalid="agentInvalid() ? '' : undefined">
+                <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="sel.agent" class="contents">
+    <button data-slot="ai-agent-select" x-ref="trigger" x-bind="trigger"
+        aria-label="Agent" x-bind:data-invalid="agentInvalid() ? &#039;&#039; : undefined" class="flex w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm">
+    <span data-slot="select-value" x-text="label() ?? 'Choose an agent'" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                    <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('review', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('review')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Code review</span>
+</div>
+                                                    <div data-slot="select-item" x-bind="item('triage', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('triage')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Triage</span>
+</div>
+    </div>
+</template>
+    </div>
+                <span role="alert" x-show="agentInvalid()" style="display: none" class="inline-flex items-center gap-1 text-caption text-nq-danger-text"><svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>Choose the agent that will run this.</span>
+            </div>
+                </div>
+    <div data-slot="select" x-data="nqSelect('haiku-4.5', false)" x-modelable="value" x-id="['nq-select']" class="contents">
+    <button data-slot="ai-model-select" x-ref="trigger" x-bind="trigger"
+        aria-label="Model" class="flex h-control min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] w-56">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+    <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('opus-5.5', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('opus-5.5')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Opus 5.5</span>
+</div>
+                    <div data-slot="select-item" x-bind="item('sonnet-5.5', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('sonnet-5.5')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Sonnet 5.5</span>
+</div>
+                    <div data-slot="select-item" x-bind="item('haiku-4.5', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('haiku-4.5')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Haiku 4.5</span>
+</div>
+    </div>
+</template>
+            <template x-if="multiple">
+            <template x-for="v in value" :key="v"><input type="hidden" name="model[]" :value="v"></template>
+        </template>
+        <template x-if="!multiple"><input type="hidden" name="model" :value="value ?? ''"></template>
+    </div>
+    <div data-slot="persona-picker" x-data="nqPersonaPicker(JSON.parse('{\u0022value\u0022:\u0022coach\u0022,\u0022personas\u0022:{\u0022coach\u0022:{\u0022id\u0022:\u0022coach\u0022,\u0022name\u0022:\u0022Coach\u0022,\u0022starters\u0022:[\u0022Plan my week\u0022,\u0022What should I do first?\u0022]},\u0022writer\u0022:{\u0022id\u0022:\u0022writer\u0022,\u0022name\u0022:\u0022Writer\u0022,\u0022starters\u0022:[\u0022Draft a launch email\u0022]}}}'))" x-modelable="selected" class="flex flex-col gap-4">
+    <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('coach')" x-modelable="value" x-bind="root"
+                aria-label="Personas" x-model="selected" class="flex-col grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('coach')"
+    aria-checked="true" tabindex="0"
+     data-checked         x-bind:disabled="false" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('coach')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex items-center gap-2">
+                    <span aria-hidden="true" class="text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 8V4H8"/>
+  <rect width="16" height="12" x="4" y="8" rx="2"/>
+  <path d="M2 14h2"/>
+  <path d="M20 14h2"/>
+  <path d="M15 13v2"/>
+  <path d="M9 13v2"/>
+</svg></span>
+                    Coach
+                </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Plans your week</span>    </span>
+    </button>
+                    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('writer')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         x-bind:disabled="false" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('writer')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex items-center gap-2">
+                    <span aria-hidden="true" class="text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 21h8"/>
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+</svg></span>
+                    Writer
+                </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Drafts and edits</span>    </span>
+    </button>
+    </div>
+    <div data-slot="persona-starters" class="flex flex-col gap-2" x-show="starters().length" >
+        <span class="text-label text-foreground">Try asking</span>
+        <ul aria-label="Try asking" class="flex flex-wrap gap-2">
+            <template x-for="s in starters()" :key="s">
+                <li>
+                    <button data-slot="button"
+     type="button"                     x-on:click="start(s)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 rounded-control border font-sans text-label transition-colors duration-150 ease-nq outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-2.5 h-auto min-h-control-sm whitespace-normal py-1.5 text-start">
+        <span x-text="s"></span></button>
+                </li>
+            </template>
+        </ul>
+    </div>
+    <input type="hidden" name="persona" x-bind:value="selected ?? ''" value="coach"></div>
+</div>

@@ -1,0 +1,150 @@
+<nav class="flex w-64 flex-col gap-1 rounded-floating border border-border bg-sidebar p-2" aria-label="Main">
+    <div data-slot="sidebar-layout" x-data="nqSidebarLayout(JSON.parse('{\u0022sections\u0022:[{\u0022id\u0022:\u0022main\u0022,\u0022label\u0022:null,\u0022storageKey\u0022:\u0022my-app-nav\u0022,\u0022ids\u0022:[\u0022dashboard\u0022,\u0022inbox\u0022,\u0022issues\u0022],\u0022defaultHidden\u0022:[]}],\u0022open\u0022:false,\u0022moved\u0022:\u0022:label, position :position of :total\u0022}'))" x-modelable="open" x-id="['nq-dialog']" class="contents">
+    <div data-slot="sidebar-sortable" class="flex flex-col"><div data-slot="sidebar-sortable-item" data-sortable-id="dashboard"
+    x-show="isVisible('main', 'dashboard')" :style="{ order: position('main', 'dashboard') }"
+    x-on:pointerdown="press($event, 'main', 'dashboard')" x-on:click.capture="swallowClick($event)" x-on:dragstart.prevent
+    style="order: 0; "
+    class="relative [&_a]:[-webkit-user-drag:none] data-dragging:z-10 data-dragging:cursor-grabbing data-dragging:*:bg-nq-surface-overlay data-dragging:*:shadow-floating"><a href="/" class="relative flex h-nav-row w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="7" height="9" x="3" y="3" rx="1"/>
+  <rect width="7" height="5" x="14" y="3" rx="1"/>
+  <rect width="7" height="9" x="14" y="12" rx="1"/>
+  <rect width="7" height="5" x="3" y="16" rx="1"/>
+</svg><span class="min-w-0 flex-1 truncate">Dashboard</span></a></div>
+        <div data-slot="sidebar-sortable-item" data-sortable-id="inbox"
+    x-show="isVisible('main', 'inbox')" :style="{ order: position('main', 'inbox') }"
+    x-on:pointerdown="press($event, 'main', 'inbox')" x-on:click.capture="swallowClick($event)" x-on:dragstart.prevent
+    style="order: 1; "
+    class="relative [&_a]:[-webkit-user-drag:none] data-dragging:z-10 data-dragging:cursor-grabbing data-dragging:*:bg-nq-surface-overlay data-dragging:*:shadow-floating"><a href="/inbox" class="relative flex h-nav-row w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg><span class="min-w-0 flex-1 truncate">Inbox</span></a></div>
+        <div data-slot="sidebar-sortable-item" data-sortable-id="issues"
+    x-show="isVisible('main', 'issues')" :style="{ order: position('main', 'issues') }"
+    x-on:pointerdown="press($event, 'main', 'issues')" x-on:click.capture="swallowClick($event)" x-on:dragstart.prevent
+    style="order: 2; "
+    class="relative [&_a]:[-webkit-user-drag:none] data-dragging:z-10 data-dragging:cursor-grabbing data-dragging:*:bg-nq-surface-overlay data-dragging:*:shadow-floating"><a href="/issues" class="relative flex h-nav-row w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 5h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="m3 17 2 2 4-4"/>
+  <rect x="3" y="4" width="6" height="6" rx="1"/>
+</svg><span class="min-w-0 flex-1 truncate">My issues</span></a></div></div>
+        <button data-slot="sidebar-layout-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Customize sidebar</button>
+        <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] rounded-floating border border-border bg-popover text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-w-md gap-0 p-0">
+            <div data-slot="dialog-header" class="flex flex-col gap-1.5 text-start border-b border-border px-5 py-4 pe-12"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Customize sidebar</h2>
+        <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Drag to reorder. Switch items off to hide them.</p></div>
+    <div class="flex max-h-[60dvh] flex-col gap-4 overflow-y-auto px-3 py-3">
+                                <section class="flex flex-col gap-1" data-section="main" >
+                                <ul class="flex flex-col gap-0.5">
+                                                                    <li data-sortable-id="dashboard" :style="{ order: position('main', 'dashboard') }" style="order: 0"
+                            class="relative flex h-10 items-center gap-2 rounded-control bg-popover px-1 data-dragging:z-10 data-dragging:shadow-floating">
+                            <button type="button" aria-label="Reorder Dashboard" aria-keyshortcuts="ArrowUp ArrowDown Home End"
+                                x-on:keydown="keyMove($event, 'main', 'dashboard', 'Dashboard')" x-on:pointerdown="press($event, 'main', 'dashboard', true)"
+                                class="inline-flex size-7 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus active:cursor-grabbing [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="1"/>
+  <circle cx="9" cy="5" r="1"/>
+  <circle cx="9" cy="19" r="1"/>
+  <circle cx="15" cy="12" r="1"/>
+  <circle cx="15" cy="5" r="1"/>
+  <circle cx="15" cy="19" r="1"/>
+</svg></button>
+                                                            <span class="text-muted-foreground [&_svg]:size-4" :class="isVisible('main', 'dashboard') ? '' : 'opacity-50'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="7" height="9" x="3" y="3" rx="1"/>
+  <rect width="7" height="5" x="14" y="3" rx="1"/>
+  <rect width="7" height="9" x="14" y="12" rx="1"/>
+  <rect width="7" height="5" x="3" y="16" rx="1"/>
+</svg></span>
+                                                        <span data-sortable-label class="min-w-0 flex-1 truncate text-body-sm text-foreground"
+                                :class="isVisible('main', 'dashboard') ? 'text-foreground' : 'text-muted-foreground'">Dashboard</span>
+                            <button type="button" role="switch" data-slot="switch" aria-label="Dashboard"
+                                x-on:click="toggleVisible('main', 'dashboard')"
+                                :aria-checked="String(isVisible('main', 'dashboard'))"
+                                :data-checked="isVisible('main', 'dashboard') ? '' : undefined" :data-unchecked="isVisible('main', 'dashboard') ? undefined : ''"
+                                aria-checked="true"  data-checked                                  disabled data-disabled                                 class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 me-1">
+                                <span data-slot="switch-thumb"  data-checked                                     :data-checked="isVisible('main', 'dashboard') ? '' : undefined" :data-unchecked="isVisible('main', 'dashboard') ? undefined : ''"
+                                    class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+                            </button>
+                        </li>
+                                                                    <li data-sortable-id="inbox" :style="{ order: position('main', 'inbox') }" style="order: 1"
+                            class="relative flex h-10 items-center gap-2 rounded-control bg-popover px-1 data-dragging:z-10 data-dragging:shadow-floating">
+                            <button type="button" aria-label="Reorder Inbox" aria-keyshortcuts="ArrowUp ArrowDown Home End"
+                                x-on:keydown="keyMove($event, 'main', 'inbox', 'Inbox')" x-on:pointerdown="press($event, 'main', 'inbox', true)"
+                                class="inline-flex size-7 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus active:cursor-grabbing [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="1"/>
+  <circle cx="9" cy="5" r="1"/>
+  <circle cx="9" cy="19" r="1"/>
+  <circle cx="15" cy="12" r="1"/>
+  <circle cx="15" cy="5" r="1"/>
+  <circle cx="15" cy="19" r="1"/>
+</svg></button>
+                                                            <span class="text-muted-foreground [&_svg]:size-4" :class="isVisible('main', 'inbox') ? '' : 'opacity-50'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg></span>
+                                                        <span data-sortable-label class="min-w-0 flex-1 truncate text-body-sm text-foreground"
+                                :class="isVisible('main', 'inbox') ? 'text-foreground' : 'text-muted-foreground'">Inbox</span>
+                            <button type="button" role="switch" data-slot="switch" aria-label="Inbox"
+                                x-on:click="toggleVisible('main', 'inbox')"
+                                :aria-checked="String(isVisible('main', 'inbox'))"
+                                :data-checked="isVisible('main', 'inbox') ? '' : undefined" :data-unchecked="isVisible('main', 'inbox') ? undefined : ''"
+                                aria-checked="true"  data-checked                                                                 class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 me-1">
+                                <span data-slot="switch-thumb"  data-checked                                     :data-checked="isVisible('main', 'inbox') ? '' : undefined" :data-unchecked="isVisible('main', 'inbox') ? undefined : ''"
+                                    class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+                            </button>
+                        </li>
+                                                                    <li data-sortable-id="issues" :style="{ order: position('main', 'issues') }" style="order: 2"
+                            class="relative flex h-10 items-center gap-2 rounded-control bg-popover px-1 data-dragging:z-10 data-dragging:shadow-floating">
+                            <button type="button" aria-label="Reorder My issues" aria-keyshortcuts="ArrowUp ArrowDown Home End"
+                                x-on:keydown="keyMove($event, 'main', 'issues', 'My issues')" x-on:pointerdown="press($event, 'main', 'issues', true)"
+                                class="inline-flex size-7 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus active:cursor-grabbing [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="1"/>
+  <circle cx="9" cy="5" r="1"/>
+  <circle cx="9" cy="19" r="1"/>
+  <circle cx="15" cy="12" r="1"/>
+  <circle cx="15" cy="5" r="1"/>
+  <circle cx="15" cy="19" r="1"/>
+</svg></button>
+                                                            <span class="text-muted-foreground [&_svg]:size-4" :class="isVisible('main', 'issues') ? '' : 'opacity-50'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 5h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="m3 17 2 2 4-4"/>
+  <rect x="3" y="4" width="6" height="6" rx="1"/>
+</svg></span>
+                                                        <span data-sortable-label class="min-w-0 flex-1 truncate text-body-sm text-foreground"
+                                :class="isVisible('main', 'issues') ? 'text-foreground' : 'text-muted-foreground'">My issues</span>
+                            <button type="button" role="switch" data-slot="switch" aria-label="My issues"
+                                x-on:click="toggleVisible('main', 'issues')"
+                                :aria-checked="String(isVisible('main', 'issues'))"
+                                :data-checked="isVisible('main', 'issues') ? '' : undefined" :data-unchecked="isVisible('main', 'issues') ? undefined : ''"
+                                aria-checked="true"  data-checked                                                                 class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 me-1">
+                                <span data-slot="switch-thumb"  data-checked                                     :data-checked="isVisible('main', 'issues') ? '' : undefined" :data-unchecked="isVisible('main', 'issues') ? undefined : ''"
+                                    class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+                            </button>
+                        </li>
+                                    </ul>
+            </section>
+            </div>
+    <div aria-live="polite" class="sr-only" x-text="announcement"></div>
+    <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row border-t border-border px-5 py-3 sm:justify-between"><button data-slot="button"
+     type="button"                     x-bind:disabled="allDefault()" x-on:click="reset()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Reset to default</button>
+        <button data-slot="button"
+     type="button"                     x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Done</button></div>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</nav>

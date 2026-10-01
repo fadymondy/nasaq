@@ -1,0 +1,184 @@
+<div class="flex flex-wrap items-start gap-8">
+    <div data-slot="extension-popup" x-data="nqExtensionPopup(JSON.parse('{\u0022paused\u0022:false,\u0022status\u0022:\u0022disconnected\u0022}'))" x-modelable="paused" x-bind:data-state="state()" data-state="disconnected"
+    class="flex max-h-[37.5rem] w-[22rem] max-w-full flex-col overflow-hidden rounded-lg border border-border bg-background text-foreground shadow-lg">
+    <header class="flex items-center gap-2 border-b border-border px-3 py-2.5">
+        <span class="flex min-w-0 flex-1 items-center gap-2 text-label font-semibold"><span dir="ltr">Nasaq</span></span>
+        <span x-show="paused"  style="display: none" ><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Paused</span>
+</span>
+        <span x-show="!paused" ><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Not connected</span>
+</span>
+                    <span class="flex items-center gap-1.5">
+                <span x-show="paused" aria-hidden="true" class="text-nq-warning-text [&_svg]:size-3.5"  style="display: none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="14" y="3" width="5" height="18" rx="1"/>
+  <rect x="5" y="3" width="5" height="18" rx="1"/>
+</svg></span>
+                <span x-show="!paused" aria-hidden="true" class="text-muted-foreground [&_svg]:size-3.5" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>
+</svg></span>
+                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="paused" aria-label="Pause" title="Stops the extension on every site until you turn it back on." class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+            </span>
+            </header>
+    <div data-slot="extension-popup-body" class="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-3">
+        <form data-slot="extension-connect" novalidate x-data="nqExtensionConnect(JSON.parse('{\u0022mode\u0022:\u0022server\u0022,\u0022server\u0022:\u0022\u0022,\u0022invalidServer\u0022:\u0022Enter a full address, starting with https:\\\/\\\/\u0022,\u0022invalidCode\u0022:\u0022The code has 6 characters\u0022}'))" x-on:submit.prevent="submit()" class="flex flex-col gap-3">
+    <div class="flex flex-col gap-1">
+        <h2 class="flex items-center gap-2 text-h3 text-foreground">
+            <span aria-hidden="true" class="text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg></span>
+            Connect to your workspace
+        </h2>
+        <p class="text-caption text-muted-foreground">Enter your server address, then sign in. The extension never asks for a password itself.</p>
+    </div>
+    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Server address</label>
+            <input data-slot="input" type="url"
+     dir="ltr"                 placeholder="https://app.example.com" value="" x-model="server" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+</div>
+    <button data-slot="button"
+     type="submit"                     x-bind:aria-busy="busy ? &#039;true&#039; : undefined" x-bind:disabled="busy" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-show="busy" x-cloak style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+        Connect</button>
+    <p x-show="error" x-cloak style="display: none" role="alert" class="flex items-start gap-1.5 text-caption text-nq-danger-text">
+        <span aria-hidden="true" class="mt-0.5 shrink-0 [&_svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg></span>
+        <span x-text="error"></span>
+    </p>
+</form>
+    </div>
+            <footer class="flex items-center justify-between gap-2 border-t border-border px-3 py-2 text-caption text-muted-foreground">
+                            <button data-slot="button"
+     type="button"                     x-on:click="$dispatch(&#039;nq-open-options&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg>Options</button>
+                        <span>v1.4.0</span>
+        </footer>
+    </div>
+    <div data-slot="extension-popup" x-data="nqExtensionPopup(JSON.parse('{\u0022paused\u0022:false,\u0022status\u0022:\u0022connected\u0022}'))" x-modelable="paused" x-bind:data-state="state()" data-state="connected"
+    class="flex max-h-[37.5rem] w-[22rem] max-w-full flex-col overflow-hidden rounded-lg border border-border bg-background text-foreground shadow-lg">
+    <header class="flex items-center gap-2 border-b border-border px-3 py-2.5">
+        <span class="flex min-w-0 flex-1 items-center gap-2 text-label font-semibold"><span dir="ltr">Nasaq</span></span>
+        <span x-show="paused"  style="display: none" ><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Paused</span>
+</span>
+        <span x-show="!paused" ><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Connected</span>
+</span>
+            </header>
+    <div data-slot="extension-popup-body" class="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-3">
+        <section data-slot="extension-mini-card" class="flex flex-col gap-2 rounded-lg border border-border bg-card p-3">
+    <div class="flex items-center gap-2">
+        <span aria-hidden="true" class="shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
+</svg></span>        <h3 class="min-w-0 flex-1 truncate text-label font-medium text-foreground">Saved today</h3>
+                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Synced</span>
+            </div>
+    <p class="text-h2 tabular-nums text-foreground">12</p>    <p class="text-caption text-muted-foreground">Pages and snippets</p>    
+</section>
+        <div data-slot="extension-quick-actions" role="group" aria-label="Quick actions" class="grid gap-2 grid-cols-2">
+            <button type="button" x-data x-on:click="$dispatch('nq-action', { id: 'open' })"             class="relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2 text-label text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50">
+            <span aria-hidden="true" class="text-primary [&_svg]:size-5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+  <path d="M2 12h20"/>
+</svg></span>
+            <span class="max-w-full truncate">Open app</span>
+            <span aria-hidden="true" class="absolute top-1.5 end-1.5 text-muted-foreground rtl:-scale-x-100 [&_svg]:size-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</svg></span>        </button>
+            <button type="button" x-data x-on:click="$dispatch('nq-action', { id: 'save' })"             class="relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2 text-label text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50">
+            <span aria-hidden="true" class="text-primary [&_svg]:size-5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
+</svg></span>
+            <span class="max-w-full truncate">Save this page</span>
+                    </button>
+            <button type="button" x-data x-on:click="$dispatch('nq-action', { id: 'copy' })"             class="relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2 text-label text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50">
+            <span aria-hidden="true" class="text-primary [&_svg]:size-5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg></span>
+            <span class="max-w-full truncate">Copy link</span>
+                    </button>
+    </div>
+    </div>
+    </div>
+    <form data-slot="extension-connect" novalidate x-data="nqExtensionConnect(JSON.parse('{\u0022mode\u0022:\u0022pair\u0022,\u0022server\u0022:\u0022\u0022,\u0022invalidServer\u0022:\u0022Enter a full address, starting with https:\\\/\\\/\u0022,\u0022invalidCode\u0022:\u0022The code has 6 characters\u0022}'))" x-on:submit.prevent="submit()" class="flex flex-col gap-3 w-80">
+    <div class="flex flex-col gap-1">
+        <h2 class="flex items-center gap-2 text-h3 text-foreground">
+            <span aria-hidden="true" class="text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg></span>
+            Pair with your account
+        </h2>
+        <p class="text-caption text-muted-foreground">Open Settings, Extensions in the app and type the pairing code it shows.</p>
+    </div>
+    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Pairing code</label>
+            <input data-slot="input" type="text"
+     dir="ltr"                 maxlength="6" autocomplete="one-time-code" inputmode="text" x-bind:value="code" x-on:input="code = $event.target.value.toUpperCase(); $event.target.value = code" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start font-mono tracking-[0.3em] uppercase">
+</div>
+    <button data-slot="button"
+     type="submit"                     x-bind:aria-busy="busy ? &#039;true&#039; : undefined" x-bind:disabled="busy" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-show="busy" x-cloak style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+        Pair</button>
+    <p x-show="error" x-cloak style="display: none" role="alert" class="flex items-start gap-1.5 text-caption text-nq-danger-text">
+        <span aria-hidden="true" class="mt-0.5 shrink-0 [&_svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg></span>
+        <span x-text="error"></span>
+    </p>
+</form>
+    <div data-slot="extension-options" x-data="nqExtensionOptions(JSON.parse('{\u0022dirty\u0022:false,\u0022saved\u0022:\u0022Saved\u0022,\u0022unsaved\u0022:\u0022Unsaved changes\u0022}'))" x-modelable="dirty"
+    x-on:input="touch()" x-on:change="touch()" class="mx-auto flex max-w-2xl flex-col gap-6 p-4 text-foreground sm:p-6 w-[36rem]">
+    <header class="flex flex-col gap-1">
+                <h1 class="text-h1">Extension settings</h1>
+        <p class="text-body text-muted-foreground">Applies to every site.</p>    </header>
+            <section aria-labelledby="general-title" class="flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
+            <div class="flex flex-col gap-0.5">
+                <h2 id="general-title" class="text-h3">General</h2>
+                <p class="text-caption text-muted-foreground">How the extension behaves.</p>            </div>
+            <div data-slot="extension-option-row" class="flex items-center justify-between gap-4 py-1">
+    <div class="min-w-0">
+        <p class="text-label text-foreground">Show badge</p>
+        <p class="text-caption text-muted-foreground">On the toolbar icon.</p>    </div>
+    <div class="shrink-0"><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 aria-label="Show badge" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button></div>
+</div>
+        </section>
+                <div class="sticky bottom-0 flex items-center gap-3 border-t border-border bg-background/90 py-3 backdrop-blur">
+            <button data-slot="button"
+     type="button"                     x-on:click="save()" x-bind:disabled="!dirty || saving" x-bind:aria-busy="saving ? &#039;true&#039; : undefined" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-show="saving" x-cloak style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                Save changes</button>
+            <span role="status" class="text-caption" x-bind:class="error ? 'text-nq-danger-text' : 'text-muted-foreground'" x-text="message()">Saved</span>
+        </div>
+    </div>
+</div>

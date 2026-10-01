@@ -6,7 +6,7 @@
 @php
     $standalone = (bool) $standalone;
     $on = $standalone ? (bool) $pressed : in_array((string) $value, array_map('strval', (array) $defaultValue), true);
-    $off = (! $standalone && $disabled) || $attributes->has('disabled');
+    $off = (! $standalone && $disabled) || $attributes->flag('disabled');
     $look = $standalone
         ? 'rounded-control border border-border bg-card data-pressed:border-primary data-pressed:bg-nq-selected data-pressed:text-foreground'
         : ($variant === 'segmented'

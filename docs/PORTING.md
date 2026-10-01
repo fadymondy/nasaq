@@ -52,7 +52,11 @@ Reference ports to copy the patterns from: **button** and **spinner** (static), 
 ## HTML + Alpine runtime
 
 - One module per behaviour: `packages/html/src/alpine/<name>.ts` exporting `export const <camelName>: Register = (Alpine) => Alpine.data("nq<Name>", ...)`. Use `x-bind` objects for parts (see `tabs.ts`: `list`, `tab(v)`, `panel(v)`), the `x-nq-presence` directive for enter/exit animation, `$nq` for locale and money.
-- The module file name becomes the export name (`date-picker.ts` → `datePicker`). Avoid reserved words: `switch.ts` is `switch-control.ts`.
+- The module file name becomes the export name (`date-picker.ts` → `datePicker`). Avoid reserved words: `switch.ts` is `switch-control.ts`. Helper files without a `Register` export (`<name>-drag.ts`, `<name>-logic.ts`) can sit next to them; the index skips them.
+- Never render a static value for an attribute that Alpine binds (`disabled`, `aria-*`, `data-*`, `role`, `src`): Alpine does not replace it on later updates. Server-render the initial state through the binding itself, or set it from `x-effect`. Bound boolean attributes take `null` to remove them (`undefined` becomes `""`).
+- Inside a method, `$el` is the element that fired the event, not the `x-data` root (and events from a teleported part don't bubble to the host). Store the root in `init()` (`this.root = this.$el`) and dispatch from it.
+- An `x-model` expression is read in the scope of the element that has it; don't reuse a name (`open`, `invalid`) that an inner component's scope already owns.
+- Blade escapes `{{ }}` inside component attributes twice; use `{!! Js::from(...) !!}` or `{!! !!}` for JS values in attributes.
 - Static components (badge, card, separator …) need no module; the rendered HTML is the whole port.
 - The rendered example is produced from the Blade example: `php scripts/render-examples.php <name>` in packages/php. Never hand-edit `examples/rendered/*.html`.
 - Test behaviour in `packages/html/test/<name>.test.ts` by loading `../php/examples/rendered/<name>.html` under real Alpine with the plugin (copy the setup from `alpine.test.ts`).

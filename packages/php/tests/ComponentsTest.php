@@ -49,6 +49,14 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('data-slot="date-time"', Blade::render('<x-nq::numeric.date-time value="2026-03-01T09:30:00+03:00" time-style="short" />'));
     }
 
+    public function test_disabled_is_a_real_boolean(): void
+    {
+        $on = Blade::render('<x-nq::radio-group><x-nq::radio-group.card value="a" title="A" disabled /></x-nq::radio-group>');
+        $this->assertMatchesRegularExpression('/<button[^>]*data-slot="radio-card"[^>]*\sdisabled\b/', preg_replace('/\s+/', ' ', $on));
+        $off = Blade::render('<x-nq::radio-group :disabled="false"><x-nq::radio-group.radio value="a" :disabled="false" /></x-nq::radio-group>');
+        $this->assertDoesNotMatchRegularExpression('/\sdata-disabled[\s>]/', $off);
+    }
+
     public function test_arabic_currency_is_sar(): void
     {
         app()->setLocale('ar');

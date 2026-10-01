@@ -3,7 +3,7 @@
 @props(['value'])
 @php
     $checked = $defaultValue !== null && (string) $defaultValue === (string) $value;
-    $off = $disabled || $attributes->has('disabled');
+    $off = ($disabled ?? false) || $attributes->flag('disabled');
 @endphp
 <button type="button" role="radio" data-slot="radio" x-bind="radio(@js((string) $value))"
     aria-checked="{{ $checked ? 'true' : 'false' }}" tabindex="{{ $checked ? 0 : -1 }}"

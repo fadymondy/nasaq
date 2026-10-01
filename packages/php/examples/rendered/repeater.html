@@ -1,0 +1,79 @@
+<div data-slot="repeater" x-data="nqRepeater(JSON.parse('[{\u0022name\u0022:\u0022Sara\u0022}]'), Object.assign(JSON.parse('{\u0022min\u0022:1,\u0022max\u0022:5}'), { createItem: () => ({ name: '' }), rowTitle: (item, index) => (item.name) }))" x-modelable="items" x-id="['nq-repeater-body']"     class="flex min-w-0 flex-col gap-3 w-96">
+            <div x-show="count() > 1" x-cloak style="display: none" class="flex items-center justify-between gap-2">
+            <span data-slot="repeater-count" class="text-caption tabular-nums text-muted-foreground" x-text="countText()"></span>
+            <button data-slot="button"
+     type="button"                     x-on:click="toggleAll()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <span x-show="!allCollapsed()" aria-hidden="true" class="flex [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 20 5-5 5 5"/>
+  <path d="m7 4 5 5 5-5"/>
+</svg></span>
+                <span x-show="allCollapsed()" x-cloak style="display: none" aria-hidden="true" class="flex [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+                <span x-text="allCollapsed() ? $nq.t('Expand all', 'توسيع الكل') : $nq.t('Collapse all', 'طيّ الكل')"></span></button>
+        </div>
+                <p :id="hintId()" class="sr-only">Focus the handle, then use the arrow keys to move the row. Home and End jump to the ends.</p>
+    <div x-show="count() === 0" x-cloak style="display: none" data-slot="repeater-empty"
+        class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">
+        No items yet.    </div>
+    <ol x-show="count() > 0" x-cloak style="display: none" aria-label="Items" class="flex flex-col gap-2">
+        <template x-for="(item, index) in items" :key="keyOf(index)">
+            <li data-slot="repeater-row" :data-row-key="keyOf(index)" :data-collapsed="isCollapsed(index) ? 'true' : undefined" :data-dragging="isDragging(index) ? 'true' : undefined" :style="rowStyle(index)"
+                class="relative rounded-card border border-border bg-card data-dragging:z-10 data-dragging:border-nq-focus data-dragging:shadow-floating">
+                <div data-slot="repeater-row-header" class="flex min-h-control items-center gap-1 p-1.5">
+                                            <button type="button" x-show="count() > 1" data-repeater-focus :aria-label="$nq.t('Reorder ' + name(index), 'إعادة ترتيب ' + name(index))" :title="$nq.t('Reorder ' + name(index), 'إعادة ترتيب ' + name(index))"
+                            :aria-describedby="hintId()" aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled"
+                            x-on:keydown="onHandleKey($event, index)" x-on:pointerdown="startDrag($event, index)"
+                            class="inline-flex size-control-sm shrink-0 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus active:cursor-grabbing disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="1"/>
+  <circle cx="9" cy="5" r="1"/>
+  <circle cx="9" cy="19" r="1"/>
+  <circle cx="15" cy="12" r="1"/>
+  <circle cx="15" cy="5" r="1"/>
+  <circle cx="15" cy="19" r="1"/>
+</svg>                        </button>
+                                                                <button type="button"  :aria-expanded="isCollapsed(index) ? 'false' : 'true'" :aria-controls="$id('nq-repeater-body', index)"
+                            :aria-label="isCollapsed(index) ? $nq.t('Expand ' + name(index), 'توسيع ' + name(index)) : $nq.t('Collapse ' + name(index), 'طيّ ' + name(index))"
+                            x-on:click="toggle(index)"
+                            class="flex min-h-control-sm min-w-0 flex-1 items-center gap-2 rounded-control px-1.5 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                            <span aria-hidden="true" :class="isCollapsed(index) ? '' : 'rotate-90 rtl:-rotate-90'" class="flex size-4 shrink-0 text-muted-foreground transition-[rotate] duration-200 ease-nq rtl:-scale-x-100 [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></span>
+                            <span class="min-w-0 truncate text-label text-foreground" x-text="title(index)"></span>
+                            <span x-show="isCollapsed(index) && summary(index)" class="min-w-0 flex-1 truncate text-body-sm text-muted-foreground" x-text="summary(index)"></span>
+                        </button>
+                                        <span class="sr-only" x-text="n(index + 1)"></span>
+                                            <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Duplicate &#039; + name(index), &#039;تكرار &#039; + name(index))" :title="$nq.t(&#039;Duplicate &#039; + name(index), &#039;تكرار &#039; + name(index))" :disabled="disabled || atMax()" x-on:click="duplicate(index)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg></button>
+                                        <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Remove &#039; + name(index), &#039;حذف &#039; + name(index))" :title="$nq.t(&#039;Remove &#039; + name(index), &#039;حذف &#039; + name(index))" :disabled="disabled || atMin()" x-on:click="remove(index)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground hover:text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                </div>
+                <div :id="$id('nq-repeater-body', index)" data-slot="repeater-body" x-show="!isCollapsed(index)" class="border-t border-border p-3 sm:p-4"><input data-slot="input" type="text"
+                    x-model="item.name" aria-label="Name" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control"></div>
+            </li>
+        </template>
+    </ol>
+    <div class="flex flex-wrap items-center gap-3">
+        <button data-slot="button"
+     type="button"                     data-repeater-add="data-repeater-add" :disabled="disabled || atMax()" :aria-describedby="limitText() ? limitId() : undefined" x-on:click="add()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>            Add item</button>
+        <span x-show="limitText()" x-cloak style="display: none" :id="limitId()" class="text-caption text-muted-foreground" x-text="limitText()"></span>
+    </div>
+    <div aria-live="polite" role="status" class="sr-only" x-text="announcement"></div>
+</div>

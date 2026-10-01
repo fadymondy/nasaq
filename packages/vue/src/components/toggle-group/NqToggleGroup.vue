@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ToggleGroupRoot } from "reka-ui";
-import { computed, provide, ref, toRef, watch, type HTMLAttributes } from "vue";
+import { computed, provide, ref, toRef, type HTMLAttributes } from "vue";
 import { cn } from "../../lib/cn";
 import { TOGGLE_GROUP_VARIANT, type ToggleGroupVariant } from "./context";
 
@@ -24,13 +24,14 @@ const props = withDefaults(defineProps<Props>(), { modelValue: undefined, defaul
 const emit = defineEmits<{ "update:modelValue": [value: string[]] }>();
 
 provide(TOGGLE_GROUP_VARIANT, toRef(props, "variant"));
-const value = ref<string[]>(props.modelValue ?? props.defaultValue ?? []);
-watch(() => props.modelValue, (v) => v && (value.value = v));
+// Uncontrolled state; when v-model is bound the prop is the only source, so a parent can reject a press or clear it.
+const local = ref<string[]>(props.defaultValue ?? []);
+const value = computed(() => props.modelValue ?? local.value);
 // Reka's single mode holds a string; the Nasaq API (like Base UI's) is always an array.
 const inner = computed(() => (props.multiple ? value.value : (value.value[0] ?? "")));
 function onUpdate(v: unknown) {
   const next = Array.isArray(v) ? (v as string[]) : v ? [v as string] : [];
-  value.value = next;
+  local.value = next;
   emit("update:modelValue", next);
 }
 defineOptions({ inheritAttrs: false });

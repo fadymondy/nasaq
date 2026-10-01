@@ -3,6 +3,7 @@ export {
   DEFAULT_SECTION_LABELS,
   CommandRegistry,
   bindShortcuts,
+  isApplePlatform,
   normalizeForSearch,
   parseShortcut,
   provideCommands,
