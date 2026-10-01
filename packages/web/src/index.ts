@@ -178,6 +178,8 @@ export * from "./components/admin-tenants";
 export * from "./components/chat-widget";
 export * from "./components/copilot-chat";
 export * from "./components/copilot-dock";
+export * from "./components/copilot-provider";
+export * from "./components/weighted-criteria-card";
 export * from "./components/workflow-canvas";
 export * from "./components/workflow-network";
 export * from "./components/graph-view";

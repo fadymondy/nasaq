@@ -34,7 +34,7 @@ function EndSlot() {
 export const Playground: Story = { args: { steps, title: "~/my-shop" } };
 
 /** `endSlot` appears when the playback ends: a screenshot of the result, or a call to action. */
-export const WithEndSlot: Story = { args: { steps, title: "~/my-shop", endSlot: <EndSlot /> } };
+export const WithEndSlot: Story = { args: { steps, title: "~/my-shop" }, render: (args) => <TypingTerminal {...args} endSlot={<EndSlot />} /> };
 
 /** Starts again after a pause, for a hero that stays on screen. */
 export const Loop: Story = { args: { steps, loop: true, typeMs: 20, height: 220 } };
@@ -42,4 +42,4 @@ export const Loop: Story = { args: { steps, loop: true, typeMs: 20, height: 220 
 /** `play={false}`: the finished transcript, as servers, crawlers and reduced motion get it. */
 export const Static: Story = { args: { steps, play: false, height: 220 } };
 
-export const Arabic: Story = { globals: { locale: "ar" }, args: { steps, endSlot: <EndSlot /> } };
+export const Arabic: Story = { globals: { locale: "ar" }, args: { steps }, render: (args) => <TypingTerminal {...args} endSlot={<EndSlot />} /> };

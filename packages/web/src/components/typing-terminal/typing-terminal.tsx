@@ -6,6 +6,7 @@ import { cn } from "../../lib/cn";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Button } from "../button";
 import { AnsiText } from "../terminal";
+import { stripAnsi } from "../terminal/terminal-ansi";
 
 const STRINGS = {
   en: { title: "Terminal", replay: "Replay", transcript: "Terminal session" },
@@ -154,7 +155,7 @@ export function TypingTerminal({
     });
   });
 
-  const transcript = steps.map((s) => [`${prompt} ${s.cmd}`, ...(s.out ?? [])].join("\n")).join("\n");
+  const transcript = stripAnsi(steps.map((s) => [`${prompt} ${s.cmd}`, ...(s.out ?? [])].join("\n")).join("\n"));
 
   return (
     <div

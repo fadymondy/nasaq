@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { extractArtifacts, frameDocument, frameHeight, localize, parseArtifact, safeColor } from "../src/components/artifact-renderer/artifact-renderer-logic.ts";
+import { extractArtifacts, frameDocument, frameHeight, localize, parseArtifact, pieSlices, safeColor } from "../src/components/artifact-renderer/artifact-renderer-logic.ts";
 
 test("valid artifacts of every kind parse", () => {
   const cases = [
@@ -77,4 +77,27 @@ test("extractArtifacts pulls fenced blocks and keeps the prose", () => {
   assert.equal(text, "Intro\n\nMid\n\nEnd");
   const streaming = extractArtifacts('x\n```artifact\n{"kind":');
   assert.equal(streaming.artifacts.length, 0);
+});
+
+test("pie and donut charts validate and fold extra slices into Other", () => {
+  const data = Array.from({ length: 10 }, (_, i) => ({ c: `c${i}`, v: 10 - i }));
+  const r = parseArtifact({ kind: "chart", chart: "donut", xKey: "c", series: [{ key: "v", label: "V" }], data: [...data, { c: "zero", v: 0 }] });
+  assert.equal(r.ok, true);
+  const slices = pieSlices(r.artifact);
+  assert.equal(slices.length, 8);
+  assert.deepEqual(slices[7], { name: "", value: 3 + 2 + 1, other: true });
+  assert.equal(slices.some((s) => s.name === "zero"), false);
+  assert.equal(parseArtifact({ kind: "chart", chart: "radar", xKey: "c", series: [{ key: "v", label: "V" }], data: [] }).ok, false);
+});
+
+test("stats take a tone and a sparkline; card takes items and a footer", () => {
+  const s = parseArtifact({ kind: "stats", items: [{ label: "A", value: 1, tone: "danger", sparkline: [1, 2, 3] }] });
+  assert.equal(s.ok, true);
+  assert.deepEqual(s.artifact.items[0], { label: "A", value: 1, tone: "danger", sparkline: [1, 2, 3] });
+  assert.equal(parseArtifact({ kind: "stats", items: [{ label: "A", value: 1, sparkline: [1, "x"] }] }).ok, false);
+  assert.equal(parseArtifact({ kind: "stats", items: [{ label: "A", value: 1, tone: "red" }] }).ok, false);
+  const c = parseArtifact({ kind: "card", items: [{ label: "Task", value: 3, tone: "info" }], footer: { en: "Source: CRM" } });
+  assert.equal(c.ok, true);
+  assert.deepEqual(c.artifact.items, [{ label: "Task", value: 3, tone: "info" }]);
+  assert.deepEqual(c.artifact.footer, { en: "Source: CRM" });
 });
