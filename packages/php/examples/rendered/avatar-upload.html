@@ -1,0 +1,110 @@
+<div data-slot="avatar-upload" x-data="nqAvatarUpload(JSON.parse('{\u0022name\u0022:\u0022Sara Alharbi\u0022,\u0022accept\u0022:\u0022image\\\/png,image\\\/jpeg,image\\\/webp\u0022,\u0022maxSize\u0022:5242880,\u0022outputSize\u0022:256,\u0022outputType\u0022:\u0022image\\\/webp\u0022,\u0022quality\u0022:0.9,\u0022maxZoom\u0022:4,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022upload\u0022:\u0022Upload photo\u0022,\u0022change\u0022:\u0022Change photo\u0022,\u0022remove\u0022:\u0022Remove photo\u0022,\u0022hint\u0022:\u0022{types}, up to {max}. You can also drop or paste an image.\u0022,\u0022dropping\u0022:\u0022Drop to use this photo\u0022,\u0022adjust\u0022:\u0022Adjust your photo\u0022,\u0022viewport\u0022:\u0022Photo position\u0022,\u0022instructions\u0022:\u0022Drag the photo to move it. Arrow keys move it, plus and minus zoom.\u0022,\u0022zoom\u0022:\u0022Zoom\u0022,\u0022zoomIn\u0022:\u0022Zoom in\u0022,\u0022zoomOut\u0022:\u0022Zoom out\u0022,\u0022save\u0022:\u0022Save photo\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022uploading\u0022:\u0022Uploading\u0022,\u0022images\u0022:\u0022images\u0022,\u0022wrongType\u0022:\u0022That file type is not supported. Use {types}.\u0022,\u0022tooLarge\u0022:\u0022That photo is larger than {max}.\u0022,\u0022unreadable\u0022:\u0022That image could not be read. Try another one.\u0022,\u0022saveFailed\u0022:\u0022The photo could not be saved. Try again.\u0022,\u0022removeFailed\u0022:\u0022The photo could not be removed. Try again.\u0022,\u0022saved\u0022:\u0022Photo updated.\u0022,\u0022removed\u0022:\u0022Photo removed.\u0022,\u0022units\u0022:\u0022B,KB,MB,GB,TB\u0022}}'))"
+    x-bind:data-dragging="dragging ? '' : null" x-bind:data-editing="editing ? '' : null"
+    x-on:dragenter="dragEnter($event)" x-on:dragover="dragOver($event)" x-on:dragleave="dragLeave()" x-on:drop="drop($event)" x-on:paste="paste($event)"
+    @nq-avatar-change="$event.detail.promise = upload($event.detail.file, $event.detail.onProgress)" @nq-avatar-remove="$event.detail.promise = removeAvatar()" class="flex flex-col gap-3">
+    <div role="group" aria-label="Adjust your photo" data-slot="avatar-upload-editor" x-show="editing" style="display: none"
+        class="flex flex-col gap-4 rounded-floating border border-border bg-card p-4 sm:flex-row">
+        <div class="flex flex-col items-center gap-2">
+            <div dir="ltr" role="group" tabindex="0" aria-label="Photo position" aria-describedby="nq-avatar-help" data-slot="avatar-upload-viewport"
+                x-on:pointerdown="pointerDown($event)" x-on:pointermove="pointerMove($event)" x-on:pointerup="endDrag()" x-on:pointercancel="endDrag()" x-on:keydown="cropKey($event)"
+                class="relative size-56 max-w-full shrink-0 cursor-grab touch-none select-none overflow-hidden rounded-control bg-nq-surface-soft outline-none active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <img x-ref="image" alt="" draggable="false" class="pointer-events-none absolute max-w-none" style="visibility: hidden"
+                    x-bind:src="sourceUrl" x-bind:style="imageStyle" x-on:load="onImageLoad()" x-on:error="onImageError()">
+                <span aria-hidden="true" class="pointer-events-none absolute inset-0 border border-nq-fg/30 rounded-full" style="box-shadow: 0 0 0 100vmax color-mix(in oklab, var(--nq-fg) 45%, transparent)"></span>
+            </div>
+            <p id="nq-avatar-help" class="max-w-56 text-center text-caption text-muted-foreground">Drag the photo to move it. Arrow keys move it, plus and minus zoom.</p>
+        </div>
+        <div class="flex min-w-0 flex-1 flex-col justify-between gap-4">
+            <div class="flex items-center gap-2" x-bind:inert="busy !== '' || ! natural ? '' : null" x-bind:class="busy !== '' || ! natural ? 'opacity-50' : ''">
+                <button data-slot="button"
+     type="button"                     aria-label="Zoom out" x-on:click="setZoom(zoom - 0.25)" x-bind:disabled="zoom &lt;= 1 ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="11" cy="11" r="8"/>
+  <line x1="21" x2="16.65" y1="21" y2="16.65"/>
+  <line x1="8" x2="14" y1="11" y2="11"/>
+</svg></button>
+                <div data-slot="slider" x-data="nqSlider(JSON.parse('{\u0022value\u0022:1,\u0022min\u0022:1,\u0022max\u0022:4,\u0022step\u0022:0.01,\u0022disabled\u0022:false,\u0022minStepsBetweenThumbs\u0022:0,\u0022format\u0022:{\u0022style\u0022:\u0022percent\u0022,\u0022maximumFractionDigits\u0022:0}}'))" x-modelable="model"     x-model="zoom" aria-label="Zoom" class="flex w-full flex-col gap-2 data-disabled:opacity-50">
+        <div data-slot="slider-control"  x-on:pointerdown="down($event)" class="flex h-5 w-full touch-none select-none items-center">
+        <div data-slot="slider-track" x-ref="track" class="relative h-1.5 w-full rounded-full bg-nq-surface-soft">
+            <div data-slot="slider-range" :style="rangeStyle()" style="position: absolute; top: 0; bottom: 0; inset-inline-start: 0px; inset-inline-end: calc(100% - calc(0% + 8.00px))" class="rounded-full bg-primary"></div>
+                            <div data-slot="slider-thumb" role="slider" tabindex="0"
+                                        aria-valuemin="1" aria-valuemax="4" aria-orientation="horizontal"
+                    :aria-valuenow="values[0]" :aria-valuetext="fmt(values[0])" :data-dragging="dragging && active === 0 ? '' : undefined"
+                                        x-on:keydown="key($event, 0)" :style="thumbStyle(0)"
+                    style="inset-inline-start: calc(0% + 8.00px); top: 50%; translate: -50% -50%; position: absolute"
+                    class="size-4 rounded-full border border-primary bg-card shadow-xs outline-none transition-[box-shadow] duration-150 ease-nq motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-dragging:shadow-md data-disabled:pointer-events-none"></div>
+                                    </div>
+    </div>
+    </div>
+                <button data-slot="button"
+     type="button"                     aria-label="Zoom in" x-on:click="setZoom(zoom + 0.25)" x-bind:disabled="zoom &gt;= maxZoom ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="11" cy="11" r="8"/>
+  <line x1="21" x2="16.65" y1="21" y2="16.65"/>
+  <line x1="11" x2="11" y1="8" y2="14"/>
+  <line x1="8" x2="14" y1="11" y2="11"/>
+</svg></button>
+            </div>
+            <div class="flex flex-col gap-3">
+                <div x-show="uploading" role="progressbar" aria-label="Uploading" aria-valuemin="0" aria-valuemax="100" x-bind:aria-valuenow="progress" style="display: none"
+                    data-slot="progress" class="flex w-full flex-col gap-1.5">
+                    <span class="block h-1 w-full overflow-hidden rounded-full bg-nq-surface-soft"><span class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none" x-bind:style="'width: ' + progress + '%'"></span></span>
+                </div>
+                <div class="flex flex-wrap justify-end gap-2">
+                    <button data-slot="button"
+     type="button"                     x-on:click="reset()" x-bind:disabled="busy !== &#039;&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="save()" x-bind:aria-busy="uploading ? &#039;true&#039; : null" x-bind:disabled="! natural || busy !== &#039;&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-show="uploading" style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                        Save photo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-slot="avatar-upload-idle" x-show="! editing" class="flex gap-4 items-center">
+        <button type="button" data-slot="avatar-upload-trigger" aria-describedby="nq-avatar-hint" x-on:click="openPicker()"
+            x-bind:aria-label="current ? 'Change photo' : 'Upload photo'" x-bind:disabled="locked ? '' : null"             class="group relative shrink-0 outline-none rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50">
+            <span data-slot="avatar" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground rounded-full size-20 text-h3">
+                <img data-slot="avatar-image" alt="Sara Alharbi" class="size-full object-cover" x-show="current" x-bind:src="current"  style="display: none" >
+                <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-show="! current"                      role="img" aria-label="Sara Alharbi" >SA</span>
+            </span>
+            <span aria-hidden="true" x-bind:class="dragging ? 'border-2 border-dashed border-nq-focus opacity-100' : ''"
+                class="absolute inset-0 flex items-center justify-center bg-nq-fg/50 text-nq-bg opacity-0 transition-opacity duration-150 ease-nq group-hover:opacity-100 group-focus-visible:opacity-100 group-disabled:hidden rounded-full">
+                <svg data-slot="icon" aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/>
+  <circle cx="12" cy="13" r="3"/>
+</svg>            </span>
+        </button>
+        <div class="flex min-w-0 flex-col gap-2">
+            <div class="flex flex-wrap gap-2">
+                <button data-slot="button"
+     type="button"                     x-on:click="openPicker()" x-bind:disabled="locked ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v12"/>
+  <path d="m17 8-5-5-5 5"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+</svg>                    <span x-text="current ? 'Change photo' : 'Upload photo'">Upload photo</span></button>
+                                    <button data-slot="button"
+     type="button"                     x-show="current" x-on:click="removePhoto()" x-bind:aria-busy="busy === &#039;removing&#039; ? &#039;true&#039; : null" x-bind:disabled="disabled || busy === &#039;saving&#039; || busy === &#039;removing&#039; ? &#039;&#039; : null" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <span x-show="busy === 'removing'" style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>                        Remove photo</button>
+                            </div>
+            <p id="nq-avatar-hint" class="text-caption text-muted-foreground" x-text="hintText"></p>
+        </div>
+    </div>
+    <p role="alert" data-slot="avatar-upload-error" x-show="error" x-text="error" class="text-caption text-nq-danger-text" style="display: none"></p>
+    <span role="status" class="sr-only" x-text="status"></span>
+    <input x-ref="input" type="file" class="sr-only" tabindex="-1" aria-hidden="true" accept="image/png,image/jpeg,image/webp" x-bind:disabled="locked ? '' : null"
+        x-on:click.stop x-on:change="onInput($event)" >
+</div>

@@ -1,0 +1,226 @@
+<div data-slot="export-action"
+    x-data="nqExportAction(JSON.parse('[{\u0022id\u0022:\u0022name\u0022,\u0022label\u0022:\u0022Name\u0022},{\u0022id\u0022:\u0022email\u0022,\u0022label\u0022:\u0022Email\u0022}]'), JSON.parse('{\u0022filtered\u0022:[{\u0022name\u0022:\u0022Sara Ali\u0022,\u0022email\u0022:\u0022sara@example.com\u0022},{\u0022name\u0022:\u0022Omar Nasser\u0022,\u0022email\u0022:\u0022omar@example.com\u0022}],\u0022all\u0022:[{\u0022name\u0022:\u0022Sara Ali\u0022,\u0022email\u0022:\u0022sara@example.com\u0022},{\u0022name\u0022:\u0022Omar Nasser\u0022,\u0022email\u0022:\u0022omar@example.com\u0022},{\u0022name\u0022:\u0022Lina Haddad\u0022,\u0022email\u0022:\u0022lina@example.com\u0022}]}'), JSON.parse('{\u0022formats\u0022:[\u0022csv\u0022,\u0022xlsx\u0022,\u0022json\u0022],\u0022defaultFormat\u0022:\u0022csv\u0022,\u0022filename\u0022:\u0022contacts\u0022}'))"
+    class="contents">
+            <button data-slot="export-button"
+     type="button"                     x-on:click="openDialog()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>            Export</button>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="dlg" class="contents">
+    <template x-teleport="body">
+            <div data-slot="dialog-portal">
+                <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+                <div data-slot="export-dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+                    class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-xl grid-cols-[minmax(0,1fr)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Export data</h2>
+                <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Choose a format, the rows and the columns to include.</p></div>
+            <div x-show="phase === 'idle' || phase === 'error'" class="flex flex-col gap-5">
+                <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="phase === &#039;error&#039;" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                    <div data-slot="alert-title" class="text-label text-foreground">The export failed</div>
+                            <div data-slot="alert-description" class="text-body-sm text-muted-foreground"><span x-text="message"></span></div>
+            </div>
+    </div>
+                <fieldset class="flex flex-col gap-2">
+                    <legend class="mb-2 text-label text-foreground">Format</legend>
+                    <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('csv')" x-modelable="value" x-bind="root"
+                x-model="format" aria-label="Format" class="flex-col grid grid-cols-1 gap-2 sm:grid-cols-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('csv')"
+    aria-checked="true" tabindex="0"
+     data-checked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 p-3">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('csv')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="inline-flex items-center gap-2">
+                                    <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+</svg>CSV
+                                </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Plain text, opens anywhere</span>    </span>
+    </button>
+                                                    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('xlsx')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 p-3">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('xlsx')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="inline-flex items-center gap-2">
+                                    <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+  <path d="M8 13h2"/>
+  <path d="M14 13h2"/>
+  <path d="M8 17h2"/>
+  <path d="M14 17h2"/>
+</svg>Excel
+                                </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">A .xlsx workbook</span>    </span>
+    </button>
+                                                    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('json')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 p-3">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('json')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="inline-flex items-center gap-2">
+                                    <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+    <path d="M10 12a1 1 0 0 0-1 1v1a1 1 0 0 1-1 1 1 1 0 0 1 1 1v1a1 1 0 0 0 1 1"/>
+    <path d="M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1"/>
+</svg>JSON
+                                </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Records for developers</span>    </span>
+    </button>
+    </div>
+                </fieldset>
+                <fieldset class="flex flex-col gap-2">
+                    <legend class="mb-2 text-label text-foreground">Rows</legend>
+                    <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('filtered')" x-modelable="value" x-bind="root"
+                x-model="scope" aria-label="Rows" class="flex flex-col gap-2">
+    <label class="flex items-center gap-2.5 text-body ">
+                                    <button type="button" role="radio" data-slot="radio" x-bind="radio('filtered')"
+    aria-checked="true" tabindex="0"
+     data-checked         class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 after:rounded-full">
+    <span data-slot="radio-indicator" class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('filtered')" ></span>
+</button>
+                                    <span class="flex-1">Current filter</span>
+                                    <span class="text-body-sm tabular-nums text-muted-foreground" x-text="countText('filtered')">2</span>
+                                </label>
+                                                                                                                <label class="flex items-center gap-2.5 text-body ">
+                                    <button type="button" role="radio" data-slot="radio" x-bind="radio('all')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 after:rounded-full">
+    <span data-slot="radio-indicator" class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('all')"  style="display: none" ></span>
+</button>
+                                    <span class="flex-1">All rows</span>
+                                    <span class="text-body-sm tabular-nums text-muted-foreground" x-text="countText('all')">3</span>
+                                </label>
+    </div>
+                </fieldset>
+                <fieldset class="flex flex-col gap-2">
+                    <legend class="mb-2 flex w-full items-center justify-between text-label text-foreground">
+                        Columns
+                        <span class="text-caption font-normal tabular-nums text-muted-foreground" x-text="num(pickedCount()) + ' / ' + num(columns.length)">2 / 2</span>
+                    </legend>
+                    <label class="flex items-center gap-2.5 border-b border-border pb-2 text-body">
+                        <button type="button" role="checkbox" data-slot="checkbox" x-on:click="toggleAll()"
+                            x-bind:aria-checked="someSelected() ? 'mixed' : (allPicked() ? 'true' : 'false')"
+                            x-bind:data-checked="allPicked() ? '' : null"
+                            x-bind:data-indeterminate="someSelected() ? '' : null"
+                            x-bind:data-unchecked="! allPicked() && ! someSelected() ? '' : null"
+                            aria-checked="true" data-checked
+                            class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus after:absolute after:-inset-1">
+                            <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="allPicked() || someSelected()">
+                                <svg aria-hidden="true" x-show="someSelected()" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>                                <svg aria-hidden="true" x-show="! someSelected()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            </span>
+                        </button>
+                        All columns
+                    </label>
+                    <div class="grid max-h-40 grid-cols-1 gap-x-4 gap-y-2 overflow-y-auto py-1 sm:grid-cols-2">
+                                                    <label class="flex min-w-0 items-center gap-2.5 text-body">
+                                <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(true, false)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="picked[0]" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+                                <span class="truncate">Name</span>
+                            </label>
+                                                    <label class="flex min-w-0 items-center gap-2.5 text-body">
+                                <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(true, false)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="picked[1]" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+                                <span class="truncate">Email</span>
+                            </label>
+                                            </div>
+                    <p x-show="pickedCount() === 0" style="display: none" class="text-body-sm text-nq-danger-text">Choose at least one column.</p>
+                </fieldset>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="dlg = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="button"                     x-bind:disabled="canRun() ? null : true" x-on:click="run()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>                        <span x-text="phase === 'error' ? 'Try again' : 'Export'">Export</span></button></div>
+                            </div>
+            <div x-show="phase === 'running'" style="display: none" class="flex flex-col gap-4 py-2" data-slot="export-progress">
+                <div data-slot="progress" data-tone="info" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                    aria-label="Preparing the file…"
+                    x-bind:aria-valuenow="progress == null ? null : pct()"
+                    class="flex w-full flex-col gap-1.5">
+                    <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+                        <span class="text-label text-foreground" x-text="progressLabel()"></span><span></span>
+                    </div>
+                    <div data-slot="progress-track" class="relative block w-full h-2 overflow-hidden rounded-full bg-nq-surface-soft">
+                        <div data-slot="progress-indicator" style="inset-inline-start:0"
+                            x-bind:style="'inset-inline-start:0;' + (progress == null ? '' : 'width:' + pct() + '%')"
+                            x-bind:class="progress == null ? 'w-full motion-safe:animate-pulse' : ''"
+                            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-nq-info"></div>
+                    </div>
+                </div>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="cancel()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button></div>
+            </div>
+            <div x-show="phase === 'done'" style="display: none" class="flex flex-col gap-4 py-2" data-slot="export-done">
+                <p role="status" class="flex items-center gap-2 text-body text-foreground">
+                    <svg aria-hidden="true" class="size-5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                    <span>
+                        <span x-text="readyText()"></span>
+                        <bdi dir="ltr" class="font-medium" x-text="file ? file.filename : ''"></bdi>
+                    </span>
+                </p>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-show="file &amp;&amp; file.blob.size &gt; 0" style="display: none" x-on:click="downloadAgain()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>                        Download again</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="dlg = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Done</button></div>
+            </div>
+                    <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                        class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                </div>
+            </div>
+        </template>
+</div>
+</div>

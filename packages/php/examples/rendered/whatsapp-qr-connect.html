@@ -1,0 +1,134 @@
+<div data-slot="whatsapp-qr-connect" x-data="nqWhatsappConnect(JSON.parse('{\u0022status\u0022:\u0022qr\u0022,\u0022qr\u0022:\u00222@nasaq-demo-pairing-payload\u0022,\u0022expiresAt\u0022:4102444800000,\u0022account\u0022:\u0022\u0022,\u0022connectedSince\u0022:\u0022\u0022,\u0022error\u0022:false,\u0022autoRefresh\u0022:true,\u0022expiresIn\u0022:\u0022Code expires in {s}s\u0022,\u0022expired\u0022:\u0022This code expired\u0022}'))" x-bind:data-status="status" x-on:nq-whatsapp-update="update($event.detail)"
+    class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-2xl">
+    <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 data-slot="card-title" class="text-label text-foreground">Connect WhatsApp</h2>
+            <span data-slot="status" data-tone="success" x-show="status === &#039;connected&#039;" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Connected" >Connected</span>
+</span>
+            <span data-slot="status" data-tone="info" x-show="status === &#039;qr&#039;" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-info-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>        <span class="truncate"  title="Waiting for the scan" >Waiting for the scan</span>
+</span>
+            <span data-slot="status" data-tone="neutral" x-show="status === &#039;disconnected&#039;" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+</svg>        <span class="truncate"  title="Not connected" >Not connected</span>
+</span>
+        </div>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Link a WhatsApp number by scanning a code from the phone.</div></div>
+    <div data-slot="card-content" class="px-4"><div data-slot="whatsapp-connected" x-show="status === 'connected'" class="flex flex-wrap items-center justify-between gap-3"  style="display: none" >
+            <div class="flex min-w-0 flex-col gap-0.5">
+                <p class="text-label text-foreground">Linked to <bdi dir="ltr" class="tabular-nums" x-text="account"></bdi></p>
+                <p class="text-caption text-muted-foreground" x-show="connectedSince" x-text="'Since {when}'.replace('{when}', connectedSince)"  style="display: none" ></p>
+            </div>
+                            <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Disconnect</button>
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disconnect WhatsApp?</h2>
+                            <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">Messages will stop until you scan a new code.</p></div>
+        <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+            <button data-slot="alert-dialog-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="run(&#039;disconnect&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Yes, disconnect</button></div>
+        </div>
+    </div>
+</template>
+</div>
+                    </div>
+        <div x-show="status !== 'connected'" class="flex flex-col gap-5 sm:flex-row sm:items-start" >
+            <div class="flex shrink-0 flex-col items-center gap-2 self-center sm:self-start" data-slot="whatsapp-qr">
+                <div x-show="showQr" x-bind:class="{ 'opacity-40': expired || busy === 'refresh' }" class="relative rounded-card border border-border bg-white p-2 transition-opacity" >
+                    <div data-slot="qr-code" data-module-style="square" data-eye-style="square" dir="ltr"
+    x-data="nqQrCode(JSON.parse('{\u0022value\u0022:\u00222@nasaq-demo-pairing-payload\u0022,\u0022moduleStyle\u0022:\u0022square\u0022,\u0022eyeStyle\u0022:\u0022square\u0022,\u0022ecc\u0022:\u0022M\u0022,\u0022margin\u0022:1,\u0022fg\u0022:\u0022black\u0022,\u0022bg\u0022:\u0022white\u0022,\u0022eyeFg\u0022:null,\u0022logo\u0022:null,\u0022size\u0022:192,\u0022pngSize\u0022:1024,\u0022downloadName\u0022:\u0022qr-code\u0022,\u0022label\u0022:\u0022WhatsApp link QR code\u0022,\u0022labelFor\u0022:\u0022QR code for {value}\u0022}'))"
+    x-modelable="value"
+    x-model="qr" class="inline-flex flex-col items-center gap-3">
+    <svg data-slot="qr-code-svg" role="img"
+     width="192" height="192"     x-bind:aria-label="name" x-bind:viewBox="viewBox" x-bind:shape-rendering="shape" x-bind:style="{ background: bg }"
+    style="background: white"
+    class="aspect-square rounded-control border border-border">
+    <path x-bind:d="layout.modules" x-bind:fill="fg" />
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[0].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[0].pupil" />
+    </g>
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[1].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[1].pupil" />
+    </g>
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[2].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[2].pupil" />
+    </g>
+    <image x-show="layout.logo" style="display: none" x-bind:href="layout.logo?.src" x-bind:x="layout.logo?.x" x-bind:y="layout.logo?.y"
+        x-bind:width="layout.logo?.size" x-bind:height="layout.logo?.size" preserveAspectRatio="xMidYMid meet" />
+</svg>
+<p x-show="error" style="display: none" role="alert" class="text-caption text-nq-danger-text">Could not create the file. Try again.</p>
+</div>
+                </div>
+                <div x-show="!showQr" class="flex size-[208px] items-center justify-center rounded-card border border-dashed border-border bg-secondary p-4 text-center"  style="display: none" >
+                    <span class="text-body-sm text-muted-foreground" role="status" x-show="busy === 'start'" style="display: none">Preparing the code…</span>
+                    <button data-slot="button"
+     type="button"                     x-show="busy !== &#039;start&#039;" x-on:click="run(&#039;start&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Show QR code</button>
+                </div>
+                <div x-show="showQr" class="flex flex-col items-center gap-1.5" >
+                    <p class="text-caption tabular-nums text-muted-foreground" role="timer" aria-live="off" data-slot="whatsapp-countdown" x-show="left !== null" x-text="countdownText" style="display: none"></p>
+                    <button data-slot="button"
+     type="button"                     x-on:click="run(&#039;refresh&#039;)" x-bind:aria-busy="busy === &#039;refresh&#039; ? &#039;true&#039; : null" x-bind:data-disabled="busy === &#039;refresh&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;refresh&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg aria-hidden="true" x-show="busy !== 'refresh'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>                        <span x-text="busy === 'refresh' ? 'Refreshing\u2026' : 'New code'">New code</span></button>
+                </div>
+            </div>
+            <div class="flex min-w-0 flex-1 flex-col gap-3">
+                <ol aria-label="How to link" class="flex flex-col gap-2.5">
+                                            <li class="flex items-start gap-2.5 text-body-sm text-foreground">
+                            <span aria-hidden="true" class="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary text-caption tabular-nums text-muted-foreground">1</span>
+                            <span class="pt-0.5">Open WhatsApp on your phone.</span>
+                        </li>
+                                            <li class="flex items-start gap-2.5 text-body-sm text-foreground">
+                            <span aria-hidden="true" class="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary text-caption tabular-nums text-muted-foreground">2</span>
+                            <span class="pt-0.5">Go to Settings, then Linked devices.</span>
+                        </li>
+                                            <li class="flex items-start gap-2.5 text-body-sm text-foreground">
+                            <span aria-hidden="true" class="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary text-caption tabular-nums text-muted-foreground">3</span>
+                            <span class="pt-0.5">Tap Link a device and point the camera at this code.</span>
+                        </li>
+                                    </ol>
+                <p class="text-caption text-muted-foreground" x-show="showQr && autoRefresh" >A new code appears automatically when this one expires.</p>
+                <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground">Could not get a code. Check the connection and try again.</div>
+            </div>
+            <div data-slot="alert-actions" class="ms-3 flex items-center gap-1">
+            <button data-slot="button"
+     type="button"                     x-on:click="run(showQr ? &#039;refresh&#039; : &#039;start&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Try again</button>
+                    </div>
+    </div>
+            </div>
+        </div></div>
+</div>

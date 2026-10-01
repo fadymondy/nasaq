@@ -1,0 +1,234 @@
+<div class="flex flex-col gap-4">
+    <span data-slot="booking-status-badge" data-status="confirmed" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 2v3"/>
+  <path d="M16 2v3"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+  <path d="M3 9h18"/>
+  <path d="m9 15 2 2 4-4"/>
+</svg>    Confirmed
+</span>
+    <div data-slot="booking-pipeline" x-bind:data-status="status" x-data="nqBookingPipeline('confirmed', JSON.parse('[{\u0022status\u0022:\u0022requested\u0022,\u0022at\u0022:\u00222026-09-29T06:00:00+00:00\u0022,\u0022by\u0022:\u0022Sara\u0022},{\u0022status\u0022:\u0022confirmed\u0022,\u0022at\u0022:\u00222026-09-29T07:00:00+00:00\u0022,\u0022by\u0022:\u0022Khaled\u0022}]'), JSON.parse('{\u0022canAdvance\u0022:true,\u0022by\u0022:\u0022You\u0022}'))" x-modelable="status"
+    class="flex flex-col gap-5">
+    <div tabindex="0" class="max-w-full overflow-x-auto rounded-control pb-1 outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <ol data-slot="stepper" data-orientation="horizontal" aria-label="Booking progress" class="m-0 flex list-none p-0 flex-row items-start">
+                            <li data-slot="stepper-item" x-bind:data-status="stageStatus(0)" class="group/step flex flex-1 items-start last:flex-none">
+                    <div data-slot="stepper-step" x-bind:aria-current="['current', 'error'].includes(stageStatus(0)) && current() === 0 ? 'step' : null"
+                        class="items-start gap-3 rounded-control text-start outline-none flex shrink-0">
+                        <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                            x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': stageStatus(0) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': stageStatus(0) === 'current', 'border-border bg-background text-muted-foreground': stageStatus(0) === 'upcoming', 'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text': stageStatus(0) === 'error' }">
+                            <svg aria-hidden="true" x-show="stageStatus(0) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <svg aria-hidden="true" x-show="stageStatus(0) === 'error'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                            <bdi data-slot="num" data-numeric="" x-show="![&#039;complete&#039;, &#039;error&#039;].includes(stageStatus(0))" class="tabular-nums">1</bdi>
+                        </span>
+                        <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                            <span class="text-label" x-bind:class="{ 'text-muted-foreground': stageStatus(0) === 'upcoming', 'text-foreground': stageStatus(0) !== 'upcoming' && stageStatus(0) !== 'error', 'text-nq-danger-text': stageStatus(0) === 'error' }">
+                                <span x-text="name('requested')"></span>
+                                <span class="sr-only" x-text="' (' + stageSr(0) + ')'"></span>
+                            </span>
+                            <span x-show="stageStatus(0) === 'error'" x-cloak style="display: none" class="text-caption text-muted-foreground" x-text="name(status)"></span>
+                        </span>
+                    </div>
+                    <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="stageStatus(0) === 'complete' ? '' : null"
+                        x-bind:class="stageStatus(0) === 'complete' ? 'bg-primary' : 'bg-border'"
+                        class="rounded-full transition-colors duration-150 ease-nq mx-3 mt-3.5 h-px min-w-6 flex-1 group-last/step:hidden"></span>
+                </li>
+                            <li data-slot="stepper-item" x-bind:data-status="stageStatus(1)" class="group/step flex flex-1 items-start last:flex-none">
+                    <div data-slot="stepper-step" x-bind:aria-current="['current', 'error'].includes(stageStatus(1)) && current() === 1 ? 'step' : null"
+                        class="items-start gap-3 rounded-control text-start outline-none flex shrink-0">
+                        <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                            x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': stageStatus(1) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': stageStatus(1) === 'current', 'border-border bg-background text-muted-foreground': stageStatus(1) === 'upcoming', 'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text': stageStatus(1) === 'error' }">
+                            <svg aria-hidden="true" x-show="stageStatus(1) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <svg aria-hidden="true" x-show="stageStatus(1) === 'error'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                            <bdi data-slot="num" data-numeric="" x-show="![&#039;complete&#039;, &#039;error&#039;].includes(stageStatus(1))" class="tabular-nums">2</bdi>
+                        </span>
+                        <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                            <span class="text-label" x-bind:class="{ 'text-muted-foreground': stageStatus(1) === 'upcoming', 'text-foreground': stageStatus(1) !== 'upcoming' && stageStatus(1) !== 'error', 'text-nq-danger-text': stageStatus(1) === 'error' }">
+                                <span x-text="name('confirmed')"></span>
+                                <span class="sr-only" x-text="' (' + stageSr(1) + ')'"></span>
+                            </span>
+                            <span x-show="stageStatus(1) === 'error'" x-cloak style="display: none" class="text-caption text-muted-foreground" x-text="name(status)"></span>
+                        </span>
+                    </div>
+                    <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="stageStatus(1) === 'complete' ? '' : null"
+                        x-bind:class="stageStatus(1) === 'complete' ? 'bg-primary' : 'bg-border'"
+                        class="rounded-full transition-colors duration-150 ease-nq mx-3 mt-3.5 h-px min-w-6 flex-1 group-last/step:hidden"></span>
+                </li>
+                            <li data-slot="stepper-item" x-bind:data-status="stageStatus(2)" class="group/step flex flex-1 items-start last:flex-none">
+                    <div data-slot="stepper-step" x-bind:aria-current="['current', 'error'].includes(stageStatus(2)) && current() === 2 ? 'step' : null"
+                        class="items-start gap-3 rounded-control text-start outline-none flex shrink-0">
+                        <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                            x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': stageStatus(2) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': stageStatus(2) === 'current', 'border-border bg-background text-muted-foreground': stageStatus(2) === 'upcoming', 'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text': stageStatus(2) === 'error' }">
+                            <svg aria-hidden="true" x-show="stageStatus(2) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <svg aria-hidden="true" x-show="stageStatus(2) === 'error'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                            <bdi data-slot="num" data-numeric="" x-show="![&#039;complete&#039;, &#039;error&#039;].includes(stageStatus(2))" class="tabular-nums">3</bdi>
+                        </span>
+                        <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                            <span class="text-label" x-bind:class="{ 'text-muted-foreground': stageStatus(2) === 'upcoming', 'text-foreground': stageStatus(2) !== 'upcoming' && stageStatus(2) !== 'error', 'text-nq-danger-text': stageStatus(2) === 'error' }">
+                                <span x-text="name('checked_in')"></span>
+                                <span class="sr-only" x-text="' (' + stageSr(2) + ')'"></span>
+                            </span>
+                            <span x-show="stageStatus(2) === 'error'" x-cloak style="display: none" class="text-caption text-muted-foreground" x-text="name(status)"></span>
+                        </span>
+                    </div>
+                    <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="stageStatus(2) === 'complete' ? '' : null"
+                        x-bind:class="stageStatus(2) === 'complete' ? 'bg-primary' : 'bg-border'"
+                        class="rounded-full transition-colors duration-150 ease-nq mx-3 mt-3.5 h-px min-w-6 flex-1 group-last/step:hidden"></span>
+                </li>
+                            <li data-slot="stepper-item" x-bind:data-status="stageStatus(3)" class="group/step flex flex-1 items-start last:flex-none">
+                    <div data-slot="stepper-step" x-bind:aria-current="['current', 'error'].includes(stageStatus(3)) && current() === 3 ? 'step' : null"
+                        class="items-start gap-3 rounded-control text-start outline-none flex shrink-0">
+                        <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                            x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': stageStatus(3) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': stageStatus(3) === 'current', 'border-border bg-background text-muted-foreground': stageStatus(3) === 'upcoming', 'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text': stageStatus(3) === 'error' }">
+                            <svg aria-hidden="true" x-show="stageStatus(3) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <svg aria-hidden="true" x-show="stageStatus(3) === 'error'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                            <bdi data-slot="num" data-numeric="" x-show="![&#039;complete&#039;, &#039;error&#039;].includes(stageStatus(3))" class="tabular-nums">4</bdi>
+                        </span>
+                        <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                            <span class="text-label" x-bind:class="{ 'text-muted-foreground': stageStatus(3) === 'upcoming', 'text-foreground': stageStatus(3) !== 'upcoming' && stageStatus(3) !== 'error', 'text-nq-danger-text': stageStatus(3) === 'error' }">
+                                <span x-text="name('in_visit')"></span>
+                                <span class="sr-only" x-text="' (' + stageSr(3) + ')'"></span>
+                            </span>
+                            <span x-show="stageStatus(3) === 'error'" x-cloak style="display: none" class="text-caption text-muted-foreground" x-text="name(status)"></span>
+                        </span>
+                    </div>
+                    <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="stageStatus(3) === 'complete' ? '' : null"
+                        x-bind:class="stageStatus(3) === 'complete' ? 'bg-primary' : 'bg-border'"
+                        class="rounded-full transition-colors duration-150 ease-nq mx-3 mt-3.5 h-px min-w-6 flex-1 group-last/step:hidden"></span>
+                </li>
+                            <li data-slot="stepper-item" x-bind:data-status="stageStatus(4)" class="group/step flex flex-1 items-start last:flex-none">
+                    <div data-slot="stepper-step" x-bind:aria-current="['current', 'error'].includes(stageStatus(4)) && current() === 4 ? 'step' : null"
+                        class="items-start gap-3 rounded-control text-start outline-none flex shrink-0">
+                        <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                            x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': stageStatus(4) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': stageStatus(4) === 'current', 'border-border bg-background text-muted-foreground': stageStatus(4) === 'upcoming', 'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text': stageStatus(4) === 'error' }">
+                            <svg aria-hidden="true" x-show="stageStatus(4) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <svg aria-hidden="true" x-show="stageStatus(4) === 'error'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                            <bdi data-slot="num" data-numeric="" x-show="![&#039;complete&#039;, &#039;error&#039;].includes(stageStatus(4))" class="tabular-nums">5</bdi>
+                        </span>
+                        <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                            <span class="text-label" x-bind:class="{ 'text-muted-foreground': stageStatus(4) === 'upcoming', 'text-foreground': stageStatus(4) !== 'upcoming' && stageStatus(4) !== 'error', 'text-nq-danger-text': stageStatus(4) === 'error' }">
+                                <span x-text="name('done')"></span>
+                                <span class="sr-only" x-text="' (' + stageSr(4) + ')'"></span>
+                            </span>
+                            <span x-show="stageStatus(4) === 'error'" x-cloak style="display: none" class="text-caption text-muted-foreground" x-text="name(status)"></span>
+                        </span>
+                    </div>
+                    <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="stageStatus(4) === 'complete' ? '' : null"
+                        x-bind:class="stageStatus(4) === 'complete' ? 'bg-primary' : 'bg-border'"
+                        class="rounded-full transition-colors duration-150 ease-nq mx-3 mt-3.5 h-px min-w-6 flex-1 group-last/step:hidden"></span>
+                </li>
+                    </ol>
+    </div>
+            <div role="group" aria-label="Move the booking" x-show="next().length > 0" x-cloak style="display: none" class="flex flex-wrap items-center gap-2">
+                            <button data-slot="button"
+     type="button"                     x-show="next().includes(&#039;confirmed&#039;)" style="display: none" x-on:click="go(&#039;confirmed&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <span x-text="label('confirmed')">Confirm</span></button>
+                            <button data-slot="button"
+     type="button"                     x-show="next().includes(&#039;checked_in&#039;)" style="display: none" x-on:click="go(&#039;checked_in&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <span x-text="label('checked_in')">Check in</span></button>
+                            <button data-slot="button"
+     type="button"                     x-show="next().includes(&#039;in_visit&#039;)" style="display: none" x-on:click="go(&#039;in_visit&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <span x-text="label('in_visit')">Start visit</span></button>
+                            <button data-slot="button"
+     type="button"                     x-show="next().includes(&#039;done&#039;)" style="display: none" x-on:click="go(&#039;done&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <span x-text="label('done')">Finish visit</span></button>
+                        <button data-slot="button"
+     type="button"                     x-show="next().includes(&#039;no_show&#039;)" style="display: none" x-on:click="ask(&#039;no_show&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Mark no-show</button>
+            <button data-slot="button"
+     type="button"                     x-show="next().includes(&#039;cancelled&#039;)" style="display: none" x-on:click="ask(&#039;cancelled&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Cancel booking</button>
+        </div>
+        <p role="alert" x-show="error" x-cloak style="display: none" class="text-caption text-nq-danger-text" x-text="error"></p>
+            <section aria-label="History" class="flex flex-col gap-2">
+            <h3 class="text-label font-semibold">History</h3>
+            <p x-show="history.length === 0" x-cloak style="display: none" class="text-body-sm text-muted-foreground">Nothing has happened yet.</p>
+            <ol data-slot="timeline" x-show="history.length > 0" class="m-0 flex list-none flex-col p-0">
+                <template x-for="h in reversed()" :key="h.key">
+                    <li data-slot="timeline-item" class="group/timeline grid grid-cols-[2rem_1fr] gap-x-3">
+                        <div class="flex flex-col items-center">
+                            <span data-slot="timeline-marker" class="flex size-8 shrink-0 items-center justify-center">
+                                <span class="flex size-8 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground [&_svg]:size-4">
+                                                                            <svg style="display: none;" aria-hidden="true" x-show="h.status === 'requested'" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>                                                                            <svg style="display: none;" aria-hidden="true" x-show="h.status === 'confirmed'" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 2v3"/>
+  <path d="M16 2v3"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+  <path d="M3 9h18"/>
+  <path d="m9 15 2 2 4-4"/>
+</svg>                                                                            <svg style="display: none;" aria-hidden="true" x-show="h.status === 'checked_in'" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m10 17 5-5-5-5"/>
+  <path d="M15 12H3"/>
+  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+</svg>                                                                            <svg style="display: none;" aria-hidden="true" x-show="h.status === 'in_visit'" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 2v2"/>
+  <path d="M5 2v2"/>
+  <path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/>
+  <path d="M8 15a6 6 0 0 0 12 0v-3"/>
+  <circle cx="20" cy="10" r="2"/>
+</svg>                                                                            <svg style="display: none;" aria-hidden="true" x-show="h.status === 'done'" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>                                                                            <svg style="display: none;" aria-hidden="true" x-show="h.status === 'no_show'" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <line x1="17" x2="22" y1="8" y2="13"/>
+  <line x1="22" x2="17" y1="8" y2="13"/>
+</svg>                                                                            <svg style="display: none;" aria-hidden="true" x-show="h.status === 'cancelled'" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="m15 9-6 6"/>
+    <path d="m9 9 6 6"/>
+</svg>                                                                    </span>
+                            </span>
+                            <span aria-hidden="true" data-slot="timeline-rail" class="my-1 w-px flex-1 bg-border group-last/timeline:hidden"></span>
+                        </div>
+                        <div data-slot="timeline-content" class="flex min-w-0 flex-col gap-1 pb-6 pt-1 group-last/timeline:pb-0">
+                            <div class="flex items-baseline justify-between gap-3">
+                                <p class="min-w-0 text-body-sm font-medium text-foreground" x-text="name(h.status)"></p>
+                                <span class="shrink-0 text-caption text-muted-foreground" x-text="when(h.at)"></span>
+                            </div>
+                            <p x-show="describe(h)" class="text-body-sm text-muted-foreground" x-text="describe(h)"></p>
+                        </div>
+                    </li>
+                </template>
+            </ol>
+        </section>
+            <template x-teleport="body">
+            <div data-slot="alert-dialog-portal" x-on:keydown.escape.window="confirming && (confirming = null)">
+                <div data-slot="alert-dialog-backdrop" x-nq-presence="confirming !== null" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+                <div data-slot="alert-dialog-content" role="alertdialog" aria-modal="true" x-nq-presence="confirming !== null" x-trap.noscroll="confirming !== null"
+                    class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                    <div class="flex flex-col gap-1.5">
+                        <h2 data-slot="alert-dialog-title" class="text-h3 text-foreground" x-text="confirmTitle()"></h2>
+                        <p data-slot="alert-dialog-description" class="text-body-sm text-muted-foreground" x-text="confirmText()"></p>
+                    </div>
+                    <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                        <button data-slot="button"
+     type="button"                     x-on:click="confirming = null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                        <button data-slot="button"
+     type="button"                     x-on:click="confirm()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-text="confirming ? label(confirming) : ''"></span></button>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>

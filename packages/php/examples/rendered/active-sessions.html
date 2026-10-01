@@ -1,0 +1,144 @@
+<div data-slot="active-sessions" x-data="nqActiveSessions(JSON.parse('{\u0022others\u0022:[\u00222\u0022,\u00223\u0022],\u0022failed\u0022:\u0022Could not sign out. Try again.\u0022}'))"
+    x-on:nq-session-revoke="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(done, 300)))" x-on:nq-session-revoke-others="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(done, 300)))" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-2xl">
+    <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground">Active sessions</h2>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Devices signed in to your account. Sign out any you do not recognise.</div>
+                    <div data-slot="card-action" x-show="hasOthers" class="col-start-2 row-span-2 row-start-1 self-start justify-self-end"><div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <span class="inline-flex items-center gap-2"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 17 5-5-5-5"/>
+  <path d="M21 12H9"/>
+  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+</svg> Sign out other devices</span></button>
+                    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Sign out every other device?</h2>
+                            <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">Only this device stays signed in.</p></div>
+                        <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" x-bind:disabled="busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                            <button data-slot="button"
+     type="button"                     x-on:click="revokeOthers().then((ok) =&gt; ok &amp;&amp; close())" x-bind:disabled="busy !== null" x-bind:data-disabled="busy !== null ? &#039;&#039; : null" x-bind:aria-busy="busy === &#039;*&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="busy === '*'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                                Sign out other devices</button></div>
+        </div>
+    </div>
+</template>
+</div></div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+                    <ul aria-label="Signed-in devices" class="overflow-hidden rounded-card border border-border">
+                                                        <li data-slot="session-row"  data-current                          class="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border px-4 py-3 first:border-t-0">
+                        <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-muted-foreground [&_svg]:size-4">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/>
+  <path d="M20.054 15.987H3.946"/>
+</svg>                        </span>
+                        <div class="flex min-w-0 flex-1 basis-48 flex-col gap-0.5">
+                            <p class="flex items-center gap-2 text-label text-foreground">
+                                <span class="truncate" title="Chrome on macOS">Chrome on macOS</span>
+                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">This device</span>
+                            </p>
+                            <p class="flex flex-wrap gap-x-2 text-caption text-muted-foreground">
+                                <span>Cairo, Egypt</span>                                <span dir="ltr" class="font-mono">41.33.12.9</span>                                <span>Active <time data-slot="date-time" datetime="2026-09-28T23:59:00+00:00" dir="auto"  title="Sep 28, 2026"     class="tabular-nums [unicode-bidi:isolate]">9 hours ago</time>
+</span>
+                            </p>
+                        </div>
+                                            </li>
+                                                        <li data-slot="session-row"   x-show="! gone.includes('2')"                         class="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border px-4 py-3 first:border-t-0">
+                        <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-muted-foreground [&_svg]:size-4">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+  <path d="M12 18h.01"/>
+</svg>                        </span>
+                        <div class="flex min-w-0 flex-1 basis-48 flex-col gap-0.5">
+                            <p class="flex items-center gap-2 text-label text-foreground">
+                                <span class="truncate" title="Safari on iPhone">Safari on iPhone</span>
+                                                            </p>
+                            <p class="flex flex-wrap gap-x-2 text-caption text-muted-foreground">
+                                <span>Alexandria, Egypt</span>                                <span dir="ltr" class="font-mono">41.33.80.2</span>                                <span>Active <time data-slot="date-time" datetime="2026-09-28T19:00:00+00:00" dir="auto"  title="Sep 28, 2026"     class="tabular-nums [unicode-bidi:isolate]">14 hours ago</time>
+</span>
+                            </p>
+                        </div>
+                                                    <div class="contents" x-data="{ sid: '2' }"><div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Sign out<span class="sr-only">: Safari on iPhone</span></button>
+                                <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Sign out this device?</h2>
+                                        <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">It will need the password to sign in again.</p></div>
+                                    <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" x-bind:disabled="busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                                        <button data-slot="button"
+     type="button"                     x-on:click="revoke(sid).then((ok) =&gt; ok &amp;&amp; close())" x-bind:disabled="busy !== null" x-bind:data-disabled="busy !== null ? &#039;&#039; : null" x-bind:aria-busy="busy === sid ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="busy === sid"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                                            Sign out</button></div>
+        </div>
+    </div>
+</template>
+</div>
+</div>
+                                            </li>
+                                                        <li data-slot="session-row"   x-show="! gone.includes('3')"                         class="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border px-4 py-3 first:border-t-0">
+                        <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-muted-foreground [&_svg]:size-4">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/>
+  <path d="M20.054 15.987H3.946"/>
+</svg>                        </span>
+                        <div class="flex min-w-0 flex-1 basis-48 flex-col gap-0.5">
+                            <p class="flex items-center gap-2 text-label text-foreground">
+                                <span class="truncate" title="Firefox on Windows">Firefox on Windows</span>
+                                                            </p>
+                            <p class="flex flex-wrap gap-x-2 text-caption text-muted-foreground">
+                                <span>Riyadh, Saudi Arabia</span>                                <span dir="ltr" class="font-mono">102.44.7.31</span>                                <span>Active <time data-slot="date-time" datetime="2026-09-27T00:00:00+00:00" dir="auto"  title="Sep 27, 2026"     class="tabular-nums [unicode-bidi:isolate]">2 days ago</time>
+</span>
+                            </p>
+                        </div>
+                                                    <div class="contents" x-data="{ sid: '3' }"><div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Sign out<span class="sr-only">: Firefox on Windows</span></button>
+                                <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Sign out this device?</h2>
+                                        <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">It will need the password to sign in again.</p></div>
+                                    <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" x-bind:disabled="busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                                        <button data-slot="button"
+     type="button"                     x-on:click="revoke(sid).then((ok) =&gt; ok &amp;&amp; close())" x-bind:disabled="busy !== null" x-bind:data-disabled="busy !== null ? &#039;&#039; : null" x-bind:aria-busy="busy === sid ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="busy === sid"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                                            Sign out</button></div>
+        </div>
+    </div>
+</template>
+</div>
+</div>
+                                            </li>
+                            </ul></div>
+</div>

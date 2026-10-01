@@ -1,0 +1,116 @@
+<div x-data="{ rail: false, collapsed: false }" class="flex w-64 flex-col gap-4">
+    <div class="flex justify-end">
+        <div data-slot="popover" x-data="nqPopover(false)" x-modelable="open" x-id="['nq-popover']" class="contents">
+    <button type="button" data-slot="product-switcher-trigger" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" x-bind:aria-expanded="open" x-bind:data-popup-open="open ? '' : null"
+        aria-label="Apps" title="Apps"
+        class="inline-flex size-control-sm items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground data-popup-open:bg-nq-selected data-popup-open:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="7" height="7" x="3" y="3" rx="1"/>
+  <rect width="7" height="7" x="14" y="3" rx="1"/>
+  <rect width="7" height="7" x="14" y="14" rx="1"/>
+  <rect width="7" height="7" x="3" y="14" rx="1"/>
+</svg></button>
+    <template x-teleport="body">
+    <div data-slot="popover-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.6="$refs.trigger"
+        data-slot="product-switcher" class="z-50 max-w-[var(--available-width)] rounded-floating border border-border bg-popover text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 w-[19rem] p-1.5 text-body"><div class="px-2 pt-1.5 pb-2 text-caption font-medium text-muted-foreground">Apps</div>
+        <div role="group" x-data="nqProductGrid" x-on:keydown="onKey($event)" class="grid grid-cols-3 gap-1">
+                                            <a data-slot="product-tile" data-id="mahaam"
+                     href="https://mahaam.app"                      aria-current="page"                                         style="--product-accent: #C9A227" x-on:click="$refs.trigger.dispatchEvent(new CustomEvent(`nq-select`, { bubbles: true, detail: { id: $el.dataset.id } })); close()"
+                    class="group relative flex flex-col items-center gap-1.5 rounded-control px-1 pt-3 pb-2 text-center outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus aria-[current]:bg-nq-selected">
+                    <span class="relative inline-flex size-10 items-center justify-center rounded-control border border-border bg-card">
+                        <svg data-slot="product-mark" viewBox="0 0 100 100" width="24" height="24"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+                        <rect x="25" y="25" width="25" height="25" fill="#8C3FB5" />
+                    <rect x="75" y="25" width="25" height="25" fill="#C9A227" />
+                    <rect x="0" y="50" width="25" height="25" fill="#8C3FB5" />
+                    <rect x="50" y="50" width="25" height="25" fill="#8C3FB5" />
+            </svg>
+                                                    <span class="absolute -end-1.5 -top-1.5 min-w-4 rounded-full bg-nq-danger-solid px-1 text-center text-[10px] leading-4 font-medium text-nq-on-danger tabular-nums">3</span>
+                                            </span>
+                    <span class="w-full truncate text-caption text-foreground">Mahaam</span>
+                    <span aria-hidden="true" class="absolute inset-x-5 bottom-0.5 h-0.5 rounded-full bg-(--product-accent) opacity-0 group-aria-[current]:opacity-100"></span>
+                </a>
+                                            <button data-slot="product-tile" data-id="zekra"
+                     type="button"                                                             style="--product-accent: #C9A227" x-on:click="$refs.trigger.dispatchEvent(new CustomEvent(`nq-select`, { bubbles: true, detail: { id: $el.dataset.id } })); close()"
+                    class="group relative flex flex-col items-center gap-1.5 rounded-control px-1 pt-3 pb-2 text-center outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus aria-[current]:bg-nq-selected">
+                    <span class="relative inline-flex size-10 items-center justify-center rounded-control border border-border bg-card">
+                        <svg data-slot="product-mark" viewBox="0 0 100 100" width="24" height="24"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+                        <rect x="40" y="10" width="20" height="20" fill="#C9A227" />
+                    <rect x="20" y="30" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="60" y="30" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="0" y="50" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="40" y="50" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="80" y="50" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="20" y="70" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="60" y="70" width="20" height="20" fill="#6D4DE6" />
+            </svg>
+                                            </span>
+                    <span class="w-full truncate text-caption text-foreground">Zekra</span>
+                    <span aria-hidden="true" class="absolute inset-x-5 bottom-0.5 h-0.5 rounded-full bg-(--product-accent) opacity-0 group-aria-[current]:opacity-100"></span>
+                </button>
+                                            <button data-slot="product-tile" data-id="custom"
+                     type="button"                                          title="A host app"                     style="--product-accent: var(--nq-accent)" x-on:click="$refs.trigger.dispatchEvent(new CustomEvent(`nq-select`, { bubbles: true, detail: { id: $el.dataset.id } })); close()"
+                    class="group relative flex flex-col items-center gap-1.5 rounded-control px-1 pt-3 pb-2 text-center outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus aria-[current]:bg-nq-selected">
+                    <span class="relative inline-flex size-10 items-center justify-center rounded-control border border-border bg-card">
+                        <span aria-hidden="true" class="inline-flex shrink-0 items-center justify-center rounded-[4px] bg-secondary font-medium text-muted-foreground" style="width: 24px; height: 24px; font-size: 11px">C</span>
+                                            </span>
+                    <span class="w-full truncate text-caption text-foreground">Custom app</span>
+                    <span aria-hidden="true" class="absolute inset-x-5 bottom-0.5 h-0.5 rounded-full bg-(--product-accent) opacity-0 group-aria-[current]:opacity-100"></span>
+                </button>
+                    </div>
+                    <a  href="/apps"  data-slot="product-all" x-on:click="$refs.trigger.dispatchEvent(new CustomEvent(`nq-view-all`, { bubbles: true })); close()"
+                class="mt-1.5 flex h-9 w-full items-center justify-center gap-1.5 rounded-control border-t border-border text-body-sm text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                All apps
+                <svg aria-hidden="true" class="size-3.5 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M7 7h10v10"/>
+  <path d="M7 17 17 7"/>
+</svg>            </a></div>
+</template>
+</div>
+    </div>
+    <div data-slot="sidebar-group" role="group"  x-bind:aria-label="(rail && collapsed) ? 'Apps' : null"  >
+    <div data-slot="collapsible" x-data="nqCollapsible(true)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-open     class="group/group flex flex-col">
+    <div class="group/label flex h-[calc(var(--spacing-nav-row)-4px)] items-center gap-1 ps-2 pe-1 group-data-collapsed/sidebar:hidden">
+                <button type="button" x-on:click="toggle()" x-bind:aria-expanded="open"
+                    class="flex min-w-0 flex-1 items-center gap-1 rounded-[3px] text-start text-caption font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-3">
+                    <span class="truncate">Apps</span>
+                    <svg aria-hidden="true" class="opacity-0 transition-[rotate,opacity] duration-200 ease-nq group-hover/label:opacity-100 group-focus-within/label:opacity-100 group-data-open/group:rotate-90 rtl:-scale-x-100 rtl:group-data-open/group:-rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>                </button>
+                            </div>
+                <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-open     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0 group-data-collapsed/sidebar:block! group-data-collapsed/sidebar:h-auto! group-data-collapsed/sidebar:opacity-100!"><div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"  aria-current="page"          x-bind:aria-label="(rail && collapsed) ? 'Mahaam' : null"         href="https://mahaam.app" data-id="mahaam" data-href="https://mahaam.app" x-on:click="if (! $el.dataset.href) $event.preventDefault(); $dispatch(`nq-select`, { id: $el.dataset.id })" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0 bg-nq-selected font-medium text-foreground">
+        <span data-slot="sidebar-icon" class="contents"><svg data-slot="product-mark" viewBox="0 0 100 100" width="16" height="16"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+                        <rect x="25" y="25" width="25" height="25" fill="#8C3FB5" />
+                    <rect x="75" y="25" width="25" height="25" fill="#8C3FB5" />
+                    <rect x="0" y="50" width="25" height="25" fill="#8C3FB5" />
+                    <rect x="50" y="50" width="25" height="25" fill="#8C3FB5" />
+            </svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Mahaam</span>
+        <span class="ms-auto text-caption text-muted-foreground tabular-nums group-data-collapsed/sidebar:hidden">3</span>    </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Mahaam</div>
+    </template>
+</div>
+                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Zekra' : null"         href="#" data-id="zekra" data-href="" x-on:click="if (! $el.dataset.href) $event.preventDefault(); $dispatch(`nq-select`, { id: $el.dataset.id })" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg data-slot="product-mark" viewBox="0 0 100 100" width="16" height="16"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+                        <rect x="40" y="10" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="20" y="30" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="60" y="30" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="0" y="50" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="40" y="50" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="80" y="50" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="20" y="70" width="20" height="20" fill="#6D4DE6" />
+                    <rect x="60" y="70" width="20" height="20" fill="#6D4DE6" />
+            </svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Zekra</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Zekra</div>
+    </template>
+</div></div></div>
+</div>
+    </div>
+</div>

@@ -48,6 +48,7 @@ Reference ports to copy the patterns from: **button** and **spinner** (static), 
 - Buttons inside parts render `<x-nq::button>` with a `data-slot` override, like `dialog/trigger.blade.php`.
 - Portals use `<template x-teleport="body">`. Focus traps use `x-trap` (@alpinejs/focus), floating positioning `x-anchor` (@alpinejs/anchor), height animation `x-collapse` (@alpinejs/collapse). All three are bundled in the runtime.
 - Root element: `x-data="nq<Name>(...)"`, `x-modelable` on the controlled value, `x-id` for generated ids.
+- Let callers override the slot name (a part reused inside another component, like React's `data-slot` prop): `data-slot="{{ $attributes->get('data-slot', 'card') }}" {{ $attributes->except('data-slot')->cn([...]) }}`. Writing `data-slot="card" {{ $attributes->cn(...) }}` emits the attribute twice and the first one wins.
 
 ## HTML + Alpine runtime
 
@@ -58,7 +59,7 @@ Reference ports to copy the patterns from: **button** and **spinner** (static), 
 - An `x-model` expression is read in the scope of the element that has it; don't reuse a name (`open`, `invalid`) that an inner component's scope already owns.
 - Blade escapes `{{ }}` inside component attributes twice; use `{!! Js::from(...) !!}` or `{!! !!}` for JS values in attributes.
 - Static components (badge, card, separator …) need no module; the rendered HTML is the whole port.
-- The rendered example is produced from the Blade example: `php scripts/render-examples.php <name>` in packages/php. Never hand-edit `examples/rendered/*.html`.
+- The rendered example is produced from the Blade example: `php scripts/render-examples.php <name>` in packages/php. Never hand-edit `examples/rendered/*.html`. Examples render with a frozen clock (`TestCase::NOW`, 2026-09-29 09:00) and a counter for `Str::random`, so `now()` and generated ids are fine in examples and components.
 - Test behaviour in `packages/html/test/<name>.test.ts` by loading `../php/examples/rendered/<name>.html` under real Alpine with the plugin (copy the setup from `alpine.test.ts`).
 
 ## Checklist (run in the worktree)

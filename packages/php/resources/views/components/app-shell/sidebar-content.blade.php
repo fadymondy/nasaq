@@ -1,2 +1,2 @@
 {{-- <x-nq::app-shell.sidebar-content> groups </x-nq::app-shell.sidebar-content>   The scrolling middle; header and footer stay put. -mx-1 px-1 keeps edge focus rings inside the scroll box. --}}
-<div data-slot="sidebar-content" {{ $attributes->cn('-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]') }}>{{ $slot }}</div>
+<div data-slot="{{ $attributes->get('data-slot', 'sidebar-content') }}" {{ $attributes->except('data-slot')->cn('-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]') }}>{{ $slot }}</div>

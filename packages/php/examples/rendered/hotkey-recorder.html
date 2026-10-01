@@ -1,0 +1,77 @@
+<div data-slot="hotkey-recorder" x-id="['nq-hotkey']" x-data="nqHotkeyRecorder('Mod+K', JSON.parse('{\u0022requireModifier\u0022:true,\u0022resetTo\u0022:\u0022Mod+K\u0022,\u0022strings\u0022:{\u0022notSet\u0022:\u0022Not set\u0022,\u0022press\u0022:\u0022Press the keys\u0022,\u0022pressSequence\u0022:\u0022Press the keys, then Enter\u0022,\u0022escHint\u0022:\u0022Esc cancels\u0022,\u0022record\u0022:\u0022Record a shortcut\u0022,\u0022change\u0022:\u0022Change shortcut\u0022,\u0022clear\u0022:\u0022Clear shortcut\u0022,\u0022reset\u0022:\u0022Reset to default\u0022,\u0022saved\u0022:\u0022Shortcut set to {shortcut}\u0022,\u0022cleared\u0022:\u0022Shortcut cleared\u0022,\u0022recording\u0022:\u0022Recording. Press the shortcut you want.\u0022,\u0022duplicate\u0022:\u0022Already used by {label}.\u0022,\u0022shadows\u0022:\u0022Would block {label}, which starts the same way.\u0022,\u0022shadowed\u0022:\u0022Would never run: {label} uses the first keys.\u0022,\u0022browser\u0022:\u0022The browser keeps this shortcut. Choose another.\u0022,\u0022system\u0022:\u0022The operating system keeps this shortcut. Choose another.\u0022,\u0022modifierRequired\u0022:\u0022Add Ctrl, Alt or Command: a bare key would fire while you type.\u0022,\u0022invalid\u0022:\u0022That is not a usable shortcut.\u0022,\u0022sequenceNotAllowed\u0022:\u0022Use one key combination, not a sequence.\u0022,\u0022tooLong\u0022:\u0022That sequence is too long.\u0022,\u0022empty\u0022:\u0022Press a key to record it.\u0022,\u0022then\u0022:\u0022then\u0022,\u0022defaultIs\u0022:\u0022Default\u0022}}'))" x-modelable="value" x-bind="rootAttrs"
+    class="flex min-w-0 flex-col gap-1.5">
+    <div class="flex items-center gap-1.5">
+        <button type="button" x-bind="button('Command palette')"
+            class="flex min-h-control min-w-0 flex-1 items-center gap-2 rounded-control border bg-card px-3 text-start text-body text-foreground outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50">
+            <span aria-hidden="true" class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 8h.01"/>
+  <path d="M12 12h.01"/>
+  <path d="M14 8h.01"/>
+  <path d="M16 12h.01"/>
+  <path d="M18 8h.01"/>
+  <path d="M6 8h.01"/>
+  <path d="M7 16h10"/>
+  <path d="M8 12h.01"/>
+  <rect width="20" height="16" x="2" y="4" rx="2"/>
+</svg></span>
+            <span x-show="recording" x-cloak style="display: none" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
+                <span x-show="steps.length > 0" x-cloak style="display: none" dir="ltr" class="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                    <template x-for="(caps, i) in capSteps(stepsShortcut())">
+                        <span class="inline-flex items-center gap-1.5">
+                            <span x-show="i > 0" aria-hidden="true" class="text-caption text-muted-foreground" x-text="t('then')"></span>
+                            <span aria-hidden="true" class="inline-flex items-center gap-0.5">
+                                <template x-for="cap in caps"><kbd data-slot="kbd" dir="ltr" class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground" x-text="cap"></kbd></template>
+                            </span>
+                        </span>
+                    </template>
+                </span>
+                <span class="text-body-sm text-muted-foreground">Press the keys</span>
+            </span>
+            <span x-show="! recording && value" x-cloak  role="img" :aria-label="spoken(value)" dir="ltr" data-slot="shortcut-keys" class="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                <template x-for="(caps, i) in capSteps(value)">
+                    <span class="inline-flex items-center gap-1.5">
+                        <span x-show="i > 0" aria-hidden="true" class="text-caption text-muted-foreground" x-text="t('then')"></span>
+                        <span aria-hidden="true" class="inline-flex items-center gap-0.5">
+                            <template x-for="cap in caps"><kbd data-slot="kbd" dir="ltr" class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground" x-text="cap"></kbd></template>
+                        </span>
+                    </span>
+                </template>
+            </span>
+            <span x-show="! recording && ! value" x-cloak  style="display: none"  class="text-muted-foreground">Not set</span>
+            <span x-show="recording" x-cloak style="display: none" class="ms-auto shrink-0 text-caption text-muted-foreground">Esc cancels</span>
+        </button>
+                    <button data-slot="button"
+     type="button"                     x-show="value" x-cloak="x-cloak" aria-label="Clear shortcut" @click="clear()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                            <button data-slot="button"
+     type="button"                     x-show="canReset()" x-cloak="x-cloak" aria-label="Reset to default" x-bind:title="resetTitle()" @click="reset()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+</svg></button>
+                        </div>
+    <ul x-show="hasProblems()" x-cloak style="display: none" :id="errorId()" role="list" class="flex flex-col gap-0.5">
+        <li x-show="error" x-cloak style="display: none" role="alert" class="flex items-start gap-1.5 text-caption text-nq-danger-text">
+            <span aria-hidden="true" class="mt-0.5 flex shrink-0 [&_svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg></span>
+            <span x-text="error"></span>
+        </li>
+        <template x-for="c in conflicts()" :key="c.id">
+            <li :data-conflict="c.kind" class="flex items-start gap-1.5 text-caption text-nq-warning-text">
+                <span aria-hidden="true" class="mt-0.5 flex shrink-0 [&_svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg></span>
+                <span x-text="conflictText(c)"></span>
+            </li>
+        </template>
+    </ul>
+    <span role="status" aria-live="polite" class="sr-only" x-text="announce"></span>
+    </div>

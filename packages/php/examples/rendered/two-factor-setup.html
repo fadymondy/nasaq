@@ -1,0 +1,333 @@
+<div x-data
+    x-on:nq-2fa-verify="$event.detail.wait(new Promise((resolve) => setTimeout(() => resolve($event.detail.code === '000000' ? { error: 'That code is not right.' } : { recoveryCodes: ['a1b2c-d3e4f', 'g5h6i-j7k8l', 'm9n0o-p1q2r', 's3t4u-v5w6x', 'y7z8a-b9c0d', 'e1f2g-h3i4j', 'k5l6m-n7o8p', 'q9r0s-t1u2v'] }), 600)))"
+    x-on:nq-2fa-regenerate="$event.detail.wait(new Promise((resolve) => setTimeout(() => resolve(['n1n1n-n1n1n', 'm2m2m-m2m2m', 'k3k3k-k3k3k', 'j4j4j-j4j4j']), 600)))"
+    x-on:nq-2fa-disable="$event.detail.wait(new Promise((resolve) => setTimeout(resolve, 600)))">
+    <div data-slot="two-factor-setup" x-data="nqTwoFactorSetup(JSON.parse('{\u0022uri\u0022:\u0022otpauth:\\\/\\\/totp\\\/Nasaq:fady@example.com?secret=JBSWY3DPEHPK3PXP\\u0026issuer=Nasaq\u0022,\u0022enabled\u0022:false,\u0022codes\u0022:[],\u0022remaining\u0022:null,\u0022mode\u0022:\u0022password\u0022,\u0022messages\u0022:{\u0022genericError\u0022:\u0022Something went wrong. Try again.\u0022,\u0022fileHeader\u0022:\u0022Recovery codes\u0022}}'))" x-modelable="enabled" x-id="['nq-2fa']"
+    x-bind:data-state="enabled ? 'enabled' : 'step-' + step"
+    class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-lg">
+    <div class="contents" x-show="enabled"  style="display: none" >
+        <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground">Two-factor authentication is on</h2>
+            <div data-slot="card-description" class="text-body-sm text-muted-foreground">You will be asked for a code from your authenticator app when you sign in.</div></div>
+        <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+                <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Enabled" >Enabled</span>
+</span>
+                <span data-slot="status" data-tone="warning" x-show="remaining !== null &amp;&amp; remaining &lt; 3" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+  <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+</svg>        <span class="truncate"  title="recovery codes left" ><span x-text="remaining === 1 ? '1 recovery code left' : '{n} recovery codes left'.replace('{n}', remaining)"> recovery codes left</span></span>
+</span>
+                <span data-slot="status" data-tone="neutral" x-show="remaining !== null &amp;&amp; remaining &gt;= 3" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+  <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+</svg>        <span class="truncate"  title="recovery codes left" ><span x-text="'{n} recovery codes left'.replace('{n}', remaining)"> recovery codes left</span></span>
+</span>
+            </div>
+            <div class="flex flex-col gap-3" x-show="fresh" style="display: none">
+                <p class="text-label text-foreground">Your new recovery codes</p>
+                <div class="flex flex-col gap-4" data-slot="two-factor-recovery">
+    <ul dir="ltr" aria-label="Recovery codes"
+        class="grid grid-cols-2 gap-x-6 gap-y-2 rounded-card border border-border bg-secondary p-4 font-mono text-body tabular-nums text-foreground">
+        <template x-for="code in fresh" :key="code">
+            <li data-slot="two-factor-recovery-code" class="select-all" x-text="code"></li>
+        </template>
+    </ul>
+    <div class="flex flex-wrap gap-2">
+        <span class="contents" x-data="nqCopyButton('', 1500)" x-effect="value = (fresh || []).join('\n')">
+            <button data-slot="copy-button"
+     type="button"                     x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>                <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                Copy all</button>
+            <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+                data-copied-label="Copied to clipboard" data-failed-label="Could not copy"
+                x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+        </span>
+        <button data-slot="button"
+     type="button"                     x-on:click="download(&#039;recovery-codes.txt&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>            Download .txt</button>
+    </div>
+    <div class="flex items-center gap-2">
+        <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="saved" x-bind:id="$id(&#039;nq-2fa&#039;, &#039;saved-fresh&#039;)" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+        <label x-bind:for="$id('nq-2fa', 'saved-fresh')" class="text-body-sm text-foreground">I saved these recovery codes</label>
+    </div>
+    <div>
+        <button data-slot="button"
+     type="button"                     x-on:click="fresh = null; saved = false" x-bind:disabled="! saved" x-bind:data-disabled="! saved ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Finish</button>
+    </div>
+</div>
+            </div></div>
+        <div data-slot="card-footer" class="flex flex-wrap gap-2 px-4" x-show="! fresh">
+                            <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" x-on:click.capture="resetCred()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Regenerate recovery codes</button>
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form class="grid gap-4" x-effect="cred === '' && $el.reset()" x-on:submit.prevent="submitCred('regenerate').then((ok) => ok && close())">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Regenerate recovery codes?</h2>
+                <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">Your current recovery codes stop working. Confirm to get a new set.</p></div>
+            <div data-slot="field" class="flex flex-col gap-1.5">
+                                    <label for="nq-2fa-23ed98-regenerate" class="text-label text-foreground">Password</label>
+                    <div data-slot="password-input" x-data="nqPasswordInput('', JSON.parse('{\u0022visible\u0022:false,\u0022score\u0022:null,\u0022rules\u0022:null,\u0022levels\u0022:[\u0022Very weak\u0022,\u0022Weak\u0022,\u0022Fair\u0022,\u0022Good\u0022,\u0022Strong\u0022]}'))" x-modelable="value"
+    class="flex w-full flex-col gap-2">
+    <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><input data-slot="input-group-input"     x-model="value" x-bind:type="shown ? &#039;text&#039; : &#039;password&#039;" type="password" value="" autocapitalize="none" autocorrect="off" spellcheck="false" id="nq-2fa-23ed98-regenerate" autocomplete="current-password" x-on:input="cred = $event.target.value" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px]" />
+        <div data-slot="input-group-addon" data-align="end"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-1.5"><button data-slot="password-input-toggle"
+     type="button"                     x-bind="toggle" aria-label="Show password" aria-pressed="false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg x-show="shown" x-cloak="1" style="display: none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>                <svg x-show="!shown" x-cloak="1" style="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg></button></div></div>
+        </div>
+                    <p data-slot="field-description" class="text-caption text-muted-foreground">Enter your password to continue.</p>
+                                <p role="alert" class="text-caption text-nq-danger-text" x-show="credError" x-text="credError" style="display: none"></p>
+            </div>
+            <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" x-bind:disabled="credPending" x-bind:data-disabled="credPending ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                <button data-slot="button"
+     type="submit"                     x-bind:disabled="! credReady || credPending" x-bind:data-disabled="(! credReady || credPending) ? &#039;&#039; : null" x-bind:aria-busy="credPending ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="credPending" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                    Regenerate</button></div>
+        </form>
+        </div>
+    </div>
+</template>
+</div>
+                                        <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" x-on:click.capture="resetCred()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Disable two-factor</button>
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form class="grid gap-4" x-effect="cred === '' && $el.reset()" x-on:submit.prevent="submitCred('disable').then((ok) => ok && close())">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disable two-factor authentication?</h2>
+                <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">Your account will be protected by your password alone.</p></div>
+            <div data-slot="field" class="flex flex-col gap-1.5">
+                                    <label for="nq-2fa-23ed98-disable" class="text-label text-foreground">Password</label>
+                    <div data-slot="password-input" x-data="nqPasswordInput('', JSON.parse('{\u0022visible\u0022:false,\u0022score\u0022:null,\u0022rules\u0022:null,\u0022levels\u0022:[\u0022Very weak\u0022,\u0022Weak\u0022,\u0022Fair\u0022,\u0022Good\u0022,\u0022Strong\u0022]}'))" x-modelable="value"
+    class="flex w-full flex-col gap-2">
+    <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><input data-slot="input-group-input"     x-model="value" x-bind:type="shown ? &#039;text&#039; : &#039;password&#039;" type="password" value="" autocapitalize="none" autocorrect="off" spellcheck="false" id="nq-2fa-23ed98-disable" autocomplete="current-password" x-on:input="cred = $event.target.value" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px]" />
+        <div data-slot="input-group-addon" data-align="end"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-1.5"><button data-slot="password-input-toggle"
+     type="button"                     x-bind="toggle" aria-label="Show password" aria-pressed="false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg x-show="shown" x-cloak="1" style="display: none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>                <svg x-show="!shown" x-cloak="1" style="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg></button></div></div>
+        </div>
+                    <p data-slot="field-description" class="text-caption text-muted-foreground">Enter your password to continue.</p>
+                                <p role="alert" class="text-caption text-nq-danger-text" x-show="credError" x-text="credError" style="display: none"></p>
+            </div>
+            <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" x-bind:disabled="credPending" x-bind:data-disabled="credPending ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                <button data-slot="button"
+     type="submit"                     x-bind:disabled="! credReady || credPending" x-bind:data-disabled="(! credReady || credPending) ? &#039;&#039; : null" x-bind:aria-busy="credPending ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="credPending" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                    Disable</button></div>
+        </form>
+        </div>
+    </div>
+</template>
+</div>
+                    </div>
+    </div>
+    <div class="contents" x-show="! enabled" >
+        <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground">Two-factor authentication</h2>
+            <div data-slot="card-description" class="text-body-sm text-muted-foreground">Ask for a code from an authenticator app each time you sign in.</div></div>
+        <div data-slot="card-content" class="px-4 flex flex-col gap-4"><ol data-slot="two-factor-steps" class="flex gap-1.5">
+                                    <li x-bind:aria-current="step === 1 ? 'step' : null" x-bind:class="{ 'bg-primary': step >= 1, 'bg-secondary': step < 1 }"
+                        class="h-1 flex-1 rounded-full bg-primary">
+                        <span class="sr-only">Step 1 of 3</span>
+                    </li>
+                                    <li x-bind:aria-current="step === 2 ? 'step' : null" x-bind:class="{ 'bg-primary': step >= 2, 'bg-secondary': step < 2 }"
+                        class="h-1 flex-1 rounded-full bg-secondary">
+                        <span class="sr-only">Step 2 of 3</span>
+                    </li>
+                                    <li x-bind:aria-current="step === 3 ? 'step' : null" x-bind:class="{ 'bg-primary': step >= 3, 'bg-secondary': step < 3 }"
+                        class="h-1 flex-1 rounded-full bg-secondary">
+                        <span class="sr-only">Step 3 of 3</span>
+                    </li>
+                            </ol>
+            <div class="flex flex-col gap-4" data-slot="two-factor-scan" x-show="step === 1">
+                <div class="flex flex-col gap-1">
+                    <h3 class="text-label text-foreground">Scan the QR code</h3>
+                    <p class="text-body-sm text-muted-foreground">Open an authenticator app such as 1Password, Authy or Google Authenticator and scan this code.</p>
+                </div>
+                <svg data-slot="two-factor-qr" role="img" aria-label="QR code for your authenticator app" viewBox="0 0 1 1" x-bind:view-box.camel="'0 0 ' + qr.size + ' ' + qr.size" shape-rendering="crispEdges"
+                    class="aspect-square w-full max-w-48 rounded-control border border-border bg-white">
+                    <path x-bind:d="qr.path" class="fill-black" />
+                </svg>
+                                    <details class="rounded-control border border-border px-3 py-2">
+                        <summary class="cursor-pointer text-body-sm text-foreground">Can&#039;t scan? Enter this key instead</summary>
+                        <div class="mt-2 flex items-center gap-2" data-slot="two-factor-key">
+                            <code dir="ltr" aria-label="Setup key" class="min-w-0 flex-1 select-all break-all font-mono text-body tabular-nums text-foreground">JBSW Y3DP EHPK 3PXP</code>
+                            <span class="contents" x-data="nqCopyButton('JBSWY3DPEHPK3PXP', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     aria-label="Copy setup key" x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span>
+                        </div>
+                    </details>
+                                <div>
+                    <button data-slot="button"
+     type="button"                     x-on:click="next()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Next</button>
+                </div>
+            </div>
+            <form class="flex flex-col gap-4" data-slot="two-factor-verify" x-show="step === 2" style="display: none" x-on:submit.prevent="verify(code)" x-effect="markInvalid($el)">
+                <div class="flex flex-col gap-1">
+                    <h3 class="text-label text-foreground">Enter the 6-digit code</h3>
+                    <p class="text-body-sm text-muted-foreground">Type the code your authenticator app shows now to confirm it is set up.</p>
+                </div>
+                <div data-slot="field" class="flex w-fit flex-col gap-1.5">
+                    <span class="text-label text-foreground">Verification code</span>
+                    <div role="group" dir="ltr" data-slot="otp-input" x-data="nqOtpInput('', 6, 'numeric')" x-modelable="value"
+    x-model="code" x-on:complete="verify($event.detail)" class="inline-flex items-center gap-2">
+            <input data-slot="otp-input-box" x-bind="box(0)" type="text" value=""
+                        aria-label="Digit 1 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(1)" type="text" value=""
+                        aria-label="Digit 2 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(2)" type="text" value=""
+                        aria-label="Digit 3 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(3)" type="text" value=""
+                        aria-label="Digit 4 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(4)" type="text" value=""
+                        aria-label="Digit 5 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(5)" type="text" value=""
+                        aria-label="Digit 6 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+        <input type="hidden" name="code" :value="value" value="" /></div>
+                    <p role="alert" class="text-caption text-nq-danger-text" x-show="error" x-text="error" style="display: none"></p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button data-slot="button"
+     type="button"                     x-on:click="back()" x-bind:disabled="pending" x-bind:data-disabled="pending ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Back</button>
+                    <button data-slot="button"
+     type="submit"                     x-bind:disabled="code.length !== 6 || pending" x-bind:data-disabled="(code.length !== 6 || pending) ? &#039;&#039; : null" x-bind:aria-busy="pending ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="pending" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        Verify and continue</button>
+                </div>
+            </form>
+            <div class="flex flex-col gap-3" x-show="step === 3" style="display: none">
+                <div class="flex flex-col gap-1">
+                    <h3 class="text-label text-foreground">Save your recovery codes</h3>
+                    <p class="text-body-sm text-muted-foreground">If you lose your phone, each of these codes lets you sign in once. Store them somewhere safe. They will not be shown again.</p>
+                </div>
+                <div class="flex flex-col gap-4" data-slot="two-factor-recovery">
+    <ul dir="ltr" aria-label="Recovery codes"
+        class="grid grid-cols-2 gap-x-6 gap-y-2 rounded-card border border-border bg-secondary p-4 font-mono text-body tabular-nums text-foreground">
+        <template x-for="code in codes" :key="code">
+            <li data-slot="two-factor-recovery-code" class="select-all" x-text="code"></li>
+        </template>
+    </ul>
+    <div class="flex flex-wrap gap-2">
+        <span class="contents" x-data="nqCopyButton('', 1500)" x-effect="value = (codes || []).join('\n')">
+            <button data-slot="copy-button"
+     type="button"                     x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>                <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                Copy all</button>
+            <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+                data-copied-label="Copied to clipboard" data-failed-label="Could not copy"
+                x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+        </span>
+        <button data-slot="button"
+     type="button"                     x-on:click="download(&#039;recovery-codes.txt&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>            Download .txt</button>
+    </div>
+    <div class="flex items-center gap-2">
+        <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="saved" x-bind:id="$id(&#039;nq-2fa&#039;, &#039;saved-codes&#039;)" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+        <label x-bind:for="$id('nq-2fa', 'saved-codes')" class="text-body-sm text-foreground">I saved these recovery codes</label>
+    </div>
+    <div>
+        <button data-slot="button"
+     type="button"                     x-on:click="finish()" x-bind:disabled="! saved" x-bind:data-disabled="! saved ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Finish</button>
+    </div>
+</div>
+            </div></div>
+    </div>
+</div>
+</div>

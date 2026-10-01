@@ -1,0 +1,235 @@
+<div class="flex flex-col gap-4">
+    <div role="status" data-slot="paused-banner" x-data="nqKillSwitchAction(JSON.parse('{\u0022failed\u0022:\u0022Could not complete this. Try again.\u0022}'))"
+    class="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1 bg-nq-danger-soft px-4 py-2 text-body-sm text-nq-danger-text">
+    <svg aria-hidden="true" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="10" x2="10" y1="15" y2="9"/>
+  <line x1="14" x2="14" y1="15" y2="9"/>
+</svg>    <span class="min-w-0 flex-1">
+        <span class="font-medium">Automations are paused.</span> <span class="opacity-80">Nothing runs until they are resumed.</span>
+        <span class="opacity-80">Paused by Sara Ali, <time data-slot="date-time" datetime="2026-03-01T09:30:00+00:00" dir="auto"  title="Mar 1, 2026"     class="tabular-nums [unicode-bidi:isolate]">6 months ago</time>
+. Bad deploy</span>
+        <span role="alert" x-show="error" x-text="error" x-cloak style="display: none" class="ms-2 font-medium"></span>
+    </span>
+            <button data-slot="button"
+     type="button"                     x-bind="actionButton" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" x-cloak="1" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>            <span x-show="!busy">Resume</span>
+            <span x-show="busy" x-cloak style="display: none">Resuming…</span></button>
+    </div>
+    <section data-slot="kill-switch" data-paused="false" aria-label="Emergency stop" x-data="nqKillSwitch(JSON.parse('{\u0022failed\u0022:\u0022Could not complete this. Try again.\u0022,\u0022unpairTitle\u0022:\u0022Unpair {name}?\u0022}'))"
+    class="flex flex-col gap-4">
+    <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground flex items-center gap-2"><svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="M12 8v4"/>
+  <path d="M12 16h.01"/>
+</svg>                Emergency stop</h2>
+            <div data-slot="card-description" class="text-body-sm text-muted-foreground">Stop every automation at once. Nothing runs again until someone resumes it.</div></div>
+        <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div x-show="error" x-cloak style="display: none">
+                <div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+            </div>
+                            <div class="flex items-center gap-2 text-body-sm text-muted-foreground">
+                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Automations are running</span>
+                    <span>14 automations are active</span>                </div>
+                <div>
+                    <button data-slot="button"
+     type="button"                     x-on:click="stopOpen = true" aria-haspopup="dialog" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 9-6 6"/>
+  <path d="M2.586 16.726A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2h6.624a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586z"/>
+  <path d="m9 9 6 6"/>
+</svg>                        Stop all automations</button>
+                </div></div></div>
+            <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground">Paired browsers</h2>
+                <div data-slot="card-description" class="text-body-sm text-muted-foreground">Browsers that can run automations for you. Unpair any you do not recognise.</div></div>
+            <div data-slot="card-content" class="px-4"><ul class="flex flex-col divide-y divide-border rounded-control border border-border">
+                                                                                <li data-slot="kill-switch-browser" data-online="true"  data-current >
+                                                                    <div class="flex flex-wrap items-center gap-3 p-3">
+                                        <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-muted-foreground [&_svg]:size-4"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+  <path d="M2 12h20"/>
+</svg></span>
+<div class="flex min-w-0 flex-1 flex-col">
+    <span class="flex flex-wrap items-center gap-2 text-label text-foreground">
+        Chrome on Windows
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-brand/40 bg-[color-mix(in_oklab,var(--nq-brand)_14%,transparent)] text-foreground">This browser</span>
+    </span>
+    <span class="text-caption text-muted-foreground">
+        Work laptop · 
+        Online    </span>
+</div>
+<span aria-hidden="true" class="size-2 rounded-full bg-nq-success"></span>
+                                    </div>
+                                                            </li>
+                                                                                <li data-slot="kill-switch-browser" data-online="false" >
+                                                                    <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="flex flex-wrap items-center gap-3 p-3"><span class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-muted-foreground [&_svg]:size-4"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+  <path d="M2 12h20"/>
+</svg></span>
+<div class="flex min-w-0 flex-1 flex-col">
+    <span class="flex flex-wrap items-center gap-2 text-label text-foreground">
+        Edge on Windows
+            </span>
+    <span class="text-caption text-muted-foreground">
+        Last seen <time data-slot="date-time" datetime="2026-03-01T06:30:00+00:00" dir="auto"  title="Mar 1, 2026"     class="tabular-nums [unicode-bidi:isolate]">6 months ago</time>
+    </span>
+</div>
+<span aria-hidden="true" class="size-2 rounded-full bg-nq-line-strong"></span>
+                                            <button data-slot="button"
+     type="button"                     aria-label="Unpair Edge on Windows" x-on:click="askUnpair(&#039;2&#039;, &#039;Edge on Windows&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Unpair</button></div>
+                                        <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="askUnpair(&#039;2&#039;, &#039;Edge on Windows&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m19 5 3-3"/>
+  <path d="m2 22 3-3"/>
+  <path d="M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z"/>
+  <path d="M7.5 13.5 10 11"/>
+  <path d="M10.5 16.5 13 14"/>
+  <path d="m12 6 6 6 2.3-2.3a2.4 2.4 0 0 0 0-3.4l-2.6-2.6a2.4 2.4 0 0 0-3.4 0Z"/>
+</svg>                                                Unpair</div></div>
+</template></div>
+                                                            </li>
+                                            </ul>
+                    <p class="mt-2 text-caption text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">1</bdi>
+ / <bdi data-slot="num" data-numeric="" class="tabular-nums">2</bdi>
+ Online</p></div></div>
+        <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="unpairOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground"><span x-text="unpairTitle"></span></h2>
+                    <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">Its automations stop running until you pair it again.</p></div>
+                <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" x-bind:disabled="unpairBusy" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="unpair()" x-bind:disabled="unpairBusy" x-bind:aria-busy="unpairBusy ? &#039;true&#039; : undefined" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="unpairBusy" x-cloak="1" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        Unpair</button></div>
+        </div>
+    </div>
+</template>
+</div>
+            <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="stopOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Stop every automation?</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Running jobs are cancelled and schedules are held. Nothing starts until you resume.</p></div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="reasonInvalid" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Reason</label>
+                    <textarea data-slot="textarea"
+                rows="3" x-model="reason" x-on:input="clearReason()" placeholder="Say why you are stopping everything" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text">Give a reason.</div>
+                    <p data-slot="field-description" x-show="!reasonInvalid" class="text-caption text-muted-foreground">Everyone on the team sees this.</p>
+</div>
+                <div x-show="stopError" x-cloak style="display: none">
+                    <div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="stopError"></span></div>
+            </div>
+    </div>
+                </div>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="closeStop()" x-bind:disabled="busy" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="stop()" x-bind:disabled="busy" x-bind:aria-busy="busy ? &#039;true&#039; : undefined" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" x-cloak="1" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg x-show="!busy" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 9-6 6"/>
+  <path d="M2.586 16.726A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2h6.624a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586z"/>
+  <path d="m9 9 6 6"/>
+</svg>                        Stop everything</button></div>
+                    </div>
+    </div>
+</template>
+</div>
+    </section>
+    <section data-slot="kill-switch" data-paused="true" aria-label="Emergency stop" x-data="nqKillSwitch(JSON.parse('{\u0022failed\u0022:\u0022Could not complete this. Try again.\u0022,\u0022unpairTitle\u0022:\u0022Unpair {name}?\u0022}'))"
+    class="flex flex-col gap-4">
+    <div data-slot="card" class="flex flex-col gap-4 rounded-card border bg-card py-4 text-card-foreground border-nq-danger/40"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground flex items-center gap-2"><svg aria-hidden="true" class="size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="10" x2="10" y1="15" y2="9"/>
+  <line x1="14" x2="14" y1="15" y2="9"/>
+</svg>                Emergency stop</h2>
+            <div data-slot="card-description" class="text-body-sm text-muted-foreground">Stop every automation at once. Nothing runs again until someone resumes it.</div></div>
+        <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div x-show="error" x-cloak style="display: none">
+                <div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+            </div>
+                            <div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                    <div data-slot="alert-title" class="text-label text-foreground">All automations are paused</div>
+                            <div data-slot="alert-description" class="text-body-sm text-muted-foreground"><span class="block">Paused by Sara Ali, <time data-slot="date-time" datetime="2026-03-01T09:30:00+00:00" dir="auto"  title="Mar 1, 2026"     class="tabular-nums [unicode-bidi:isolate]">6 months ago</time>
+</span>
+                    <span class="block text-foreground">Reason: Bad deploy</span></div>
+            </div>
+    </div>
+                <div>
+                    <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z"/>
+  <circle cx="12" cy="12" r="10"/>
+</svg>                        Resume automations</button>
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Resume all automations?</h2>
+                            <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">Schedules start again and held jobs run. Check the reason it was stopped first.</p></div>
+        <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+            <button data-slot="alert-dialog-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="resume()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Resume</button></div>
+        </div>
+    </div>
+</template>
+</div>
+                </div></div></div>
+    </section>
+</div>

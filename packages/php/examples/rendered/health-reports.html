@@ -1,0 +1,378 @@
+<div data-slot="health-report" role="region" aria-labelledby="nq-health-report-d10c505d" x-data="nqHealthReport(30)" class="flex flex-col gap-6">
+    <header class="flex flex-col gap-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <h1 id="nq-health-report-d10c505d" class="text-h1 text-foreground">Reports</h1>
+                <p class="max-w-prose text-pretty text-body text-muted-foreground">Your recent days, in counts and averages. Days with no reading are left out, never counted as zero.</p>
+            </div>
+                            <button data-slot="button"
+     type="button"                     x-on:click="exportReport()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>                    Export CSV</button>
+                    </div>
+                <div class="flex flex-wrap items-center gap-2">
+            <span class="text-label text-muted-foreground">Period</span>
+            <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u002230\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Period" x-model="selected" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('7')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">7 days</button>
+                                    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('30')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">30 days</button>
+                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('90')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">90 days</button>
+</div>
+        </div>
+    </header>
+            <div class="flex flex-col gap-8">
+            <section aria-labelledby="nq-health-report-d10c505d-avg" class="flex flex-col gap-4">
+                <div data-slot="section-header" class="flex items-end justify-between gap-4">
+    <div class="flex min-w-0 flex-col gap-1">
+        <h2  id="nq-health-report-d10c505d-avg"  class="text-h2 text-foreground">Averages</h2>
+                    <p class="text-pretty text-body-sm text-muted-foreground">Across the 7 days that reported each figure.</p>
+            </div>
+    </div>
+                <div data-slot="stat-grid" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3"><div data-slot="stat-card"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/>
+  <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Average water</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="measure" data-numeric="" dir="ltr" class="tabular-nums [unicode-bidi:isolate]">2,450 mL</bdi>
+                                    </div>
+                            </div>
+                    </div>
+    </div>
+                    <div data-slot="stat-card"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/>
+  <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/>
+  <path d="M16 17h4"/>
+  <path d="M4 13h4"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Average steps</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="measure" data-numeric="" dir="ltr" class="tabular-nums [unicode-bidi:isolate]">7,200 steps</bdi>
+                                    </div>
+                            </div>
+                    </div>
+    </div>
+                    <div data-slot="stat-card"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/>
+  <path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/>
+  <path d="M12 4v6"/>
+  <path d="M2 18h20"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Average sleep</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="measure" data-numeric="" dir="ltr" class="tabular-nums [unicode-bidi:isolate]">7 hr 15 min</bdi>
+                                    </div>
+                            </div>
+                    </div>
+    </div>
+                    <div data-slot="stat-card"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Average resting heart rate</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <span class="text-body-sm font-normal text-muted-foreground">Not enough readings</span>
+                                    </div>
+                            </div>
+                    </div>
+    </div>
+                    <div data-slot="stat-card"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v18"/>
+  <path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/>
+  <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/>
+  <path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/>
+  <path d="M7 21h10"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Weight change</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="measure" data-numeric="" dir="ltr" class="tabular-nums [unicode-bidi:isolate]">-0.6 kg</bdi>
+                                    </div>
+                            </div>
+                    </div>
+    </div>
+                    <div data-slot="stat-card"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Days with shutdown violations</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="measure" data-numeric="" dir="ltr" class="tabular-nums [unicode-bidi:isolate]">0 days</bdi>
+                                    </div>
+                            </div>
+                    </div>
+    </div></div>
+            </section>
+            <section aria-labelledby="nq-health-report-d10c505d-trend" class="flex flex-col gap-4">
+                <div data-slot="section-header" class="flex items-end justify-between gap-4">
+    <div class="flex min-w-0 flex-col gap-1">
+        <h2  id="nq-health-report-d10c505d-trend"  class="text-h2 text-foreground">Trend</h2>
+            </div>
+    </div>
+                <div class="overflow-x-auto pb-1">
+                    <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022waterMl\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Figure to chart" x-model="metric" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('waterMl')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/>
+  <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>
+</svg>Water</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('steps')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/>
+  <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/>
+  <path d="M16 17h4"/>
+  <path d="M4 13h4"/>
+</svg>Steps</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('sleepMinutes')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/>
+  <path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/>
+  <path d="M12 4v6"/>
+  <path d="M2 18h20"/>
+</svg>Sleep</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('weightKg')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v18"/>
+  <path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/>
+  <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/>
+  <path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/>
+  <path d="M7 21h10"/>
+</svg>Weight</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('restingHeartRate')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+</svg>Resting heart rate</button>
+</div>
+                </div>
+                <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-content" class="px-4"><div data-metric="waterMl"  x-show="metric[0] === 'waterMl'">
+                                                                    <div data-slot="chart"  role="img" aria-label="Water over the last 7 days"   style="--color-value: var(--primary)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+        <div aria-hidden="true" class="flex w-7 shrink-0 flex-col justify-between text-end text-muted-foreground tabular-nums"><span>2900</span><span>0</span></div>
+        <div class="flex min-w-0 flex-1 items-end gap-1 border-b border-border bg-[linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[length:100%_50%]">
+                                            <div data-slot="chart-bar" title="23 Sep: Water 2000" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 68.965517241379%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="24 Sep: Water 2150" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 74.137931034483%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="25 Sep: Water 2300" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 79.310344827586%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="26 Sep: Water 2450" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 84.48275862069%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="27 Sep: Water 2600" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 89.655172413793%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="28 Sep: Water 2750" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 94.827586206897%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="29 Sep: Water 2900" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 100%; background-color: var(--color-value)"></span>
+                                    </div>
+                    </div>
+    </div>
+    <div aria-hidden="true" class="flex justify-between ps-9 text-muted-foreground"><span>23 Sep</span><span>29 Sep</span></div>
+</div>
+                                                            </div>
+                                                                                <div data-metric="steps"  x-cloak  x-show="metric[0] === 'steps'">
+                                                                    <div data-slot="chart"  role="img" aria-label="Steps over the last 7 days"   style="--color-value: var(--primary)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+        <div aria-hidden="true" class="flex w-7 shrink-0 flex-col justify-between text-end text-muted-foreground tabular-nums"><span>8400</span><span>0</span></div>
+        <div class="flex min-w-0 flex-1 items-end gap-1 border-b border-border bg-[linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[length:100%_50%]">
+                                            <div data-slot="chart-bar" title="23 Sep: Steps 6000" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 71.428571428571%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="24 Sep: Steps 6400" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 76.190476190476%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="25 Sep: Steps 6800" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 80.952380952381%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="26 Sep: Steps 7200" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 85.714285714286%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="27 Sep: Steps 7600" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 90.47619047619%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="28 Sep: Steps 8000" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 95.238095238095%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="29 Sep: Steps 8400" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 100%; background-color: var(--color-value)"></span>
+                                    </div>
+                    </div>
+    </div>
+    <div aria-hidden="true" class="flex justify-between ps-9 text-muted-foreground"><span>23 Sep</span><span>29 Sep</span></div>
+</div>
+                                                            </div>
+                                                                                <div data-metric="sleepMinutes"  x-cloak  x-show="metric[0] === 'sleepMinutes'">
+                                                                    <div data-slot="chart"  role="img" aria-label="Sleep over the last 7 days"   style="--color-value: var(--primary)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+        <div aria-hidden="true" class="flex w-7 shrink-0 flex-col justify-between text-end text-muted-foreground tabular-nums"><span>450</span><span>0</span></div>
+        <div class="flex min-w-0 flex-1 items-end gap-1 border-b border-border bg-[linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[length:100%_50%]">
+                                            <div data-slot="chart-bar" title="23 Sep: Sleep 420" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 93.333333333333%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="24 Sep: Sleep 425" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 94.444444444444%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="25 Sep: Sleep 430" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 95.555555555556%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="26 Sep: Sleep 435" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 96.666666666667%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="27 Sep: Sleep 440" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 97.777777777778%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="28 Sep: Sleep 445" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 98.888888888889%; background-color: var(--color-value)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="29 Sep: Sleep 450" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full rounded-t-[3px]" style="height: 100%; background-color: var(--color-value)"></span>
+                                    </div>
+                    </div>
+    </div>
+    <div aria-hidden="true" class="flex justify-between ps-9 text-muted-foreground"><span>23 Sep</span><span>29 Sep</span></div>
+</div>
+                                                            </div>
+                                                                                <div data-metric="weightKg"  x-cloak  x-show="metric[0] === 'weightKg'">
+                                                                    <div data-slot="chart"  role="img" aria-label="Weight over the last 7 days"   style="--color-value: var(--primary)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto h-64 flex-col justify-start gap-2">
+    <div class="flex min-h-0 flex-1 gap-2">
+        <div aria-hidden="true" class="flex w-10 shrink-0 flex-col justify-between text-end text-muted-foreground tabular-nums"><span>84.3</span><span>83.5</span></div>
+        <div class="relative min-w-0 flex-1 border-b border-border bg-[linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[length:100%_50%]">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <polyline points="0,8.33 16.67,22.22 33.33,36.11 50,50 66.67,63.89 83.33,77.78 100,91.67" fill="none" stroke="var(--color-value)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                            </svg>
+                                                <span data-slot="chart-dot" title="23 Sep: 84.2" class="absolute size-1.5 -translate-y-1/2 rounded-full bg-[var(--color-value)] ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 0%; top: 8.33%"></span>
+                                                                <span data-slot="chart-dot" title="24 Sep: 84.1" class="absolute size-1.5 -translate-y-1/2 rounded-full bg-[var(--color-value)] ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 16.67%; top: 22.22%"></span>
+                                                                <span data-slot="chart-dot" title="25 Sep: 84" class="absolute size-1.5 -translate-y-1/2 rounded-full bg-[var(--color-value)] ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 33.33%; top: 36.11%"></span>
+                                                                <span data-slot="chart-dot" title="26 Sep: 83.9" class="absolute size-1.5 -translate-y-1/2 rounded-full bg-[var(--color-value)] ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 50%; top: 50%"></span>
+                                                                <span data-slot="chart-dot" title="27 Sep: 83.8" class="absolute size-1.5 -translate-y-1/2 rounded-full bg-[var(--color-value)] ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 66.67%; top: 63.89%"></span>
+                                                                <span data-slot="chart-dot" title="28 Sep: 83.7" class="absolute size-1.5 -translate-y-1/2 rounded-full bg-[var(--color-value)] ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 83.33%; top: 77.78%"></span>
+                                                                <span data-slot="chart-dot" title="29 Sep: 83.6" class="absolute size-1.5 -translate-y-1/2 rounded-full bg-[var(--color-value)] ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 100%; top: 91.67%"></span>
+                                    </div>
+    </div>
+    <div aria-hidden="true" class="flex justify-between ps-12 text-muted-foreground"><span>23 Sep</span><span>29 Sep</span></div>
+</div>
+                                                            </div>
+                                                                                <div data-metric="restingHeartRate"  x-cloak  x-show="metric[0] === 'restingHeartRate'">
+                                                                    <p class="py-10 text-center text-body-sm text-muted-foreground">No readings in this period for this figure.</p>
+                                                            </div></div></div>
+            </section>
+                            <section class="grid gap-4 lg:grid-cols-2">
+                                            <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-foreground text-h3">Meals</h3>
+                                <div data-slot="card-description" class="text-body-sm text-muted-foreground">Meals per day by safety.</div></div>
+                            <div data-slot="card-content" class="px-4"><div data-slot="chart"  role="img" aria-label="Meals, 7"   style="--color-safe: var(--nq-success); --color-unsafe: var(--nq-warning)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto h-52 flex-col justify-start gap-2">
+    <div class="flex min-h-0 flex-1 gap-2">
+        <div aria-hidden="true" class="flex w-7 shrink-0 flex-col justify-between text-end text-muted-foreground tabular-nums"><span>3</span><span>0</span></div>
+        <div class="flex min-w-0 flex-1 items-end gap-1 border-b border-border bg-[linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[length:100%_50%]">
+                                            <div data-slot="chart-bar" title="23 Sep: Safe 3, Unsafe 0" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full " style="height: 100%; background-color: var(--color-safe)"></span>
+                                            <span class="block w-full rounded-t-[3px]" style="height: 0%; background-color: var(--color-unsafe)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="24 Sep: Safe 2, Unsafe 1" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full " style="height: 66.666666666667%; background-color: var(--color-safe)"></span>
+                                            <span class="block w-full rounded-t-[3px]" style="height: 33.333333333333%; background-color: var(--color-unsafe)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="25 Sep: Safe 3, Unsafe 0" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full " style="height: 100%; background-color: var(--color-safe)"></span>
+                                            <span class="block w-full rounded-t-[3px]" style="height: 0%; background-color: var(--color-unsafe)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="26 Sep: Safe 2, Unsafe 1" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full " style="height: 66.666666666667%; background-color: var(--color-safe)"></span>
+                                            <span class="block w-full rounded-t-[3px]" style="height: 33.333333333333%; background-color: var(--color-unsafe)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="27 Sep: Safe 3, Unsafe 0" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full " style="height: 100%; background-color: var(--color-safe)"></span>
+                                            <span class="block w-full rounded-t-[3px]" style="height: 0%; background-color: var(--color-unsafe)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="28 Sep: Safe 2, Unsafe 1" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full " style="height: 66.666666666667%; background-color: var(--color-safe)"></span>
+                                            <span class="block w-full rounded-t-[3px]" style="height: 33.333333333333%; background-color: var(--color-unsafe)"></span>
+                                    </div>
+                                            <div data-slot="chart-bar" title="29 Sep: Safe 3, Unsafe 0" class="flex h-full min-w-0 flex-1 flex-col-reverse justify-start">
+                                            <span class="block w-full " style="height: 100%; background-color: var(--color-safe)"></span>
+                                            <span class="block w-full rounded-t-[3px]" style="height: 0%; background-color: var(--color-unsafe)"></span>
+                                    </div>
+                    </div>
+    </div>
+    <div aria-hidden="true" class="flex justify-between ps-9 text-muted-foreground"><span>23 Sep</span><span>29 Sep</span></div>
+    <ul data-slot="chart-legend" class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 pt-3 text-caption">
+                                <li class="flex items-center gap-1.5 text-muted-foreground">
+                <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]"  style="background-color: var(--color-safe)" ></span>
+                Safe
+            </li>
+                                <li class="flex items-center gap-1.5 text-muted-foreground">
+                <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]"  style="background-color: var(--color-unsafe)" ></span>
+                Unsafe
+            </li>
+            </ul>
+</div></div></div>
+                                                        </section>
+                            <section aria-labelledby="nq-health-report-d10c505d-adh" class="flex flex-col gap-4">
+                    <div data-slot="section-header" class="flex items-end justify-between gap-4">
+    <div class="flex min-w-0 flex-col gap-1">
+        <h2  id="nq-health-report-d10c505d-adh"  class="text-h2 text-foreground">Protocol days</h2>
+                    <p class="text-pretty text-body-sm text-muted-foreground">For each engine that judges days: days on protocol, off it, and days it declined to judge.</p>
+            </div>
+    </div>
+                    <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-content" class="px-4"><div data-slot="table-container" role="region" tabindex="0"  aria-label="Protocol days per engine"     class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+    <table data-slot="table" data-density="default"
+                  class="w-full caption-bottom border-collapse text-body-sm">
+        <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Engine</th>
+                                        <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">On protocol</th>
+                                        <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Off protocol</th>
+                                        <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Not judged</th>
+                                        <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Current streak</th>
+                                        <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Best streak</th></tr></thead>
+                                <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     data-engine="hydration" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><span class="inline-flex items-center gap-2 font-medium">
+                                                    <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/>
+  <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>
+</svg>                                                    Hydration
+                                                </span></td>
+                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><bdi data-slot="measure" data-numeric="" dir="ltr" class="tabular-nums [unicode-bidi:isolate]">6 days</bdi></td>
+                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><bdi data-slot="measure" data-numeric="" dir="ltr" class="tabular-nums [unicode-bidi:isolate]">1 day</bdi></td>
+                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><bdi data-slot="measure" data-numeric="" dir="ltr" class="tabular-nums [unicode-bidi:isolate]">0 days</bdi></td>
+                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><bdi data-slot="measure" data-numeric="" dir="ltr" class="tabular-nums [unicode-bidi:isolate]">4 days</bdi></td>
+                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><bdi data-slot="measure" data-numeric="" dir="ltr" class="tabular-nums [unicode-bidi:isolate]">4 days</bdi></td></tr></tbody>
+    </table>
+</div></div></div>
+                </section>
+                    </div>
+    </div>

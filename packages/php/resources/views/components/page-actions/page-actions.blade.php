@@ -14,7 +14,7 @@
     $groups = array_values($groups);
     $click = fn ($a) => ! empty($a['href']) ? 'window.location.assign(`'.str_replace(['`', '${', chr(92)], '', $a['href']).'`)' : (! empty($a['event']) ? '$dispatch(`'.preg_replace('/[^A-Za-z0-9:._-]/', '', $a['event']).'`)' : null);
 @endphp
-<div data-slot="page-actions" {{ $attributes->cn('flex items-center gap-1.5') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'page-actions') }}" {{ $attributes->except('data-slot')->cn('flex items-center gap-1.5') }}>
     {{ $slot }}
     @if (count((array) $actions))
         <x-nq::dropdown-menu>

@@ -1,0 +1,352 @@
+<div data-slot="cron-builder" role="group" aria-label="Schedule"
+    x-data="nqCronBuilder(JSON.parse('{\u0022value\u0022:\u00220 9 * * 1-5\u0022,\u0022zone\u0022:\u0022Asia\\\/Riyadh\u0022,\u0022now\u0022:null,\u0022previewCount\u0022:5,\u0022strings\u0022:{\u0022custom\u0022:\u0022Custom schedule\u0022,\u0022invalid\u0022:\u0022Not a valid schedule\u0022,\u0022nextNone\u0022:\u0022This schedule never runs.\u0022,\u0022fieldNames\u0022:[\u0022minute\u0022,\u0022hour\u0022,\u0022day of month\u0022,\u0022month\u0022,\u0022day of week\u0022],\u0022errors\u0022:{\u0022empty\u0022:\u0022Enter a cron expression.\u0022,\u0022fields\u0022:\u0022A cron expression has five fields separated by spaces.\u0022,\u0022syntax\u0022:\u0022The {field} field has a value that cannot be read: {token}.\u0022,\u0022range\u0022:\u0022The {field} field is out of range: {token}.\u0022,\u0022step\u0022:\u0022The {field} field has a step that does not fit: {token}.\u0022}}}'))" x-modelable="cron" x-id="['nq-cron']"
+    class="flex flex-col gap-4 rounded-card border border-border bg-card p-4">
+            <div role="group" aria-label="Common schedules" class="flex flex-wrap gap-2">
+                                            <button data-slot="button"
+     type="button"                     aria-pressed="true" x-show="isPreset(&#039;*\/5 * * * *&#039;)" x-on:click="setValue(&#039;*\/5 * * * *&#039;)" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Every 5 minutes</button>
+                <button data-slot="button"
+     type="button"                     aria-pressed="false" x-show="! isPreset(&#039;*\/5 * * * *&#039;)" x-on:click="setValue(&#039;*\/5 * * * *&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Every 5 minutes</button>
+                                            <button data-slot="button"
+     type="button"                     aria-pressed="true" x-show="isPreset(&#039;0 * * * *&#039;)" x-on:click="setValue(&#039;0 * * * *&#039;)" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Hourly</button>
+                <button data-slot="button"
+     type="button"                     aria-pressed="false" x-show="! isPreset(&#039;0 * * * *&#039;)" x-on:click="setValue(&#039;0 * * * *&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Hourly</button>
+                                            <button data-slot="button"
+     type="button"                     aria-pressed="true" x-show="isPreset(&#039;0 9 * * *&#039;)" x-on:click="setValue(&#039;0 9 * * *&#039;)" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Daily at 09:00</button>
+                <button data-slot="button"
+     type="button"                     aria-pressed="false" x-show="! isPreset(&#039;0 9 * * *&#039;)" x-on:click="setValue(&#039;0 9 * * *&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Daily at 09:00</button>
+                                            <button data-slot="button"
+     type="button"                     aria-pressed="true" x-show="isPreset(&#039;0 9 * * 1-5&#039;)" x-on:click="setValue(&#039;0 9 * * 1-5&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Weekdays at 09:00</button>
+                <button data-slot="button"
+     type="button"                     aria-pressed="false" x-show="! isPreset(&#039;0 9 * * 1-5&#039;)" x-on:click="setValue(&#039;0 9 * * 1-5&#039;)" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Weekdays at 09:00</button>
+                                            <button data-slot="button"
+     type="button"                     aria-pressed="true" x-show="isPreset(&#039;0 9 * * 1&#039;)" x-on:click="setValue(&#039;0 9 * * 1&#039;)" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Mondays at 09:00</button>
+                <button data-slot="button"
+     type="button"                     aria-pressed="false" x-show="! isPreset(&#039;0 9 * * 1&#039;)" x-on:click="setValue(&#039;0 9 * * 1&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Mondays at 09:00</button>
+                                            <button data-slot="button"
+     type="button"                     aria-pressed="true" x-show="isPreset(&#039;0 9 1 * *&#039;)" x-on:click="setValue(&#039;0 9 1 * *&#039;)" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Monthly on the 1st</button>
+                <button data-slot="button"
+     type="button"                     aria-pressed="false" x-show="! isPreset(&#039;0 9 1 * *&#039;)" x-on:click="setValue(&#039;0 9 1 * *&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Monthly on the 1st</button>
+                    </div>
+    <div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('cron')" x-modelable="value" x-id="['nq-tabs']" x-model="pane" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="underline" aria-orientation="horizontal" x-bind="list"
+    class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-4 border-b border-border">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('simple')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Simple</button>
+            <button type="button" data-slot="tabs-tab" x-bind="tab('cron')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Cron expression</button>
+            <span data-slot="tabs-indicator" aria-hidden="true"
+    class="absolute -z-10 transition-[left,width] duration-200 ease-nq left-[var(--active-tab-left)] w-[var(--active-tab-width)] bottom-0 h-0.5 rounded-full bg-primary"></span>
+</div>
+        <div data-slot="tabs-panel" x-bind="panel('simple')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus flex flex-col gap-4"><div role="status" x-show="! isSimple" style="display: none" class="flex flex-wrap items-center gap-3 rounded-control border border-border bg-nq-surface-soft p-3 text-body-sm text-muted-foreground">
+                <svg aria-hidden="true" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>                <span class="min-w-0 flex-1">This schedule cannot be shown as simple settings. Edit the cron expression, or start over from a simple one.</span>
+                <button data-slot="button"
+     type="button"                     x-on:click="startOver()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Start over</button>
+            </div>
+            <div x-show="isSimple" class="grid gap-4 sm:grid-cols-2">
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Repeat</label>
+                    <div data-slot="select" x-data="nqSelect('daily', false)" x-modelable="value" x-id="['nq-select']" x-model="frequency" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Repeat" class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                        <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('minutes', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('minutes')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Every few minutes</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('hours', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('hours')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Every few hours</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('daily', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('daily')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Every day</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('weekly', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('weekly')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Every week</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('monthly', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('monthly')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Every month</span>
+</div>
+    </div>
+</template>
+    </div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-show="frequency === &#039;minutes&#039; || frequency === &#039;hours&#039;" style="display: none" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Every (<span x-text="frequency === 'minutes' ? 'minutes' : 'hours'"></span>)</label>
+                    <input data-slot="input" type="number"
+     dir="ltr"                 inputmode="numeric" min="1" x-bind:max="frequency === &#039;minutes&#039; ? 59 : 23" x-model.number="every" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-show="frequency === &#039;hours&#039;" style="display: none" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">At minute</label>
+                    <input data-slot="input" type="number"
+     dir="ltr"                 inputmode="numeric" min="0" max="59" x-model.number="minute" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-show="frequency === &#039;daily&#039; || frequency === &#039;weekly&#039; || frequency === &#039;monthly&#039;" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">At</label>
+                    <input data-slot="input" type="time"
+     dir="ltr"                 x-model="time" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-show="frequency === &#039;monthly&#039;" style="display: none" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Day of the month</label>
+                    <input data-slot="input" type="number"
+     dir="ltr"                 inputmode="numeric" min="1" max="31" x-model.number="dayOfMonth" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+</div>
+                <div x-show="frequency === 'weekly'" style="display: none" class="flex flex-col gap-1.5 sm:col-span-2">
+                    <span x-bind:id="$id('nq-cron', 'days')" class="text-label text-foreground">On</span>
+                    <div role="group" data-slot="toggle-group" data-variant="outline" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u00221\u0022]'), true)" x-modelable="value" x-bind="root"
+     data-multiple         x-bind:aria-labelledby="$id(&#039;nq-cron&#039;, &#039;days&#039;)" x-model="weekdays" class="flex w-fit max-w-full rounded-control flex-wrap">
+    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('0')"             aria-label="Sunday" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 border border-border bg-card first:rounded-s-control last:rounded-e-control not-first:-ms-px data-pressed:z-1 data-pressed:border-primary data-pressed:bg-nq-selected data-pressed:text-foreground">Sun</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('1')"      data-pressed         aria-label="Monday" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 border border-border bg-card first:rounded-s-control last:rounded-e-control not-first:-ms-px data-pressed:z-1 data-pressed:border-primary data-pressed:bg-nq-selected data-pressed:text-foreground">Mon</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('2')"             aria-label="Tuesday" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 border border-border bg-card first:rounded-s-control last:rounded-e-control not-first:-ms-px data-pressed:z-1 data-pressed:border-primary data-pressed:bg-nq-selected data-pressed:text-foreground">Tue</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('3')"             aria-label="Wednesday" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 border border-border bg-card first:rounded-s-control last:rounded-e-control not-first:-ms-px data-pressed:z-1 data-pressed:border-primary data-pressed:bg-nq-selected data-pressed:text-foreground">Wed</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('4')"             aria-label="Thursday" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 border border-border bg-card first:rounded-s-control last:rounded-e-control not-first:-ms-px data-pressed:z-1 data-pressed:border-primary data-pressed:bg-nq-selected data-pressed:text-foreground">Thu</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('5')"             aria-label="Friday" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 border border-border bg-card first:rounded-s-control last:rounded-e-control not-first:-ms-px data-pressed:z-1 data-pressed:border-primary data-pressed:bg-nq-selected data-pressed:text-foreground">Fri</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('6')"             aria-label="Saturday" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 border border-border bg-card first:rounded-s-control last:rounded-e-control not-first:-ms-px data-pressed:z-1 data-pressed:border-primary data-pressed:bg-nq-selected data-pressed:text-foreground">Sat</button>
+</div>
+                </div>
+            </div></div>
+        <div data-slot="tabs-panel" x-bind="panel('cron')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="expressionInvalid" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Cron expression</label>
+                <input data-slot="input" type="text"
+     dir="ltr"                 spellcheck="false" autocomplete="off" placeholder="0 9 * * 1-5" x-model="expression" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start font-mono">
+                <p data-slot="field-description" class="text-caption text-muted-foreground">Five fields: minute, hour, day of month, month, day of week. Ranges 1-5, lists 1,3 and steps */15 work.</p>
+                <p role="alert" x-show="! valid" style="display: none" class="flex items-start gap-2 text-body-sm text-nq-danger-text">
+                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>                    <span x-text="error"></span>
+                </p>
+</div></div>
+</div>
+    <div data-slot="cron-summary" aria-live="polite" class="flex items-start gap-3 rounded-control bg-nq-surface-soft p-3">
+        <svg aria-hidden="true" class="mt-0.5 size-5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 14v2.2l1.6 1"/>
+  <path d="M16 2v3"/>
+  <path d="M21 7.338V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h2.338"/>
+  <path d="M3 9h5.859"/>
+  <path d="M8 2v3"/>
+  <circle cx="16" cy="16" r="6"/>
+</svg>        <div class="min-w-0">
+            <p class="text-caption text-muted-foreground">Runs</p>
+            <p x-text="valid ? summary : cfg.strings.invalid" x-bind:class="valid ? 'text-foreground' : 'text-nq-danger-text'" class="text-body"></p>
+            <bdi dir="ltr" x-show="valid" x-text="trimmed" class="mt-0.5 block font-mono text-code text-muted-foreground"></bdi>
+        </div>
+    </div>
+            <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50"><span class="inline-flex items-center gap-1.5">
+                    <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+  <path d="M2 12h20"/>
+</svg>                    Time zone
+                </span></label>
+            <div data-slot="select" x-data="nqSelect('Asia\/Riyadh', false)" x-modelable="value" x-id="['nq-select']" x-model="zone" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Time zone" dir="ltr" class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('Asia\/Riyadh', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Asia\/Riyadh')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">Asia/Riyadh</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('UTC', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('UTC')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">UTC</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('Asia\/Dubai', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Asia\/Dubai')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">Asia/Dubai</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('Africa\/Cairo', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Africa\/Cairo')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">Africa/Cairo</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('Europe\/London', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Europe\/London')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">Europe/London</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('Europe\/Paris', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Europe\/Paris')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">Europe/Paris</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('America\/New_York', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('America\/New_York')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">America/New_York</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('America\/Los_Angeles', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('America\/Los_Angeles')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">America/Los_Angeles</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('Asia\/Kolkata', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Asia\/Kolkata')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">Asia/Kolkata</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('Asia\/Singapore', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Asia\/Singapore')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">Asia/Singapore</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('Asia\/Tokyo', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Asia\/Tokyo')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">Asia/Tokyo</bdi></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('Australia\/Sydney', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Australia\/Sydney')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><bdi dir="ltr">Australia/Sydney</bdi></span>
+</div>
+    </div>
+</template>
+    </div>
+            <p data-slot="field-description" class="text-caption text-muted-foreground">The schedule is read in this time zone.</p>
+</div>
+    <section data-slot="cron-next-runs" x-show="valid" aria-label="Next runs" class="flex flex-col gap-2">
+        <h3 class="text-label text-foreground">Next runs</h3>
+        <p x-show="runs.length === 0" style="display: none" x-text="cfg.strings.nextNone" class="text-body-sm text-muted-foreground"></p>
+        <ol x-show="runs.length > 0" style="display: none" class="flex flex-col divide-y divide-border rounded-control border border-border">
+            <template x-for="r in runs" x-bind:key="r.key">
+                <li class="flex flex-wrap items-baseline justify-between gap-x-4 px-3 py-2 text-body-sm">
+                    <time data-slot="date-time" dir="auto" x-bind:datetime="r.iso" x-text="r.text" class="tabular-nums text-foreground [unicode-bidi:isolate]"></time>
+                    <time data-slot="date-time" dir="auto" x-bind:datetime="r.iso" x-text="r.relative" class="tabular-nums text-caption text-muted-foreground [unicode-bidi:isolate]"></time>
+                </li>
+            </template>
+        </ol>
+    </section>
+</div>

@@ -25,7 +25,7 @@
         ? 'التقييم '.$score.' من '.$max.($count === null ? '' : '، '.$total.' '.($countLabel ?? ''))
         : 'Rated '.$score.' out of '.$max.($count === null ? '' : ', '.$total.' '.($countLabel ?? ''));
 @endphp
-<span data-slot="rating" {{ $attributes->cn('inline-flex items-center gap-1.5 text-caption text-muted-foreground') }}>
+<span data-slot="{{ $attributes->get('data-slot', 'rating') }}" {{ $attributes->except('data-slot')->cn('inline-flex items-center gap-1.5 text-caption text-muted-foreground') }}>
     <span class="sr-only">{{ trim($spoken) }}</span>
     <x-lucide-star aria-hidden="true" class="size-3.5 shrink-0 fill-nq-accent text-nq-accent" />
     <bdi aria-hidden="true" class="tabular-nums text-foreground">{{ $score }}</bdi>

@@ -1,0 +1,2 @@
+{{-- <x-nq::code-block.inline-code>npm i</x-nq::code-block.inline-code>   Inline code inside a sentence. Left-to-right and isolated, so it keeps its order in Arabic text. --}}
+<code data-slot="inline-code" dir="ltr" {{ $attributes->cn('rounded-[4px] border border-border bg-secondary px-1 py-0.5 font-mono text-[0.9em] text-foreground [unicode-bidi:isolate]') }}>{{ $slot }}</code>

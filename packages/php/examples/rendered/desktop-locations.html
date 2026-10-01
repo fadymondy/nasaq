@@ -1,0 +1,471 @@
+<section data-slot="desktop-locations" aria-label="Locations on this computer" x-data="nqDesktopLocations(JSON.parse('{\u0022paths\u0022:[\u0022C:\\\\Users\\\\sara\\\\projects\\\\app\u0022,\u0022\\\/home\\\/sara\\\/notes\u0022,\u0022D:\\\\archive\u0022],\u0022labels\u0022:{\u0022genericError\u0022:\u0022Something went wrong. Try again.\u0022,\u0022problemEmpty\u0022:\u0022Enter the folder path.\u0022,\u0022problemRelative\u0022:\u0022Use a full path that starts at a drive, a share or the root.\u0022,\u0022problemDuplicate\u0022:\u0022This folder is already on the list.\u0022,\u0022warnInside\u0022:\u0022Already covered by {other}.\u0022,\u0022warnContains\u0022:\u0022Includes {other}, which is already on the list.\u0022,\u0022removeTitle\u0022:\u0022Remove {name}?\u0022}}'))" x-on:nq-location-browse="$event.detail.waitUntil(Promise.resolve(&#039;C:\Users\sara\Documents&#039;))" x-on:nq-location-add="$event.detail.waitUntil(Promise.resolve())" x-on:nq-location-remove="$event.detail.waitUntil(Promise.resolve())" x-on:nq-location-permissions="$event.detail.waitUntil(Promise.resolve())" class="flex min-w-0 flex-col gap-4">
+    <header class="flex flex-wrap items-start justify-between gap-3">
+        <div class="flex min-w-0 flex-col gap-1">
+            <h3 class="text-h3 text-foreground">Locations on this computer</h3>
+            <p class="max-w-prose text-body-sm text-muted-foreground">Folders the desktop app can read and change for you. It cannot open anything outside them.</p>
+        </div>
+                    <button data-slot="button"
+     type="button"                     x-on:click="openAdd()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 10v6"/>
+  <path d="M9 13h6"/>
+  <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+</svg>                Add folder</button>
+            </header>
+    <template x-if="pageError">
+        <div data-slot="alert" data-tone="danger" role="alert"
+     x-data="nqAlert()" x-modelable="open" x-show="open"     x-on:nq:dismiss="pageError = null" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="pageError"></span></div>
+            </div>
+            <div data-slot="alert-actions" class="ms-3 flex items-center gap-1">
+                            <button data-slot="button"
+     type="button"                     aria-label="Dismiss" x-on:click="dismiss()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground [&_svg]:size-3.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+    </template>
+            <ul aria-label="Locations" class="m-0 flex list-none flex-col overflow-hidden rounded-card border border-border bg-card p-0">
+                                            <li data-slot="desktop-location" data-status="ready" x-data="nqDesktopLocationRow(JSON.parse('{\u0022id\u0022:\u0022l1\u0022,\u0022locked\u0022:false,\u0022permissions\u0022:{\u0022read\u0022:true,\u0022write\u0022:true,\u0022index\u0022:true}}'))" class="flex flex-col gap-3 border-b border-border px-4 py-3 last:border-b-0">
+                    <div class="flex flex-wrap items-start gap-3">
+                        <span class="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary [&amp;_svg]:size-4.5 text-muted-foreground">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>
+</svg>                        </span>
+                        <div class="flex min-w-0 flex-1 flex-col gap-1">
+                            <div class="flex min-w-0 flex-wrap items-center gap-2">
+                                <bdi dir="auto" class="truncate text-label text-foreground">App</bdi>
+                                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>Default</span>
+                                                                <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Ready" >Ready</span>
+</span>
+                            </div>
+                            <bdi dir="ltr" title="C:\Users\sara\projects\app" class="block break-all font-mono text-code text-muted-foreground">C:\Users\sara\projects\app</bdi>
+                                                            <span class="text-caption text-muted-foreground">
+                                    <bdi>1,240 files</bdi> ·                                     Indexed <time data-slot="date-time" datetime="2025-03-01T08:00:00+00:00" dir="auto"  title="Mar 1, 2025"     class="tabular-nums [unicode-bidi:isolate]">1 year ago</time>
+                                                                    </span>
+                                                    </div>
+                        <div class="flex shrink-0 items-center gap-0.5">
+                                                                                                                        <button data-slot="button"
+     type="button"                     aria-label="Re-index App" title="Re-index App" x-bind:disabled="busyId === id ? &#039;&#039; : null" x-on:click="run(id, &#039;nq-location-reindex&#039;, { id })" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg></button>
+                                                                                                                        <button data-slot="button"
+     type="button"                     aria-label="Remove App" title="Remove App" x-bind:disabled="busyId === id ? &#039;&#039; : null" data-name="App" data-path="C:\Users\sara\projects\app" x-on:click="askRemove(id, $el.dataset.name, $el.dataset.path)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                                                    </div>
+                    </div>
+                    <div role="group" aria-label="Permissions: App" class="grid gap-2 sm:grid-cols-3">
+                                                                                <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-0-read" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Read</span>
+                                    <span class="truncate text-caption text-muted-foreground">List and open files</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 id="nq-locations-000001-0-read" x-model="p.read" x-bind:disabled="off(&#039;read&#039;) ? &#039;&#039; : null" x-bind:data-disabled="off(&#039;read&#039;) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                                                                <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-0-write" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Write</span>
+                                    <span class="truncate text-caption text-muted-foreground">Create and change files</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 id="nq-locations-000001-0-write" x-model="p.write" x-bind:disabled="off(&#039;write&#039;) ? &#039;&#039; : null" x-bind:data-disabled="off(&#039;write&#039;) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                                                                <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-0-index" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Search index</span>
+                                    <span class="truncate text-caption text-muted-foreground">Include in local search</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 id="nq-locations-000001-0-index" x-model="p.index" x-bind:disabled="off(&#039;index&#039;) ? &#039;&#039; : null" x-bind:data-disabled="off(&#039;index&#039;) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                            </div>
+                </li>
+                                            <li data-slot="desktop-location" data-status="ready" x-data="nqDesktopLocationRow(JSON.parse('{\u0022id\u0022:\u0022l2\u0022,\u0022locked\u0022:false,\u0022permissions\u0022:{\u0022read\u0022:true,\u0022write\u0022:false,\u0022index\u0022:false}}'))" class="flex flex-col gap-3 border-b border-border px-4 py-3 last:border-b-0">
+                    <div class="flex flex-wrap items-start gap-3">
+                        <span class="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary [&amp;_svg]:size-4.5 text-muted-foreground">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>
+</svg>                        </span>
+                        <div class="flex min-w-0 flex-1 flex-col gap-1">
+                            <div class="flex min-w-0 flex-wrap items-center gap-2">
+                                <bdi dir="auto" class="truncate text-label text-foreground">notes</bdi>
+                                                                <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Ready" >Ready</span>
+</span>
+                            </div>
+                            <bdi dir="ltr" title="/home/sara/notes" class="block break-all font-mono text-code text-muted-foreground">/home/sara/notes</bdi>
+                                                            <span class="text-caption text-muted-foreground">
+                                    <bdi>38 files</bdi> ·                                     Not indexed                                </span>
+                                                    </div>
+                        <div class="flex shrink-0 items-center gap-0.5">
+                                                                                            <button data-slot="button"
+     type="button"                     aria-label="Make notes the default" title="Make notes the default" x-bind:disabled="busyId === id ? &#039;&#039; : null" x-on:click="run(id, &#039;nq-location-default&#039;, { id })" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg></button>
+                                                                                                                                                    <button data-slot="button"
+     type="button"                     aria-label="Remove notes" title="Remove notes" x-bind:disabled="busyId === id ? &#039;&#039; : null" data-name="notes" data-path="/home/sara/notes" x-on:click="askRemove(id, $el.dataset.name, $el.dataset.path)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                                                    </div>
+                    </div>
+                    <div role="group" aria-label="Permissions: notes" class="grid gap-2 sm:grid-cols-3">
+                                                                                <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-1-read" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Read</span>
+                                    <span class="truncate text-caption text-muted-foreground">List and open files</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 id="nq-locations-000001-1-read" x-model="p.read" x-bind:disabled="off(&#039;read&#039;) ? &#039;&#039; : null" x-bind:data-disabled="off(&#039;read&#039;) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                                                                <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-1-write" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Write</span>
+                                    <span class="truncate text-caption text-muted-foreground">Create and change files</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 id="nq-locations-000001-1-write" x-model="p.write" x-bind:disabled="off(&#039;write&#039;) ? &#039;&#039; : null" x-bind:data-disabled="off(&#039;write&#039;) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                                                                <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-1-index" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Search index</span>
+                                    <span class="truncate text-caption text-muted-foreground">Include in local search</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 id="nq-locations-000001-1-index" x-model="p.index" x-bind:disabled="off(&#039;index&#039;) ? &#039;&#039; : null" x-bind:data-disabled="off(&#039;index&#039;) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                            </div>
+                </li>
+                                            <li data-slot="desktop-location" data-status="missing" x-data="nqDesktopLocationRow(JSON.parse('{\u0022id\u0022:\u0022l3\u0022,\u0022locked\u0022:true,\u0022permissions\u0022:{\u0022read\u0022:true,\u0022write\u0022:false,\u0022index\u0022:false}}'))" class="flex flex-col gap-3 border-b border-border px-4 py-3 last:border-b-0">
+                    <div class="flex flex-wrap items-start gap-3">
+                        <span class="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary [&amp;_svg]:size-4.5 text-nq-danger-text">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+  <path d="m9.5 10.5 5 5"/>
+  <path d="m14.5 10.5-5 5"/>
+</svg>                        </span>
+                        <div class="flex min-w-0 flex-1 flex-col gap-1">
+                            <div class="flex min-w-0 flex-wrap items-center gap-2">
+                                <bdi dir="auto" class="truncate text-label text-foreground">archive</bdi>
+                                                                <span data-slot="status" data-tone="danger" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>        <span class="truncate"  title="Folder not found" >Folder not found</span>
+</span>
+                            </div>
+                            <bdi dir="ltr" title="D:\archive" class="block break-all font-mono text-code text-muted-foreground">D:\archive</bdi>
+                                                    </div>
+                        <div class="flex shrink-0 items-center gap-0.5">
+                                                                                                                                                    <button data-slot="button"
+     type="button"                     aria-label="Remove archive" title="Remove archive" x-bind:disabled="busyId === id ? &#039;&#039; : null" data-name="archive" data-path="D:\archive" x-on:click="askRemove(id, $el.dataset.name, $el.dataset.path)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                                                    </div>
+                    </div>
+                    <div role="group" aria-label="Permissions: archive" class="grid gap-2 sm:grid-cols-3">
+                                                                                <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-2-read" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Read</span>
+                                    <span class="truncate text-caption text-muted-foreground">List and open files</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 id="nq-locations-000001-2-read" x-model="p.read" x-bind:disabled="off(&#039;read&#039;) ? &#039;&#039; : null" x-bind:data-disabled="off(&#039;read&#039;) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                                                                <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-2-write" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Write</span>
+                                    <span class="truncate text-caption text-muted-foreground">Create and change files</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 id="nq-locations-000001-2-write" x-model="p.write" x-bind:disabled="off(&#039;write&#039;) ? &#039;&#039; : null" x-bind:data-disabled="off(&#039;write&#039;) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                                                                <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-2-index" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Search index</span>
+                                    <span class="truncate text-caption text-muted-foreground">Include in local search</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 id="nq-locations-000001-2-index" x-model="p.index" x-bind:disabled="off(&#039;index&#039;) ? &#039;&#039; : null" x-bind:data-disabled="off(&#039;index&#039;) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                            </div>
+                </li>
+                    </ul>
+        <p class="text-caption text-muted-foreground">3 folders · Relative paths resolve against the default folder.</p>
+            <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="addOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form novalidate data-slot="desktop-location-add" class="grid gap-4" x-effect="validate()" x-on:submit.prevent="submitAdd()">
+                    <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Add a folder</h2>
+                        <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Choose a folder on this computer. The desktop app gets access to it and everything inside.</p></div>
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="pathInvalid" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Folder path</label>
+                        <div class="flex gap-2">
+                            <input data-slot="input" type="text"
+     dir="ltr"                 x-model="path" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="C:\Users\you\projects\app" x-on:blur="touched = true" class="w-full rounded-control border border-input bg-card px-3 text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start min-w-0 flex-1 font-mono text-code">
+                                                            <button data-slot="button"
+     type="button"                     x-bind:aria-busy="browsing ? &#039;true&#039; : null" x-bind:data-disabled="browsing ? &#039;&#039; : null" x-on:click="browse()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="browsing" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                    <svg aria-hidden="true" x-show="!browsing" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.7 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v4.1"/>
+  <path d="m21 21-1.9-1.9"/>
+  <circle cx="17" cy="17" r="3"/>
+</svg>                                    Browse</button>
+                                                    </div>
+                        <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="problemText"></span></div>
+</div>
+                    <template x-if="warnText">
+                        <div data-slot="alert" data-tone="warning" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><bdi dir="ltr" class="font-mono" x-text="warnText"></bdi></div>
+            </div>
+    </div>
+                    </template>
+                    <div role="group" aria-label="Permissions" class="grid gap-2">
+                                                    <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-new-read" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Read</span>
+                                    <span class="text-caption text-muted-foreground">List and open files</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 id="nq-locations-000001-new-read" x-model="perms.read" x-bind:disabled="null" x-bind:data-disabled="null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                                    <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-new-write" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Write</span>
+                                    <span class="text-caption text-muted-foreground">Create and change files</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 id="nq-locations-000001-new-write" x-model="perms.write" x-bind:disabled="!perms.read ? &#039;&#039; : null" x-bind:data-disabled="!perms.read ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                                    <div class="flex items-center justify-between gap-3 rounded-control border border-border px-3 py-2">
+                                <label for="nq-locations-000001-new-index" class="flex min-w-0 flex-col">
+                                    <span class="text-body-sm text-foreground">Search index</span>
+                                    <span class="text-caption text-muted-foreground">Include in local search</span>
+                                </label>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 id="nq-locations-000001-new-index" x-model="perms.index" x-bind:disabled="!perms.read ? &#039;&#039; : null" x-bind:data-disabled="!perms.read ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                                            </div>
+                    <template x-if="formError"><div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="formError"></span></div>
+            </div>
+    </div>
+</template>
+                    <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="addOpen = false" x-bind:disabled="pending ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                        <button data-slot="button"
+     type="submit"                     x-bind:aria-busy="pending ? &#039;true&#039; : null" x-bind:disabled="touched &amp;&amp; problem ? &#039;&#039; : null" x-bind:data-disabled="pending || (touched &amp;&amp; problem) ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="pending" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                            Add folder</button></div>
+                </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+            <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="removeOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="desktop-location-remove" class="contents">
+                    <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground"><span x-text="removeTitle()"></span></h2>
+                        <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">The desktop app loses access to this folder and its search index is deleted. Your files are not touched.</p></div>
+                    <bdi dir="ltr" class="block break-all rounded-control border border-border bg-secondary p-2 font-mono text-code" x-text="removePath"></bdi>
+                    <template x-if="removeError"><div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="removeError"></span></div>
+            </div>
+    </div>
+</template>
+                    <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" x-bind:disabled="removing ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                        <button data-slot="button"
+     type="button"                     x-bind:aria-busy="removing ? &#039;true&#039; : null" x-bind:data-disabled="removing ? &#039;&#039; : null" x-on:click="confirmRemove()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="removing" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                            Remove</button></div>
+                </div>
+        </div>
+    </div>
+</template>
+</div>
+    </section>
+<div class="mt-4 w-72">
+    <div data-slot="desktop-location-picker" class="contents">
+    <div data-slot="select" x-data="nqSelect('l1', false)" x-modelable="value" x-id="['nq-select']" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Save to" class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? 'Choose a location'" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+        <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('l1', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('l1')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><span class="flex min-w-0 flex-col">
+                        <span class="truncate">
+                            <bdi dir="auto">App</bdi>
+                                                    </span>
+                        <bdi dir="ltr" class="truncate font-mono text-caption text-muted-foreground">C:\Users\sara\projects\app</bdi>
+                    </span></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('l2', true)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('l2')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><span class="flex min-w-0 flex-col">
+                        <span class="truncate">
+                            <bdi dir="auto">notes</bdi>
+                            <span class="ms-2 text-caption text-muted-foreground">unavailable</span>                        </span>
+                        <bdi dir="ltr" class="truncate font-mono text-caption text-muted-foreground">/home/sara/notes</bdi>
+                    </span></span>
+</div>
+                                            <div data-slot="select-item" x-bind="item('l3', true)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('l3')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><span class="flex min-w-0 flex-col">
+                        <span class="truncate">
+                            <bdi dir="auto">archive</bdi>
+                            <span class="ms-2 text-caption text-muted-foreground">unavailable</span>                        </span>
+                        <bdi dir="ltr" class="truncate font-mono text-caption text-muted-foreground">D:\archive</bdi>
+                    </span></span>
+</div>
+    </div>
+</template>
+    </div>
+</div>
+</div>

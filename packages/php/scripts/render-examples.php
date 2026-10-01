@@ -27,6 +27,8 @@ foreach (glob($root.'/examples/*.blade.php') as $file) {
         continue;
     }
     try {
+        // Fixed clock and ids, so the output only changes when the component does (see TestCase::freeze).
+        \Nasaq\Tests\TestCase::freeze();
         $html = Blade::render(file_get_contents($file));
         // Collapse the blank lines Blade leaves behind @php / @if blocks.
         $html = preg_replace("/\n\s*\n+/", "\n", trim($html))."\n";

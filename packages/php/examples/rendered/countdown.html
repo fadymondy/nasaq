@@ -1,0 +1,63 @@
+<div data-slot="countdown" x-data="nqCountdown(1500000, JSON.parse('{\u0022total\u0022:4,\u0022done\u0022:1}'))" class="flex flex-col items-center gap-4"><div data-slot="timer-ring" data-tone="primary"  x-bind="ringRoot(224)"     class="relative inline-flex shrink-0 items-center justify-center">
+    <svg aria-hidden="true" viewBox="0 0 224 224" class="absolute inset-0 size-full -rotate-90">
+        <circle cx="112" cy="112" r="106" fill="none" stroke-width="12" class="stroke-nq-line" />
+        <circle data-slot="timer-ring-arc" cx="112" cy="112" r="106" fill="none" stroke-width="12" stroke-linecap="round"
+             x-bind="arc(224, 12)"             class="stroke-primary transition-[stroke-dashoffset,stroke] duration-500 ease-linear motion-reduce:transition-none" />
+    </svg>
+    <div class="relative flex flex-col items-center justify-center gap-1 text-center"><time data-slot="timer-readout" role="timer" aria-label="Focus" aria-live="off" dir="ltr"
+     :datetime="iso()" x-text="clock()"     class="font-medium leading-none tabular-nums text-foreground">25:00</time></div>
+</div>
+    <div data-slot="cycle-dots" role="img"  :aria-label="cyclesLabel()"  class="inline-flex items-center gap-2">
+                                <span :data-state="dotState(0)" :class="dotClass(0)"></span>
+                                        <span :data-state="dotState(1)" :class="dotClass(1)"></span>
+                                        <span :data-state="dotState(2)" :class="dotClass(2)"></span>
+                                        <span :data-state="dotState(3)" :class="dotClass(3)"></span>
+            </div>
+    <div class="flex gap-2">
+        <button data-slot="button"
+     type="button"                     x-show="status === &#039;idle&#039; || status === &#039;done&#039;" x-on:click="start()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Start</button>
+        <button data-slot="button"
+     type="button"                     x-show="status === &#039;running&#039;" x-cloak="x-cloak" style="display: none" x-on:click="pause()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Pause</button>
+        <button data-slot="button"
+     type="button"                     x-show="status === &#039;paused&#039;" x-cloak="x-cloak" style="display: none" x-on:click="resume()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Resume</button>
+        <button data-slot="button"
+     type="button"                     x-on:click="reset()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Reset</button>
+    </div></div>
+<div data-slot="idle-time-prompt-root" x-data="nqIdleTime(300000, JSON.parse('{\u0022disabled\u0022:false}'))" class="contents">
+    <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="away" class="contents">
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground inline-flex items-center gap-2"><svg aria-hidden="true" class="size-5 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 2h4"/>
+  <path d="M4.6 11a8 8 0 0 0 1.7 8.7 8 8 0 0 0 8.7 1.7"/>
+  <path d="M7.4 7.4a8 8 0 0 1 10.3 1 8 8 0 0 1 .9 10.2"/>
+  <path d="m2 2 20 20"/>
+  <path d="M12 12v-2"/>
+</svg>                    You were away</h2>
+                <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-text="description()"></span></p></div>
+            <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="discardAndStop()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Discard and stop</button>
+                                <button data-slot="button"
+     type="button"                     x-on:click="discard()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="discardLabel()"></span></button>
+                <button data-slot="button"
+     type="button"                     x-on:click="keep()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 2v2"/>
+  <path d="M14 2v2"/>
+  <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
+  <path d="M6 2v2"/>
+</svg>                    Keep the time</button></div>
+        </div>
+    </div>
+</template>
+</div>
+</div>

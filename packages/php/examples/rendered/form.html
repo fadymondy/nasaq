@@ -1,0 +1,22 @@
+<form data-slot="form" novalidate x-data="nqForm(JSON.parse('{\u0022errors\u0022:{},\u0022formError\u0022:null}'))" x-on:submit="submit($event)" action="/sign-up" method="post" class="flex flex-col gap-4 max-w-sm">
+    <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="formError" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="formError"></span></div>
+            </div>
+    </div>
+    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     data-name="email" x-effect="invalid = Boolean(errors[$root.dataset.name])" x-on:input="clear($root.dataset.name)" x-on:change="clear($root.dataset.name)" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Email</label>
+        <input data-slot="input" type="email"
+         name="email"             class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+        <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errors[$root.dataset.name] ?? ''"></span></div>
+</div>
+    <button data-slot="button"
+     type="submit"                     x-bind:disabled="submitting" x-bind:aria-busy="submitting ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Create account</button>
+</form>

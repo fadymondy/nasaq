@@ -57,6 +57,13 @@ class ComponentsTest extends TestCase
         $this->assertDoesNotMatchRegularExpression('/\sdata-disabled[\s>]/', $off);
     }
 
+    public function test_compact_currency(): void
+    {
+        $this->assertStringContainsString('$48K', Blade::render('<x-nq::numeric :value="48200" style="currency" compact />'));
+        $this->assertStringContainsString('1.2K', Blade::render('<x-nq::numeric :value="1240" compact />'));
+        $this->assertStringContainsString('1M', Blade::render('<x-nq::numeric :value="999950" compact />'));
+    }
+
     public function test_arabic_currency_is_sar(): void
     {
         app()->setLocale('ar');

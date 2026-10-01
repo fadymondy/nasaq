@@ -1,0 +1,375 @@
+<div x-data
+    x-on:nq-connect="$event.detail.wait(new Promise((resolve) => setTimeout(() => resolve({ account: $event.detail.id + '@example.com' }), 600)))"
+    x-on:nq-disconnect="$event.detail.wait(new Promise((resolve) => setTimeout(resolve, 600)))">
+    <div data-slot="connected-accounts" x-data="nqConnectedAccounts(JSON.parse('{\u0022connected\u0022:{\u0022google\u0022:true,\u0022github\u0022:true,\u0022apple\u0022:false,\u0022microsoft\u0022:false},\u0022accounts\u0022:{\u0022google\u0022:\u0022fady@example.com\u0022,\u0022github\u0022:\u0022fadymondy\u0022},\u0022others\u0022:1,\u0022messages\u0022:{\u0022connectFailed\u0022:\u0022Could not connect the account. Try again.\u0022,\u0022disconnectFailed\u0022:\u0022Could not disconnect the account. Try again.\u0022}}'))" x-modelable="connected"
+    class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-2xl">
+    <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground">Connected accounts</h2>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Sign in with these accounts instead of a password.</div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+        <ul aria-label="Sign-in providers" class="overflow-hidden rounded-card border border-border">
+                                            <li data-slot="connected-account" data-provider="google" x-bind:data-connected="connected['google'] ? '' : null"
+                    class="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border px-4 py-3 first:border-t-0">
+                    <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-card [&_svg]:size-5">
+                                                    <svg viewBox="10 10 20 20" width="20" height="20" aria-hidden="true" focusable="false" >
+    <path d="M29.6 20.2273C29.6 19.5182 29.5364 18.8364 29.4182 18.1818H20V22.05H25.3818C25.15 23.3 24.4455 24.3591 23.3864 25.0682V27.5773H26.6182C28.5091 25.8364 29.6 23.2727 29.6 20.2273Z" fill="#4285F4" />
+    <path d="M20 30C22.7 30 24.9636 29.1045 26.6181 27.5773L23.3863 25.0682C22.4909 25.6682 21.3454 26.0227 20 26.0227C17.3954 26.0227 15.1909 24.2636 14.4045 21.9H11.0636V24.4909C12.7091 27.7591 16.0909 30 20 30Z" fill="#34A853" />
+    <path d="M14.4045 21.9C14.2045 21.3 14.0909 20.6591 14.0909 20C14.0909 19.3409 14.2045 18.7 14.4045 18.1V15.5091H11.0636C10.3864 16.8591 10 18.3864 10 20C10 21.6136 10.3864 23.1409 11.0636 24.4909L14.4045 21.9Z" fill="#FBBC04" />
+    <path d="M20 13.9773C21.4681 13.9773 22.7863 14.4818 23.8227 15.4727L26.6909 12.6045C24.9591 10.9909 22.6954 10 20 10C16.0909 10 12.7091 12.2409 11.0636 15.5091L14.4045 18.1C15.1909 15.7364 17.3954 13.9773 20 13.9773Z" fill="#E94235" />
+</svg>
+                                            </span>
+                    <div class="flex min-w-0 flex-1 basis-40 flex-col gap-0.5">
+                        <p class="text-label text-foreground"><bdi>Google</bdi></p>
+                        <p class="truncate text-caption text-muted-foreground" x-show="connected['google'] && accounts['google']" >
+                            <bdi dir="ltr" x-text="accounts['google']">fady@example.com</bdi>
+                        </p>
+                        <span data-slot="status" data-tone="success" x-show="connected[&#039;google&#039;] &amp;&amp; ! accounts[&#039;google&#039;]" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-caption text-muted-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Connected" >Connected</span>
+</span>
+                        <span data-slot="status" data-tone="neutral" x-show="! connected[&#039;google&#039;]" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-caption text-muted-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+</svg>        <span class="truncate"  title="Not connected" >Not connected</span>
+</span>
+                        <p id="nq-connected-d09cf1-google" class="text-caption text-muted-foreground" x-show="connected['google'] && total <= 1"
+                             style="display: none" >This is your only way to sign in. Add a password, a passkey or another account first.</p>
+                    </div>
+                    <span class="contents" x-show="connected['google']" >
+                        <span class="contents" x-show="total <= 1"  style="display: none" >
+                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><button data-slot="button"
+     type="button"                     aria-describedby="nq-connected-d09cf1-google" aria-disabled="true" data-disabled="" x-on:click.prevent="x-on:click.prevent" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7"/>
+  <path d="M15 7h2a5 5 0 0 1 4 8"/>
+  <line x1="8" x2="12" y1="12" y2="12"/>
+  <line x1="2" x2="22" y1="2" y2="22"/>
+</svg>                                    Disconnect
+                                    <span class="sr-only"> <bdi>Google</bdi></span></button></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.top.offset.6="triggerEl"
+            class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">This is your only way to sign in. Add a password, a passkey or another account first.</div>
+    </template>
+</div>
+                        </span>
+                        <span class="contents" x-show="total > 1" >
+                            <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" x-bind:disabled="busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="busy !== 'google'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7"/>
+  <path d="M15 7h2a5 5 0 0 1 4 8"/>
+  <line x1="8" x2="12" y1="12" y2="12"/>
+  <line x1="2" x2="22" y1="2" y2="22"/>
+</svg>                                    <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;google&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                    Disconnect
+                                    <span class="sr-only"> <bdi>Google</bdi></span></button>
+                                <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disconnect Google?</h2>
+                                        <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">You will no longer be able to sign in with this account. You can connect it again later.</p></div>
+                                    <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                                        <button data-slot="confirm-button-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="disconnect(&#039;google&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Disconnect</button></div>
+        </div>
+    </div>
+</template>
+</div>
+                        </span>
+                    </span>
+                    <button data-slot="button"
+     type="button"                     x-show="! connected[&#039;google&#039;]" style="display: none" x-on:click="connect(&#039;google&#039;)" x-bind:disabled="busy !== null &amp;&amp; busy !== &#039;google&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="busy !== 'google'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg>                        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;google&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        Connect
+                        <span class="sr-only"> <bdi>Google</bdi></span></button>
+                </li>
+                                            <li data-slot="connected-account" data-provider="github" x-bind:data-connected="connected['github'] ? '' : null"
+                    class="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border px-4 py-3 first:border-t-0">
+                    <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-card [&_svg]:size-5">
+                                                    <svg viewBox="0 0 98 96" width="20" height="20" aria-hidden="true" focusable="false" >
+    <path d="M41.4395 69.3848C28.8066 67.8535 19.9062 58.7617 19.9062 46.9902C19.9062 42.2051 21.6289 37.0371 24.5 33.5918C23.2559 30.4336 23.4473 23.7344 24.8828 20.959C28.7109 20.4805 33.8789 22.4902 36.9414 25.2656C40.5781 24.1172 44.4062 23.543 49.0957 23.543C53.7852 23.543 57.6133 24.1172 61.0586 25.1699C64.0254 22.4902 69.2891 20.4805 73.1172 20.959C74.457 23.543 74.6484 30.2422 73.4043 33.4961C76.4668 37.1328 78.0937 42.0137 78.0937 46.9902C78.0937 58.7617 69.1934 67.6621 56.3691 69.2891C59.623 71.3945 61.8242 75.9883 61.8242 81.252L61.8242 91.2051C61.8242 94.0762 64.2168 95.7031 67.0879 94.5547C84.4102 87.9512 98 70.6289 98 49.1914C98 22.1074 75.9883 6.69539e-07 48.9043 4.309e-07C21.8203 1.92261e-07 -1.9479e-07 22.1074 -4.3343e-07 49.1914C-6.20631e-07 70.4375 13.4941 88.0469 31.6777 94.6504C34.2617 95.6074 36.75 93.8848 36.75 91.3008L36.75 83.6445C35.4102 84.2188 33.6875 84.6016 32.1562 84.6016C25.8398 84.6016 22.1074 81.1563 19.4277 74.7441C18.375 72.1602 17.2266 70.6289 15.0254 70.3418C13.877 70.2461 13.4941 69.7676 13.4941 69.1934C13.4941 68.0449 15.4082 67.1836 17.3223 67.1836C20.0977 67.1836 22.4902 68.9063 24.9785 72.4473C26.8926 75.2227 28.9023 76.4668 31.2949 76.4668C33.6875 76.4668 35.2187 75.6055 37.4199 73.4043C39.0469 71.7773 40.291 70.3418 41.4395 69.3848Z"  class="fill-black dark:fill-white"  />
+</svg>
+                                            </span>
+                    <div class="flex min-w-0 flex-1 basis-40 flex-col gap-0.5">
+                        <p class="text-label text-foreground"><bdi>GitHub</bdi></p>
+                        <p class="truncate text-caption text-muted-foreground" x-show="connected['github'] && accounts['github']" >
+                            <bdi dir="ltr" x-text="accounts['github']">fadymondy</bdi>
+                        </p>
+                        <span data-slot="status" data-tone="success" x-show="connected[&#039;github&#039;] &amp;&amp; ! accounts[&#039;github&#039;]" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-caption text-muted-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Connected" >Connected</span>
+</span>
+                        <span data-slot="status" data-tone="neutral" x-show="! connected[&#039;github&#039;]" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-caption text-muted-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+</svg>        <span class="truncate"  title="Not connected" >Not connected</span>
+</span>
+                        <p id="nq-connected-d09cf1-github" class="text-caption text-muted-foreground" x-show="connected['github'] && total <= 1"
+                             style="display: none" >This is your only way to sign in. Add a password, a passkey or another account first.</p>
+                    </div>
+                    <span class="contents" x-show="connected['github']" >
+                        <span class="contents" x-show="total <= 1"  style="display: none" >
+                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><button data-slot="button"
+     type="button"                     aria-describedby="nq-connected-d09cf1-github" aria-disabled="true" data-disabled="" x-on:click.prevent="x-on:click.prevent" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7"/>
+  <path d="M15 7h2a5 5 0 0 1 4 8"/>
+  <line x1="8" x2="12" y1="12" y2="12"/>
+  <line x1="2" x2="22" y1="2" y2="22"/>
+</svg>                                    Disconnect
+                                    <span class="sr-only"> <bdi>GitHub</bdi></span></button></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.top.offset.6="triggerEl"
+            class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">This is your only way to sign in. Add a password, a passkey or another account first.</div>
+    </template>
+</div>
+                        </span>
+                        <span class="contents" x-show="total > 1" >
+                            <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" x-bind:disabled="busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="busy !== 'github'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7"/>
+  <path d="M15 7h2a5 5 0 0 1 4 8"/>
+  <line x1="8" x2="12" y1="12" y2="12"/>
+  <line x1="2" x2="22" y1="2" y2="22"/>
+</svg>                                    <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;github&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                    Disconnect
+                                    <span class="sr-only"> <bdi>GitHub</bdi></span></button>
+                                <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disconnect GitHub?</h2>
+                                        <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">You will no longer be able to sign in with this account. You can connect it again later.</p></div>
+                                    <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                                        <button data-slot="confirm-button-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="disconnect(&#039;github&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Disconnect</button></div>
+        </div>
+    </div>
+</template>
+</div>
+                        </span>
+                    </span>
+                    <button data-slot="button"
+     type="button"                     x-show="! connected[&#039;github&#039;]" style="display: none" x-on:click="connect(&#039;github&#039;)" x-bind:disabled="busy !== null &amp;&amp; busy !== &#039;github&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="busy !== 'github'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg>                        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;github&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        Connect
+                        <span class="sr-only"> <bdi>GitHub</bdi></span></button>
+                </li>
+                                            <li data-slot="connected-account" data-provider="apple" x-bind:data-connected="connected['apple'] ? '' : null"
+                    class="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border px-4 py-3 first:border-t-0">
+                    <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-card [&_svg]:size-5">
+                                                    <svg viewBox="20 15.5 16 20" width="14" height="17.5" aria-hidden="true" focusable="false" >
+    <path d="M28.2226562,20.3846154 C29.0546875,20.3846154 30.0976562,19.8048315 30.71875,19.0317864 C31.28125,18.3312142 31.6914062,17.352829 31.6914062,16.3744437 C31.6914062,16.2415766 31.6796875,16.1087095 31.65625,16 C30.7304687,16.0362365 29.6171875,16.640178 28.9492187,17.4494596 C28.421875,18.06548 27.9414062,19.0317864 27.9414062,20.0222505 C27.9414062,20.1671964 27.9648438,20.3121424 27.9765625,20.3604577 C28.0351562,20.3725366 28.1289062,20.3846154 28.2226562,20.3846154 Z M25.2929688,35 C26.4296875,35 26.9335938,34.214876 28.3515625,34.214876 C29.7929688,34.214876 30.109375,34.9758423 31.375,34.9758423 C32.6171875,34.9758423 33.4492188,33.792117 34.234375,32.6325493 C35.1132812,31.3038779 35.4765625,29.9993643 35.5,29.9389701 C35.4179688,29.9148125 33.0390625,28.9122695 33.0390625,26.0979021 C33.0390625,23.6579784 34.9140625,22.5588048 35.0195312,22.474253 C33.7773438,20.6382708 31.890625,20.5899555 31.375,20.5899555 C29.9804688,20.5899555 28.84375,21.4596313 28.1289062,21.4596313 C27.3554688,21.4596313 26.3359375,20.6382708 25.1289062,20.6382708 C22.8320312,20.6382708 20.5,22.5950413 20.5,26.2911634 C20.5,28.5861411 21.3671875,31.013986 22.4335938,32.5842339 C23.3476562,33.9129053 24.1445312,35 25.2929688,35 Z" fill-rule="nonzero"  class="fill-white dark:fill-black"  />
+</svg>
+                                            </span>
+                    <div class="flex min-w-0 flex-1 basis-40 flex-col gap-0.5">
+                        <p class="text-label text-foreground"><bdi>Apple</bdi></p>
+                        <p class="truncate text-caption text-muted-foreground" x-show="connected['apple'] && accounts['apple']"  style="display: none" >
+                            <bdi dir="ltr" x-text="accounts['apple']"></bdi>
+                        </p>
+                        <span data-slot="status" data-tone="success" x-show="connected[&#039;apple&#039;] &amp;&amp; ! accounts[&#039;apple&#039;]" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-caption text-muted-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Connected" >Connected</span>
+</span>
+                        <span data-slot="status" data-tone="neutral" x-show="! connected[&#039;apple&#039;]" style="" class="inline-flex min-w-0 items-center gap-1.5 text-caption text-muted-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+</svg>        <span class="truncate"  title="Not connected" >Not connected</span>
+</span>
+                        <p id="nq-connected-d09cf1-apple" class="text-caption text-muted-foreground" x-show="connected['apple'] && total <= 1"
+                             style="display: none" >This is your only way to sign in. Add a password, a passkey or another account first.</p>
+                    </div>
+                    <span class="contents" x-show="connected['apple']"  style="display: none" >
+                        <span class="contents" x-show="total <= 1"  style="display: none" >
+                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><button data-slot="button"
+     type="button"                     aria-describedby="nq-connected-d09cf1-apple" aria-disabled="true" data-disabled="" x-on:click.prevent="x-on:click.prevent" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7"/>
+  <path d="M15 7h2a5 5 0 0 1 4 8"/>
+  <line x1="8" x2="12" y1="12" y2="12"/>
+  <line x1="2" x2="22" y1="2" y2="22"/>
+</svg>                                    Disconnect
+                                    <span class="sr-only"> <bdi>Apple</bdi></span></button></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.top.offset.6="triggerEl"
+            class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">This is your only way to sign in. Add a password, a passkey or another account first.</div>
+    </template>
+</div>
+                        </span>
+                        <span class="contents" x-show="total > 1" >
+                            <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" x-bind:disabled="busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="busy !== 'apple'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7"/>
+  <path d="M15 7h2a5 5 0 0 1 4 8"/>
+  <line x1="8" x2="12" y1="12" y2="12"/>
+  <line x1="2" x2="22" y1="2" y2="22"/>
+</svg>                                    <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;apple&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                    Disconnect
+                                    <span class="sr-only"> <bdi>Apple</bdi></span></button>
+                                <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disconnect Apple?</h2>
+                                        <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">You will no longer be able to sign in with this account. You can connect it again later.</p></div>
+                                    <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                                        <button data-slot="confirm-button-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="disconnect(&#039;apple&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Disconnect</button></div>
+        </div>
+    </div>
+</template>
+</div>
+                        </span>
+                    </span>
+                    <button data-slot="button"
+     type="button"                     x-show="! connected[&#039;apple&#039;]" style="" x-on:click="connect(&#039;apple&#039;)" x-bind:disabled="busy !== null &amp;&amp; busy !== &#039;apple&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="busy !== 'apple'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg>                        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;apple&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        Connect
+                        <span class="sr-only"> <bdi>Apple</bdi></span></button>
+                </li>
+                                            <li data-slot="connected-account" data-provider="microsoft" x-bind:data-connected="connected['microsoft'] ? '' : null"
+                    class="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border px-4 py-3 first:border-t-0">
+                    <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-card [&_svg]:size-5">
+                                                    <svg viewBox="0 0 21 21" width="20" height="20" aria-hidden="true" focusable="false" >
+    <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+    <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+    <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+    <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
+</svg>
+                                            </span>
+                    <div class="flex min-w-0 flex-1 basis-40 flex-col gap-0.5">
+                        <p class="text-label text-foreground"><bdi>Microsoft</bdi></p>
+                        <p class="truncate text-caption text-muted-foreground" x-show="connected['microsoft'] && accounts['microsoft']"  style="display: none" >
+                            <bdi dir="ltr" x-text="accounts['microsoft']"></bdi>
+                        </p>
+                        <span data-slot="status" data-tone="success" x-show="connected[&#039;microsoft&#039;] &amp;&amp; ! accounts[&#039;microsoft&#039;]" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-caption text-muted-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Connected" >Connected</span>
+</span>
+                        <span data-slot="status" data-tone="neutral" x-show="! connected[&#039;microsoft&#039;]" style="" class="inline-flex min-w-0 items-center gap-1.5 text-caption text-muted-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+</svg>        <span class="truncate"  title="Not connected" >Not connected</span>
+</span>
+                        <p id="nq-connected-d09cf1-microsoft" class="text-caption text-muted-foreground" x-show="connected['microsoft'] && total <= 1"
+                             style="display: none" >This is your only way to sign in. Add a password, a passkey or another account first.</p>
+                    </div>
+                    <span class="contents" x-show="connected['microsoft']"  style="display: none" >
+                        <span class="contents" x-show="total <= 1"  style="display: none" >
+                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><button data-slot="button"
+     type="button"                     aria-describedby="nq-connected-d09cf1-microsoft" aria-disabled="true" data-disabled="" x-on:click.prevent="x-on:click.prevent" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7"/>
+  <path d="M15 7h2a5 5 0 0 1 4 8"/>
+  <line x1="8" x2="12" y1="12" y2="12"/>
+  <line x1="2" x2="22" y1="2" y2="22"/>
+</svg>                                    Disconnect
+                                    <span class="sr-only"> <bdi>Microsoft</bdi></span></button></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.top.offset.6="triggerEl"
+            class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">This is your only way to sign in. Add a password, a passkey or another account first.</div>
+    </template>
+</div>
+                        </span>
+                        <span class="contents" x-show="total > 1" >
+                            <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" x-bind:disabled="busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="busy !== 'microsoft'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7"/>
+  <path d="M15 7h2a5 5 0 0 1 4 8"/>
+  <line x1="8" x2="12" y1="12" y2="12"/>
+  <line x1="2" x2="22" y1="2" y2="22"/>
+</svg>                                    <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;microsoft&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                    Disconnect
+                                    <span class="sr-only"> <bdi>Microsoft</bdi></span></button>
+                                <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disconnect Microsoft?</h2>
+                                        <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">You will no longer be able to sign in with this account. You can connect it again later.</p></div>
+                                    <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                                        <button data-slot="confirm-button-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="disconnect(&#039;microsoft&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Disconnect</button></div>
+        </div>
+    </div>
+</template>
+</div>
+                        </span>
+                    </span>
+                    <button data-slot="button"
+     type="button"                     x-show="! connected[&#039;microsoft&#039;]" style="" x-on:click="connect(&#039;microsoft&#039;)" x-bind:disabled="busy !== null &amp;&amp; busy !== &#039;microsoft&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="busy !== 'microsoft'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg>                        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;microsoft&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        Connect
+                        <span class="sr-only"> <bdi>Microsoft</bdi></span></button>
+                </li>
+                    </ul></div>
+</div>
+</div>

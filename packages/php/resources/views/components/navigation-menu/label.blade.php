@@ -1,1 +1,1 @@
-<p data-slot="navigation-menu-label" {{ $attributes->cn(['m-0 px-2.5 pb-1 text-caption font-medium text-muted-foreground']) }}>{{ $slot }}</p>
+<p data-slot="{{ $attributes->get('data-slot', 'navigation-menu-label') }}" {{ $attributes->except('data-slot')->cn(['m-0 px-2.5 pb-1 text-caption font-medium text-muted-foreground']) }}>{{ $slot }}</p>

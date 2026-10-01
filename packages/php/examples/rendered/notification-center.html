@@ -1,0 +1,130 @@
+<div data-slot="notification-center" data-variant="popover" x-data="nqNotificationCenter(JSON.parse('[{\u0022id\u0022:\u00221\u0022,\u0022title\u0022:\u0022Sara mentioned you in MH-142\u0022,\u0022description\u0022:\u0022Can you take a look at the checkout flow?\u0022,\u0022actor\u0022:{\u0022name\u0022:\u0022Sara Alharbi\u0022},\u0022time\u0022:1700000000000,\u0022unread\u0022:true},{\u0022id\u0022:\u00222\u0022,\u0022title\u0022:\u0022Invoice INV-031 was paid\u0022,\u0022time\u0022:1700000000000}]'), {})" x-modelable="open" x-id="['nq-notification-center']"
+    class="inline-flex">
+    <button data-slot="popover-trigger"
+     type="button"                     x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" x-bind:aria-expanded="open" x-bind:aria-label="triggerLabel()" aria-label="Notifications, 1 unread" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0 relative">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
+</svg>        <span data-slot="badge"     data-notification="badge" aria-hidden="true" x-show="count() &gt; 0" class="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text pointer-events-none absolute -end-1 -top-1 h-4 min-w-4 justify-center px-1 text-[10px]"><span x-text="countText()">1</span></span></button>
+            <template x-teleport="body">
+    <div data-slot="popover-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.6="$refs.trigger"
+        class="z-50 max-w-[var(--available-width)] rounded-floating border border-border bg-popover text-body-sm text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 w-[min(24rem,calc(100vw-1rem))] p-0"><div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('all')" x-modelable="value" x-id="['nq-tabs']" class="flex flex-col gap-0">
+    <div class="flex items-center justify-between gap-2 border-b border-border px-4 pt-3">
+        <p x-bind:id="$id('nq-notification-center', 'title')" class="text-label text-foreground">Notifications</p>
+        <button data-slot="button"
+     type="button"                     data-notification="mark-all-read" x-on:click="markAllRead()" x-bind:disabled="count() === 0" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5 -mt-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg> Mark all read</button>
+    </div>
+        <div data-slot="tabs-list" data-variant="underline" aria-orientation="horizontal" x-bind="list"
+    class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-4 border-b border-border px-4">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('all')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">All</button>
+        <button type="button" data-slot="tabs-tab" x-bind="tab('unread')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Unread <span x-show="count() > 0" x-text="countText()" class="text-caption text-muted-foreground"></span></button>
+        <span data-slot="tabs-indicator" aria-hidden="true"
+    class="absolute -z-10 transition-[left,width] duration-200 ease-nq left-[var(--active-tab-left)] w-[var(--active-tab-width)] bottom-0 h-0.5 rounded-full bg-primary"></span>
+</div>
+    <div data-slot="tabs-panel" x-bind="panel('all')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div x-show="rows(false).length === 0"  style="display: none" >
+            <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 text-center rounded-card border-0 py-10">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M17 17H4a1 1 0 0 1-.74-1.673C4.59 13.956 6 12.499 6 8a6 6 0 0 1 .258-1.742"/>
+  <path d="m2 2 20 20"/>
+  <path d="M8.668 3.01A6 6 0 0 1 18 8c0 2.687.77 4.653 1.707 6.05"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No notifications</p>
+                    <p class="text-body-sm text-muted-foreground">Mentions, reviews and activity show up here.</p>
+            </div>
+    </div>
+        </div>
+        <ul x-show="rows(false).length > 0" class="m-0 list-none divide-y divide-border overflow-y-auto overscroll-contain p-0 max-h-96" ><template x-for="item in rows(false)" :key="item.id"><li><template x-if="item.href"><a data-slot="notification-item" x-bind:href="item.href" x-bind:data-unread="item.unread ? '' : null" x-on:click="press(item)" class="flex w-full items-start no-underline gap-3 px-4 py-3 text-start outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus"><span class="relative mt-0.5 shrink-0">
+    <template x-if="item.icon"><span class="flex size-8 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground [&_svg]:size-4" x-html="item.icon"></span></template>
+    <template x-if="!item.icon && item.actor">
+        <span data-slot="avatar" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-8 text-caption rounded-full">
+            <img data-slot="avatar-image" x-show="item.actor.avatar" x-bind:src="item.actor.avatar" x-bind:alt="item.actor.name" class="size-full object-cover">
+            <span data-slot="avatar-fallback" x-show="!item.actor.avatar" role="img" x-bind:aria-label="item.actor.name" x-text="initials(item.actor.name)" class="flex size-full items-center justify-center"></span>
+        </span>
+    </template>
+</span>
+<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+    <span class="text-body-sm" x-bind:class="item.unread ? 'font-medium text-foreground' : 'text-muted-foreground'" x-text="item.title"></span>
+    <span x-show="item.description" class="line-clamp-2 text-caption text-muted-foreground" x-text="item.description"></span>
+</span>
+<span class="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
+    <time x-show="item.time !== undefined" x-bind:datetime="isoTime(item.time)" x-text="timeText(item.time)" class="text-caption text-muted-foreground tabular-nums"></time>
+    <span x-show="item.unread" class="size-2 rounded-full bg-nq-accent"><span class="sr-only">Unread</span></span>
+</span></a></template><template x-if="!item.href"><button type="button" data-slot="notification-item" x-bind:data-unread="item.unread ? '' : null" x-on:click="press(item)" class="flex w-full items-start no-underline gap-3 px-4 py-3 text-start outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus"><span class="relative mt-0.5 shrink-0">
+    <template x-if="item.icon"><span class="flex size-8 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground [&_svg]:size-4" x-html="item.icon"></span></template>
+    <template x-if="!item.icon && item.actor">
+        <span data-slot="avatar" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-8 text-caption rounded-full">
+            <img data-slot="avatar-image" x-show="item.actor.avatar" x-bind:src="item.actor.avatar" x-bind:alt="item.actor.name" class="size-full object-cover">
+            <span data-slot="avatar-fallback" x-show="!item.actor.avatar" role="img" x-bind:aria-label="item.actor.name" x-text="initials(item.actor.name)" class="flex size-full items-center justify-center"></span>
+        </span>
+    </template>
+</span>
+<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+    <span class="text-body-sm" x-bind:class="item.unread ? 'font-medium text-foreground' : 'text-muted-foreground'" x-text="item.title"></span>
+    <span x-show="item.description" class="line-clamp-2 text-caption text-muted-foreground" x-text="item.description"></span>
+</span>
+<span class="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
+    <time x-show="item.time !== undefined" x-bind:datetime="isoTime(item.time)" x-text="timeText(item.time)" class="text-caption text-muted-foreground tabular-nums"></time>
+    <span x-show="item.unread" class="size-2 rounded-full bg-nq-accent"><span class="sr-only">Unread</span></span>
+</span></button></template></li></template></ul></div>
+    <div data-slot="tabs-panel" x-bind="panel('unread')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div x-show="rows(true).length === 0"  style="display: none" >
+            <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 text-center rounded-card border-0 py-10">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M17 17H4a1 1 0 0 1-.74-1.673C4.59 13.956 6 12.499 6 8a6 6 0 0 1 .258-1.742"/>
+  <path d="m2 2 20 20"/>
+  <path d="M8.668 3.01A6 6 0 0 1 18 8c0 2.687.77 4.653 1.707 6.05"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">You are all caught up</p>
+                    <p class="text-body-sm text-muted-foreground">There is nothing new to read.</p>
+            </div>
+    </div>
+        </div>
+        <ul x-show="rows(true).length > 0" class="m-0 list-none divide-y divide-border overflow-y-auto overscroll-contain p-0 max-h-96" ><template x-for="item in rows(true)" :key="item.id"><li><template x-if="item.href"><a data-slot="notification-item" x-bind:href="item.href" x-bind:data-unread="item.unread ? '' : null" x-on:click="press(item)" class="flex w-full items-start no-underline gap-3 px-4 py-3 text-start outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus"><span class="relative mt-0.5 shrink-0">
+    <template x-if="item.icon"><span class="flex size-8 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground [&_svg]:size-4" x-html="item.icon"></span></template>
+    <template x-if="!item.icon && item.actor">
+        <span data-slot="avatar" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-8 text-caption rounded-full">
+            <img data-slot="avatar-image" x-show="item.actor.avatar" x-bind:src="item.actor.avatar" x-bind:alt="item.actor.name" class="size-full object-cover">
+            <span data-slot="avatar-fallback" x-show="!item.actor.avatar" role="img" x-bind:aria-label="item.actor.name" x-text="initials(item.actor.name)" class="flex size-full items-center justify-center"></span>
+        </span>
+    </template>
+</span>
+<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+    <span class="text-body-sm" x-bind:class="item.unread ? 'font-medium text-foreground' : 'text-muted-foreground'" x-text="item.title"></span>
+    <span x-show="item.description" class="line-clamp-2 text-caption text-muted-foreground" x-text="item.description"></span>
+</span>
+<span class="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
+    <time x-show="item.time !== undefined" x-bind:datetime="isoTime(item.time)" x-text="timeText(item.time)" class="text-caption text-muted-foreground tabular-nums"></time>
+    <span x-show="item.unread" class="size-2 rounded-full bg-nq-accent"><span class="sr-only">Unread</span></span>
+</span></a></template><template x-if="!item.href"><button type="button" data-slot="notification-item" x-bind:data-unread="item.unread ? '' : null" x-on:click="press(item)" class="flex w-full items-start no-underline gap-3 px-4 py-3 text-start outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus"><span class="relative mt-0.5 shrink-0">
+    <template x-if="item.icon"><span class="flex size-8 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground [&_svg]:size-4" x-html="item.icon"></span></template>
+    <template x-if="!item.icon && item.actor">
+        <span data-slot="avatar" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-8 text-caption rounded-full">
+            <img data-slot="avatar-image" x-show="item.actor.avatar" x-bind:src="item.actor.avatar" x-bind:alt="item.actor.name" class="size-full object-cover">
+            <span data-slot="avatar-fallback" x-show="!item.actor.avatar" role="img" x-bind:aria-label="item.actor.name" x-text="initials(item.actor.name)" class="flex size-full items-center justify-center"></span>
+        </span>
+    </template>
+</span>
+<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+    <span class="text-body-sm" x-bind:class="item.unread ? 'font-medium text-foreground' : 'text-muted-foreground'" x-text="item.title"></span>
+    <span x-show="item.description" class="line-clamp-2 text-caption text-muted-foreground" x-text="item.description"></span>
+</span>
+<span class="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
+    <time x-show="item.time !== undefined" x-bind:datetime="isoTime(item.time)" x-text="timeText(item.time)" class="text-caption text-muted-foreground tabular-nums"></time>
+    <span x-show="item.unread" class="size-2 rounded-full bg-nq-accent"><span class="sr-only">Unread</span></span>
+</span></button></template></li></template></ul></div>
+</div></div>
+</template>
+    </div>

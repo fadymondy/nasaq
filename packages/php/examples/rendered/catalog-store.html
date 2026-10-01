@@ -1,0 +1,326 @@
+<div data-slot="catalog-store" x-data="nqCatalogStore(JSON.parse('{\u0022items\u0022:[{\u0022id\u0022:\u0022a\u0022,\u0022name\u0022:\u0022Task runner\u0022,\u0022summary\u0022:\u0022Run scripts on a schedule.\u0022,\u0022description\u0022:\u0022\u0022,\u0022category\u0022:\u0022tools\u0022,\u0022publisher\u0022:\u0022Nasaq\u0022,\u0022tags\u0022:[],\u0022installs\u0022:1200,\u0022updatedAt\u0022:0,\u0022installed\u0022:false},{\u0022id\u0022:\u0022b\u0022,\u0022name\u0022:\u0022Charts Pro\u0022,\u0022summary\u0022:\u0022Dashboards from your data.\u0022,\u0022description\u0022:\u0022\u0022,\u0022category\u0022:\u0022data\u0022,\u0022publisher\u0022:\u0022\u0022,\u0022tags\u0022:[],\u0022installs\u0022:9000,\u0022updatedAt\u0022:0,\u0022installed\u0022:false},{\u0022id\u0022:\u0022c\u0022,\u0022name\u0022:\u0022CSV import\u0022,\u0022summary\u0022:\u0022Bring spreadsheets in.\u0022,\u0022description\u0022:\u0022\u0022,\u0022category\u0022:\u0022data\u0022,\u0022publisher\u0022:\u0022\u0022,\u0022tags\u0022:[],\u0022installs\u0022:450,\u0022updatedAt\u0022:0,\u0022installed\u0022:true}],\u0022sort\u0022:\u0022popular\u0022,\u0022select\u0022:false,\u0022results\u0022:\u0022:n results\u0022}'))" class="flex min-w-0 flex-col gap-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative min-w-48 flex-1 sm:max-w-sm">
+            <svg aria-hidden="true" class="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>            <input data-slot="input" type="search"
+                    x-model="query" placeholder="Search the store" aria-label="Search the store" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control ps-8">
+        </div>
+                <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022popular\u0022]'), false)" x-modelable="value" x-bind="root"
+            x-model="sortSel" aria-label="Sort by" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5 ms-auto">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('popular')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Popular</button>
+            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('newest')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Newest</button>
+            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('name')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">A to Z</button>
+</div>
+    </div>
+    <div role="group" data-slot="chip-group" x-data="nqChipGroup('all')" x-modelable="value"
+    x-model="category" aria-label="Categories" class="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <button data-slot="chip"
+     type="button"                     data-value="all" data-selected="" aria-pressed="true" x-on:click="select($el.dataset.value)" x-bind:aria-pressed="String(value === $el.dataset.value)" x-bind:data-selected="value === $el.dataset.value ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm shrink-0 rounded-full px-3 text-muted-foreground">
+        All <bdi class="text-caption tabular-nums opacity-70" x-text="count('all')">3</bdi></button>
+                    <button data-slot="chip"
+     type="button"                     data-value="tools" aria-pressed="false" x-on:click="select($el.dataset.value)" x-bind:aria-pressed="String(value === $el.dataset.value)" x-bind:data-selected="value === $el.dataset.value ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm shrink-0 rounded-full px-3 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/>
+</svg>                Tools <bdi class="text-caption tabular-nums opacity-70" x-text="count('tools')">1</bdi></button>
+                    <button data-slot="chip"
+     type="button"                     data-value="data" aria-pressed="false" x-on:click="select($el.dataset.value)" x-bind:aria-pressed="String(value === $el.dataset.value)" x-bind:data-selected="value === $el.dataset.value ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm shrink-0 rounded-full px-3 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 3v16a2 2 0 0 0 2 2h16"/>
+  <path d="M7 16h8"/>
+  <path d="M7 11h12"/>
+  <path d="M7 6h3"/>
+</svg>                Data <bdi class="text-caption tabular-nums opacity-70" x-text="count('data')">2</bdi></button>
+                <button data-slot="chip"
+     type="button"                     data-value="installed" aria-pressed="false" x-on:click="select($el.dataset.value)" x-bind:aria-pressed="String(value === $el.dataset.value)" x-bind:data-selected="value === $el.dataset.value ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm shrink-0 rounded-full px-3 text-muted-foreground">
+        Installed <bdi class="text-caption tabular-nums opacity-70" x-text="installedCount">1</bdi></button>
+</div>
+    <p class="sr-only" role="status" x-text="resultsText">3 results</p>
+    <div data-slot="empty-state" x-show="listed.length === 0" style="display: none" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">Nothing found</p>
+                    <p class="text-body-sm text-muted-foreground">Try another word or pick a different category.</p>
+            </div>
+            <div class="mt-1 flex flex-wrap items-center justify-center gap-2"><button data-slot="button"
+     type="button"                     x-show="query || category !== &#039;all&#039;" x-on:click="clear()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Clear filters</button></div>
+    </div>
+    <ul x-ref="grid" class="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-3">
+                    <li class="min-w-0" data-id="b" x-show="visible('b')">
+                <article data-slot="catalog-card" data-item="b" data-state="available"
+    x-bind:data-state="stateOf('b')"
+    class="relative flex h-full flex-col gap-3 rounded-card border border-border bg-card p-4 shadow-xs transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nq-focus hover:bg-nq-hover">
+    <div class="flex items-start gap-3">
+        <span aria-hidden="true" data-slot="catalog-icon" class="flex size-10 shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>
+  <path d="M12 22V12"/>
+  <polyline points="3.29 7 12 12 20.71 7"/>
+  <path d="m7.5 4.27 9 5.15"/>
+</svg></span>
+        <div class="min-w-0 flex-1">
+            <h3 class="text-label text-foreground">
+                <button type="button" class="text-start outline-none after:absolute after:inset-0 after:content-['']" x-on:click="openDetail('b')">Charts Pro</button>
+            </h3>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Official</span>
+    </div>
+    <p class="line-clamp-2 text-body-sm text-muted-foreground">Dashboards from your data.</p>
+    <div class="mt-auto flex items-center justify-between gap-2">
+        <div class="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                        <span><bdi>9K</bdi> installs</span>            <span data-slot="price" class="inline-flex flex-wrap items-baseline gap-x-1.5 text-foreground text-body-sm">
+        <span>
+            <bdi class="tabular-nums font-medium">$9</bdi>
+            <span class="text-muted-foreground">/mo</span>        </span>
+            </span>
+        </div>
+        <span class="contents relative z-10 shrink-0">
+    <button data-slot="install-button"
+     type="button"                     data-state="available" aria-label="Install Charts Pro" x-show="!installed(&#039;b&#039;)" x-bind:data-state="stateOf(&#039;b&#039;)" x-bind:disabled="busyOf(&#039;b&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;b&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;b&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Install</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open Charts Pro" style="display: none" x-show="installed(&#039;b&#039;)" x-on:click="openApp(&#039;b&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+    </div>
+</article>
+            </li>
+                    <li class="min-w-0" data-id="a" x-show="visible('a')">
+                <article data-slot="catalog-card" data-item="a" data-state="available"
+    x-bind:data-state="stateOf('a')"
+    class="relative flex h-full flex-col gap-3 rounded-card border border-border bg-card p-4 shadow-xs transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nq-focus hover:bg-nq-hover">
+    <div class="flex items-start gap-3">
+        <span aria-hidden="true" data-slot="catalog-icon" class="flex size-10 shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>
+  <path d="M12 22V12"/>
+  <polyline points="3.29 7 12 12 20.71 7"/>
+  <path d="m7.5 4.27 9 5.15"/>
+</svg></span>
+        <div class="min-w-0 flex-1">
+            <h3 class="text-label text-foreground">
+                <button type="button" class="text-start outline-none after:absolute after:inset-0 after:content-['']" x-on:click="openDetail('a')">Task runner</button>
+            </h3>
+            <p class="truncate text-caption text-muted-foreground">by Nasaq</p>        </div>
+            </div>
+    <p class="line-clamp-2 text-body-sm text-muted-foreground">Run scripts on a schedule.</p>
+    <div class="mt-auto flex items-center justify-between gap-2">
+        <div class="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+            <span data-slot="rating" class="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+    <span class="sr-only">Rated 4.7 out of 5, 210</span>
+    <svg aria-hidden="true" class="size-3.5 shrink-0 fill-nq-accent text-nq-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>    <bdi aria-hidden="true" class="tabular-nums text-foreground">4.7</bdi>
+            <span aria-hidden="true" class="truncate">
+            <span class="me-1.5">·</span>
+            <bdi class="tabular-nums">210</bdi>
+        </span>
+    </span>
+            <span><bdi>1.2K</bdi> installs</span>                    </div>
+        <span class="contents relative z-10 shrink-0">
+    <button data-slot="install-button"
+     type="button"                     data-state="available" aria-label="Get Task runner" x-show="!installed(&#039;a&#039;)" x-bind:data-state="stateOf(&#039;a&#039;)" x-bind:disabled="busyOf(&#039;a&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;a&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;a&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Get</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open Task runner" style="display: none" x-show="installed(&#039;a&#039;)" x-on:click="openApp(&#039;a&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+    </div>
+</article>
+            </li>
+                    <li class="min-w-0" data-id="c" x-show="visible('c')">
+                <article data-slot="catalog-card" data-item="c" data-state="installed"
+    x-bind:data-state="stateOf('c')"
+    class="relative flex h-full flex-col gap-3 rounded-card border border-border bg-card p-4 shadow-xs transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nq-focus hover:bg-nq-hover">
+    <div class="flex items-start gap-3">
+        <span aria-hidden="true" data-slot="catalog-icon" class="flex size-10 shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>
+  <path d="M12 22V12"/>
+  <polyline points="3.29 7 12 12 20.71 7"/>
+  <path d="m7.5 4.27 9 5.15"/>
+</svg></span>
+        <div class="min-w-0 flex-1">
+            <h3 class="text-label text-foreground">
+                <button type="button" class="text-start outline-none after:absolute after:inset-0 after:content-['']" x-on:click="openDetail('c')">CSV import</button>
+            </h3>
+                    </div>
+            </div>
+    <p class="line-clamp-2 text-body-sm text-muted-foreground">Bring spreadsheets in.</p>
+    <div class="mt-auto flex items-center justify-between gap-2">
+        <div class="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                        <span><bdi>450</bdi> installs</span>                    </div>
+        <span class="contents relative z-10 shrink-0">
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Get CSV import" style="display: none" x-show="!installed(&#039;c&#039;)" x-bind:data-state="stateOf(&#039;c&#039;)" x-bind:disabled="busyOf(&#039;c&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;c&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;c&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Get</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open CSV import" x-show="installed(&#039;c&#039;)" x-on:click="openApp(&#039;c&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+    </div>
+</article>
+            </li>
+            </ul>
+    <div data-slot="sheet" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="detailOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="sheet-portal">
+        <div data-slot="sheet-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 dark:bg-nq-bg/60"></div>
+        <div data-slot="sheet-content" data-side="end" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed z-50 flex flex-col bg-popover text-popover-foreground outline-none shadow-floating transition-[translate,opacity] duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 inset-y-0 end-0 h-dvh border-s border-border data-starting-style:translate-x-8 data-ending-style:translate-x-8 rtl:data-starting-style:-translate-x-8 rtl:data-ending-style:-translate-x-8 w-full sm:max-w-md">
+            <template x-if="detailId === 'a'">
+                    <div class="contents" data-slot="catalog-detail" data-item="a">
+                        <div data-slot="sheet-header" class="flex flex-col gap-1 border-b border-border px-4 py-3.5 pe-12"><div class="flex items-start gap-3">
+                                <span aria-hidden="true" data-slot="catalog-icon" class="flex shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5 size-12">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>
+  <path d="M12 22V12"/>
+  <polyline points="3.29 7 12 12 20.71 7"/>
+  <path d="m7.5 4.27 9 5.15"/>
+</svg></span>
+                                <div class="min-w-0">
+                                    <h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-foreground text-h3">Task runner</h2>
+                                    <p data-slot="sheet-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground">by Nasaq
+                                        · <bdi>v1.4.0</bdi></p>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                                                                <span data-slot="rating" class="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+    <span class="sr-only">Rated 4.7 out of 5, 210</span>
+    <svg aria-hidden="true" class="size-3.5 shrink-0 fill-nq-accent text-nq-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>    <bdi aria-hidden="true" class="tabular-nums text-foreground">4.7</bdi>
+            <span aria-hidden="true" class="truncate">
+            <span class="me-1.5">·</span>
+            <bdi class="tabular-nums">210</bdi>
+        </span>
+    </span>
+                                <span class="text-caption text-muted-foreground"><bdi>1.2K</bdi> installs</span>                                                                    <span class="text-caption text-muted-foreground">Free</span>
+                                                            </div></div>
+                        <div data-slot="sheet-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain flex flex-col gap-5 p-4"><section class="flex flex-col gap-1.5">
+                                <h4 class="eyebrow">About</h4>
+                                <p class="text-body-sm text-foreground">Run scripts on a schedule.</p>
+                            </section></div>
+                        <div data-slot="sheet-footer" class="flex items-center gap-2 border-t border-border px-4 py-3 flex-wrap"><p role="alert" class="w-full text-body-sm text-nq-danger-text" x-show="error && error.id === 'a'" style="display: none" x-text="error ? error.message : ''"></p>
+                            <span class="contents">
+    <button data-slot="install-button"
+     type="button"                     data-state="available" aria-label="Get Task runner" x-show="!installed(&#039;a&#039;)" x-bind:data-state="stateOf(&#039;a&#039;)" x-bind:disabled="busyOf(&#039;a&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;a&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;a&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Get</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open Task runner" style="display: none" x-show="installed(&#039;a&#039;)" x-on:click="openApp(&#039;a&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+                                                            <button data-slot="button"
+     type="button"                     x-show="installed(&#039;a&#039;)" style="display: none" x-bind:disabled="busyOf(&#039;a&#039;) === &#039;uninstall&#039;" x-bind:aria-busy="busyOf(&#039;a&#039;) === &#039;uninstall&#039; ? &#039;true&#039; : null" x-on:click="uninstall(&#039;a&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="busyOf('a') === 'uninstall' ? 'Removing' : 'Uninstall'">Uninstall</span></button></div>
+                    </div>
+                </template>
+                                            <template x-if="detailId === 'b'">
+                    <div class="contents" data-slot="catalog-detail" data-item="b">
+                        <div data-slot="sheet-header" class="flex flex-col gap-1 border-b border-border px-4 py-3.5 pe-12"><div class="flex items-start gap-3">
+                                <span aria-hidden="true" data-slot="catalog-icon" class="flex shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5 size-12">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>
+  <path d="M12 22V12"/>
+  <polyline points="3.29 7 12 12 20.71 7"/>
+  <path d="m7.5 4.27 9 5.15"/>
+</svg></span>
+                                <div class="min-w-0">
+                                    <h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-foreground text-h3">Charts Pro</h2>
+                                    <p data-slot="sheet-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground">Dashboards from your data.</p>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Official</span>
+                                                                <span class="text-caption text-muted-foreground"><bdi>9K</bdi> installs</span>                                                                    <span data-slot="price" class="inline-flex flex-wrap items-baseline gap-x-1.5 text-foreground text-body-sm">
+        <span>
+            <bdi class="tabular-nums font-medium">$9</bdi>
+            <span class="text-muted-foreground">/mo</span>        </span>
+            </span>
+                                                            </div></div>
+                        <div data-slot="sheet-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain flex flex-col gap-5 p-4"><section class="flex flex-col gap-1.5">
+                                <h4 class="eyebrow">About</h4>
+                                <p class="text-body-sm text-foreground">Dashboards from your data.</p>
+                            </section></div>
+                        <div data-slot="sheet-footer" class="flex items-center gap-2 border-t border-border px-4 py-3 flex-wrap"><p role="alert" class="w-full text-body-sm text-nq-danger-text" x-show="error && error.id === 'b'" style="display: none" x-text="error ? error.message : ''"></p>
+                            <span class="contents">
+    <button data-slot="install-button"
+     type="button"                     data-state="available" aria-label="Install Charts Pro" x-show="!installed(&#039;b&#039;)" x-bind:data-state="stateOf(&#039;b&#039;)" x-bind:disabled="busyOf(&#039;b&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;b&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;b&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Install</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open Charts Pro" style="display: none" x-show="installed(&#039;b&#039;)" x-on:click="openApp(&#039;b&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+                                                            <button data-slot="button"
+     type="button"                     x-show="installed(&#039;b&#039;)" style="display: none" x-bind:disabled="busyOf(&#039;b&#039;) === &#039;uninstall&#039;" x-bind:aria-busy="busyOf(&#039;b&#039;) === &#039;uninstall&#039; ? &#039;true&#039; : null" x-on:click="uninstall(&#039;b&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="busyOf('b') === 'uninstall' ? 'Removing' : 'Uninstall'">Uninstall</span></button></div>
+                    </div>
+                </template>
+                                            <template x-if="detailId === 'c'">
+                    <div class="contents" data-slot="catalog-detail" data-item="c">
+                        <div data-slot="sheet-header" class="flex flex-col gap-1 border-b border-border px-4 py-3.5 pe-12"><div class="flex items-start gap-3">
+                                <span aria-hidden="true" data-slot="catalog-icon" class="flex shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5 size-12">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>
+  <path d="M12 22V12"/>
+  <polyline points="3.29 7 12 12 20.71 7"/>
+  <path d="m7.5 4.27 9 5.15"/>
+</svg></span>
+                                <div class="min-w-0">
+                                    <h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-foreground text-h3">CSV import</h2>
+                                    <p data-slot="sheet-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground">Bring spreadsheets in.</p>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                                                                                                <span class="text-caption text-muted-foreground"><bdi>450</bdi> installs</span>                                                                    <span class="text-caption text-muted-foreground">Free</span>
+                                                            </div></div>
+                        <div data-slot="sheet-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain flex flex-col gap-5 p-4"><section class="flex flex-col gap-1.5">
+                                <h4 class="eyebrow">About</h4>
+                                <p class="text-body-sm text-foreground">Bring spreadsheets in.</p>
+                            </section></div>
+                        <div data-slot="sheet-footer" class="flex items-center gap-2 border-t border-border px-4 py-3 flex-wrap"><p role="alert" class="w-full text-body-sm text-nq-danger-text" x-show="error && error.id === 'c'" style="display: none" x-text="error ? error.message : ''"></p>
+                            <span class="contents">
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Get CSV import" style="display: none" x-show="!installed(&#039;c&#039;)" x-bind:data-state="stateOf(&#039;c&#039;)" x-bind:disabled="busyOf(&#039;c&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;c&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;c&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Get</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open CSV import" x-show="installed(&#039;c&#039;)" x-on:click="openApp(&#039;c&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+                                                            <button data-slot="button"
+     type="button"                     x-show="installed(&#039;c&#039;)" style="display: none" x-bind:disabled="busyOf(&#039;c&#039;) === &#039;uninstall&#039;" x-bind:aria-busy="busyOf(&#039;c&#039;) === &#039;uninstall&#039; ? &#039;true&#039; : null" x-on:click="uninstall(&#039;c&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="busyOf('c') === 'uninstall' ? 'Removing' : 'Uninstall'">Uninstall</span></button></div>
+                    </div>
+                </template>
+                            <button type="button" data-slot="sheet-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</div>

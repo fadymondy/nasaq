@@ -1,0 +1,178 @@
+<section data-slot="approval-queue" aria-label="Approvals" x-data="nqApprovalQueue(JSON.parse('[{\u0022id\u0022:\u0022a1\u0022,\u0022kind\u0022:\u0022action\u0022,\u0022status\u0022:\u0022pending\u0022,\u0022title\u0022:\u0022Send the weekly digest\u0022,\u0022description\u0022:\u0022An automation wants to email 1,240 customers.\u0022,\u0022requester\u0022:\u0022Digest bot\u0022,\u0022createdAt\u0022:1767265200000,\u0022args\u0022:{\u0022audience\u0022:\u0022all-customers\u0022,\u0022apiKey\u0022:\u0022sk-live-123\u0022},\u0022redact\u0022:[\u0022apiKey\u0022]},{\u0022id\u0022:\u0022a2\u0022,\u0022kind\u0022:\u0022review\u0022,\u0022status\u0022:\u0022pending\u0022,\u0022title\u0022:\u0022Review testimonial\u0022,\u0022requester\u0022:\u0022Layla\u0022,\u0022createdAt\u0022:1767261600000,\u0022criteria\u0022:[{\u0022id\u0022:\u0022c1\u0022,\u0022label\u0022:\u0022Tone is polite\u0022,\u0022met\u0022:true},{\u0022id\u0022:\u0022c2\u0022,\u0022label\u0022:\u0022No personal data\u0022,\u0022met\u0022:false}]},{\u0022id\u0022:\u0022a3\u0022,\u0022kind\u0022:\u0022request\u0022,\u0022status\u0022:\u0022approved\u0022,\u0022title\u0022:\u0022Refund order 1042\u0022,\u0022createdAt\u0022:1767182400000,\u0022decidedBy\u0022:\u0022Sam\u0022,\u0022decidedAt\u0022:1767186000000}]'), JSON.parse('{\u0022convert\u0022:true,\u0022now\u0022:1767268800000}'))" x-modelable="items"
+    class="flex flex-col gap-4">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-body-sm text-muted-foreground" aria-live="polite" x-text="waitingText()"></p>
+        <div role="tablist" aria-label="Filter the queue" data-slot="tabs-list" class="inline-flex items-center gap-1 rounded-control bg-secondary p-1">
+                            <button type="button" role="tab" data-slot="tabs-tab" x-on:click="filter = 'pending'" x-bind:aria-selected="filter === 'pending'" x-bind:data-active="filter === 'pending' ? '' : null"
+                    class="inline-flex h-control-sm items-center gap-1.5 rounded-control px-3 text-label text-muted-foreground outline-none transition-colors focus-visible:outline-2 focus-visible:outline-nq-focus data-active:bg-card data-active:text-foreground">
+                    Pending
+                                            <span x-show="waiting() > 0" x-cloak style="display: none" class="text-caption tabular-nums text-muted-foreground" x-text="waiting()"></span>
+                                    </button>
+                            <button type="button" role="tab" data-slot="tabs-tab" x-on:click="filter = 'decided'" x-bind:aria-selected="filter === 'decided'" x-bind:data-active="filter === 'decided' ? '' : null"
+                    class="inline-flex h-control-sm items-center gap-1.5 rounded-control px-3 text-label text-muted-foreground outline-none transition-colors focus-visible:outline-2 focus-visible:outline-nq-focus data-active:bg-card data-active:text-foreground">
+                    Decided
+                                    </button>
+                            <button type="button" role="tab" data-slot="tabs-tab" x-on:click="filter = 'all'" x-bind:aria-selected="filter === 'all'" x-bind:data-active="filter === 'all' ? '' : null"
+                    class="inline-flex h-control-sm items-center gap-1.5 rounded-control px-3 text-label text-muted-foreground outline-none transition-colors focus-visible:outline-2 focus-visible:outline-nq-focus data-active:bg-card data-active:text-foreground">
+                    All
+                                    </button>
+                    </div>
+    </div>
+    <div x-show="rows().length === 0" x-cloak style="display: none">
+        <div data-slot="empty-state" x-show="filter === &#039;pending&#039;" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">You are all caught up</p>
+                    <p class="text-body-sm text-muted-foreground">Nothing needs a decision right now.</p>
+            </div>
+    </div>
+        <div data-slot="empty-state" x-show="filter !== &#039;pending&#039;" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+    <path d="M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3"/>
+    <path d="M12 17h.01"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">The queue is empty</p>
+                    <p class="text-body-sm text-muted-foreground">Requests that need a decision show up here.</p>
+            </div>
+    </div>
+    </div>
+    <ul x-show="rows().length > 0" aria-label="Approval requests" class="flex flex-col gap-3">
+        <template x-for="item in rows()" :key="item.id">
+            <li data-slot="approval-item" x-bind:data-status="item.shown" x-bind:data-kind="item.kind">
+                <div data-slot="card" class="flex flex-col rounded-card border border-border bg-card text-card-foreground gap-3 p-4"><div class="flex flex-wrap items-start justify-between gap-3">
+                        <div class="flex min-w-0 flex-1 flex-col gap-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                                                    <span data-slot="badge"  style="display: none"     x-show="item.kind === &#039;action&#039;" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Action</span>
+                                                                    <span data-slot="badge"  style="display: none"     x-show="item.kind === &#039;review&#039;" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Review</span>
+                                                                    <span data-slot="badge"  style="display: none"     x-show="item.kind === &#039;moderation&#039;" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Moderation</span>
+                                                                    <span data-slot="badge"  style="display: none"     x-show="item.kind === &#039;request&#039;" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text">Request</span>
+                                                                                                    <span data-slot="badge"  style="display: none"     x-show="item.shown === &#039;pending&#039;" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Pending</span>
+                                                                    <span data-slot="badge"  style="display: none"     x-show="item.shown === &#039;approved&#039;" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Approved</span>
+                                                                    <span data-slot="badge"  style="display: none"     x-show="item.shown === &#039;rejected&#039;" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text">Rejected</span>
+                                                                    <span data-slot="badge"  style="display: none"     x-show="item.shown === &#039;expired&#039;" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Expired</span>
+                                                                    <span data-slot="badge"  style="display: none"     x-show="item.shown === &#039;converted&#039;" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Converted</span>
+                                                                <span data-slot="badge"  style="display: none"     x-show="item.criteria &amp;&amp; item.criteria.length &gt; 0 &amp;&amp; item.unmet === 0" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Pass</span>
+                                <span data-slot="badge"  style="display: none"     x-show="item.criteria &amp;&amp; item.criteria.length &gt; 0 &amp;&amp; item.unmet &gt; 0" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>Fail</span>
+                            </div>
+                            <h3 class="text-label text-foreground" x-text="item.title"></h3>
+                            <p x-show="item.description" class="text-body-sm text-muted-foreground" x-text="item.description"></p>
+                        </div>
+                        <dl class="flex flex-col gap-0.5 text-caption text-muted-foreground sm:items-end">
+                            <div x-show="item.requester" class="flex gap-1"><dt>By</dt><dd class="text-foreground" x-text="item.requester"></dd></div>
+                            <div class="flex gap-1"><dt>Requested</dt><dd class="tabular-nums" x-text="item.createdText"></dd></div>
+                            <div x-show="item.expiresText && (item.shown === 'pending' || item.shown === 'expired')" x-cloak style="display: none" class="flex items-center gap-1" x-bind:class="item.shown === 'expired' && 'text-nq-danger-text'">
+                                <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>                                <dt x-text="item.shown === 'expired' ? $nq.t('Expired', 'انتهى') : $nq.t('Expires', 'ينتهي')"></dt>
+                                <dd class="tabular-nums" x-text="item.expiresText"></dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <blockquote x-show="item.quote" x-cloak style="display: none" class="border-s-2 border-border ps-3 text-body-sm text-foreground" x-text="item.quote"></blockquote>
+                    <div x-show="item.argRows.length > 0" x-cloak style="display: none" class="flex flex-col gap-1.5">
+                        <p class="text-caption text-muted-foreground">Arguments</p>
+                        <dl class="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 rounded-control border border-border bg-secondary/50 p-2.5">
+                            <template x-for="a in item.argRows" :key="a.key">
+                                <div class="contents">
+                                    <dt dir="ltr" class="text-start font-mono text-caption text-muted-foreground" x-text="a.key"></dt>
+                                    <dd dir="ltr" class="flex min-w-0 items-center gap-1 break-words text-start font-mono text-caption" x-bind:class="a.redacted ? 'text-muted-foreground' : 'text-foreground'">
+                                        <span x-show="a.redacted" aria-label="Hidden" class="flex"><svg class="size-3 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg></span>
+                                        <span x-text="a.value"></span>
+                                    </dd>
+                                </div>
+                            </template>
+                        </dl>
+                    </div>
+                    <div x-show="item.criteria && item.criteria.length > 0" x-cloak style="display: none" class="flex flex-col gap-1.5">
+                        <p class="text-caption text-muted-foreground">Criteria<span x-show="item.unmet > 0" x-text="' · ' + item.unmet + ' ' + $nq.t('not met', 'غير مستوفاة')"></span></p>
+                        <ul class="flex flex-col gap-1">
+                            <template x-for="c in item.criteria ?? []" :key="c.id">
+                                <li class="flex items-center gap-2 text-body-sm">
+                                    <span x-show="c.met" aria-label="Pass" class="flex"><svg class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg></span>
+                                    <span x-show="!c.met" x-cloak style="display: none" aria-label="Fail" class="flex"><svg class="size-4 shrink-0 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg></span>
+                                    <span x-bind:class="!c.met && 'text-nq-danger-text'" x-text="c.label"></span>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <p x-show="item.shown !== 'pending' && (item.reason || item.decidedBy)" x-cloak style="display: none" class="flex flex-wrap gap-x-3 text-body-sm text-muted-foreground">
+                        <span x-show="item.decidedBy">Decided by <span class="text-foreground" x-text="item.decidedBy"></span> <span class="tabular-nums" x-text="item.decidedText"></span></span>
+                        <span x-show="item.reason">Reason: <span class="text-foreground" x-text="item.reason"></span></span>
+                    </p>
+                    <div x-show="item.decidable" x-cloak style="display: none" class="flex flex-wrap items-center gap-2 border-t border-border pt-3">
+                        <button data-slot="button"
+     type="button"                     x-bind:disabled="!item.approvable" x-bind:aria-label="$nq.t(&#039;Approve &#039;, &#039;موافقة على &#039;) + item.title" x-bind:title="item.approvable ? null : $nq.t(&#039;Fix the unmet criteria before approving.&#039;, &#039;أصلح المعايير غير المستوفاة قبل الموافقة.&#039;)" x-on:click="approve(item.id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Approve</button>
+                        <button data-slot="button"
+     type="button"                     x-bind:aria-label="$nq.t(&#039;Reject &#039;, &#039;رفض &#039;) + item.title" x-on:click="askReject(item.id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M4.929 4.929 19.07 19.071"/>
+</svg>Reject</button>
+                        <button data-slot="button"
+     type="button"                     x-show="convert" x-cloak="x-cloak" style="display: none" x-bind:aria-label="&#039;Convert to task&#039; + &#039; &#039; + item.title" x-on:click="toConvert(item.id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 3 4 4-4 4"/>
+  <path d="M20 7H4"/>
+  <path d="m8 21-4-4 4-4"/>
+  <path d="M4 17h16"/>
+</svg>Convert to task</button>
+                        <span x-show="!item.approvable" x-cloak style="display: none" class="text-caption text-nq-danger-text">Fix the unmet criteria before approving.</span>
+                    </div></div>
+            </li>
+        </template>
+    </ul>
+    <template x-teleport="body">
+        <div data-slot="dialog-portal" x-on:keydown.escape.window="rejecting && cancelReject()">
+            <div data-slot="dialog-backdrop" x-nq-presence="rejecting !== null" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+            <div data-slot="approval-reject" role="dialog" aria-modal="true" x-nq-presence="rejecting !== null" x-trap.noscroll="rejecting !== null"
+                class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                <div class="flex flex-col gap-1.5">
+                    <h2 data-slot="dialog-title" class="text-h3 text-foreground" x-text="$nq.t('Reject ', 'رفض ') + (rejecting?.title ?? '') + '?'"></h2>
+                    <p data-slot="dialog-description" class="text-body-sm text-muted-foreground">The person who asked will see your reason.</p>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label for="nq-approval-reason" class="text-label text-foreground">Reason</label>
+                    <textarea id="nq-approval-reason" data-slot="textarea" rows="3" x-model="reason" placeholder="Say why this is rejected" x-bind:aria-invalid="touched && reason.trim() === '' ? 'true' : null"
+                        class="w-full min-w-0 rounded-control border border-input bg-card px-3 py-2 text-body text-foreground outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus aria-invalid:border-nq-danger"></textarea>
+                    <p data-slot="field-error" x-show="touched && reason.trim() === ''" x-cloak style="display: none" class="text-caption text-nq-danger-text">Give a reason.</p>
+                </div>
+                <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                    <button data-slot="button"
+     type="button"                     x-on:click="cancelReject()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="submitReject()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Reject</button>
+                </div>
+            </div>
+        </div>
+    </template>
+</section>

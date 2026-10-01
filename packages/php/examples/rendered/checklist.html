@@ -1,0 +1,141 @@
+<section data-slot="checklist" aria-label="Checklist" x-data="nqChecklist(JSON.parse('[{\u0022id\u0022:\u00221\u0022,\u0022text\u0022:\u0022Write the brief\u0022,\u0022done\u0022:true},{\u0022id\u0022:\u00222\u0022,\u0022text\u0022:\u0022Prepare the launch\u0022,\u0022done\u0022:false,\u0022subtasks\u0022:[{\u0022id\u0022:\u00222a\u0022,\u0022text\u0022:\u0022Draft the announcement\u0022,\u0022done\u0022:true},{\u0022id\u0022:\u00222b\u0022,\u0022text\u0022:\u0022Schedule the post\u0022,\u0022done\u0022:false}]}]'), JSON.parse('{\u0022canAdd\u0022:true,\u0022canRemove\u0022:true}'))" x-modelable="items"
+    class="flex flex-col gap-3">
+            <div data-slot="progress" role="progressbar" x-show="progress().total > 0" x-cloak style="display: none" aria-valuemin="0" aria-valuemax="100" x-bind:aria-valuenow="progress().percent" x-bind:data-tone="progress().percent === 100 ? 'success' : 'default'" class="flex w-full flex-col gap-1.5">
+            <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+                <span class="text-label text-foreground" x-text="progressLabel()"></span>
+                <span aria-hidden="true" class="text-muted-foreground tabular-nums" x-text="progress().percent + '%'"></span>
+            </div>
+            <div data-slot="progress-track" class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-2">
+                <div data-slot="progress-indicator" x-bind:style="'inset-inline-start:0;width:' + progress().percent + '%'" x-bind:class="progress().percent === 100 ? 'bg-nq-success' : 'bg-primary'" class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none"></div>
+            </div>
+        </div>
+    <div data-slot="empty-state" x-show="items.length === 0" x-cloak="x-cloak" style="display: none" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 5h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="m3 17 2 2 4-4"/>
+  <path d="m3 7 2 2 4-4"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No items yet</p>
+                    <p class="text-body-sm text-muted-foreground">Add the first thing that needs doing.</p>
+            </div>
+    </div>
+    <ul x-show="items.length > 0" aria-label="Items" class="flex flex-col gap-1">
+        <template x-for="item in items" :key="item.id">
+            <li data-slot="checklist-item" x-bind:data-done="done(item) ? '' : null" class="flex flex-col gap-1.5">
+                <div class="group flex items-start gap-2.5 rounded-control px-1 py-1 hover:bg-nq-hover">
+                    <label class="flex min-w-0 flex-1 cursor-pointer items-start gap-2.5">
+                        <button type="button" role="checkbox" data-slot="checkbox" x-on:click.prevent="toggle(item)" x-bind:disabled="readOnly" x-bind:aria-label="item.text"
+                            x-bind:aria-checked="state(item) === 'some' ? 'mixed' : String(done(item))"
+                            x-bind:data-checked="done(item) && state(item) !== 'some' ? '' : null" x-bind:data-unchecked="!done(item) && state(item) !== 'some' ? '' : null" x-bind:data-indeterminate="state(item) === 'some' ? '' : null"
+                            class="mt-0.5 relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+                            <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="done(item) || state(item) === 'some'" x-cloak style="display: none">
+                                <svg aria-hidden="true" x-show="state(item) === 'some'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>                                <svg aria-hidden="true" x-show="state(item) !== 'some'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            </span>
+                        </button>
+                        <span class="flex min-w-0 flex-col">
+                            <span class="text-body-sm text-foreground" x-bind:class="done(item) && 'text-muted-foreground line-through'" x-text="item.text"></span>
+                            <span x-show="item.meta" class="text-caption text-muted-foreground" x-text="item.meta"></span>
+                        </span>
+                    </label>
+                    <span x-show="(item.subtasks ?? []).length > 0" x-cloak style="display: none" dir="ltr" class="mt-0.5 shrink-0 text-caption tabular-nums text-muted-foreground" x-text="doneSubs(item) + '/' + (item.subtasks ?? []).length"></span>
+                    <div class="flex shrink-0 items-center">
+                                                    <button data-slot="button"
+     type="button"                     x-show="!readOnly" x-bind:aria-label="$nq.t(&#039;Add a subtask to &#039;, &#039;إضافة مهمة فرعية إلى &#039;) + item.text" x-on:click="startAdd(item.id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg></button>
+                                                                                                    <button data-slot="button"
+     type="button"                     x-show="!readOnly" x-bind:aria-label="$nq.t(&#039;Delete &#039;, &#039;حذف &#039;) + item.text" x-on:click="remove(item.id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                                                <button data-slot="button"
+     type="button"                     x-show="(item.subtasks ?? []).length &gt; 0" x-cloak="x-cloak" style="display: none" x-bind:aria-expanded="isOpen(item.id)" x-bind:aria-label="(isOpen(item.id) ? $nq.t(&#039;Hide subtasks of &#039;, &#039;إخفاء المهام الفرعية لـ &#039;) : $nq.t(&#039;Show subtasks of &#039;, &#039;إظهار المهام الفرعية لـ &#039;)) + item.text" x-on:click="toggleOpen(item.id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" x-bind:class="!isOpen(item.id) && '-rotate-90 rtl:rotate-90'" class="transition-transform duration-150" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></button>
+                    </div>
+                </div>
+                <ul x-show="(item.attachments ?? []).length > 0" x-cloak style="display: none" class="flex flex-wrap gap-1.5 ps-8" aria-label="Attach a file">
+                    <template x-for="a in item.attachments ?? []" :key="a.id">
+                        <li class="inline-flex max-w-full items-center gap-1 rounded-control border border-border bg-secondary px-2 py-0.5 text-caption text-foreground">
+                            <svg aria-hidden="true" class="size-3 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/>
+</svg>                            <a x-show="a.url" x-bind:href="a.url" dir="auto" class="truncate underline-offset-2 hover:underline" x-text="a.name"></a>
+                            <span x-show="!a.url" dir="auto" class="truncate" x-text="a.name"></span>
+                            <bdi x-show="a.size !== undefined" class="text-muted-foreground" x-text="a.size !== undefined ? size(a.size) : ''"></bdi>
+                            <button type="button" x-show="!readOnly" x-bind:aria-label="$nq.t('Remove ', 'إزالة ') + a.name" x-on:click="removeAttachment(item.id, a.id)"
+                                class="inline-flex size-4 items-center justify-center rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus"><svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                        </li>
+                    </template>
+                </ul>
+                <ul x-show="(item.subtasks ?? []).length > 0 && isOpen(item.id)" x-cloak style="display: none" class="ms-3 flex flex-col gap-1 border-s border-border ps-4">
+                    <template x-for="sub in item.subtasks ?? []" :key="sub.id">
+                        <li data-slot="checklist-item" x-bind:data-done="sub.done ? '' : null" class="flex flex-col gap-1.5">
+                            <div class="group flex items-start gap-2.5 rounded-control px-1 py-1 hover:bg-nq-hover">
+                                <label class="flex min-w-0 flex-1 cursor-pointer items-start gap-2.5">
+                                    <button type="button" role="checkbox" data-slot="checkbox" x-on:click.prevent="toggle(sub)" x-bind:disabled="readOnly" x-bind:aria-label="sub.text" x-bind:aria-checked="String(sub.done)"
+                                        x-bind:data-checked="sub.done ? '' : null" x-bind:data-unchecked="sub.done ? null : ''" class="mt-0.5 relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+                                        <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="sub.done" x-cloak style="display: none"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+                                    </button>
+                                    <span class="flex min-w-0 flex-col">
+                                        <span class="text-body-sm text-foreground" x-bind:class="sub.done && 'text-muted-foreground line-through'" x-text="sub.text"></span>
+                                        <span x-show="sub.meta" class="text-caption text-muted-foreground" x-text="sub.meta"></span>
+                                    </span>
+                                </label>
+                                                                    <button data-slot="button"
+     type="button"                     x-show="!readOnly" x-bind:aria-label="$nq.t(&#039;Delete &#039;, &#039;حذف &#039;) + sub.text" x-on:click="remove(sub.id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                                                            </div>
+                        </li>
+                    </template>
+                </ul>
+                                    <div x-show="adding === item.id" x-cloak style="display: none" class="ms-3 ps-4">
+                        <form class="flex items-center gap-2" x-on:submit.prevent="add(item.id)" x-on:keydown.escape="adding = null">
+                            <input data-slot="input" type="text"
+                    x-model="subText" x-effect="adding === item.id &amp;&amp; $nextTick(() =&gt; $el.focus())" aria-label="Add subtask" placeholder="Add a subtask" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                            <button data-slot="button"
+     type="submit"                     x-bind:disabled="subText.trim() === &#039;&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>Add</button>
+                        </form>
+                    </div>
+                            </li>
+        </template>
+    </ul>
+            <form class="flex items-center gap-2" x-on:submit.prevent="add()">
+            <input data-slot="input" type="text"
+                    x-model="text" aria-label="New item" placeholder="Add an item" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+            <button data-slot="button"
+     type="submit"                     x-bind:disabled="text.trim() === &#039;&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>Add</button>
+        </form>
+    </section>

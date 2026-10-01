@@ -7,7 +7,7 @@
     $last = count($crumbs) - 1;
     $heading = $as === 'h2' ? 'h2' : 'h1';
 @endphp
-<header data-slot="page-header" {{ $attributes->cn('flex flex-col gap-3') }}>
+<header data-slot="{{ $attributes->get('data-slot', 'page-header') }}" {{ $attributes->except('data-slot')->cn('flex flex-col gap-3') }}>
     @if (count($crumbs) > 0)
         <div data-slot="page-header-breadcrumbs" class="contents"><x-nq::breadcrumb>
             <x-nq::breadcrumb.list>

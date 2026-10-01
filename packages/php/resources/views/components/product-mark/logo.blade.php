@@ -14,7 +14,7 @@
     [$latin, $arabicName] = $names[$key];
     $useArabic = ($arabic ?? \Nasaq\Nasaq::rtl()) && $arabicName !== null;
 @endphp
-<span data-slot="product-logo" {{ $attributes->cn('inline-flex items-center gap-2') }}>
+<span data-slot="{{ $attributes->get('data-slot', 'product-logo') }}" {{ $attributes->except('data-slot')->cn('inline-flex items-center gap-2') }}>
     <x-nq::product-mark :brand="$key" :size="$size" title="" />
     @if ($useArabic)
         <span lang="ar" class="font-arabic font-medium tracking-normal text-foreground" style="font-size: {{ $size * 0.7 }}px">{{ $arabicName }}</span>

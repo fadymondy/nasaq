@@ -1,0 +1,177 @@
+<section data-slot="semantic-search" aria-label="Semantic search" x-data="nqSemanticSearch(JSON.parse('{\u0022results\u0022:[{\u0022id\u0022:\u00221\u0022,\u0022content\u0022:\u0022Refunds are issued within 14 days of the return.\u0022,\u0022score\u0022:0.91,\u0022group\u0022:\u0022policies\u0022,\u0022kind\u0022:\u0022document\u0022,\u0022source\u0022:\u0022notion\u0022,\u0022sourceRef\u0022:\u0022Returns\u0022,\u0022importance\u0022:0.8},{\u0022id\u0022:\u00222\u0022,\u0022content\u0022:\u0022Shipping to Jeddah takes 2 to 3 days.\u0022,\u0022score\u0022:0.62,\u0022group\u0022:\u0022faq\u0022,\u0022kind\u0022:\u0022fact\u0022,\u0022source\u0022:\u0022upload\u0022,\u0022viaEntity\u0022:\u0022Shipping\u0022,\u0022importance\u0022:0.3}],\u0022query\u0022:\u0022refunds\u0022,\u0022mode\u0022:\u0022semantic\u0022,\u0022limit\u0022:10,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022countOne\u0022:\u00221 result\u0022,\u0022countMany\u0022:\u0022{n} results\u0022,\u0022countOf\u0022:\u0022{n} of {total} results\u0022,\u0022scoreTitle\u0022:\u0022Similarity {n}\u0022,\u0022strong\u0022:\u0022Strong\u0022,\u0022good\u0022:\u0022Good\u0022,\u0022weak\u0022:\u0022Weak\u0022,\u0022importance\u0022:\u0022Importance {n}\u0022,\u0022via\u0022:\u0022via {entity}\u0022,\u0022none\u0022:\u0022Nothing found for \\u201c{q}\\u201d\u0022,\u0022allFiltered\u0022:\u0022All {n} results are hidden by the filters.\u0022,\u0022failed\u0022:\u0022The search failed. Try again.\u0022}}'))" x-modelable="results"
+    class="flex min-w-0 flex-col gap-4">
+    <form class="flex flex-col gap-3" role="search" x-on:submit.prevent="submit()">
+                    <div class="flex flex-wrap items-center gap-2">
+                                    <div role="group" aria-label="Search mode" class="flex flex-wrap items-center gap-1.5">
+                                                    <button type="button" data-slot="button" x-bind:aria-pressed="String(mode === 'semantic')" x-on:click="mode = 'semantic'"
+                                x-bind:class="mode === 'semantic' ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'border-border bg-card text-foreground hover:bg-nq-hover'" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover">
+                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>                                Semantic
+                            </button>
+                                                    <button type="button" data-slot="button" x-bind:aria-pressed="String(mode === 'keyword')" x-on:click="mode = 'keyword'"
+                                x-bind:class="mode === 'keyword' ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'border-border bg-card text-foreground hover:bg-nq-hover'" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover">
+                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                                Keyword
+                            </button>
+                                            </div>
+                                                    <div role="group" aria-label="Results" class="ms-auto flex items-center gap-1.5">
+                        <span class="text-caption text-muted-foreground">Results</span>
+                                                    <button type="button" data-slot="button" x-bind:aria-pressed="String(limit === 10)" x-on:click="limit = 10"
+                                x-bind:class="limit === 10 ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'text-foreground hover:bg-nq-hover'" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 text-foreground hover:bg-nq-hover h-7 px-2 tabular-nums">10</button>
+                                                    <button type="button" data-slot="button" x-bind:aria-pressed="String(limit === 20)" x-on:click="limit = 20"
+                                x-bind:class="limit === 20 ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'text-foreground hover:bg-nq-hover'" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 text-foreground hover:bg-nq-hover h-7 px-2 tabular-nums">20</button>
+                                                    <button type="button" data-slot="button" x-bind:aria-pressed="String(limit === 50)" x-on:click="limit = 50"
+                                x-bind:class="limit === 50 ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'text-foreground hover:bg-nq-hover'" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 text-foreground hover:bg-nq-hover h-7 px-2 tabular-nums">50</button>
+                                            </div>
+                            </div>
+                <div class="flex flex-col gap-2 sm:flex-row">
+            <div class="relative min-w-0 flex-1">
+                <svg aria-hidden="true" class="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                <input data-slot="input" type="text"
+                    dir="auto" x-model="query" placeholder="Ask or describe what you are looking for" aria-label="Ask or describe what you are looking for" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control ps-9">
+            </div>
+            <button type="submit" data-slot="button" x-bind:aria-busy="searching ? 'true' : null" x-bind:disabled="(searching || ! query.trim()) ? '' : null" x-bind:data-disabled="(searching || ! query.trim()) ? '' : null"
+                                class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+                <span x-show="searching" style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                <span x-text="searching ? 'Searching' : 'Search'">Search</span>
+            </button>
+        </div>
+    </form>
+    <div x-show="results.length > 0 && ! searching" class="flex flex-wrap items-center gap-1.5" role="group" aria-label="Refine" >
+        <span class="me-1 inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+            <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 5H3"/>
+  <path d="M12 19H3"/>
+  <path d="M14 3v4"/>
+  <path d="M16 17v4"/>
+  <path d="M21 12h-9"/>
+  <path d="M21 19h-5"/>
+  <path d="M21 5h-7"/>
+  <path d="M8 10v4"/>
+  <path d="M8 12H3"/>
+</svg>            Refine
+        </span>
+                    <span x-show="values('group').length > 0" role="group" aria-label="Group" class="flex flex-wrap items-center gap-1.5 border-s border-border ps-2 first:border-s-0 first:ps-0">
+                <template x-for="value in values('group')" :key="value">
+                    <button type="button" data-slot="button" x-bind:aria-pressed="String(isOn('group', value))" x-on:click="toggle('group', value)"
+                        x-bind:class="isOn('group', value) ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'border-border bg-card text-foreground hover:bg-nq-hover'" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover h-7 px-2.5 text-caption">
+                        <span x-show="isOn('group', value)" class="flex [&_svg]:size-4" style="display: none"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+                        <bdi dir="ltr" class="font-mono text-[12px]" x-text="value"></bdi>
+                    </button>
+                </template>
+            </span>
+                    <span x-show="values('kind').length > 0" role="group" aria-label="Type" class="flex flex-wrap items-center gap-1.5 border-s border-border ps-2 first:border-s-0 first:ps-0">
+                <template x-for="value in values('kind')" :key="value">
+                    <button type="button" data-slot="button" x-bind:aria-pressed="String(isOn('kind', value))" x-on:click="toggle('kind', value)"
+                        x-bind:class="isOn('kind', value) ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'border-border bg-card text-foreground hover:bg-nq-hover'" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover h-7 px-2.5 text-caption">
+                        <span x-show="isOn('kind', value)" class="flex [&_svg]:size-4" style="display: none"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+                        <bdi dir="ltr" class="font-mono text-[12px]" x-text="value"></bdi>
+                    </button>
+                </template>
+            </span>
+                    <span x-show="values('source').length > 0" role="group" aria-label="Source" class="flex flex-wrap items-center gap-1.5 border-s border-border ps-2 first:border-s-0 first:ps-0">
+                <template x-for="value in values('source')" :key="value">
+                    <button type="button" data-slot="button" x-bind:aria-pressed="String(isOn('source', value))" x-on:click="toggle('source', value)"
+                        x-bind:class="isOn('source', value) ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'border-border bg-card text-foreground hover:bg-nq-hover'" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover h-7 px-2.5 text-caption">
+                        <span x-show="isOn('source', value)" class="flex [&_svg]:size-4" style="display: none"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+                        <bdi dir="ltr" class="font-mono text-[12px]" x-text="value"></bdi>
+                    </button>
+                </template>
+            </span>
+                <span x-show="hasImportance" class="border-s border-border ps-2" style="display: none">
+            <button type="button" data-slot="button" x-bind:aria-pressed="String(high)" x-on:click="high = ! high" x-bind:class="high ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'border-border bg-card text-foreground hover:bg-nq-hover'" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover h-7 px-2.5 text-caption">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>                High importance
+            </button>
+        </span>
+        <button type="button" data-slot="button" x-show="filtered" x-on:click="clear()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 text-foreground hover:bg-nq-hover ms-auto h-7" style="display: none">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>            Clear filters
+        </button>
+    </div>
+    <div x-show="searching" role="status" aria-live="polite" class="flex flex-col gap-3 rounded-card border border-border bg-card p-4" style="display: none">
+        <span class="sr-only">Searching</span>
+                    <div class="flex flex-col gap-2">
+                <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-4 w-3/4"></div>
+                <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-3 w-1/3"></div>
+            </div>
+                    <div class="flex flex-col gap-2">
+                <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-4 w-3/4"></div>
+                <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-3 w-1/3"></div>
+            </div>
+                    <div class="flex flex-col gap-2">
+                <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-4 w-3/4"></div>
+                <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-3 w-1/3"></div>
+            </div>
+            </div>
+    <div x-show="! searching && error" role="alert" data-slot="error-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card" style="display: none">
+        <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&_svg]:size-5 text-nq-danger-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg></span>
+        <div class="flex max-w-sm flex-col gap-1"><p class="text-label text-foreground" x-text="error"></p></div>
+    </div>
+    <p x-show="! searching && ! error && ! asked && results.length === 0" class="py-6 text-center text-body-sm text-muted-foreground"  style="display: none" >Search the brain in plain words. Results are ranked by meaning, not only by matching words.</p>
+    <div x-show="! searching && ! error && asked && results.length === 0" data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card" style="display: none">
+        <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&_svg]:size-5 text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg></span>
+        <div class="flex max-w-sm flex-col gap-1">
+            <p class="text-label text-foreground" x-text="noneText"></p>
+            <p class="text-body-sm text-muted-foreground">Try other words, or a shorter question. If it should be there, add it and it will show up as a knowledge gap.</p>
+        </div>
+    </div>
+    <p x-show="! searching && ! error && results.length > 0 && shown.length === 0" class="py-6 text-center text-body-sm text-muted-foreground" x-text="filteredText" style="display: none"></p>
+    <div x-show="! searching && ! error && shown.length > 0" class="flex flex-col gap-2" >
+        <p role="status" aria-live="polite" class="text-caption text-muted-foreground" x-text="countText"></p>
+        <ol class="flex flex-col divide-y divide-border rounded-card border border-border bg-card">
+            <template x-for="hit in shown" :key="hit.id">
+                <li class="flex flex-col gap-2 px-4 py-3">
+                    <div class="flex items-start gap-3">
+                        <p dir="auto" class="line-clamp-4 min-w-0 flex-1 whitespace-pre-wrap text-body text-foreground" x-html="marked(hit)"></p>
+                                                    <button type="button" data-slot="button" x-on:click="open(hit)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover shrink-0">Open</button>
+                                            </div>
+                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-caption text-muted-foreground">
+                        <span x-show="hit.group || hit.kind" data-slot="badge" dir="ltr" x-text="tag(hit)" style="display: none"
+                            class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground font-mono"></span>
+                        <bdi x-show="hit.source" dir="ltr" class="max-w-56 truncate font-mono" x-text="sourceText(hit)" style="display: none"></bdi>
+                        <span x-show="hit.viaEntity" class="text-nq-accent-text" x-text="viaText(hit)" style="display: none"></span>
+                        <span class="ms-auto flex flex-wrap items-center gap-3">
+                            <span x-show="copied === hit.id" role="status" style="display: none">Copied</span>
+                                                            <span class="inline-flex items-center gap-2" x-bind:title="scoreTitle(hit)">
+                                    <span class="sr-only">Match</span>
+                                    <span aria-hidden="true" class="block h-1 w-12 overflow-hidden rounded-full bg-nq-surface-soft">
+                                        <span class="block h-full rounded-full" x-bind:class="weak(hit) ? 'bg-nq-line-strong' : 'bg-nq-accent'" x-bind:style="scoreWidth(hit)"></span>
+                                    </span>
+                                    <bdi dir="ltr" class="tabular-nums" x-text="fig(hit.score)"></bdi>
+                                    <span x-text="level(hit)"></span>
+                                </span>
+                                                        <span x-show="hit.importance !== undefined && hit.importance !== null" x-text="importanceText(hit)" style="display: none"></span>
+                        </span>
+                    </div>
+                </li>
+            </template>
+        </ol>
+    </div>
+</section>

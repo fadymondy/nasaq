@@ -1,0 +1,554 @@
+<div data-slot="import-wizard" x-bind:data-step="step"
+    x-data="nqImportWizard(JSON.parse('[{\u0022key\u0022:\u0022name\u0022,\u0022label\u0022:\u0022Name\u0022,\u0022required\u0022:true},{\u0022key\u0022:\u0022email\u0022,\u0022label\u0022:\u0022Email\u0022,\u0022type\u0022:\u0022email\u0022,\u0022required\u0022:true}]'), JSON.parse('{\u0022uniqueKey\u0022:\u0022email\u0022,\u0022maxRows\u0022:5000,\u0022maxSize\u0022:5242880}'))"
+    x-on:import="$event.detail.done({ imported: $event.detail.rows.length })" class="flex flex-col gap-6">
+    <ol data-slot="stepper" data-orientation="horizontal" x-bind:aria-label="t().steps.join(', ')" class="m-0 flex list-none flex-row items-start p-0 max-sm:[&_li:not([data-status=current])_[data-slot=stepper-text]]:sr-only">
+        <template x-for="(label, i) in t().steps" :key="i">
+            <li data-slot="stepper-item" x-bind:data-status="stepStatus(i)" class="group/step flex flex-1 items-start last:flex-none">
+                <div data-slot="stepper-step" x-bind:aria-current="step === i ? 'step' : null" class="flex shrink-0 items-start gap-3 rounded-control text-start outline-none">
+                    <span data-slot="stepper-marker" x-bind:class="markerClass(i)" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&_svg]:size-3.5">
+                        <svg aria-hidden="true" x-show="stepStatus(i) === 'complete'" x-cloak="1" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                        <bdi data-slot="num" class="tabular-nums" x-show="stepStatus(i) !== 'complete'" x-text="n(i + 1)">1</bdi>
+                    </span>
+                    <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                        <span class="text-label" x-bind:class="stepStatus(i) === 'upcoming' ? 'text-muted-foreground' : 'text-foreground'">
+                            <span x-text="label"></span>
+                            <span class="sr-only"> (<span x-text="stepLabel(i)"></span>)</span>
+                        </span>
+                    </span>
+                </div>
+                <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="stepStatus(i) === 'complete' ? '' : null"
+                    x-bind:class="stepStatus(i) === 'complete' ? 'bg-primary' : 'bg-border'" class="mx-3 mt-3.5 h-px min-w-6 flex-1 rounded-full transition-colors duration-150 ease-nq group-last/step:hidden"></span>
+            </li>
+        </template>
+    </ol>
+    <div data-slot="card" x-show="step === 0" class="flex flex-col gap-4 rounded-card border border-border bg-card p-4 text-card-foreground sm:p-6">
+        <div class="flex flex-col gap-1">
+            <h2 class="text-h3 text-foreground">Choose a file</h2>
+            <p class="text-body-sm text-muted-foreground">CSV or TSV. Working in Excel? Use Save as, then CSV.</p>
+        </div>
+        <div data-slot="dropzone" role="button" tabindex="0" x-bind:data-dragging="dragging ? '' : null" x-bind:data-invalid="uploadError ? '' : null"
+            x-on:click="$refs.file.click()" x-on:keydown="zoneKey($event)" x-on:dragenter="dragEnter($event)" x-on:dragover.prevent x-on:dragleave="dragLeave()" x-on:drop="drop($event)"
+            class="flex min-h-32 cursor-pointer flex-col items-center justify-center gap-2 rounded-floating border border-dashed border-input bg-card p-6 text-center transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-dragging:border-nq-focus data-dragging:bg-nq-selected data-invalid:border-nq-danger">
+            <span aria-hidden="true" class="flex [&_svg]:size-6 text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v12"/>
+  <path d="m17 8-5-5-5 5"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+</svg></span>
+            <span class="text-label text-foreground"><span class="inline-flex items-center gap-2"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+  <path d="M8 13h2"/>
+  <path d="M14 13h2"/>
+  <path d="M8 17h2"/>
+  <path d="M14 17h2"/>
+</svg>Drop a CSV file here, or click to choose one</span></span>
+            <input type="file" class="sr-only" tabindex="-1" x-ref="file" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain" aria-label="Choose a file" x-on:click.stop x-on:change="onPick($event)">
+        </div>
+        <div x-show="uploadError" x-cloak style="display: none" data-slot="alert" data-tone="danger" role="alert" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border border-nq-danger/30 bg-nq-danger-soft p-3 text-start">
+            <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>            <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5"><div data-slot="alert-description" class="text-body-sm text-foreground" x-text="uploadError"></div></div>
+        </div>
+        <div data-slot="field" class="flex flex-col gap-1.5">
+            <label for="nq-import-paste" data-slot="field-label" class="text-label text-foreground">Or paste the rows</label>
+            <textarea id="nq-import-paste" data-slot="textarea" dir="ltr" rows="4" x-model="paste" placeholder="name,email,phone"
+                class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2 text-start font-mono text-caption"></textarea>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-2">
+            <button data-slot="button"
+     type="button"                     x-on:click="downloadTemplate()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>Download a template</button>
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="paste.trim() === &#039;&#039; ? true : null" x-on:click="usePasted()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Use pasted rows</button>
+        </div>
+    </div>
+    <div data-slot="card" x-show="step === 1" x-cloak style="display: none" class="flex flex-col gap-4 rounded-card border border-border bg-card p-4 text-card-foreground sm:p-6">
+        <div class="flex flex-col gap-1">
+            <h2 class="text-h3 text-foreground" x-text="t().mapTitle"></h2>
+            <p class="text-body-sm text-muted-foreground" x-text="t().mapBody"></p>
+            <p dir="auto" class="text-caption text-muted-foreground" x-text="loadedText()"></p>
+        </div>
+        <div class="flex flex-col divide-y divide-border rounded-control border border-border">
+            <template x-for="f in fields" :key="f.key">
+                <div class="grid items-center gap-2 p-3 sm:grid-cols-[1fr_1fr_1fr]">
+                    <div class="flex items-center gap-2 text-label text-foreground">
+                        <span x-text="f.label"></span>
+                        <span x-show="f.required" x-cloak style="display: none" data-slot="badge" x-bind:class="unmapped(f.key) ? 'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text' : 'border-border text-muted-foreground'"
+                            class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3" x-text="t().required"></span>
+                    </div>
+                    <div data-slot="native-select" class="relative w-full min-w-0">
+                        <select x-bind:aria-label="f.label + ': ' + t().sourceCol" x-on:change="setMap(f.key, $event.target.value)"
+                            class="h-control w-full min-w-0 appearance-none rounded-control border border-input bg-card ps-3 pe-9 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+                            <template x-for="o in options()" :key="o.value">
+                                <option x-bind:value="o.value" x-bind:selected="isSelected(f.key, o.value)" x-text="o.label"></option>
+                            </template>
+                        </select>
+                        <svg aria-hidden="true" class="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg>                    </div>
+                    <div class="min-w-0 truncate text-caption text-muted-foreground" dir="auto">
+                        <template x-if="sample(f.key)"><span><span x-text="t().example + ': '"></span><bdi class="text-foreground" x-text="sample(f.key)"></bdi></span></template>
+                    </div>
+                </div>
+            </template>
+        </div>
+        <div x-show="missing().length > 0" x-cloak style="display: none" data-slot="alert" data-tone="warning" role="alert" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border border-nq-warning/30 bg-nq-warning-soft p-3 text-start">
+            <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>            <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5"><div data-slot="alert-description" class="text-body-sm text-foreground" x-text="missingText()"></div></div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-2">
+            <button data-slot="button"
+     type="button"                     x-on:click="step = 0" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg><span x-text="t().back"></span></button>
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="missing().length &gt; 0 ? true : null" x-on:click="step = 2" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-text="t().next"></span><svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg></button>
+        </div>
+    </div>
+    <div data-slot="card" x-show="step === 2" x-cloak style="display: none" class="flex flex-col gap-4 rounded-card border border-border bg-card p-4 text-card-foreground sm:p-6">
+        <h2 class="text-h3 text-foreground" x-text="t().reviewTitle"></h2>
+        <dl class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <template x-for="c in cards()" :key="c.label">
+                <div class="flex flex-col gap-0.5 rounded-control border border-border p-3">
+                    <dt class="text-caption text-muted-foreground" x-text="c.label"></dt>
+                    <dd class="text-h3" x-bind:class="c.tone"><bdi data-slot="num" class="tabular-nums" x-text="c.n"></bdi></dd>
+                </div>
+            </template>
+        </dl>
+        <div class="flex flex-col gap-2">
+            <div data-slot="table-container" role="region" tabindex="0" x-bind:aria-label="t().filePreview" class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                <table data-slot="table" data-density="default" class="w-full caption-bottom border-collapse text-body-sm">
+                    <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent">
+                        <tr data-slot="table-row" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                            <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 w-16" x-text="t().line"></th>
+                                                            <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Name</th>
+                                                            <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Email</th>
+                                                    </tr>
+                    </thead>
+                    <tbody data-slot="table-body" class="[&_tr:last-child]:border-0">
+                                                    <tr data-slot="table-row" x-show="previewRows()[0]" x-cloak style="display: none" x-bind:data-invalid="rowBad(0) ? '' : null" x-bind:class="rowBad(0) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(0)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[0], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[0], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[0], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[0], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[0], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[0], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[0], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[0], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[1]" x-cloak style="display: none" x-bind:data-invalid="rowBad(1) ? '' : null" x-bind:class="rowBad(1) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(1)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[1], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[1], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[1], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[1], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[1], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[1], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[1], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[1], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[2]" x-cloak style="display: none" x-bind:data-invalid="rowBad(2) ? '' : null" x-bind:class="rowBad(2) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(2)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[2], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[2], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[2], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[2], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[2], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[2], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[2], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[2], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[3]" x-cloak style="display: none" x-bind:data-invalid="rowBad(3) ? '' : null" x-bind:class="rowBad(3) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(3)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[3], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[3], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[3], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[3], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[3], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[3], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[3], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[3], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[4]" x-cloak style="display: none" x-bind:data-invalid="rowBad(4) ? '' : null" x-bind:class="rowBad(4) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(4)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[4], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[4], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[4], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[4], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[4], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[4], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[4], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[4], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[5]" x-cloak style="display: none" x-bind:data-invalid="rowBad(5) ? '' : null" x-bind:class="rowBad(5) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(5)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[5], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[5], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[5], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[5], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[5], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[5], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[5], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[5], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[6]" x-cloak style="display: none" x-bind:data-invalid="rowBad(6) ? '' : null" x-bind:class="rowBad(6) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(6)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[6], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[6], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[6], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[6], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[6], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[6], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[6], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[6], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[7]" x-cloak style="display: none" x-bind:data-invalid="rowBad(7) ? '' : null" x-bind:class="rowBad(7) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(7)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[7], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[7], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[7], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[7], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[7], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[7], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[7], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[7], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[8]" x-cloak style="display: none" x-bind:data-invalid="rowBad(8) ? '' : null" x-bind:class="rowBad(8) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(8)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[8], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[8], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[8], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[8], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[8], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[8], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[8], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[8], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[9]" x-cloak style="display: none" x-bind:data-invalid="rowBad(9) ? '' : null" x-bind:class="rowBad(9) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(9)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[9], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[9], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[9], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[9], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[9], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[9], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[9], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[9], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[10]" x-cloak style="display: none" x-bind:data-invalid="rowBad(10) ? '' : null" x-bind:class="rowBad(10) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(10)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[10], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[10], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[10], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[10], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[10], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[10], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[10], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[10], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[11]" x-cloak style="display: none" x-bind:data-invalid="rowBad(11) ? '' : null" x-bind:class="rowBad(11) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(11)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[11], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[11], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[11], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[11], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[11], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[11], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[11], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[11], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[12]" x-cloak style="display: none" x-bind:data-invalid="rowBad(12) ? '' : null" x-bind:class="rowBad(12) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(12)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[12], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[12], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[12], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[12], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[12], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[12], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[12], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[12], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[13]" x-cloak style="display: none" x-bind:data-invalid="rowBad(13) ? '' : null" x-bind:class="rowBad(13) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(13)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[13], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[13], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[13], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[13], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[13], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[13], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[13], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[13], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[14]" x-cloak style="display: none" x-bind:data-invalid="rowBad(14) ? '' : null" x-bind:class="rowBad(14) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(14)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[14], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[14], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[14], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[14], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[14], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[14], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[14], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[14], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[15]" x-cloak style="display: none" x-bind:data-invalid="rowBad(15) ? '' : null" x-bind:class="rowBad(15) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(15)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[15], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[15], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[15], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[15], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[15], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[15], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[15], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[15], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[16]" x-cloak style="display: none" x-bind:data-invalid="rowBad(16) ? '' : null" x-bind:class="rowBad(16) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(16)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[16], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[16], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[16], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[16], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[16], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[16], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[16], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[16], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[17]" x-cloak style="display: none" x-bind:data-invalid="rowBad(17) ? '' : null" x-bind:class="rowBad(17) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(17)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[17], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[17], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[17], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[17], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[17], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[17], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[17], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[17], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[18]" x-cloak style="display: none" x-bind:data-invalid="rowBad(18) ? '' : null" x-bind:class="rowBad(18) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(18)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[18], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[18], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[18], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[18], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[18], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[18], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[18], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[18], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[19]" x-cloak style="display: none" x-bind:data-invalid="rowBad(19) ? '' : null" x-bind:class="rowBad(19) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(19)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[19], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[19], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[19], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[19], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[19], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[19], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[19], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[19], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[20]" x-cloak style="display: none" x-bind:data-invalid="rowBad(20) ? '' : null" x-bind:class="rowBad(20) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(20)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[20], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[20], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[20], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[20], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[20], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[20], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[20], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[20], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[21]" x-cloak style="display: none" x-bind:data-invalid="rowBad(21) ? '' : null" x-bind:class="rowBad(21) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(21)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[21], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[21], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[21], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[21], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[21], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[21], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[21], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[21], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[22]" x-cloak style="display: none" x-bind:data-invalid="rowBad(22) ? '' : null" x-bind:class="rowBad(22) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(22)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[22], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[22], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[22], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[22], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[22], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[22], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[22], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[22], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[23]" x-cloak style="display: none" x-bind:data-invalid="rowBad(23) ? '' : null" x-bind:class="rowBad(23) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(23)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[23], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[23], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[23], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[23], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[23], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[23], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[23], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[23], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                                    <tr data-slot="table-row" x-show="previewRows()[24]" x-cloak style="display: none" x-bind:data-invalid="rowBad(24) ? '' : null" x-bind:class="rowBad(24) && 'bg-nq-danger-soft/40'"
+                                class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected">
+                                <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-muted-foreground"><bdi data-slot="num" class="tabular-nums" x-text="rowLine(24)"></bdi></td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[24], 'name') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[24], 'name')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[24], 'name')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[24], 'name') + ')'"></span>
+                                    </td>
+                                                                    <td data-slot="table-cell" x-bind:class="cellIssue(previewRows()[24], 'email') && 'text-nq-danger-text'" class="h-row align-middle whitespace-nowrap px-4 py-3">
+                                        <bdi x-text="cellText(previewRows()[24], 'email')"></bdi>
+                                        <span x-show="cellIssue(previewRows()[24], 'email')" x-cloak style="display: none" class="ms-1 text-caption" x-text="'(' + cellIssue(previewRows()[24], 'email') + ')'"></span>
+                                    </td>
+                                                            </tr>
+                                            </tbody>
+                </table>
+            </div>
+            <p x-show="hasMore()" x-cloak style="display: none" class="text-caption text-muted-foreground" x-text="showingText()"></p>
+        </div>
+        <div x-show="hasProblems()" x-cloak style="display: none" class="flex flex-col gap-2">
+            <h3 class="flex items-center gap-2 text-label text-foreground"><svg aria-hidden="true" class="size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg><span x-text="t().unresolved"></span></h3>
+            <ul class="flex max-h-48 flex-col gap-1 overflow-y-auto rounded-control border border-border p-2 text-body-sm">
+                <template x-for="r in problemRows()" :key="r.line">
+                    <li class="flex flex-wrap items-center gap-x-2">
+                        <span class="text-muted-foreground"><span x-text="t().line"></span> <bdi data-slot="num" class="tabular-nums" x-text="n(r.line)"></bdi></span>
+                        <template x-for="i in r.issues" :key="i.field + '-' + i.code"><span class="text-nq-danger-text" x-text="issueText(i)"></span></template>
+                    </li>
+                </template>
+            </ul>
+            <label class="flex items-start gap-2 text-body-sm text-foreground">
+                <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(true, false)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="skipInvalid" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 mt-0.5">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+                <span class="flex flex-col"><span x-text="t().skipInvalid"></span><span class="text-caption text-muted-foreground" x-text="t().skipInvalidHint"></span></span>
+            </label>
+        </div>
+        <div x-show="toImport().length === 0" x-cloak style="display: none" data-slot="alert" data-tone="danger" role="alert" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border border-nq-danger/30 bg-nq-danger-soft p-3 text-start">
+            <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>            <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5"><div data-slot="alert-title" class="text-label text-foreground" x-text="t().nothing"></div><div data-slot="alert-description" class="text-body-sm text-muted-foreground" x-text="t().nothingBody"></div></div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-2">
+            <button data-slot="button"
+     type="button"                     x-on:click="step = 1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg><span x-text="t().back"></span></button>
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="toImport().length === 0 ? true : null" x-on:click="runImport()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-text="importLabel()"></span></button>
+        </div>
+    </div>
+    <div data-slot="card" x-show="step === 3" x-cloak style="display: none" aria-live="polite" class="flex flex-col gap-4 rounded-card border border-border bg-card p-4 text-card-foreground sm:p-6">
+        <div x-show="busy" x-cloak style="display: none" class="flex flex-col gap-3">
+            <h2 class="text-h3 text-foreground" x-text="t().importing"></h2>
+            <div data-slot="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuetext="indeterminate progress" data-indeterminate class="flex w-full flex-col gap-1.5">
+                <div data-slot="progress-track" class="relative block h-2 w-full overflow-hidden rounded-full bg-nq-surface-soft"><div data-slot="progress-indicator" class="block h-full w-full rounded-full bg-primary motion-safe:animate-pulse" style="inset-inline-start:0"></div></div>
+            </div>
+        </div>
+        <div x-show="! busy && runError" x-cloak style="display: none" class="flex flex-col gap-3">
+            <div data-slot="alert" data-tone="danger" role="alert" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border border-nq-danger/30 bg-nq-danger-soft p-3 text-start">
+                <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>                <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5"><div data-slot="alert-title" class="text-label text-foreground" x-text="t().failed"></div><div data-slot="alert-description" class="text-body-sm text-muted-foreground" x-text="runError"></div></div>
+            </div>
+            <div class="flex gap-2">
+                <button data-slot="button"
+     type="button"                     x-on:click="step = 2" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg><span x-text="t().back"></span></button>
+                <button data-slot="button"
+     type="button"                     x-on:click="runImport()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-text="t().retry"></span></button>
+            </div>
+        </div>
+        <div x-show="! busy && ! runError && result" x-cloak style="display: none" class="flex flex-col gap-4">
+            <div class="flex items-center gap-3">
+                <span class="inline-flex size-10 items-center justify-center rounded-full bg-nq-success-soft text-nq-success-text"><svg aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg></span>
+                <div class="flex flex-col">
+                    <h2 class="text-h3 text-foreground" x-text="t().done"></h2>
+                    <p class="text-body-sm text-muted-foreground" x-text="importedText()"></p>
+                </div>
+            </div>
+            <div x-show="result && result.failed && result.failed.length > 0" x-cloak style="display: none" class="flex flex-col gap-1">
+                <h3 class="text-label text-foreground" x-text="t().failedRows"></h3>
+                <ul class="flex max-h-48 flex-col gap-1 overflow-y-auto rounded-control border border-border p-2 text-body-sm">
+                    <template x-for="f in (result && result.failed) || []" :key="f.line">
+                        <li class="flex gap-2"><span class="text-muted-foreground"><span x-text="t().line"></span> <bdi data-slot="num" class="tabular-nums" x-text="n(f.line)"></bdi></span><span class="text-nq-danger-text" x-text="f.message"></span></li>
+                    </template>
+                </ul>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button data-slot="button"
+     type="button"                     x-on:click="finish()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-text="t().finish"></span></button>
+                <button data-slot="button"
+     type="button"                     x-on:click="reset()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="t().another"></span></button>
+            </div>
+        </div>
+    </div>
+</div>

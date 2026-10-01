@@ -14,7 +14,7 @@
     $ring = 'outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus';
     $strike = 'absolute start-1/2 top-1/2 h-px w-[150%] -translate-x-1/2 -translate-y-1/2 -rotate-45 bg-nq-danger';
 @endphp
-<div data-slot="product-variant-picker" {{ $attributes->cn('flex flex-col gap-4') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'product-variant-picker') }}" {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
     @foreach ($product['options'] ?? [] as $option)
         @php
             $oid = $option['id'];

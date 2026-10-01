@@ -1,0 +1,533 @@
+<div class="flex flex-col gap-8" x-data="{ showInstall: false, showIos: false, showDone: false }">
+    <div class="flex flex-wrap items-center gap-3">
+        <button data-slot="button"
+     type="button"                     x-on:click="showInstall = true" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Install the app</button>
+        <button data-slot="button"
+     type="button"                     x-on:click="showIos = true" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        iPhone steps</button>
+        <button data-slot="button"
+     type="button"                     x-on:click="showDone = true" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Installed</button>
+    </div>
+    <div data-slot="install-prompt-root" x-data="nqInstallPrompt(JSON.parse('{\u0022open\u0022:false,\u0022platform\u0022:\u0022auto\u0022,\u0022snoozeDays\u0022:14}'))" x-modelable="open" x-id="['nq-dialog']" x-model="showInstall" class="contents">
+    <template x-teleport="body">
+        <div data-slot="dialog-portal">
+            <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+            <div data-slot="install-prompt" data-platform="prompt" x-bind:data-platform="platform" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+                class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                <div data-slot="dialog-header" x-show="platform === &#039;installed&#039;" style="display: none" class="flex flex-col gap-1.5 pe-8 items-center text-center"><span aria-hidden="true" class="mb-1 inline-flex size-12 items-center justify-center rounded-full bg-nq-success-soft text-nq-success-text">
+                        <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                    </span>
+                    <h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Nasaq Courier is installed</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Open it from your home screen or app list.</p></div>
+                <div data-slot="dialog-header" x-show="platform !== &#039;installed&#039;" style="" class="flex flex-col gap-1.5 pe-8 items-start text-start"><span class="mb-1 inline-flex size-12 items-center justify-center overflow-hidden rounded-card border border-border bg-card">
+                                                    <svg data-slot="product-mark" viewBox="0 0 100 100" width="28" height="28"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+            <g class="dark:hidden">
+                            <rect x="0" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="80" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="20" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="60" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+        <g class="hidden dark:block">
+                            <rect x="0" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="80" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="20" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="60" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+    </svg>
+                                            </span>
+                    <h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Install Nasaq Courier</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-show="platform === 'prompt'" style="">Add it to your device for a faster start, a full-screen window and offline access.</span>
+                        <span x-show="platform === 'ios'" style="display: none">Safari does not show an install button. Add it yourself in two steps.</span>
+                        <span x-show="platform === 'unsupported'" style="display: none">This browser can not install apps. Open the page in Chrome, Edge or Safari to install it.</span></p></div>
+                <ul class="flex flex-col gap-2 text-body-sm text-nq-fg-body" x-show="platform === 'prompt'" style="">
+                                            <li class="flex items-center gap-2">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                            Opens in one tap, like any app
+                        </li>
+                                            <li class="flex items-center gap-2">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                            Keeps working when the connection drops
+                        </li>
+                                            <li class="flex items-center gap-2">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                            Can send you alerts on this device
+                        </li>
+                                    </ul>
+                <ol class="flex flex-col gap-2" x-show="platform === 'ios'" style="display: none">
+                                            <li class="flex items-center gap-3 rounded-control border border-border bg-card p-3 text-body-sm">
+                            <span aria-hidden="true" class="inline-flex size-8 shrink-0 items-center justify-center rounded-control bg-secondary">
+                                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2v13"/>
+  <path d="m16 6-4-4-4 4"/>
+  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+</svg>                            </span>
+                            <span>
+                                <bdi class="me-1 text-muted-foreground tabular-nums">1.</bdi>
+                                Tap the Share button in the toolbar
+                            </span>
+                        </li>
+                                            <li class="flex items-center gap-3 rounded-control border border-border bg-card p-3 text-body-sm">
+                            <span aria-hidden="true" class="inline-flex size-8 shrink-0 items-center justify-center rounded-control bg-secondary">
+                                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="M8 12h8"/>
+  <path d="M12 8v8"/>
+</svg>                            </span>
+                            <span>
+                                <bdi class="me-1 text-muted-foreground tabular-nums">2.</bdi>
+                                Choose Add to Home Screen, then Add
+                            </span>
+                        </li>
+                                    </ol>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-show="platform !== &#039;installed&#039;" x-on:click="notNow()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Not now</button>
+                    <button data-slot="button"
+     type="button"                     x-show="platform === &#039;prompt&#039;" x-on:click="install()" x-bind:disabled="busy" x-bind:aria-busy="busy ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>Install</button>
+                    <button data-slot="button"
+     type="button"                     x-show="platform !== &#039;prompt&#039;" x-on:click="close()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Done</button></div>
+                <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+            </div>
+        </div>
+    </template>
+</div>
+    <div data-slot="install-prompt-root" x-data="nqInstallPrompt(JSON.parse('{\u0022open\u0022:false,\u0022platform\u0022:\u0022ios\u0022,\u0022snoozeDays\u0022:14}'))" x-modelable="open" x-id="['nq-dialog']" x-model="showIos" class="contents">
+    <template x-teleport="body">
+        <div data-slot="dialog-portal">
+            <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+            <div data-slot="install-prompt" data-platform="ios" x-bind:data-platform="platform" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+                class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                <div data-slot="dialog-header" x-show="platform === &#039;installed&#039;" style="display: none" class="flex flex-col gap-1.5 pe-8 items-center text-center"><span aria-hidden="true" class="mb-1 inline-flex size-12 items-center justify-center rounded-full bg-nq-success-soft text-nq-success-text">
+                        <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                    </span>
+                    <h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Nasaq Courier is installed</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Open it from your home screen or app list.</p></div>
+                <div data-slot="dialog-header" x-show="platform !== &#039;installed&#039;" style="" class="flex flex-col gap-1.5 pe-8 items-start text-start"><span class="mb-1 inline-flex size-12 items-center justify-center overflow-hidden rounded-card border border-border bg-card">
+                                                    <svg data-slot="product-mark" viewBox="0 0 100 100" width="28" height="28"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+            <g class="dark:hidden">
+                            <rect x="0" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="80" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="20" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="60" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+        <g class="hidden dark:block">
+                            <rect x="0" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="80" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="20" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="60" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+    </svg>
+                                            </span>
+                    <h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Install Nasaq Courier</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-show="platform === 'prompt'" style="display: none">Add it to your device for a faster start, a full-screen window and offline access.</span>
+                        <span x-show="platform === 'ios'" style="">Safari does not show an install button. Add it yourself in two steps.</span>
+                        <span x-show="platform === 'unsupported'" style="display: none">This browser can not install apps. Open the page in Chrome, Edge or Safari to install it.</span></p></div>
+                <ul class="flex flex-col gap-2 text-body-sm text-nq-fg-body" x-show="platform === 'prompt'" style="display: none">
+                                            <li class="flex items-center gap-2">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                            Opens in one tap, like any app
+                        </li>
+                                            <li class="flex items-center gap-2">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                            Keeps working when the connection drops
+                        </li>
+                                            <li class="flex items-center gap-2">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                            Can send you alerts on this device
+                        </li>
+                                    </ul>
+                <ol class="flex flex-col gap-2" x-show="platform === 'ios'" style="">
+                                            <li class="flex items-center gap-3 rounded-control border border-border bg-card p-3 text-body-sm">
+                            <span aria-hidden="true" class="inline-flex size-8 shrink-0 items-center justify-center rounded-control bg-secondary">
+                                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2v13"/>
+  <path d="m16 6-4-4-4 4"/>
+  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+</svg>                            </span>
+                            <span>
+                                <bdi class="me-1 text-muted-foreground tabular-nums">1.</bdi>
+                                Tap the Share button in the toolbar
+                            </span>
+                        </li>
+                                            <li class="flex items-center gap-3 rounded-control border border-border bg-card p-3 text-body-sm">
+                            <span aria-hidden="true" class="inline-flex size-8 shrink-0 items-center justify-center rounded-control bg-secondary">
+                                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="M8 12h8"/>
+  <path d="M12 8v8"/>
+</svg>                            </span>
+                            <span>
+                                <bdi class="me-1 text-muted-foreground tabular-nums">2.</bdi>
+                                Choose Add to Home Screen, then Add
+                            </span>
+                        </li>
+                                    </ol>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-show="platform !== &#039;installed&#039;" x-on:click="notNow()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Not now</button>
+                    <button data-slot="button"
+     type="button"                     x-show="platform === &#039;prompt&#039;" x-on:click="install()" x-bind:disabled="busy" x-bind:aria-busy="busy ? &#039;true&#039; : null" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>Install</button>
+                    <button data-slot="button"
+     type="button"                     x-show="platform !== &#039;prompt&#039;" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Done</button></div>
+                <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+            </div>
+        </div>
+    </template>
+</div>
+    <div data-slot="install-prompt-root" x-data="nqInstallPrompt(JSON.parse('{\u0022open\u0022:false,\u0022platform\u0022:\u0022installed\u0022,\u0022snoozeDays\u0022:14}'))" x-modelable="open" x-id="['nq-dialog']" x-model="showDone" class="contents">
+    <template x-teleport="body">
+        <div data-slot="dialog-portal">
+            <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+            <div data-slot="install-prompt" data-platform="installed" x-bind:data-platform="platform" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+                class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                <div data-slot="dialog-header" x-show="platform === &#039;installed&#039;" style="" class="flex flex-col gap-1.5 pe-8 items-center text-center"><span aria-hidden="true" class="mb-1 inline-flex size-12 items-center justify-center rounded-full bg-nq-success-soft text-nq-success-text">
+                        <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                    </span>
+                    <h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Nasaq Courier is installed</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Open it from your home screen or app list.</p></div>
+                <div data-slot="dialog-header" x-show="platform !== &#039;installed&#039;" style="display: none" class="flex flex-col gap-1.5 pe-8 items-start text-start"><span class="mb-1 inline-flex size-12 items-center justify-center overflow-hidden rounded-card border border-border bg-card">
+                                                    <svg data-slot="product-mark" viewBox="0 0 100 100" width="28" height="28"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+            <g class="dark:hidden">
+                            <rect x="0" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="80" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="20" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="60" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+        <g class="hidden dark:block">
+                            <rect x="0" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="80" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="20" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="60" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+    </svg>
+                                            </span>
+                    <h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Install Nasaq Courier</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-show="platform === 'prompt'" style="display: none">Add it to your device for a faster start, a full-screen window and offline access.</span>
+                        <span x-show="platform === 'ios'" style="display: none">Safari does not show an install button. Add it yourself in two steps.</span>
+                        <span x-show="platform === 'unsupported'" style="display: none">This browser can not install apps. Open the page in Chrome, Edge or Safari to install it.</span></p></div>
+                <ul class="flex flex-col gap-2 text-body-sm text-nq-fg-body" x-show="platform === 'prompt'" style="display: none">
+                                            <li class="flex items-center gap-2">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                            Opens in one tap, like any app
+                        </li>
+                                            <li class="flex items-center gap-2">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                            Keeps working when the connection drops
+                        </li>
+                                            <li class="flex items-center gap-2">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                            Can send you alerts on this device
+                        </li>
+                                    </ul>
+                <ol class="flex flex-col gap-2" x-show="platform === 'ios'" style="display: none">
+                                            <li class="flex items-center gap-3 rounded-control border border-border bg-card p-3 text-body-sm">
+                            <span aria-hidden="true" class="inline-flex size-8 shrink-0 items-center justify-center rounded-control bg-secondary">
+                                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2v13"/>
+  <path d="m16 6-4-4-4 4"/>
+  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+</svg>                            </span>
+                            <span>
+                                <bdi class="me-1 text-muted-foreground tabular-nums">1.</bdi>
+                                Tap the Share button in the toolbar
+                            </span>
+                        </li>
+                                            <li class="flex items-center gap-3 rounded-control border border-border bg-card p-3 text-body-sm">
+                            <span aria-hidden="true" class="inline-flex size-8 shrink-0 items-center justify-center rounded-control bg-secondary">
+                                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="M8 12h8"/>
+  <path d="M12 8v8"/>
+</svg>                            </span>
+                            <span>
+                                <bdi class="me-1 text-muted-foreground tabular-nums">2.</bdi>
+                                Choose Add to Home Screen, then Add
+                            </span>
+                        </li>
+                                    </ol>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-show="platform !== &#039;installed&#039;" x-on:click="notNow()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Not now</button>
+                    <button data-slot="button"
+     type="button"                     x-show="platform === &#039;prompt&#039;" x-on:click="install()" x-bind:disabled="busy" x-bind:aria-busy="busy ? &#039;true&#039; : null" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>Install</button>
+                    <button data-slot="button"
+     type="button"                     x-show="platform !== &#039;prompt&#039;" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Done</button></div>
+                <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+            </div>
+        </div>
+    </template>
+</div>
+    <section data-slot="push-opt-in" aria-labelledby="nq-push-3813f1d3" x-data="nqPushOptIn(JSON.parse('{\u0022permission\u0022:\u0022granted\u0022,\u0022subscribed\u0022:true,\u0022devices\u0022:[{\u0022id\u0022:\u0022d1\u0022,\u0022current\u0022:true},{\u0022id\u0022:\u0022d2\u0022,\u0022current\u0022:false},{\u0022id\u0022:\u0022d3\u0022,\u0022current\u0022:false}]}'))" x-on:nq-permission="onPermission($event)"
+    class="flex w-full max-w-xl flex-col gap-4 rounded-card border border-border bg-card p-4">
+    <header class="flex flex-col gap-1">
+        <h2 id="nq-push-3813f1d3" class="text-h3">Notifications on this device</h2>
+        <p class="text-body-sm text-muted-foreground">Each device is turned on by itself, so your phone can buzz while your laptop stays quiet.</p>
+    </header>
+        <div x-show="! granted()" style="display: none">
+        <div role="group" aria-labelledby="nq-dn-perm-df62b9e2" data-slot="desktop-notification-permission" data-step="granted"
+    x-data="nqNotificationPermission('granted', JSON.parse('{\u0022ask\u0022:[\u0022Turn on desktop notifications?\u0022,\u0022Get a quiet alert when something needs you, even when this window is in the background.\u0022],\u0022asking\u0022:[\u0022Waiting for your system\u0022,\u0022Choose Allow in the system dialog to finish.\u0022],\u0022granted\u0022:[\u0022Desktop notifications are on\u0022,\u0022You will see alerts here. You can turn them off in system settings.\u0022],\u0022denied\u0022:[\u0022Notifications are blocked\u0022,\u0022This app is not allowed to show alerts. Allow it in your system settings, then come back.\u0022],\u0022unsupported\u0022:[\u0022Not available here\u0022,\u0022Your system does not support desktop notifications.\u0022]}'))" x-effect="$el.setAttribute('data-step', step)"
+    class="flex w-full flex-col gap-3 rounded-card border border-border bg-card p-4 max-w-none">
+    <div class="flex items-start gap-3">
+        <span aria-hidden="true" class="grid size-9 shrink-0 place-items-center rounded-full bg-secondary"
+            x-bind:class="step === 'denied' ? 'bg-nq-warning-soft' : 'bg-secondary'">
+            <svg x-show="! off" style="" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M22 8c0-2.3-.8-4.3-2-6"/>
+  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
+  <path d="M4 2C2.8 3.7 2 5.7 2 8"/>
+</svg>            <svg x-show="off" style="display: none" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M17 17H4a1 1 0 0 1-.74-1.673C4.59 13.956 6 12.499 6 8a6 6 0 0 1 .258-1.742"/>
+  <path d="m2 2 20 20"/>
+  <path d="M8.668 3.01A6 6 0 0 1 18 8c0 2.687.77 4.653 1.707 6.05"/>
+</svg>        </span>
+        <div class="flex min-w-0 flex-col gap-1" aria-live="polite">
+            <h3 id="nq-dn-perm-df62b9e2" class="text-label" x-text="copy[step][0]">Desktop notifications are on</h3>
+            <p class="text-body-sm text-muted-foreground" x-text="copy[step][1]">You will see alerts here. You can turn them off in system settings.</p>
+        </div>
+    </div>
+    <div class="flex flex-wrap justify-end gap-2">
+                <button data-slot="button"
+     type="button"                     x-show="step === &#039;ask&#039; || step === &#039;asking&#039;" x-on:click="request()" x-bind:aria-busy="step === &#039;asking&#039; ? &#039;true&#039; : null" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="step === &#039;asking&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>Turn on</button>
+                    </div>
+</div>
+    </div>
+    <div class="flex flex-col gap-4" x-show="granted()" style="">
+        <div class="flex items-center justify-between gap-4 rounded-control border border-border p-3">
+            <div class="flex min-w-0 flex-col">
+                <span id="nq-push-3813f1d3-switch" class="text-label">Send notifications to this device</span>
+                <span class="text-caption text-muted-foreground" aria-live="polite" x-text="subscribed ? 'This device will get notifications.' : 'This device will not get notifications.'">This device will get notifications.</span>
+            </div>
+            <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="subscribed" aria-labelledby="nq-push-3813f1d3-switch" x-bind:data-saving="saving ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+        </div>
+        <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+                    <div x-show="subscribed" style="">
+                <button data-slot="button"
+     type="button"                     x-on:click="test()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Send a test</button>
+            </div>
+                <div class="flex flex-col gap-2">
+            <h3 class="text-label">Your devices</h3>
+                            <ul class="flex flex-col divide-y divide-border rounded-control border border-border">
+                                            <li class="flex items-center gap-3 p-3" x-show="! gone.includes('d1')">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+  <path d="M12 18h.01"/>
+</svg>                            <div class="flex min-w-0 flex-1 flex-col">
+                                <span class="flex items-center gap-2 text-body-sm">
+                                    <span dir="auto" class="truncate">Pixel 9</span>
+                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">This device</span>
+                                                                    </span>
+                                                                    <span class="text-caption text-muted-foreground">
+                                        Last seen <time data-slot="date-time" datetime="2026-09-30T08:00:00+00:00" dir="auto"  title="Sep 30, 2026"     class="tabular-nums [unicode-bidi:isolate]">23 hours from now</time>
+                                    </span>
+                                                            </div>
+                                                    </li>
+                                            <li class="flex items-center gap-3 p-3" x-show="! gone.includes('d2')">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/>
+  <path d="M20.054 15.987H3.946"/>
+</svg>                            <div class="flex min-w-0 flex-1 flex-col">
+                                <span class="flex items-center gap-2 text-body-sm">
+                                    <span dir="auto" class="truncate">Work laptop</span>
+                                                                    </span>
+                                                                    <span class="text-caption text-muted-foreground">
+                                        Last seen <time data-slot="date-time" datetime="2026-09-28T10:30:00+00:00" dir="auto"  title="Sep 28, 2026"     class="tabular-nums [unicode-bidi:isolate]">22 hours ago</time>
+                                    </span>
+                                                            </div>
+                                                            <button data-slot="button"
+     type="button"                     aria-label="Remove Work laptop" x-on:click="remove(&#039;d2&#039;)" x-bind:disabled="removing === &#039;d2&#039;" x-bind:aria-busy="removing === &#039;d2&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                                                    </li>
+                                            <li class="flex items-center gap-3 p-3" x-show="! gone.includes('d3')">
+                            <svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="16" height="20" x="4" y="2" rx="2" ry="2"/>
+  <line x1="12" x2="12.01" y1="18" y2="18"/>
+</svg>                            <div class="flex min-w-0 flex-1 flex-col">
+                                <span class="flex items-center gap-2 text-body-sm">
+                                    <span dir="auto" class="truncate">iPad</span>
+                                                                    </span>
+                                                            </div>
+                                                            <button data-slot="button"
+     type="button"                     aria-label="Remove iPad" x-on:click="remove(&#039;d3&#039;)" x-bind:disabled="removing === &#039;d3&#039;" x-bind:aria-busy="removing === &#039;d3&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                                                    </li>
+                                    </ul>
+                        <p class="text-body-sm text-muted-foreground" x-show="visibleDevices() === 0" style="display: none">No other devices yet.</p>
+        </div>
+    </div>
+</section>
+    <section data-slot="push-opt-in" aria-labelledby="nq-push-16cc03ec" x-data="nqPushOptIn(JSON.parse('{\u0022permission\u0022:\u0022default\u0022,\u0022subscribed\u0022:false,\u0022devices\u0022:[]}'))" x-on:nq-permission="onPermission($event)"
+    class="flex w-full max-w-xl flex-col gap-4 rounded-card border border-border bg-card p-4">
+    <header class="flex flex-col gap-1">
+        <h2 id="nq-push-16cc03ec" class="text-h3">Notifications on this device</h2>
+        <p class="text-body-sm text-muted-foreground">Each device is turned on by itself, so your phone can buzz while your laptop stays quiet.</p>
+    </header>
+            <div data-slot="alert" data-tone="info" role="status"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-info/30 bg-nq-info-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-info-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground">On iPhone and iPad, install the app to your home screen first. Notifications only work from the installed app.</div>
+            </div>
+    </div>
+        <div x-show="! granted()" style="">
+        <div role="group" aria-labelledby="nq-dn-perm-96f02dbc" data-slot="desktop-notification-permission" data-step="ask"
+    x-data="nqNotificationPermission('default', JSON.parse('{\u0022ask\u0022:[\u0022Turn on desktop notifications?\u0022,\u0022Get a quiet alert when something needs you, even when this window is in the background.\u0022],\u0022asking\u0022:[\u0022Waiting for your system\u0022,\u0022Choose Allow in the system dialog to finish.\u0022],\u0022granted\u0022:[\u0022Desktop notifications are on\u0022,\u0022You will see alerts here. You can turn them off in system settings.\u0022],\u0022denied\u0022:[\u0022Notifications are blocked\u0022,\u0022This app is not allowed to show alerts. Allow it in your system settings, then come back.\u0022],\u0022unsupported\u0022:[\u0022Not available here\u0022,\u0022Your system does not support desktop notifications.\u0022]}'))" x-effect="$el.setAttribute('data-step', step)"
+    class="flex w-full flex-col gap-3 rounded-card border border-border bg-card p-4 max-w-none">
+    <div class="flex items-start gap-3">
+        <span aria-hidden="true" class="grid size-9 shrink-0 place-items-center rounded-full bg-secondary"
+            x-bind:class="step === 'denied' ? 'bg-nq-warning-soft' : 'bg-secondary'">
+            <svg x-show="! off" style="" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M22 8c0-2.3-.8-4.3-2-6"/>
+  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
+  <path d="M4 2C2.8 3.7 2 5.7 2 8"/>
+</svg>            <svg x-show="off" style="display: none" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M17 17H4a1 1 0 0 1-.74-1.673C4.59 13.956 6 12.499 6 8a6 6 0 0 1 .258-1.742"/>
+  <path d="m2 2 20 20"/>
+  <path d="M8.668 3.01A6 6 0 0 1 18 8c0 2.687.77 4.653 1.707 6.05"/>
+</svg>        </span>
+        <div class="flex min-w-0 flex-col gap-1" aria-live="polite">
+            <h3 id="nq-dn-perm-96f02dbc" class="text-label" x-text="copy[step][0]">Turn on desktop notifications?</h3>
+            <p class="text-body-sm text-muted-foreground" x-text="copy[step][1]">Get a quiet alert when something needs you, even when this window is in the background.</p>
+        </div>
+    </div>
+    <div class="flex flex-wrap justify-end gap-2">
+                <button data-slot="button"
+     type="button"                     x-show="step === &#039;ask&#039; || step === &#039;asking&#039;" x-on:click="request()" x-bind:aria-busy="step === &#039;asking&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="step === &#039;asking&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>Turn on</button>
+                    </div>
+</div>
+    </div>
+    <div class="flex flex-col gap-4" x-show="granted()" style="display: none">
+        <div class="flex items-center justify-between gap-4 rounded-control border border-border p-3">
+            <div class="flex min-w-0 flex-col">
+                <span id="nq-push-16cc03ec-switch" class="text-label">Send notifications to this device</span>
+                <span class="text-caption text-muted-foreground" aria-live="polite" x-text="subscribed ? 'This device will get notifications.' : 'This device will not get notifications.'">This device will not get notifications.</span>
+            </div>
+            <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="subscribed" aria-labelledby="nq-push-16cc03ec-switch" x-bind:data-saving="saving ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+        </div>
+        <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+                <div class="flex flex-col gap-2">
+            <h3 class="text-label">Your devices</h3>
+                        <p class="text-body-sm text-muted-foreground" x-show="visibleDevices() === 0" style="">No other devices yet.</p>
+        </div>
+    </div>
+</section>
+</div>

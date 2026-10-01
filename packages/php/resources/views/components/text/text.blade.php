@@ -20,4 +20,4 @@
     ];
     $tag = $as ?? ($elements[$variant] ?? 'p');
 @endphp
-<{{ $tag }} data-slot="text" {{ $attributes->cn($roles[$variant] ?? $roles['body']) }}>{{ $slot }}</{{ $tag }}>
+<{{ $tag }} data-slot="{{ $attributes->get('data-slot', 'text') }}" {{ $attributes->except('data-slot')->cn($roles[$variant] ?? $roles['body']) }}>{{ $slot }}</{{ $tag }}>

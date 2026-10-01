@@ -1,0 +1,418 @@
+<div x-data
+    x-on:nq-power="$event.detail.wait(new Promise((resolve) => setTimeout(resolve, 400)))"
+    x-on:nq-take-snapshot="$event.detail.wait(new Promise((resolve) => setTimeout(resolve, 400)))"
+    x-on:nq-rollback="$event.detail.wait(new Promise((resolve) => setTimeout(resolve, 400)))"
+    x-on:nq-delete-snapshot="$event.detail.wait(new Promise((resolve) => setTimeout(resolve, 400)))"
+    x-on:nq-save-limits="$event.detail.wait(new Promise((resolve) => setTimeout(resolve, 400)))">
+    <div data-slot="server-card" data-server-name="web-01" x-data="nqServerCard(JSON.parse('{\u0022status\u0022:\u0022running\u0022,\u0022limits\u0022:{\u0022cpuCores\u0022:4,\u0022memoryMb\u0022:8192,\u0022diskGb\u0022:160},\u0022metrics\u0022:true,\u0022snapshots\u0022:[{\u0022id\u0022:\u0022s1\u0022,\u0022name\u0022:\u0022Before upgrade\u0022,\u0022sizeLabel\u0022:\u002218.4 GB\u0022,\u0022creating\u0022:false,\u0022when\u0022:\u00228 months ago\u0022,\u0022iso\u0022:\u00222025-12-30T09:00:00+00:00\u0022}],\u0022strings\u0022:{\u0022status\u0022:{\u0022running\u0022:\u0022Running\u0022,\u0022stopped\u0022:\u0022Stopped\u0022,\u0022starting\u0022:\u0022Starting\u0022,\u0022stopping\u0022:\u0022Stopping\u0022,\u0022restarting\u0022:\u0022Restarting\u0022,\u0022provisioning\u0022:\u0022Setting up\u0022,\u0022suspended\u0022:\u0022Suspended\u0022,\u0022error\u0022:\u0022Error\u0022},\u0022powerActions\u0022:{\u0022start\u0022:\u0022Start\u0022,\u0022stop\u0022:\u0022Stop\u0022,\u0022restart\u0022:\u0022Restart\u0022,\u0022force-stop\u0022:\u0022Force stop\u0022},\u0022powerConfirmTitle\u0022:\u0022{action} {name}?\u0022,\u0022powerConfirmBody\u0022:{\u0022start\u0022:\u0022The server boots and services start.\u0022,\u0022restart\u0022:\u0022The server reboots. Connections drop for a minute or so.\u0022,\u0022stop\u0022:\u0022The server shuts down cleanly. Sites and services on it go offline until you start it again.\u0022,\u0022force-stop\u0022:\u0022The power is cut without a clean shutdown. Unsaved data can be lost. Use it only when a normal stop does not work.\u0022},\u0022rollback\u0022:\u0022Roll back\u0022,\u0022rollbackTitle\u0022:\u0022Roll back to {name}?\u0022,\u0022rollbackBody\u0022:\u0022The disk returns to how it was in this snapshot. Everything written after it is lost, and the server restarts.\u0022,\u0022remove\u0022:\u0022Delete\u0022,\u0022removeTitle\u0022:\u0022Delete {name}?\u0022,\u0022removeBody\u0022:\u0022The snapshot is removed for good. You will not be able to roll back to it.\u0022,\u0022coresOne\u0022:\u00221 vCPU\u0022,\u0022coresMany\u0022:\u0022{n} vCPU\u0022,\u0022limitIntegerError\u0022:\u0022Enter a whole number.\u0022,\u0022limitRangeError\u0022:\u0022Enter a number from {min} to {max}.\u0022,\u0022actionsFor\u0022:\u0022Actions for {name}\u0022,\u0022justNow\u0022:\u0022Just now\u0022,\u0022genericError\u0022:\u0022Something went wrong. Try again.\u0022}}'))"
+        x-bind:data-status="status" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full">
+        <div data-slot="card-header" class="grid auto-rows-min items-start px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto] gap-1.5"><div class="flex flex-wrap items-center justify-between gap-2">
+                <h3 data-slot="card-title" dir="auto" class="text-label text-foreground min-w-0 truncate">web-01</h3>
+                                    <span data-slot="status" data-tone="success" aria-live="polite" x-show="tone === &#039;success&#039;" style="" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-nq-success-text">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Running" ><span x-text="statusLabel">Running</span></span>
+</span>
+                                    <span data-slot="status" data-tone="neutral" aria-live="polite" x-show="tone === &#039;neutral&#039;" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-muted-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+</svg>        <span class="truncate"  title="Running" ><span x-text="statusLabel">Running</span></span>
+</span>
+                                    <span data-slot="status" data-tone="info" aria-live="polite" x-show="tone === &#039;info&#039;" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-nq-info-text">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-info-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>        <span class="truncate"  title="Running" ><span x-text="statusLabel">Running</span></span>
+</span>
+                                    <span data-slot="status" data-tone="warning" aria-live="polite" x-show="tone === &#039;warning&#039;" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-nq-warning-text">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>        <span class="truncate"  title="Running" ><span x-text="statusLabel">Running</span></span>
+</span>
+                                    <span data-slot="status" data-tone="danger" aria-live="polite" x-show="tone === &#039;danger&#039;" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-nq-danger-text">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>        <span class="truncate"  title="Running" ><span x-text="statusLabel">Running</span></span>
+</span>
+                            </div>
+            <div data-slot="card-description" class="text-body-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1"><span class="inline-flex items-center gap-1">
+                    <bdi dir="ltr" class="font-mono text-body-sm tabular-nums">203.0.113.24</bdi>
+                    <span class="contents" x-data="nqCopyButton('203.0.113.24', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     aria-label="Copy address" x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span>
+                </span>
+                                    <span dir="auto">Frankfurt</span>
+                                                    <bdi dir="ltr">Ubuntu 24.04</bdi></div></div>
+        <div data-slot="card-content" class="px-4 grid gap-5"><div data-slot="alert" data-tone="danger" role="alert"
+     x-data="nqAlert()" x-modelable="open" x-show="open"     x-model="hasError" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+            <div data-slot="alert-actions" class="ms-3 flex items-center gap-1">
+                            <button data-slot="button"
+     type="button"                     aria-label="Dismiss" x-on:click="dismiss()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground [&_svg]:size-3.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+            <ul class="flex flex-wrap gap-2" aria-label="Hardware">
+                <li><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 20v2"/>
+  <path d="M12 2v2"/>
+  <path d="M17 20v2"/>
+  <path d="M17 2v2"/>
+  <path d="M2 12h2"/>
+  <path d="M2 17h2"/>
+  <path d="M2 7h2"/>
+  <path d="M20 12h2"/>
+  <path d="M20 17h2"/>
+  <path d="M20 7h2"/>
+  <path d="M7 20v2"/>
+  <path d="M7 2v2"/>
+  <rect x="4" y="4" width="16" height="16" rx="2"/>
+  <rect x="8" y="8" width="8" height="8" rx="1"/>
+</svg> <bdi x-text="coresLabel">4 vCPU</bdi></span>
+</li>
+                <li><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 12v-2"/>
+  <path d="M12 18v-2"/>
+  <path d="M16 12v-2"/>
+  <path d="M16 18v-2"/>
+  <path d="M2 11h1.5"/>
+  <path d="M20 18v-2"/>
+  <path d="M20.5 11H22"/>
+  <path d="M4 18v-2"/>
+  <path d="M8 12v-2"/>
+  <path d="M8 18v-2"/>
+  <rect x="2" y="6" width="20" height="10" rx="2"/>
+</svg> <bdi dir="ltr" x-text="memoryLabel">8 GB</bdi></span>
+</li>
+                <li><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 16h.01"/>
+  <path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+  <path d="M21.946 12.013H2.054"/>
+  <path d="M6 16h.01"/>
+</svg> <bdi dir="ltr" x-text="diskLabel">160 GB</bdi></span>
+</li>
+            </ul>
+            <section aria-label="Live usage" class="grid gap-3">
+                                    <div class="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end" x-show="live" >
+                        <div class="grid gap-3">
+                                                                                            <div data-slot="meter" data-tone="default" role="meter" aria-labelledby="nq-server-srv-1-cpu-label" aria-valuemin="0" aria-valuemax="100"
+                                    aria-valuenow="42" aria-valuetext="42%" class="flex w-full flex-col gap-1.5">
+                                    <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+                                        <span id="nq-server-srv-1-cpu-label" class="text-label text-foreground"><span class="inline-flex items-center gap-1.5"><svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 20v2"/>
+  <path d="M12 2v2"/>
+  <path d="M17 20v2"/>
+  <path d="M17 2v2"/>
+  <path d="M2 12h2"/>
+  <path d="M2 17h2"/>
+  <path d="M2 7h2"/>
+  <path d="M20 12h2"/>
+  <path d="M20 17h2"/>
+  <path d="M20 7h2"/>
+  <path d="M7 20v2"/>
+  <path d="M7 2v2"/>
+  <rect x="4" y="4" width="16" height="16" rx="2"/>
+  <rect x="8" y="8" width="8" height="8" rx="1"/>
+</svg>CPU</span></span>
+                                        <span aria-hidden="true" class="text-muted-foreground tabular-nums"><bdi dir="ltr">42%</bdi></span>
+                                    </div>
+                                    <div data-slot="meter-track" class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-1">
+                                        <div data-slot="meter-indicator" style="inset-inline-start:0;width:42%"
+                                            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-primary"></div>
+                                    </div>
+                                </div>
+                                                                                            <div data-slot="meter" data-tone="default" role="meter" aria-labelledby="nq-server-srv-1-memory-label" aria-valuemin="0" aria-valuemax="100"
+                                    aria-valuenow="71" aria-valuetext="71%" class="flex w-full flex-col gap-1.5">
+                                    <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+                                        <span id="nq-server-srv-1-memory-label" class="text-label text-foreground"><span class="inline-flex items-center gap-1.5"><svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 12v-2"/>
+  <path d="M12 18v-2"/>
+  <path d="M16 12v-2"/>
+  <path d="M16 18v-2"/>
+  <path d="M2 11h1.5"/>
+  <path d="M20 18v-2"/>
+  <path d="M20.5 11H22"/>
+  <path d="M4 18v-2"/>
+  <path d="M8 12v-2"/>
+  <path d="M8 18v-2"/>
+  <rect x="2" y="6" width="20" height="10" rx="2"/>
+</svg>Memory</span></span>
+                                        <span aria-hidden="true" class="text-muted-foreground tabular-nums"><bdi dir="ltr">71%</bdi></span>
+                                    </div>
+                                    <div data-slot="meter-track" class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-1">
+                                        <div data-slot="meter-indicator" style="inset-inline-start:0;width:71%"
+                                            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-primary"></div>
+                                    </div>
+                                </div>
+                                                                                            <div data-slot="meter" data-tone="default" role="meter" aria-labelledby="nq-server-srv-1-disk-label" aria-valuemin="0" aria-valuemax="100"
+                                    aria-valuenow="38" aria-valuetext="38%" class="flex w-full flex-col gap-1.5">
+                                    <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+                                        <span id="nq-server-srv-1-disk-label" class="text-label text-foreground"><span class="inline-flex items-center gap-1.5"><svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 16h.01"/>
+  <path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+  <path d="M21.946 12.013H2.054"/>
+  <path d="M6 16h.01"/>
+</svg>Disk</span></span>
+                                        <span aria-hidden="true" class="text-muted-foreground tabular-nums"><bdi dir="ltr">38%</bdi></span>
+                                    </div>
+                                    <div data-slot="meter-track" class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-1">
+                                        <div data-slot="meter-indicator" style="inset-inline-start:0;width:38%"
+                                            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-primary"></div>
+                                    </div>
+                                </div>
+                                                    </div>
+                                                    <div data-slot="sparkline"  role="img" aria-label="CPU load of web-01, recent"  class="shrink-0 h-12 w-full sm:w-40">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-0cfb03af" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--primary)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,11.33C8.89,10.09,15.78,7.6,22.67,7.6C29.56,7.6,36.44,9.47,43.33,9.47C50.22,9.47,57.11,4.49,64,4.49C70.89,4.49,77.78,6.36,84.67,6.36C91.56,6.36,98.44,2,105.33,2C112.22,2,119.11,3.24,126,3.87L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-0cfb03af)" stroke="none" />        <path d="M2,11.33C8.89,10.09,15.78,7.6,22.67,7.6C29.56,7.6,36.44,9.47,43.33,9.47C50.22,9.47,57.11,4.49,64,4.49C70.89,4.49,77.78,6.36,84.67,6.36C91.56,6.36,98.44,2,105.33,2C112.22,2,119.11,3.24,126,3.87" fill="none" stroke="var(--primary)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                                            </div>
+                                <p class="text-body-sm text-muted-foreground" x-show="! live"  style="display: none" >Live usage is not available while the server is off.</p>
+            </section>
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-body-sm">
+                <span class="text-muted-foreground">Last deploy</span>
+                                                        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Succeeded</span>
+                    <bdi dir="ltr" class="font-mono text-caption">a1b2c3d</bdi>
+                    <time data-slot="date-time" datetime="2026-01-01T09:00:00+00:00" dir="auto"  title="Jan 1, 2026"     class="tabular-nums [unicode-bidi:isolate] text-muted-foreground">8 months ago</time>
+                                            <span class="text-muted-foreground">by Layla</span>
+                                                </div>
+            <section aria-label="Power" class="flex flex-wrap items-center gap-2" data-slot="server-power">
+                                                        <button data-slot="button"
+     type="button"                     data-power="start" x-show="allows(&#039;start&#039;)" style="display: none" x-bind:disabled="busy" x-on:click="requestPower(&#039;start&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>
+</svg>                        Start</button>
+                                                        <button data-slot="button"
+     type="button"                     data-power="restart" x-show="allows(&#039;restart&#039;)" style="" x-bind:disabled="busy" x-on:click="requestPower(&#039;restart&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+</svg>                        Restart</button>
+                                                        <button data-slot="button"
+     type="button"                     data-power="stop" x-show="allows(&#039;stop&#039;)" style="" x-bind:disabled="busy" x-on:click="requestPower(&#039;stop&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2v10"/>
+  <path d="M18.4 6.6a9 9 0 1 1-12.77.04"/>
+</svg>                        Stop</button>
+                                                        <button data-slot="button"
+     type="button"                     data-power="force-stop" x-show="allows(&#039;force-stop&#039;)" style="" x-bind:disabled="busy" x-on:click="requestPower(&#039;force-stop&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18.36 6.64A9 9 0 0 1 20.77 15"/>
+  <path d="M6.16 6.16a9 9 0 1 0 12.68 12.68"/>
+  <path d="M12 2v4"/>
+  <path d="m2 2 20 20"/>
+</svg>                        Force stop</button>
+                                <span class="text-body-sm text-muted-foreground" x-show="transitional"  style="display: none" ><span x-text="statusLabel"></span>…</span>
+                <span class="flex-1"></span>
+                                    <button data-slot="button"
+     type="button"                     x-on:click="openLimits()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 5H3"/>
+  <path d="M12 19H3"/>
+  <path d="M14 3v4"/>
+  <path d="M16 17v4"/>
+  <path d="M21 12h-9"/>
+  <path d="M21 19h-5"/>
+  <path d="M21 5h-7"/>
+  <path d="M8 10v4"/>
+  <path d="M8 12H3"/>
+</svg>                        Resource limits</button>
+                            </section>
+                            <section aria-labelledby="nq-server-srv-1-snaps" class="grid gap-2 border-t border-border pt-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="min-w-0">
+                            <h4 id="nq-server-srv-1-snaps" class="text-label text-foreground">Snapshots</h4>
+                            <p class="text-body-sm text-muted-foreground">Point-in-time copies of the disk. Roll back to return to one.</p>
+                        </div>
+                                                    <button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-on:click="openSnapshot()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/>
+  <circle cx="12" cy="13" r="3"/>
+</svg>                                Take snapshot</button>
+                                            </div>
+                    <p class="rounded-control border border-dashed border-border p-3 text-body-sm text-muted-foreground" x-show="snapshots.length === 0"  style="display: none" >No snapshots yet.</p>
+                    <ul class="grid gap-1.5" x-show="snapshots.length > 0" >
+                        <template x-for="sn in snapshots" :key="sn.id">
+                            <li class="contents" data-slot="server-snapshot" x-bind:data-snapshot="sn.id">
+                                <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-control border border-border px-3 py-2 outline-none focus-visible:outline-2 focus-visible:outline-nq-focus" tabindex="0"><span class="min-w-0 flex-1 truncate text-label text-foreground" dir="auto" x-bind:title="sn.name" x-text="sn.name"></span>
+                                        <span data-slot="badge"     x-show="sn.creating" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Creating</span>
+                                        <bdi dir="ltr" class="text-caption tabular-nums text-muted-foreground" x-show="sn.sizeLabel" x-text="sn.sizeLabel"></bdi>
+                                        <time data-slot="date-time" dir="auto" class="tabular-nums [unicode-bidi:isolate] text-caption text-muted-foreground" x-bind:datetime="sn.iso" x-text="sn.when"></time>
+                                                                                    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" x-bind:aria-label="actionsLabel(sn)" x-show="! sn.creating" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                                <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-40"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="askSnapshot(&#039;rollback&#039;, sn)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+  <path d="M12 7v5l4 2"/>
+</svg> Roll back</div>
+                                                                                                                                                                <div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="askSnapshot(&#039;delete&#039;, sn)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg> Delete</div></div>
+</template></div></div>
+                                                                            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-40"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="askSnapshot(&#039;rollback&#039;, sn)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+  <path d="M12 7v5l4 2"/>
+</svg> Roll back</div>
+                                                                                                                                        <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="askSnapshot(&#039;delete&#039;, sn)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg> Delete</div></div>
+</template></div>
+                            </li>
+                        </template>
+                    </ul>
+                </section></div>
+        <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="confirmOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground"><span x-text="confirmTitle"></span></h2>
+                    <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-text="confirmBody"></span></p></div>
+                <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="confirm-button-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="confirmPending()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-text="confirmLabel"></span></button></div>
+        </div>
+    </div>
+</template>
+</div>
+                    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="snapOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form data-slot="server-snapshot-dialog" class="grid gap-4" x-on:submit.prevent="submitSnapshot()">
+                        <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Take snapshot</h2>
+                            <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Point-in-time copies of the disk. Roll back to return to one.</p></div>
+                        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Name</label>
+                            <input data-slot="input" type="text"
+                    x-model="snapName" maxlength="60" dir="auto" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                            <p data-slot="field-description" class="text-caption text-muted-foreground">Optional. Leave empty to name it by date.</p>
+</div>
+                        <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-bind:disabled="snapSaving" x-on:click="closeSnapshot()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                            <button data-slot="button"
+     type="submit"                     x-bind:disabled="snapSaving" x-bind:aria-busy="snapSaving ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="snapSaving" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                Create snapshot</button></div>
+                    </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+                    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="limitsOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form data-slot="server-limits" class="grid gap-4" novalidate x-on:submit.prevent="submitLimits()">
+                        <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Resource limits</h2>
+                            <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">The most this server may use. Changes apply after a restart.</p></div>
+                                                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">CPU cores</label>
+                                <input data-slot="input" type="text"
+     dir="ltr"                 x-model="limitsRaw.cpuCores" inputmode="numeric" x-bind:data-invalid="limitInvalid(&#039;cpuCores&#039;) ? &#039;&#039; : null" x-bind:aria-invalid="limitInvalid(&#039;cpuCores&#039;) ? &#039;true&#039; : null" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                                <div data-slot="field-error" role="alert" class="text-caption text-nq-danger-text" x-show="limitInvalid('cpuCores')" style="display: none" x-text="limitError('cpuCores')"></div>
+</div>
+                                                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Memory (MB)</label>
+                                <input data-slot="input" type="text"
+     dir="ltr"                 x-model="limitsRaw.memoryMb" inputmode="numeric" x-bind:data-invalid="limitInvalid(&#039;memoryMb&#039;) ? &#039;&#039; : null" x-bind:aria-invalid="limitInvalid(&#039;memoryMb&#039;) ? &#039;true&#039; : null" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                                <div data-slot="field-error" role="alert" class="text-caption text-nq-danger-text" x-show="limitInvalid('memoryMb')" style="display: none" x-text="limitError('memoryMb')"></div>
+</div>
+                                                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Disk (GB)</label>
+                                <input data-slot="input" type="text"
+     dir="ltr"                 x-model="limitsRaw.diskGb" inputmode="numeric" x-bind:data-invalid="limitInvalid(&#039;diskGb&#039;) ? &#039;&#039; : null" x-bind:aria-invalid="limitInvalid(&#039;diskGb&#039;) ? &#039;true&#039; : null" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                                <div data-slot="field-error" role="alert" class="text-caption text-nq-danger-text" x-show="limitInvalid('diskGb')" style="display: none" x-text="limitError('diskGb')"></div>
+</div>
+                                                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-bind:disabled="limitsSaving" x-on:click="closeLimits()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                            <button data-slot="button"
+     type="submit"                     x-bind:disabled="limitsSaving" x-bind:aria-busy="limitsSaving ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="limitsSaving" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                Save limits</button></div>
+                    </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+            </div>
+</div>

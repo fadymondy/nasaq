@@ -1,0 +1,92 @@
+<form data-slot="limits-editor" novalidate x-data="nqLimitsEditor(JSON.parse('{\u0022seats\u0022:{\u0022mode\u0022:\u0022limit\u0022,\u0022value\u0022:25},\u0022storage\u0022:{\u0022mode\u0022:\u0022inherit\u0022}}'), JSON.parse('{\u0022keys\u0022:[\u0022seats\u0022,\u0022storage\u0022],\u0022fields\u0022:[\u0022value\u0022],\u0022inherited\u0022:{\u0022storage\u0022:100},\u0022units\u0022:{\u0022seats\u0022:\u0022seats\u0022,\u0022storage\u0022:\u0022GB\u0022}}'))" x-modelable="rules" x-id="['nq-limits']" x-on:submit.prevent="submit()"
+    class="flex flex-col gap-4 max-w-3xl">
+    <ul data-slot="limits-editor-list" aria-label="Limits" class="flex flex-col divide-y divide-border rounded-card border border-border bg-card">
+                                <li data-slot="limits-editor-row" data-key="seats" :data-mode="rule('seats').mode" :data-changed="changed('seats') ? '' : null" class="flex flex-col gap-3 p-4">
+                <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+                    <div class="flex min-w-0 flex-col">
+                        <span class="flex items-center gap-2 text-label text-foreground">
+                            Seats
+                            <span x-show="changed('seats')" x-cloak style="display: none" aria-hidden="true" class="size-1.5 rounded-full bg-primary"></span>
+                        </span>
+                                            </div>
+                    <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal" aria-label="Seats limits"                         class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+                                                    <button type="button" data-slot="toggle" x-bind="modeButton('seats', 'limit')"  class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Limit</button>
+                                                    <button type="button" data-slot="toggle" x-bind="modeButton('seats', 'unlimited')"  class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Unlimited</button>
+                                                    <button type="button" data-slot="toggle" x-bind="modeButton('seats', 'inherit')"  class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Inherit</button>
+                                            </div>
+                </div>
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <div data-slot="field" x-show="rule('seats').mode === 'limit'"  class="flex min-w-0 flex-col gap-1.5">
+                        <label data-slot="field-label" :for="$id('nq-limits', 'seats-value')" class="text-label text-foreground">Limit (seats)</label>
+                        <input data-slot="input" dir="ltr" type="number" inputmode="decimal" min="0" step="any" :id="$id('nq-limits', 'seats-value')" x-bind="numberField('seats', 'value')"  class="h-control w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] text-start">
+                        <div data-slot="field-error" role="alert" x-show="err('seats', 'value')" x-text="err('seats', 'value')" style="display: none" class="text-caption text-nq-danger-text"></div>
+                    </div>
+                    <div data-slot="limits-editor-effective" x-show="rule('seats').mode !== 'limit'"  style="display: none"  class="flex min-w-0 flex-col justify-end gap-1 pb-2 text-body-sm text-muted-foreground">
+                        <span x-show="rule('seats').mode === 'unlimited'"  style="display: none" >
+                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground w-fit">Unlimited</span>
+                        </span>
+                        <bdi x-show="rule('seats').mode === 'inherit'" x-text="inheritText('seats')"  style="display: none" >Inherits the default</bdi>
+                    </div>
+                                    </div>
+            </li>
+                                <li data-slot="limits-editor-row" data-key="storage" :data-mode="rule('storage').mode" :data-changed="changed('storage') ? '' : null" class="flex flex-col gap-3 p-4">
+                <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+                    <div class="flex min-w-0 flex-col">
+                        <span class="flex items-center gap-2 text-label text-foreground">
+                            Storage
+                            <span x-show="changed('storage')" x-cloak style="display: none" aria-hidden="true" class="size-1.5 rounded-full bg-primary"></span>
+                        </span>
+                                            </div>
+                    <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal" aria-label="Storage limits"                         class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+                                                    <button type="button" data-slot="toggle" x-bind="modeButton('storage', 'limit')"  class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Limit</button>
+                                                    <button type="button" data-slot="toggle" x-bind="modeButton('storage', 'unlimited')"  class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Unlimited</button>
+                                                    <button type="button" data-slot="toggle" x-bind="modeButton('storage', 'inherit')"  class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Inherit</button>
+                                            </div>
+                </div>
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <div data-slot="field" x-show="rule('storage').mode === 'limit'"  style="display: none"  class="flex min-w-0 flex-col gap-1.5">
+                        <label data-slot="field-label" :for="$id('nq-limits', 'storage-value')" class="text-label text-foreground">Limit (GB)</label>
+                        <input data-slot="input" dir="ltr" type="number" inputmode="decimal" min="0" step="any" :id="$id('nq-limits', 'storage-value')" x-bind="numberField('storage', 'value')"  class="h-control w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] text-start">
+                        <div data-slot="field-error" role="alert" x-show="err('storage', 'value')" x-text="err('storage', 'value')" style="display: none" class="text-caption text-nq-danger-text"></div>
+                    </div>
+                    <div data-slot="limits-editor-effective" x-show="rule('storage').mode !== 'limit'"  class="flex min-w-0 flex-col justify-end gap-1 pb-2 text-body-sm text-muted-foreground">
+                        <span x-show="rule('storage').mode === 'unlimited'"  style="display: none" >
+                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground w-fit">Unlimited</span>
+                        </span>
+                        <bdi x-show="rule('storage').mode === 'inherit'" x-text="inheritText('storage')" >Inherits 100 GB</bdi>
+                    </div>
+                                    </div>
+            </li>
+            </ul>
+    <div data-slot="alert" data-tone="danger" role="alert" x-show="failure" x-cloak style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border border-nq-danger/30 bg-nq-danger-soft p-3 text-start">
+        <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>        <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5"><div data-slot="alert-description" class="text-body-sm text-foreground" x-text="failure"></div></div>
+    </div>
+    <div data-slot="alert" data-tone="warning" role="alert" x-show="!failure && blocked()" x-cloak style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border border-nq-warning/30 bg-nq-warning-soft p-3 text-start">
+        <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>        <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5"><div data-slot="alert-description" class="text-body-sm text-foreground">Fix the highlighted fields to save.</div></div>
+    </div>
+            <div data-slot="limits-editor-footer" class="flex flex-wrap items-center justify-end gap-2">
+            <span role="status" x-text="status()" class="me-auto text-body-sm text-muted-foreground"></span>
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="dirty().length === 0 || busy || false" x-on:click="discard()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 14 4 9l5-5"/>
+  <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>
+</svg>                Discard changes</button>
+            <button data-slot="button"
+     type="submit"                     x-bind:disabled="dirty().length === 0 || false" x-bind:aria-busy="busy ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+  <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/>
+  <path d="M7 3v4a1 1 0 0 0 1 1h7"/>
+</svg>                Save limits</button>
+        </div>
+                <input type="hidden" name="limits" :value="JSON.stringify(rules)">
+    </form>

@@ -1,0 +1,368 @@
+<div class="flex flex-col gap-8" x-data="{ showUpdate: false }">
+    <div class="flex items-center gap-3">
+        <button type="button" data-slot="update-pill" data-status="available"  title="Version 2.4.0"     x-data="nqAppUpdate(JSON.parse('{\u0022status\u0022:\u0022available\u0022,\u0022progress\u0022:0,\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022pillAvailable\u0022:\u0022Update available\u0022,\u0022pillDownloading\u0022:\u0022Downloading {percent}%\u0022,\u0022pillReady\u0022:\u0022Restart to update\u0022,\u0022pillError\u0022:\u0022Update failed\u0022}}'))" x-on:nq-update-state.window="set($event.detail)" x-bind:data-status="status"
+    x-bind:class="{ 'border-nq-success/40 bg-nq-success-soft text-nq-success-text': status === 'ready', 'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text': status === 'error', 'border-border bg-card text-foreground hover:bg-nq-hover': status === 'available' || status === 'downloading' }"
+    x-on:click="showUpdate = true" class="relative inline-flex h-control-sm items-center gap-1.5 overflow-hidden rounded-full border px-3 text-label outline-none focus-visible:outline-2 focus-visible:outline-nq-focus border-border bg-card text-foreground hover:bg-nq-hover">
+    <span aria-hidden="true" data-slot="update-pill-fill" x-show="status === 'downloading'" x-bind:style="{ inlineSize: percent() + '%' }"
+        style="inline-size: 0%; display: none"
+        class="absolute inset-y-0 start-0 bg-primary/15 transition-[inline-size] duration-300 ease-nq motion-reduce:transition-none"></span>
+    <svg aria-hidden="true" x-show="status === 'available'" style="" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 17V3"/>
+  <path d="m6 11 6 6 6-6"/>
+  <path d="M19 21H5"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'downloading'" style="display: none" class="relative size-3.5 motion-safe:animate-spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'ready'" style="display: none" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'error'" style="display: none" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <span class="relative" aria-live="polite" x-text="pillText()">Update available</span>
+</button>
+        <button type="button" data-slot="update-pill" data-status="downloading"     x-data="nqAppUpdate(JSON.parse('{\u0022status\u0022:\u0022downloading\u0022,\u0022progress\u0022:42,\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022pillAvailable\u0022:\u0022Update available\u0022,\u0022pillDownloading\u0022:\u0022Downloading {percent}%\u0022,\u0022pillReady\u0022:\u0022Restart to update\u0022,\u0022pillError\u0022:\u0022Update failed\u0022}}'))" x-on:nq-update-state.window="set($event.detail)" x-bind:data-status="status"
+    x-bind:class="{ 'border-nq-success/40 bg-nq-success-soft text-nq-success-text': status === 'ready', 'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text': status === 'error', 'border-border bg-card text-foreground hover:bg-nq-hover': status === 'available' || status === 'downloading' }"
+    class="relative inline-flex h-control-sm items-center gap-1.5 overflow-hidden rounded-full border px-3 text-label outline-none focus-visible:outline-2 focus-visible:outline-nq-focus border-border bg-card text-foreground hover:bg-nq-hover">
+    <span aria-hidden="true" data-slot="update-pill-fill" x-show="status === 'downloading'" x-bind:style="{ inlineSize: percent() + '%' }"
+        style="inline-size: 42%;"
+        class="absolute inset-y-0 start-0 bg-primary/15 transition-[inline-size] duration-300 ease-nq motion-reduce:transition-none"></span>
+    <svg aria-hidden="true" x-show="status === 'available'" style="display: none" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 17V3"/>
+  <path d="m6 11 6 6 6-6"/>
+  <path d="M19 21H5"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'downloading'" style="" class="relative size-3.5 motion-safe:animate-spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'ready'" style="display: none" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'error'" style="display: none" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <span class="relative" aria-live="polite" x-text="pillText()">Downloading 42%</span>
+</button>
+        <button type="button" data-slot="update-pill" data-status="ready"     x-data="nqAppUpdate(JSON.parse('{\u0022status\u0022:\u0022ready\u0022,\u0022progress\u0022:0,\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022pillAvailable\u0022:\u0022Update available\u0022,\u0022pillDownloading\u0022:\u0022Downloading {percent}%\u0022,\u0022pillReady\u0022:\u0022Restart to update\u0022,\u0022pillError\u0022:\u0022Update failed\u0022}}'))" x-on:nq-update-state.window="set($event.detail)" x-bind:data-status="status"
+    x-bind:class="{ 'border-nq-success/40 bg-nq-success-soft text-nq-success-text': status === 'ready', 'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text': status === 'error', 'border-border bg-card text-foreground hover:bg-nq-hover': status === 'available' || status === 'downloading' }"
+    class="relative inline-flex h-control-sm items-center gap-1.5 overflow-hidden rounded-full border px-3 text-label outline-none focus-visible:outline-2 focus-visible:outline-nq-focus border-nq-success/40 bg-nq-success-soft text-nq-success-text">
+    <span aria-hidden="true" data-slot="update-pill-fill" x-show="status === 'downloading'" x-bind:style="{ inlineSize: percent() + '%' }"
+        style="inline-size: 0%; display: none"
+        class="absolute inset-y-0 start-0 bg-primary/15 transition-[inline-size] duration-300 ease-nq motion-reduce:transition-none"></span>
+    <svg aria-hidden="true" x-show="status === 'available'" style="display: none" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 17V3"/>
+  <path d="m6 11 6 6 6-6"/>
+  <path d="M19 21H5"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'downloading'" style="display: none" class="relative size-3.5 motion-safe:animate-spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'ready'" style="" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'error'" style="display: none" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <span class="relative" aria-live="polite" x-text="pillText()">Restart to update</span>
+</button>
+        <button type="button" data-slot="update-pill" data-status="error"     x-data="nqAppUpdate(JSON.parse('{\u0022status\u0022:\u0022error\u0022,\u0022progress\u0022:0,\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022pillAvailable\u0022:\u0022Update available\u0022,\u0022pillDownloading\u0022:\u0022Downloading {percent}%\u0022,\u0022pillReady\u0022:\u0022Restart to update\u0022,\u0022pillError\u0022:\u0022Update failed\u0022}}'))" x-on:nq-update-state.window="set($event.detail)" x-bind:data-status="status"
+    x-bind:class="{ 'border-nq-success/40 bg-nq-success-soft text-nq-success-text': status === 'ready', 'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text': status === 'error', 'border-border bg-card text-foreground hover:bg-nq-hover': status === 'available' || status === 'downloading' }"
+    class="relative inline-flex h-control-sm items-center gap-1.5 overflow-hidden rounded-full border px-3 text-label outline-none focus-visible:outline-2 focus-visible:outline-nq-focus border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text">
+    <span aria-hidden="true" data-slot="update-pill-fill" x-show="status === 'downloading'" x-bind:style="{ inlineSize: percent() + '%' }"
+        style="inline-size: 0%; display: none"
+        class="absolute inset-y-0 start-0 bg-primary/15 transition-[inline-size] duration-300 ease-nq motion-reduce:transition-none"></span>
+    <svg aria-hidden="true" x-show="status === 'available'" style="display: none" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 17V3"/>
+  <path d="m6 11 6 6 6-6"/>
+  <path d="M19 21H5"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'downloading'" style="display: none" class="relative size-3.5 motion-safe:animate-spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'ready'" style="display: none" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>    <svg aria-hidden="true" x-show="status === 'error'" style="" class="relative size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <span class="relative" aria-live="polite" x-text="pillText()">Update failed</span>
+</button>
+    </div>
+    <div data-slot="sheet" x-data="nqAppUpdateSheet(JSON.parse('{\u0022open\u0022:false,\u0022status\u0022:\u0022available\u0022,\u0022progress\u0022:0,\u0022speed\u0022:null,\u0022size\u0022:48200000,\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022download\u0022:\u0022Download update\u0022,\u0022remaining\u0022:\u0022left\u0022,\u0022retry\u0022:\u0022Try again\u0022}}'))" x-modelable="open" x-id="['nq-dialog']" x-on:nq-update-state.window="set($event.detail)"
+    x-model="showUpdate" class="contents">
+    <template x-teleport="body">
+        <div data-slot="sheet-portal">
+            <div data-slot="sheet-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 dark:bg-nq-bg/60"></div>
+            <div data-slot="update-sheet" data-side="end" data-status="available" x-bind:data-status="status" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+                class="fixed z-50 flex flex-col bg-popover text-popover-foreground outline-none shadow-floating transition-[translate,opacity] duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 inset-y-0 end-0 h-dvh w-[min(24rem,100vw)] border-s border-border data-starting-style:translate-x-8 data-ending-style:translate-x-8 rtl:data-starting-style:-translate-x-8 rtl:data-ending-style:-translate-x-8">
+                <div data-slot="sheet-header" class="flex flex-col gap-1 border-b border-border px-4 py-3.5 pe-12"><h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-foreground text-h3">Version 2.4.0 is ready</h2>
+                    <p data-slot="sheet-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground flex flex-wrap items-center gap-2"><span>Build 240</span>
+                                                    <time data-slot="date-time" datetime="2026-09-28T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 28, 2026</time>
+                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Beta</span></p></div>
+                <div data-slot="sheet-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain flex flex-col gap-5 p-4"><section aria-labelledby="nq-au-aab93d1b-notes" class="flex flex-col gap-2">
+    <h3 id="nq-au-aab93d1b-notes" class="text-label text-foreground">What is new</h3>
+            <ul class="flex flex-col gap-2">
+                                            <li class="flex items-start gap-2 text-body-sm text-nq-fg-body">
+                    <span data-slot="badge"     class="inline-flex h-5 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text mt-0.5 shrink-0">New</span>
+                    <span dir="auto">Offline mode for the courier app</span>
+                </li>
+                                            <li class="flex items-start gap-2 text-body-sm text-nq-fg-body">
+                    <span data-slot="badge"     class="inline-flex h-5 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text mt-0.5 shrink-0">Improved</span>
+                    <span dir="auto">Faster order search</span>
+                </li>
+                                            <li class="flex items-start gap-2 text-body-sm text-nq-fg-body">
+                    <span data-slot="badge"     class="inline-flex h-5 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text mt-0.5 shrink-0">Fixed</span>
+                    <span dir="auto">Receipts showed the wrong total</span>
+                </li>
+                    </ul>
+    </section>
+                                            <p class="flex items-center justify-between text-body-sm">
+                            <span class="text-muted-foreground">Size</span>
+                            <span dir="ltr" class="tabular-nums">46 MB</span>
+                        </p>
+                                        <div data-slot="update-progress" class="flex flex-col gap-1.5" x-show="status === 'downloading'"  style="display: none" >
+    <div data-slot="progress" data-tone="default" role="progressbar" aria-labelledby="nq-au-aab93d1b-label" aria-valuemin="0" aria-valuemax="100"
+        aria-valuenow="0" aria-valuetext="0%"
+        x-bind:aria-valuenow="percent()" x-bind:aria-valuetext="rounded() + '%'"
+        class="flex w-full flex-col gap-1.5">
+        <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+            <span id="nq-au-aab93d1b-label" class="text-label text-foreground">Downloading update</span>
+            <span aria-hidden="true" class="text-muted-foreground tabular-nums" x-text="rounded() + '%'">0%</span>
+        </div>
+        <div data-slot="progress-track" class="relative block h-2 w-full overflow-hidden rounded-full bg-nq-surface-soft">
+            <div data-slot="progress-indicator" x-bind:style="{ width: percent() + '%' }" style="inset-inline-start:0;width:0%"
+                class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none"></div>
+        </div>
+    </div>
+    <p class="flex items-center justify-between text-caption text-muted-foreground tabular-nums">
+        <span dir="ltr" x-text="speedText()"></span>
+        <span dir="ltr" x-text="leftText()"></span>
+    </p>
+</div>
+                    <div data-slot="alert" data-tone="success" role="status"
+        x-show="status === &#039;ready&#039;" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-success/30 bg-nq-success-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground">The update is downloaded. Restarting takes a few seconds and keeps your work.</div>
+            </div>
+    </div>
+                    <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="status === &#039;error&#039;" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground">The download did not finish. Check your connection and try again.</div>
+            </div>
+    </div></div>
+                <div data-slot="sheet-footer" class="flex items-center gap-2 border-t border-border px-4 py-3 justify-end"><button data-slot="button"
+     type="button"                     x-on:click="later()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Later</button>
+                    <button data-slot="button"
+     type="button"                     x-show="status === &#039;ready&#039;" x-on:click="restart()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+</svg>Restart now</button>
+                    <button data-slot="button"
+     type="button"                     x-show="status !== &#039;ready&#039;" x-on:click="download()" x-bind:disabled="status === &#039;downloading&#039;" x-bind:data-disabled="status === &#039;downloading&#039; ? &#039;&#039; : null" x-bind:aria-busy="status === &#039;downloading&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="status === &#039;downloading&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <span x-text="status === 'error' ? t.retry : t.download">Download update</span></button></div>
+                <button type="button" data-slot="sheet-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+            </div>
+        </div>
+    </template>
+</div>
+    <main data-slot="forced-update-gate" data-status="available" x-data="nqAppUpdate(JSON.parse('{\u0022status\u0022:\u0022available\u0022,\u0022progress\u0022:0,\u0022speed\u0022:null,\u0022size\u0022:48200000,\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022download\u0022:\u0022Download update\u0022,\u0022remaining\u0022:\u0022left\u0022,\u0022retry\u0022:\u0022Try again\u0022}}'))" x-on:nq-update-state.window="set($event.detail)" x-bind:data-status="status"
+        class="flex flex-col items-center justify-center gap-8 bg-background p-6 text-center text-foreground min-h-0 rounded-card border border-border">
+                    <span data-slot="product-logo" class="inline-flex items-center gap-2">
+    <svg data-slot="product-mark" viewBox="0 0 100 100" width="24" height="24"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+            <g class="dark:hidden">
+                            <rect x="0" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="80" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="20" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="60" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+        <g class="hidden dark:block">
+                            <rect x="0" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="80" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="20" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="60" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+    </svg>
+            <span dir="ltr" class="font-mono font-medium tracking-[0.14em] uppercase text-foreground" style="font-size: 14.4px">NASAQ</span>
+    </span>
+                <div class="flex w-full max-w-md flex-col items-center gap-5">
+            <span aria-hidden="true" class="inline-flex size-12 items-center justify-center rounded-card border border-border bg-card text-nq-warning-text">
+                <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>            </span>
+            <div class="flex flex-col gap-2">
+                <h1 class="text-h2">Please update to continue</h1>
+                <p class="text-body text-muted-foreground">This version is no longer supported. Update to keep using the app.</p>
+                <p class="text-caption text-muted-foreground">You have build 100. The oldest supported build is 200.</p>
+            </div>
+            <div class="w-full rounded-card border border-border bg-card p-4 text-start">
+                <div class="mb-3 flex items-center justify-between gap-2">
+                    <span class="text-label">Version 2.4.0 is ready</span>
+                                            <span dir="ltr" class="text-caption text-muted-foreground tabular-nums">46 MB</span>
+                                    </div>
+                <section aria-labelledby="nq-au-aab93d1b-notes" class="flex flex-col gap-2">
+    <h3 id="nq-au-aab93d1b-notes" class="text-label text-foreground">What is new</h3>
+            <ul class="flex flex-col gap-2">
+                                            <li class="flex items-start gap-2 text-body-sm text-nq-fg-body">
+                    <span data-slot="badge"     class="inline-flex h-5 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text mt-0.5 shrink-0">New</span>
+                    <span dir="auto">Offline mode for the courier app</span>
+                </li>
+                                            <li class="flex items-start gap-2 text-body-sm text-nq-fg-body">
+                    <span data-slot="badge"     class="inline-flex h-5 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text mt-0.5 shrink-0">Improved</span>
+                    <span dir="auto">Faster order search</span>
+                </li>
+                                            <li class="flex items-start gap-2 text-body-sm text-nq-fg-body">
+                    <span data-slot="badge"     class="inline-flex h-5 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text mt-0.5 shrink-0">Fixed</span>
+                    <span dir="auto">Receipts showed the wrong total</span>
+                </li>
+                    </ul>
+    </section>
+                <div data-slot="update-progress" class="flex flex-col gap-1.5" x-show="status === 'downloading'"  style="display: none" >
+    <div data-slot="progress" data-tone="default" role="progressbar" aria-labelledby="nq-au-aab93d1b-label" aria-valuemin="0" aria-valuemax="100"
+        aria-valuenow="0" aria-valuetext="0%"
+        x-bind:aria-valuenow="percent()" x-bind:aria-valuetext="rounded() + '%'"
+        class="flex w-full flex-col gap-1.5">
+        <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+            <span id="nq-au-aab93d1b-label" class="text-label text-foreground">Downloading update</span>
+            <span aria-hidden="true" class="text-muted-foreground tabular-nums" x-text="rounded() + '%'">0%</span>
+        </div>
+        <div data-slot="progress-track" class="relative block h-2 w-full overflow-hidden rounded-full bg-nq-surface-soft">
+            <div data-slot="progress-indicator" x-bind:style="{ width: percent() + '%' }" style="inset-inline-start:0;width:0%"
+                class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none"></div>
+        </div>
+    </div>
+    <p class="flex items-center justify-between text-caption text-muted-foreground tabular-nums">
+        <span dir="ltr" x-text="speedText()"></span>
+        <span dir="ltr" x-text="leftText()"></span>
+    </p>
+</div>
+                <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="status === &#039;error&#039;" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft mt-3">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground">The download did not finish. Check your connection and try again.</div>
+            </div>
+    </div>
+            </div>
+            <button data-slot="button"
+     type="button"                     x-show="status === &#039;ready&#039;" x-on:click="restart()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+</svg>Restart now</button>
+            <button data-slot="button"
+     type="button"                     x-show="status !== &#039;ready&#039;" x-on:click="download()" x-bind:disabled="status === &#039;downloading&#039;" x-bind:data-disabled="status === &#039;downloading&#039; ? &#039;&#039; : null" x-bind:aria-busy="status === &#039;downloading&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="status === &#039;downloading&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                <span x-text="status === 'error' ? t.retry : t.download">Download update</span></button>
+        </div>
+    </main>
+    <section data-slot="release-manager" x-data="nqReleaseManager(JSON.parse('{\u0022min\u0022:230,\u0022latest\u0022:250,\u0022usage\u0022:[{\u0022build\u0022:220,\u0022users\u0022:1200},{\u0022build\u0022:240,\u0022users\u0022:8000}],\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022minBuildHint\u0022:\u0022Builds below this are stopped and must update.\u0022,\u0022saved\u0022:\u0022Saved\u0022,\u0022invalid\u0022:\u0022Enter a whole number, 0 or more.\u0022,\u0022tooHigh\u0022:\u0022That is newer than the latest release.\u0022,\u0022blocked\u0022:\u0022{count} people are on a build below this and will be asked to update.\u0022}}'))" class="flex w-full flex-col gap-5 rounded-card border border-border bg-card p-4">
+    <header class="flex flex-col gap-1">
+        <h2 class="text-h3">Releases</h2>
+        <p class="text-body-sm text-muted-foreground">Publish builds, roll them out slowly and decide the oldest build that may still run.</p>
+    </header>
+    <div class="flex flex-col gap-2">
+        <label for="nq-rm-1e92c656" class="text-label">Minimum supported build</label>
+        <div class="flex items-start gap-2">
+            <input data-slot="input" type="text"
+     dir="ltr"                 id="nq-rm-1e92c656" inputmode="numeric" x-model="draft" x-bind:aria-invalid="problem() ? &#039;true&#039; : null" class="min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start w-32">
+            <button data-slot="button"
+     type="button"              disabled      data-disabled     x-on:click="save()" x-bind:disabled="cannotSave()" x-bind:data-disabled="cannotSave() ? &#039;&#039; : null" x-bind:aria-busy="saving ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="saving" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>Save</button>
+        </div>
+        <p class="text-caption text-muted-foreground" x-bind:class="{ 'text-nq-danger-text': problem(), 'text-muted-foreground': ! problem() }" x-text="hint()">Builds below this are stopped and must update.</p>
+        <div data-slot="alert" data-tone="warning" role="alert"
+        x-show="blocked() &gt; 0 &amp;&amp; changed()" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="blockedText()"></span></div>
+            </div>
+    </div>
+        <p role="status" class="text-caption text-nq-success-text" x-show="notice" x-text="notice" style="display: none"></p>
+    </div>
+    <div data-slot="table-container" role="region" tabindex="0"  aria-label="Releases"     class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+    <table data-slot="table" data-density="default"
+                  class="w-full caption-bottom border-collapse text-body-sm">
+        <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Version</th>
+                <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Build</th>
+                <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Channel</th>
+                <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Released</th>
+                <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Rollout</th>
+                <th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Status</th>
+                <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Actions</th></tr></thead>
+        <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" dir="ltr" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start font-mono">2.5.0-beta</td>
+                    <td data-slot="table-cell" dir="ltr" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start font-mono">250
+                        <span data-slot="badge"  style="display: none"     x-show="min === 250" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground ms-2">Min</span></td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Beta</span></td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"></td>
+                    <td data-slot="table-cell" dir="ltr" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start tabular-nums">—</td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Draft</span></td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end"><button data-slot="button"
+     type="button"                     x-on:click="act(&#039;pub-r3&#039;, &#039;nq-release-publish&#039;, &#039;r3&#039;)" x-bind:disabled="pending === &#039;pub-r3&#039;" x-bind:data-disabled="pending === &#039;pub-r3&#039; ? &#039;&#039; : null" x-bind:aria-busy="pending === &#039;pub-r3&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="pending === &#039;pub-r3&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>Publish</button></td></tr>
+                                            <tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" dir="ltr" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start font-mono">2.4.0</td>
+                    <td data-slot="table-cell" dir="ltr" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start font-mono">240
+                        <span data-slot="badge"  style="display: none"     x-show="min === 240" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground ms-2">Min</span></td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Stable</span></td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><time data-slot="date-time" datetime="2026-09-28T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 28, 2026</time></td>
+                    <td data-slot="table-cell" dir="ltr" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start tabular-nums">50%</td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Live</span></td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end"><button data-slot="button"
+     type="button"                     x-on:click="act(&#039;rb-r2&#039;, &#039;nq-release-rollback&#039;, &#039;r2&#039;)" x-bind:disabled="pending === &#039;rb-r2&#039;" x-bind:data-disabled="pending === &#039;rb-r2&#039; ? &#039;&#039; : null" x-bind:aria-busy="pending === &#039;rb-r2&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="pending === &#039;rb-r2&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>Roll back</button></td></tr>
+                                            <tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" dir="ltr" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start font-mono">2.3.0</td>
+                    <td data-slot="table-cell" dir="ltr" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start font-mono">230
+                        <span data-slot="badge"     x-show="min === 230" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground ms-2">Min</span></td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Stable</span></td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><time data-slot="date-time" datetime="2026-08-02T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Aug 2, 2026</time></td>
+                    <td data-slot="table-cell" dir="ltr" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start tabular-nums">0%</td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Rolled back</span></td>
+                    <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end"><button data-slot="button"
+     type="button"                     x-on:click="act(&#039;pub-r1&#039;, &#039;nq-release-publish&#039;, &#039;r1&#039;)" x-bind:disabled="pending === &#039;pub-r1&#039;" x-bind:data-disabled="pending === &#039;pub-r1&#039; ? &#039;&#039; : null" x-bind:aria-busy="pending === &#039;pub-r1&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="pending === &#039;pub-r1&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>Publish</button></td></tr></tbody>
+    </table>
+</div>
+</section>
+</div>

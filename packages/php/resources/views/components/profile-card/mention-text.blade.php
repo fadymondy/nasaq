@@ -32,7 +32,7 @@
         return [$found, 'person'];
     };
 @endphp
-<p data-slot="mention-text" {{ $attributes->cn('whitespace-pre-wrap text-body text-foreground') }}>
+<p data-slot="{{ $attributes->get('data-slot', 'mention-text') }}" {{ $attributes->except('data-slot')->cn('whitespace-pre-wrap text-body text-foreground') }}>
     @foreach ($segments as [$type, $value])
         @if ($type === 'text')<span>{{ $value }}</span>@else
             @php [$person, $kind] = $find($value['id']); @endphp

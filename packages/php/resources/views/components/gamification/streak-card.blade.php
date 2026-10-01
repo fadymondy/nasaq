@@ -7,7 +7,7 @@
     $todayKey = nq_gm_day_key($today ?? now());
     $stats = nq_gm_streak($activeDays, $todayKey);
 @endphp
-<div data-slot="streak-card" {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'streak-card') }}" {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0') }}>
     <div data-slot="card-content" class="flex flex-col gap-4 px-4">
         <x-nq::gamification.streak-counter :current="$stats['current']" :longest="$stats['longest']" :at-risk="$stats['atRisk']" :labels="$labels" :locale="$locale" />
         <x-nq::gamification.streak-calendar :active-days="$activeDays" :today="$todayKey" :week-start="$weekStart" :labels="$labels" :locale="$locale" class="max-w-none" />

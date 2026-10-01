@@ -2,7 +2,7 @@
      Legend row: a colour key and the series label from config. payload: items with dataKey (or value) and color (or payload.fill). --}}
 @props(['config' => [], 'payload' => []])
 @if (count($payload))
-    <ul data-slot="chart-legend" {{ $attributes->cn('flex flex-wrap items-center justify-center gap-x-4 gap-y-1 pt-3 text-caption') }}>
+    <ul data-slot="{{ $attributes->get('data-slot', 'chart-legend') }}" {{ $attributes->except('data-slot')->cn('flex flex-wrap items-center justify-center gap-x-4 gap-y-1 pt-3 text-caption') }}>
         @foreach ($payload as $item)
             @php
                 $key = (string) ($item['dataKey'] ?? $item['value'] ?? '');

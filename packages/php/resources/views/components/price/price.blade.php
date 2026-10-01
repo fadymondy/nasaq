@@ -37,7 +37,7 @@
         <span class="{{ $s['amount'] }}">{{ $freeLabel ?? ($ar ? 'مجاني' : 'Free') }}</span>
     </span>
 @else
-    <span data-slot="price" {{ $attributes->cn(['inline-flex flex-wrap items-baseline gap-x-1.5 text-foreground', $s['root']]) }}>
+    <span data-slot="{{ $attributes->get('data-slot', 'price') }}" {{ $attributes->except('data-slot')->cn(['inline-flex flex-wrap items-baseline gap-x-1.5 text-foreground', $s['root']]) }}>
         <span>
             <bdi class="{{ \Nasaq\Cn::merge('tabular-nums', $s['amount']) }}">{{ $money($amount) }}</bdi>
             @if ($period !== 'once' && isset($periods[$period]))<span class="text-muted-foreground">{{ $periods[$period][$ar ? 1 : 0] }}</span>@endif

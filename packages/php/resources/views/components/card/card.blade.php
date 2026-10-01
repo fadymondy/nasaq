@@ -3,4 +3,4 @@
          <x-nq::card.action>...</x-nq::card.action></x-nq::card.header>
        <x-nq::card.content>Body</x-nq::card.content><x-nq::card.footer>...</x-nq::card.footer>
      </x-nq::card> --}}
-<div data-slot="card" {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground') }}>{{ $slot }}</div>
+<div data-slot="{{ $attributes->get('data-slot', 'card') }}" {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground') }}>{{ $slot }}</div>

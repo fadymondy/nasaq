@@ -1,0 +1,45 @@
+<div class="w-80">
+    <div data-slot="phone-input-root" x-data="nqPhoneInput('+966501234567', JSON.parse('{\u0022defaultCountry\u0022:\u0022SA\u0022,\u0022locale\u0022:\u0022en\u0022}'))" x-modelable="value" x-id="['nq-phone']"
+    class="block w-full min-w-0">
+    <div role="group" data-slot="phone-input" x-ref="anchor"         class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50">
+        <button data-slot="phone-input-country" x-ref="trigger" x-bind="trigger"             class="order-first flex h-full shrink-0 cursor-default items-center gap-1.5 border-e border-input ps-3 pe-2 text-body-sm text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:bg-nq-hover data-[state=open]:bg-nq-hover disabled:cursor-not-allowed">
+            <span data-slot="country-flag" aria-hidden="true" x-html="flag"
+                class="relative inline-block aspect-[3/2] h-[1em] shrink-0 overflow-hidden rounded-[2px] bg-muted align-[-0.125em] text-[1.125rem] [&>svg]:block [&>svg]:size-full after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:ring-1 after:ring-foreground/15 after:ring-inset"></span>
+            <bdi dir="ltr" class="tabular-nums" x-text="'+' + country().dial">+966</bdi>
+            <svg aria-hidden="true" class="size-3.5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>        </button>
+        <input data-slot="input-group-input" dir="ltr" x-bind="field"              aria-label="Phone" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start tabular-nums">
+                    <input type="hidden" name="phone" :value="value">
+            </div>
+    <template x-teleport="body">
+        <div data-slot="phone-input-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.anchor" :dir="lang === 'ar' ? 'rtl' : 'ltr'"
+            class="z-50 w-[max(var(--anchor-width),18rem)] overflow-hidden rounded-floating border border-border bg-popover text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div class="border-b border-border p-1.5">
+                <input data-slot="phone-input-search" x-ref="search" x-bind="search"
+                    class="h-control-sm w-full min-w-0 rounded-control border-0 bg-transparent px-2 text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+            </div>
+            <div class="max-h-64 overflow-y-auto p-1.5">
+                <template x-if="open"><div class="contents"><template x-for="c in matches()" :key="c.iso">
+                    <div data-slot="combobox-item" x-bind="item(c)"
+                        class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected">
+                        <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+                            <span x-show="c.iso === iso" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+                        </span>
+                        <span class="flex min-w-0 flex-1 items-center gap-2">
+                            <span data-slot="country-flag" aria-hidden="true" x-data="nqCountryFlag(c.iso)" x-html="svg"
+                                class="relative inline-block aspect-[3/2] h-[1em] shrink-0 overflow-hidden rounded-[2px] bg-muted align-[-0.125em] text-[1rem] [&>svg]:block [&>svg]:size-full after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:ring-1 after:ring-foreground/15 after:ring-inset"></span>
+                            <span class="min-w-0 flex-1 truncate" x-text="c.label"></span>
+                            <bdi dir="ltr" class="shrink-0 text-muted-foreground tabular-nums" x-text="'+' + c.dial"></bdi>
+                        </span>
+                    </div>
+                </template></div></template>
+                <div x-bind="emptyState" class="px-2.5 py-2 text-body-sm text-muted-foreground">No country found.</div>
+            </div>
+        </div>
+    </template>
+</div>
+</div>

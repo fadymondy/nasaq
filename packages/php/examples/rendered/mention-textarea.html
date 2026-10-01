@@ -1,0 +1,48 @@
+<div x-data="{ count: 0 }">
+    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Comment</label>
+        <div data-slot="mention-textarea" x-data="nqMentionTextarea('', JSON.parse('{\u0022suggestions\u0022:[{\u0022id\u0022:\u0022u1\u0022,\u0022name\u0022:\u0022Sara Ali\u0022,\u0022description\u0022:\u0022Design lead\u0022},{\u0022id\u0022:\u0022u2\u0022,\u0022name\u0022:\u0022Omar Nasser\u0022,\u0022description\u0022:\u0022Engineer\u0022}],\u0022strings\u0022:{\u0022list\u0022:\u0022Mentions\u0022,\u0022empty\u0022:\u0022No matches\u0022,\u0022count\u0022:\u0022{n} suggestions\u0022,\u0022person\u0022:\u0022People\u0022,\u0022team\u0022:\u0022Teams\u0022,\u0022group\u0022:\u0022Groups\u0022,\u0022teamOne\u0022:\u0022Team\u0022,\u0022groupOne\u0022:\u0022Group\u0022}}'))" x-modelable="text" x-id="['nq-mention']"
+    @nq-mentions-change="count = $event.detail.mentions.length" class="relative w-full">
+    <textarea data-slot="textarea"
+                x-bind="area" x-ref="area" rows="4" placeholder="Type @ to mention someone" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+    <ul x-show="open()" x-cloak :id="listId()" role="listbox" aria-label="Mentions" data-slot="mention-list" :style="listStyle()" @mousedown.prevent
+        class="absolute z-50 max-h-56 w-64 max-w-full overflow-y-auto rounded-floating border border-border bg-popover p-1 text-body-sm text-popover-foreground shadow-floating">
+        <template x-for="r in rows()" :key="r.key">
+            <li x-bind="row(r)">
+                <span x-show="r.type === 'heading'" x-text="r.type === 'heading' ? heading(r.kind) : ''"></span>
+                <span x-show="r.type === 'option' && (r.option.kind ?? 'person') === 'person'" class="relative inline-flex shrink-0">
+                    <span data-slot="avatar" aria-hidden="true" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full">
+                        <img x-show="r.type === 'option' && r.option.avatar" data-slot="avatar-image" :src="r.type === 'option' ? r.option.avatar : null" alt="" class="size-full object-cover" style="display: none">
+                        <span x-show="r.type === 'option' && ! r.option.avatar" data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-text="r.type === 'option' ? initials(r.option.name) : ''"></span>
+                    </span>
+                    <span x-show="r.type === 'option' && r.option.presence" style="display: none" data-slot="presence-dot" aria-hidden="true"
+                        :data-presence="r.type === 'option' ? r.option.presence : null"
+                        :class="r.type === 'option' && r.option.presence ? presenceClass(r.option.presence) : ''"
+                        class="absolute -end-0.5 -bottom-0.5 inline-block size-2.5 shrink-0 rounded-full border-2 border-popover"></span>
+                </span>
+                <span x-show="r.type === 'option' && (r.option.kind ?? 'person') !== 'person'" style="display: none" aria-hidden="true" class="inline-flex size-6 shrink-0 items-center justify-center rounded-control bg-secondary text-secondary-foreground">
+                    <span class="flex [&_svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg></span>
+                </span>
+                <span x-show="r.type === 'option'" class="flex min-w-0 flex-col">
+                    <span class="truncate text-label text-foreground">
+                        <span x-text="r.type === 'option' ? r.option.name : ''"></span>
+                        <span x-show="r.type === 'option' && (r.option.kind ?? 'person') !== 'person'" style="display: none" class="sr-only" x-text="r.type === 'option' ? ' (' + kindLabel(r.option.kind) + ')' : ''"></span>
+                    </span>
+                    <span x-show="r.type === 'option' && r.option.description" style="display: none" class="truncate text-caption text-muted-foreground" x-text="r.type === 'option' ? r.option.description : ''"></span>
+                </span>
+            </li>
+        </template>
+    </ul>
+    <div x-show="emptyShown()" x-cloak data-slot="mention-empty" :style="listStyle()"
+        class="absolute z-50 w-64 max-w-full rounded-floating border border-border bg-popover px-3 py-2 text-body-sm text-muted-foreground shadow-floating">No matches</div>
+    <span role="status" class="sr-only" x-text="status()"></span>
+    </div>
+        <output x-text="count + ' mentioned'">0 mentioned</output>
+</div>
+</div>

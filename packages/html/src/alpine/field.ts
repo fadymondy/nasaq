@@ -18,7 +18,7 @@ interface FieldState extends Magics {
 }
 
 const CONTROL =
-  '[data-slot="input"], [data-slot="textarea"], [data-slot="field-control"], [data-slot="checkbox"], [data-slot="switch"], [data-slot="radio-group"]';
+  '[data-slot="input"], [data-slot="textarea"], [data-slot="field-control"], [data-slot="checkbox"], [data-slot="switch"], [data-slot="radio-group"], [data-slot="input-group-input"], [data-slot="date-picker-trigger"], [data-slot="color-picker-trigger"], [data-slot="time-picker-hour"]';
 
 export const field: Register = (Alpine) => {
   Alpine.data("nqField", (invalid: boolean = false) => ({

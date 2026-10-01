@@ -1,0 +1,716 @@
+<div class="flex flex-col gap-10" x-data="{ api: { post: async (review) => undefined, vote: async (id, voted) => undefined, report: async (id, reason, note) => undefined, ask: async (text) => undefined } }">
+    <section data-slot="product-reviews" x-data="nqProductReviews(JSON.parse('{\u0022reviews\u0022:[{\u0022id\u0022:\u0022r1\u0022,\u0022author\u0022:\u0022Sara\u0022,\u0022rating\u0022:5,\u0022title\u0022:\u0022Worth it\u0022,\u0022body\u0022:\u0022Great quality, arrived on time and fits perfectly.\u0022,\u0022date\u0022:\u00222026-03-02\u0022,\u0022verified\u0022:true,\u0022helpful\u0022:12,\u0022fit\u0022:\u0022true\u0022,\u0022photos\u0022:[{\u0022src\u0022:\u0022data:image\\\/gif;base64,R0lGODlhAQABAAAAACw=\u0022,\u0022alt\u0022:\u0022Front view\u0022}]},{\u0022id\u0022:\u0022r2\u0022,\u0022author\u0022:\u0022Omar\u0022,\u0022rating\u0022:4,\u0022body\u0022:\u0022Good value for the price, the strap could be softer.\u0022,\u0022date\u0022:\u00222026-02-11\u0022,\u0022verified\u0022:true,\u0022helpful\u0022:4,\u0022fit\u0022:\u0022small\u0022,\u0022reply\u0022:{\u0022author\u0022:\u0022Support\u0022,\u0022body\u0022:\u0022Thanks Omar, we are improving the strap.\u0022,\u0022date\u0022:\u00222026-02-12\u0022}},{\u0022id\u0022:\u0022r3\u0022,\u0022author\u0022:\u0022Lina\u0022,\u0022rating\u0022:2,\u0022body\u0022:\u0022Not what I expected from the photos, a little too small.\u0022,\u0022date\u0022:\u00222026-01-20\u0022,\u0022helpful\u0022:1}],\u0022summary\u0022:null,\u0022pageSize\u0022:5,\u0022defaultSort\u0022:\u0022helpful\u0022,\u0022loading\u0022:false,\u0022error\u0022:false,\u0022canSubmit\u0022:true,\u0022canReport\u0022:true,\u0022labels\u0022:{}}'))" x-id="['nq-reviews']" :aria-labelledby="$id('nq-reviews')"
+    x-on:nq-review="$event.detail.waitUntil(api.post($event.detail.review))" x-on:nq-vote="$event.detail.waitUntil(api.vote($event.detail.id, $event.detail.voted))" x-on:nq-report="$event.detail.waitUntil(api.report($event.detail.id, $event.detail.reason, $event.detail.note))" class="flex flex-col gap-6">
+    <header class="flex flex-wrap items-center justify-between gap-3">
+        <h2 :id="$id('nq-reviews')" class="text-h2 text-foreground" x-text="t.reviews"></h2>
+        <button data-slot="button"
+     type="button"                     x-show="canSubmit" style="display: none" x-on:click="writing = true" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 21h8"/>
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+</svg>            <span x-text="t.writeReview"></span></button>
+    </header>
+    <div x-show="errorText" style="display: none" role="alert" class="flex flex-col items-start gap-3 rounded-card border border-nq-danger-border bg-nq-danger-subtle p-4 text-nq-danger-text">
+        <p class="flex items-center gap-2 text-body-sm">
+            <svg aria-hidden="true" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>            <span x-text="errorText"></span>
+        </p>
+        <button data-slot="button"
+     type="button"                     x-on:click="$dispatch(&#039;nq-retry&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <span x-text="t.retry"></span></button>
+    </div>
+    <div x-show="loading && !errorText" style="display: none" role="status" :aria-label="t.loading" aria-busy="true" class="flex flex-col gap-5">
+        <div class="h-32 animate-pulse rounded-card bg-secondary motion-reduce:animate-none"></div>
+                    <div class="flex flex-col gap-2">
+                <div class="h-4 w-32 animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+                <div class="h-4 w-full animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+                <div class="h-4 w-2/3 animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+            </div>
+                    <div class="flex flex-col gap-2">
+                <div class="h-4 w-32 animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+                <div class="h-4 w-full animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+                <div class="h-4 w-2/3 animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+            </div>
+                    <div class="flex flex-col gap-2">
+                <div class="h-4 w-32 animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+                <div class="h-4 w-full animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+                <div class="h-4 w-2/3 animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+            </div>
+            </div>
+    <div x-show="empty" style="display: none" class="flex flex-col items-center gap-2 rounded-card border border-dashed border-border py-10 text-center">
+        <svg aria-hidden="true" class="size-8 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>        <p class="text-h3 text-foreground" x-text="t.noReviews"></p>
+        <p class="text-body-sm text-muted-foreground" x-text="t.noReviewsHint"></p>
+        <button data-slot="button"
+     type="button"                     x-show="canSubmit" style="display: none" x-on:click="writing = true" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)] mt-2">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 21h8"/>
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+</svg>            <span x-text="t.writeReview"></span></button>
+    </div>
+    <template x-if="ready">
+        <div class="flex flex-col gap-6">
+            <section data-slot="product-review-summary"  :aria-label="t.reviews"
+    class="grid gap-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-10">
+    <div class="flex flex-col gap-1">
+        <p class="flex items-baseline gap-2">
+            <bdi class="text-display tabular-nums text-foreground" x-text="avgText"></bdi>
+            <span class="text-body text-muted-foreground">/ <bdi x-text="fmt(5)"></bdi></span>
+        </p>
+        <span data-slot="rating" class="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+            <span class="sr-only" x-text="spoken(stats.average, stats.count)"></span>
+            <svg aria-hidden="true" class="size-3.5 shrink-0 fill-nq-accent text-nq-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>            <bdi aria-hidden="true" class="tabular-nums text-foreground" x-text="avgText"></bdi>
+            <span aria-hidden="true" class="truncate">
+                <span class="me-1.5">·</span>
+                <bdi class="tabular-nums" x-text="countText"></bdi> <span x-text="t.reviewsCount"></span>
+            </span>
+        </span>
+        <p class="text-caption text-muted-foreground" x-text="basedOn"></p>
+    </div>
+    <div class="flex min-w-0 flex-col gap-4">
+        <ul role="group" :aria-label="t.histogram" class="flex flex-col gap-1">
+            <template x-for="row in rows" :key="row.level">
+                <li>
+                    <template x-if="selectable">
+                        <button type="button" :aria-pressed="isSelected(row.level) ? 'true' : 'false'" :aria-label="row.label" :data-level="row.level"
+                            :data-pressed="isSelected(row.level) ? '' : null" x-on:click="toggleStar(row.level)"
+                            class="flex w-full items-center gap-3 rounded-control px-2 py-1 text-start outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus"
+                            x-bind:class="isSelected(row.level) && 'bg-nq-selected'">
+                            <span class="inline-flex w-9 shrink-0 items-center gap-1 text-label tabular-nums text-foreground">
+                                <bdi x-text="row.levelText"></bdi>
+                                <svg aria-hidden="true" class="size-3.5 fill-nq-accent text-nq-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>                            </span>
+                            <span aria-hidden="true" class="relative h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-secondary">
+                                <span class="absolute inset-y-0 start-0 rounded-full bg-nq-accent transition-[width] duration-300 ease-nq motion-reduce:transition-none" :style="{ width: row.pct + '%' }"></span>
+                            </span>
+                            <span class="w-10 shrink-0 text-end text-caption tabular-nums text-muted-foreground"><bdi x-text="row.countText"></bdi></span>
+                        </button>
+                    </template>
+                    <template x-if="!selectable">
+                        <div role="text" :aria-label="row.plain" class="flex items-center gap-3 px-2 py-1">
+                            <span class="inline-flex w-9 shrink-0 items-center gap-1 text-label tabular-nums text-foreground">
+                                <bdi x-text="row.levelText"></bdi>
+                                <svg aria-hidden="true" class="size-3.5 fill-nq-accent text-nq-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>                            </span>
+                            <span aria-hidden="true" class="relative h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-secondary">
+                                <span class="absolute inset-y-0 start-0 rounded-full bg-nq-accent transition-[width] duration-300 ease-nq motion-reduce:transition-none" :style="{ width: row.pct + '%' }"></span>
+                            </span>
+                            <span class="w-10 shrink-0 text-end text-caption tabular-nums text-muted-foreground"><bdi x-text="row.countText"></bdi></span>
+                        </div>
+                    </template>
+                </li>
+            </template>
+        </ul>
+        <div x-show="fitRows.length > 0" style="display: none" class="flex flex-col gap-1.5">
+            <p class="text-label text-foreground" x-text="fitTitle"></p>
+            <div role="img" :aria-label="fitAria" class="flex h-2 overflow-hidden rounded-full bg-secondary">
+                <template x-for="(r, i) in fitRows" :key="r.key">
+                    <span class="h-full" :class="i === 1 ? 'bg-nq-success' : 'bg-nq-line-strong'" :style="{ width: r.pct + '%' }"></span>
+                </template>
+            </div>
+            <ul class="flex justify-between gap-2 text-caption text-muted-foreground">
+                <template x-for="r in fitRows" :key="r.key">
+                    <li><span x-text="r.label"></span> <bdi class="tabular-nums" x-text="r.text"></bdi></li>
+                </template>
+            </ul>
+        </div>
+    </div>
+</section>
+            <div x-show="photoTotal > 0" style="display: none" class="flex flex-col gap-2">
+                <h3 class="text-label text-foreground" x-text="t.photosTitle"></h3>
+                <ul class="flex gap-2 overflow-x-auto pb-1">
+                    <template x-for="(p, i) in photoStrip" :key="p.reviewId + p.src">
+                        <li class="shrink-0">
+                            <button type="button" :aria-label="t.viewPhoto" x-on:click="openPhoto(p.reviewId, p.src)"
+                                class="relative block overflow-hidden rounded-control outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <img :src="p.src" :alt="p.alt || t.viewPhoto" width="72" height="72" loading="lazy" class="size-18 rounded-control bg-secondary object-cover">
+                                <span x-show="i === photoStrip.length - 1 && photoTotal > photoStrip.length" style="display: none" class="absolute inset-0 flex items-center justify-center bg-foreground/60 text-label text-background">
+                                    <bdi x-text="t.morePhotos(fmt(photoTotal - photoStrip.length))"></bdi>
+                                </span>
+                            </button>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+            <div role="group" :aria-label="t.filters" class="flex flex-wrap items-center gap-2 border-y border-border py-3">
+                <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="sort" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Sort by" class="flex h-control items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] w-auto min-w-40">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                    <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('helpful', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('helpful')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Most helpful</span>
+</div>
+                                                    <div data-slot="select-item" x-bind="item('newest', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('newest')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Newest</span>
+</div>
+                                                    <div data-slot="select-item" x-bind="item('oldest', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('oldest')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Oldest</span>
+</div>
+                                                    <div data-slot="select-item" x-bind="item('highest', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('highest')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Highest rating</span>
+</div>
+                                                    <div data-slot="select-item" x-bind="item('lowest', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('lowest')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Lowest rating</span>
+</div>
+    </div>
+</template>
+    </div>
+                <button data-slot="chip"
+     type="button"                     data-key="withPhotos" x-on:click="toggleFlag(&#039;withPhotos&#039;)" x-bind:aria-pressed="String(filters.withPhotos)" x-bind:data-selected="filters.withPhotos ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm shrink-0 rounded-full px-3 text-muted-foreground data-selected:bg-nq-selected data-selected:text-foreground">
+        <span x-text="t.withPhotos"></span></button>
+                <button data-slot="chip"
+     type="button"                     data-key="verifiedOnly" x-on:click="toggleFlag(&#039;verifiedOnly&#039;)" x-bind:aria-pressed="String(filters.verifiedOnly)" x-bind:data-selected="filters.verifiedOnly ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm shrink-0 rounded-full px-3 text-muted-foreground data-selected:bg-nq-selected data-selected:text-foreground">
+        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                    <span x-text="t.verifiedOnly"></span></button>
+                <template x-for="level in selectedStars" :key="level">
+                    <button type="button" data-star-pill :aria-label="starPillLabel(level)" x-on:click="toggleStar(level)"
+                        class="inline-flex h-8 items-center gap-1 rounded-full border border-foreground bg-nq-selected px-3 text-label text-foreground outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <bdi x-text="fmt(level)"></bdi>
+                        <svg aria-hidden="true" class="size-3.5 fill-nq-accent text-nq-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>                        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                    </button>
+                </template>
+                <button data-slot="button"
+     type="button"                     x-show="active" style="display: none" x-on:click="clearFilters()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <span x-text="t.clearFilters"></span></button>
+            </div>
+            <p role="status" aria-live="polite" class="text-caption text-muted-foreground">
+                <span x-text="showingText"></span>
+                <span x-show="voteError" style="display: none" class="ms-2 text-nq-danger-text" x-text="voteError"></span>
+            </p>
+            <div x-show="shown.length === 0" style="display: none" class="flex flex-col items-center gap-3 py-8 text-center">
+                <p class="text-body text-muted-foreground" x-text="t.noMatches"></p>
+                <button data-slot="button"
+     type="button"                     x-on:click="clearFilters()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <span x-text="t.clearFilters"></span></button>
+            </div>
+            <ul x-show="shown.length > 0" style="display: none" class="flex flex-col divide-y divide-border">
+                <template x-for="r in page" :key="r.id">
+                    <li class="flex flex-col gap-2 py-5" :data-review-id="r.id">
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                            <span data-slot="rating" class="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+                                <span class="sr-only" x-text="spoken(r.rating)"></span>
+                                <svg aria-hidden="true" class="size-3.5 shrink-0 fill-nq-accent text-nq-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>                                <bdi aria-hidden="true" class="tabular-nums text-foreground" x-text="ratingText(r.rating)"></bdi>
+                            </span>
+                            <span data-slot="badge"  style="display: none"     x-show="r.verified" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                                <span x-text="t.verified"></span></span>
+                        </div>
+                        <h3 x-show="r.title" style="display: none" class="text-h3 text-foreground" x-text="r.title"></h3>
+                        <p class="text-caption text-muted-foreground">
+                            <span x-text="r.author"></span> · <time :datetime="r.date" x-text="date(r.date)"></time><span x-text="metaTail(r)"></span>
+                        </p>
+                        <p class="whitespace-pre-line text-body text-foreground" :class="isLong(r) && !isExpanded(r.id) && 'line-clamp-4'" x-text="r.body"></p>
+                        <button x-show="isLong(r)" style="display: none" type="button" :aria-expanded="isExpanded(r.id) ? 'true' : 'false'" x-on:click="toggleExpanded(r.id)"
+                            class="self-start text-label text-nq-accent-text underline-offset-2 outline-none hover:underline focus-visible:outline-2 focus-visible:outline-nq-focus"
+                            x-text="isExpanded(r.id) ? t.readLess : t.readMore"></button>
+                        <ul x-show="r.photos && r.photos.length > 0" style="display: none" class="flex flex-wrap gap-2">
+                            <template x-for="p in (r.photos || [])" :key="p.src">
+                                <li>
+                                    <button type="button" :aria-label="t.viewPhoto" x-on:click="openPhoto(r.id, p.src)"
+                                        class="block overflow-hidden rounded-control outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                        <img :src="p.src" :alt="p.alt || t.viewPhoto" width="64" height="64" loading="lazy" class="size-16 bg-secondary object-cover">
+                                    </button>
+                                </li>
+                            </template>
+                        </ul>
+                        <div x-show="r.reply" style="display: none" class="ms-4 flex flex-col gap-1 border-s-2 border-nq-line-strong ps-3">
+                            <p class="flex items-center gap-1.5 text-label text-foreground">
+                                <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/>
+  <path d="m10 8-3 3 3 3"/>
+  <path d="M17 14v-1a2 2 0 0 0-2-2H7"/>
+</svg>                                <span x-text="t.sellerReply"></span>
+                            </p>
+                            <p class="text-body-sm text-foreground" x-text="r.reply && r.reply.body"></p>
+                            <p class="text-caption text-muted-foreground">
+                                <span x-text="r.reply && r.reply.author"></span> · <time :datetime="r.reply && r.reply.date" x-text="r.reply && date(r.reply.date)"></time>
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2 pt-1">
+                            <button data-slot="button"
+     type="button"                     data-vote="data-vote" x-show="!voteFor(r).voted" x-on:click="vote(r)" aria-pressed="false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>
+  <path d="M7 10v12"/>
+</svg>                                <span x-text="helpfulText(r)"></span></button>
+                            <button data-slot="button"
+     type="button"                     data-vote="data-vote" x-show="voteFor(r).voted" style="display: none" x-on:click="vote(r)" aria-pressed="true" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>
+  <path d="M7 10v12"/>
+</svg>                                <span x-text="helpfulText(r)"></span></button>
+                            <button data-slot="button"
+     type="button"                     data-report="data-report" x-show="canReport" style="display: none" x-bind:disabled="isReported(r.id)" x-on:click="openReport(r.id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg>                                <span x-text="isReported(r.id) ? t.reported : t.report"></span></button>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+            <button data-slot="button"
+     type="button"                     x-show="shown.length &gt; visible" style="display: none" x-on:click="showMore()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)] self-center">
+        <span x-text="t.showMore"></span></button>
+        </div>
+    </template>
+            <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="writing" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-h-[90dvh] overflow-y-auto">
+            <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground"><span x-text="t.formTitle"></span></h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-text="t.formDescription"></span></p></div>
+                <div data-slot="product-review-form" x-data="nqProductReviewForm(JSON.parse('{\u0022askFit\u0022:true,\u0022askName\u0022:true,\u0022defaultName\u0022:\u0022\u0022,\u0022rules\u0022:null,\u0022labels\u0022:{}}'))" x-on:nq-cancel="writing = false" class="contents">
+    <div x-show="state === 'done'" style="display: none" role="status" class="flex flex-col items-center gap-2 py-8 text-center">
+        <svg aria-hidden="true" class="size-10 text-nq-success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <p class="text-h3 text-foreground" x-text="t.reviewThanks"></p>
+        <p class="text-body-sm text-muted-foreground" x-text="t.reviewThanksHint"></p>
+    </div>
+    <form x-show="state !== 'done'" novalidate class="flex flex-col gap-5" x-on:submit.prevent="submit()">
+        <div class="flex flex-col gap-1.5" x-id="['nq-review-rating']">
+            <span :id="$id('nq-review-rating')" class="text-label text-foreground" x-text="t.yourRating"></span>
+            <div class="flex items-center gap-3">
+                <div role="radiogroup" data-field="rating" tabindex="-1" :aria-labelledby="$id('nq-review-rating')"
+                    :aria-invalid="show('rating') ? 'true' : null" aria-orientation="horizontal" class="flex gap-1">
+                    <template x-for="n in stars" :key="n">
+                        <button type="button" role="radio" data-slot="rating-star" :data-value="n" :aria-checked="rating === n ? 'true' : 'false'"
+                            :tabindex="(rating ? rating === n : n === 1) ? 0 : -1" :aria-label="starLabel(n)"
+                            x-on:click="setRating(n)" x-on:keydown="ratingKey($event)"
+                            class="inline-flex size-9 items-center justify-center rounded-control outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                            <svg aria-hidden="true" x-bind:class="n <= rating ? 'fill-nq-accent text-nq-accent' : 'text-nq-line-strong'" class="size-6 transition-colors duration-150" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>                        </button>
+                    </template>
+                </div>
+                <span aria-hidden="true" class="text-body-sm text-muted-foreground" x-text="ratingWord()"></span>
+            </div>
+            <p x-show="show('rating')" style="display: none" role="alert" class="text-caption text-nq-danger-text" x-text="show('rating')"></p>
+        </div>
+        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-effect="invalid = show(&#039;title&#039;) !== &#039;&#039;" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50"><span x-text="t.reviewTitle"></span></label>
+            <input data-slot="input" type="text"
+                    data-field="title" x-model="title" x-bind:maxlength="titleMax" autocomplete="off" x-on:blur="touch(&#039;title&#039;)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+            <p data-slot="field-description" class="text-caption text-muted-foreground"><span x-text="t.reviewTitleHint"></span></p>
+            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="show('title')"></span></div>
+</div>
+        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-effect="invalid = show(&#039;body&#039;) !== &#039;&#039;" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50"><span x-text="t.reviewBody"></span></label>
+            <textarea data-slot="textarea"
+                data-field="body" rows="5" x-model="body" x-on:blur="touch(&#039;body&#039;)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+            <p data-slot="field-description" class="text-caption text-muted-foreground"><span x-text="bodyHint"></span></p>
+            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="show('body')"></span></div>
+</div>
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-effect="invalid = show(&#039;name&#039;) !== &#039;&#039;" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50"><span x-text="t.yourName"></span></label>
+                <input data-slot="input" type="text"
+                    data-field="name" x-model="name" autocomplete="name" x-on:blur="touch(&#039;name&#039;)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="show('name')"></span></div>
+</div>
+                    <div class="flex flex-col gap-1.5" x-id="['nq-review-fit']">
+                <span :id="$id('nq-review-fit')" class="text-label text-foreground" x-text="t.fitQuestion"></span>
+                <div role="radiogroup" :aria-labelledby="$id('nq-review-fit')" aria-orientation="horizontal" class="flex flex-wrap gap-2">
+                    <template x-for="(f, i) in fits" :key="f">
+                        <button type="button" role="radio" data-slot="fit-option" :data-value="f" :aria-checked="fit === f ? 'true' : 'false'"
+                            :data-checked="fit === f ? '' : null" :tabindex="(fit ? fit === f : i === 0) ? 0 : -1"
+                            x-on:click="fit = f" x-on:keydown="fitKey($event)" x-text="fitText(f)"
+                            class="inline-flex h-control items-center rounded-control border border-border bg-card px-3 text-label text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-checked:border-foreground data-checked:ring-1 data-checked:ring-foreground"></button>
+                    </template>
+                </div>
+            </div>
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-wrap items-center gap-3">
+                <input x-ref="files" data-field="photos" type="file" accept="image/*" multiple hidden x-on:change="addFiles($event)">
+                <button data-slot="button"
+     type="button"                     x-bind:disabled="previews.length &gt;= maxPhotos" x-on:click="$refs.files.click()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 5h6"/>
+  <path d="M19 2v6"/>
+  <path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/>
+  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+  <circle cx="9" cy="9" r="2"/>
+</svg>                    <span x-text="t.addPhotos"></span></button>
+                <span class="text-caption" x-bind:class="show('photos') ? 'text-nq-danger-text' : 'text-muted-foreground'" x-text="show('photos') || photosHint"></span>
+            </div>
+            <ul x-show="previews.length > 0" style="display: none" class="flex flex-wrap gap-2">
+                <template x-for="(p, i) in previews" :key="p.url">
+                    <li class="relative size-16 overflow-hidden rounded-control border border-border bg-secondary">
+                        <img :src="p.url" :alt="p.name" width="64" height="64" class="size-full object-cover">
+                        <button type="button" :aria-label="removeLabel(p.name)" x-on:click="removePhoto(i)"
+                            class="absolute end-0.5 top-0.5 inline-flex size-5 items-center justify-center rounded-full bg-background/90 text-foreground outline-none hover:bg-background focus-visible:outline-2 focus-visible:outline-nq-focus">
+                            <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                        </button>
+                    </li>
+                </template>
+            </ul>
+        </div>
+        <p x-show="failure" style="display: none" role="alert" class="text-body-sm text-nq-danger-text" x-text="failure"></p>
+        <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                            <button data-slot="button"
+     type="button"                     x-on:click="$dispatch(&#039;nq-cancel&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="t.cancel"></span></button>
+                        <button data-slot="button"
+     type="submit"                     x-bind:disabled="state === &#039;sending&#039;" x-bind:aria-busy="state === &#039;sending&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="state === 'sending'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                <span x-text="state === 'sending' ? t.submitting : t.submitReview"></span></button>
+        </div>
+    </form>
+</div>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+            <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="reportOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground"><span x-text="t.reportTitle"></span></h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-text="t.reportDescription"></span></p></div>
+                <div x-show="report.state === 'done'" style="display: none" class="flex flex-col items-center gap-4 py-4">
+                    <p role="status" class="text-body text-foreground" x-text="t.reportThanks"></p>
+                    <button data-slot="button"
+     type="button"                     x-on:click="reportOpen = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="t.cancel"></span></button>
+                </div>
+                <form x-show="report.state !== 'done'" class="flex flex-col gap-4" x-on:submit.prevent="sendReport()">
+                    <div x-id="['nq-report']" class="flex flex-col gap-2">
+                        <span :id="$id('nq-report', 'reason')" class="text-label text-foreground" x-text="t.reportReason"></span>
+                        <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup(null)" x-modelable="value" x-bind="root"
+                x-model="report.reason" x-bind:aria-labelledby="$id(&#039;nq-report&#039;, &#039;reason&#039;)" class="flex flex-col gap-1">
+    <label class="flex cursor-pointer items-center gap-2 rounded-control px-2 py-1.5 text-body-sm text-foreground hover:bg-nq-hover">
+                                    <button type="button" role="radio" data-slot="radio" x-bind="radio('spam')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 after:rounded-full">
+    <span data-slot="radio-indicator" class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('spam')"  style="display: none" ></span>
+</button>
+                                    Spam or advertising
+                                </label>
+                                                            <label class="flex cursor-pointer items-center gap-2 rounded-control px-2 py-1.5 text-body-sm text-foreground hover:bg-nq-hover">
+                                    <button type="button" role="radio" data-slot="radio" x-bind="radio('offensive')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 after:rounded-full">
+    <span data-slot="radio-indicator" class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('offensive')"  style="display: none" ></span>
+</button>
+                                    Offensive or abusive
+                                </label>
+                                                            <label class="flex cursor-pointer items-center gap-2 rounded-control px-2 py-1.5 text-body-sm text-foreground hover:bg-nq-hover">
+                                    <button type="button" role="radio" data-slot="radio" x-bind="radio('fake')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 after:rounded-full">
+    <span data-slot="radio-indicator" class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('fake')"  style="display: none" ></span>
+</button>
+                                    Looks fake
+                                </label>
+                                                            <label class="flex cursor-pointer items-center gap-2 rounded-control px-2 py-1.5 text-body-sm text-foreground hover:bg-nq-hover">
+                                    <button type="button" role="radio" data-slot="radio" x-bind="radio('irrelevant')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 after:rounded-full">
+    <span data-slot="radio-indicator" class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('irrelevant')"  style="display: none" ></span>
+</button>
+                                    Not about this product
+                                </label>
+                                                            <label class="flex cursor-pointer items-center gap-2 rounded-control px-2 py-1.5 text-body-sm text-foreground hover:bg-nq-hover">
+                                    <button type="button" role="radio" data-slot="radio" x-bind="radio('other')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 after:rounded-full">
+    <span data-slot="radio-indicator" class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('other')"  style="display: none" ></span>
+</button>
+                                    Something else
+                                </label>
+    </div>
+                    </div>
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50"><span x-text="t.reportNote"></span></label>
+                        <textarea data-slot="textarea"
+                rows="3" x-model="report.note" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+</div>
+                    <p x-show="report.failure" style="display: none" role="alert" class="text-body-sm text-nq-danger-text" x-text="report.failure"></p>
+                    <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="reportOpen = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="t.cancel"></span></button>
+                        <button data-slot="button"
+     type="submit"                     x-bind:disabled="!report.reason || report.state === &#039;sending&#039;" x-bind:aria-busy="report.state === &#039;sending&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="report.state === 'sending'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                            <span x-text="t.reportSend"></span></button></div>
+                </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="viewerOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-w-2xl">
+            <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground"><span x-text="t.photosTitle"></span></h2>
+                <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-text="viewerCaption"></span></p></div>
+            <div class="flex items-center gap-2">
+                <button data-slot="button"
+     type="button"                     aria-label="Previous photo" x-bind:disabled="!hasPrev" x-on:click="step(-1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0">
+        <svg aria-hidden="true" class="rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg></button>
+                <div class="flex min-w-0 flex-1 justify-center">
+                    <img :src="viewerPhoto && viewerPhoto.src" :alt="(viewerPhoto && viewerPhoto.alt) || t.viewPhoto" width="640" height="640" class="aspect-square max-h-[60dvh] w-full rounded-card bg-secondary object-contain">
+                </div>
+                <button data-slot="button"
+     type="button"                     aria-label="Next photo" x-bind:disabled="!hasNext" x-on:click="step(1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0">
+        <svg aria-hidden="true" class="rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></button>
+            </div>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</section>
+    <section data-slot="product-qa" x-data="nqProductQA(JSON.parse('{\u0022questions\u0022:[{\u0022id\u0022:\u0022q1\u0022,\u0022author\u0022:\u0022Huda\u0022,\u0022question\u0022:\u0022Is it machine washable?\u0022,\u0022date\u0022:\u00222026-03-05\u0022,\u0022votes\u0022:3,\u0022answers\u0022:[{\u0022id\u0022:\u0022a1\u0022,\u0022author\u0022:\u0022Support\u0022,\u0022body\u0022:\u0022Yes, on a gentle cycle at 30 degrees.\u0022,\u0022date\u0022:\u00222026-03-06\u0022,\u0022seller\u0022:true,\u0022votes\u0022:2}]}],\u0022answersShown\u0022:2,\u0022pageSize\u0022:5,\u0022defaultSort\u0022:\u0022votes\u0022,\u0022loading\u0022:false,\u0022error\u0022:false,\u0022canAsk\u0022:true,\u0022canAnswer\u0022:false,\u0022labels\u0022:{}}'))" x-id="['nq-qa']" :aria-labelledby="$id('nq-qa')" x-on:nq-ask="$event.detail.waitUntil(api.ask($event.detail.question))" class="flex flex-col gap-5">
+    <header class="flex flex-col gap-1">
+        <h2 :id="$id('nq-qa')" class="text-h2 text-foreground" x-text="t.qaTitle"></h2>
+        <p class="text-caption text-muted-foreground" x-text="qaCountText"></p>
+    </header>
+            <form novalidate class="flex flex-col gap-2" x-on:submit.prevent="submitAsk()">
+            <label :for="$id('nq-qa', 'ask')" class="text-label text-foreground" x-text="t.askTitle"></label>
+            <textarea data-slot="textarea"
+                x-bind:id="$id(&#039;nq-qa&#039;, &#039;ask&#039;)" rows="2" x-model="ask" x-bind:placeholder="t.askPlaceholder" x-bind:aria-invalid="askError ? &#039;true&#039; : null" x-on:input="if (askState === &#039;done&#039;) askState = &#039;idle&#039;" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+            <p x-show="askError" style="display: none" role="alert" class="text-caption text-nq-danger-text" x-text="askError"></p>
+            <div class="flex items-center justify-between gap-3">
+                <p role="status" class="text-caption text-nq-success-text" x-text="askState === 'done' ? t.askThanks : ''"></p>
+                <button data-slot="button"
+     type="submit"                     x-bind:disabled="askState === &#039;sending&#039;" x-bind:aria-busy="askState === &#039;sending&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="askState === 'sending'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                    <span x-text="askState === 'sending' ? t.asking : t.askSubmit"></span></button>
+            </div>
+        </form>
+    <div x-show="errorText" style="display: none" role="alert" class="flex flex-col items-start gap-3 rounded-card border border-nq-danger-border bg-nq-danger-subtle p-4 text-body-sm text-nq-danger-text">
+        <span x-text="errorText"></span>
+        <button data-slot="button"
+     type="button"                     x-on:click="$dispatch(&#039;nq-retry&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <span x-text="t.retry"></span></button>
+    </div>
+    <div x-show="loading && !errorText" style="display: none" role="status" aria-busy="true" :aria-label="t.loading" class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-2">
+                <div class="h-4 w-2/3 animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+                <div class="h-4 w-1/2 animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+            </div>
+                    <div class="flex flex-col gap-2">
+                <div class="h-4 w-2/3 animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+                <div class="h-4 w-1/2 animate-pulse rounded bg-secondary motion-reduce:animate-none"></div>
+            </div>
+            </div>
+    <div x-show="empty" style="display: none" class="flex flex-col items-center gap-2 rounded-card border border-dashed border-border py-8 text-center">
+        <svg aria-hidden="true" class="size-8 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+    <path d="M12 17h.01"/>
+</svg>        <p class="text-h3 text-foreground" x-text="t.noQuestions"></p>
+        <p class="text-body-sm text-muted-foreground" x-text="t.noQuestionsHint"></p>
+    </div>
+    <template x-if="ready">
+        <div class="flex flex-col gap-5">
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="relative min-w-48 flex-1">
+                    <svg aria-hidden="true" class="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                    <input type="search" x-model="query" :aria-label="t.searchQuestions" :placeholder="t.searchQuestions"
+                        class="h-control w-full rounded-control border border-border bg-card ps-9 pe-3 text-body outline-none placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                </div>
+                <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="sort" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Sort questions" class="flex h-control items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] w-auto min-w-40">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                    <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('votes', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('votes')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Most upvoted</span>
+</div>
+                                                    <div data-slot="select-item" x-bind="item('newest', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('newest')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Newest</span>
+</div>
+                                                    <div data-slot="select-item" x-bind="item('answered', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('answered')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Most answered</span>
+</div>
+    </div>
+</template>
+    </div>
+            </div>
+            <p role="status" aria-live="polite" class="sr-only"><span x-text="shownCountText"></span> <span x-text="voteError"></span></p>
+            <p x-show="voteError" style="display: none" class="text-caption text-nq-danger-text" x-text="voteError"></p>
+            <p x-show="shown.length === 0" style="display: none" class="py-6 text-center text-body text-muted-foreground" x-text="t.noQuestionMatches"></p>
+            <ul x-show="shown.length > 0" style="display: none" class="flex flex-col divide-y divide-border">
+                <template x-for="q in page" :key="q.id">
+                    <li class="flex flex-col gap-3 py-5" :data-question-id="q.id">
+                        <div class="flex items-start gap-3">
+                            <div class="min-w-0 flex-1">
+                                <h3 class="text-h3 text-foreground" x-text="q.question"></h3>
+                                <p class="text-caption text-muted-foreground">
+                                    <span x-text="askedBy(q)"></span> · <time :datetime="q.date" x-text="date(q.date)"></time> · <span x-text="answersCount(q)"></span>
+                                </p>
+                            </div>
+                            <button data-slot="button"
+     type="button"                     data-upvote="data-upvote" x-bind:class="voteOf(q.id, q.votes || 0).voted ? &#039;bg-card border-border hover:bg-nq-hover&#039; : &#039;&#039;" x-bind:aria-pressed="String(voteOf(q.id, q.votes || 0).voted)" x-bind:aria-label="upvoteLabel(q.id, q.votes || 0)" x-on:click="voteQuestion(q)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 12 7-7 7 7"/>
+  <path d="M12 19V5"/>
+</svg>                                <bdi class="tabular-nums" x-text="fmt(voteOf(q.id, q.votes || 0).count)"></bdi></button>
+                        </div>
+                        <p x-show="q.answers.length === 0" style="display: none" class="text-body-sm text-muted-foreground" x-text="t.noAnswers"></p>
+                        <ul x-show="q.answers.length > 0" style="display: none" class="flex flex-col gap-3 ps-4">
+                            <template x-for="a in answersOf(q)" :key="a.id">
+                                <li class="flex items-start gap-3 border-s-2 border-border ps-3">
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-body text-foreground" x-text="a.body"></p>
+                                        <p class="mt-1 flex flex-wrap items-center gap-2 text-caption text-muted-foreground">
+                                            <span data-slot="badge"  style="display: none"     x-show="a.seller" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-brand/40 bg-[color-mix(in_oklab,var(--nq-brand)_14%,transparent)] text-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                                                <span x-text="t.fromSeller"></span></span>
+                                            <span><span x-text="a.author"></span> · <time :datetime="a.date" x-text="date(a.date)"></time></span>
+                                        </p>
+                                    </div>
+                                    <button data-slot="button"
+     type="button"                     data-upvote="data-upvote" x-bind:class="voteOf(q.id + &#039;:&#039; + a.id, a.votes || 0).voted ? &#039;bg-card border-border hover:bg-nq-hover&#039; : &#039;&#039;" x-bind:aria-pressed="String(voteOf(q.id + &#039;:&#039; + a.id, a.votes || 0).voted)" x-bind:aria-label="upvoteLabel(q.id + &#039;:&#039; + a.id, a.votes || 0)" x-on:click="voteAnswer(q, a)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 12 7-7 7 7"/>
+  <path d="M12 19V5"/>
+</svg>                                        <bdi class="tabular-nums" x-text="fmt(voteOf(q.id + ':' + a.id, a.votes || 0).count)"></bdi></button>
+                                </li>
+                            </template>
+                        </ul>
+                        <button x-show="moreAnswers(q)" style="display: none" type="button" :aria-expanded="open.includes(q.id) ? 'true' : 'false'" x-on:click="toggleOpen(q.id)"
+                            class="self-start ps-4 text-label text-nq-accent-text outline-none hover:underline focus-visible:outline-2 focus-visible:outline-nq-focus" x-text="toggleLabel(q)"></button>
+                        <div x-show="canAnswer" style="display: none" class="flex flex-col gap-2 ps-4">
+                            <textarea data-slot="textarea"
+                rows="2" x-bind:aria-label="t.answer + &#039;: &#039; + q.question" x-bind:placeholder="t.answerPlaceholder" x-bind:value="answerDraft[q.id] || &#039;&#039;" x-on:input="answerDraft = { ...answerDraft, [q.id]: $event.target.value }" x-bind:aria-invalid="answerError[q.id] ? &#039;true&#039; : null" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                            <p x-show="answerError[q.id]" style="display: none" role="alert" class="text-caption text-nq-danger-text" x-text="answerError[q.id]"></p>
+                            <button data-slot="button"
+     type="button"                     x-bind:disabled="answerBusy === q.id" x-bind:aria-busy="answerBusy === q.id ? &#039;true&#039; : null" x-on:click="submitAnswer(q)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 self-end">
+        <template x-if="answerBusy === q.id"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                                <span x-text="t.answerSubmit"></span></button>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+            <button data-slot="button"
+     type="button"                     x-show="shown.length &gt; visible" style="display: none" x-on:click="showMore()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)] self-center">
+        <span x-text="t.showMore"></span></button>
+        </div>
+    </template>
+</section>
+</div>

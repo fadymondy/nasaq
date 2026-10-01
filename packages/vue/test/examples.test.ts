@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { readdirSync } from "node:fs";
 import { resolve } from "node:path";
-import { expect, it } from "vitest";
+import { beforeAll, expect, it } from "vitest";
 import type { Component } from "vue";
 
 // Every examples/<name>.vue (the code on the component's Vue tab) mounts without warnings and renders Nasaq markup.
@@ -9,6 +9,11 @@ const dir = (p: string) => readdirSync(resolve(process.cwd(), p), { withFileType
 const examples = dir("examples")
   .filter((f) => f.isFile() && f.name.endsWith(".vue"))
   .map((f) => f.name.replace(/\.vue$/, ""));
+
+// Compile the whole library once, outside any single test's timeout (examples import it through "@fadymondy/nasaq/vue").
+beforeAll(async () => {
+  await import("../src/index");
+}, 180_000);
 
 it("has an example for every ported component", () => {
   const ported = dir("src/components").filter((d) => d.isDirectory()).map((d) => d.name);
@@ -22,4 +27,4 @@ it.each(examples)("%s mounts", async (name) => {
   expect(warnings).toEqual([]);
   expect(document.body.innerHTML).toMatch(/data-slot="/);
   w.unmount();
-}, 30_000); // the first import compiles the whole library
+}, 30_000);

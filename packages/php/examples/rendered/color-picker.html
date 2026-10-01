@@ -1,0 +1,94 @@
+<div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5 max-w-sm">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Label colour</label>
+    <div data-slot="color-picker" x-data="nqColorPicker(JSON.parse('{\u0022value\u0022:\u0022--nq-tag-teal\u0022,\u0022swatches\u0022:[{\u0022value\u0022:\u0022--nq-tag-gray\u0022,\u0022label\u0022:\u0022Gray\u0022},{\u0022value\u0022:\u0022--nq-tag-red\u0022,\u0022label\u0022:\u0022Red\u0022},{\u0022value\u0022:\u0022--nq-tag-orange\u0022,\u0022label\u0022:\u0022Orange\u0022},{\u0022value\u0022:\u0022--nq-tag-amber\u0022,\u0022label\u0022:\u0022Amber\u0022},{\u0022value\u0022:\u0022--nq-tag-green\u0022,\u0022label\u0022:\u0022Green\u0022},{\u0022value\u0022:\u0022--nq-tag-teal\u0022,\u0022label\u0022:\u0022Teal\u0022},{\u0022value\u0022:\u0022--nq-tag-blue\u0022,\u0022label\u0022:\u0022Blue\u0022},{\u0022value\u0022:\u0022--nq-tag-violet\u0022,\u0022label\u0022:\u0022Violet\u0022},{\u0022value\u0022:\u0022--nq-tag-pink\u0022,\u0022label\u0022:\u0022Pink\u0022}],\u0022placeholder\u0022:\u0022No colour\u0022,\u0022none\u0022:\u0022No colour\u0022,\u0022choose\u0022:\u0022Label colour\u0022,\u0022rtl\u0022:false}'))" x-modelable="color" class="contents">
+    <div data-slot="popover" x-data="nqPopover(false)" x-modelable="open" x-id="['nq-popover']" class="contents">
+    <button type="button" x-ref="trigger" data-slot="color-picker-trigger" aria-haspopup="dialog" x-on:click="toggle()"
+            :aria-expanded="open" x-bind:data-popup-open="open ? '' : undefined" x-bind:aria-label="triggerLabel"
+                                    class="flex h-control w-full min-w-0 items-center gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger data-disabled:cursor-not-allowed data-disabled:opacity-50 disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+            <span aria-hidden="true" data-slot="color-picker-chip" x-bind:style="color ? { backgroundColor: css(color) } : null"
+                x-bind:class="color ? '' : 'border-dashed bg-transparent'" class="inline-block size-5 shrink-0 rounded-[6px] border border-nq-line-strong"></span>
+            <span class="min-w-0 flex-1 truncate text-start" x-bind:class="label ? '' : 'text-muted-foreground'" dir="auto" x-text="label ?? placeholder">No colour</span>
+            <svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>        </button>
+                <template x-teleport="body">
+    <div data-slot="popover-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+        dir="ltr" lang="en" aria-label="Choose colour" x-effect="open &amp;&amp; $nextTick(() =&gt; syncDraft())" class="z-50 max-w-[var(--available-width)] rounded-floating border border-border bg-popover text-body-sm text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 w-64 p-3"><div class="flex flex-col gap-3">
+                                    <div role="radiogroup" aria-label="Colours" dir="ltr" data-slot="color-picker-swatches" class="grid gap-2"
+                        style="grid-template-columns: repeat(5, minmax(0, 1fr))" x-on:keydown="swatchKey($event)">
+                                                    <button type="button" role="radio" data-slot="color-picker-swatch" data-value="--nq-tag-gray" aria-label="Gray" title="Gray"
+                                style="background-color: var(--nq-tag-gray)"
+                                x-bind:aria-checked="isOn('--nq-tag-gray')" x-bind:tabindex="tab('--nq-tag-gray')"
+                                x-bind:data-checked="isOn('--nq-tag-gray') ? '' : null" x-bind:data-unchecked="isOn('--nq-tag-gray') ? null : ''"
+                                x-on:click="pick('--nq-tag-gray')" class="relative aspect-square w-full cursor-default rounded-control border border-nq-line-strong outline-none transition-shadow duration-150 ease-nq hover:shadow-[0_0_0_2px_var(--nq-line-strong)] data-checked:shadow-[0_0_0_2px_var(--popover),0_0_0_4px_var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"></button>
+                                                    <button type="button" role="radio" data-slot="color-picker-swatch" data-value="--nq-tag-red" aria-label="Red" title="Red"
+                                style="background-color: var(--nq-tag-red)"
+                                x-bind:aria-checked="isOn('--nq-tag-red')" x-bind:tabindex="tab('--nq-tag-red')"
+                                x-bind:data-checked="isOn('--nq-tag-red') ? '' : null" x-bind:data-unchecked="isOn('--nq-tag-red') ? null : ''"
+                                x-on:click="pick('--nq-tag-red')" class="relative aspect-square w-full cursor-default rounded-control border border-nq-line-strong outline-none transition-shadow duration-150 ease-nq hover:shadow-[0_0_0_2px_var(--nq-line-strong)] data-checked:shadow-[0_0_0_2px_var(--popover),0_0_0_4px_var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"></button>
+                                                    <button type="button" role="radio" data-slot="color-picker-swatch" data-value="--nq-tag-orange" aria-label="Orange" title="Orange"
+                                style="background-color: var(--nq-tag-orange)"
+                                x-bind:aria-checked="isOn('--nq-tag-orange')" x-bind:tabindex="tab('--nq-tag-orange')"
+                                x-bind:data-checked="isOn('--nq-tag-orange') ? '' : null" x-bind:data-unchecked="isOn('--nq-tag-orange') ? null : ''"
+                                x-on:click="pick('--nq-tag-orange')" class="relative aspect-square w-full cursor-default rounded-control border border-nq-line-strong outline-none transition-shadow duration-150 ease-nq hover:shadow-[0_0_0_2px_var(--nq-line-strong)] data-checked:shadow-[0_0_0_2px_var(--popover),0_0_0_4px_var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"></button>
+                                                    <button type="button" role="radio" data-slot="color-picker-swatch" data-value="--nq-tag-amber" aria-label="Amber" title="Amber"
+                                style="background-color: var(--nq-tag-amber)"
+                                x-bind:aria-checked="isOn('--nq-tag-amber')" x-bind:tabindex="tab('--nq-tag-amber')"
+                                x-bind:data-checked="isOn('--nq-tag-amber') ? '' : null" x-bind:data-unchecked="isOn('--nq-tag-amber') ? null : ''"
+                                x-on:click="pick('--nq-tag-amber')" class="relative aspect-square w-full cursor-default rounded-control border border-nq-line-strong outline-none transition-shadow duration-150 ease-nq hover:shadow-[0_0_0_2px_var(--nq-line-strong)] data-checked:shadow-[0_0_0_2px_var(--popover),0_0_0_4px_var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"></button>
+                                                    <button type="button" role="radio" data-slot="color-picker-swatch" data-value="--nq-tag-green" aria-label="Green" title="Green"
+                                style="background-color: var(--nq-tag-green)"
+                                x-bind:aria-checked="isOn('--nq-tag-green')" x-bind:tabindex="tab('--nq-tag-green')"
+                                x-bind:data-checked="isOn('--nq-tag-green') ? '' : null" x-bind:data-unchecked="isOn('--nq-tag-green') ? null : ''"
+                                x-on:click="pick('--nq-tag-green')" class="relative aspect-square w-full cursor-default rounded-control border border-nq-line-strong outline-none transition-shadow duration-150 ease-nq hover:shadow-[0_0_0_2px_var(--nq-line-strong)] data-checked:shadow-[0_0_0_2px_var(--popover),0_0_0_4px_var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"></button>
+                                                    <button type="button" role="radio" data-slot="color-picker-swatch" data-value="--nq-tag-teal" aria-label="Teal" title="Teal"
+                                style="background-color: var(--nq-tag-teal)"
+                                x-bind:aria-checked="isOn('--nq-tag-teal')" x-bind:tabindex="tab('--nq-tag-teal')"
+                                x-bind:data-checked="isOn('--nq-tag-teal') ? '' : null" x-bind:data-unchecked="isOn('--nq-tag-teal') ? null : ''"
+                                x-on:click="pick('--nq-tag-teal')" class="relative aspect-square w-full cursor-default rounded-control border border-nq-line-strong outline-none transition-shadow duration-150 ease-nq hover:shadow-[0_0_0_2px_var(--nq-line-strong)] data-checked:shadow-[0_0_0_2px_var(--popover),0_0_0_4px_var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"></button>
+                                                    <button type="button" role="radio" data-slot="color-picker-swatch" data-value="--nq-tag-blue" aria-label="Blue" title="Blue"
+                                style="background-color: var(--nq-tag-blue)"
+                                x-bind:aria-checked="isOn('--nq-tag-blue')" x-bind:tabindex="tab('--nq-tag-blue')"
+                                x-bind:data-checked="isOn('--nq-tag-blue') ? '' : null" x-bind:data-unchecked="isOn('--nq-tag-blue') ? null : ''"
+                                x-on:click="pick('--nq-tag-blue')" class="relative aspect-square w-full cursor-default rounded-control border border-nq-line-strong outline-none transition-shadow duration-150 ease-nq hover:shadow-[0_0_0_2px_var(--nq-line-strong)] data-checked:shadow-[0_0_0_2px_var(--popover),0_0_0_4px_var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"></button>
+                                                    <button type="button" role="radio" data-slot="color-picker-swatch" data-value="--nq-tag-violet" aria-label="Violet" title="Violet"
+                                style="background-color: var(--nq-tag-violet)"
+                                x-bind:aria-checked="isOn('--nq-tag-violet')" x-bind:tabindex="tab('--nq-tag-violet')"
+                                x-bind:data-checked="isOn('--nq-tag-violet') ? '' : null" x-bind:data-unchecked="isOn('--nq-tag-violet') ? null : ''"
+                                x-on:click="pick('--nq-tag-violet')" class="relative aspect-square w-full cursor-default rounded-control border border-nq-line-strong outline-none transition-shadow duration-150 ease-nq hover:shadow-[0_0_0_2px_var(--nq-line-strong)] data-checked:shadow-[0_0_0_2px_var(--popover),0_0_0_4px_var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"></button>
+                                                    <button type="button" role="radio" data-slot="color-picker-swatch" data-value="--nq-tag-pink" aria-label="Pink" title="Pink"
+                                style="background-color: var(--nq-tag-pink)"
+                                x-bind:aria-checked="isOn('--nq-tag-pink')" x-bind:tabindex="tab('--nq-tag-pink')"
+                                x-bind:data-checked="isOn('--nq-tag-pink') ? '' : null" x-bind:data-unchecked="isOn('--nq-tag-pink') ? null : ''"
+                                x-on:click="pick('--nq-tag-pink')" class="relative aspect-square w-full cursor-default rounded-control border border-nq-line-strong outline-none transition-shadow duration-150 ease-nq hover:shadow-[0_0_0_2px_var(--nq-line-strong)] data-checked:shadow-[0_0_0_2px_var(--popover),0_0_0_4px_var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"></button>
+                                            </div>
+                                                    <div class="flex flex-col gap-1">
+                        <div class="flex h-control items-center gap-2 rounded-control border border-input bg-card px-2 focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus"
+                            x-bind:class="showError ? 'border-nq-danger' : ''">
+                            <span aria-hidden="true" data-slot="color-picker-chip" x-bind:style="draftColor ? { backgroundColor: css(draftColor) } : null"
+                                x-bind:class="draftColor ? '' : 'border-dashed bg-transparent'" class="inline-block size-5 shrink-0 rounded-[6px] border border-nq-line-strong"></span>
+                            <input type="text" dir="ltr" inputmode="text" autocomplete="off" spellcheck="false" maxlength="7" aria-label="Hex value"
+                                data-slot="color-picker-hex" x-bind:value="draft" x-bind:aria-invalid="showError ? 'true' : null"
+                                x-on:input="onHex($event)" x-on:blur="submitDraft()" x-on:keydown.enter.prevent="submitDraft()"
+                                class="h-full min-w-0 flex-1 border-0 bg-transparent text-start font-mono text-body-sm text-foreground outline-none pointer-coarse:text-[16px]">
+                        </div>
+                        <p x-show="showError" style="display: none" role="alert" data-slot="color-picker-error" class="text-caption text-nq-danger-text">Use 3 or 6 hex digits, for example 1A73E8.</p>
+                    </div>
+                                                    <div class="contents">
+                        <button type="button" data-slot="color-picker-custom" x-on:click="openNative()"
+                            class="inline-flex h-control-sm min-h-[var(--nq-touch-min,0px)] items-center justify-center gap-2 rounded-control border border-border bg-card px-2.5 text-label text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 9-8.414 8.414A2 2 0 0 0 3 18.828v1.344a2 2 0 0 1-.586 1.414A2 2 0 0 1 3.828 21h1.344a2 2 0 0 0 1.414-.586L15 12"/>
+  <path d="m18 9 .4.4a1 1 0 1 1-3 3l-3.8-3.8a1 1 0 1 1 3-3l.4.4 3.4-3.4a1 1 0 1 1 3 3z"/>
+  <path d="m2 22 .414-.414"/>
+</svg>                            Custom
+                        </button>
+                        <input type="color" tabindex="-1" aria-hidden="true" class="sr-only" x-on:change="onNative($event)">
+                    </div>
+                            </div></div>
+</template>
+</div>
+</div>
+</div>

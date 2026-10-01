@@ -13,7 +13,7 @@
         }
     }
 @endphp
-<li data-slot="timeline-item" {{ $attributes->cn('group/timeline grid grid-cols-[2rem_1fr] gap-x-3') }}>
+<li data-slot="{{ $attributes->get('data-slot', 'timeline-item') }}" {{ $attributes->except('data-slot')->cn('group/timeline grid grid-cols-[2rem_1fr] gap-x-3') }}>
     <div class="flex flex-col items-center">
         <span data-slot="timeline-marker" class="flex size-8 shrink-0 items-center justify-center">
             @if ($filled($icon))

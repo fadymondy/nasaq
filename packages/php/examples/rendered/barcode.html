@@ -1,0 +1,27 @@
+<div data-slot="barcode" data-format="CODE128" dir="ltr"
+    x-data="nqBarcode(JSON.parse('{\u0022value\u0022:\u0022NSQ-2026-0042\u0022,\u0022format\u0022:\u0022CODE128\u0022,\u0022showValue\u0022:true,\u0022height\u0022:80,\u0022barWidth\u0022:2,\u0022margin\u0022:10,\u0022fg\u0022:\u0022black\u0022,\u0022bg\u0022:\u0022white\u0022,\u0022pngSize\u0022:1200,\u0022downloadName\u0022:\u0022sku\u0022,\u0022jsbarcodeSrc\u0022:null}'))"
+    x-modelable="value"
+    x-bind:data-invalid="message ? '' : null"
+    class="inline-flex max-w-full flex-col items-center gap-3">
+    <p x-show="message" style="display: none" role="alert" dir="auto" x-text="message"
+    class="rounded-control border border-dashed border-border px-4 py-6 text-center text-body-sm text-nq-danger-text"></p>
+<svg data-slot="barcode-svg" role="img" x-show="!message" x-bind:aria-label="name" x-bind:style="{ background: bg }" style="background: white"
+    class="h-auto max-w-full rounded-control border border-border"></svg>
+    <div x-show="!message" class="flex flex-wrap items-center justify-center gap-2" dir="inherit" data-slot="barcode-actions">
+        <button data-slot="button"
+     type="button"                     x-on:click="save(&#039;svg&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>Download SVG</button>
+        <button data-slot="button"
+     type="button"                     x-on:click="save(&#039;png&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>Download PNG</button>
+    </div>
+<p x-show="error" style="display: none" role="alert" class="text-caption text-nq-danger-text">Could not create the file. Try again.</p>
+</div>

@@ -1,0 +1,191 @@
+<div x-data="{
+        repos: [
+            { id: '1', fullName: 'acme/storefront', description: 'The customer storefront', language: 'TypeScript', defaultBranch: 'main', stars: 128 },
+            { id: '2', fullName: 'acme/billing-api', private: true, language: 'Go', defaultBranch: 'main', stars: 12 },
+            { id: '3', fullName: 'acme/design-tokens', language: 'CSS', defaultBranch: 'trunk', stars: 54 },
+        ],
+        branches: [{ name: 'main', default: true, protected: true }, { name: 'develop' }, { name: 'feat/checkout' }],
+    }"
+    x-on:nq-repo-search="$event.detail.wait(Promise.resolve(repos.filter((r) => r.fullName.includes($event.detail.query.toLowerCase()))))"
+    x-on:nq-repo-branches="$event.detail.wait(Promise.resolve(branches))">
+    <div data-slot="repository-picker" x-data="nqRepositoryPicker(JSON.parse('{\u0022repo\u0022:null,\u0022branch\u0022:null,\u0022hideBranch\u0022:false,\u0022disabled\u0022:false,\u0022locale\u0022:\u0022en\u0022,\u0022searchUrl\u0022:\u0022\u0022,\u0022branchesUrl\u0022:\u0022\u0022,\u0022strings\u0022:{\u0022loading\u0022:\u0022Loading\u0022,\u0022failed\u0022:\u0022Could not load. Check your connection.\u0022,\u0022results\u0022:\u0022{n} results\u0022}}'))" x-id="['nq-repo']"
+    class="grid gap-3 sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+    <div class="flex min-w-0 flex-col gap-1.5">
+        <span class="text-label text-foreground">Repository</span>
+        <div data-slot="popover" x-data="nqPopover(false)" x-modelable="open" x-id="['nq-popover']" x-model="repoOpen" class="contents">
+    <button data-slot="popover-trigger"
+     type="button"                     x-bind:data-popup-open="open ? &#039;&#039; : undefined" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" :aria-expanded="open" x-bind:aria-label="`Repository: ` + (repo ? repo.fullName : `Choose a repository`)" class="shrink-0 select-none justify-center whitespace-nowrap font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground flex h-control w-full min-w-0 items-center gap-2 rounded-control border border-input bg-card px-3 text-start text-body outline-none transition-colors hover:bg-nq-hover focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50">
+        <svg viewBox="0 0 98 96" width="20" height="20" aria-hidden="true" focusable="false" width="16" height="16" class="shrink-0">
+    <path d="M41.4395 69.3848C28.8066 67.8535 19.9062 58.7617 19.9062 46.9902C19.9062 42.2051 21.6289 37.0371 24.5 33.5918C23.2559 30.4336 23.4473 23.7344 24.8828 20.959C28.7109 20.4805 33.8789 22.4902 36.9414 25.2656C40.5781 24.1172 44.4062 23.543 49.0957 23.543C53.7852 23.543 57.6133 24.1172 61.0586 25.1699C64.0254 22.4902 69.2891 20.4805 73.1172 20.959C74.457 23.543 74.6484 30.2422 73.4043 33.4961C76.4668 37.1328 78.0937 42.0137 78.0937 46.9902C78.0937 58.7617 69.1934 67.6621 56.3691 69.2891C59.623 71.3945 61.8242 75.9883 61.8242 81.252L61.8242 91.2051C61.8242 94.0762 64.2168 95.7031 67.0879 94.5547C84.4102 87.9512 98 70.6289 98 49.1914C98 22.1074 75.9883 6.69539e-07 48.9043 4.309e-07C21.8203 1.92261e-07 -1.9479e-07 22.1074 -4.3343e-07 49.1914C-6.20631e-07 70.4375 13.4941 88.0469 31.6777 94.6504C34.2617 95.6074 36.75 93.8848 36.75 91.3008L36.75 83.6445C35.4102 84.2188 33.6875 84.6016 32.1562 84.6016C25.8398 84.6016 22.1074 81.1563 19.4277 74.7441C18.375 72.1602 17.2266 70.6289 15.0254 70.3418C13.877 70.2461 13.4941 69.7676 13.4941 69.1934C13.4941 68.0449 15.4082 67.1836 17.3223 67.1836C20.0977 67.1836 22.4902 68.9063 24.9785 72.4473C26.8926 75.2227 28.9023 76.4668 31.2949 76.4668C33.6875 76.4668 35.2187 75.6055 37.4199 73.4043C39.0469 71.7773 40.291 70.3418 41.4395 69.3848Z"  class="fill-black dark:fill-white"  />
+</svg>
+                <bdi dir="ltr" class="min-w-0 flex-1 truncate"  style="display: none"  x-show="repo">
+                    <span class="text-muted-foreground" x-text="owner ? owner + '/' : ''"></span>
+                    <span class="font-semibold text-foreground" x-text="repoName"></span>
+                </bdi>
+                <span class="min-w-0 flex-1 truncate text-muted-foreground"  x-show="! repo">Choose a repository</span>
+                <span x-show="repo && repo.private" style="display: none" class="inline-flex shrink-0" aria-label="Private"><svg data-slot="icon" aria-hidden="true" class="size-3.5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</svg></span>
+                <svg data-slot="icon" aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></button>
+            <template x-teleport="body">
+    <div data-slot="popover-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+        class="z-50 max-w-[var(--available-width)] rounded-floating border border-border bg-popover text-body-sm text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 w-[min(28rem,var(--available-width))] p-0"><div class="flex min-w-0 flex-col">
+                    <div class="relative p-2">
+                        <svg data-slot="icon" aria-hidden="true" class="pointer-events-none absolute start-4.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                        <input data-slot="input" type="search"
+                    role="combobox" aria-expanded="true" x-model="query" x-on:keydown="onKey(&#039;repo&#039;, $event)" x-effect="if (repoOpen) $nextTick(() =&gt; $el.focus())" x-bind:aria-controls="$id(&#039;nq-repo&#039;, &#039;repo-list&#039;)" x-bind:aria-activedescendant="repoActive &gt;= 0 ? $id(&#039;nq-repo&#039;, &#039;repo-&#039; + repoActive) : null" aria-label="Search repositories" placeholder="Search repositories" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control ps-8">
+                    </div>
+                    <p class="sr-only" role="status" x-text="statusText('repo')"></p>
+                    <div class="max-h-72 overflow-y-auto border-t border-border">
+                        <div x-show="repoStatus === 'loading' && repos.length === 0" class="flex flex-col gap-2 p-3" aria-hidden="true">
+                            <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-9 w-full"></div>
+<div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-9 w-full"></div>
+<div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-9 w-full"></div>
+                        </div>
+                        <div x-show="repoStatus === 'error'" style="display: none" class="flex flex-col items-start gap-2 p-4 text-body-sm text-muted-foreground">
+                            <p>Could not load. Check your connection.</p>
+                            <button data-slot="button"
+     type="button"                     x-on:click="searchRepos(0)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+</svg>                                Try again</button>
+                        </div>
+                        <div x-show="repoStatus === 'ready' && repos.length === 0" style="display: none" class="p-4 text-body-sm">
+                            <p class="text-label text-foreground">No repositories match</p>
+                            <p class="mt-1 text-muted-foreground">Check the spelling, or give the GitHub app access to more repositories.</p>
+                        </div>
+                        <ul x-show="repos.length > 0" style="display: none" x-bind:id="$id('nq-repo', 'repo-list')" role="listbox" aria-label="Search repositories"
+                            class="flex flex-col p-1" x-bind:class="repoStatus === 'loading' && 'opacity-60'">
+                            <template x-for="(r, i) in repos" :key="r.id">
+                                <li role="option" x-bind:id="$id('nq-repo', 'repo-' + i)" x-bind:aria-selected="repo && r.id === repo.id ? 'true' : 'false'"
+                                    x-bind:data-active="i === repoActive ? 'true' : null" class="flex cursor-pointer items-start gap-2 rounded-control px-2 py-1.5" x-bind:class="i === repoActive && 'bg-nq-hover'"
+                                    x-on:click="pickRepo(r)" x-on:mousemove="repoActive = i">
+                                    <span class="min-w-0 flex-1">
+                                        <span class="flex min-w-0 flex-col gap-0.5">
+                                            <span class="flex items-center gap-2">
+                                                <bdi dir="ltr" class="min-w-0 truncate text-label text-foreground" x-text="r.fullName"></bdi>
+                                                <span data-slot="badge"  style="display: none"     x-show="r.private" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground"><svg data-slot="icon" aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</svg>                                                    Private</span>
+                                            </span>
+                                            <span x-show="r.description" dir="auto" class="line-clamp-1 text-caption text-muted-foreground" x-text="r.description"></span>
+                                            <span class="flex flex-wrap items-center gap-x-3 text-caption text-muted-foreground">
+                                                <bdi x-show="r.language" dir="ltr" x-text="r.language"></bdi>
+                                                <span x-show="r.stars !== undefined" class="inline-flex items-center gap-1">
+                                                    <svg data-slot="icon" aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>                                                    <bdi x-text="num(r.stars ?? 0)"></bdi>
+                                                </span>
+                                                <span x-show="r.updatedAt">Updated <span x-text="relative(r.updatedAt)"></span></span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <span x-show="repo && r.id === repo.id" class="mt-0.5 inline-flex shrink-0 text-primary"><svg data-slot="icon" aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between gap-2 border-t border-border px-3 py-2 text-caption text-muted-foreground">
+                        <span class="flex min-w-0 items-center gap-1.5">
+                                                            <svg data-slot="icon" aria-hidden="true" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                                                        <span class="truncate">Through the GitHub app on acme</span>
+                        </span>
+                        <button data-slot="button"
+     type="button"                     x-on:click="configure()" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5 shrink-0">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 17H5"/>
+  <path d="M19 7h-9"/>
+  <circle cx="17" cy="17" r="3"/>
+  <circle cx="7" cy="7" r="3"/>
+</svg>                            Configure access</button>
+                    </div>
+                </div></div>
+</template>
+</div>
+    </div>
+            <div class="flex min-w-0 flex-col gap-1.5">
+            <span class="text-label text-foreground">Branch</span>
+            <div data-slot="popover" x-data="nqPopover(false)" x-modelable="open" x-id="['nq-popover']" x-model="branchOpen" class="contents">
+    <button data-slot="popover-trigger"
+     type="button"                     x-bind:data-popup-open="open ? &#039;&#039; : undefined" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" :aria-expanded="open" x-bind:disabled="(disabled || ! repo) ? &#039;&#039; : null" x-bind:data-disabled="(disabled || ! repo) ? &#039;&#039; : null" x-bind:aria-label="`Branch: ` + (branch ?? (repo ? `Choose a branch` : `Choose a repository first`))" class="shrink-0 select-none justify-center whitespace-nowrap font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground flex h-control w-full min-w-0 items-center gap-2 rounded-control border border-input bg-card px-3 text-start text-body outline-none transition-colors hover:bg-nq-hover focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50">
+        <svg data-slot="icon" aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 6a9 9 0 0 0-9 9V3"/>
+  <circle cx="18" cy="6" r="3"/>
+  <circle cx="6" cy="18" r="3"/>
+</svg>                    <bdi dir="ltr" class="min-w-0 flex-1 truncate"  style="display: none"  x-show="branch" x-text="branch"></bdi>
+                    <span class="min-w-0 flex-1 truncate text-muted-foreground"  x-show="! branch"
+                        x-text="repo ? (branchStatus === 'loading' ? `Loading branches` : `Choose a branch`) : `Choose a repository first`">Choose a repository first</span>
+                    <svg data-slot="icon" aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></button>
+                <template x-teleport="body">
+    <div data-slot="popover-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+        class="z-50 max-w-[var(--available-width)] rounded-floating border border-border bg-popover text-body-sm text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 w-[min(22rem,var(--available-width))] p-0"><div class="flex min-w-0 flex-col">
+                        <div class="relative p-2">
+                            <svg data-slot="icon" aria-hidden="true" class="pointer-events-none absolute start-4.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                            <input data-slot="input" type="search"
+                    role="combobox" aria-expanded="true" x-model="branchQuery" x-on:keydown="onKey(&#039;branch&#039;, $event)" x-effect="if (branchOpen) $nextTick(() =&gt; $el.focus())" x-bind:aria-controls="$id(&#039;nq-repo&#039;, &#039;branch-list&#039;)" x-bind:aria-activedescendant="branchActive &gt;= 0 ? $id(&#039;nq-repo&#039;, &#039;branch-&#039; + branchActive) : null" aria-label="Filter branches" placeholder="Filter branches" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control ps-8">
+                        </div>
+                        <p class="sr-only" role="status" x-text="statusText('branch')"></p>
+                        <div class="max-h-72 overflow-y-auto border-t border-border">
+                            <div x-show="branchStatus === 'loading' && branches.length === 0" class="flex flex-col gap-2 p-3" aria-hidden="true">
+                                <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-9 w-full"></div>
+<div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-9 w-full"></div>
+<div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-9 w-full"></div>
+                            </div>
+                            <div x-show="branchStatus === 'error'" style="display: none" class="flex flex-col items-start gap-2 p-4 text-body-sm text-muted-foreground">
+                                <p>Could not load. Check your connection.</p>
+                                <button data-slot="button"
+     type="button"                     x-on:click="loadBranches()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+</svg>                                    Try again</button>
+                            </div>
+                            <div x-show="branchStatus === 'ready' && shownBranches.length === 0" style="display: none" class="p-4 text-body-sm">
+                                <p class="text-label text-foreground">No branches match</p>
+                            </div>
+                            <ul x-show="shownBranches.length > 0" style="display: none" x-bind:id="$id('nq-repo', 'branch-list')" role="listbox" aria-label="Filter branches"
+                                class="flex flex-col p-1" x-bind:class="branchStatus === 'loading' && 'opacity-60'">
+                                <template x-for="(b, i) in shownBranches" :key="b.name">
+                                    <li role="option" x-bind:id="$id('nq-repo', 'branch-' + i)" x-bind:aria-selected="b.name === branch ? 'true' : 'false'"
+                                        x-bind:data-active="i === branchActive ? 'true' : null" class="flex cursor-pointer items-start gap-2 rounded-control px-2 py-1.5" x-bind:class="i === branchActive && 'bg-nq-hover'"
+                                        x-on:click="pickBranch(b)" x-on:mousemove="branchActive = i">
+                                        <span class="min-w-0 flex-1">
+                                            <span class="flex items-center gap-2">
+                                                <bdi dir="ltr" class="min-w-0 truncate text-body-sm text-foreground" x-text="b.name"></bdi>
+                                                <span data-slot="badge"  style="display: none"     x-show="b.default" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Default</span>
+                                                <span data-slot="badge"  style="display: none"     x-show="b.protected" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground"><svg data-slot="icon" aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</svg>                                                    Protected</span>
+                                            </span>
+                                        </span>
+                                        <span x-show="b.name === branch" class="mt-0.5 inline-flex shrink-0 text-primary"><svg data-slot="icon" aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div></div>
+</template>
+</div>
+        </div>
+    </div>
+</div>

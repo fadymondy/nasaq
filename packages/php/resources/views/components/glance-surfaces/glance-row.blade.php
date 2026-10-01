@@ -20,7 +20,7 @@
     </button>
 </div>
 @else
-<div data-slot="glance-row" {{ $attributes->cn($base) }}>
+<div data-slot="{{ $attributes->get('data-slot', 'glance-row') }}" {{ $attributes->except('data-slot')->cn($base) }}>
     @if ($icon)<x-dynamic-component :component="'lucide-'.$icon" aria-hidden="true" class="{{ $iconClass }}" />@endif
     <span class="min-w-0 flex-1 text-start">
         <span class="{{ \Nasaq\Cn::merge('block truncate text-foreground', $dense ? 'text-caption' : 'text-label') }}">{{ $label }}</span>

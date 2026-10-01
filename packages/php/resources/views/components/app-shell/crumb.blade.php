@@ -9,7 +9,7 @@
 @endphp
 <li class="group/crumb flex min-w-0 items-center gap-1 max-md:not-last:hidden">
     <span aria-hidden="true" class="select-none px-0.5 text-body text-nq-line-strong group-first/crumb:hidden max-md:hidden">/</span>
-    <span data-slot="app-crumb" {{ $attributes->cn('flex min-w-0 items-center gap-1') }}>
+    <span data-slot="{{ $attributes->get('data-slot', 'app-crumb') }}" {{ $attributes->except('data-slot')->cn('flex min-w-0 items-center gap-1') }}>
         @if ($href && ! $current)
             <a href="{{ $href }}" class="{{ $labelClass }} transition-colors duration-150 ease-nq hover:bg-nq-hover">
                 @if ($hasIcon)<span class="inline-flex shrink-0 [&_svg]:size-4">{{ $icon }}</span>@endif

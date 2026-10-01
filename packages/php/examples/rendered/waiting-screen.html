@@ -1,0 +1,75 @@
+<div data-slot="waiting-screen" data-status="waiting" x-data="nqWaitingScreen" class="mx-auto flex w-full max-w-md flex-col gap-4">
+        <div class="flex items-center justify-between gap-2">
+                            <span></span>
+                        <span data-slot="queue-live" data-connection="live" role="status" aria-label="Connection: Live"  x-data="nqQueueLive(JSON.parse('{\u0022updatedAt\u0022:1790672388000,\u0022frozen\u0022:false,\u0022serverNow\u0022:1790672400000,\u0022justNow\u0022:\u0022Updated just now\u0022,\u0022ago\u0022:\u0022Updated :n s ago\u0022}'))"     class="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+            <span aria-hidden="true" class="relative flex size-2">
+            <span class="absolute inline-flex size-full rounded-full opacity-60 motion-safe:animate-ping bg-nq-success-text"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-nq-success-text"></span>
+        </span>
+        <span class="font-medium text-foreground">Live</span>
+            <span>· <span data-slot="queue-updated"  x-text="text" >Updated 12 s ago</span></span>
+    </span>
+        </div>
+        <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Your ticket</h3>
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text justify-self-end"><svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 22h14"/>
+  <path d="M5 2h14"/>
+  <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
+  <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+</svg>                        Waiting</span></div>
+            <div data-slot="card-content" class="px-4 flex flex-col gap-4"><bdi dir="ltr" data-slot="waiting-ticket" class="text-center font-mono text-[3.5rem] font-semibold leading-none tracking-wider tabular-nums">A-017</bdi>
+                                    <div class="grid grid-cols-2 gap-3 border-t border-nq-line pt-4">
+                        <div class="flex flex-col gap-0.5">
+                            <span class="text-caption text-muted-foreground">Your place in line</span>
+                            <span class="text-h2 tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">3</bdi>
+</span>
+                            <span class="text-caption text-muted-foreground">2 people ahead of you</span>
+                        </div>
+                        <div class="flex flex-col gap-0.5">
+                            <span class="text-caption text-muted-foreground">Estimated wait</span>
+                            <span class="text-h2">About 10 min</span>
+                        </div>
+                    </div></div></div>
+        <section aria-label="Now serving" aria-live="polite" class="flex flex-col gap-2 rounded-card border border-border bg-card p-4">
+            <h3 class="text-label font-semibold">Now serving</h3>
+                            <ul class="m-0 grid list-none gap-2 p-0">
+                                            <li class="flex items-center justify-between gap-3 rounded-control px-3 py-2 bg-secondary">
+                            <bdi dir="ltr" class="font-mono text-h3 tabular-nums">A-014</bdi>
+                                                            <span class="inline-flex items-center gap-1.5 text-body-sm text-muted-foreground">
+                                    <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 20H2"/>
+  <path d="M11 4.562v16.157a1 1 0 0 0 1.242.97L19 20V5.562a2 2 0 0 0-1.515-1.94l-4-1A2 2 0 0 0 11 4.561z"/>
+  <path d="M11 4H8a2 2 0 0 0-2 2v14"/>
+  <path d="M14 12h.01"/>
+  <path d="M22 20h-3"/>
+</svg>                                    Room 2
+                                </span>
+                                                    </li>
+                                    </ul>
+                    </section>
+                    <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 17 5-5-5-5"/>
+  <path d="M21 12H9"/>
+  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+</svg>                Leave the line</button>
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Leave the line?</h2>
+                            <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">You lose your place. You can check in again, but you go to the back.</p></div>
+        <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+            <button data-slot="alert-dialog-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="$dispatch(&#039;nq-leave&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Yes, leave</button></div>
+        </div>
+    </div>
+</template>
+</div>
+                    </div>
