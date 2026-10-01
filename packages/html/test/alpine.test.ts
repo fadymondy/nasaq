@@ -2,7 +2,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 
 // Alpine reads window at import time, so load it inside the DOM environment.
-let Alpine: typeof import("alpinejs").default;
+let Alpine: typeof import("alpinejs");
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
 
@@ -35,7 +35,7 @@ beforeAll(async () => {
 
     <div id="store" x-data><span id="theme" x-text="$nq.theme"></span><button id="dark" @click="$nq.setTheme('dark')"></button></div>
   `;
-  Alpine = (await import("alpinejs")).default;
+  Alpine = (await import("alpinejs")).default as unknown as typeof Alpine;
   const nasaq = (await import("../src/alpine")).default;
   (window as unknown as { Alpine: unknown }).Alpine = Alpine;
   Alpine.plugin(nasaq);

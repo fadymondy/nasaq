@@ -19,7 +19,6 @@
 //   $nq                 the same store: $nq.toast({ title }), $nq.money(12), $nq.openDialog('invite')
 //   window event "nq-toast" (Livewire: $this->dispatch('nq-toast', title: 'Saved', tone: 'success'))
 
-import type AlpineNs from "alpinejs";
 import { dialog as bindDialog } from "./core/dialog";
 import { closeDialog, openDialog } from "./core/dialog";
 import { isRtlAt, place } from "./core/dom";
@@ -30,7 +29,25 @@ import { tabs as bindTabs } from "./core/tabs";
 import { toast, type ToastOptions } from "./core/toast";
 import { tooltip as bindTooltip } from "./core/tooltip";
 
-type Alpine = AlpineNs.Alpine;
+/** The slice of the Alpine API the plugin uses; declared here so the published types need no @types/alpinejs. */
+export interface AlpineLike {
+  store(name: string, value?: unknown): unknown;
+  magic(name: string, callback: (el: Element) => unknown): void;
+  directive(
+    name: string,
+    callback: (
+      el: Element,
+      directive: { value: string; expression: string; modifiers: string[] },
+      utilities: {
+        cleanup(fn: () => void): void;
+        effect(fn: () => void): unknown;
+        evaluateLater<T>(expression: string): (callback: (value: T) => void) => void;
+      },
+    ) => void,
+  ): unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data(name: string, callback: (...args: any[]) => Record<string, any>): void;
+}
 
 export interface NasaqStore {
   locale: string;
@@ -76,9 +93,9 @@ function store(): NasaqStore {
   };
 }
 
-export default function nasaq(Alpine: Alpine): void {
-  (Alpine.store as (name: string, value: unknown) => void)("nq", store());
-  const nq = () => (Alpine.store as (name: string) => NasaqStore)("nq");
+export default function nasaq(Alpine: AlpineLike): void {
+  Alpine.store("nq", store());
+  const nq = () => Alpine.store("nq") as NasaqStore;
 
   Alpine.magic("nq", () => nq());
 

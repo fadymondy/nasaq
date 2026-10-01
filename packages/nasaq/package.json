@@ -1,7 +1,7 @@
 {
   "name": "@fadymondy/nasaq",
   "version": "0.4.0",
-  "description": "Nasaq (نسق): one product language for every surface. React + Base UI + Tailwind v4 components, design tokens, brand marks, a React Native kit and Electron window chrome. Arabic and RTL native.",
+  "description": "Nasaq (نسق): one product language for every surface. React + Base UI + Tailwind v4 components, Vue 3 components, plain HTML/CSS classes with vanilla JS and Alpine.js behaviours (Laravel Blade, Livewire, FilamentPHP), design tokens, brand marks, a React Native kit and Electron window chrome. Arabic and RTL native.",
   "keywords": [
     "design-system",
     "ui",
@@ -15,7 +15,18 @@
     "arabic",
     "react-native",
     "electron",
-    "shadcn"
+    "shadcn",
+    "vue",
+    "vue3",
+    "alpinejs",
+    "alpine",
+    "html",
+    "css",
+    "laravel",
+    "blade",
+    "livewire",
+    "filament",
+    "filamentphp"
   ],
   "license": "MIT",
   "author": "Fady Mondy",
@@ -66,6 +77,24 @@
       "default": "./dist/electron/preload.js"
     },
     "./electron/chrome.css": "./dist/electron/chrome.css",
+    "./html": {
+      "types": "./dist/html/index.d.ts",
+      "default": "./dist/html/index.js"
+    },
+    "./alpine": {
+      "types": "./dist/html/alpine.d.ts",
+      "default": "./dist/html/alpine.js"
+    },
+    "./html.css": "./dist/html.css",
+    "./html/components.css": "./dist/html/components.css",
+    "./html/base.css": "./dist/html/base.css",
+    "./vue": {
+      "types": "./dist/vue/index.d.ts",
+      "default": "./dist/vue/index.js"
+    },
+    "./cdn/nasaq.js": "./dist/cdn/nasaq.global.js",
+    "./cdn/nasaq-alpine.js": "./dist/cdn/nasaq-alpine.global.js",
+    "./blade/*": "./dist/blade/*",
     "./package.json": "./package.json"
   },
   "files": [
@@ -79,7 +108,7 @@
     "check": "pnpm run publint && pnpm run attw && pnpm run check:client",
     "check:client": "node scripts/check-client.mjs",
     "publint": "publint run --strict .",
-    "attw": "attw --pack . --profile esm-only --exclude-entrypoints web/styles.css tokens.css theme.css theme-script.js electron/chrome.css",
+    "attw": "attw --pack . --profile esm-only --exclude-entrypoints web/styles.css tokens.css theme.css theme-script.js electron/chrome.css html.css html/components.css html/base.css cdn/nasaq.js cdn/nasaq-alpine.js",
     "pack:dry": "npm pack --dry-run",
     "test": "node --test \"test/*.test.mjs\""
   },
@@ -116,13 +145,17 @@
     "react": ">=19",
     "react-dom": ">=19",
     "react-native": ">=0.86",
-    "react-native-svg": ">=15"
+    "react-native-svg": ">=15",
+    "vue": ">=3.5"
   },
   "peerDependenciesMeta": {
     "electron": {
       "optional": true
     },
     "expo-haptics": {
+      "optional": true
+    },
+    "react": {
       "optional": true
     },
     "react-dom": {
@@ -133,12 +166,17 @@
     },
     "react-native-svg": {
       "optional": true
+    },
+    "vue": {
+      "optional": true
     }
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
+    "esbuild": "0.28.2",
     "publint": "0.3.24",
-    "tsdown": "0.23.0"
+    "tsdown": "0.23.0",
+    "vue": "3.5.43"
   },
   "publishConfig": {
     "access": "public",
