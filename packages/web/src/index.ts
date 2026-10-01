@@ -370,3 +370,6 @@ export * from "./components/hooks";
 export * from "./components/markdown-editor";
 export * from "./components/native-select";
 export * from "./components/source-badge";
+export * from "./components/desktop-icons";
+export * from "./components/desktop-login-screen";
+export * from "./components/typing-terminal";

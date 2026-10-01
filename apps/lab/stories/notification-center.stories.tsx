@@ -1,7 +1,7 @@
 import { NotificationCenter, type NotificationCenterItem, useNasaq } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CreditCard } from "lucide-react";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 
 const meta = { title: "Components/Alerts & Notifications/Notification Center", component: NotificationCenter, args: { items: [] } } satisfies Meta<typeof NotificationCenter>;
 export default meta;
@@ -33,13 +33,15 @@ function makeItems(ar: boolean, count: number): NotificationCenterItem[] {
   });
 }
 
-function Demo({ count = 3 }: { count?: number }) {
+function Demo({ count = 3, variant, header }: { count?: number; variant?: "popover" | "sheet"; header?: ReactNode }) {
   const ar = useNasaq().locale.startsWith("ar");
   const [items, setItems] = useState(() => makeItems(ar, count));
   return (
     <div className="flex justify-end">
       <NotificationCenter
         items={items}
+        variant={variant}
+        header={header}
         onItemClick={(item) => setItems((all) => all.map((i) => (i.id === item.id ? { ...i, unread: false } : i)))}
         onMarkAllRead={() => setItems((all) => all.map((i) => ({ ...i, unread: false })))}
       />
@@ -90,3 +92,23 @@ function ActionsDemo() {
 /** Right-click a row (or Shift+F10 on it) for read/unread and remove. */
 export const ContextMenu: Story = { render: () => <ActionsDemo /> };
 export const ContextMenuArabic: Story = { globals: { locale: "ar" }, render: () => <ActionsDemo /> };
+
+function TodayWidget() {
+  const ar = useNasaq().locale.startsWith("ar");
+  return (
+    <div className="flex items-baseline justify-between gap-3">
+      <div>
+        <p className="text-caption text-muted-foreground">{ar ? "اليوم" : "Today"}</p>
+        <p className="text-h4 text-foreground">{ar ? "اجتماعان، ومراجعة واحدة" : "2 meetings, 1 review"}</p>
+      </div>
+      <p dir="ltr" className="text-h3 tabular-nums text-foreground">
+        24°
+      </p>
+    </div>
+  );
+}
+
+/** `variant="sheet"`: a desktop-style notification centre in a full-height side panel, with a widget in `header`. */
+export const SidePanel: Story = { render: () => <Demo count={8} variant="sheet" header={<TodayWidget />} /> };
+
+export const SidePanelArabic: Story = { globals: { locale: "ar" }, render: () => <Demo count={8} variant="sheet" header={<TodayWidget />} /> };

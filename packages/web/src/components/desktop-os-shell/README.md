@@ -4,8 +4,8 @@ title: DesktopShell
 category: platforms
 status: beta
 summary: A desktop for the browser with a wallpaper, menu bar, dock, launchpad and a window manager that drags, resizes, snaps, maximises and minimises. Windows are plain data.
-exports: [DesktopShellLabels, DesktopApp, DesktopMenuItem, DesktopMenu, DesktopAppIcon, DesktopMenuBarProps, DesktopMenuBar, DesktopDockProps, DesktopDock, DesktopLaunchpadProps, DesktopLaunchpad, DesktopShellProps, DesktopShell]
-related: [menubar, context-menu, command-palette, dialog]
+exports: [DesktopShellLabels, DesktopApp, DesktopMenuItem, DesktopMenu, DesktopAppIcon, DesktopMenuBarProps, DesktopMenuBar, DesktopDockProps, DesktopDock, DesktopLaunchpadProps, DesktopLaunchpad, DesktopShellProps, DesktopShell, DesktopShellApi]
+related: [menubar, context-menu, command-palette, dialog, desktop-icons]
 story: components-apps-platforms-pages-desktop-os-shell
 base-ui: [menubar, context-menu]
 keywords: [desktop, os, shell, dock, launchpad, window manager, menu bar, wallpaper, windows, snap]
@@ -76,6 +76,7 @@ DesktopShell                    data-slot="desktop-shell"
 | `menuBarStart?` / `menuBarEnd?` | `ReactNode` | none | Logo, clock, battery. |
 | `launchpadOpen?` / `onLaunchpadOpenChange?` | `boolean` / `(open) => void` | uncontrolled | Launchpad state. |
 | `compactBelow?` | `number` | `640` | Container width under which windows go full size. |
+| `children?` | `ReactNode \| ({ open }) => ReactNode` | none | Desktop content behind the windows. As a function it gets `open(appId)`, so a [`DesktopIconGrid`](../desktop-icons/README.md) can launch apps. |
 | `labels?` | `DesktopShellLabels` | built-in en/ar | String overrides. |
 
 The pure window functions (`openWindow`, `snapWindow`, `resizeRect` and more) live in `desktop-math.ts` and are
@@ -108,7 +109,7 @@ Only `--nq-*` tokens. Override the wallpaper with the `wallpaper` prop.
 
 ## Related
 
-[`Menubar`](../menubar/README.md), [`ContextMenu`](../context-menu/README.md), [`Dialog`](../dialog/README.md).
+[`Menubar`](../menubar/README.md), [`ContextMenu`](../context-menu/README.md), [`Dialog`](../dialog/README.md), [`DesktopIconGrid`](../desktop-icons/README.md).
 
 ## Lab
 
