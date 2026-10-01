@@ -333,6 +333,7 @@ export * from "./components/docs-shell";
 export * from "./components/legal-page";
 export * from "./components/line-item-editor";
 export * from "./components/dashboard-board";
+export * from "./components/section-board";
 export * from "./components/pos-register";
 export * from "./components/desktop-os-shell";
 export * from "./components/extension-popup";
