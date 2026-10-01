@@ -1,0 +1,2 @@
+{{-- <x-nq::table.body> rows </x-nq::table.body> --}}
+<tbody data-slot="table-body" {{ $attributes->cn('[&_tr:last-child]:border-0') }}>{{ $slot }}</tbody>

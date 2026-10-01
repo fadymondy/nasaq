@@ -5,18 +5,21 @@ import { expect, it } from "vitest";
 import type { Component } from "vue";
 
 // Every examples/<name>.vue (the code on the component's Vue tab) mounts without warnings and renders Nasaq markup.
-const examples = import.meta.glob<{ default: Component }>("../examples/*.vue", { eager: true });
+const dir = (p: string) => readdirSync(resolve(process.cwd(), p), { withFileTypes: true });
+const examples = dir("examples")
+  .filter((f) => f.isFile() && f.name.endsWith(".vue"))
+  .map((f) => f.name.replace(/\.vue$/, ""));
 
 it("has an example for every ported component", () => {
-  const ported = readdirSync(resolve(process.cwd(), "src/components"), { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
-  const named = Object.keys(examples).map((p) => p.replace(/^.*\/|\.vue$/g, ""));
-  expect(ported.filter((n) => !named.includes(n))).toEqual([]);
+  const ported = dir("src/components").filter((d) => d.isDirectory()).map((d) => d.name);
+  expect(ported.filter((n) => !examples.includes(n))).toEqual([]);
 });
 
-it.each(Object.entries(examples))("%s mounts", (_path, mod) => {
+it.each(examples)("%s mounts", async (name) => {
+  const mod = (await import(`../examples/${name}.vue`)) as { default: Component };
   const warnings: string[] = [];
   const w = mount(mod.default, { attachTo: document.body, global: { config: { warnHandler: (msg) => void warnings.push(msg) } } });
   expect(warnings).toEqual([]);
   expect(document.body.innerHTML).toMatch(/data-slot="/);
   w.unmount();
-});
+}, 30_000); // the first import compiles the whole library

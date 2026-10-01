@@ -38,6 +38,8 @@ import { NasaqProvider, NqButton } from "@fadymondy/nasaq/vue";
 </template>
 ```
 
+Using `NqToaster`? Also `import "vue-sonner/style.css"` once.
+
 `NasaqProvider` takes `v-model:theme` and `v-model:locale`. Arabic switches the direction to RTL and the currency to SAR.
 
 **Nuxt**: add the plugin in `plugins/nasaq.ts` (`export default defineNuxtPlugin((app) => app.vueApp.use(Nasaq))`), and the CSS in `nuxt.config` `css`. **No Tailwind**: import `@fadymondy/nasaq/nasaq.css` instead of the CSS block.

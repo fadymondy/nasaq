@@ -52,6 +52,7 @@ Reference ports to copy the patterns from: **button** and **spinner** (static), 
 ## HTML + Alpine runtime
 
 - One module per behaviour: `packages/html/src/alpine/<name>.ts` exporting `export const <camelName>: Register = (Alpine) => Alpine.data("nq<Name>", ...)`. Use `x-bind` objects for parts (see `tabs.ts`: `list`, `tab(v)`, `panel(v)`), the `x-nq-presence` directive for enter/exit animation, `$nq` for locale and money.
+- The module file name becomes the export name (`date-picker.ts` → `datePicker`). Avoid reserved words: `switch.ts` is `switch-control.ts`.
 - Static components (badge, card, separator …) need no module; the rendered HTML is the whole port.
 - The rendered example is produced from the Blade example: `php scripts/render-examples.php <name>` in packages/php. Never hand-edit `examples/rendered/*.html`.
 - Test behaviour in `packages/html/test/<name>.test.ts` by loading `../php/examples/rendered/<name>.html` under real Alpine with the plugin (copy the setup from `alpine.test.ts`).

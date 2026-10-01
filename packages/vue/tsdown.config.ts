@@ -16,5 +16,9 @@ export default defineConfig({
   clean: true,
   sourcemap: false,
   outDir: "../nasaq/dist/vue",
-  plugins: [Vue({ isProduction: true })],
+  plugins: [
+    Vue({ isProduction: true }),
+    // The brand registry ships as its own entry of the same package; import it from there instead of inlining a copy.
+    { name: "nasaq-brands", resolveId: (id: string) => (id === "@nasaq/brands" ? { id: "@fadymondy/nasaq/brands", external: true } : null) },
+  ],
 });
