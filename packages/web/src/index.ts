@@ -174,6 +174,7 @@ export * from "./components/apm-page";
 export * from "./components/web-vitals-page";
 export * from "./components/inbox";
 export * from "./components/admin-users";
+export * from "./components/user-actions-menu";
 export * from "./components/admin-tenants";
 export * from "./components/chat-widget";
 export * from "./components/copilot-chat";
