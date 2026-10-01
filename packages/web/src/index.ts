@@ -278,6 +278,7 @@ export * from "./components/personal-widgets";
 export * from "./components/comment-thread";
 export * from "./components/activity-composer";
 export * from "./components/issue-view";
+export * from "./components/issue-board";
 export * from "./components/project-view";
 export * from "./components/notes";
 export * from "./components/seo-preview";
