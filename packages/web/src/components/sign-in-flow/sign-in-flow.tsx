@@ -1,27 +1,55 @@
 "use client";
 
-import { ArrowLeft, Building2, KeyRound, Mail, TriangleAlert, UserPlus } from "lucide-react";
+import { ArrowLeft, Building2, KeyRound, Link2, Mail, MailCheck, ShieldOff, TriangleAlert, UserPlus } from "lucide-react";
 import { type ComponentProps, type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
-import { AuthErrorSummary, type AuthSubmitFailure, type AuthSubmitResult, isEmail, useAuthForm, useAuthLocale, useConditionalPasskey, usePasskeySupport } from "../auth-layout/auth-utils";
+import { Alert } from "../alert";
+import {
+  AuthErrorSummary,
+  type AuthSubmitFailure,
+  type AuthSubmitResult,
+  formatCountdown,
+  isEmail,
+  useAuthForm,
+  useAuthLocale,
+  useConditionalPasskey,
+  useCooldown,
+  usePasskeySupport,
+} from "../auth-layout/auth-utils";
 import { Button } from "../button";
 import { Checkbox } from "../checkbox";
 import { Field, FieldError, FieldLabel, Input } from "../field";
+import { ForgotPasswordForm } from "../forgot-password-form";
 import { LastUsed, OAuthButtons, OAuthDivider, type OAuthProvider } from "../oauth-buttons";
 import { PasswordInput } from "../password-input";
+import { TwoFactorChallenge, type TwoFactorValues } from "../two-factor-challenge";
 import { VerifyOtpForm } from "../verify-otp-form";
 
 /** Where the flow goes after the email step. Your backend decides it from the address (account, domain, policy). */
+/** Another way in, offered on the password step. */
+export type SignInAlternative = "code" | "magic-link";
+
 export type SignInNext =
-  | { step: "password" }
+  /**
+   * Ask for the password. `alternatives` limits the other ways in for this address (policy, account type);
+   * default: every one you passed a handler for. `[]` hides them.
+   */
+  | { step: "password"; alternatives?: readonly SignInAlternative[] }
   /** A one-time code was sent to the email. */
   | { step: "code"; length?: number }
   /** The domain belongs to an organisation with single sign-on. `connection` is its display name. */
   | { step: "sso"; connection?: string }
   /** No account uses this address. */
-  | { step: "register" };
+  | { step: "register" }
+  /** A sign-in link was already sent to the email. */
+  | { step: "link-sent" }
+  /** This address may not sign in here (suspended, wrong tenant, no allowed method). `message` replaces the default text. */
+  | { step: "blocked"; message?: string };
 
-export type SignInStep = "email" | SignInNext["step"];
+/** What `onPassword` may resolve to: nothing on success, a failure, or `{ twoFactor: true }` to ask for a second factor. */
+export type SignInPasswordResult = AuthSubmitResult | { twoFactor: true; length?: number };
+
+export type SignInStep = "email" | SignInNext["step"] | "two-factor" | "forgot";
 
 export interface SignInFlowLabels {
   email: string;
@@ -50,6 +78,18 @@ export interface SignInFlowLabels {
   lastUsed: string;
   errorTitle: string;
   failed: string;
+  magicLink: string;
+  linkSentTitle: string;
+  /** `{email}` is replaced by the address. */
+  linkSentBody: string;
+  resend: string;
+  /** `{time}` is replaced by the countdown. */
+  resendIn: string;
+  resent: string;
+  blockedTitle: string;
+  blockedBody: string;
+  forgotPassword: string;
+  backToSignIn: string;
 }
 
 const STRINGS: Record<"en" | "ar", SignInFlowLabels> = {
@@ -79,6 +119,16 @@ const STRINGS: Record<"en" | "ar", SignInFlowLabels> = {
     lastUsed: "Last used",
     errorTitle: "Fix these to continue",
     failed: "Something went wrong. Try again.",
+    magicLink: "Email me a sign-in link",
+    linkSentTitle: "Check your email",
+    linkSentBody: "We sent a sign-in link to {email}. Open it on this device to finish signing in.",
+    resend: "Send the link again",
+    resendIn: "Send again in {time}",
+    resent: "We sent a new link.",
+    blockedTitle: "This account can't sign in here",
+    blockedBody: "Contact your administrator, or try another address.",
+    forgotPassword: "Forgot password?",
+    backToSignIn: "Back to sign in",
   },
   ar: {
     email: "البريد الإلكتروني",
@@ -106,6 +156,16 @@ const STRINGS: Record<"en" | "ar", SignInFlowLabels> = {
     lastUsed: "آخر استخدام",
     errorTitle: "صحّح ما يلي للمتابعة",
     failed: "حدث خطأ ما. حاول مرة أخرى.",
+    magicLink: "أرسل لي رابط تسجيل الدخول",
+    linkSentTitle: "تحقّق من بريدك",
+    linkSentBody: "أرسلنا رابط تسجيل الدخول إلى {email}. افتحه على هذا الجهاز لإكمال تسجيل الدخول.",
+    resend: "أرسل الرابط مرة أخرى",
+    resendIn: "أعد الإرسال بعد {time}",
+    resent: "أرسلنا رابطًا جديدًا.",
+    blockedTitle: "لا يمكن لهذا الحساب تسجيل الدخول هنا",
+    blockedBody: "تواصل مع المسؤول، أو جرّب بريدًا آخر.",
+    forgotPassword: "نسيت كلمة المرور؟",
+    backToSignIn: "العودة لتسجيل الدخول",
   },
 };
 
@@ -117,8 +177,25 @@ export interface SignInFlowProps extends Omit<ComponentProps<"div">, "children">
    * otherwise the code step (email-only, passwordless sign-in through `onRequestCode` and `onCode`).
    */
   onIdentify?: (email: string) => Promise<SignInNext | AuthSubmitResult> | SignInNext | AuthSubmitResult;
-  /** The password step. Resolve with nothing on success. */
-  onPassword?: (values: { email: string; password: string; remember: boolean }) => Promise<AuthSubmitResult> | AuthSubmitResult;
+  /** The password step. Resolve with nothing on success, or `{ twoFactor: true }` to ask for a second factor. */
+  onPassword?: (values: { email: string; password: string; remember: boolean }) => Promise<SignInPasswordResult> | SignInPasswordResult;
+  /** The two-factor step after a password, with `TwoFactorChallenge`. */
+  onTwoFactor?: (values: TwoFactorValues & { email: string }) => Promise<AuthSubmitResult> | AuthSubmitResult;
+  /** Passkey as the second factor. Shows "Use a passkey" on the two-factor step. */
+  onTwoFactorPasskey?: () => void | Promise<unknown>;
+  /**
+   * Sends a one-time sign-in link. Adds "Email me a sign-in link" to the password step and powers "Send the link again".
+   * Without `onPassword` and `onRequestCode` it is the default step: every address gets a link.
+   */
+  onMagicLink?: (email: string) => Promise<AuthSubmitResult> | AuthSubmitResult;
+  /** Seconds before a link or reset email can be sent again. Default 30. */
+  resendSeconds?: number;
+  /**
+   * Sends a reset email. Adds "Forgot password?" to the password step (unless you pass the `forgotPassword` slot),
+   * which opens `ForgotPasswordForm` in place with the email filled in. The reset itself happens on the link's page,
+   * with `ResetPasswordForm`.
+   */
+  onForgotPassword?: (email: string) => Promise<AuthSubmitResult> | AuthSubmitResult;
   /** Sends a one-time code to the email. Adds "Email me a code instead" to the password step and powers "Resend". */
   onRequestCode?: (email: string) => Promise<AuthSubmitResult> | AuthSubmitResult;
   /** The code step. */
@@ -150,12 +227,19 @@ export interface SignInFlowProps extends Omit<ComponentProps<"div">, "children">
 
 /**
  * Identifier-first sign-in. The page starts with only an email field and the provider buttons; the backend then
- * picks the next step for that address: a password, a one-time code, the organisation's SSO, or sign-up.
+ * picks the next step for that address: a password, a one-time code, a sign-in link, the organisation's SSO, sign-up,
+ * or a "can't sign in here" notice. After a password it can ask for a second factor, and "Forgot password?" opens the
+ * reset request in place.
  * Asking for the email first keeps the first screen calm and lets SSO domains skip the password entirely.
  */
 export function SignInFlow({
   onIdentify,
   onPassword,
+  onTwoFactor,
+  onTwoFactorPasskey,
+  onMagicLink,
+  resendSeconds = 30,
+  onForgotPassword,
   onRequestCode,
   onCode,
   onSso,
@@ -176,16 +260,26 @@ export function SignInFlow({
   const t = { ...STRINGS[useAuthLocale()], ...labelsProp };
   const [step, setStepState] = useState<SignInStep>("email");
   const [next, setNext] = useState<SignInNext | null>(null);
+  const [twoFactor, setTwoFactor] = useState<{ length?: number }>({});
   const [email, setEmail] = useState(defaultEmail);
   const [moved, setMoved] = useState(false);
   const stepChange = useRef(onStepChange);
   stepChange.current = onStepChange;
+  const move = (to: SignInStep, address = email) => {
+    setMoved(true);
+    setStepState(to);
+    stepChange.current?.(to, address);
+  };
   const go = (to: SignInNext | null, address = email) => {
     setNext(to);
-    setMoved(true);
-    setStepState(to ? to.step : "email");
-    stepChange.current?.(to ? to.step : "email", address);
+    move(to ? to.step : "email", address);
   };
+  const sendLink = async (address: string) => {
+    const failure = await onMagicLink?.(address);
+    if (!failure || (!failure.error && !failure.fieldErrors)) go({ step: "link-sent" }, address);
+    return failure;
+  };
+  const allowed = (alt: SignInAlternative) => next?.step !== "password" || !next.alternatives || next.alternatives.includes(alt);
 
   return (
     <div data-slot="sign-in-flow" data-step={step} data-moved={moved ? "" : undefined} className={cn("flex w-full flex-col", className)} {...props}>
@@ -198,12 +292,17 @@ export function SignInFlow({
             setEmail={setEmail}
             onIdentify={onIdentify}
             fallback={
-              onPassword || !onRequestCode
+              onPassword || (!onRequestCode && !onMagicLink)
                 ? () => ({ step: "password" })
-                : async (address) => {
-                    const failure = await onRequestCode(address);
-                    return failure || { step: "code" };
-                  }
+                : onRequestCode
+                  ? async (address) => {
+                      const failure = await onRequestCode(address);
+                      return failure || { step: "code" };
+                    }
+                  : async (address) => {
+                      const failure = await onMagicLink?.(address);
+                      return failure || { step: "link-sent" };
+                    }
             }
             onNext={(n, address) => go(n, address)}
             oauthProviders={oauthProviders}
@@ -212,6 +311,14 @@ export function SignInFlow({
             onPasskeyAutofill={onPasskeyAutofill}
             lastUsed={lastUsed}
           />
+        ) : step === "forgot" ? (
+          <div data-slot="sign-in-flow-forgot" className="flex flex-col gap-4">
+            <ForgotPasswordForm defaultEmail={email} resendSeconds={resendSeconds} onSubmit={(v) => onForgotPassword?.(v.email)} />
+            <Button type="button" variant="ghost" size="lg" onClick={() => move("password")}>
+              <ArrowLeft aria-hidden className="rtl:-scale-x-100" />
+              {t.backToSignIn}
+            </Button>
+          </div>
         ) : (
           <>
             <Identity email={email} change={t.change} onChange={() => go(null)} />
@@ -220,10 +327,22 @@ export function SignInFlow({
                 t={t}
                 email={email}
                 onPassword={onPassword}
-                forgotPassword={forgotPassword}
+                forgotPassword={
+                  forgotPassword ??
+                  (onForgotPassword ? (
+                    <Button type="button" variant="link" size="sm" onClick={() => move("forgot")} data-slot="sign-in-flow-forgot-link">
+                      {t.forgotPassword}
+                    </Button>
+                  ) : null)
+                }
                 showRemember={showRemember}
+                onTwoFactor={(challenge) => {
+                  setTwoFactor({ length: challenge.length });
+                  move("two-factor");
+                }}
+                onMagicLink={onMagicLink && allowed("magic-link") ? () => sendLink(email) : undefined}
                 onUseCode={
-                  onRequestCode
+                  onRequestCode && allowed("code")
                     ? async () => {
                         const failure = await onRequestCode(email);
                         if (!failure) go({ step: "code" });
@@ -241,6 +360,18 @@ export function SignInFlow({
                 onSubmit={(v) => onCode?.({ email, code: v.code })}
                 onResend={onRequestCode ? () => onRequestCode(email) : undefined}
               />
+            ) : null}
+            {step === "two-factor" ? (
+              <TwoFactorChallenge length={twoFactor.length} onPasskey={onTwoFactorPasskey} onSubmit={(v) => onTwoFactor?.({ ...v, email })} />
+            ) : null}
+            {step === "link-sent" ? <LinkSentStep t={t} email={email} seconds={resendSeconds} onResend={onMagicLink ? () => onMagicLink(email) : undefined} /> : null}
+            {step === "blocked" ? (
+              <div data-slot="sign-in-flow-blocked" className="flex flex-col gap-4">
+                <Notice icon={<ShieldOff aria-hidden />} title={t.blockedTitle} body={(next?.step === "blocked" && next.message) || t.blockedBody} />
+                <Button type="button" variant="secondary" size="lg" onClick={() => go(null)}>
+                  {t.otherEmail}
+                </Button>
+              </div>
             ) : null}
             {step === "sso" ? <SsoStep t={t} email={email} connection={next?.step === "sso" ? next.connection : undefined} onSso={onSso} /> : null}
             {step === "register" ? (
@@ -396,6 +527,8 @@ function PasswordStep({
   onPassword,
   forgotPassword,
   showRemember,
+  onTwoFactor,
+  onMagicLink,
   onUseCode,
 }: {
   t: Strings;
@@ -403,18 +536,40 @@ function PasswordStep({
   onPassword?: SignInFlowProps["onPassword"];
   forgotPassword?: ReactNode;
   showRemember: boolean;
+  onTwoFactor: (challenge: { length?: number }) => void;
+  onMagicLink?: () => Promise<AuthSubmitResult>;
   onUseCode?: () => Promise<AuthSubmitResult>;
 }) {
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [codePending, setCodePending] = useState(false);
+  const [linkPending, setLinkPending] = useState(false);
   const [caps, setCaps] = useState(false);
   const readCaps = (e: KeyboardEvent<HTMLInputElement>) => setCaps(e.getModifierState("CapsLock"));
   const form = useAuthForm<{ password: string }, "password">({
     fallbackError: t.failed,
     validate: (v) => ({ password: v.password ? undefined : t.passwordRequired }),
-    onSubmit: (v) => onPassword?.({ email, password: v.password, remember }),
+    onSubmit: async (v) => {
+      const result = await onPassword?.({ email, password: v.password, remember });
+      if (result && "twoFactor" in result) {
+        onTwoFactor(result);
+        return;
+      }
+      return result;
+    },
   });
+  const alternative = async (run: () => Promise<AuthSubmitResult>, setPending: (v: boolean) => void) => {
+    setPending(true);
+    try {
+      const failure = await run();
+      if (failure) form.setError(failure.error ?? t.failed);
+    } catch {
+      form.setError(t.failed);
+    } finally {
+      setPending(false);
+    }
+  };
+  const altPending = codePending || linkPending;
   const fe = form.fieldErrors;
   const input = useRef<HTMLInputElement>(null);
   useEffect(() => input.current?.focus(), []);
@@ -470,28 +625,25 @@ function PasswordStep({
           {t.remember}
         </label>
       ) : null}
-      <Button type="submit" variant="primary" size="lg" loading={form.pending} disabled={codePending}>
+      <Button type="submit" variant="primary" size="lg" loading={form.pending} disabled={altPending}>
         {t.signIn}
       </Button>
-      {onUseCode ? (
+      {onMagicLink ? (
         <Button
           type="button"
           variant="ghost"
           size="lg"
-          loading={codePending}
-          disabled={form.pending}
-          onClick={async () => {
-            setCodePending(true);
-            try {
-              const failure = await onUseCode();
-              if (failure) form.setError(failure.error ?? t.failed);
-            } catch {
-              form.setError(t.failed);
-            } finally {
-              setCodePending(false);
-            }
-          }}
+          loading={linkPending}
+          disabled={form.pending || codePending}
+          data-slot="sign-in-flow-magic-link"
+          onClick={() => alternative(onMagicLink, setLinkPending)}
         >
+          <Link2 aria-hidden />
+          {t.magicLink}
+        </Button>
+      ) : null}
+      {onUseCode ? (
+        <Button type="button" variant="ghost" size="lg" loading={codePending} disabled={form.pending || linkPending} onClick={() => alternative(onUseCode, setCodePending)}>
           <Mail aria-hidden />
           {t.useCode}
         </Button>
@@ -520,6 +672,58 @@ function SsoStep({ t, email, connection, onSso }: { t: Strings; email: string; c
         {connection ? t.ssoWith.replace("{connection}", connection) : t.ssoContinue}
       </Button>
     </form>
+  );
+}
+
+function LinkSentStep({ t, email, seconds, onResend }: { t: Strings; email: string; seconds: number; onResend?: () => Promise<AuthSubmitResult> | AuthSubmitResult }) {
+  const cooldown = useCooldown(seconds);
+  const [state, setState] = useState<{ pending: boolean; error?: string; done?: boolean }>({ pending: false });
+  const heading = useRef<HTMLParagraphElement>(null);
+  useEffect(() => heading.current?.focus(), []);
+  const [before = "", after = ""] = t.linkSentBody.split("{email}");
+  const resend = async () => {
+    if (!onResend || cooldown.remaining > 0 || state.pending) return;
+    setState({ pending: true });
+    try {
+      const result = await onResend();
+      if (result?.error) setState({ pending: false, error: result.error });
+      else {
+        setState({ pending: false, done: true });
+        cooldown.start(seconds);
+      }
+    } catch {
+      setState({ pending: false, error: t.failed });
+    }
+  };
+  return (
+    <div data-slot="sign-in-flow-link-sent" className="flex flex-col gap-4">
+      <div role="status" className="flex gap-3 rounded-card border border-border bg-muted/50 p-4">
+        <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-nq-success-soft text-nq-success-text [&_svg]:size-4">
+          <MailCheck aria-hidden />
+        </span>
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <p ref={heading} tabIndex={-1} className="text-label text-foreground outline-none">
+            {t.linkSentTitle}
+          </p>
+          <p className="text-body-sm text-muted-foreground">
+            {before}
+            <bdi dir="ltr" className="font-medium text-foreground">
+              {email}
+            </bdi>
+            {after}
+          </p>
+        </div>
+      </div>
+      {state.error ? <Alert tone="danger">{state.error}</Alert> : null}
+      <span role="status" className="sr-only">
+        {state.done && cooldown.remaining > 0 ? t.resent : ""}
+      </span>
+      {onResend ? (
+        <Button type="button" variant="secondary" size="lg" loading={state.pending} disabled={cooldown.remaining > 0} onClick={resend} data-slot="sign-in-flow-resend">
+          {cooldown.remaining > 0 ? t.resendIn.replace("{time}", formatCountdown(cooldown.remaining)) : t.resend}
+        </Button>
+      ) : null}
+    </div>
   );
 }
 

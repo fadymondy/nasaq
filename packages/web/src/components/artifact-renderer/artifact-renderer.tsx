@@ -2,7 +2,7 @@
 
 import { Check, TriangleAlert } from "lucide-react";
 import { type ComponentProps, type ReactNode, useId, useMemo, useState } from "react";
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell as Slice, Line, LineChart, Pie, PieChart, XAxis, YAxis } from "recharts";
 import { cn } from "../../lib/cn";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Alert } from "../alert";
@@ -26,10 +26,12 @@ import {
   type ArtifactText,
   type ArtifactTone,
   type PickerArtifact,
+  type PieSlice,
   frameDocument,
   frameHeight,
   localize,
   parseArtifact,
+  pieSlices,
 } from "./artifact-renderer-logic";
 
 export {
@@ -40,6 +42,7 @@ export {
   frameHeight,
   localize,
   parseArtifact,
+  pieSlices,
   safeColor,
   type ActionsArtifact,
   type Artifact,
@@ -57,6 +60,7 @@ export {
   type HtmlArtifact,
   type MarkdownArtifact,
   type PickerArtifact,
+  type PieSlice,
   type StatsArtifact,
   type TableArtifact,
 } from "./artifact-renderer-logic";
@@ -77,6 +81,8 @@ const STRINGS = {
     htmlFrame: "Content from the agent, in a sandbox",
     source: "Source",
     chartLabel: (title: string) => (title ? `Chart: ${title}` : "Chart"),
+    other: "Other",
+    tones: { neutral: "Neutral", success: "Good", warning: "Warning", danger: "Critical", info: "Info" } as Record<ArtifactTone, string>,
   },
   ar: {
     invalid: "تعذّر عرض هذا المحتوى",
@@ -93,6 +99,8 @@ const STRINGS = {
     htmlFrame: "محتوى من الوكيل داخل صندوق معزول",
     source: "المصدر",
     chartLabel: (title: string) => (title ? `مخطط: ${title}` : "مخطط"),
+    other: "أخرى",
+    tones: { neutral: "محايد", success: "جيد", warning: "تحذير", danger: "حرج", info: "معلومة" } as Record<ArtifactTone, string>,
   },
 };
 
@@ -120,7 +128,19 @@ interface CommonProps {
 
 const TONE_BADGE: Record<ArtifactTone, BadgeProps["variant"]> = { neutral: "neutral", success: "success", warning: "warning", danger: "danger", info: "info" };
 
-function Frame({ artifact, children, footer }: { artifact: Artifact; children: ReactNode; footer?: ReactNode }) {
+const TONE_DOT: Record<ArtifactTone, string> = { neutral: "bg-muted-foreground", success: "bg-nq-success", warning: "bg-nq-warning", danger: "bg-nq-danger", info: "bg-nq-info" };
+
+/** A coloured dot with the tone in words for screen readers, so the tone is never colour alone. */
+function ToneDot({ tone, t }: { tone: ArtifactTone; t: ArtifactRendererLabels }) {
+  return (
+    <>
+      <span aria-hidden data-tone={tone} className={cn("inline-block size-2 shrink-0 rounded-full", TONE_DOT[tone])} />
+      <span className="sr-only">{t.tones[tone]}: </span>
+    </>
+  );
+}
+
+function Frame({ artifact, children, footer, note }: { artifact: Artifact; children: ReactNode; footer?: ReactNode; note?: string }) {
   const { tx } = useI18n();
   const title = tx(artifact.title);
   const description = tx(artifact.description);
@@ -133,7 +153,16 @@ function Frame({ artifact, children, footer }: { artifact: Artifact; children: R
         </CardHeader>
       ) : null}
       <CardContent className="flex flex-col gap-3">{children}</CardContent>
-      {footer ? <CardFooter className="flex flex-wrap gap-2">{footer}</CardFooter> : null}
+      {footer || note ? (
+        <CardFooter className="flex flex-col items-stretch gap-3">
+          {footer}
+          {note ? (
+            <p data-slot="artifact-note" dir="auto" className="text-caption text-muted-foreground">
+              {note}
+            </p>
+          ) : null}
+        </CardFooter>
+      ) : null}
     </Card>
   );
 }
@@ -209,6 +238,7 @@ function ChartView({ artifact }: { artifact: Extract<Artifact, { kind: "chart" }
     return { data, config, keys };
   }, [artifact]);
   const kind = artifact.chart ?? "bar";
+  if (kind === "pie" || kind === "donut") return <PieView artifact={artifact} donut={kind === "donut"} />;
   const axes = (
     <>
       <CartesianGrid vertical={false} />
@@ -242,6 +272,30 @@ function ChartView({ artifact }: { artifact: Extract<Artifact, { kind: "chart" }
           ))}
         </BarChart>
       )}
+    </ChartContainer>
+  );
+}
+
+function PieView({ artifact, donut }: { artifact: Extract<Artifact, { kind: "chart" }>; donut: boolean }) {
+  const { t, tx } = useI18n();
+  // Slice names come from the agent too, so they become p0, p1... keys with the name as the label.
+  const { data, config } = useMemo(() => {
+    const slices: PieSlice[] = pieSlices(artifact);
+    const config: ChartConfig = Object.fromEntries(slices.map((s, i) => [`p${i}`, { label: s.other ? t.other : s.name }]));
+    const data = slices.map((s, i) => ({ key: `p${i}`, value: s.value }));
+    return { data, config };
+  }, [artifact, t.other]);
+  return (
+    <ChartContainer config={config} label={t.chartLabel(tx(artifact.title))} className="aspect-auto h-64 w-full">
+      <PieChart>
+        <ChartTooltip cursor={false} content={<ChartTooltipContent config={config} hideLabel />} />
+        <Pie data={data} dataKey="value" nameKey="key" innerRadius={donut ? "58%" : 0} outerRadius="80%" stroke="var(--card)" strokeWidth={2} isAnimationActive={false}>
+          {data.map((d) => (
+            <Slice key={d.key} fill={`var(--color-${d.key})`} />
+          ))}
+        </Pie>
+        <ChartLegend content={<ChartLegendContent config={config} />} />
+      </PieChart>
     </ChartContainer>
   );
 }
@@ -340,7 +394,11 @@ export function ArtifactView({ artifact, allowHtml = false, onAction, onPick, la
   switch (artifact.kind) {
     case "card":
       return (
-        <Frame artifact={artifact} footer={artifact.actions?.length ? <ActionButtons actions={artifact.actions} artifact={artifact} onAction={onAction} labels={labels} /> : undefined}>
+        <Frame
+          artifact={artifact}
+          note={tx(artifact.footer) || undefined}
+          footer={artifact.actions?.length ? <ActionButtons actions={artifact.actions} artifact={artifact} onAction={onAction} labels={labels} /> : undefined}
+        >
           {artifact.badges?.length ? (
             <div className="flex flex-wrap gap-1.5">
               {artifact.badges.map((b, i) => (
@@ -363,6 +421,30 @@ export function ArtifactView({ artifact, allowHtml = false, onAction, onPick, la
                 </div>
               ))}
             </dl>
+          ) : null}
+          {artifact.items?.length ? (
+            <ul data-slot="artifact-items" className="flex flex-col divide-y divide-border rounded-control border border-border">
+              {artifact.items.map((it, i) => (
+                <li key={i} className="flex items-start gap-3 px-3 py-2">
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span dir="auto" className="flex items-center gap-2 text-body-sm text-foreground">
+                      {it.tone ? <ToneDot tone={it.tone} t={t} /> : null}
+                      {tx(it.label)}
+                    </span>
+                    {it.description ? (
+                      <span dir="auto" className="text-caption text-muted-foreground">
+                        {tx(it.description)}
+                      </span>
+                    ) : null}
+                  </span>
+                  {it.value !== undefined ? (
+                    <span dir="auto" className="shrink-0 text-body-sm text-foreground tabular-nums">
+                      <Cell value={it.value} t={t} />
+                    </span>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
           ) : null}
           {artifact.body ? <Markdown>{tx(artifact.body)}</Markdown> : null}
         </Frame>
@@ -429,7 +511,24 @@ export function ArtifactView({ artifact, allowHtml = false, onAction, onPick, la
         <Frame artifact={artifact}>
           <StatGrid>
             {artifact.items.map((s, i) => (
-              <StatCard key={i} label={tx(s.label)} value={s.value} {...(s.delta !== undefined ? { delta: s.delta } : {})} {...(s.invert ? { invert: true } : {})} />
+              <StatCard
+                key={i}
+                data-tone={s.tone}
+                label={
+                  s.tone ? (
+                    <span className="inline-flex items-center gap-1.5">
+                      <ToneDot tone={s.tone} t={t} />
+                      {tx(s.label)}
+                    </span>
+                  ) : (
+                    tx(s.label)
+                  )
+                }
+                value={s.value}
+                {...(s.delta !== undefined ? { delta: s.delta } : {})}
+                {...(s.invert ? { invert: true } : {})}
+                {...(s.sparkline ? { sparkline: s.sparkline } : {})}
+              />
             ))}
           </StatGrid>
         </Frame>

@@ -417,9 +417,15 @@ export interface DesktopShellProps extends Omit<React.ComponentProps<"div">, "ch
   onLaunchpadOpenChange?: (open: boolean) => void;
   /** Container width under which windows go full size and the dock replaces dragging. Default 640. */
   compactBelow?: number;
-  /** Desktop content behind the windows (icons, widgets). */
-  children?: ReactNode;
+  /** Desktop content behind the windows (icons, widgets). A function gets `open`, to launch an app from a desktop icon. */
+  children?: ReactNode | ((desktop: DesktopShellApi) => ReactNode);
   labels?: DesktopShellLabels;
+}
+
+/** What a `DesktopShell` children function receives. */
+export interface DesktopShellApi {
+  /** Opens the app, or brings its latest window to the front. */
+  open: (appId: string) => void;
 }
 
 const DOCK_SPACE = 76;
@@ -502,6 +508,15 @@ export function DesktopShell({
     if (!latest) return;
     if (top && top.id === latest.id) setWindows(minimiseWindow(windowsRef.current, latest.id));
     else setWindows(focusWindow(windowsRef.current, latest.id));
+  };
+  const openById = (appId: string) => {
+    const app = appOf(appId);
+    if (!app) return;
+    setLaunchpad(false);
+    const own = windowsOf(windowsRef.current, app.id);
+    const latest = own[own.length - 1];
+    if (latest) setWindows(focusWindow(windowsRef.current, latest.id));
+    else open(app);
   };
   const newWindow = (app: DesktopApp) => {
     setLaunchpad(false);
@@ -632,7 +647,7 @@ export function DesktopShell({
       </div>
       <DesktopMenuBar appName={focusedApp?.title} menus={menuList} start={menuBarStart} end={menuBarEnd} labels={labels} />
       <div ref={area} role="region" aria-label={t.desktop} className="relative min-h-0 flex-1">
-        {children ? <div className="absolute inset-0">{children}</div> : null}
+        {children ? <div className="absolute inset-0">{typeof children === "function" ? children({ open: openById }) : children}</div> : null}
         {previewRect ? (
           <div
             data-slot="desktop-snap-preview"

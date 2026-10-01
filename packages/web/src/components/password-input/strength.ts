@@ -26,3 +26,39 @@ export function estimatePasswordStrength(password: string): PasswordScore {
   if (length >= 8 && variety >= 2) return 2;
   return 1;
 }
+
+/** One requirement of a password policy, as the checklist under `PasswordInput` shows it. */
+export interface PasswordRule {
+  id: "length" | "upper" | "lower" | "digit" | "symbol" | (string & {});
+  met: boolean;
+  /** Only for `length`: the minimum it checks. */
+  min?: number;
+}
+
+export interface PasswordPolicy {
+  /** Default 12. */
+  minLength?: number;
+  /** Which character classes to require. Default all four. */
+  require?: readonly ("upper" | "lower" | "digit" | "symbol")[];
+}
+
+const CLASS_TESTS = { upper: /\p{Lu}/u, lower: /\p{Ll}/u, digit: /\p{Nd}/u, symbol: /[^\p{L}\p{Nd}]/u } as const;
+
+/** Checks a password against a policy: a minimum length, then one rule per required character class. */
+export function computePasswordRules(password: string, policy: PasswordPolicy = {}): PasswordRule[] {
+  const min = policy.minLength ?? 12;
+  const require = policy.require ?? ["upper", "lower", "digit", "symbol"];
+  return [{ id: "length", met: Array.from(password).length >= min, min }, ...require.map((id) => ({ id, met: CLASS_TESTS[id].test(password) }))];
+}
+
+/**
+ * A 0 to 4 score from the rules: 0 until the length rule passes, then 1 plus one point per other rule met, capped at 4.
+ * Use it as `score` when the policy, not the estimate, should drive the meter.
+ */
+export function computeRuleScore(rules: readonly PasswordRule[]): PasswordScore {
+  if (!rules.find((r) => r.id === "length")?.met) return 0;
+  return Math.min(4, 1 + rules.filter((r) => r.id !== "length" && r.met).length) as PasswordScore;
+}
+
+/** True when every rule passes. */
+export const passwordMeetsPolicy = (rules: readonly PasswordRule[]) => rules.every((r) => r.met);

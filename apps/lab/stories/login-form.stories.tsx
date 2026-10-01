@@ -59,3 +59,51 @@ export const FieldErrors: Story = {
 };
 
 export const Arabic: Story = { globals: { locale: "ar" }, render: () => <Full /> };
+
+function Magic({ only = false }: { only?: boolean }) {
+  const ar = useAr();
+  return (
+    <div className="max-w-sm">
+      <LoginForm
+        methods={only ? ["magic-link"] : undefined}
+        onSubmit={(v) => fakeLogin(v.password, ar)}
+        onMagicLink={() => sleep(800)}
+        magicLinkSeconds={15}
+        forgotPassword={<Forgot />}
+      />
+    </div>
+  );
+}
+
+/** `onMagicLink` adds "Email me a sign-in link": it checks the email only, then shows "Check your email" with a resend timer. */
+export const MagicLink: Story = { name: "With magic link", render: () => <Magic /> };
+
+/** `methods={["magic-link"]}` drops the password field: the main button sends the link. */
+export const MagicLinkOnly: Story = { name: "Magic link only", render: () => <Magic only /> };
+
+/** `methods={[]}`: this account or tenant may not sign in here. Only the notice (and the dev button, when set) remains. */
+export const Blocked: Story = {
+  render: () => (
+    <div className="max-w-sm">
+      <LoginForm methods={[]} onSubmit={() => {}} />
+    </div>
+  ),
+};
+
+/** `onDevLogin` adds a dashed "Dev login" button for local builds. This one fails, to show the error. */
+export const DevLogin: Story = {
+  name: "Dev login",
+  render: () => (
+    <div className="max-w-sm">
+      <LoginForm
+        onSubmit={(v) => fakeLogin(v.password, false)}
+        onDevLogin={async () => {
+          await sleep(600);
+          throw new Error("no dev user");
+        }}
+      />
+    </div>
+  ),
+};
+
+export const MagicLinkArabic: Story = { name: "Magic link (Arabic)", globals: { locale: "ar" }, render: () => <Magic /> };
