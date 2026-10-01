@@ -47,11 +47,48 @@ function Home() {
 | `NasaqProvider` | `brand`, `scheme` (omit to follow the OS), `expression` (default `native`), `density`, `locale`, `direction`, `fonts`, `onDirectionChangeRequiresReload`. Paints the ground colour. |
 | `useNasaq()` | The resolved theme: `colors` (camelCase theme tokens plus `brand`, `action`, `onAction`), `space`, `radius`, `size` (density), `isRtl`, `script`, `fonts`, `flip`. |
 | `Text` | `variant` = display, h1–h3, body, body-sm, label, caption, eyebrow, code. `tone` = default, body, muted, accent, success, warning, danger, info. Metrics follow the script (Arabic runs larger and looser); `maxFontSizeMultiplier` defaults to 1.4. Headings get `accessibilityRole="header"`. |
-| `Button` | `variant` primary, secondary (default), ghost, danger; `size` md (at least 44pt tall) or sm (shorter, hit area extended to 44pt); `loading`; `icon`; `haptic` (default true). |
+| `Button` | `variant` primary, secondary (default), ghost, danger, success; `size` md (at least 44pt tall), sm (shorter, hit area extended to 44pt) or lg (52pt); `fullWidth`; `loading`; `icon`; `haptic`: `true` (light impact, default), `"success"` (notification) or `false`. |
 | `Screen` | Ground colour, the density's page padding and safe-area `insets`; `scroll`, `bleed`. |
 | `ProductMark` | A brand's cube-lattice mark via react-native-svg. Never mirrored or recoloured; the accent cube drops below 20pt. |
 | `useHaptics()` | `impact`, `notify`, `selection`, `available`. A no-op on web and when expo-haptics is absent. |
 | `resolveTheme()`, `textMetrics()` | The same values outside React (navigation themes, splash screens). |
+
+## App components
+
+All are token-driven, brand-aware through the provider, RTL-correct (start/end, direction-driven alignment, mirrored chevrons), dark-mode ready and at least 44pt to touch. Built-in strings (close, back, accept) default by script and can be overridden with `labels`.
+
+| Export | Props that matter |
+| --- | --- |
+| `Card`, `CardHeader`, `CardContent`, `CardFooter` | `tone` default, success, warning, danger; `padded`; `onPress` makes the card a button. Header takes `title`, `description`, `action`. |
+| `Input` | `label`, `error`, `hint`, `leading`, `trailing`, `multiline`, any TextInput prop. `secureTextEntry` adds a show/hide control. |
+| `Badge` | `tone` neutral, success, warning, danger, info; `variant` soft or outline; `icon`. |
+| `Notice` (`Alert`) | `tone`, `title`, `children`, `onDismiss`. Danger and warning are announced as alerts. |
+| `SegmentedControl` | `value`, `onChange`, `options[{ value, label, icon? }]`. |
+| `Sheet` | `visible`, `onClose`, `title`, `snapPoints` (fractions of the window, the largest is the max height), `bottomInset`. |
+| `Switch` | `value`, `onValueChange`, `label`, `description`. |
+| `ListRow`, `Separator` | `title`, `subtitle`, `leading`, `trailing`, `chevron` (mirrors in RTL), `onPress`. |
+| `AppHeader` | `title`, `canGoBack`, `onBack`, `trailing`, `topInset`. The back chevron points to the start edge. |
+| `useTabBarOptions()`, `tabBarOptions()` | Tab-bar `screenOptions` for expo-router / React Navigation: tints, surface, hairline, label font. |
+| `useNasaqStatusBarStyle()` | `"light"` or `"dark"` for expo-status-bar. |
+| `EmptyState` | `icon`, `title`, `description`, `action`. |
+| `Skeleton`, `Spinner` | `width`, `height`, `circle`; a pulse that stops under reduced motion. |
+| `MoneyText` | `cents` (integer minor units), `currency` (ILS), `tone` (`"sign"` colours by sign), `showPlus`, `arabicIndic`. Tabular numerals. |
+| `StepProgress` | `steps` (labels), `current`. |
+| `OfferCountdown` | `seconds`, `total`, `onExpire` (fires once), `variant` ring or bar. Danger at 10 seconds or fewer. |
+| `OfferCard` | `pickup`, `dropoff`, `zone`, `feeCents`, `distanceMeters`, `etaSeconds`, `seconds`, `total`, `onAccept` (success haptic), `onDecline`, `loading`. |
+| `RouteStops` | `stops[{ kind, label, address, done }]`, `onNavigate`, `renderActions`. The first pending stop is current. |
+| `CashCollect` | `amountDue`, `breakdown`, `value`, `onChange`, `onConfirm`, `currency`, `allowShort`. Shows change or what is still owed. |
+| `PinInput` | `value`, `onChange`, `length` (4), `error`, `onComplete`, `secure`, `readOnly`. One hidden field, so autofill and paste work; boxes always run left to right. |
+
+### Shared logic
+
+Money, distance, ETA, offer timing, cash and route maths come from `packages/web/src/lib/delivery.ts` (pure, no
+imports) and are re-exported from `@nasaq/native`, so a phone and the web agree to the minor unit. Native-only
+pure helpers (`parseAmountMinor`, `sanitizePin`, `countdownTone`, `alpha`, digit conversion) are in `src/logic.ts`
+and covered by `pnpm --filter @nasaq/native test`.
+
+Not yet in the kit: photo capture, a map wrapper, and scheme-preference persistence. Haptics need the optional
+`expo-haptics` peer; icons draw with `react-native-svg`, already a peer.
 
 ## RTL
 

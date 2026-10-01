@@ -38,7 +38,7 @@ export function Text({ variant = "body", tone, script, style, maxFontSizeMultipl
       maxFontSizeMultiplier={maxFontSizeMultiplier}
       style={[
         textMetrics(variant, s),
-        { color, textAlign: "auto" },
+        { color, textAlign: nq.isRtl ? "right" : "left", writingDirection: nq.direction },
         fontFamily ? { fontFamily } : null,
         upper ? { textTransform: "uppercase" } : null,
         style,
