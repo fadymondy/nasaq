@@ -93,6 +93,8 @@ function store(): NasaqStore {
   };
 }
 
+let tabsSeq = 0;
+
 export default function nasaq(Alpine: AlpineLike): void {
   Alpine.store("nq", store());
   const nq = () => Alpine.store("nq") as NasaqStore;
@@ -161,6 +163,8 @@ export default function nasaq(Alpine: AlpineLike): void {
 
   Alpine.data("nqTabs", (initial?: string) => ({
     active: initial ?? "",
+    // Per-instance id prefix: two tab sets with the same keys on one page (common in Filament) must not collide.
+    uid: `nq-tabs-${++tabsSeq}`,
     init(this: { $el: HTMLElement; active: string }) {
       if (!this.active) this.active = this.$el.querySelector<HTMLElement>("[data-value]")?.dataset.value ?? "";
     },
@@ -174,8 +178,8 @@ export default function nasaq(Alpine: AlpineLike): void {
         type: "button",
         "data-value": v,
         class: "nq-tabs-trigger",
-        id: `nq-tab-${v}`,
-        "aria-controls": `nq-panel-${v}`,
+        id: `${self.uid}-tab-${v}`,
+        "aria-controls": `${self.uid}-panel-${v}`,
         ":aria-selected"() {
           return String(self.active === v);
         },
@@ -206,8 +210,8 @@ export default function nasaq(Alpine: AlpineLike): void {
       return {
         role: "tabpanel",
         class: "nq-tabs-panel",
-        id: `nq-panel-${v}`,
-        "aria-labelledby": `nq-tab-${v}`,
+        id: `${self.uid}-panel-${v}`,
+        "aria-labelledby": `${self.uid}-tab-${v}`,
         tabindex: 0,
         "x-show"() {
           return self.active === v;

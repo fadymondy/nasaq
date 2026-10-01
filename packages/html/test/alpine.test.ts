@@ -56,11 +56,12 @@ describe("alpine plugin", () => {
   it("nqTabs wires aria and switches panels", async () => {
     const [one, two] = document.querySelectorAll<HTMLElement>("#tabs [role=tab]");
     expect(one!.getAttribute("aria-selected")).toBe("true");
-    expect(one!.getAttribute("aria-controls")).toBe("nq-panel-one");
+    const panelId = one!.getAttribute("aria-controls")!;
+    expect(panelId).toMatch(/^nq-tabs-\d+-panel-one$/);
     two!.click();
     await tick();
     expect(two!.getAttribute("aria-selected")).toBe("true");
-    expect(document.getElementById("nq-panel-one")!.style.display).toBe("none");
+    expect(document.getElementById(panelId)!.style.display).toBe("none");
   });
 
   it("nqMenu toggles from its trigger", async () => {
