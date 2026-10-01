@@ -1,0 +1,60 @@
+/*
+ * Nasaq HTML base: the page defaults the React kit gets from Tailwind preflight + web/styles.css,
+ * as plain CSS. Declares the layer order Tailwind v4 uses, so loading this before or after Tailwind
+ * keeps utilities on top.
+ */
+
+@layer theme, base, components, utilities;
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+    border: 0 solid var(--nq-line);
+  }
+
+  html {
+    font-family: var(--nq-font-ui);
+    background-color: var(--nq-bg);
+    color: var(--nq-fg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    /* Inter's contextual alternates turn "3x1" into "3×1"; Arabic joining does not use calt. */
+    font-feature-settings: "calt" 0;
+  }
+
+  body {
+    margin: 0;
+    font-size: var(--nq-type-body-size);
+    line-height: var(--nq-type-body-line);
+  }
+
+  :where(input, time, [data-numeric]) {
+    font-feature-settings: "calt" 0, "tnum" 1;
+  }
+
+  /* Arabic: never tracked. */
+  [lang|="ar"] {
+    letter-spacing: 0;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--nq-accent) 35%, transparent);
+  }
+
+  :focus-visible {
+    outline-color: var(--nq-focus);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
