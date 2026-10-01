@@ -1,7 +1,8 @@
 // NasaqProvider for Vue: writes lang, dir, data-theme, data-brand, data-density and data-expression to <html>
 // (or a wrapping <div> with target="scope"), exactly like the React provider, so tokens.css and the .nq-* classes follow.
 
-import { defaultCurrency, dirOf } from "@nasaq/html";
+import { dirOf } from "./lib/locale";
+import { defaultCurrency } from "./lib/money";
 import {
   computed,
   defineComponent,

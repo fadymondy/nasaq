@@ -5,7 +5,7 @@ import { useClientForHooks } from "./scripts/use-client-plugin.mjs";
 const at = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 
 /**
- * One build, seven entry groups (web, tokens, brands, native, electron, html + alpine, vue). Internal workspace packages are inlined (they are private); every
+ * One build, six entry groups (web, tokens, brands, native, electron, html + alpine; vue builds itself, see packages/vue). Internal workspace packages are inlined (they are private); every
  * third-party import stays external and is declared in package.json (dependencies or peers).
  * `unbundle` keeps one output file per source module, so a "use client" directive stays on the
  * module that owns it and pure helpers stay usable from React Server Components.
@@ -22,7 +22,6 @@ export default defineConfig({
     "electron/preload": "../electron/src/preload.ts",
     "html/index": "../html/src/index.ts",
     "html/alpine": "../html/src/alpine.ts",
-    "vue/index": "../vue/src/index.ts",
   },
   alias: {
     "@nasaq/tokens": at("../tokens/src/index.ts"),

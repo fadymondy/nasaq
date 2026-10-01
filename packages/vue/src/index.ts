@@ -1,32 +1,26 @@
-// @fadymondy/nasaq/vue: Nasaq for Vue 3. Components render the .nq-* classes, so import the stylesheet once:
+// @fadymondy/nasaq/vue: Nasaq for Vue 3. The components use the same Tailwind classes as the React ones.
 //
-//   import "@fadymondy/nasaq/html.css";
-//   import { NasaqProvider, NqButton } from "@fadymondy/nasaq/vue";
+//   Tailwind app:  @import "@fadymondy/nasaq/vue/styles.css"; @source "../node_modules/@fadymondy/nasaq/dist/vue";
+//   No Tailwind:   import "@fadymondy/nasaq/nasaq.css";
 //
-// Or register everything globally: app.use(Nasaq).
+//   import { NasaqProvider, NqButton } from "@fadymondy/nasaq/vue";   // or app.use(Nasaq) for all of them
 
 import type { App, Component } from "vue";
-import * as form from "./components/form";
-import * as navigation from "./components/navigation";
-import * as overlay from "./components/overlay";
-import * as primitives from "./components/primitives";
+import * as components from "./components";
 import { NasaqProvider } from "./provider";
 
 export * from "./provider";
-export * from "./components/primitives";
-export * from "./components/form";
-export * from "./components/overlay";
-export * from "./components/navigation";
-export { formatMoney, defaultCurrency, toast, setTheme, setLocale, setBrand } from "@nasaq/html";
+export * from "./components";
+export { cn } from "./lib/cn";
+export { formatMoney, defaultCurrency, type MoneyOptions } from "./lib/money";
+export { setTheme, setLocale, setBrand, toggleTheme, currentTheme, dirOf } from "./lib/locale";
 
 /** Vue plugin: registers NasaqProvider and every Nq* component globally. */
 export const Nasaq = {
   install(app: App) {
     app.component("NasaqProvider", NasaqProvider);
-    for (const mod of [primitives, form, overlay, navigation]) {
-      for (const [name, value] of Object.entries(mod)) {
-        if (name.startsWith("Nq") && typeof value === "object" && value !== null) app.component(name, value as Component);
-      }
+    for (const [name, value] of Object.entries(components)) {
+      if (name.startsWith("Nq") && typeof value === "object" && value !== null) app.component(name, value as Component);
     }
   },
 };
