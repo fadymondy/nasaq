@@ -13,10 +13,11 @@ export interface BrandManifest {
   mark: MarkSpec;
   color: { brand: Pair; action: Pair; onAction: Pair; accent: string };
   typography: { latin: "lusail" | "inter" };
+  tagline?: { en: string; ar?: string };
   links?: { site?: string };
 }
 
-const meta: Record<BrandKey, Pick<BrandManifest, "name" | "typography"> & { site?: string }> = {
+const meta: Record<BrandKey, Pick<BrandManifest, "name" | "typography" | "tagline"> & { site?: string }> = {
   nasaq: { name: { en: "Nasaq", ar: "نسق" }, typography: { latin: "lusail" }, site: "https://nasaq.fadymondy.com" },
   fadymondy: { name: { en: "Fady Mondy" }, typography: { latin: "lusail" }, site: "https://fadymondy.com" },
   mahaam: { name: { en: "Mahaam", ar: "مهام" }, typography: { latin: "inter" }, site: "https://mahaam.app" },
@@ -26,6 +27,11 @@ const meta: Record<BrandKey, Pick<BrandManifest, "name" | "typography"> & { site
   "health-debug": { name: { en: "Health Debug", ar: "شفرة التعافي الصحي" }, typography: { latin: "lusail" } },
   circlexo: { name: { en: "CircleXO", ar: "سيركل إكس أو" }, typography: { latin: "lusail" } },
   hosbah: { name: { en: "Hosbah", ar: "حوسبة" }, typography: { latin: "inter" } },
+  "yes-delivery": {
+    name: { en: "Yes Delivery", ar: "يس دليفري" },
+    typography: { latin: "lusail" },
+    tagline: { en: "Yes — it's on its way.", ar: "نعم، طلبك في الطريق" },
+  },
   orchestra: { name: { en: "Orchestra", ar: "اوركيسترا" }, typography: { latin: "lusail" } },
   togo: { name: { en: "ToGO" }, typography: { latin: "lusail" }, site: "https://to-go.dev" },
 };
@@ -46,6 +52,7 @@ export const BRANDS = Object.fromEntries(
       mark: MARKS[key],
       color: { brand: { ...t.brand }, action: { ...t.action }, onAction: { ...t.onAction }, accent: t.accent },
       typography: m.typography,
+      ...(m.tagline ? { tagline: m.tagline } : {}),
       ...(m.site ? { links: { site: m.site } } : {}),
     };
     return [key, manifest];

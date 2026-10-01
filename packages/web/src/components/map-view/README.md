@@ -4,7 +4,7 @@ title: MapView
 category: charts
 status: stable
 summary: A map of pins and routes without a map library, with layer toggles, a legend, zoom and pan by drag, wheel, buttons or keyboard, a location card and pin clustering; tiles come from a URL template you provide, and without one it draws a coordinate grid.
-exports: [MapView, MapViewLabels, MapTone, MapPin, MapRoute, MapLayer, MapClusterInfo, MapViewProps]
+exports: [MapView, MapViewLabels, MapTone, MapPin, MapRoute, MapArea, MapLayer, MapClusterInfo, MapViewProps]
 related: [geo-list, entity-list, context-menu, copy-button]
 story: components-charts-maps-map-view
 keywords: [map, pins, cluster, clustering, routes, fleet, location, tiles, layers, legend, gps, geo]
@@ -58,6 +58,7 @@ export function Fleet() {
 ```
 MapView                       data-slot="map-view"  dir="ltr"  role="group" (map)
 ├─ tiles (img) or grid (svg)  base
+├─ svg                        areas (data-slot="map-areas"): one polygon each, data-area
 ├─ svg                        routes: casing + line + start and end dots
 ├─ button[data-pin]           one per visible pin, in a ContextMenuActions when pinActions is set
 ├─ button[data-cluster]       a count bubble for pins that are close together (see Clustering)
@@ -72,8 +73,9 @@ MapView                       data-slot="map-view"  dir="ltr"  role="group" (map
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `pins` | `MapPin[]` | `[]` | `id`, `lat`, `lng`, `label`, `labelAr`, `detail`, `layer`, `tone`, `icon`, `status`, `meta`. |
+| `pins` | `MapPin[]` | `[]` | `id`, `lat`, `lng`, `label`, `labelAr`, `detail`, `layer`, `tone`, `icon`, `live`, `status`, `meta`. `live` adds a soft pulse and a glide to each new position (a moving driver); the glide is off while dragging and under reduced motion. |
 | `routes` | `MapRoute[]` | `[]` | `id`, `points`, `label`, `layer`, `tone`, `dashed`. |
+| `areas` | `MapArea[]` | `[]` | Filled polygons for zones: `id`, `points` (a ring of 3 or more, closed for you), `label`, `labelAr`, `layer`, `tone`, `dashed`. Drawn under routes and pins, listed in the legend, included when the map fits. |
 | `layers` | `MapLayer[]` | `[]` | `id`, `label`, `labelAr`, `tone`, `icon`, `defaultHidden`. |
 | `visibleLayers` / `onVisibleLayersChange` | `string[]` | all shown | Controlled layer visibility. |
 | `tileUrl` | `string` | none | Template with `{z}`, `{x}`, `{y}`. Only http, https and site paths are accepted. |

@@ -87,6 +87,7 @@ const KNOWN_STATUS_COLLISIONS = new Set([
   "health-debug:danger", // action is Health Debug red
   "circlexo:info", // CircleXO sky blue
   "hosbah:info", // Hosbah steel blue
+  "yes-delivery:danger", // Yes Delivery pin red
   "fadymondy:warning", // warm orange action vs amber warning
   "seatfor:warning", // orange action
   "orchestra:warning", // terracotta action

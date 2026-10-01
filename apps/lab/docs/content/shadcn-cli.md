@@ -56,7 +56,7 @@ Useful flags: `--overwrite` to replace files that exist, `--dry-run` to print wh
 
 ## 4. Add a brand theme
 
-There is one `registry:theme` item per brand: `theme-nasaq`, `theme-fadymondy`, `theme-mahaam`, `theme-zekra`, `theme-moharrik`, `theme-seatfor`, `theme-health-debug`, `theme-circlexo`, `theme-hosbah` and `theme-orchestra`. A theme item sets that brand's colours as the default in `:root`.
+There is one `registry:theme` item per brand: `theme-nasaq`, `theme-fadymondy`, `theme-mahaam`, `theme-zekra`, `theme-moharrik`, `theme-seatfor`, `theme-health-debug`, `theme-circlexo`, `theme-hosbah`, `theme-yes-delivery` and `theme-orchestra`. A theme item sets that brand's colours as the default in `:root`.
 
 ```bash
 npx shadcn@latest add @nasaq/theme-mahaam

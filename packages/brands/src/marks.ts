@@ -103,6 +103,15 @@ export const MARKS = {
     body: "#D97757",
     accent: "#8C3B1F",
   },
+  /** upstream: yes-delivery. A map pin; the gold centre is the drop-off. */
+  "yes-delivery": {
+    name: "Yes Delivery",
+    cells: [[1, 0], [3, 0], [0, 1], [2, 1], [4, 1], [1, 2], [3, 2], [2, 3]],
+    accentCells: [[2, 1]],
+    body: "#C8283A",
+    bodyOnDark: "#F2626F",
+    accent: "#C9A227",
+  },
   /** to-go.dev/brand: the ToGO framework */
   togo: {
     name: "ToGO",

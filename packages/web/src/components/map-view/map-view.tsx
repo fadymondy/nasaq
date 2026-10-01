@@ -40,6 +40,7 @@ const STRINGS = {
     map: "Map",
     layers: "Layers",
     routes: "Routes",
+    areas: "Areas",
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
     fit: "Show everything",
@@ -61,6 +62,7 @@ const STRINGS = {
     map: "الخريطة",
     layers: "الطبقات",
     routes: "المسارات",
+    areas: "المناطق",
     zoomIn: "تكبير",
     zoomOut: "تصغير",
     fit: "عرض كل شيء",
@@ -94,6 +96,11 @@ export interface MapPin extends MapLatLng {
   layer?: string;
   tone?: MapTone;
   icon?: LucideIcon;
+  /**
+   * A moving thing, such as a driver: shows a soft pulse and glides to each new position instead of jumping. The
+   * glide is off while the map is being dragged and when the user prefers reduced motion.
+   */
+  live?: boolean;
   /** A short status word for a badge in the card ("Moving", "Idle"). */
   status?: string;
   statusAr?: string;
@@ -108,6 +115,19 @@ export interface MapRoute {
   labelAr?: string;
   layer?: string;
   tone?: MapTone;
+  dashed?: boolean;
+}
+
+/** A filled polygon: a delivery zone, a service area, a no-go region. */
+export interface MapArea {
+  id: string;
+  /** Ring of at least three points. It is closed for you. */
+  points: readonly MapLatLng[];
+  label: string;
+  labelAr?: string;
+  layer?: string;
+  tone?: MapTone;
+  /** Draw the outline dashed. */
   dashed?: boolean;
 }
 
@@ -134,6 +154,8 @@ export interface MapClusterInfo {
 export interface MapViewProps {
   pins?: readonly MapPin[];
   routes?: readonly MapRoute[];
+  /** Filled polygons drawn under the routes and pins, for zones. */
+  areas?: readonly MapArea[];
   layers?: readonly MapLayer[];
   /** Visible layer ids. Controlled when set. Default: every layer that is not `defaultHidden`. */
   visibleLayers?: readonly string[];
@@ -193,6 +215,14 @@ const STROKE: Record<MapTone, string> = {
   danger: "stroke-nq-danger",
   neutral: "stroke-muted-foreground",
 };
+const FILL: Record<MapTone, string> = {
+  brand: "fill-primary/15",
+  info: "fill-nq-info/15",
+  success: "fill-nq-success/15",
+  warning: "fill-nq-warning/15",
+  danger: "fill-nq-danger/15",
+  neutral: "fill-muted-foreground/15",
+};
 const SWATCH: Record<MapTone, string> = {
   brand: "bg-primary",
   info: "bg-nq-info",
@@ -214,6 +244,7 @@ const EMPTY_SIZE: MapSize = { width: 0, height: 0 };
 export function MapView({
   pins = [],
   routes = [],
+  areas = [],
   layers = [],
   visibleLayers,
   onVisibleLayersChange,
@@ -258,6 +289,7 @@ export function MapView({
   const isShown = useCallback((layer?: string) => !layer || !layers.some((l) => l.id === layer) || shown.includes(layer), [layers, shown]);
   const visiblePins = useMemo(() => pins.filter((p) => isShown(p.layer)), [pins, isShown]);
   const visibleRoutes = useMemo(() => routes.filter((r) => isShown(r.layer)), [routes, isShown]);
+  const visibleAreas = useMemo(() => areas.filter((a) => isShown(a.layer)), [areas, isShown]);
 
   useEffect(() => {
     const el = canvas.current;
@@ -270,9 +302,9 @@ export function MapView({
   }, []);
 
   const fitted = useMemo(() => {
-    const points: MapLatLng[] = [...visiblePins, ...visibleRoutes.flatMap((r) => r.points)];
+    const points: MapLatLng[] = [...visiblePins, ...visibleRoutes.flatMap((r) => r.points), ...visibleAreas.flatMap((a) => a.points)];
     return mapFit(points, size, { minZoom, maxZoom });
-  }, [visiblePins, visibleRoutes, size, minZoom, maxZoom]);
+  }, [visiblePins, visibleRoutes, visibleAreas, size, minZoom, maxZoom]);
   const view = viewProp ?? own ?? fitted;
   const ready = size.width > 0 && size.height > 0;
 
@@ -496,6 +528,16 @@ export function MapView({
               ))}
             </svg>
           ) : null}
+          {visibleAreas.length > 0 ? (
+            <svg aria-hidden className="pointer-events-none absolute inset-0 size-full" data-slot="map-areas">
+              {visibleAreas.map((area) => {
+                if (area.points.length < 3) return null;
+                const d = area.points.map((pt) => mapToScreen(pt, view, size)).map((q) => `${q.x.toFixed(1)},${q.y.toFixed(1)}`).join(" ");
+                const tone = area.tone ?? "brand";
+                return <polygon key={area.id} data-area={area.id} points={d} strokeWidth={2} strokeLinejoin="round" strokeDasharray={area.dashed ? "6 6" : undefined} className={cn(FILL[tone], STROKE[tone])} />;
+              })}
+            </svg>
+          ) : null}
           <svg aria-hidden className="pointer-events-none absolute inset-0 size-full" data-slot="map-routes">
             {visibleRoutes.map((route) => {
               const pts = route.points.map((p) => mapToScreen(p, view, size));
@@ -550,6 +592,7 @@ export function MapView({
                 data-map-control=""
                 data-pin={pin.id}
                 data-selected={isSelected || undefined}
+                data-live={pin.live || undefined}
                 aria-label={isSelected ? t.selected(name) : name}
                 aria-pressed={isSelected}
                 onClick={() => select(isSelected ? null : pin.id)}
@@ -557,6 +600,7 @@ export function MapView({
                   "absolute flex -translate-x-1/2 -translate-y-full cursor-pointer flex-col items-center outline-none",
                   "focus-visible:[&>span:first-child]:outline-2 focus-visible:[&>span:first-child]:outline-offset-2 focus-visible:[&>span:first-child]:outline-nq-focus",
                   isSelected ? "z-20" : "z-10",
+                  pin.live && !drag && "motion-safe:transition-[left,top] motion-safe:duration-1000 motion-safe:ease-linear",
                 )}
                 style={{ left: p.x, top: p.y }}
               >
@@ -569,6 +613,7 @@ export function MapView({
                 >
                   <Icon aria-hidden />
                 </span>
+                {pin.live ? <span aria-hidden className={cn("pointer-events-none absolute top-0 rounded-full motion-safe:animate-ping", isSelected ? "size-10" : "size-8", SWATCH[tone], "opacity-25")} /> : null}
                 <span aria-hidden className={cn("-mt-0.5 h-2 w-0.5", SWATCH[tone])} />
                 {isSelected ? (
                   <bdi dir="auto" className="pointer-events-none absolute top-full mt-0.5 max-w-40 truncate rounded-[4px] border border-border bg-card px-1.5 text-caption text-foreground shadow-sm">
@@ -580,13 +625,13 @@ export function MapView({
             const actions = pinActions?.(pin) ?? [];
             return actions.length ? <ContextMenuActions key={pin.id} actions={actions} render={button} /> : button;
           })}
-          {pins.length === 0 && routes.length === 0 ? (
+          {pins.length === 0 && routes.length === 0 && areas.length === 0 ? (
             <p className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-body-sm text-muted-foreground">{t.noPins}</p>
           ) : null}
         </>
       ) : null}
 
-      {legend && (layers.length > 0 || visibleRoutes.length > 0) ? (
+      {legend && (layers.length > 0 || visibleRoutes.length > 0 || visibleAreas.length > 0) ? (
         <div data-map-control="" data-slot="map-legend" className="absolute start-3 top-3 z-30 flex max-w-[calc(100%-6rem)] cursor-default flex-col items-start gap-1.5" dir={ar ? "rtl" : "ltr"}>
           <Button type="button" variant="secondary" size="sm" aria-expanded={legendVisible} onClick={() => setLegendOpen(!legendVisible)} className="shadow-sm">
             <Layers aria-hidden />
@@ -612,8 +657,21 @@ export function MapView({
                   })}
                 </ul>
               ) : null}
-              {visibleRoutes.length > 0 ? (
+              {visibleAreas.length > 0 ? (
                 <div className={cn("flex flex-col gap-1.5", layers.length > 0 && "border-t border-border pt-2")}>
+                  <span className="text-caption text-muted-foreground">{t.areas}</span>
+                  <ul role="list" className="flex flex-col gap-1.5">
+                    {visibleAreas.map((area) => (
+                      <li key={area.id} className="flex items-center gap-2">
+                        <span aria-hidden className={cn("size-3 shrink-0 rounded-[3px] opacity-70", SWATCH[area.tone ?? "brand"])} />
+                        <span className="min-w-0 flex-1 truncate text-foreground">{pick(area.label, area.labelAr, ar)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              {visibleRoutes.length > 0 ? (
+                <div className={cn("flex flex-col gap-1.5", (layers.length > 0 || visibleAreas.length > 0) && "border-t border-border pt-2")}>
                   <span className="text-caption text-muted-foreground">{t.routes}</span>
                   <ul role="list" className="flex flex-col gap-1.5">
                     {visibleRoutes.map((route) => (

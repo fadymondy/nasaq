@@ -24,7 +24,7 @@ export const registryInstall = (name) => ({
   command: `npx shadcn@latest add @nasaq/${name}`,
 });
 
-export const CATEGORIES = ["account", "actions", "admin", "ai", "ai-agents", "alerts", "analytics", "auth", "billing", "bookings", "brand", "charts", "chat", "collaboration", "crm", "data-display", "developer-tools", "editors", "feedback", "feedback-sdk", "files", "form-builders", "forms", "gamification", "healthcare", "integrations", "keyboard", "layout", "marketing", "monitoring", "navigation", "onboarding", "overlays", "pickers", "platforms", "pricing", "productivity", "security", "seo", "server-tools", "store", "store-admin", "typography", "utilities", "website", "wellness", "work", "workflow"];
+export const CATEGORIES = ["account", "actions", "admin", "ai", "ai-agents", "alerts", "analytics", "auth", "billing", "bookings", "brand", "charts", "chat", "collaboration", "crm", "data-display", "delivery", "developer-tools", "editors", "feedback", "feedback-sdk", "files", "form-builders", "forms", "gamification", "healthcare", "integrations", "keyboard", "layout", "marketing", "monitoring", "navigation", "onboarding", "overlays", "pickers", "platforms", "pricing", "productivity", "security", "seo", "server-tools", "store", "store-admin", "typography", "utilities", "website", "wellness", "work", "workflow"];
 
 /** The monorepo root: NASAQ_ROOT, else the nearest ancestor with packages/web/src/components. */
 export function findRoot(start = here) {
@@ -151,7 +151,7 @@ export function Root({ children }: { children: React.ReactNode }) {
 }
 \`\`\`
 
-- \`brand\`: a brand key (nasaq, fadymondy, mahaam, zekra, moharrik, seatfor, health-debug, circlexo, hosbah, orchestra, togo).
+- \`brand\`: a brand key (nasaq, fadymondy, mahaam, zekra, moharrik, seatfor, health-debug, circlexo, hosbah, yes-delivery, orchestra, togo).
 - \`locale\`: "en" | "ar" (sets dir="rtl" for Arabic). \`density\`: "comfortable" | "compact" | "dense".
 - An app with a sidebar starts from \`AppShell\` (see get_component("app-shell")); add a \`CommandPalette\` and register
   commands with \`useRegisterCommands\` (see get_component("commands")).

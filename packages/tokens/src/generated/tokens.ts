@@ -356,6 +356,21 @@ export const brands = {
     },
     "accent": "#8C3B1F"
   },
+  "yes-delivery": {
+    "brand": {
+      "light": "#C8283A",
+      "dark": "#F2626F"
+    },
+    "action": {
+      "light": "#C8283A",
+      "dark": "#F2626F"
+    },
+    "onAction": {
+      "light": "#FFFFFF",
+      "dark": "#1A0A0D"
+    },
+    "accent": "#C9A227"
+  },
   "togo": {
     "brand": {
       "light": "#0E1A3C",

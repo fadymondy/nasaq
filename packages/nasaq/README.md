@@ -117,7 +117,7 @@ Built-in strings ship in English and Arabic; components take a `labels` prop to 
 <NasaqProvider brand="mahaam" density="comfortable" expression="native" defaultTheme="dark">
 ```
 
-Brands: `nasaq`, `fadymondy`, `mahaam`, `zekra`, `moharrik`, `seatfor`, `health-debug`, `circlexo`, `hosbah`, `orchestra`. A brand changes identity and action colour only; status colours keep their meaning. Every pair is contrast-tested. Read the manifests and draw marks from `@fadymondy/nasaq/brands`.
+Brands: `nasaq`, `fadymondy`, `mahaam`, `zekra`, `moharrik`, `seatfor`, `health-debug`, `circlexo`, `hosbah`, `yes-delivery`, `orchestra`. A brand changes identity and action colour only; status colours keep their meaning. Every pair is contrast-tested. Read the manifests and draw marks from `@fadymondy/nasaq/brands`.
 
 ## Subpaths
 

@@ -8,7 +8,7 @@ Nasaq separates what stays the same in every product (layout, type scale, states
 
 | Prop | Attribute | Values | What it changes |
 | --- | --- | --- | --- |
-| `brand` | `data-brand` | `nasaq`, `fadymondy`, `mahaam`, `zekra`, `moharrik`, `seatfor`, `health-debug`, `circlexo`, `hosbah`, `orchestra` | Brand and action colours, mark |
+| `brand` | `data-brand` | `nasaq`, `fadymondy`, `mahaam`, `zekra`, `moharrik`, `seatfor`, `health-debug`, `circlexo`, `hosbah`, `yes-delivery`, `orchestra` | Brand and action colours, mark |
 | `theme` | `data-theme` and the `dark` class | `light`, `dark`, `system` | The semantic colour set, see [Dark mode](?page=docs-guides-dark-mode) |
 | `locale` / `direction` | `lang`, `dir` | `en`, `ar` (extend with the `locales` prop) | Language, reading direction, see [RTL and Arabic](?page=docs-guides-rtl-and-arabic) |
 | `density` | `data-density` | `comfortable`, `compact` (default), `dense` | Control height, row height, page padding |
