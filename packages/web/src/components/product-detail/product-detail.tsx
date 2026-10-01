@@ -29,6 +29,7 @@ import { ProductGallery } from "./product-gallery";
 import { ProductQuantityStepper } from "./quantity-stepper";
 import { ProductSizeGuide, type ProductSizeGuideData } from "./size-guide";
 import { ProductVariantPicker } from "./variant-picker";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface ProductBreadcrumb {
   label: string;
@@ -75,7 +76,8 @@ export type ProductActionResult = void | { error?: string };
 export interface ProductDetailProps {
   product: CommerceProduct;
   /** ISO 4217 code of the store currency. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Digits after the decimal point of the currency's minor unit. Default 2. */
   currencyExponent?: number;
   /** Open on this variant (default: the first one in stock). */
@@ -147,7 +149,7 @@ function useWide(): boolean {
  */
 export function ProductDetail({
   product,
-  currency,
+  currency: currencyProp,
   currencyExponent = 2,
   defaultVariantId,
   blankSelection,
@@ -178,6 +180,7 @@ export function ProductDetail({
   className,
   labels,
 }: ProductDetailProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale } = usePdpStrings(labels);
   const fmt = useFormatNumber();
   const wide = useWide();

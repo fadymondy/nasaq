@@ -11,6 +11,7 @@ import { Field, FieldError, FieldLabel, Input } from "../field";
 import { formatNumber } from "../numeric";
 import { Toggle, ToggleGroup } from "../toggle-group";
 import { changedKeys, effectiveLimit, hasErrors, type LimitErrors, type LimitField, type LimitMode, type LimitRule, type LimitRules, parseNumberInput, ruleOf, validateRules } from "./limits-math";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const STRINGS = {
   en: {
@@ -94,7 +95,7 @@ export interface LimitsEditorProps extends Omit<ComponentProps<"form">, "onSubmi
   showPricing?: boolean;
   /** Show the per-key rate limit and spend cap. */
   showKeyLimits?: boolean;
-  /** ISO 4217 code for prices and the spend cap. Default "USD". */
+  /** ISO 4217 code for prices and the spend cap. Default USD, or SAR in Arabic. */
   currency?: string;
   /** Adds the Save and Discard footer. Return `{ error }` to show a failure. */
   onSave?: (rules: LimitRules) => Promise<LimitsSaveResult> | LimitsSaveResult;
@@ -117,13 +118,14 @@ export function LimitsEditor({
   inherited,
   showPricing = false,
   showKeyLimits = false,
-  currency = "USD",
+  currency: currencyProp,
   onSave,
   disabled = false,
   labels,
   className,
   ...props
 }: LimitsEditorProps) {
+  const currency = useCurrency(currencyProp);
   const locale = useOptionalNasaq()?.locale ?? "en";
   const t = { ...STRINGS[locale.startsWith("ar") ? "ar" : "en"], ...labels };
   const [inner, setInner] = useState<LimitRules>(defaultValue ?? value ?? {});

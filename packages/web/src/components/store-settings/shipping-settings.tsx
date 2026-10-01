@@ -26,6 +26,7 @@ import {
   tierIssues,
 } from "./shipping-logic";
 import { Money, regionName, type SettingsResult, type StoreSettingsLabels, uid, useAction, useSettingsStrings } from "./store-settings-shared";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const RATE_TYPES: ShippingRateType[] = ["flat", "weight", "price", "free-over"];
 const COMMON_COUNTRIES = ["EG", "SA", "AE", "KW", "QA", "BH", "OM", "JO", "LB", "MA", "US", "GB", "DE", "FR", "*"];
@@ -37,7 +38,8 @@ export interface ShippingSettingsProps extends Omit<ComponentProps<"section">, "
   zones: readonly ShippingZone[];
   pickups?: readonly PickupLocation[];
   /** ISO 4217 code of the store. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Saves a new or changed zone with its rates. New zones arrive with a fresh `id`. Resolve `{ error }` to keep the editor open. */
   onSaveZone: (zone: ShippingZone) => Promise<SettingsResult>;
   onDeleteZone?: (zone: ShippingZone) => Promise<SettingsResult>;
@@ -54,7 +56,8 @@ export interface ShippingSettingsProps extends Omit<ComponentProps<"section">, "
  * destination" panel runs the same resolver checkout uses, so a merchant sees exactly what a customer would be
  * offered for a country, a city, a cart total and a weight. Money is integer minor units, weight is grams.
  */
-export function ShippingSettings({ zones, pickups = [], currency, onSaveZone, onDeleteZone, onSavePickup, onDeletePickup, loading = false, error, onRetry, labels, className, ...props }: ShippingSettingsProps) {
+export function ShippingSettings({ zones, pickups = [], currency: currencyProp, onSaveZone, onDeleteZone, onSavePickup, onDeletePickup, loading = false, error, onRetry, labels, className, ...props }: ShippingSettingsProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale, n } = useSettingsStrings(labels);
   const [zone, setZone] = useState<ShippingZone | null>(null);
   const [pickup, setPickup] = useState<PickupLocation | null>(null);

@@ -27,6 +27,7 @@ import {
   isExpiryValid,
   lastFour,
 } from "./card-format";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 /* ------------------------------------------------------------------ strings */
 
@@ -401,7 +402,7 @@ export function PaymentMethodForm({ value, onChange, errors = {}, methods = ["ca
 
 export interface CheckoutStepsProps extends Omit<ComponentProps<"div">, "onError"> {
   plans: readonly CheckoutPlan[];
-  /** ISO 4217 code for every amount. Default "USD". */
+  /** ISO 4217 code for every amount. Default USD, or SAR in Arabic. */
   currency?: string;
   /** Tax as a fraction of the subtotal: 0.15 for 15% VAT. Default 0 (no tax line). */
   taxRate?: number;
@@ -459,7 +460,7 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  */
 export function CheckoutSteps({
   plans,
-  currency = "USD",
+  currency: currencyProp,
   taxRate = 0,
   taxLabel,
   defaultPlanId,
@@ -476,6 +477,7 @@ export function CheckoutSteps({
   className,
   ...props
 }: CheckoutStepsProps) {
+  const currency = useCurrency(currencyProp);
   const { t, ar } = useStrings(labels);
   const money = useMoney(currency);
   const fmt = useFormatNumber();

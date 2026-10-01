@@ -3,7 +3,7 @@
 import { Bike, Car, Footprints, HandCoins, Motorbike, PackageCheck, Truck, type LucideIcon } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "../../lib/cn";
-import { DELIVERY_DEFAULT_CURRENCY, deliveryDistance, deliveryDuration, deliveryMoney } from "../../lib/delivery";
+import { deliveryCurrency, deliveryDistance, deliveryDuration, deliveryMoney } from "../../lib/delivery";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Avatar } from "../avatar";
 
@@ -76,7 +76,7 @@ export interface CourierCardProps extends Omit<ComponentProps<"div">, "children"
   cashFloatMinor?: number;
   /** Orders the courier is carrying now. */
   activeOrders?: number;
-  /** ISO 4217 code. Default "ILS". */
+  /** ISO 4217 code. Default USD, or SAR in Arabic. */
   currency?: string;
   /** Makes the card a button (select a courier on the map or to assign). */
   onSelect?: () => void;
@@ -104,7 +104,7 @@ export function CourierCard({
   etaSeconds,
   cashFloatMinor,
   activeOrders,
-  currency = DELIVERY_DEFAULT_CURRENCY,
+  currency: currencyProp,
   onSelect,
   selected = false,
   actions,
@@ -117,6 +117,7 @@ export function CourierCard({
   const ambient = useOptionalNasaq()?.locale ?? "en";
   const locale = localeProp ?? ambient;
   const ar = locale.startsWith("ar");
+  const currency = currencyProp ?? deliveryCurrency(locale);
   const t = { ...STRINGS[ar ? "ar" : "en"], ...labels };
   const shownName = ar ? nameAr || name : name || nameAr || "";
   const VehicleIcon = vehicle ? VEHICLE_ICON[vehicle] : null;

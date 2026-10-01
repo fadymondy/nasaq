@@ -258,3 +258,14 @@ export function useNasaq(): NasaqContextValue {
 export function useOptionalNasaq(): NasaqContextValue | null {
   return useContext(NasaqContext);
 }
+
+/** The currency when a caller sets none: Saudi riyal in Arabic, US dollar otherwise. */
+export function defaultCurrency(locale = "en"): string {
+  return locale.startsWith("ar") ? "SAR" : "USD";
+}
+
+/** The given currency, or the default for the ambient locale (SAR in Arabic, USD otherwise). */
+export function useCurrency(currency?: string): string {
+  const locale = useOptionalNasaq()?.locale ?? "en";
+  return currency ?? defaultCurrency(locale);
+}

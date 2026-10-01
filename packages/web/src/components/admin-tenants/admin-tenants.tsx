@@ -3,7 +3,7 @@
 import { ArrowRightLeft, Building2, CirclePause, CirclePlay, ExternalLink, Pencil, Plus } from "lucide-react";
 import { type FormEvent, type ReactNode, useEffect, useMemo, useState } from "react";
 import { cn } from "../../lib/cn";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { defaultCurrency, useCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Alert } from "../alert";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../alert-dialog";
 import { Badge } from "../badge";
@@ -188,7 +188,7 @@ export interface AdminPlan {
   description?: string;
   /** Monthly price in `currency`. 0 is free. */
   priceMonthly: number;
-  /** ISO 4217 code. Default "USD". */
+  /** ISO 4217 code. Default USD, or SAR in Arabic. */
   currency?: string;
   /** Seat limit. `null` is unlimited. */
   seats: number | null;
@@ -394,7 +394,7 @@ export function AdminWorkspaces({
       trials: workspaces.filter((w) => w.status === "trial").length,
       suspended: workspaces.filter((w) => w.status === "suspended").length,
       revenue,
-      currency: plans[0]?.currency ?? "USD",
+      currency: plans[0]?.currency ?? defaultCurrency(locale),
     };
   }, [workspaces, planById, plans]);
 
@@ -595,7 +595,8 @@ export interface PlanDialogProps {
 }
 
 /** Create or edit a plan: name, price, seat and storage limits, and a reorderable list of features. */
-export function PlanDialog({ plan, currency = "USD", onOpenChange, onSave, labels }: PlanDialogProps) {
+export function PlanDialog({ plan, currency: currencyProp, onOpenChange, onSave, labels }: PlanDialogProps) {
+  const currency = useCurrency(currencyProp);
   const locale = useOptionalNasaq()?.locale ?? "en";
   const t = { ...strings(locale), ...labels };
   const editing = plan && plan !== "new" ? plan : undefined;
@@ -729,7 +730,8 @@ export interface AdminPlansProps {
 }
 
 /** The plan catalogue: each plan as a card with price, limits and how many workspaces use it, and a dialog to edit or add. */
-export function AdminPlans({ plans, onSavePlan, currency = "USD", labels, className }: AdminPlansProps) {
+export function AdminPlans({ plans, onSavePlan, currency: currencyProp, labels, className }: AdminPlansProps) {
+  const currency = useCurrency(currencyProp);
   const locale = useOptionalNasaq()?.locale ?? "en";
   const t = { ...strings(locale), ...labels };
   const [editing, setEditing] = useState<AdminPlan | "new" | null>(null);

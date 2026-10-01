@@ -34,6 +34,7 @@ import {
   type PromoProblem,
   promoLive,
 } from "./loyalty-logic";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 /* ------------------------------------------------------------------ strings */
 
@@ -461,7 +462,8 @@ export interface PromoApplied {
 export interface PromoCodeFieldProps extends Omit<ComponentProps<"div">, "children" | "onChange"> {
   /** The code currently applied. */
   applied?: PromoApplied | null;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /**
    * Checks a code with your server. Resolve `{ error }` (or reject) to show it under the field; on success update `applied`.
    * Skip it to let `promos` and `context` decide locally.
@@ -481,7 +483,8 @@ export interface PromoCodeFieldProps extends Omit<ComponentProps<"div">, "childr
  * A promo-code box for checkout. Typing is upper-cased; Apply checks the format, then either your `onApply` (server) or the
  * `promos` you pass in (local rules). A success shows the code with the saving and a remove button; a failure says why.
  */
-export function PromoCodeField({ applied, currency, onApply, onRemove, promos, context, onApplied, disabled, labels, className, ...props }: PromoCodeFieldProps) {
+export function PromoCodeField({ applied, currency: currencyProp, onApply, onRemove, promos, context, onApplied, disabled, labels, className, ...props }: PromoCodeFieldProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStrings(labels);
   const [value, setValue] = useState("");
   const [busy, setBusy] = useState(false);
@@ -588,7 +591,8 @@ export interface PromoCodeInput {
 
 export interface PromoCodeManagerProps extends Omit<ComponentProps<"section">, "children"> {
   promos: readonly PromoCode[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Day key for "live" and "ended". Default today. */
   today?: string;
   /** Creates (no `id`) or updates (with `id`) a code. Resolve `{ error }` to keep the dialog open. */
@@ -611,7 +615,8 @@ function promoStanding(p: PromoCode, today: string): PromoStanding {
 }
 
 /** Admin list of promo codes with a create and edit dialog. Row actions (edit, copy, turn on or off, delete) open on context-click too. */
-export function PromoCodeManager({ promos, currency, today = todayKey(), onSave, onSetActive, onDelete, loading = false, labels, className, ...props }: PromoCodeManagerProps) {
+export function PromoCodeManager({ promos, currency: currencyProp, today = todayKey(), onSave, onSetActive, onDelete, loading = false, labels, className, ...props }: PromoCodeManagerProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useStrings(labels);
   const titleId = useId();
   const [editing, setEditing] = useState<PromoCode | "new" | null>(null);
@@ -906,7 +911,8 @@ export interface Visit {
 
 export interface VisitHistoryProps extends Omit<ComponentProps<"section">, "children"> {
   visits: readonly Visit[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Extra actions per visit, such as "Book again". They open on context-click too. */
   rowActions?: (visit: Visit) => DataTableRowAction[];
   loading?: boolean;
@@ -916,7 +922,8 @@ export interface VisitHistoryProps extends Omit<ComponentProps<"section">, "chil
 const VISIT_TONE: Record<VisitStatus, StatusTone> = { completed: "success", "no-show": "danger", cancelled: "neutral" };
 
 /** A customer's visits with totals up top: count, total spend, average visit and last visit. Sortable by date, spend and points. */
-export function VisitHistory({ visits, currency, rowActions, loading = false, labels, className, ...props }: VisitHistoryProps) {
+export function VisitHistory({ visits, currency: currencyProp, rowActions, loading = false, labels, className, ...props }: VisitHistoryProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useStrings(labels);
   const titleId = useId();
   const done = visits.filter((v) => v.status === "completed");

@@ -1,6 +1,6 @@
 /*
  * Demo data and stateful page shells for the store admin catalogue and settings stories.
- * Built on _store-demo.ts. Money is integer minor units (EGP piasters). Names, codes and figures are invented.
+ * Built on _store-demo.ts. Money is integer minor units (cents, halalas in Arabic). Names, codes and figures are invented.
  */
 import {
   bulkEditProducts,
@@ -204,7 +204,7 @@ export function zonesSeed(locale: StoreLocale): ShippingZone[] {
       cities: ["Cairo", "Giza"],
       rates: [
         { id: "r1", label: ar ? "توصيل اليوم التالي" : "Next-day delivery", type: "flat", amount: 4000, etaDays: [1, 1] },
-        { id: "r2", label: ar ? "مجاني فوق ١٥٠٠ جنيه" : "Free over EGP 1,500", type: "free-over", freeOver: 150000, amount: 6000, etaDays: [2, 3] },
+        { id: "r2", label: ar ? "مجاني فوق ١٥٠٠ ريال" : "Free over $1,500", type: "free-over", freeOver: 150000, amount: 6000, etaDays: [2, 3] },
       ],
     },
     {
@@ -261,8 +261,8 @@ export function discountsSeed(locale: StoreLocale): Discount[] {
   return [
     { id: "d1", title: ar ? "خريف ١٠٪" : "Autumn 10%", method: "code", code: "AUTUMN10", kind: "percentage", value: 1000, maxDiscount: 30000, combinesWith: { shipping: true }, startsAt: "2026-09-01T00:00:00Z", endsAt: "2026-10-31T23:59:59Z", limits: { total: 500, perCustomer: 1 } },
     { id: "d2", title: ar ? "اشترِ ٢ واحصل على ١ مجانًا (أكواب)" : "Buy 2 get 1 free (mugs)", method: "automatic", kind: "bxgy", bxgy: { buyQty: 2, getQty: 1, buyScope: { productIds: ["mug"] }, getPercentBps: 10000, maxSets: 3 } },
-    { id: "d3", title: ar ? "شحن مجاني فوق ١٠٠٠ جنيه" : "Free shipping over EGP 1,000", method: "automatic", kind: "free-shipping", minSubtotal: 100000, combinesWith: { product: true, order: true } },
-    { id: "d4", title: ar ? "٥٠ جنيهًا خصم للطلب الأول" : "EGP 50 off first order", method: "code", code: "WELCOME50", kind: "fixed", value: 5000, firstOrderOnly: true, minSubtotal: 30000 },
+    { id: "d3", title: ar ? "شحن مجاني فوق ١٠٠٠ ريال" : "Free shipping over $1,000", method: "automatic", kind: "free-shipping", minSubtotal: 100000, combinesWith: { product: true, order: true } },
+    { id: "d4", title: ar ? "٥٠ ريالًا خصم للطلب الأول" : "$50 off first order", method: "code", code: "WELCOME50", kind: "fixed", value: 5000, firstOrderOnly: true, minSubtotal: 30000 },
     { id: "d5", title: ar ? "عرض الصيف" : "Summer flash", method: "automatic", kind: "percentage", value: 2000, active: true, startsAt: "2026-06-01T00:00:00Z", endsAt: "2026-06-30T23:59:59Z", excludeOnSale: true },
     { id: "d6", title: ar ? "عملاء VIP" : "VIP members", method: "code", code: "VIP15", kind: "percentage", value: 1500, customers: { mode: "segments", segments: ["vip"] }, active: false },
   ];
@@ -360,7 +360,7 @@ function GiftCheckoutDemo({ cards: given }: { cards?: GiftCard[] }) {
         <CardTitle as="h3">{ar ? "كما يراها العميل عند الدفع" : "What the customer sees at checkout"}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="mb-3 text-body-sm text-muted-foreground">{ar ? "الإجمالي ٥٠٠ جنيه. جرّب الرمز 7KQM-2XPR-4TVW-9HDF." : "Total EGP 500. Try the code 7KQM-2XPR-4TVW-9HDF."}</p>
+        <p className="mb-3 text-body-sm text-muted-foreground">{ar ? "الإجمالي ٥٠٠ ريال. جرّب الرمز 7KQM-2XPR-4TVW-9HDF." : "Total $500. Try the code 7KQM-2XPR-4TVW-9HDF."}</p>
         <GiftCardField
           className="max-w-md"
           cards={entered}

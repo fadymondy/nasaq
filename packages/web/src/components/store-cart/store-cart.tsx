@@ -34,6 +34,7 @@ import { type StoreCartLabels, useStoreCartStrings } from "./cart-strings";
 import { StoreImage } from "./store-image";
 import { StoreAmount, StoreCartMoney } from "./store-money";
 import type { StoreCartMessage } from "./use-store-cart";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const toLatin = (value: string) => value.replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06f0));
 
@@ -167,7 +168,8 @@ export function StoreQuantityStepper({ value, max, min = 1, onChange, name, disa
 
 export interface StoreCartLineItemProps extends Omit<ComponentProps<"li">, "children"> {
   line: CommerceCartLine;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** A saved-for-later line: no stepper, "Move to cart" instead of "Save for later". */
   saved?: boolean;
   /** The narrow layout for the mini cart: a smaller picture and an icon-only remove. */
@@ -186,7 +188,8 @@ export interface StoreCartLineItemProps extends Omit<ComponentProps<"li">, "chil
  * One product in the cart: picture (with a placeholder), name, variant, stock warning, unit and line price, the
  * quantity stepper and the row actions. The same actions are on its context menu (context-click, long-press or Shift+F10).
  */
-export function StoreCartLineItem({ line, currency, saved = false, compact = false, onQuantityChange, onRemove, onSaveForLater, onMoveToCart, onOpenProduct, sku, labels, className, ...props }: StoreCartLineItemProps) {
+export function StoreCartLineItem({ line, currency: currencyProp, saved = false, compact = false, onQuantityChange, onRemove, onSaveForLater, onMoveToCart, onOpenProduct, sku, labels, className, ...props }: StoreCartLineItemProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useStoreCartStrings(labels);
   const issue = cartStockIssue(line);
   const shownIssue = saved ? (issue?.kind === "out" ? issue : undefined) : issue;
@@ -310,12 +313,14 @@ export interface StoreFreeShippingBarProps extends Omit<ComponentProps<"div">, "
   subtotal: number;
   /** Free shipping starts here, minor units. */
   threshold: number;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   labels?: StoreCartLabels;
 }
 
-/** "You are EGP 500 away from free shipping" with a progress bar that turns green when it is unlocked. */
-export function StoreFreeShippingBar({ subtotal, threshold, currency, labels, className, ...props }: StoreFreeShippingBarProps) {
+/** "You are $500 away from free shipping" with a progress bar that turns green when it is unlocked. */
+export function StoreFreeShippingBar({ subtotal, threshold, currency: currencyProp, labels, className, ...props }: StoreFreeShippingBarProps) {
+  const currency = useCurrency(currencyProp);
   const { t, money } = useStoreCartStrings(labels);
   const { remaining, progress } = commerceFreeShippingProgress(subtotal, threshold);
   const unlocked = remaining === 0;
@@ -364,7 +369,8 @@ export interface StoreMiniCartProps {
   onOpenChange: (open: boolean) => void;
   /** All cart lines; saved-for-later ones are not shown. */
   lines: readonly CommerceCartLine[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Free shipping starts here, minor units. Leave out to hide the bar. */
   freeShippingThreshold?: number;
   onQuantityChange?: (lineId: string, quantity: number) => void;
@@ -386,7 +392,8 @@ export interface StoreMiniCartProps {
  * progress bar, the subtotal, and Checkout / View cart. It is a dialog: focus moves in, Escape closes, and focus returns
  * to the trigger. Checkout is off while a line is out of stock.
  */
-export function StoreMiniCart({ open, onOpenChange, lines, currency, freeShippingThreshold, onQuantityChange, onRemove, onCheckout, onViewCart, onContinueShopping, removed, onUndo, onDismissRemoved, trigger, labels }: StoreMiniCartProps) {
+export function StoreMiniCart({ open, onOpenChange, lines, currency: currencyProp, freeShippingThreshold, onQuantityChange, onRemove, onCheckout, onViewCart, onContinueShopping, removed, onUndo, onDismissRemoved, trigger, labels }: StoreMiniCartProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useStoreCartStrings(labels);
   const active = cartActiveLines(lines);
   const totals = commerceTotals({ lines });
@@ -449,7 +456,8 @@ export function StoreMiniCart({ open, onOpenChange, lines, currency, freeShippin
 
 export interface StoreCartSummaryProps extends Omit<ComponentProps<"section">, "children"> {
   lines: readonly CommerceCartLine[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Promo discount, minor units. */
   discount?: number;
   /** The chosen shipping method; without one the row says it is worked out at checkout. */
@@ -465,7 +473,8 @@ export interface StoreCartSummaryProps extends Omit<ComponentProps<"section">, "
 }
 
 /** The order summary from `commerceTotals`: items, subtotal, promo discount, shipping, tax, total and "You are saving …". */
-export function StoreCartSummary({ lines, currency, discount = 0, shipping, taxBps, taxInclusive, onCheckout, checkoutDisabled, footer, labels, className, ...props }: StoreCartSummaryProps) {
+export function StoreCartSummary({ lines, currency: currencyProp, discount = 0, shipping, taxBps, taxInclusive, onCheckout, checkoutDisabled, footer, labels, className, ...props }: StoreCartSummaryProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n, money } = useStoreCartStrings(labels);
   const totals = commerceTotals({ lines, discount, ...(shipping ? { shipping } : {}), ...(taxBps ? { taxBps } : {}), ...(taxInclusive !== undefined ? { taxInclusive } : {}) });
   const titleId = useId();
@@ -531,7 +540,8 @@ export interface StoreShippingEstimatorProps extends Omit<ComponentProps<"sectio
   zones: readonly StoreShippingZone[];
   /** Order value before shipping, minor units, for the free-shipping rule. */
   subtotal: number;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   value?: StoreShippingSelection | undefined;
   onChange?: (selection: StoreShippingSelection | undefined) => void;
   defaultCity?: string;
@@ -549,7 +559,8 @@ function etaText(method: CommerceShippingMethod, t: ReturnType<typeof useStoreCa
  * Type a city, see the delivery options for it (matched in English or Arabic), and pick one. The picked method feeds
  * `StoreCartSummary`. Free-over thresholds show how much more to add.
  */
-export function StoreShippingEstimator({ zones, subtotal, currency, value, onChange, defaultCity = "", labels, className, ...props }: StoreShippingEstimatorProps) {
+export function StoreShippingEstimator({ zones, subtotal, currency: currencyProp, value, onChange, defaultCity = "", labels, className, ...props }: StoreShippingEstimatorProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n, money } = useStoreCartStrings(labels);
   const [city, setCity] = useState(value?.city ?? defaultCity);
   const [searched, setSearched] = useState<string | null>(value?.city ?? null);
@@ -630,7 +641,8 @@ export function StoreShippingEstimator({ zones, subtotal, currency, value, onCha
 
 export interface StoreCrossSellProps extends Omit<ComponentProps<"section">, "children" | "title"> {
   products: readonly CommerceProduct[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Adds the product's first in-stock variant. Sold-out products have no Add button. */
   onAdd?: (product: CommerceProduct) => void;
   onOpenProduct?: (product: CommerceProduct) => void;
@@ -639,7 +651,8 @@ export interface StoreCrossSellProps extends Omit<ComponentProps<"section">, "ch
 }
 
 /** "You might also like": a carousel of product cards with a quick Add. Each card has a context menu with the same actions. */
-export function StoreCrossSell({ products, currency, onAdd, onOpenProduct, title, labels, className, ...props }: StoreCrossSellProps) {
+export function StoreCrossSell({ products, currency: currencyProp, onAdd, onOpenProduct, title, labels, className, ...props }: StoreCrossSellProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStoreCartStrings(labels);
   const titleId = useId();
   if (products.length === 0) return null;
@@ -706,7 +719,8 @@ export interface StoreCartPromo {
 
 export interface StoreCartPageProps extends Omit<ComponentProps<"div">, "children"> {
   lines: readonly CommerceCartLine[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   onQuantityChange?: (lineId: string, quantity: number) => void;
   onRemove?: (lineId: string) => void;
   onSaveForLater?: (lineId: string) => void;
@@ -749,7 +763,7 @@ export interface StoreCartPageProps extends Omit<ComponentProps<"div">, "childre
  */
 export function StoreCartPage({
   lines,
-  currency,
+  currency: currencyProp,
   onQuantityChange,
   onRemove,
   onSaveForLater,
@@ -778,6 +792,7 @@ export function StoreCartPage({
   className,
   ...props
 }: StoreCartPageProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useStoreCartStrings(labels);
   const [ownSelection, setOwnSelection] = useState<StoreShippingSelection | undefined>();
   const selection = onShippingChange ? shippingSelection : (shippingSelection ?? ownSelection);

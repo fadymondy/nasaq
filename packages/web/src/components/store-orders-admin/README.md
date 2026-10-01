@@ -50,7 +50,7 @@ export function Orders({ initial }: { initial: CommerceOrder[] }) {
       <StoreOrderDetail
         order={order}
         refunds={refunds[order.id] ?? []}
-        currency="EGP"
+        currency="USD"
         actor="Mona"
         onBack={() => setOpen(null)}
         onChange={(next) => {
@@ -60,7 +60,7 @@ export function Orders({ initial }: { initial: CommerceOrder[] }) {
       />
     );
   }
-  return <StoreOrdersList orders={orders} currency="EGP" onOpenOrder={(o) => setOpen(o.id)} />;
+  return <StoreOrdersList orders={orders} currency="USD" onOpenOrder={(o) => setOpen(o.id)} />;
 }
 ```
 
@@ -92,7 +92,7 @@ StoreAbandonedCarts [data-slot="store-abandoned-carts"]
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `orders` | `CommerceOrder[]` | `required` | All orders to list. |
-| `currency` | `string` | `required` | ISO 4217 code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. |
 | `views, onViewsChange` | `OrderView[]` |  | Saved views. Without `onViewsChange` they are kept in the component. |
 | `onOpenOrder` | `(order) => void` |  | Row click and Open order. |
 | `onMarkFulfilled` | `(orders) => void` |  | Bulk and row action; only orders that can ship in full are passed. |
@@ -107,7 +107,7 @@ StoreAbandonedCarts [data-slot="store-abandoned-carts"]
 | --- | --- | --- | --- |
 | `order` | `CommerceOrder` | `required` | The order. Lines carry `fulfilled`, `refunded`, `returned`. |
 | `refunds` | `RefundRecord[]` | `[]` | Refunds already issued. |
-| `currency` | `string` | `required` | ISO code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO code. |
 | `onChange` | `({ order, refunds, restock? }) => void` |  | The next state after a fulfilment, refund, cancel or note. `restock` lists the units to add back to inventory. |
 | `actor` | `string` |  | Written on events. |
 | `carriers` | `string[]` |  | Carrier choices in the fulfil dialog. |
@@ -133,7 +133,7 @@ StoreAbandonedCarts [data-slot="store-abandoned-carts"]
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `carts` | `AbandonedCart[]` | `required` | With customer, lines, last activity, emails sent. |
-| `currency` | `string` | `required` | ISO code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO code. |
 | `now, rules` | `number \| Date, RecoveryRules` | now, defaults | Reference time; idle minutes, cooldown hours, email limit, days until lost. |
 | `maxDiscountPercent` | `number` | `20` | Largest discount an email may offer. |
 | `onSendRecovery` | `(email: RecoveryEmail) => void` |  | Discount percent and amount, message. |
@@ -150,8 +150,8 @@ StoreAbandonedCarts [data-slot="store-abandoned-carts"]
 **Print from the list**
 
 ```tsx
-<StoreOrdersList orders={orders} currency="EGP" onPrint={(picked, kind) => setPrint({ picked, kind })} />
-{print ? <StoreOrderPrintView orders={print.picked} kind={print.kind} currency="EGP" seller={{ name: "Bayt Store" }} onClose={() => setPrint(null)} /> : null}
+<StoreOrdersList orders={orders} currency="USD" onPrint={(picked, kind) => setPrint({ picked, kind })} />
+{print ? <StoreOrderPrintView orders={print.picked} kind={print.kind} currency="USD" seller={{ name: "Bayt Store" }} onClose={() => setPrint(null)} /> : null}
 ```
 
 **A goodwill refund by amount** is chosen in the dialog; in code, `planRefund(order, refunds, { mode: "amount", amount: 5000 })` returns `{ ok, amount, issues }`.

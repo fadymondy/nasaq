@@ -30,6 +30,7 @@ import {
   referenceProblem,
   verificationStep,
 } from "./payment-logic";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 /* ------------------------------------------------------------------ strings */
 
@@ -349,7 +350,8 @@ export interface LocalPaymentsProps extends Omit<ComponentProps<typeof Card>, "c
   /** What is owed, in minor units. */
   amount: number;
   /** ISO 4217 code. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   methods: readonly LocalPaymentMethod[];
   /** The customer's submission, when there is one. Its status decides what the card shows. */
   submission?: LocalPaymentSubmission;
@@ -369,7 +371,8 @@ export interface LocalPaymentsProps extends Omit<ComponentProps<typeof Card>, "c
  * and a QR, add the transfer reference and the receipt, and follow verification. Amounts are minor units and each
  * method's fee and limits are applied. Names are text unless you pass an official `mark`.
  */
-export function LocalPayments({ amount, currency, methods, submission, defaultMethodId, onSubmit, onCancel, receiptRequired = true, maxReceiptSize = 5 * 1024 * 1024, labels, className, ...props }: LocalPaymentsProps) {
+export function LocalPayments({ amount, currency: currencyProp, methods, submission, defaultMethodId, onSubmit, onCancel, receiptRequired = true, maxReceiptSize = 5 * 1024 * 1024, labels, className, ...props }: LocalPaymentsProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStrings(labels);
   const [methodId, setMethodId] = useState(defaultMethodId ?? submission?.methodId ?? methods[0]?.id ?? "");
   const [reference, setReference] = useState(submission?.reference ?? "");

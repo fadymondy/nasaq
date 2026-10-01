@@ -78,7 +78,7 @@ PlanDialog             name, description, price, seat and storage limits, visibi
 | --- | --- | --- | --- |
 | `plans` | `AdminPlan[]` | required | |
 | `onSavePlan` | `(plan) => result` | none | Enables New plan and Edit. `plan.id` is undefined for a new one. Return `{ error }` to keep the dialog open. |
-| `currency` | `string` | `"USD"` | For new plans. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | For new plans. |
 
 ## Examples
 

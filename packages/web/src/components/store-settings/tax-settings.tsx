@@ -17,13 +17,15 @@ import { Status } from "../status";
 import { Switch } from "../switch";
 import { duplicateTaxRegions, orderTax, splitTax, type TaxRate, taxRateFor } from "./tax-logic";
 import { Money, bpsToPercent, percentToBps, regionName, type SettingsResult, type StoreSettingsLabels, uid, useAction, useSettingsStrings } from "./store-settings-shared";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const keyOf = (r: { country: string; region?: string }) => `${r.country.toUpperCase()}${r.region ? `/${r.region}` : ""}`;
 
 export interface TaxSettingsProps extends Omit<ComponentProps<"section">, "children"> {
   rates: readonly TaxRate[];
   /** ISO 4217 code of the store. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Saves a new or changed rate. New rates arrive with a fresh `id`. Resolve `{ error }` to keep the dialog open. */
   onSave: (rate: TaxRate) => Promise<SettingsResult>;
   onDelete?: (rate: TaxRate) => Promise<SettingsResult>;
@@ -38,7 +40,8 @@ export interface TaxSettingsProps extends Omit<ComponentProps<"section">, "child
  * checkout), optionally on shipping too. A calculator below runs the same `orderTax` a checkout does, so a merchant sees
  * the tax, the total and the net for a sample order. Rates are basis points (1400 is 14%); money is integer minor units.
  */
-export function TaxSettings({ rates, currency, onSave, onDelete, loading = false, error, onRetry, labels, className, ...props }: TaxSettingsProps) {
+export function TaxSettings({ rates, currency: currencyProp, onSave, onDelete, loading = false, error, onRetry, labels, className, ...props }: TaxSettingsProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale } = useSettingsStrings(labels);
   const [editing, setEditing] = useState<TaxRate | null>(null);
   const [deleting, setDeleting] = useState<TaxRate | null>(null);

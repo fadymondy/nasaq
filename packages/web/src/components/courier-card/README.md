@@ -68,7 +68,7 @@ CourierList  data-slot="courier-list"
 | `etaSeconds` | `number` | none | Time to reach the pickup. |
 | `cashFloatMinor` | `number` | none | Cash the courier holds, in minor units. |
 | `activeOrders` | `number` | none | Orders in progress. |
-| `currency` | `string` | `"ILS"` | ISO currency for the float. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO currency for the float. |
 | `selected` / `onSelect` | `boolean` / `() => void` | none | Selection; makes the card a button. |
 | `actions` | `ReactNode` | none | Trailing slot, for example an Assign button. |
 | `compact` | `boolean` | `false` | Tighter layout. |

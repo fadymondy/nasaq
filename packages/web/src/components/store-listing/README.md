@@ -39,7 +39,7 @@ import { StoreListing, StoreProductCard } from "@fadymondy/nasaq/web";
 <StoreListing
   title="Clothing"
   products={products}
-  currency="EGP"
+  currency="USD"
   categoryTree={tree}
   defaultFilters={{ ...EMPTY_LISTING_FILTERS, category: "Clothing" }}
   onAddToCart={(product, variant, qty) => cart.add(variant.id, qty)}
@@ -47,7 +47,7 @@ import { StoreListing, StoreProductCard } from "@fadymondy/nasaq/web";
 />
 ```
 
-Prices in `CommerceProduct` are integer minor units (piastres for EGP); the components convert with the currency's own digits.
+Prices in `CommerceProduct` are integer minor units (cents for USD, halalas for SAR); the components convert with the currency's own digits.
 
 ## API
 
@@ -56,7 +56,7 @@ Prices in `CommerceProduct` are integer minor units (piastres for EGP); the comp
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `products` | `CommerceProduct[]` | required | The full result set. Drafts and archived items are ignored. |
-| `currency` | `string` | required | ISO 4217 code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. |
 | `categoryTree?` | `ListingCategoryNode[]` | none | Category facet. Node ids equal `product.category`. |
 | `filters?` / `defaultFilters?` / `onFiltersChange?` | `ListingFilters` | empty | Query, category, brands, options, price range, rating, in stock, on sale. |
 | `sort?` / `defaultSort?` / `onSortChange?` | `ListingSort` | `relevance` | Relevance, price, newest, top rated, biggest discount, name. |

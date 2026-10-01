@@ -73,7 +73,7 @@ All are token-driven, brand-aware through the provider, RTL-correct (start/end, 
 | `useNasaqStatusBarStyle()` | `"light"` or `"dark"` for expo-status-bar. |
 | `EmptyState` | `icon`, `title`, `description`, `action`. |
 | `Skeleton`, `Spinner` | `width`, `height`, `circle`; a pulse that stops under reduced motion. |
-| `MoneyText` | `cents` (integer minor units), `currency` (ILS), `tone` (`"sign"` colours by sign), `showPlus`, `arabicIndic`. Tabular numerals. |
+| `MoneyText` | `cents` (integer minor units), `currency` (USD, or SAR in Arabic), `tone` (`"sign"` colours by sign), `showPlus`, `arabicIndic`. Tabular numerals. |
 | `StepProgress` | `steps` (labels), `current`. |
 | `OfferCountdown` | `seconds`, `total`, `onExpire` (fires once), `variant` ring or bar. Danger at 10 seconds or fewer. |
 | `OfferCard` | `pickup`, `dropoff`, `zone`, `feeCents`, `orderTotalMinor` (shows the cash to collect: total plus fee), `distanceMeters`, `etaSeconds`, `seconds`, `total`, `onAccept` (success haptic), `onDecline`, `loading`. |

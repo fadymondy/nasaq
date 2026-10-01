@@ -4,6 +4,7 @@ import {
   cashBreakdown,
   deliveryDistance,
   deliveryDuration,
+  deliveryCurrency,
   deliveryMinorFactor,
   deliveryMoney,
   deliveryProgress,
@@ -14,18 +15,27 @@ import {
 } from "../src/lib/delivery.ts";
 
 test("minor factor follows the currency", () => {
-  assert.equal(deliveryMinorFactor("ILS"), 100);
+  assert.equal(deliveryMinorFactor("USD"), 100);
+  assert.equal(deliveryMinorFactor("SAR"), 100);
   assert.equal(deliveryMinorFactor("JPY"), 1);
   assert.equal(deliveryMinorFactor("KWD"), 1000);
   assert.equal(deliveryMinorFactor("not-a-code"), 100);
 });
 
 test("money is formatted from minor units with Latin digits", () => {
-  const en = deliveryMoney(12550, "ILS", "en");
+  const en = deliveryMoney(12550, "USD", "en");
   assert.match(en, /125\.50/);
-  const ar = deliveryMoney(12550, "ILS", "ar");
+  const ar = deliveryMoney(12550, "SAR", "ar");
   assert.match(ar, /125\.50|125٫50/);
   assert.doesNotMatch(ar, /[٠-٩]/);
+});
+
+test("the default currency is USD, and SAR in Arabic", () => {
+  assert.equal(deliveryCurrency("en"), "USD");
+  assert.equal(deliveryCurrency("ar"), "SAR");
+  assert.equal(deliveryCurrency("ar-EG"), "SAR");
+  assert.match(deliveryMoney(12550, undefined, "en"), /^\$125\.50$/);
+  assert.match(deliveryMoney(12550, undefined, "ar"), /ر\.س/);
 });
 
 test("distance and duration", () => {

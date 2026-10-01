@@ -25,7 +25,7 @@ test("alpha appends a hex alpha channel to a 6-digit colour", () => {
 });
 
 test("digit conversion round-trips and ignores other characters", () => {
-  assert.equal(toArabicIndic("₪12.50"), "₪١٢.٥٠");
+  assert.equal(toArabicIndic("$12.50"), "$١٢.٥٠");
   assert.equal(toLatinDigits("١٢٣٤"), "1234");
   assert.equal(toLatinDigits("۱۲۳"), "123");
   assert.equal(toLatinDigits(toArabicIndic("0987")), "0987");
@@ -81,5 +81,5 @@ test("countdownTone turns danger at 10 seconds or fewer", () => {
 test("shared delivery maths is the web helpers", () => {
   assert.equal(cashBreakdown({ orderTotal: 5000, deliveryFee: 1000, collected: 7000 }).change, 1000);
   assert.equal(routeSummary([{ id: "a", kind: "pickup", status: "done" }, { id: "b", kind: "dropoff" }]).currentId, "b");
-  assert.match(deliveryMoney(1250, "ILS", "en"), /12\.50/);
+  assert.match(deliveryMoney(1250, "USD", "en"), /12\.50/);
 });

@@ -62,7 +62,7 @@ DispatchOffer  data-slot="dispatch-offer"  data-expired
 | `pickup` / `dropoff` | `OfferPlace` | required | `name`, `nameAr`, `address`, `addressAr`. |
 | `feeMinor` | `number` | none | Courier fee in minor units. |
 | `cashToCollectMinor` | `number` | none | Cash due from the customer. |
-| `currency` | `string` | `"ILS"` | ISO currency. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO currency. |
 | `distanceMeters` / `etaSeconds` | `number` | none | Trip size. |
 | `orderCount` | `number` | `1` | More than one shows a multi-order badge. |
 | `expiresAt` | `number` | none | Epoch ms when the offer lapses. Optional: without it there is no countdown and the offer never expires. |

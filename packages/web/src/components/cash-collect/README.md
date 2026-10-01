@@ -12,7 +12,7 @@ keywords: [cash, cod, collect, change, prepaid, delivery fee, courier, settlemen
 
 # Cash Collect
 
-What the courier must take at the door and what to hand back. Amounts are integer minor units (cents, agorot).
+What the courier must take at the door and what to hand back. Amounts are integer minor units (cents, halalas).
 
 ## When to use
 
@@ -53,7 +53,7 @@ CashCollect  data-slot="cash-collect"  data-state
 | `orderTotalMinor` | `number` | required | Goods total. |
 | `deliveryFeeMinor` | `number` | `0` | Added to the total. |
 | `prepaidMinor` | `number` | `0` | Already paid; subtracted. |
-| `currency` | `string` | `"ILS"` | ISO currency. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO currency. |
 | `collectedMinor` / `defaultCollectedMinor` | `number \| null` | none | Controlled or initial received amount. |
 | `onCollectedChange` | `(minor) => void` | none | Input change. |
 | `onConfirm` | `(minor) => void` | none | Confirm tapped. |

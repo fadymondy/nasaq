@@ -35,7 +35,7 @@ import { LoyaltyCard, PromoCodeField, PromoCodeManager, PointsHistory, VisitHist
 
 ```tsx
 <LoyaltyCard name="Sara" balance={1840} tiers={tiers} memberCode="NSQ-4821" rewards={rewards} onRedeem={async (r) => api.redeem(r.id)} />
-<PromoCodeField applied={applied} currency="EGP" onApply={async (code) => api.applyPromo(code)} onRemove={clear} />
+<PromoCodeField applied={applied} currency="USD" onApply={async (code) => api.applyPromo(code)} onRemove={clear} />
 ```
 
 ## Anatomy

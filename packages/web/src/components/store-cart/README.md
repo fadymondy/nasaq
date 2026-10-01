@@ -40,7 +40,7 @@ const cart = useStoreCart({ initialLines, feedback: "both" });
   open={cart.drawerOpen}
   onOpenChange={cart.setDrawerOpen}
   lines={cart.lines}
-  currency="EGP"
+  currency="USD"
   freeShippingThreshold={150000}
   onQuantityChange={cart.setQuantity}
   onRemove={cart.remove}
@@ -49,7 +49,7 @@ const cart = useStoreCart({ initialLines, feedback: "both" });
   onCheckout={() => router.push("/checkout")}
   trigger={<StoreCartButton count={cart.count} />}
 />
-<StoreCartPage lines={cart.lines} currency="EGP" message={cart.message} onQuantityChange={cart.setQuantity} onRemove={cart.remove} onCheckout={go} />
+<StoreCartPage lines={cart.lines} currency="USD" message={cart.message} onQuantityChange={cart.setQuantity} onRemove={cart.remove} onCheckout={go} />
 ```
 
 ## Anatomy
@@ -82,7 +82,7 @@ Read the exported prop types in `store-cart.tsx`. In short:
 ### Arabic
 
 ```tsx
-<NasaqProvider locale="ar"><StoreCartPage lines={lines} currency="EGP" /></NasaqProvider>
+<NasaqProvider locale="ar"><StoreCartPage lines={lines} currency="USD" /></NasaqProvider>
 ```
 
 ## Accessibility

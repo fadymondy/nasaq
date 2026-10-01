@@ -36,6 +36,7 @@ import {
   redeemGiftCard,
 } from "./gift-card-logic";
 import { Money, type SettingsResult, type StoreSettingsLabels, uid, useAction, useSettingsStrings } from "./store-settings-shared";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const STATUSES: GiftCardStatus[] = ["active", "depleted", "expired", "disabled"];
 const STATUS_TONE: Record<GiftCardStatus, StatusTone> = { active: "success", depleted: "neutral", expired: "warning", disabled: "danger" };
@@ -44,7 +45,8 @@ const endOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(
 export interface GiftCardsManagerProps extends Omit<ComponentProps<"section">, "children"> {
   cards: readonly GiftCard[];
   /** ISO 4217 code of the store. New cards are issued in it. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Today. Defaults to the current time. */
   now?: Date;
   /** Saves a newly issued card (its ledger holds the issue entry). Resolve `{ error }` to keep the dialog open. */
@@ -64,7 +66,8 @@ export interface GiftCardsManagerProps extends Omit<ComponentProps<"section">, "
  * ledger history, redeem an amount, add or remove balance by hand, and disable a card. The balance is never stored, it
  * is the sum of the ledger. Money is integer minor units.
  */
-export function GiftCardsManager({ cards, currency, now, onIssue, onUpdate, actor, loading = false, error, onRetry, labels, className, ...props }: GiftCardsManagerProps) {
+export function GiftCardsManager({ cards, currency: currencyProp, now, onIssue, onUpdate, actor, loading = false, error, onRetry, labels, className, ...props }: GiftCardsManagerProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale } = useSettingsStrings(labels);
   const today = useMemo(() => now ?? new Date(), [now]);
   const [issuing, setIssuing] = useState(false);
@@ -413,7 +416,8 @@ export interface GiftCardFieldProps extends Omit<ComponentProps<"section">, "chi
   cards: readonly GiftCard[];
   /** What is left to pay before gift cards, in minor units. */
   total: number;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Finds a card by its normalised code. Resolve the card, or `{ error: "not-found" }`. */
   onLookup: (code: string) => Promise<GiftCardLookup>;
   /** Called with the new list after a card is added or removed. */
@@ -430,7 +434,8 @@ export interface GiftCardFieldProps extends Omit<ComponentProps<"section">, "chi
  * The code is checked for shape and check character before any request, so a typo never reaches the server. Several
  * cards can be added; the one that expires soonest is spent first. Cards in another currency are refused.
  */
-export function GiftCardField({ cards, total, currency, onLookup, onCardsChange, onChange, now, disabled = false, labels, className, ...props }: GiftCardFieldProps) {
+export function GiftCardField({ cards, total, currency: currencyProp, onLookup, onCardsChange, onChange, now, disabled = false, labels, className, ...props }: GiftCardFieldProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useSettingsStrings(labels);
   const id = useId();
   const today = useMemo(() => now ?? new Date(), [now]);

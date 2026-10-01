@@ -11,6 +11,7 @@ import { useFormatNumber } from "../numeric";
 import { StoreProductCard, StoreProductImage } from "../store-listing/store-product-card";
 import { type MerchDeal, merchActiveDeals, merchCountdownParts, merchDealProgress, merchNextTick } from "./store-merch-model";
 import { type MerchLabels, merchFill, useMerchStrings } from "./merch-strings";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 /* ------------------------------------------------------------------ section heading */
 
@@ -279,7 +280,8 @@ export interface StoreFlashDeal extends MerchDeal {
 
 export interface StoreFlashDealsProps {
   deals: readonly StoreFlashDeal[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Clock override for stories and tests. */
   now?: number;
   /** Section heading. Default "Flash deals". */
@@ -302,7 +304,8 @@ export interface StoreFlashDealsProps {
  * A strip of time-limited offers. The soonest-ending live deal sets the countdown; each deal shows the shared product
  * card and how much of its stock is claimed. Ended and not-yet-started deals are not shown.
  */
-export function StoreFlashDeals({ deals, currency, now, title, viewAllHref, onAddToCart, onQuickView, onNavigate, getHref, onToggleWishlist, wishlistIds, onExpire, labels, className }: StoreFlashDealsProps) {
+export function StoreFlashDeals({ deals, currency: currencyProp, now, title, viewAllHref, onAddToCart, onQuickView, onNavigate, getHref, onToggleWishlist, wishlistIds, onExpire, labels, className }: StoreFlashDealsProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale } = useMerchStrings(labels);
   const fmt = useFormatNumber();
   const [clock, setClock] = useState(() => now ?? Date.now());
@@ -379,7 +382,8 @@ export function StoreFlashDeals({ deals, currency, now, title, viewAllHref, onAd
 
 export interface StoreProductCarouselProps {
   products: readonly CommerceProduct[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Heading, e.g. "You may also like" or "Recently viewed". Default "You may also like". */
   title?: ReactNode;
   /** Plain-text name for the carousel region when the heading is not a string. */
@@ -411,7 +415,8 @@ const basis = {
  * A scroll-snapping row of storefront product cards: related products, recently viewed, new arrivals. It takes plain
  * `CommerceProduct` objects and reports through callbacks, so any page can drop it in. Swipes and arrow keys mirror in RTL.
  */
-export function StoreProductCarousel({ products, currency, title, label, viewAllHref, perView = 4, getHref, wishlistIds, onToggleWishlist, onAddToCart, onQuickView, onNavigate, labels, className }: StoreProductCarouselProps) {
+export function StoreProductCarousel({ products, currency: currencyProp, title, label, viewAllHref, perView = 4, getHref, wishlistIds, onToggleWishlist, onAddToCart, onQuickView, onNavigate, labels, className }: StoreProductCarouselProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale } = useMerchStrings(labels);
   if (!products.length) return null;
   const heading = title ?? t.relatedProducts;

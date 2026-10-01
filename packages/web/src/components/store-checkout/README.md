@@ -37,7 +37,7 @@ import { StoreCheckout, StoreOrderConfirmation, StoreAddressForm } from "@fadymo
 ```tsx
 <StoreCheckout
   lines={cart.lines}
-  currency="EGP"
+  currency="USD"
   shippingMethods={methods}
   savedAddresses={addresses}
   paymentPolicy={{ card: true, cod: { maxTotal: 500000, countries: ["EG"], fee: 2500 }, wallet: { balance } }}
@@ -67,7 +67,7 @@ Read the exported prop types in `store-checkout.tsx`. In short:
 ### Arabic
 
 ```tsx
-<NasaqProvider locale="ar"><StoreCheckout lines={lines} currency="EGP" shippingMethods={methods} onPlaceOrder={place} /></NasaqProvider>
+<NasaqProvider locale="ar"><StoreCheckout lines={lines} currency="USD" shippingMethods={methods} onPlaceOrder={place} /></NasaqProvider>
 ```
 
 ## Accessibility

@@ -45,6 +45,7 @@ import {
 } from "./order-math";
 import { StoreFulfilmentBadge, StoreOrderStatusBadge, StorePaymentBadge, type StoreOrderDocumentKind } from "./store-orders-list";
 import { commerceMinorFactor as storeMinorFactor } from "../../lib/commerce";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface StoreOrderChange {
   order: CommerceOrder;
@@ -57,7 +58,8 @@ export interface StoreOrderDetailProps {
   order: CommerceOrder;
   /** Refunds already made, oldest first. */
   refunds?: readonly RefundRecord[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Called with the updated order after a shipment, refund, cancel or note. You store it. */
   onChange?: (change: StoreOrderChange) => void;
   onBack?: () => void;
@@ -130,7 +132,7 @@ function QtyField({ label, value, max, onChange, invalid }: { label: string; val
 export function StoreOrderDetail({
   order,
   refunds = [],
-  currency,
+  currency: currencyProp,
   onChange,
   onBack,
   onPrint,
@@ -141,6 +143,7 @@ export function StoreOrderDetail({
   labels,
   className,
 }: StoreOrderDetailProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStoreAdminStrings(labels);
   const [dialog, setDialog] = useState<"fulfil" | "refund" | "cancel" | null>(null);
   const summary = paymentSummary(order, refunds);

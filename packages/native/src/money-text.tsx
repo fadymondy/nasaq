@@ -3,9 +3,9 @@ import { useNasaq } from "./provider";
 import { Text, type TextProps, type TextTone } from "./text";
 
 export interface MoneyTextProps extends Omit<TextProps, "children" | "tone"> {
-  /** Integer minor units (agorot, cents). Money is never a float. */
+  /** Integer minor units (cents, halalas). Money is never a float. */
   cents: number;
-  /** ISO 4217 code. Default ILS. */
+  /** ISO 4217 code. Default USD, or SAR in Arabic. */
   currency?: string;
   /** Colour by sign: positive success, negative danger, zero muted. Or a fixed tone. Default none (body colour). */
   tone?: "sign" | TextTone;

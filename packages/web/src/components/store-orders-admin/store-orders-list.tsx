@@ -25,6 +25,7 @@ import { useStoreAdminStrings, type StoreAdminLabels } from "./admin-strings";
 import { StoreMoney } from "./money";
 import { outstandingPicks, planFulfilment } from "./order-math";
 import { type OrderFilters, type OrderView, activeView, filterOrders, orderFulfilment, ordersToCsv, removeView, upsertView, viewCounts } from "./orders-list-logic";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export type StoreOrderDocumentKind = "invoice" | "packing-slip";
 
@@ -58,7 +59,8 @@ function download(name: string, text: string) {
 export interface StoreOrdersListProps {
   orders: readonly CommerceOrder[];
   /** ISO 4217 code of the store's currency. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Saved views added by the team. The built-in ones (All, To fulfil, Unpaid, Delivered, Refunds) are always there. */
   views?: readonly OrderView[];
   onViewsChange?: (views: OrderView[]) => void;
@@ -82,7 +84,7 @@ export interface StoreOrdersListProps {
  */
 export function StoreOrdersList({
   orders,
-  currency,
+  currency: currencyProp,
   views: customViews = [],
   onViewsChange,
   onOpenOrder,
@@ -96,6 +98,7 @@ export function StoreOrdersList({
   labels,
   className,
 }: StoreOrdersListProps) {
+  const currency = useCurrency(currencyProp);
   const { t, ar } = useStoreAdminStrings(labels);
   const [filters, setFilters] = useState<OrderFilters>({});
   const [query, setQuery] = useState("");

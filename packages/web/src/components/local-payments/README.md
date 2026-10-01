@@ -37,7 +37,7 @@ import { LocalPayments, PaymentVerificationQueue, PaymentVerificationStatus } fr
 ```tsx
 <LocalPayments
   amount={1_250_000}
-  currency="EGP"
+  currency="USD"
   methods={[{ id: "instapay", name: "InstaPay", kind: "instant-transfer", details: [{ label: "Payment address", value: "shop@instapay" }] }]}
   submission={submission}
   onSubmit={async (input) => api.submitReceipt(input)}
@@ -77,7 +77,7 @@ Pure helpers: `paymentFee`, `paymentTotal`, `paymentLimit`, `normalizeReference`
 ### Rejected receipt
 
 ```tsx
-<LocalPayments amount={5000} currency="EGP" methods={methods} onSubmit={send}
+<LocalPayments amount={5000} currency="USD" methods={methods} onSubmit={send}
   submission={{ methodId: "instapay", reference: "IP-1", status: "rejected", rejectionReason: "Amount differs." }} />
 ```
 

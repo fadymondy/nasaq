@@ -30,6 +30,7 @@ import {
 } from "./discount-logic";
 import { DiscountSimulator, type SimCollection } from "./discount-simulator";
 import { Money, type SettingsResult, type StoreSettingsLabels, bpsToPercent, percentToBps, uid, useAction, useSettingsStrings } from "./store-settings-shared";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const KINDS: DiscountKind[] = ["percentage", "fixed", "bxgy", "free-shipping"];
 const CLASSES: DiscountClass[] = ["product", "order", "shipping"];
@@ -44,7 +45,8 @@ const hasScope = (s?: DiscountScope) => (s?.productIds?.length ?? 0) > 0 || (s?.
 export interface DiscountsManagerProps extends Omit<ComponentProps<"section">, "children"> {
   discounts: readonly Discount[];
   /** ISO 4217 code of the store. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** For scope pickers and the simulator. */
   products?: readonly CommerceProduct[];
   collections?: readonly SimCollection[];
@@ -71,7 +73,8 @@ export interface DiscountsManagerProps extends Omit<ComponentProps<"section">, "
  * simulator runs the real evaluator so the merchant sees what a customer would get. Money is integer minor units and
  * percentages are basis points.
  */
-export function DiscountsManager({ discounts, currency, products = [], collections = [], segments = [], usage = {}, now, onSave, onDelete, simulator, loading = false, error, onRetry, labels, className, ...props }: DiscountsManagerProps) {
+export function DiscountsManager({ discounts, currency: currencyProp, products = [], collections = [], segments = [], usage = {}, now, onSave, onDelete, simulator, loading = false, error, onRetry, labels, className, ...props }: DiscountsManagerProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useSettingsStrings(labels);
   const today = useMemo(() => now ?? new Date(), [now]);
   const [editing, setEditing] = useState<Discount | null>(null);

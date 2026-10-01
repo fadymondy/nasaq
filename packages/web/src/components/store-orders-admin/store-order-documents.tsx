@@ -12,6 +12,7 @@ import { useStoreAdminStrings, type StoreAdminLabels } from "./admin-strings";
 import { StoreMoney } from "./money";
 import { lineFulfilled, lineOutstanding, lineRefunded, paymentSummary, type RefundRecord } from "./order-math";
 import type { StoreOrderDocumentKind } from "./store-orders-list";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface StoreDocumentSeller {
   name: string;
@@ -66,7 +67,8 @@ function Address({ title, address }: { title: string; address?: CommerceAddress 
 export interface StoreOrderDocumentProps {
   kind: StoreOrderDocumentKind;
   order: CommerceOrder;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   seller: StoreDocumentSeller;
   refunds?: readonly RefundRecord[];
   /** Printed under the totals, for example return terms. */
@@ -79,7 +81,8 @@ export interface StoreOrderDocumentProps {
  * One printable sheet: an invoice (prices, totals, refunds, tax number) or a packing slip (what to put in the box, no
  * prices). The order number is also a barcode so it can be scanned at the packing bench.
  */
-export function StoreOrderDocument({ kind, order, currency, seller, refunds = [], footer, labels, className }: StoreOrderDocumentProps) {
+export function StoreOrderDocument({ kind, order, currency: currencyProp, seller, refunds = [], footer, labels, className }: StoreOrderDocumentProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStoreAdminStrings(labels);
   const invoice = kind === "invoice";
   const summary = paymentSummary(order, refunds);
@@ -222,7 +225,8 @@ export function StoreOrderDocument({ kind, order, currency, seller, refunds = []
 export interface StoreOrderPrintViewProps {
   orders: readonly CommerceOrder[];
   kind?: StoreOrderDocumentKind;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   seller: StoreDocumentSeller;
   refunds?: (order: CommerceOrder) => readonly RefundRecord[];
   footer?: string;
@@ -235,7 +239,8 @@ export interface StoreOrderPrintViewProps {
  * A preview of one or many documents with a Print button. The print CSS hides this toolbar and everything else on the
  * page, and starts each order on its own page.
  */
-export function StoreOrderPrintView({ orders, kind: initial = "invoice", currency, seller, refunds, footer, onClose, labels, className }: StoreOrderPrintViewProps) {
+export function StoreOrderPrintView({ orders, kind: initial = "invoice", currency: currencyProp, seller, refunds, footer, onClose, labels, className }: StoreOrderPrintViewProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStoreAdminStrings(labels);
   const [kind, setKind] = useState<StoreOrderDocumentKind>(initial);
   return (

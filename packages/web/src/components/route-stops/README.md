@@ -51,7 +51,7 @@ RouteStops  data-slot="route-stops"
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `stops` | `RouteStop[]` | required | `id`, `kind` (`pickup`/`dropoff`), `name`, `nameAr`, `address`, `addressAr`, `status` (`pending`/`done`/`failed`), `orderRef`, `cashMinor`, `eta`, `note`, `noteAr`. |
-| `currency` | `string` | `"ILS"` | ISO currency. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO currency. |
 | `onSelectStop` | `(stop) => void` | none | Makes stops clickable. |
 | `renderActions` | `(stop, { current }) => ReactNode` | none | Per-stop actions. |
 | `actionsForAll` | `boolean` | `false` | Show actions on every stop, not just the current one. |

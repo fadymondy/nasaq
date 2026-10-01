@@ -3,7 +3,7 @@
 import { Check, Clock, Lock, ShieldCheck, Sparkles, X } from "lucide-react";
 import { type ComponentProps, type ReactElement, type ReactNode, useEffect, useState } from "react";
 import { cn } from "../../lib/cn";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { useCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { useSidebarCollapsed } from "../app-shell";
 import { Badge } from "../badge";
 import { Button } from "../button";
@@ -167,7 +167,7 @@ export function UpgradeDialog({
   plans,
   defaultPlanId,
   currentPlanId,
-  currency = "USD",
+  currency: currencyProp,
   defaultPeriod = "year",
   offer,
   note,
@@ -175,6 +175,7 @@ export function UpgradeDialog({
   cta,
   labels,
 }: UpgradeDialogProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStrings(labels);
   const choices = plans?.filter((p) => p.id !== currentPlanId) ?? [];
   const [planId, setPlanId] = useState<string | undefined>(defaultPlanId ?? (choices.find((p) => p.highlighted) ?? choices[0])?.id);

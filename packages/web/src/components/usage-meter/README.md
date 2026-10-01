@@ -73,7 +73,7 @@ UsageSummary        data-slot="usage-summary"
 | `limit` | `number \| null` | required | The limit; `null` is unlimited (no bar, an Unlimited badge). |
 | `kind` | `"count" \| "money" \| "hours"` | `"count"` | How amounts are formatted. |
 | `unit` | `string` | none | Noun after a count ("seats", "GB"). |
-| `currency` | `string` | `"USD"` | ISO 4217 code for `money`. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code for `money`. |
 | `thresholds` | `{ warnAt?: number; dangerAt?: number }` | 0.75 and 0.9 | Fractions of the limit for warning and danger. |
 | `marker` | `number` | none | Fraction of the period passed; draws a tick on the bar. |
 | `hint` | `ReactNode` | remaining amount | End-of-row text such as a projection. |
@@ -91,7 +91,7 @@ UsageSummary        data-slot="usage-summary"
 | `planName` | `ReactNode` | required | Shown in the badge. |
 | `period` | `ReactNode` | "Current period" | Localised period text. |
 | `items` | `UsageItem[]` | required | `{ id, label, used, limit, kind?, unit?, overageRate?, hint? }`. |
-| `currency` | `string` | `"USD"` | For the estimate and money items. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | For the estimate and money items. |
 | `onUpgrade` | `() => void` | none | Shows Upgrade plan when any item is near or over its limit. |
 | `loading` | `boolean` | `false` | Skeleton layout. |
 

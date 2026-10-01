@@ -3,7 +3,7 @@ import { type StyleProp, View, type ViewStyle } from "react-native";
 import { Button } from "./button";
 import { Card } from "./card";
 import { Input } from "./input";
-import { cashBreakdown, formatAmountInput, parseAmountMinor } from "./logic";
+import { cashBreakdown, deliveryCurrency, formatAmountInput, parseAmountMinor } from "./logic";
 import { MoneyText } from "./money-text";
 import { useNasaq } from "./provider";
 import { Text } from "./text";
@@ -46,8 +46,9 @@ const AR = { due: "المبلغ المستحق", received: "المبلغ الم�
  * Cash on delivery: the amount due, how it adds up, a field for what was handed over, and the change or the
  * shortfall. The maths is the web CashCollect's `cashBreakdown`, so both surfaces agree to the minor unit.
  */
-export function CashCollect({ amountDue, breakdown, value, onChange, onConfirm, currency = "ILS", loading, allowShort = false, labels, style }: CashCollectProps) {
+export function CashCollect({ amountDue, breakdown, value, onChange, onConfirm, currency: currencyProp, loading, allowShort = false, labels, style }: CashCollectProps) {
   const nq = useNasaq();
+  const currency = currencyProp ?? deliveryCurrency(nq.locale);
   const t = { ...(nq.script === "arabic" ? AR : EN), ...labels };
   const result = cashBreakdown({ orderTotal: amountDue, deliveryFee: 0, collected: value });
   const [text, setText] = useState(formatAmountInput(value, currency));

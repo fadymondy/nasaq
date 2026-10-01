@@ -3,7 +3,7 @@
 import { Check, HandCoins, MapPin, Package, Send, Store, X } from "lucide-react";
 import { type ComponentProps, type ReactNode, useEffect, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
-import { DELIVERY_DEFAULT_CURRENCY, deliveryDistance, deliveryDuration, deliveryMoney, offerFraction, offerSecondsLeft, offerTone } from "../../lib/delivery";
+import { deliveryCurrency, deliveryDistance, deliveryDuration, deliveryMoney, offerFraction, offerSecondsLeft, offerTone } from "../../lib/delivery";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Button } from "../button";
 import { TimerRing, timerToneText } from "../countdown";
@@ -109,7 +109,7 @@ export function DispatchOffer({
   dropoff,
   feeMinor,
   cashToCollectMinor,
-  currency = DELIVERY_DEFAULT_CURRENCY,
+  currency: currencyProp,
   distanceMeters,
   etaSeconds,
   orderCount,
@@ -130,6 +130,7 @@ export function DispatchOffer({
   const ambient = useOptionalNasaq()?.locale ?? "en";
   const locale = localeProp ?? ambient;
   const ar = locale.startsWith("ar");
+  const currency = currencyProp ?? deliveryCurrency(locale);
   const t = { ...STRINGS[ar ? "ar" : "en"], ...labels };
   const [tick, setTick] = useState(() => now());
   const expiredFired = useRef(false);

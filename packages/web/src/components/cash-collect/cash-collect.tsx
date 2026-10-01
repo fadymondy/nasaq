@@ -3,7 +3,7 @@
 import { Banknote, Check, CircleAlert, Undo2 } from "lucide-react";
 import { type ComponentProps, useId, useState } from "react";
 import { cn } from "../../lib/cn";
-import { DELIVERY_DEFAULT_CURRENCY, cashBreakdown, deliveryMoney, deliveryMinorFactor } from "../../lib/delivery";
+import { deliveryCurrency, cashBreakdown, deliveryMoney, deliveryMinorFactor } from "../../lib/delivery";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Button } from "../button";
 import { CurrencyInput } from "../currency-input";
@@ -45,7 +45,7 @@ export type CashCollectLabels = Partial<(typeof STRINGS)["en"]>;
 export { cashBreakdown };
 
 export interface CashCollectProps extends Omit<ComponentProps<"section">, "children" | "onChange"> {
-  /** Order total in minor units (cents, agorot). */
+  /** Order total in minor units (cents, halalas). */
   orderTotalMinor: number;
   /** Delivery fee in minor units. Cash on delivery collects total plus fee. */
   deliveryFeeMinor: number;
@@ -87,7 +87,7 @@ export function CashCollect({
   orderTotalMinor,
   deliveryFeeMinor,
   prepaidMinor = 0,
-  currency = DELIVERY_DEFAULT_CURRENCY,
+  currency: currencyProp,
   collectedMinor: collectedProp,
   defaultCollectedMinor = null,
   onCollectedChange,
@@ -103,6 +103,7 @@ export function CashCollect({
   const ambient = useOptionalNasaq()?.locale ?? "en";
   const locale = localeProp ?? ambient;
   const ar = locale.startsWith("ar");
+  const currency = currencyProp ?? deliveryCurrency(locale);
   const t = { ...STRINGS[ar ? "ar" : "en"], ...labels };
   const uid = useId();
   const [inner, setInner] = useState<number | null>(defaultCollectedMinor);

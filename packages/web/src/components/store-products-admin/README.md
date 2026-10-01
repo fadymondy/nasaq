@@ -38,7 +38,7 @@ import { ProductAdminList, ProductEditor, CollectionsManager, productToDraft } f
 ```tsx
 <ProductAdminList
   products={products}
-  currency="EGP"
+  currency="USD"
   onOpen={(p) => router.push(`/products/${p.id}`)}
   onCreate={() => router.push("/products/new")}
   onBulkEdit={async (ids, edit) => api.bulkEdit(ids, edit)}
@@ -46,7 +46,7 @@ import { ProductAdminList, ProductEditor, CollectionsManager, productToDraft } f
 
 <ProductEditor
   initial={productToDraft(product, { cost: 4000 })}
-  currency="EGP"
+  currency="USD"
   siteUrl="https://shop.example"
   onSave={async (draft) => api.saveProduct(draft)}
 />
@@ -70,7 +70,7 @@ CollectionsManager [data-slot=collections-manager]  cards + editor dialog with R
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `products` | `readonly CommerceProduct[]` | required | The catalogue. |
-| `currency` | `string` | required | ISO 4217 code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. |
 | `onOpen` | `(product) => void` | none | Row click, Enter, or Edit in the row menu. |
 | `onCreate` | `() => void` | none | Shows "New product". |
 | `onBulkEdit` | `(ids, edit: ProductBulkEdit) => Promise<ProductAdminResult>` | none | Without it the bulk button is hidden. |
@@ -85,7 +85,7 @@ CollectionsManager [data-slot=collections-manager]  cards + editor dialog with R
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `initial` | `ProductDraft` | empty draft | Build with `productToDraft(product, { cost, visibility, seoTitle, seoDescription })`. |
-| `currency` | `string` | required | ISO 4217 code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. |
 | `siteUrl` | `string` | `https://store.example` | Origin for the search preview URL. |
 | `onSave` | `(draft) => Promise<ProductAdminResult>` | required | Resolve `{ error }` to keep the edits. |
 | `onCancel` | `() => void` | none | Called when Discard is pressed with nothing changed. |

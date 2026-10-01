@@ -5,6 +5,7 @@
 export {
   cashBreakdown,
   DELIVERY_DEFAULT_CURRENCY,
+  deliveryCurrency,
   deliveryDistance,
   deliveryDuration,
   deliveryMinorFactor,
@@ -17,7 +18,7 @@ export {
 } from "../../web/src/lib/delivery";
 export type { CashBreakdown, CashState, StopKind, StopStatus } from "../../web/src/lib/delivery";
 
-import { deliveryMinorFactor } from "../../web/src/lib/delivery";
+import { DELIVERY_DEFAULT_CURRENCY, deliveryMinorFactor } from "../../web/src/lib/delivery";
 
 export type Tone = "neutral" | "success" | "warning" | "danger" | "info";
 
@@ -54,7 +55,7 @@ export function sanitizePin(text: string, length: number): string {
  * Parses what a courier types into the cash field ("12", "12.5", "12,50", Arabic digits) to minor units.
  * Returns null for empty or unreadable text. Rounds to the currency's minor unit.
  */
-export function parseAmountMinor(text: string, currency = "ILS"): number | null {
+export function parseAmountMinor(text: string, currency = DELIVERY_DEFAULT_CURRENCY): number | null {
   const clean = toLatinDigits(text).replace(/[٫,]/g, ".").replace(/[^\d.]/g, "");
   if (!clean) return null;
   const [whole = "", ...rest] = clean.split(".");
@@ -64,7 +65,7 @@ export function parseAmountMinor(text: string, currency = "ILS"): number | null 
 }
 
 /** Minor units as the plain editable text for the cash field ("12.5"), without symbol or grouping. */
-export function formatAmountInput(minor: number | null, currency = "ILS"): string {
+export function formatAmountInput(minor: number | null, currency = DELIVERY_DEFAULT_CURRENCY): string {
   if (minor == null) return "";
   const factor = deliveryMinorFactor(currency);
   const digits = Math.round(Math.log10(factor));

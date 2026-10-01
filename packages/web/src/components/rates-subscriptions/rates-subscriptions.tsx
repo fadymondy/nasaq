@@ -21,6 +21,7 @@ import { EmptyState, Skeleton } from "../states";
 import { Status, type StatusTone } from "../status";
 import { Switch } from "../switch";
 import { type CycleUnit, checkRate, divRound, marginBps, cycleMonthlyEquivalent, nextOccurrences, type RateProblem, rateAt, rateSegments, shiftDay, sortRates } from "./rates-logic";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 /* ------------------------------------------------------------------ strings */
 
@@ -211,7 +212,8 @@ export interface RateScheduleProps extends Omit<ComponentProps<typeof Card>, "ch
   /** Which schedule this is, shown as the heading. Default "Bill rate". */
   title?: string;
   rates: readonly Rate[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Day key treated as today. Default the real today. */
   today?: string;
   /** A second schedule, such as cost rates: the margin over it today is shown. */
@@ -228,7 +230,8 @@ export interface RateScheduleProps extends Omit<ComponentProps<typeof Card>, "ch
  * it changed, and an Add rate dialog. A new rate applies from its start date and never reprices earlier work. Rows have
  * remove in their context menu (context-click, long-press or the Menu key).
  */
-export function RateSchedule({ title, rates, currency, today = todayKey(), marginAgainst, onAdd, onRemove, loading = false, labels, className, ...props }: RateScheduleProps) {
+export function RateSchedule({ title, rates, currency: currencyProp, today = todayKey(), marginAgainst, onAdd, onRemove, loading = false, labels, className, ...props }: RateScheduleProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useStrings(labels);
   const titleId = useId();
   const [adding, setAdding] = useState(false);
@@ -473,7 +476,8 @@ export function subscriptionMonthly(s: Pick<Subscription, "schedule" | "amount" 
 
 export interface RecurringSubscriptionsProps extends Omit<ComponentProps<"section">, "children"> {
   subscriptions: readonly Subscription[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Projects a subscription can belong to. Omit to hide the project field. */
   projects?: readonly { id: string; name: string }[];
   today?: string;
@@ -491,7 +495,8 @@ const SUB_TONE: Record<SubscriptionStatus, StatusTone> = { active: "success", pa
  * custom cron schedule, the next charge and the monthly equivalent. Pause, resume, edit and cancel are in each row's context menu
  * (context-click, long-press or the Menu key) and behind its "..." button.
  */
-export function RecurringSubscriptions({ subscriptions, currency, projects, today = todayKey(), onSave, onStatusChange, loading = false, labels, className, ...props }: RecurringSubscriptionsProps) {
+export function RecurringSubscriptions({ subscriptions, currency: currencyProp, projects, today = todayKey(), onSave, onStatusChange, loading = false, labels, className, ...props }: RecurringSubscriptionsProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n, locale } = useStrings(labels);
   const titleId = useId();
   const [editing, setEditing] = useState<Subscription | "new" | null>(null);
@@ -775,14 +780,16 @@ function SubscriptionEditor({ sub, currency, projects, today, busy, error, t, on
 
 export interface BillingOverviewProps extends Omit<ComponentProps<"section">, "children"> {
   subscriptions: readonly Subscription[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   today?: string;
   loading?: boolean;
   labels?: RatesSubscriptionsLabels;
 }
 
 /** The organisation's billing at a glance: monthly recurring total, active count, what is due in 30 days, a split by project and the upcoming charges. */
-export function BillingOverview({ subscriptions, currency, today = todayKey(), loading = false, labels, className, ...props }: BillingOverviewProps) {
+export function BillingOverview({ subscriptions, currency: currencyProp, today = todayKey(), loading = false, labels, className, ...props }: BillingOverviewProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useStrings(labels);
   const titleId = useId();
   const active = subscriptions.filter((s) => s.status === "active");

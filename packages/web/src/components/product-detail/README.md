@@ -44,7 +44,7 @@ export function Page({ product }: { product: CommerceProduct }) {
   return (
     <ProductDetail
       product={product}
-      currency="EGP"
+      currency="USD"
       onAddToCart={async (variant, quantity) => {
         await cart.add(variant.id, quantity); // return { error } to show a failure
       }}
@@ -80,7 +80,7 @@ sticky add bar                 phones only, after the main buttons scroll away
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `product` | `CommerceProduct` | required | Options, variants, images, rating. |
-| `currency` | `string` | required | ISO 4217 code. Money is integer minor units. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. Money is integer minor units. |
 | `currencyExponent?` | `number` | `2` | Digits of the minor unit. |
 | `defaultVariantId?` | `string` | first in stock | Opening variant. |
 | `blankSelection?` | `boolean` | `false` | Open with nothing picked. Add to cart then asks for a pick. |
@@ -116,7 +116,7 @@ sticky add bar                 phones only, after the main buttons scroll away
 ```tsx
 <ProductDetail
   product={product}
-  currency="EGP"
+  currency="USD"
   delivery={{ cities: [{ id: "cairo", label: "القاهرة", etaDays: [1, 2], fee: 0 }], skipWeekdays: [5, 6] }}
   onAddToCart={add}
 />
@@ -127,7 +127,7 @@ Set the provider locale to `ar`; everything, including numbers and dates, follow
 ### Reviews in the slot
 
 ```tsx
-<ProductDetail product={product} currency="EGP" onAddToCart={add} reviews={<ProductReviews reviews={reviews} />} />
+<ProductDetail product={product} currency="USD" onAddToCart={add} reviews={<ProductReviews reviews={reviews} />} />
 ```
 
 ## Accessibility

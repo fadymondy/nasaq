@@ -3,7 +3,7 @@
 import { Check, Minus } from "lucide-react";
 import { type ComponentProps, Fragment, type ReactNode, useState } from "react";
 import { cn } from "../../lib/cn";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { useCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Badge } from "../badge";
 import { Button } from "../button";
 import { PlanCard, type PlanFeature, PlanGrid } from "../plan-card";
@@ -200,7 +200,7 @@ export function planAction(plan: PricingPlan, plans: PricingPlan[], t: PricingLa
 
 export interface PricingTableProps extends Omit<ComponentProps<"div">, "onSelect"> {
   plans: PricingPlan[];
-  /** ISO 4217 code. Default "USD". */
+  /** ISO 4217 code. Default USD, or SAR in Arabic. */
   currency?: string;
   period?: BillingPeriod;
   defaultPeriod?: BillingPeriod;
@@ -222,7 +222,7 @@ export interface PricingTableProps extends Omit<ComponentProps<"div">, "onSelect
  */
 export function PricingTable({
   plans,
-  currency = "USD",
+  currency: currencyProp,
   period: periodProp,
   defaultPeriod = "month",
   onPeriodChange,
@@ -234,6 +234,7 @@ export function PricingTable({
   className,
   ...props
 }: PricingTableProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = usePricingLabels(labels);
   const [inner, setInner] = useState<BillingPeriod>(defaultPeriod);
   const period = periodProp ?? inner;
@@ -328,7 +329,8 @@ export interface PlanComparisonProps extends Omit<ComponentProps<"div">, "onSele
 }
 
 /** Every feature, plan by plan. The header with the plan names, prices and buttons stays on screen while you scroll. */
-export function PlanComparison({ plans, sections, currency = "USD", period = "month", currentPlanId, onSelect, caption, labels, className, ...props }: PlanComparisonProps) {
+export function PlanComparison({ plans, sections, currency: currencyProp, period = "month", currentPlanId, onSelect, caption, labels, className, ...props }: PlanComparisonProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = usePricingLabels(labels);
   const cell = (value: boolean | ReactNode) => {
     if (value === true) {
@@ -434,7 +436,8 @@ export interface PlanPickerProps extends Omit<ComponentProps<typeof RadioGroup>,
 }
 
 /** Plans as a compact list of radio cards, for an upgrade dialog, checkout or onboarding, where full cards do not fit. */
-export function PlanPicker({ plans, value, defaultValue, onValueChange, currency = "USD", period = "month", currentPlanId, labels, className, ...props }: PlanPickerProps) {
+export function PlanPicker({ plans, value, defaultValue, onValueChange, currency: currencyProp, period = "month", currentPlanId, labels, className, ...props }: PlanPickerProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = usePricingLabels(labels);
   return (
     <RadioGroup

@@ -53,7 +53,7 @@ export interface OrderTax {
   added: CommerceMoney;
   /** Total the customer pays. */
   total: CommerceMoney;
-  /** "Includes EGP 12.00 tax" vs "Tax EGP 12.00". */
+  /** "Includes $12.00 tax" vs "Tax $12.00". */
   inclusive: boolean;
   bps: number;
 }

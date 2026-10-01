@@ -46,6 +46,7 @@ import { fillTemplate, type ListingLabels, useListingStrings } from "./listing-s
 import { StoreCompareDialog, StoreCompareTray } from "./store-compare";
 import { StoreProductCard, storeCurrencyDigits } from "./store-product-card";
 import { StoreQuickView } from "./store-quick-view";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 /* ------------------------------------------------------------------ small helpers */
 
@@ -146,7 +147,8 @@ export interface StoreFacetSidebarProps {
   onFiltersChange: (filters: ListingFilters) => void;
   categoryTree?: readonly ListingCategoryNode[];
   /** ISO 4217 code for the price slider. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Options to offer, by option id. Default: every option in the catalogue. */
   optionIds?: readonly string[];
   labels?: ListingLabels;
@@ -157,7 +159,8 @@ export interface StoreFacetSidebarProps {
  * The filter column: category tree, price slider, brand, options (colour swatches, sizes), rating, availability and
  * on sale. Counts are disjunctive: a group counts what each value would give if picked, ignoring that group's own picks.
  */
-export function StoreFacetSidebar({ products, filters, onFiltersChange, categoryTree = [], currency, optionIds, labels, className }: StoreFacetSidebarProps) {
+export function StoreFacetSidebar({ products, filters, onFiltersChange, categoryTree = [], currency: currencyProp, optionIds, labels, className }: StoreFacetSidebarProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useListingStrings(labels);
   const fmt = useFormatNumber();
   const index = useMemo(() => listingLabelIndex(products, categoryTree), [products, categoryTree]);
@@ -332,7 +335,8 @@ export interface StoreActiveChipsProps {
   filters: ListingFilters;
   onFiltersChange: (filters: ListingFilters) => void;
   index: ListingLabelIndex;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Show the query chip. Default false (the search page shows the query in its heading). */
   includeQuery?: boolean;
   labels?: ListingLabels;
@@ -340,7 +344,8 @@ export interface StoreActiveChipsProps {
 }
 
 /** One removable chip per applied filter, and "Clear all". */
-export function StoreActiveChips({ filters, onFiltersChange, index, currency, includeQuery = false, labels, className }: StoreActiveChipsProps) {
+export function StoreActiveChips({ filters, onFiltersChange, index, currency: currencyProp, includeQuery = false, labels, className }: StoreActiveChipsProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useListingStrings(labels);
   const fmt = useFormatNumber();
   const money = useMoney(currency);
@@ -496,7 +501,8 @@ export interface StoreListingProps {
   /** The whole catalogue for this page; filtering, sorting, facets and paging happen here. */
   products: readonly CommerceProduct[];
   /** ISO 4217 code; prices are integer minor units. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   categoryTree?: readonly ListingCategoryNode[];
   /** Controlled filters. Uncontrolled starts from `defaultFilters`. */
   filters?: ListingFilters;
@@ -556,7 +562,7 @@ const GRID = {
  */
 export function StoreListing({
   products,
-  currency,
+  currency: currencyProp,
   categoryTree = [],
   filters: filtersProp,
   defaultFilters,
@@ -591,6 +597,7 @@ export function StoreListing({
   labels,
   className,
 }: StoreListingProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale } = useListingStrings(labels);
   const fmt = useFormatNumber();
   const money = useMoney(currency);

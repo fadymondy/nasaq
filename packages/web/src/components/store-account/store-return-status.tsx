@@ -11,6 +11,7 @@ import { DateTime, Num } from "../numeric";
 import { StoreMoney } from "../store-orders-admin/money";
 import { type StoreAccountLabels, useStoreAccountStrings } from "./account-strings";
 import { type ReturnRequest, type RmaStatus, rmaIsOpen, rmaSteps } from "./return-math";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const VARIANT: Record<RmaStatus, "info" | "success" | "warning" | "danger" | "neutral"> = {
   requested: "warning",
@@ -26,7 +27,8 @@ export interface StoreReturnStatusProps {
   request: ReturnRequest;
   /** The order the return belongs to, to name the items. */
   order: Pick<CommerceOrder, "lines" | "number">;
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Shows a "Cancel request" button while the request is still open and not yet sent back. */
   onCancel?: (request: ReturnRequest) => void;
   labels?: StoreAccountLabels;
@@ -34,7 +36,8 @@ export interface StoreReturnStatusProps {
 }
 
 /** One return request: its number, the items, the five-step RMA progress, the refund and, when it was refused, why. */
-export function StoreReturnStatus({ request, order, currency, onCancel, labels, className }: StoreReturnStatusProps) {
+export function StoreReturnStatus({ request, order, currency: currencyProp, onCancel, labels, className }: StoreReturnStatusProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStoreAccountStrings(labels);
   const [confirm, setConfirm] = useState(false);
   const steps = rmaSteps(request.status, request.stoppedAfter);

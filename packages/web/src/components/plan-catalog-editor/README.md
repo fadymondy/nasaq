@@ -70,7 +70,7 @@ PlanCatalogEditor         data-slot="plan-catalog-editor"
 | `onPreview` | `(draft) => Promise<CatalogPreviewResult \| void>` | local diff | Your server-side dry run. Return `changes` to replace the local diff, `warnings` to show, or `error`. |
 | `onApply` | `(draft) => Promise<void \| { error?: string }>` | none | Publishes. Return `{ error }` or throw to keep the preview open. Without it the preview is read-only. |
 | `onChange` | `(draft) => void` | none | Called on every edit. |
-| `currency` | `string` | `"USD"` | ISO 4217 code for prices. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code for prices. |
 | `planLabels` | `AdminTenantsLabels` | en / ar | Labels for the plan cards and plan dialog. |
 | `loading` | `boolean` | `false` | Skeleton for the tabs. |
 | `labels` | `PlanCatalogEditorLabels` | en / ar | Override any string. |

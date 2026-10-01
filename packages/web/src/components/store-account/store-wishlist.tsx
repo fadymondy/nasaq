@@ -11,11 +11,13 @@ import { EmptyState, ErrorState, Skeleton } from "../states";
 import { StoreMoney } from "../store-orders-admin/money";
 import { type WishlistEntry, type WishlistItem, backInStock, wishlistEntries } from "./account-logic";
 import { type StoreAccountLabels, useStoreAccountStrings } from "./account-strings";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface StoreWishlistProps {
   items: readonly WishlistItem[];
   products: readonly CommerceProduct[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   onMoveToCart?: (entry: WishlistEntry) => void;
   onToggleNotify?: (item: WishlistItem) => void;
   onRemove?: (item: WishlistItem) => void;
@@ -28,7 +30,8 @@ export interface StoreWishlistProps {
 }
 
 /** Saved products with live availability. Move an item to the cart, ask to be told when a sold-out item returns. */
-export function StoreWishlist({ items, products, currency, onMoveToCart, onToggleNotify, onRemove, onOpenProduct, loading, error, onRetry, labels, className }: StoreWishlistProps) {
+export function StoreWishlist({ items, products, currency: currencyProp, onMoveToCart, onToggleNotify, onRemove, onOpenProduct, loading, error, onRetry, labels, className }: StoreWishlistProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useStoreAccountStrings(labels);
   const entries = useMemo(() => wishlistEntries(items, products), [items, products]);
   const returned = useMemo(() => backInStock(items, products), [items, products]);

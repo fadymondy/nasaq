@@ -15,6 +15,7 @@ import { Status, type StatusTone } from "../status";
 import { Switch } from "../switch";
 import { type BulkPriceMode, type BulkStockMode, bulkEditProducts, decimalToMinor, type ProductBulkEdit, stockSummary, variantCount } from "./product-admin-logic";
 import { failMessage, Money, type ProductAdminResult, type StoreProductsAdminLabels, Thumb, useProductAdminStrings } from "./product-admin-shared";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 type ProductStatus = NonNullable<CommerceProduct["status"]>;
 
@@ -44,7 +45,8 @@ function PriceRange({ product, currency }: { product: CommerceProduct; currency:
 export interface ProductAdminListProps extends Omit<ComponentProps<"section">, "children"> {
   products: readonly CommerceProduct[];
   /** ISO 4217 code of the store. */
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   /** Opens the editor: a row click, Enter on a row, or "Edit" in its menu. */
   onOpen?: (product: CommerceProduct) => void;
   onCreate?: () => void;
@@ -69,7 +71,8 @@ export interface ProductAdminListProps extends Omit<ComponentProps<"section">, "
  * status and stock filters, sorting, and bulk edit of price, stock and status for the selected rows.
  * Row actions (edit, activate, archive, delete) open on context-click too. Money is integer minor units.
  */
-export function ProductAdminList({ products, currency, onOpen, onCreate, onBulkEdit, onStatusChange, onDelete, lowStockAt = 5, loading = false, error, onRetry, labels, className, ...props }: ProductAdminListProps) {
+export function ProductAdminList({ products, currency: currencyProp, onOpen, onCreate, onBulkEdit, onStatusChange, onDelete, lowStockAt = 5, loading = false, error, onRetry, labels, className, ...props }: ProductAdminListProps) {
+  const currency = useCurrency(currencyProp);
   const { t, n } = useProductAdminStrings(labels);
   const titleId = useId();
   const [bulk, setBulk] = useState(false);

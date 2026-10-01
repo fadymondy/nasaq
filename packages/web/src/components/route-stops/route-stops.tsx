@@ -3,7 +3,7 @@
 import { Ban, Check, HandCoins, MapPin, Navigation, SkipForward, Store } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "../../lib/cn";
-import { DELIVERY_DEFAULT_CURRENCY, deliveryMoney, routeSummary, type DeliveryMoney, type StopKind, type StopStatus } from "../../lib/delivery";
+import { deliveryCurrency, deliveryMoney, routeSummary, type DeliveryMoney, type StopKind, type StopStatus } from "../../lib/delivery";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Badge } from "../badge";
 import { formatDate } from "../numeric";
@@ -86,7 +86,7 @@ const pick = (en: string | undefined, ar: string | undefined, isAr: boolean) => 
  */
 export function RouteStops({
   stops,
-  currency = DELIVERY_DEFAULT_CURRENCY,
+  currency: currencyProp,
   onSelectStop,
   renderActions,
   actionsForAll = false,
@@ -99,6 +99,7 @@ export function RouteStops({
   const ambient = useOptionalNasaq()?.locale ?? "en";
   const locale = localeProp ?? ambient;
   const ar = locale.startsWith("ar");
+  const currency = currencyProp ?? deliveryCurrency(locale);
   const t = { ...STRINGS[ar ? "ar" : "en"], ...labels };
   const summary = routeSummary(stops);
   const statusWord: Record<StopStatus, string> = { done: t.done, pending: t.pending, failed: t.failed, skipped: t.skipped };

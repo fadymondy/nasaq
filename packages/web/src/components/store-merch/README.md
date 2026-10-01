@@ -38,8 +38,8 @@ import { StoreProductCarousel, StoreFlashDeals } from "@fadymondy/nasaq/web";
 ```tsx
 <StoreHeroBanner items={hero} />
 <StoreCategoryTiles items={tiles} />
-<StoreFlashDeals deals={deals} currency="EGP" onAddToCart={add} />
-<StoreProductCarousel title="Recently viewed" products={merchViewedProducts(all, viewedIds, current.id)} currency="EGP" onAddToCart={add} />
+<StoreFlashDeals deals={deals} currency="USD" onAddToCart={add} />
+<StoreProductCarousel title="Recently viewed" products={merchViewedProducts(all, viewedIds, current.id)} currency="USD" onAddToCart={add} />
 ```
 
 ## API

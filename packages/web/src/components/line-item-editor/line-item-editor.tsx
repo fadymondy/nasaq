@@ -23,6 +23,7 @@ import {
   quantityMilli,
   quantityText,
 } from "./line-item-math";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export { LineItemActionsMenu, LineItemDecimalField, LineItemMoney, type LineItemActionsMenuProps, type LineItemDecimalFieldProps, type LineItemMoneyProps } from "./line-item-fields";
 export {
@@ -176,7 +177,7 @@ export interface LineItemEditorProps extends Omit<ComponentProps<"div">, "defaul
   onValueChange?: (lines: LineItemEditorLine[]) => void;
   /** Products the picker offers. Picking one fills the name, price and tax rate. */
   products?: readonly LineItemEditorProduct[];
-  /** ISO 4217 code. Sets the decimals of the price fields. Default "USD". */
+  /** ISO 4217 code. Sets the decimals of the price fields. Default USD, or SAR in Arabic. */
   currency?: string;
   /** "exclusive": prices are before tax. "inclusive": prices already contain it. Default "exclusive". */
   taxMode?: LineTaxMode;
@@ -339,7 +340,7 @@ export function LineItemEditor({
   defaultValue,
   onValueChange,
   products = [],
-  currency = "USD",
+  currency: currencyProp,
   taxMode = "exclusive",
   taxRounding = "line",
   defaultTaxBps = 0,
@@ -357,6 +358,7 @@ export function LineItemEditor({
   className,
   ...rest
 }: LineItemEditorProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useLineItemEditorStrings(labels);
   const [inner, setInner] = useState<LineItemEditorLine[]>(defaultValue ?? []);
   const lines = valueProp ?? inner;

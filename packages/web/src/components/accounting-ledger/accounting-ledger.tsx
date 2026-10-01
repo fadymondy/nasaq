@@ -3,7 +3,7 @@
 import { Archive, ChevronDown, Copy, FolderPlus, ListTree, Plus, Scale, Trash2 } from "lucide-react";
 import { type ComponentProps, useId, useMemo, useState } from "react";
 import { cn } from "../../lib/cn";
-import { useOptionalNasaq } from "../../provider/nasaq-provider";
+import { useCurrency, useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Badge } from "../badge";
 import { Button } from "../button";
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList, comboboxFilter } from "../combobox";
@@ -240,7 +240,8 @@ export interface ChartOfAccountsProps extends Omit<ComponentProps<"div">, "child
 }
 
 /** The account tree: code, name, type and balance per row, groups that collapse, and a row menu that mirrors the context menu. */
-export function ChartOfAccounts({ accounts, entries = [], currency = "USD", selectedId, onSelectAccount, onAddChild, onArchiveChange, labels, className, ...props }: ChartOfAccountsProps) {
+export function ChartOfAccounts({ accounts, entries = [], currency: currencyProp, selectedId, onSelectAccount, onAddChild, onArchiveChange, labels, className, ...props }: ChartOfAccountsProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useAccountingLedgerStrings(labels);
   const [collapsed, setCollapsed] = useState<ReadonlySet<string>>(new Set());
   const tree = useMemo(() => accountingTree(accounts), [accounts]);
@@ -407,7 +408,8 @@ const ENTRY_GRID = "@2xl:grid-cols-[minmax(13rem,1.5fr)_minmax(8rem,1fr)_9rem_9r
  * A balanced journal entry. Debits and credits are integer minor units; the running difference is always exact, and
  * Post stays off until the entry balances. Typing on one side of a line clears the other.
  */
-export function JournalEntryEditor({ accounts, value, defaultValue, onValueChange, currency = "USD", number, onPost, onSaveDraft, readOnly = false, labels, className, ...props }: JournalEntryEditorProps) {
+export function JournalEntryEditor({ accounts, value, defaultValue, onValueChange, currency: currencyProp, number, onPost, onSaveDraft, readOnly = false, labels, className, ...props }: JournalEntryEditorProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useAccountingLedgerStrings(labels);
   const id = useId();
   const [inner, setInner] = useState<JournalEntryEditorValue>(() => defaultValue ?? journalEntryDraft());
@@ -584,7 +586,8 @@ export interface TrialBalanceProps extends Omit<ComponentProps<"div">, "children
 }
 
 /** Net debit and credit per account with the two totals, and a plain statement of whether they agree. */
-export function TrialBalance({ accounts, entries, currency = "USD", asOf, includeZero, onSelectAccount, labels, className, ...props }: TrialBalanceProps) {
+export function TrialBalance({ accounts, entries, currency: currencyProp, asOf, includeZero, onSelectAccount, labels, className, ...props }: TrialBalanceProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale } = useAccountingLedgerStrings(labels);
   const date = useDate(locale);
   const tb = useMemo(() => accountingTrialBalance(accounts, entries, { asOf, includeZero }), [accounts, entries, asOf, includeZero]);
@@ -658,7 +661,8 @@ export interface AccountStatementProps extends Omit<ComponentProps<"div">, "chil
 }
 
 /** The movements of one account with a running balance on its normal side. */
-export function AccountStatement({ account, entries, currency = "USD", opening = 0, labels, className, ...props }: AccountStatementProps) {
+export function AccountStatement({ account, entries, currency: currencyProp, opening = 0, labels, className, ...props }: AccountStatementProps) {
+  const currency = useCurrency(currencyProp);
   const { t, locale } = useAccountingLedgerStrings(labels);
   const date = useDate(locale);
   const rows = useMemo(() => accountingStatement(account, entries, { opening }), [account, entries, opening]);

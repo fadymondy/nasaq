@@ -53,7 +53,7 @@ import { PosRegister } from "@fadymondy/nasaq/web";
 | --- | --- | --- | --- |
 | `products` | `PosProduct[]` | required | Prices in minor units. `stock` disables a tile when the basket holds it all. |
 | `categories` | `PosCategory[]` | none | Filter chips. |
-| `currency` | `string` | `"USD"` | ISO 4217 code. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. |
 | `taxMode` | `"exclusive" \| "inclusive"` | `"exclusive"` | Whether prices contain tax. |
 | `defaultTaxBps` | `number` | `0` | Rate for products without their own. |
 | `session` / `defaultSession` | `PosSession \| null` | `null` | The open drawer session. `null` shows the closed register. |

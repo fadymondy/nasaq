@@ -15,12 +15,14 @@ import { StoreMoney } from "../store-orders-admin/money";
 import { Toggle, ToggleGroup } from "../toggle-group";
 import { type OrderGroup, type ReorderPlan, ORDER_GROUPS, filterCustomerOrders, newestOrdersFirst, orderGroupCounts, reorderPlan } from "./account-logic";
 import { type StoreAccountLabels, type StoreAccountStrings, useStoreAccountStrings } from "./account-strings";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface StoreOrderHistoryProps {
   orders: readonly CommerceOrder[];
   /** Current catalogue, used to decide what "Order again" can add today. */
   products?: readonly CommerceProduct[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   trackingTemplate?: string;
   onOpenOrder?: (order: CommerceOrder) => void;
   /** Called with the lines that can go in the cart. The list shows what was added, reduced or skipped. */
@@ -34,7 +36,8 @@ export interface StoreOrderHistoryProps {
 }
 
 /** The customer's order history: filter by status group, search, open an order, track it or order it again. */
-export function StoreOrderHistory({ orders, products = [], currency, trackingTemplate, onOpenOrder, onReorder, onOpenCart, loading, error, onRetry, labels, className }: StoreOrderHistoryProps) {
+export function StoreOrderHistory({ orders, products = [], currency: currencyProp, trackingTemplate, onOpenOrder, onReorder, onOpenCart, loading, error, onRetry, labels, className }: StoreOrderHistoryProps) {
+  const currency = useCurrency(currencyProp);
   const { t, ar } = useStoreAccountStrings(labels);
   const [group, setGroup] = useState<OrderGroup>("all");
   const [query, setQuery] = useState("");

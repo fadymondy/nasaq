@@ -20,6 +20,7 @@ import {
   sanitizeMoneyText,
   symbolSide,
 } from "./currency-input-logic";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 const STRINGS = {
   en: { currency: "Currency", outOfRange: "Amount out of range" },
@@ -33,7 +34,7 @@ export interface CurrencyInputProps extends Omit<ComponentProps<"div">, "default
   defaultValue?: number | null;
   /** Called with the amount in minor units on every edit, and `null` when the field is emptied. */
   onValueChange?: (minor: number | null) => void;
-  /** ISO 4217 code. It sets the decimals (JPY 0, USD 2, KWD 3). Default "USD". */
+  /** ISO 4217 code. It sets the decimals (JPY 0, USD 2, KWD 3). Default USD, or SAR in Arabic. */
   currency?: string;
   /** Show a currency picker with these codes. Needs `onCurrencyChange`. The amount keeps its value when decimals differ. */
   currencies?: readonly string[];
@@ -77,7 +78,7 @@ export function CurrencyInput({
   value: valueProp,
   defaultValue = null,
   onValueChange,
-  currency = "USD",
+  currency: currencyProp,
   currencies,
   onCurrencyChange,
   min,
@@ -102,6 +103,7 @@ export function CurrencyInput({
   "aria-label": ariaLabel,
   ...rest
 }: CurrencyInputProps) {
+  const currency = useCurrency(currencyProp);
   const ctx = useOptionalNasaq();
   const locale = localeProp ?? ctx?.locale ?? "en";
   const t = { ...STRINGS[locale.startsWith("ar") ? "ar" : "en"], ...labels };

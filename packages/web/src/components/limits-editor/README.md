@@ -75,7 +75,7 @@ LimitsEditor            data-slot="limits-editor"  (a form)
 | `inherited` | `Record<string, number \| null>` | none | What Inherit resolves to; `null` is unlimited. |
 | `showPricing` | `boolean` | `false` | Price and overage price columns. |
 | `showKeyLimits` | `boolean` | `false` | Per-key rate limit and spend cap. |
-| `currency` | `string` | `"USD"` | ISO 4217 code for money fields. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code for money fields. |
 | `onSave` | `(rules) => Promise<void \| { error?: string }>` | none | Adds the footer. Return `{ error }` (or throw) to show a failure. |
 | `disabled` | `boolean` | `false` | Read-only form. |
 | `labels` | `LimitsEditorLabels` | en / ar | Override any string. |

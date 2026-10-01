@@ -55,7 +55,7 @@ const [lines, setLines] = useState<LineItemEditorLine[]>([]);
 | `value` / `defaultValue` | `LineItemEditorLine[]` | `[]` | The lines. |
 | `onValueChange` | `(lines) => void` | none | Called on every edit. |
 | `products` | `LineItemEditorProduct[]` | none | Picker options. Prices are minor units. |
-| `currency` | `string` | `"USD"` | ISO 4217 code. Sets the price decimals. |
+| `currency` | `string` | `"USD"` (`"SAR"` in Arabic) | ISO 4217 code. Sets the price decimals. |
 | `taxMode` | `"exclusive" \| "inclusive"` | `"exclusive"` | Whether prices contain tax. |
 | `taxRounding` | `"line" \| "invoice"` | `"line"` | Round tax per line or once per rate. |
 | `defaultTaxBps` | `number` | `0` | Rate for lines without their own (1500 is 15%). |

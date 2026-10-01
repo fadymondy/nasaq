@@ -482,7 +482,7 @@ function JourneyFrame({ locale }: { locale: StoreLocale }) {
   const { ar, screen, cart } = j;
   const now = useMemo(() => Date.now(), []);
   const [lang, setLang] = useState(locale);
-  const [currency, setCurrency] = useState("EGP");
+  const [currency, setCurrency] = useState(ar ? "SAR" : "USD");
   const top = useRef<HTMLDivElement>(null);
 
   // A new screen starts at the top, like a page load.

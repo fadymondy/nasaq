@@ -14,6 +14,7 @@ import { Switch } from "../switch";
 import { listingCompareDifferences, listingCompareRows } from "./listing-model";
 import { fillTemplate, type ListingLabels, useListingStrings } from "./listing-strings";
 import { StoreProductImage, StorePrice } from "./store-product-card";
+import { useCurrency } from "../../provider/nasaq-provider";
 
 export interface StoreCompareTrayProps {
   /** The products picked for comparison, in pick order. */
@@ -81,7 +82,8 @@ export function StoreCompareTray({ products, max = 4, onRemove, onClear, onCompa
 
 export interface StoreCompareTableProps {
   products: readonly CommerceProduct[];
-  currency: string;
+  /** Defaults to USD, or SAR in Arabic. */
+  currency?: string;
   onRemove?: (product: CommerceProduct) => void;
   onAddToCart?: (product: CommerceProduct) => void;
   /** Start with only the differing rows. Default false. */
@@ -91,7 +93,8 @@ export interface StoreCompareTableProps {
 }
 
 /** Products side by side: price, brand, category, rating, availability, each option and the description. Differing rows are marked. */
-export function StoreCompareTable({ products, currency, onRemove, onAddToCart, differencesOnly = false, labels, className }: StoreCompareTableProps) {
+export function StoreCompareTable({ products, currency: currencyProp, onRemove, onAddToCart, differencesOnly = false, labels, className }: StoreCompareTableProps) {
+  const currency = useCurrency(currencyProp);
   const { t } = useListingStrings(labels);
   const fmt = useFormatNumber();
   const [onlyDiff, setOnlyDiff] = useState(differencesOnly);

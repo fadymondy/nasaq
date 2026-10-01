@@ -48,15 +48,15 @@ function useCases(): Case[] {
       note: "After Arabic letters the digits count as Arabic numbers (UBA W2), so $ no longer binds to them and lands after the figure: 48,210$.",
     },
     {
-      value: "SAR · EGP · EUR",
+      value: "SAR · USD · EUR",
       nasaq: (
         <>
           <Num value={48210.5} format={{ style: "currency", currency: "SAR" }} /> ·{" "}
-          <Num value={1200} format={{ style: "currency", currency: "EGP" }} /> ·{" "}
+          <Num value={1200} format={{ style: "currency", currency: "USD" }} /> ·{" "}
           <Num value={980} format={{ style: "currency", currency: "EUR" }} />
         </>
       ),
-      plain: ["SAR", "EGP", "EUR"].map((c, i) => new Intl.NumberFormat("ar-u-nu-latn", { style: "currency", currency: c }).format([48210.5, 1200, 980][i]!)).join(" · "),
+      plain: ["SAR", "USD", "EUR"].map((c, i) => new Intl.NumberFormat("ar-u-nu-latn", { style: "currency", currency: c }).format([48210.5, 1200, 980][i]!)).join(" · "),
       breaks: false,
       note: "Arabic symbols (ر.س.، ج.م.) and € carry their own direction.",
     },

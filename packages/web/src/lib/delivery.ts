@@ -1,16 +1,21 @@
 /*
  * Shared pieces of the delivery kit (delivery-tracker, courier-card, dispatch-offer, route-stops, cash-collect).
  * Pure functions and types only: no React, no imports, so node tests can load it.
- * Money is integer minor units (piasters, agorot, cents) in one currency, ILS unless a caller says otherwise.
+ * Money is integer minor units (halalas, cents) in one currency: USD, or SAR in Arabic, unless a caller says otherwise.
  */
 
 export type DeliveryMoney = number;
-export const DELIVERY_DEFAULT_CURRENCY = "ILS";
+export const DELIVERY_DEFAULT_CURRENCY = "USD";
+
+/** The currency when a caller sets none: Saudi riyal in Arabic, US dollar otherwise. */
+export function deliveryCurrency(locale = "en"): string {
+  return locale.startsWith("ar") ? "SAR" : DELIVERY_DEFAULT_CURRENCY;
+}
 
 const LATIN = /[A-Za-z]/;
 const factorCache = new Map<string, number>();
 
-/** Minor units per major unit (100 for ILS and USD, 1 for JPY, 1000 for KWD). Unknown codes use 100. */
+/** Minor units per major unit (100 for USD and SAR, 1 for JPY, 1000 for KWD). Unknown codes use 100. */
 export function deliveryMinorFactor(currency: string): number {
   const code = currency.toUpperCase();
   const known = factorCache.get(code);
@@ -29,7 +34,8 @@ export function deliveryMinorFactor(currency: string): number {
  * Formats an amount in minor units for display, with Latin digits. A Latin currency code or symbol is isolated
  * (LRI...PDI) so it keeps its place beside Arabic text. Display only: never do arithmetic on the result.
  */
-export function deliveryMoney(minor: DeliveryMoney, currency: string = DELIVERY_DEFAULT_CURRENCY, locale = "en"): string {
+export function deliveryMoney(minor: DeliveryMoney, currency: string | undefined = undefined, locale = "en"): string {
+  currency ??= deliveryCurrency(locale);
   const factor = deliveryMinorFactor(currency);
   const lang = locale.startsWith("ar") ? "ar-u-nu-latn" : `${locale}-u-nu-latn`;
   let format: Intl.NumberFormat;
