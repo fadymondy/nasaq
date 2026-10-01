@@ -370,6 +370,96 @@ export const brands = {
       "dark": "#0B1429"
     },
     "accent": "#1F8A99"
+  },
+  "matjar": {
+    "brand": {
+      "light": "#0E7C66",
+      "dark": "#2FCB9F"
+    },
+    "action": {
+      "light": "#0E7C66",
+      "dark": "#2FCB9F"
+    },
+    "onAction": {
+      "light": "#FFFFFF",
+      "dark": "#0E1A3C"
+    },
+    "accent": "#C9A227"
+  },
+  "sanduq": {
+    "brand": {
+      "light": "#B7791F",
+      "dark": "#E9B44C"
+    },
+    "action": {
+      "light": "#B7791F",
+      "dark": "#E9B44C"
+    },
+    "onAction": {
+      "light": "#0E1A3C",
+      "dark": "#0E1A3C"
+    },
+    "accent": "#0E1A3C"
+  },
+  "mizan": {
+    "brand": {
+      "light": "#1E3A5F",
+      "dark": "#7FA7D9"
+    },
+    "action": {
+      "light": "#1E3A5F",
+      "dark": "#7FA7D9"
+    },
+    "onAction": {
+      "light": "#FFFFFF",
+      "dark": "#0E1A3C"
+    },
+    "accent": "#C9A227"
+  },
+  "qaima": {
+    "brand": {
+      "light": "#B5400F",
+      "dark": "#F0A062"
+    },
+    "action": {
+      "light": "#B5400F",
+      "dark": "#F0A062"
+    },
+    "onAction": {
+      "light": "#FFFFFF",
+      "dark": "#0E1A3C"
+    },
+    "accent": "#C9A227"
+  },
+  "makhzan": {
+    "brand": {
+      "light": "#8D6E3F",
+      "dark": "#D2B48C"
+    },
+    "action": {
+      "light": "#8D6E3F",
+      "dark": "#D2B48C"
+    },
+    "onAction": {
+      "light": "#FFFFFF",
+      "dark": "#0E1A3C"
+    },
+    "accent": "#C9A227"
+  },
+  "mawared": {
+    "brand": {
+      "light": "#A23B72",
+      "dark": "#E07AAE"
+    },
+    "action": {
+      "light": "#A23B72",
+      "dark": "#E07AAE"
+    },
+    "onAction": {
+      "light": "#FFFFFF",
+      "dark": "#0E1A3C"
+    },
+    "accent": "#C9A227"
   }
 } as const;
 

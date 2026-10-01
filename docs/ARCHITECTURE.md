@@ -177,7 +177,7 @@ Density never changes the type scale, and it never shrinks touch targets below 4
 
 ```ts
 export interface BrandManifest {
-  key: BrandKey;                         // "nasaq" | "fadymondy" | "mahaam" | "zekra" | "moharrik" | "seatfor" | "health-debug" | "circlexo" | "hosbah" | "orchestra" | "togo"
+  key: BrandKey;                         // "nasaq" | "fadymondy" | "mahaam" | "zekra" | "moharrik" | "seatfor" | "health-debug" | "circlexo" | "hosbah" | "orchestra" | "togo" | "matjar" | "sanduq" | "mizan" | "qaima" | "makhzan" | "mawared"
   aliases?: string[];                    // legacy keys: "managy", "cabrain", "cloudy", "claude-digital-twin", "booki", "orchestra-mcp", "togo-framework"
   name: { en: string; ar?: string };
   wordmark: { latin: string; arabic?: string };   // typeset text, never an image

@@ -90,6 +90,11 @@ const KNOWN_STATUS_COLLISIONS = new Set([
   "fadymondy:warning", // warm orange action vs amber warning
   "seatfor:warning", // orange action
   "orchestra:warning", // terracotta action
+  "sanduq:warning", // amber action
+  "qaima:warning", // burnt-orange action
+  "makhzan:warning", // tan action
+  "mizan:info", // navy action
+  "mawared:danger", // plum action
 ]);
 
 describe("brand action vs status hues", () => {

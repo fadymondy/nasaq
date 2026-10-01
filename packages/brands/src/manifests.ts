@@ -28,6 +28,12 @@ const meta: Record<BrandKey, Pick<BrandManifest, "name" | "typography" | "taglin
   circlexo: { name: { en: "CircleXO", ar: "سيركل إكس أو" }, typography: { latin: "lusail" } },
   hosbah: { name: { en: "Hosbah", ar: "حوسبة" }, typography: { latin: "inter" } },
   orchestra: { name: { en: "Orchestra", ar: "اوركيسترا" }, typography: { latin: "lusail" } },
+  matjar: { name: { en: "Matjar", ar: "متجر" }, typography: { latin: "lusail" }, tagline: { en: "E-commerce stores", ar: "المتاجر الإلكترونية" }, site: "https://matjar.circlexo.com" },
+  sanduq: { name: { en: "Sanduq", ar: "صندوق" }, typography: { latin: "lusail" }, tagline: { en: "Point of sale", ar: "نقاط البيع" }, site: "https://sanduq.circlexo.com" },
+  mizan: { name: { en: "Mizan", ar: "ميزان" }, typography: { latin: "lusail" }, tagline: { en: "Invoicing and accounting", ar: "الفواتير والمحاسبة" }, site: "https://mizan.circlexo.com" },
+  qaima: { name: { en: "Qaima", ar: "قائمة" }, typography: { latin: "lusail" }, tagline: { en: "QR e-menus", ar: "القوائم الرقمية بـ QR" }, site: "https://qaima.circlexo.com" },
+  makhzan: { name: { en: "Makhzan", ar: "مخزن" }, typography: { latin: "lusail" }, tagline: { en: "Inventory", ar: "المخزون" }, site: "https://makhzan.circlexo.com" },
+  mawared: { name: { en: "Mawared", ar: "موارد" }, typography: { latin: "lusail" }, tagline: { en: "HR and payroll", ar: "الموارد البشرية والرواتب" }, site: "https://mawared.circlexo.com" },
   togo: { name: { en: "ToGO" }, typography: { latin: "lusail" }, site: "https://to-go.dev" },
 };
 
