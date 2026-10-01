@@ -1,5 +1,11 @@
 # @fadymondy/nasaq
 
+## 0.3.1
+
+### Patch Changes
+
+- Republish with the built `dist`: the 0.3.0 tarball shipped only the CSS files, so `@fadymondy/nasaq/web` and the other entry points could not be resolved.
+
 ## 0.3.0
 
 ### Minor Changes
