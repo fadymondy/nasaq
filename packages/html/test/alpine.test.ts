@@ -1,94 +1,124 @@
-// @vitest-environment happy-dom
-import { beforeAll, describe, expect, it } from "vitest";
+// Runs the Blade examples, as rendered by Laravel (packages/php/examples/rendered), under real Alpine with the
+// Nasaq runtime: the same HTML an HTML/Alpine, Blade, Livewire or Filament page ships.
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import Alpine from "alpinejs";
+import { afterEach, beforeAll, describe, expect, it } from "vitest";
+import nasaq, { components } from "../src/alpine";
 
-// Alpine reads window at import time, so load it inside the DOM environment.
-let Alpine: typeof import("alpinejs");
+const rendered = (name: string) => readFileSync(resolve(process.cwd(), "../php/examples/rendered", `${name}.html`), "utf8");
+const tick = () => new Promise((r) => setTimeout(r, 30));
 
-const tick = () => new Promise((r) => setTimeout(r, 0));
-
-beforeAll(async () => {
-  document.body.innerHTML = `
-    <div id="money" x-data="{ price: 12.5 }">
-      <span id="usd" x-nq-money="price"></span>
-      <span id="sar" lang="ar" data-locale="ar" x-nq-money="price"></span>
-      <button id="bump" @click="price = 20">bump</button>
-    </div>
-
-    <div id="tabs" x-data="nqTabs('one')">
-      <div role="tablist" class="nq-tabs-list">
-        <button x-bind="tab('one')">One</button>
-        <button x-bind="tab('two')">Two</button>
-      </div>
-      <div x-bind="panel('one')">first</div>
-      <div x-bind="panel('two')">second</div>
-    </div>
-
-    <div id="menu" x-data="nqMenu">
-      <button id="menu-trigger" x-bind="trigger">Actions</button>
-      <div id="menu-panel" x-bind="menu"><button x-bind="item">Edit</button></div>
-    </div>
-
-    <div id="vanilla" x-data>
-      <button id="vt" x-nq:menu aria-controls="vm">More</button>
-      <div id="vm" role="menu"><button role="menuitem">Archive</button></div>
-    </div>
-
-    <div id="store" x-data><span id="theme" x-text="$nq.theme"></span><button id="dark" @click="$nq.setTheme('dark')"></button></div>
-  `;
-  Alpine = (await import("alpinejs")).default as unknown as typeof Alpine;
-  const nasaq = (await import("../src/alpine")).default;
-  (window as unknown as { Alpine: unknown }).Alpine = Alpine;
+beforeAll(() => {
   Alpine.plugin(nasaq);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window as any).Alpine = Alpine;
   Alpine.start();
-  await tick();
 });
 
-describe("alpine plugin", () => {
-  it("x-nq-money formats reactively, USD or SAR in Arabic", async () => {
-    expect(document.getElementById("usd")!.textContent).toBe("$12.50");
-    expect(document.getElementById("sar")!.textContent).toMatch(/12\.50/);
-    expect(document.getElementById("sar")!.textContent).not.toMatch(/\$/);
-    document.getElementById("bump")!.click();
-    await tick();
-    expect(document.getElementById("usd")!.textContent).toBe("$20.00");
+afterEach(() => {
+  for (const el of [...document.body.children]) {
+    Alpine.destroyTree(el as HTMLElement);
+    el.remove();
+  }
+});
+
+async function mount(name: string) {
+  const host = document.createElement("div");
+  host.innerHTML = rendered(name);
+  document.body.append(host);
+  Alpine.initTree(host);
+  await tick();
+  return host;
+}
+
+describe("alpine runtime", () => {
+  it("registers every module", () => {
+    expect(Object.keys(components)).toEqual(expect.arrayContaining(["dialog", "tabs"]));
   });
 
-  it("nqTabs wires aria and switches panels", async () => {
-    const [one, two] = document.querySelectorAll<HTMLElement>("#tabs [role=tab]");
-    expect(one!.getAttribute("aria-selected")).toBe("true");
-    const panelId = one!.getAttribute("aria-controls")!;
-    expect(panelId).toMatch(/^nq-tabs-\d+-panel-one$/);
-    two!.click();
-    await tick();
-    expect(two!.getAttribute("aria-selected")).toBe("true");
-    expect(document.getElementById(panelId)!.style.display).toBe("none");
+  it("$nq formats money as USD, or SAR in Arabic", () => {
+    const nq = Alpine.store("nq") as { money(n: number): string; setLocale(l: string): void };
+    expect(nq.money(12)).toBe("$12.00");
+    nq.setLocale("ar");
+    expect(nq.money(12)).toMatch(/12\.00/);
+    expect(nq.money(12)).toMatch(/ر\.س|SAR/);
+    nq.setLocale("en");
   });
+});
 
-  it("nqMenu toggles from its trigger", async () => {
-    const trigger = document.getElementById("menu-trigger")!;
-    expect(document.getElementById("menu-panel")!.style.display).toBe("none");
+describe("dialog (Blade example)", () => {
+  it("opens from the trigger, labels itself and closes", async () => {
+    const host = await mount("dialog");
+    const popup = () => document.querySelector<HTMLElement>('[data-slot="dialog-content"]')!;
+    expect(popup().style.display).toBe("none");
+
+    const trigger = host.querySelector<HTMLButtonElement>('[data-slot="dialog-trigger"]')!;
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
     trigger.click();
     await tick();
+
+    expect(popup().style.display).toBe("");
+    expect(popup().hasAttribute("data-open")).toBe(true);
+    expect(popup().getAttribute("role")).toBe("dialog");
     expect(trigger.getAttribute("aria-expanded")).toBe("true");
-    expect(document.getElementById("menu-panel")!.style.display).not.toBe("none");
-  });
+    const title = popup().querySelector('[data-slot="dialog-title"]')!;
+    expect(title.id).toBeTruthy();
+    expect(popup().getAttribute("aria-labelledby")).toBe(title.id);
 
-  it("x-nq:menu binds the vanilla menu", async () => {
-    const t = document.getElementById("vt")!;
-    expect(t.getAttribute("aria-haspopup")).toBe("menu");
-    t.click();
-    expect(document.getElementById("vm")!.hidden).toBe(false);
-  });
-
-  it("$nq is the reactive store", async () => {
-    document.getElementById("dark")!.click();
+    popup().querySelector<HTMLButtonElement>('[aria-label="Close"]')!.click();
     await tick();
-    expect(document.documentElement.dataset.theme).toBe("dark");
-    expect(document.getElementById("theme")!.textContent).toBe("dark");
+    expect(popup().hasAttribute("data-open")).toBe(false);
+    expect(popup().hasAttribute("data-closed")).toBe(true);
   });
 
-  it("listens for the Livewire nq-toast event", () => {
-    window.dispatchEvent(new CustomEvent("nq-toast", { detail: { title: "Saved", tone: "success", duration: 0 } }));
-    expect(document.querySelector(".nq-toast-title")!.textContent).toBe("Saved");
+  it("closes on Escape and on the backdrop", async () => {
+    const host = await mount("dialog");
+    const trigger = host.querySelector<HTMLButtonElement>('[data-slot="dialog-trigger"]')!;
+    const popup = () => document.querySelector<HTMLElement>('[data-slot="dialog-content"]')!;
+
+    trigger.click();
+    await tick();
+    popup().dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    await tick();
+    expect(popup().hasAttribute("data-open")).toBe(false);
+
+    trigger.click();
+    await tick();
+    document.querySelector<HTMLElement>('[data-slot="dialog-backdrop"]')!.click();
+    await tick();
+    expect(popup().hasAttribute("data-open")).toBe(false);
+  });
+});
+
+describe("tabs (Blade example)", () => {
+  it("marks the active tab and switches panels", async () => {
+    const host = await mount("tabs");
+    const [board, timeline] = host.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    const [boardPanel, timelinePanel] = host.querySelectorAll<HTMLElement>('[role="tabpanel"]');
+
+    expect(board!.hasAttribute("data-active")).toBe(true);
+    expect(board!.getAttribute("aria-selected")).toBe("true");
+    expect(timeline!.tabIndex).toBe(-1);
+    expect(timelinePanel!.hidden).toBe(true);
+    expect(board!.getAttribute("aria-controls")).toBe(boardPanel!.id);
+
+    timeline!.click();
+    await tick();
+    expect(timeline!.hasAttribute("data-active")).toBe(true);
+    expect(board!.hasAttribute("data-active")).toBe(false);
+    expect(boardPanel!.hidden).toBe(true);
+    expect(timelinePanel!.hidden).toBe(false);
+  });
+
+  it("moves focus with the arrow keys and Home/End", async () => {
+    const host = await mount("tabs");
+    const list = host.querySelector<HTMLElement>('[role="tablist"]')!;
+    const [board, timeline] = host.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    board!.focus();
+    list.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
+    expect(document.activeElement).toBe(timeline);
+    list.dispatchEvent(new KeyboardEvent("keydown", { key: "Home", bubbles: true }));
+    expect(document.activeElement).toBe(board);
   });
 });

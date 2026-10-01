@@ -1,5 +1,5 @@
 // NasaqProvider for Vue: writes lang, dir, data-theme, data-brand, data-density and data-expression to <html>
-// (or a wrapping <div> with target="scope"), exactly like the React provider, so tokens.css and the .nq-* classes follow.
+// (or a wrapping <div> with target="scope"), exactly like the React provider, so tokens.css and the Tailwind theme follow.
 
 import { dirOf } from "./lib/locale";
 import { defaultCurrency } from "./lib/money";
@@ -166,4 +166,10 @@ export function useCurrency(currency?: Ref<string | undefined> | (() => string |
     const own = typeof currency === "function" ? currency() : currency?.value;
     return own ?? ctx.currency.value;
   });
+}
+
+/** Picks the English or Arabic built-in label by the provider (or document) locale: t("Close", "إغلاق"). */
+export function useT(): (en: string, ar: string) => string {
+  const ctx = useNasaq();
+  return (en, ar) => (ctx.locale.value.startsWith("ar") ? ar : en);
 }

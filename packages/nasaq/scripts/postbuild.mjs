@@ -1,5 +1,5 @@
 // Copies the CSS entry points next to the JS output.
-import { cpSync, copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -10,8 +10,6 @@ const files = [
   ["tokens/dist/tokens.css", "dist/tokens.css"],
   ["tokens/dist/theme.css", "dist/theme.css"],
   ["electron/src/chrome.css", "dist/electron/chrome.css"],
-  ["html/src/components.css", "dist/html/components.css"],
-  ["html/src/base.css", "dist/html/base.css"],
 ];
 for (const [from, to] of files) {
   const src = join(pkgs, from);
@@ -24,14 +22,7 @@ for (const [from, to] of files) {
 const { nasaqThemeScriptFile } = await import(pathToFileURL(join(root, "dist/web/src/provider/theme-script.js")).href);
 writeFileSync(join(root, "dist/theme-script.js"), nasaqThemeScriptFile());
 
-// html.css: tokens + base + components in one file, for plain HTML, Blade, Filament and Vue (no bundler needed).
-const read = (p) => readFileSync(join(pkgs, p), "utf8").replace(/^@import[^;]*;\s*/gm, "");
-writeFileSync(
-  join(root, "dist/html.css"),
-  ["/* @fadymondy/nasaq/html.css: tokens, base, components */", read("tokens/dist/tokens.css"), read("html/src/base.css"), read("html/src/components.css")].join("\n"),
-);
-
-// html.unlayered.css: tokens + components without @layer and without base, for Tailwind v3 hosts (FilamentPHP v3).
+// unlayer: strips @layer wrappers, for hosts on Tailwind v3 (FilamentPHP v3).
 // Tailwind v3's preflight is unlayered, and unlayered rules beat every layer, so `button { background: transparent }`
 // would win over a layered .nq-button. Unlayered, the class selectors win again; the host keeps its own preflight.
 const unlayer = (source) => {
@@ -68,26 +59,43 @@ const unlayer = (source) => {
   }
   return out;
 };
-writeFileSync(
-  join(root, "dist/html.unlayered.css"),
-  ["/* @fadymondy/nasaq/html.unlayered.css: tokens and components, no layers, no base (Tailwind v3 / Filament v3) */", read("tokens/dist/tokens.css"), unlayer(read("html/src/components.css"))].join("\n"),
-);
 
-// Script-tag builds (no bundler): window.Nasaq, and window.NasaqAlpine which registers itself with Alpine.
+// nasaq.css: the precompiled stylesheet for stacks without their own Tailwind build (plain HTML, Blade, Livewire).
+// Tailwind v4 over the Blade components and the Alpine runtime, so it holds exactly the classes they use, which are
+// the React components' classes. nasaq.unlayered.css drops preflight and @layer, for hosts that bring their own
+// base styles on Tailwind v3 (FilamentPHP v3), whose unlayered preflight would otherwise beat layered utilities.
+const fwd = (p) => p.replaceAll("\\", "/");
+const cssEntry = (preflight) =>
+  [
+    preflight ? '@import "tailwindcss";' : '@import "tailwindcss/theme.css" layer(theme);\n@import "tailwindcss/utilities.css" layer(utilities);',
+    `@import "${fwd(join(pkgs, "tokens/dist/tokens.css"))}";`,
+    `@import "${fwd(join(pkgs, "tokens/dist/theme.css"))}";`,
+    preflight ? `@import "${fwd(join(pkgs, "web/src/styles.css"))}";` : "",
+    `@source "${fwd(join(pkgs, "php/resources/views"))}";`,
+    `@source "${fwd(join(pkgs, "html/src/alpine"))}";`,
+  ].join("\n");
+const { default: postcss } = await import("postcss");
+const { default: tailwind } = await import("@tailwindcss/postcss");
+const compile = async (preflight) =>
+  (await postcss([tailwind({ optimize: { minify: true } })]).process(cssEntry(preflight), { from: join(root, "nasaq.entry.css") })).css;
+writeFileSync(join(root, "dist/nasaq.css"), await compile(true));
+writeFileSync(join(root, "dist/nasaq.unlayered.css"), unlayer(await compile(false)));
+
+// nasaq-alpine.js: the script-tag build of the Alpine runtime; registers itself on alpine:init.
 const { build } = await import("esbuild");
-for (const [entry, out] of [["cdn.ts", "nasaq.global.js"], ["cdn-alpine.ts", "nasaq-alpine.global.js"]]) {
-  await build({
-    entryPoints: [join(pkgs, "html/src", entry)],
-    outfile: join(root, "dist/cdn", out),
-    bundle: true,
-    format: "iife",
-    minify: true,
-    target: "es2020",
-    legalComments: "none",
-    logLevel: "warning",
-  });
-}
+await build({
+  entryPoints: [join(pkgs, "html/src/cdn-alpine.ts")],
+  outfile: join(root, "dist/cdn/nasaq-alpine.js"),
+  bundle: true,
+  format: "iife",
+  minify: true,
+  target: "es2020",
+  legalComments: "none",
+  logLevel: "warning",
+});
 
-// Blade anonymous components for Laravel / Livewire / Filament (copy to resources/views/components/nq).
-cpSync(join(pkgs, "html/blade"), join(root, "dist/blade"), { recursive: true });
-console.log("postbuild: copied", files.length, "files, wrote html.css, cdn bundles and blade components");
+// fadymondy/nasaq-php serves the same two assets (php artisan vendor:publish --tag=nasaq-assets, or FilamentAsset).
+const phpDist = join(pkgs, "php/resources/dist");
+mkdirSync(phpDist, { recursive: true });
+for (const f of ["nasaq.css", "nasaq.unlayered.css", "cdn/nasaq-alpine.js"]) copyFileSync(join(root, "dist", f), join(phpDist, f.replace("cdn/", "")));
+console.log("postbuild: copied", files.length, "files, wrote nasaq.css, nasaq.unlayered.css and cdn/nasaq-alpine.js");

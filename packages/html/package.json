@@ -4,21 +4,22 @@
   "private": true,
   "type": "module",
   "sideEffects": [
-    "*.css",
-    "./src/cdn.ts"
+    "./src/cdn-alpine.ts"
   ],
   "exports": {
     ".": "./src/index.ts",
     "./alpine": "./src/alpine.ts",
-    "./nasaq.css": "./src/nasaq.css",
-    "./base.css": "./src/base.css",
-    "./components.css": "./src/components.css"
+    "./cdn-alpine": "./src/cdn-alpine.ts"
   },
   "scripts": {
+    "gen": "node scripts/gen-index.mjs",
     "typecheck": "tsc -p .",
     "test": "vitest run"
   },
   "dependencies": {
+    "@alpinejs/anchor": "3.17.4",
+    "@alpinejs/collapse": "3.17.4",
+    "@alpinejs/focus": "3.17.4",
     "@nasaq/tokens": "workspace:*"
   },
   "devDependencies": {

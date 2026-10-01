@@ -1,24 +1,19 @@
-// CDN build for Alpine pages, Livewire, FilamentPHP and TomatoPHP (nasaq-alpine.global.js).
-// Everything in nasaq.global.js, plus the Alpine plugin registered on alpine:init.
-// Load it BEFORE Alpine (or before @livewireScripts / Filament's scripts), so the plugin is in place when Alpine starts.
+// nasaq-alpine.js: the script-tag build. Load it before Alpine (or anywhere with Livewire/Filament,
+// whose Alpine fires alpine:init after scripts in the page have run); it registers the plugin on alpine:init.
+//
+//   <script defer src="…/nasaq-alpine.js"></script>
+//   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
 
-import nasaq, { type AlpineLike } from "./alpine";
-import "./cdn";
+import nasaq from "./alpine";
+import type { AlpineLike } from "./alpine/types";
 
 declare global {
   interface Window {
-    Alpine?: AlpineLike & { plugin(p: (a: AlpineLike) => void): void };
-    NasaqAlpine: typeof nasaq;
+    Alpine?: AlpineLike;
+    Nasaq?: { plugin: typeof nasaq };
   }
 }
 
-window.NasaqAlpine = nasaq;
-let registered = false;
-const register = () => {
-  if (registered || !window.Alpine) return;
-  registered = true;
-  window.Alpine.plugin(nasaq);
-};
-document.addEventListener("alpine:init", register);
-// Alpine already on the page but not started yet (a bundle that set window.Alpine first).
-register();
+window.Nasaq = { plugin: nasaq };
+if (window.Alpine) nasaq(window.Alpine);
+document.addEventListener("alpine:init", () => window.Alpine && nasaq(window.Alpine));

@@ -1,0 +1,53 @@
+<?php
+
+namespace Nasaq\Tests;
+
+use Illuminate\Support\Facades\Blade;
+use PHPUnit\Framework\Attributes\DataProvider;
+
+class ComponentsTest extends TestCase
+{
+    public static function examples(): array
+    {
+        $out = [];
+        foreach (glob(__DIR__.'/../examples/*.blade.php') as $file) {
+            $out[basename($file, '.blade.php')] = [$file];
+        }
+
+        return $out;
+    }
+
+    #[DataProvider('examples')]
+    public function test_example_renders_and_matches_the_committed_html(string $file): void
+    {
+        $html = preg_replace("/\n\s*\n+/", "\n", trim(Blade::render(file_get_contents($file))))."\n";
+        $this->assertStringContainsString('data-slot=', $html);
+        $rendered = dirname($file).'/rendered/'.basename($file, '.blade.php').'.html';
+        $this->assertFileExists($rendered, 'run php scripts/render-examples.php');
+        $this->assertSame(file_get_contents($rendered), $html, 'stale: run php scripts/render-examples.php');
+    }
+
+    public function test_every_component_has_an_example(): void
+    {
+        foreach (glob(__DIR__.'/../resources/views/components/*', GLOB_ONLYDIR) as $dir) {
+            $this->assertFileExists(__DIR__.'/../examples/'.basename($dir).'.blade.php');
+        }
+    }
+
+    public function test_button_overrides_and_loading(): void
+    {
+        $html = Blade::render('<x-nq::button class="h-12" loading>Go</x-nq::button>');
+        $this->assertStringContainsString('aria-busy="true"', $html);
+        $this->assertStringContainsString('data-slot="spinner"', $html);
+        $this->assertDoesNotMatchRegularExpression('/class="[^"]*\bh-control\b/', $html);
+        $this->assertMatchesRegularExpression('/class="[^"]*\bh-12\b/', $html);
+    }
+
+    public function test_arabic_currency_is_sar(): void
+    {
+        app()->setLocale('ar');
+        $this->assertSame('SAR', \Nasaq\Nasaq::currency());
+        app()->setLocale('en');
+        $this->assertSame('USD', \Nasaq\Nasaq::currency());
+    }
+}
