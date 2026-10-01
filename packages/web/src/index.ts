@@ -236,6 +236,7 @@ export * from "./components/status-label-manager";
 export * from "./components/cron-builder";
 export * from "./components/run-history";
 export * from "./components/step-editor";
+export * from "./components/test-run-stream";
 export * from "./components/rule-builder";
 export * from "./components/version-history";
 export * from "./components/server-card";
