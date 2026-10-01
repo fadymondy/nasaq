@@ -115,9 +115,12 @@ const items = [];
   const generated = await readFile(join(root, "packages/tokens/src/generated/tokens.ts"), "utf8");
   const brandsConst = generated.match(/export const brands = [\s\S]*?\n\} as const;\n/)?.[0];
   if (!brandsConst) throw new Error("brands not found in generated tokens");
+  const colorConst = generated.match(/export const color = [\s\S]*?\n\} as const;\n/)?.[0];
+  if (!colorConst) throw new Error("color not found in generated tokens");
+  const contrastSrc = await readFile(join(root, "packages/tokens/src/contrast.ts"), "utf8");
   const files = [
     { path: await emit("lib/utils.ts", await readFile(join(root, "packages/web/src/lib/cn.ts"), "utf8")), type: "registry:lib", target: "lib/utils.ts" },
-    { path: await emit("lib/nasaq/tokens.ts", `// Nasaq token types and brand colours (from @nasaq/tokens).\n${tokIndex.replace(/^export \*.*\n/gm, "").trim()}\n\n${brandsConst}`), type: "registry:lib", target: "lib/nasaq/tokens.ts" },
+    { path: await emit("lib/nasaq/tokens.ts", `// Nasaq token types and brand colours (from @nasaq/tokens).\n${tokIndex.replace(/^export \*.*\n/gm, "").trim()}\n\n${colorConst}\n${brandsConst}\n${contrastSrc}`), type: "registry:lib", target: "lib/nasaq/tokens.ts" },
     { path: await emit("lib/nasaq/hotkey.ts", await readFile(join(root, "packages/web/src/lib/hotkey.ts"), "utf8")), type: "registry:lib", target: "lib/nasaq/hotkey.ts" },
     { path: await emit("lib/nasaq/commerce.ts", await readFile(join(root, "packages/web/src/lib/commerce.ts"), "utf8")), type: "registry:lib", target: "lib/nasaq/commerce.ts" },
     { path: await emit("lib/nasaq/click-sound.ts", await readFile(join(root, "packages/web/src/lib/click-sound.ts"), "utf8")), type: "registry:lib", target: "lib/nasaq/click-sound.ts" },
