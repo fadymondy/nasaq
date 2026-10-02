@@ -541,7 +541,7 @@ export const webhooksManager: Register = (Alpine) => {
 
     dismissPush(this: Self) {
       this.pushShown = false;
-      (this.root ?? this.$el).dispatchEvent(new CustomEvent("dismiss-push", { bubbles: true, detail: {} }));
+      (this.root ?? this.$el).dispatchEvent(new CustomEvent("dismiss-push", { bubbles: true, detail: { wait: () => undefined } }));
     },
   }));
 };

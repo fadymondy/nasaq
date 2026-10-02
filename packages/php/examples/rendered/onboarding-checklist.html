@@ -1,0 +1,112 @@
+<section role="region" aria-label="Get started" data-slot="onboarding-checklist" x-data="nqOnboardingChecklist(JSON.parse('[{\u0022id\u0022:\u0022profile\u0022,\u0022done\u0022:true},{\u0022id\u0022:\u0022invite\u0022,\u0022done\u0022:false},{\u0022id\u0022:\u0022connect\u0022,\u0022done\u0022:false}]'), JSON.parse('{\u0022title\u0022:\u0022Get started\u0022,\u0022allDone\u0022:\u0022You are all set\u0022,\u0022progress\u0022:\u0022{done} of {total} done\u0022}'))" x-modelable="items"
+    x-bind:data-complete="summary().complete ? '' : null"
+    x-on:action="window.__action = $event.detail.id; $event.detail.wait(Promise.resolve())" x-on:dismiss="window.__dismissed = true" x-on:complete="window.__complete = true" class="flex flex-col gap-3 rounded-card border border-border bg-card p-4 text-card-foreground">
+    <header class="flex items-start gap-3">
+        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+            <h3 class="text-h3 text-foreground" x-text="heading()">Get started</h3>
+            <p class="text-caption text-muted-foreground" data-slot="onboarding-checklist-count" x-text="progressText()">1 of 3 done</p>
+        </div>
+                    <button data-slot="button"
+     type="button"                     aria-label="Dismiss the checklist" x-on:click="dismiss()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+            </header>
+    <div data-slot="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" x-bind:aria-valuenow="summary().percent" x-bind:aria-label="progressText()" x-bind:data-tone="summary().complete ? 'success' : 'default'" class="flex w-full flex-col gap-1.5">
+        <div data-slot="progress-track" class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-1.5">
+            <div data-slot="progress-indicator" x-bind:style="'inset-inline-start:0;width:' + summary().percent + '%'" x-bind:class="summary().complete ? 'bg-nq-success' : 'bg-primary'" class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none" style="inset-inline-start:0;width:33%"></div>
+        </div>
+    </div>
+    <div x-show="summary().complete" x-cloak style="display: none" class="flex items-center gap-2 rounded-control bg-nq-success-soft px-3 py-2 text-body text-nq-success-text">
+        <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5.8 11.3 2 22l10.7-3.79"/>
+  <path d="M4 3h.01"/>
+  <path d="M22 8h.01"/>
+  <path d="M15 2h.01"/>
+  <path d="M22 20h.01"/>
+  <path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/>
+  <path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/>
+  <path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/>
+  <path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/>
+</svg>        Every step is done. Nice work.
+    </div>
+    <ol x-show="!summary().complete" class="flex flex-col gap-1.5">
+                                <li x-data="{ id: 'profile' }" x-bind:data-done="isDone(id) ? '' : null" x-bind:data-next="isNext(id) ? '' : null"
+                x-bind:class="isNext(id) ? 'border-primary bg-nq-selected' : 'border-border bg-card'"
+                class="flex items-center gap-3 rounded-control border px-3 py-2 border-border bg-card">
+                <span aria-hidden="true" x-bind:class="isDone(id) ? 'border-nq-success bg-nq-success text-primary-foreground' : 'border-nq-line-strong text-muted-foreground'"
+                    class="inline-flex size-5 shrink-0 items-center justify-center rounded-full border border-nq-line-strong text-muted-foreground">
+                    <svg x-show="isDone(id)" style="display: none" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                                    </span>
+                <span class="flex min-w-0 flex-1 flex-col text-start">
+                    <span x-bind:class="isDone(id) ? 'text-muted-foreground line-through' : 'text-foreground'" class="truncate text-label text-foreground">
+                        Complete your profile
+                        <span class="sr-only" x-text="isDone(id) ? ', Done' : (isNext(id) ? ', Next' : '')"></span>
+                    </span>
+                                    </span>
+                            </li>
+                                <li x-data="{ id: 'invite' }" x-bind:data-done="isDone(id) ? '' : null" x-bind:data-next="isNext(id) ? '' : null"
+                x-bind:class="isNext(id) ? 'border-primary bg-nq-selected' : 'border-border bg-card'"
+                class="flex items-center gap-3 rounded-control border px-3 py-2 border-primary bg-nq-selected">
+                <span aria-hidden="true" x-bind:class="isDone(id) ? 'border-nq-success bg-nq-success text-primary-foreground' : 'border-nq-line-strong text-muted-foreground'"
+                    class="inline-flex size-5 shrink-0 items-center justify-center rounded-full border border-nq-line-strong text-muted-foreground">
+                    <svg x-show="isDone(id)" style="display: none" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                                            <span class="inline-flex" x-show="!isDone(id)"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg></span>
+                                    </span>
+                <span class="flex min-w-0 flex-1 flex-col text-start">
+                    <span x-bind:class="isDone(id) ? 'text-muted-foreground line-through' : 'text-foreground'" class="truncate text-label text-foreground">
+                        Invite a teammate
+                        <span class="sr-only" x-text="isDone(id) ? ', Done' : (isNext(id) ? ', Next' : '')"></span>
+                    </span>
+                                            <span x-show="!isDone(id)" class="truncate text-caption text-muted-foreground">Work is better together.</span>
+                                    </span>
+                                    <button data-slot="button"
+     type="button"                     x-show="!isDone(id)" x-bind:class="isNext(id) ? &#039;bg-primary text-primary-foreground&#039; : &#039;&#039;" x-bind:disabled="pending !== null" x-bind:aria-busy="pending === id ? &#039;true&#039; : null" x-on:click="run(id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Invite
+                        <svg aria-hidden="true" x-show="pending === id" style="display: none" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg aria-hidden="true" x-show="pending !== id" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg></button>
+                            </li>
+                                <li x-data="{ id: 'connect' }" x-bind:data-done="isDone(id) ? '' : null" x-bind:data-next="isNext(id) ? '' : null"
+                x-bind:class="isNext(id) ? 'border-primary bg-nq-selected' : 'border-border bg-card'"
+                class="flex items-center gap-3 rounded-control border px-3 py-2 border-border bg-card">
+                <span aria-hidden="true" x-bind:class="isDone(id) ? 'border-nq-success bg-nq-success text-primary-foreground' : 'border-nq-line-strong text-muted-foreground'"
+                    class="inline-flex size-5 shrink-0 items-center justify-center rounded-full border border-nq-line-strong text-muted-foreground">
+                    <svg x-show="isDone(id)" style="display: none" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                                    </span>
+                <span class="flex min-w-0 flex-1 flex-col text-start">
+                    <span x-bind:class="isDone(id) ? 'text-muted-foreground line-through' : 'text-foreground'" class="truncate text-label text-foreground">
+                        Connect GitHub
+                        <span class="sr-only" x-text="isDone(id) ? ', Done' : (isNext(id) ? ', Next' : '')"></span>
+                    </span>
+                                    </span>
+                                    <button data-slot="button"
+     type="button"                     x-show="!isDone(id)" x-bind:class="isNext(id) ? &#039;bg-primary text-primary-foreground&#039; : &#039;&#039;" x-bind:disabled="pending !== null" x-bind:aria-busy="pending === id ? &#039;true&#039; : null" x-on:click="run(id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Connect
+                        <svg aria-hidden="true" x-show="pending === id" style="display: none" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg aria-hidden="true" x-show="pending !== id" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg></button>
+                            </li>
+            </ol>
+            <button data-slot="button"
+     type="button"                     x-show="summary().complete" x-cloak="x-cloak" style="display: none" x-on:click="dismiss()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 self-start">
+        Dismiss the checklist</button>
+    </section>

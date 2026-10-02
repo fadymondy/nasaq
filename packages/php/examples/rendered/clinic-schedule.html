@@ -1,0 +1,318 @@
+<div data-slot="clinic-schedule" x-data="nqClinicSchedule(JSON.parse('{\u0022appointments\u0022:[{\u0022id\u0022:\u0022a1\u0022,\u0022patient\u0022:\u0022Layla Hassan\u0022,\u0022service\u0022:\u0022Check-up\u0022,\u0022start\u0022:\u00222026-09-29T08:00:00\u0022,\u0022end\u0022:\u00222026-09-29T08:30:00\u0022,\u0022status\u0022:\u0022done\u0022,\u0022room\u0022:\u00222\u0022,\u0022followUp\u0022:false},{\u0022id\u0022:\u0022a2\u0022,\u0022patient\u0022:\u0022Omar Nasser\u0022,\u0022service\u0022:\u0022Blood pressure review\u0022,\u0022start\u0022:\u00222026-09-29T08:30:00\u0022,\u0022end\u0022:\u00222026-09-29T09:15:00\u0022,\u0022status\u0022:\u0022in_visit\u0022,\u0022room\u0022:\u00222\u0022,\u0022followUp\u0022:false},{\u0022id\u0022:\u0022a3\u0022,\u0022patient\u0022:\u0022Sara Khalil\u0022,\u0022service\u0022:\u0022Follow-up\u0022,\u0022start\u0022:\u00222026-09-29T09:00:00\u0022,\u0022end\u0022:\u00222026-09-29T09:30:00\u0022,\u0022status\u0022:\u0022checked_in\u0022,\u0022room\u0022:\u00222\u0022,\u0022followUp\u0022:true},{\u0022id\u0022:\u0022a4\u0022,\u0022patient\u0022:\u0022Hadi Mansour\u0022,\u0022service\u0022:\u0022Consultation\u0022,\u0022start\u0022:\u00222026-09-29T10:00:00\u0022,\u0022end\u0022:\u00222026-09-29T10:45:00\u0022,\u0022status\u0022:\u0022confirmed\u0022,\u0022room\u0022:null,\u0022followUp\u0022:false},{\u0022id\u0022:\u0022a5\u0022,\u0022patient\u0022:\u0022Nour Aziz\u0022,\u0022service\u0022:\u0022Vaccination\u0022,\u0022start\u0022:\u00222026-09-29T11:00:00\u0022,\u0022end\u0022:\u00222026-09-29T11:15:00\u0022,\u0022status\u0022:\u0022requested\u0022,\u0022room\u0022:null,\u0022followUp\u0022:false},{\u0022id\u0022:\u0022a6\u0022,\u0022patient\u0022:\u0022Yara Saad\u0022,\u0022service\u0022:\u0022Check-up\u0022,\u0022start\u0022:\u00222026-09-29T13:00:00\u0022,\u0022end\u0022:\u00222026-09-29T13:30:00\u0022,\u0022status\u0022:\u0022cancelled\u0022,\u0022room\u0022:null,\u0022followUp\u0022:false}],\u0022date\u0022:null,\u0022now\u0022:\u00222026-09-29T09:00:00\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022strings\u0022:{\u0022hours\u0022:\u0022{h} h {m} min\u0022,\u0022late\u0022:\u0022{n} min late\u0022,\u0022room\u0022:\u0022Room {r}\u0022,\u0022followUp\u0022:\u0022Follow-up\u0022,\u0022overlapOne\u0022:\u00221 pair of appointments overlaps.\u0022,\u0022overlapMany\u0022:\u0022{n} pairs of appointments overlap.\u0022}}'))" x-on:date-change="setDate($event.detail.date)" x-on:event-click="pick($event.detail.id)"
+    class="grid gap-4 lg:grid-cols-[1fr_18rem] lg:items-start">
+    <div class="min-w-0">
+        <div data-slot="scheduler" data-view="day" dir="ltr" lang="en" x-data="nqScheduler(JSON.parse('{\u0022events\u0022:[{\u0022id\u0022:\u0022a1\u0022,\u0022title\u0022:\u0022Layla Hassan \\u00b7 Done\u0022,\u0022start\u0022:\u00222026-09-29T08:00:00\u0022,\u0022end\u0022:\u00222026-09-29T08:30:00\u0022,\u0022tone\u0022:\u0022success\u0022},{\u0022id\u0022:\u0022a2\u0022,\u0022title\u0022:\u0022Omar Nasser \\u00b7 In visit\u0022,\u0022start\u0022:\u00222026-09-29T08:30:00\u0022,\u0022end\u0022:\u00222026-09-29T09:15:00\u0022,\u0022tone\u0022:\u0022brand\u0022},{\u0022id\u0022:\u0022a3\u0022,\u0022title\u0022:\u0022Sara Khalil \\u00b7 Checked in\u0022,\u0022start\u0022:\u00222026-09-29T09:00:00\u0022,\u0022end\u0022:\u00222026-09-29T09:30:00\u0022,\u0022tone\u0022:\u0022info\u0022},{\u0022id\u0022:\u0022a4\u0022,\u0022title\u0022:\u0022Hadi Mansour \\u00b7 Confirmed\u0022,\u0022start\u0022:\u00222026-09-29T10:00:00\u0022,\u0022end\u0022:\u00222026-09-29T10:45:00\u0022,\u0022tone\u0022:\u0022neutral\u0022},{\u0022id\u0022:\u0022a5\u0022,\u0022title\u0022:\u0022Nour Aziz \\u00b7 Requested\u0022,\u0022start\u0022:\u00222026-09-29T11:00:00\u0022,\u0022end\u0022:\u00222026-09-29T11:15:00\u0022,\u0022tone\u0022:\u0022warning\u0022},{\u0022id\u0022:\u0022a6\u0022,\u0022title\u0022:\u0022Yara Saad \\u00b7 Cancelled\u0022,\u0022start\u0022:\u00222026-09-29T13:00:00\u0022,\u0022end\u0022:\u00222026-09-29T13:30:00\u0022,\u0022tone\u0022:\u0022danger\u0022}],\u0022view\u0022:\u0022day\u0022,\u0022date\u0022:\u00222026-09-29T09:00:00\u0022,\u0022today\u0022:\u00222026-09-29T09:00:00\u0022,\u0022workingHours\u0022:{\u0022start\u0022:8,\u0022end\u0022:18},\u0022slotMinutes\u0022:15,\u0022weekStartsOn\u0022:null,\u0022hour12\u0022:null,\u0022maxChips\u0022:3,\u0022locale\u0022:\u0022en\u0022,\u0022dir\u0022:\u0022ltr\u0022,\u0022tones\u0022:{\u0022neutral\u0022:\u0022border-border bg-secondary text-foreground\u0022,\u0022brand\u0022:\u0022border-nq-brand\\\/40 bg-[color-mix(in_oklab,var(--nq-brand)_14%,transparent)] text-foreground\u0022,\u0022success\u0022:\u0022border-nq-success\\\/40 bg-nq-success-soft text-nq-success-text\u0022,\u0022warning\u0022:\u0022border-nq-warning\\\/40 bg-nq-warning-soft text-nq-warning-text\u0022,\u0022danger\u0022:\u0022border-nq-danger\\\/40 bg-nq-danger-soft text-nq-danger-text\u0022,\u0022info\u0022:\u0022border-nq-info\\\/40 bg-nq-info-soft text-nq-info-text\u0022},\u0022strings\u0022:{\u0022today\u0022:\u0022Today\u0022,\u0022previous\u0022:{\u0022day\u0022:\u0022Previous day\u0022,\u0022week\u0022:\u0022Previous week\u0022,\u0022month\u0022:\u0022Previous month\u0022},\u0022next\u0022:{\u0022day\u0022:\u0022Next day\u0022,\u0022week\u0022:\u0022Next week\u0022,\u0022month\u0022:\u0022Next month\u0022},\u0022more\u0022:\u0022+{n} more\u0022,\u0022eventsOn\u0022:\u0022Events on {date}\u0022,\u0022slotsOn\u0022:\u0022Available times on {date}\u0022,\u0022noSlots\u0022:\u0022No times available on this day.\u0022}}'))" x-bind:data-view="view"
+    class="flex w-full flex-col gap-3 text-body-sm text-foreground">
+    <div data-slot="scheduler-toolbar" class="flex flex-wrap items-center gap-2">
+        <div class="flex items-center gap-1">
+            <button data-slot="button"
+     type="button"                     x-bind:aria-label="previousLabel" aria-label="Previous day" x-on:click="step(-1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg></button>
+            <button data-slot="button"
+     type="button"                     x-bind:aria-label="nextLabel" aria-label="Next day" x-on:click="step(1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></button>
+            <button data-slot="button"
+     type="button"                     x-on:click="goToday()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Today</button>
+        </div>
+        <h2 aria-live="polite" class="me-auto text-body font-semibold"><bdi x-text="title"></bdi></h2>
+        <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022day\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="View" x-model="viewValue" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('day')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Day</button>
+            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('week')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Week</button>
+            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('month')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Month</button>
+</div>
+    </div>
+    <div x-show="view !== 'month'"  data-slot="scheduler-grid" class="overflow-auto rounded-card border border-border bg-card">
+        <div class="sticky top-0 z-20 grid border-b border-border bg-card" x-bind:style="columnsStyle">
+            <div></div>
+            <template x-for="d in days" x-bind:key="d.key">
+                <div x-bind:data-today="d.today ? '' : undefined" class="flex flex-col items-center gap-0.5 border-s border-border py-1.5">
+                    <span class="text-caption text-muted-foreground" x-text="d.weekday"></span>
+                    <span x-text="d.num" x-bind:class="d.today ? 'bg-primary text-primary-foreground' : ''" class="flex size-6 items-center justify-center rounded-full text-label tabular-nums"></span>
+                </div>
+            </template>
+        </div>
+        <div class="grid" x-bind:style="columnsStyle" x-on:keydown="onGridKey($event)">
+            <div aria-hidden="true">
+                <template x-for="h in hourRows" x-bind:key="h.m">
+                    <div class="h-8 pe-2 text-end text-caption text-muted-foreground tabular-nums">
+                        <span x-show="h.show" x-text="h.label" x-bind:class="h.first ? '' : '-top-2'" class="relative bg-card"></span>
+                    </div>
+                </template>
+            </div>
+            <template x-for="d in days" x-bind:key="d.key">
+                <div x-bind:data-date="d.key" class="relative border-s border-border">
+                    <template x-for="s in d.slots" x-bind:key="s.key">
+                        <button type="button" data-slot="scheduler-slot" x-bind:data-col="d.col" x-bind:data-row="s.row" x-bind:tabindex="isFocusCell(d.col, s.row) ? 0 : -1" x-bind:aria-label="s.label"
+                            x-bind:class="s.dashed ? 'border-dashed' : ''" x-on:focus="onSlotFocus(d.col, s.row)" x-on:click="pickSlot(s)"
+                            class="block h-8 w-full border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus"></button>
+                    </template>
+                    <template x-for="ev in d.events" x-bind:key="ev.id">
+                        <button type="button" data-slot="scheduler-event" x-bind:data-tone="ev.tone" x-bind:aria-label="ev.label" x-bind:class="ev.toneClass" x-bind:style="ev.style" x-on:click="pickEvent(ev)"
+                            class="absolute z-10 flex min-h-0 flex-col items-start overflow-hidden rounded-[4px] border px-1.5 py-0.5 text-start text-caption outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus">
+                            <span class="w-full truncate font-medium" x-text="ev.title"></span>
+                            <span x-show="ev.tall" class="w-full truncate tabular-nums opacity-80"><bdi x-text="ev.range"></bdi></span>
+                        </button>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </div>
+    <div x-show="view === 'month'"  style="display: none"  data-slot="scheduler-grid" class="overflow-hidden rounded-card border border-border bg-card">
+        <div class="grid grid-cols-7 border-b border-border">
+            <template x-for="(w, i) in weekdayNames" x-bind:key="i">
+                <div class="px-2 py-1.5 text-caption text-muted-foreground" x-text="w"></div>
+            </template>
+        </div>
+        <template x-for="(row, r) in monthRows" x-bind:key="r">
+            <div class="grid grid-cols-7">
+                <template x-for="day in row" x-bind:key="day.key">
+                    <div data-slot="scheduler-day" x-bind:data-date="day.key" x-bind:data-outside="day.outside ? '' : undefined" x-bind:data-today="day.today ? '' : undefined"
+                        x-bind:class="day.outside ? 'bg-secondary/40' : ''" class="relative flex min-h-24 min-w-0 flex-col gap-0.5 border-b border-s border-border p-1">
+                        <button type="button" x-bind:aria-label="day.label" x-text="day.num" x-on:click="fire('slot-select', { start: day.start, end: day.end })"
+                            x-bind:class="(day.outside ? 'text-muted-foreground ' : '') + (day.today ? 'bg-primary text-primary-foreground hover:bg-primary' : '')"
+                            class="flex size-6 items-center justify-center self-start rounded-full text-label tabular-nums hover:bg-nq-hover outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus"></button>
+                        <template x-for="e in day.chips" x-bind:key="e.id">
+                            <button type="button" data-slot="scheduler-chip" x-bind:data-tone="e.tone" x-bind:aria-label="e.label" x-bind:class="e.toneClass" x-on:click="pickEvent(e)"
+                                class="flex w-full min-w-0 items-center gap-1 rounded-[4px] border px-1.5 py-0.5 text-start text-caption outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus">
+                                <span class="shrink-0 tabular-nums opacity-80"><bdi x-text="e.time"></bdi></span>
+                                <span class="truncate font-medium" x-text="e.title"></span>
+                            </button>
+                        </template>
+                        <template x-if="day.hidden > 0">
+                            <div class="contents">
+                                <button type="button" x-bind:aria-expanded="moreKey === day.key ? 'true' : 'false'" x-on:click="toggleMore(day.key)"
+                                    class="rounded-[4px] px-1.5 py-0.5 text-start text-caption font-medium text-muted-foreground hover:bg-nq-hover hover:text-foreground outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus"><bdi x-text="day.more"></bdi></button>
+                                <div x-show="moreKey === day.key" style="display: none" role="group" x-bind:aria-label="day.eventsOn" x-on:click.outside="moreKey === day.key && (moreKey = null)" x-on:keydown.escape="moreKey = null"
+                                    class="absolute start-0 top-full z-30 flex w-64 flex-col gap-1 rounded-floating border border-border bg-popover p-3 text-popover-foreground shadow-floating">
+                                    <p class="text-label font-semibold" x-text="day.eventsOn"></p>
+                                    <template x-for="e in day.all" x-bind:key="e.id">
+                                        <button type="button" data-slot="scheduler-chip" x-bind:data-tone="e.tone" x-bind:aria-label="e.label" x-bind:class="e.toneClass" x-on:click="pickEvent(e)"
+                                            class="flex w-full min-w-0 items-center gap-1 rounded-[4px] border px-1.5 py-0.5 text-start text-caption outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus">
+                                            <span class="shrink-0 tabular-nums opacity-80"><bdi x-text="e.time"></bdi></span>
+                                            <span class="truncate font-medium" x-text="e.title"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</div>
+        <p x-show="empty" style="display: none" class="mt-3 text-body-sm text-muted-foreground">No appointments on this day.</p>
+    </div>
+    <div class="flex flex-col gap-4">
+        <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Today at a glance</h3>
+                <div data-slot="card-description" class="text-body-sm text-muted-foreground"><bdi x-text="dayLabel"></bdi></div></div>
+            <div data-slot="card-content" class="px-4 flex flex-col gap-3"><dl class="m-0 grid grid-cols-2 gap-3">
+                    <div>
+                        <dt class="text-caption text-muted-foreground">Booked</dt>
+                        <dd class="m-0 text-h2 tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums" x-text="total"></bdi></dd>
+                    </div>
+                    <div>
+                        <dt class="text-caption text-muted-foreground">Still to see</dt>
+                        <dd class="m-0 text-h2 tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums" x-text="remaining"></bdi></dd>
+                    </div>
+                    <div class="col-span-2">
+                        <dt class="text-caption text-muted-foreground">Booked time</dt>
+                        <dd class="m-0 text-body-sm tabular-nums" x-text="bookedLabel"></dd>
+                    </div>
+                </dl>
+                <ul aria-label="Status legend" class="m-0 flex list-none flex-wrap gap-1.5 p-0">
+                                            <li x-show="count('requested') > 0" style="display: none" class="inline-flex items-center gap-1">
+                            <span data-slot="booking-status-badge" data-status="requested" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>    Requested
+</span>
+                            <span class="text-caption tabular-nums text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums" x-text="countLabel('requested')"></bdi></span>
+                        </li>
+                                            <li x-show="count('confirmed') > 0" style="display: none" class="inline-flex items-center gap-1">
+                            <span data-slot="booking-status-badge" data-status="confirmed" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 2v3"/>
+  <path d="M16 2v3"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+  <path d="M3 9h18"/>
+  <path d="m9 15 2 2 4-4"/>
+</svg>    Confirmed
+</span>
+                            <span class="text-caption tabular-nums text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums" x-text="countLabel('confirmed')"></bdi></span>
+                        </li>
+                                            <li x-show="count('checked_in') > 0" style="display: none" class="inline-flex items-center gap-1">
+                            <span data-slot="booking-status-badge" data-status="checked_in" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m10 17 5-5-5-5"/>
+  <path d="M15 12H3"/>
+  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+</svg>    Checked in
+</span>
+                            <span class="text-caption tabular-nums text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums" x-text="countLabel('checked_in')"></bdi></span>
+                        </li>
+                                            <li x-show="count('in_visit') > 0" style="display: none" class="inline-flex items-center gap-1">
+                            <span data-slot="booking-status-badge" data-status="in_visit" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-brand/40 bg-[color-mix(in_oklab,var(--nq-brand)_14%,transparent)] text-foreground gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 2v2"/>
+  <path d="M5 2v2"/>
+  <path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/>
+  <path d="M8 15a6 6 0 0 0 12 0v-3"/>
+  <circle cx="20" cy="10" r="2"/>
+</svg>    In visit
+</span>
+                            <span class="text-caption tabular-nums text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums" x-text="countLabel('in_visit')"></bdi></span>
+                        </li>
+                                            <li x-show="count('done') > 0" style="display: none" class="inline-flex items-center gap-1">
+                            <span data-slot="booking-status-badge" data-status="done" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>    Done
+</span>
+                            <span class="text-caption tabular-nums text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums" x-text="countLabel('done')"></bdi></span>
+                        </li>
+                                            <li x-show="count('no_show') > 0" style="display: none" class="inline-flex items-center gap-1">
+                            <span data-slot="booking-status-badge" data-status="no_show" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <line x1="17" x2="22" y1="8" y2="13"/>
+  <line x1="22" x2="17" y1="8" y2="13"/>
+</svg>    No-show
+</span>
+                            <span class="text-caption tabular-nums text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums" x-text="countLabel('no_show')"></bdi></span>
+                        </li>
+                                            <li x-show="count('cancelled') > 0" style="display: none" class="inline-flex items-center gap-1">
+                            <span data-slot="booking-status-badge" data-status="cancelled" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="m15 9-6 6"/>
+    <path d="m9 9 6 6"/>
+</svg>    Cancelled
+</span>
+                            <span class="text-caption tabular-nums text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums" x-text="countLabel('cancelled')"></bdi></span>
+                        </li>
+                                    </ul></div></div>
+        <div x-show="current" style="display: none">
+            <div data-slot="clinic-current" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">In visit now</h3>
+                    <div data-slot="card-description" class="text-body-sm text-muted-foreground"><span x-text="current ? current.service : ''"></span></div></div>
+                <div data-slot="card-content" class="px-4 flex items-center justify-between gap-2"><span class="text-label" x-text="current ? current.patient : ''"></span>
+                    <button data-slot="button"
+     type="button"                     x-on:click="current ? pick(current.id) : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Open
+                        <svg aria-hidden="true" class="rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg></button></div></div>
+        </div>
+        <div data-slot="clinic-next" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Next up</h3></div>
+            <div data-slot="card-content" class="px-4 flex flex-col gap-2"><div x-show="next" style="display: none" class="flex flex-col gap-2">
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="min-w-0">
+                            <p class="text-label" x-text="next ? next.patient : ''"></p>
+                            <p class="text-caption text-muted-foreground" x-text="nextDetail"></p>
+                        </div>
+                                                    <div x-show="next ? next.status === 'requested' : false" style="display: none" class="contents">
+                                <span data-slot="booking-status-badge" data-status="requested" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>    Requested
+</span>
+                            </div>
+                                                    <div x-show="next ? next.status === 'confirmed' : false" style="display: none" class="contents">
+                                <span data-slot="booking-status-badge" data-status="confirmed" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 2v3"/>
+  <path d="M16 2v3"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+  <path d="M3 9h18"/>
+  <path d="m9 15 2 2 4-4"/>
+</svg>    Confirmed
+</span>
+                            </div>
+                                                    <div x-show="next ? next.status === 'checked_in' : false" style="display: none" class="contents">
+                                <span data-slot="booking-status-badge" data-status="checked_in" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m10 17 5-5-5-5"/>
+  <path d="M15 12H3"/>
+  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+</svg>    Checked in
+</span>
+                            </div>
+                                                    <div x-show="next ? next.status === 'in_visit' : false" style="display: none" class="contents">
+                                <span data-slot="booking-status-badge" data-status="in_visit" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-brand/40 bg-[color-mix(in_oklab,var(--nq-brand)_14%,transparent)] text-foreground gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 2v2"/>
+  <path d="M5 2v2"/>
+  <path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/>
+  <path d="M8 15a6 6 0 0 0 12 0v-3"/>
+  <circle cx="20" cy="10" r="2"/>
+</svg>    In visit
+</span>
+                            </div>
+                                                    <div x-show="next ? next.status === 'done' : false" style="display: none" class="contents">
+                                <span data-slot="booking-status-badge" data-status="done" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>    Done
+</span>
+                            </div>
+                                                    <div x-show="next ? next.status === 'no_show' : false" style="display: none" class="contents">
+                                <span data-slot="booking-status-badge" data-status="no_show" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <line x1="17" x2="22" y1="8" y2="13"/>
+  <line x1="22" x2="17" y1="8" y2="13"/>
+</svg>    No-show
+</span>
+                            </div>
+                                                    <div x-show="next ? next.status === 'cancelled' : false" style="display: none" class="contents">
+                                <span data-slot="booking-status-badge" data-status="cancelled" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="m15 9-6 6"/>
+    <path d="m9 9 6 6"/>
+</svg>    Cancelled
+</span>
+                            </div>
+                                            </div>
+                    <p class="inline-flex items-center gap-1.5 text-body-sm">
+                        <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>                        <bdi x-text="nextTime"></bdi>
+                        <span x-show="nextRoom" style="display: none" class="text-muted-foreground">· <span x-text="nextRoom"></span></span>
+                        <span x-show="late" style="display: none" class="font-medium text-nq-warning-text">· <span x-text="lateLabel"></span></span>
+                    </p>
+                    <button data-slot="button"
+     type="button"                     x-on:click="next ? pick(next.id) : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Open</button>
+                </div>
+                <p x-show="!next" class="text-body-sm text-muted-foreground">No one is waiting.</p></div></div>
+        <div data-slot="alert" data-tone="warning" role="alert"
+        x-show="overlapCount" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="overlapLabel"></span></div>
+            </div>
+    </div>
+    </div>
+</div>

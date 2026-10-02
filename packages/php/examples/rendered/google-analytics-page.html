@@ -1,0 +1,877 @@
+<div data-slot="analytics-page" data-connected="true" x-data="nqAnalyticsPage(JSON.parse('{\u0022id\u0022:\u0022ga\u0022,\u0022refreshing\u0022:false}'))"
+    class="flex w-full flex-col gap-6">
+    <header class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+        <div class="flex min-w-0 flex-col gap-1">
+            <h1 class="text-h1 text-foreground">Google Analytics</h1>
+                            <p class="text-pretty text-body-sm text-muted-foreground">Traffic and engagement for nasaq.dev</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                <div role="group" data-slot="period-toggle" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u002228\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Period" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('7')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">7 days</button>
+            <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('28')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">28 days</button>
+            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('90')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">90 days</button>
+</div>                                <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Disconnect</button>
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disconnect Google Analytics?</h2>
+                            <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">This page goes back to the connect screen. Nothing is deleted from your account.</p></div>
+        <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+            <button data-slot="alert-dialog-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="disconnect()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Disconnect</button></div>
+        </div>
+    </div>
+</template>
+</div>
+            </div>
+            </header>
+                        <p class="-mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Connected" >Connected</span>
+</span>
+                                    <span>Connected to <bdi dir="ltr">owner@nasaq.dev</bdi></span>
+                                            </p>
+                            <div data-slot="metric-tiles" role="group" aria-label="Key metrics" x-data="nqMetricTiles(null)" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3">
+                                            <div data-slot="stat-card"  data-trend="up" data-tone="positive"   data-metric="users" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Users</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">18,420</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">+13.6%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 16,210</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-1803ed87" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,7.69C10.27,7.25,18.53,6.74,26.8,6.38C35.07,6.01,43.33,5.86,51.6,5.5C59.87,5.14,68.13,4.63,76.4,4.19C84.67,3.75,92.93,3.24,101.2,2.88C109.47,2.51,117.73,2.29,126,2L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-1803ed87)" stroke="none" />        <path d="M2,7.69C10.27,7.25,18.53,6.74,26.8,6.38C35.07,6.01,43.33,5.86,51.6,5.5C59.87,5.14,68.13,4.63,76.4,4.19C84.67,3.75,92.93,3.24,101.2,2.88C109.47,2.51,117.73,2.29,126,2" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                                                        <div data-slot="stat-card"  data-trend="up" data-tone="positive"   data-metric="sessions" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Sessions</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">26,110</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">+7.4%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 24,300</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-924fb8f1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,6.08C10.27,5.79,18.53,5.6,26.8,5.21C35.07,4.82,43.33,3.75,51.6,3.75C59.87,3.75,68.13,4.33,76.4,4.33C84.67,4.33,92.93,3.26,101.2,2.88C109.47,2.49,117.73,2.29,126,2L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-924fb8f1)" stroke="none" />        <path d="M2,6.08C10.27,5.79,18.53,5.6,26.8,5.21C35.07,4.82,43.33,3.75,51.6,3.75C59.87,3.75,68.13,4.33,76.4,4.33C84.67,4.33,92.93,3.26,101.2,2.88C109.47,2.49,117.73,2.29,126,2" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                                                        <div data-slot="stat-card"  data-trend="up" data-tone="positive"   data-metric="engagementRate" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 4.1 12 6"/>
+  <path d="m5.1 8-2.9-.8"/>
+  <path d="m6 12-1.9 2"/>
+  <path d="M7.2 2.2 8 5.1"/>
+  <path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Engagement rate</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">61.2%</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">+4.1%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 58.8%</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-c2ec9013" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,3.46C10.27,3.31,18.53,3.16,26.8,3.01C35.07,2.85,43.33,2.7,51.6,2.55C59.87,2.4,68.13,2.09,76.4,2.09C84.67,2.09,92.93,2.09,101.2,2.09C109.47,2.09,117.73,2.03,126,2L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-c2ec9013)" stroke="none" />        <path d="M2,3.46C10.27,3.31,18.53,3.16,26.8,3.01C35.07,2.85,43.33,2.7,51.6,2.55C59.87,2.4,68.13,2.09,76.4,2.09C84.67,2.09,92.93,2.09,101.2,2.09C109.47,2.09,117.73,2.03,126,2" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                                                        <div data-slot="stat-card"  data-trend="up" data-tone="positive"   data-metric="engagementSeconds" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Avg. engagement time</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            2m 14s
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">+10.7%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 2m 01s</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-de7162c8" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,5.34C10.27,5.06,18.53,4.79,26.8,4.51C35.07,4.23,43.33,3.95,51.6,3.67C59.87,3.39,68.13,3.04,76.4,2.84C84.67,2.63,92.93,2.56,101.2,2.42C109.47,2.28,117.73,2.14,126,2L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-de7162c8)" stroke="none" />        <path d="M2,5.34C10.27,5.06,18.53,4.79,26.8,4.51C35.07,4.23,43.33,3.95,51.6,3.67C59.87,3.39,68.13,3.04,76.4,2.84C84.67,2.63,92.93,2.56,101.2,2.42C109.47,2.28,117.73,2.14,126,2" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                                                        <div data-slot="stat-card"  data-trend="down" data-tone="negative"   data-metric="conversions" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="6"/>
+  <circle cx="12" cy="12" r="2"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Key events</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">940</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-danger-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 17h6v-6"/>
+  <path d="m22 17-8.5-8.5-5 5L2 7"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">-6.9%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 1,010</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-e7682d8b" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-danger)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-danger)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,2C10.27,2.27,18.53,2.41,26.8,2.82C35.07,3.24,43.33,4.06,51.6,4.47C59.87,4.88,68.13,5.02,76.4,5.29C84.67,5.57,92.93,6.12,101.2,6.12C109.47,6.12,117.73,5.57,126,5.29L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-e7682d8b)" stroke="none" />        <path d="M2,2C10.27,2.27,18.53,2.41,26.8,2.82C35.07,3.24,43.33,4.06,51.6,4.47C59.87,4.88,68.13,5.02,76.4,5.29C84.67,5.57,92.93,6.12,101.2,6.12C109.47,6.12,117.73,5.57,126,5.29" fill="none" stroke="var(--nq-danger)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                        </div>
+    <div class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]">
+        <div data-slot="time-series-panel"  x-data="nqTimeSeriesPanel('users', true)"
+    class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+    <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Traffic</h3>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Daily totals for the selected period</div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="max-w-full overflow-x-auto">
+                    <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022users\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Metric" x-model="pressed" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('users')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Users</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('sessions')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Sessions</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('conversions')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Key events</button>
+</div>
+                </div>
+                                        <label class="flex items-center gap-2 text-body-sm text-muted-foreground">
+                    <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="compare" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                    Compare with previous period
+                </label>
+                    </div>
+                                                    <div class="contents" data-metric="users" x-show="metric === 'users'" >
+                    <div data-slot="time-series-total" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-caption text-muted-foreground">Total</span>
+                        <span class="text-h2 text-foreground tabular-nums">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">1,905</bdi>
+                        </span>
+                                                    <span class="text-label text-nq-success-text" x-show="compare" >
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums">+10.4%</bdi>
+                            </span>
+                                            </div>
+                    <div data-slot="chart"  role="img" aria-label="Users, Sep 27 to Sep 29"   style="--color-current: var(--primary); --color-previous: var(--muted-foreground)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+                            <div aria-hidden="true" class="relative w-11 shrink-0 text-end text-muted-foreground">
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 100%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">0</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 75%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">200</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 50%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">400</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 25%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">600</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 0%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">800</bdi>
+                                                                            </span>
+                                                            </div>
+                            <div data-slot="time-series-plot" class="relative min-w-0 flex-1" x-data="nqTimeSeriesChart(JSON.parse('[{\u0022x\u0022:0,\u0022y\u0022:23.75,\u0022date\u0022:\u0022Sep 27\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Users\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022610\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022560\u0022}]},{\u0022x\u0022:50,\u0022y\u0022:20,\u0022date\u0022:\u0022Sep 28\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Users\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022640\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022575\u0022}]},{\u0022x\u0022:100,\u0022y\u0022:18.13,\u0022date\u0022:\u0022Sep 29\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Users\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022655\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022590\u0022}]}]'))" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 100%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 75%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 50%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 25%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 0%"></span>
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <defs>
+                                        <linearGradient id="nq-ts-65a4616b" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" style="stop-color: var(--color-current); stop-opacity: 0.28" />
+                                            <stop offset="100%" style="stop-color: var(--color-current); stop-opacity: 0.02" />
+                                        </linearGradient>
+                                    </defs>
+                                                                                                                <path data-slot="time-series-previous" x-show="compare"  d="M0,30C16.67,29.38,33.33,28.76,50,28.13C66.67,27.51,83.33,26.88,100,26.25" fill="none" stroke="var(--color-previous)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                                        <path d="M0,23.75C16.67,22.5,33.33,20.94,50,20C66.67,19.06,83.33,18.75,100,18.13L100,100L0,100Z" fill="url(#nq-ts-65a4616b)" stroke="none" />
+                                    <path data-slot="time-series-current" d="M0,23.75C16.67,22.5,33.33,20.94,50,20C66.67,19.06,83.33,18.75,100,18.13" fill="none" stroke="var(--color-current)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+                                </svg>
+                                                                <div class="contents" x-show="hover !== null" style="display: none">
+                                    <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 w-px bg-border" x-bind:style="lineStyle"></span>
+                                    <span aria-hidden="true" data-slot="chart-dot" class="pointer-events-none absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-current)] ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="dotStyle"></span>
+                                    <div class="pointer-events-none absolute top-0 z-10 ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="tipStyle">
+                                        <div data-slot="chart-tooltip" dir="ltr" class="grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md">
+                                            <div class="text-label" x-text="tip.date"></div>
+                                            <div class="grid gap-1">
+                                                <template x-for="row in tip.rows" x-bind:key="row.k">
+                                                    <div class="flex items-center gap-2" x-show="row.k === 'current' || compare">
+                                                        <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]" x-bind:style="{ backgroundColor: row.color }"></span>
+                                                        <span class="text-muted-foreground" x-text="row.label"></span>
+                                                        <span class="ms-auto ps-3 text-label tabular-nums" x-text="row.text"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-hidden="true" class="relative h-4 ms-[3.25rem]">
+                                                                                            <span class="absolute top-0 whitespace-nowrap start-0"
+                                    >Sep 27</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap ltr:-translate-x-1/2 rtl:translate-x-1/2"
+                                     style="inset-inline-start: 50%" >Sep 28</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap end-0"
+                                    >Sep 29</span>
+                                                    </div>
+</div>
+                </div>
+                                            <div class="contents" data-metric="sessions" x-show="metric === 'sessions'"  style="display: none" >
+                    <div data-slot="time-series-total" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-caption text-muted-foreground">Total</span>
+                        <span class="text-h2 text-foreground tabular-nums">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">2,770</bdi>
+                        </span>
+                                                    <span class="text-label text-nq-success-text" x-show="compare" >
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums">+9.1%</bdi>
+                            </span>
+                                            </div>
+                    <div data-slot="chart"  role="img" aria-label="Sessions, Sep 27 to Sep 29"   style="--color-current: var(--nq-tag-teal); --color-previous: var(--muted-foreground)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+                            <div aria-hidden="true" class="relative w-11 shrink-0 text-end text-muted-foreground">
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 100%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">0</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 50%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">500</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 0%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">1K</bdi>
+                                                                            </span>
+                                                            </div>
+                            <div data-slot="time-series-plot" class="relative min-w-0 flex-1" x-data="nqTimeSeriesChart(JSON.parse('[{\u0022x\u0022:0,\u0022y\u0022:12,\u0022date\u0022:\u0022Sep 27\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Sessions\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022880\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022820\u0022}]},{\u0022x\u0022:50,\u0022y\u0022:7,\u0022date\u0022:\u0022Sep 28\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Sessions\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022930\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022850\u0022}]},{\u0022x\u0022:100,\u0022y\u0022:4,\u0022date\u0022:\u0022Sep 29\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Sessions\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022960\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022870\u0022}]}]'))" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 100%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 50%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 0%"></span>
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <defs>
+                                        <linearGradient id="nq-ts-7d93a569" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" style="stop-color: var(--color-current); stop-opacity: 0.28" />
+                                            <stop offset="100%" style="stop-color: var(--color-current); stop-opacity: 0.02" />
+                                        </linearGradient>
+                                    </defs>
+                                                                                                                <path data-slot="time-series-previous" x-show="compare"  d="M0,18C16.67,17,33.33,15.83,50,15C66.67,14.17,83.33,13.67,100,13" fill="none" stroke="var(--color-previous)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                                        <path d="M0,12C16.67,10.33,33.33,8.33,50,7C66.67,5.67,83.33,5,100,4L100,100L0,100Z" fill="url(#nq-ts-7d93a569)" stroke="none" />
+                                    <path data-slot="time-series-current" d="M0,12C16.67,10.33,33.33,8.33,50,7C66.67,5.67,83.33,5,100,4" fill="none" stroke="var(--color-current)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+                                </svg>
+                                                                <div class="contents" x-show="hover !== null" style="display: none">
+                                    <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 w-px bg-border" x-bind:style="lineStyle"></span>
+                                    <span aria-hidden="true" data-slot="chart-dot" class="pointer-events-none absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-current)] ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="dotStyle"></span>
+                                    <div class="pointer-events-none absolute top-0 z-10 ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="tipStyle">
+                                        <div data-slot="chart-tooltip" dir="ltr" class="grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md">
+                                            <div class="text-label" x-text="tip.date"></div>
+                                            <div class="grid gap-1">
+                                                <template x-for="row in tip.rows" x-bind:key="row.k">
+                                                    <div class="flex items-center gap-2" x-show="row.k === 'current' || compare">
+                                                        <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]" x-bind:style="{ backgroundColor: row.color }"></span>
+                                                        <span class="text-muted-foreground" x-text="row.label"></span>
+                                                        <span class="ms-auto ps-3 text-label tabular-nums" x-text="row.text"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-hidden="true" class="relative h-4 ms-[3.25rem]">
+                                                                                            <span class="absolute top-0 whitespace-nowrap start-0"
+                                    >Sep 27</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap ltr:-translate-x-1/2 rtl:translate-x-1/2"
+                                     style="inset-inline-start: 50%" >Sep 28</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap end-0"
+                                    >Sep 29</span>
+                                                    </div>
+</div>
+                </div>
+                                            <div class="contents" data-metric="conversions" x-show="metric === 'conversions'"  style="display: none" >
+                    <div data-slot="time-series-total" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-caption text-muted-foreground">Total</span>
+                        <span class="text-h2 text-foreground tabular-nums">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">90</bdi>
+                        </span>
+                                                    <span class="text-label text-nq-danger-text" x-show="compare" >
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums">-10%</bdi>
+                            </span>
+                                            </div>
+                    <div data-slot="chart"  role="img" aria-label="Key events, Sep 27 to Sep 29"   style="--color-current: var(--nq-tag-orange); --color-previous: var(--muted-foreground)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+                            <div aria-hidden="true" class="relative w-11 shrink-0 text-end text-muted-foreground">
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 100%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">0</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 75%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">10</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 50%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">20</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 25%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">30</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 0%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">40</bdi>
+                                                                            </span>
+                                                            </div>
+                            <div data-slot="time-series-plot" class="relative min-w-0 flex-1" x-data="nqTimeSeriesChart(JSON.parse('[{\u0022x\u0022:0,\u0022y\u0022:22.5,\u0022date\u0022:\u0022Sep 27\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Key events\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u002231\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u002233\u0022}]},{\u0022x\u0022:50,\u0022y\u0022:27.5,\u0022date\u0022:\u0022Sep 28\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Key events\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u002229\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u002234\u0022}]},{\u0022x\u0022:100,\u0022y\u0022:25,\u0022date\u0022:\u0022Sep 29\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Key events\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u002230\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u002233\u0022}]}]'))" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 100%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 75%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 50%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 25%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 0%"></span>
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <defs>
+                                        <linearGradient id="nq-ts-f6b1ba1e" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" style="stop-color: var(--color-current); stop-opacity: 0.28" />
+                                            <stop offset="100%" style="stop-color: var(--color-current); stop-opacity: 0.02" />
+                                        </linearGradient>
+                                    </defs>
+                                                                                                                <path data-slot="time-series-previous" x-show="compare"  d="M0,17.5C16.67,16.67,33.33,15,50,15C66.67,15,83.33,16.67,100,17.5" fill="none" stroke="var(--color-previous)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                                        <path d="M0,22.5C16.67,24.17,33.33,27.5,50,27.5C66.67,27.5,83.33,25.83,100,25L100,100L0,100Z" fill="url(#nq-ts-f6b1ba1e)" stroke="none" />
+                                    <path data-slot="time-series-current" d="M0,22.5C16.67,24.17,33.33,27.5,50,27.5C66.67,27.5,83.33,25.83,100,25" fill="none" stroke="var(--color-current)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+                                </svg>
+                                                                <div class="contents" x-show="hover !== null" style="display: none">
+                                    <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 w-px bg-border" x-bind:style="lineStyle"></span>
+                                    <span aria-hidden="true" data-slot="chart-dot" class="pointer-events-none absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-current)] ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="dotStyle"></span>
+                                    <div class="pointer-events-none absolute top-0 z-10 ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="tipStyle">
+                                        <div data-slot="chart-tooltip" dir="ltr" class="grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md">
+                                            <div class="text-label" x-text="tip.date"></div>
+                                            <div class="grid gap-1">
+                                                <template x-for="row in tip.rows" x-bind:key="row.k">
+                                                    <div class="flex items-center gap-2" x-show="row.k === 'current' || compare">
+                                                        <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]" x-bind:style="{ backgroundColor: row.color }"></span>
+                                                        <span class="text-muted-foreground" x-text="row.label"></span>
+                                                        <span class="ms-auto ps-3 text-label tabular-nums" x-text="row.text"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-hidden="true" class="relative h-4 ms-[3.25rem]">
+                                                                                            <span class="absolute top-0 whitespace-nowrap start-0"
+                                    >Sep 27</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap ltr:-translate-x-1/2 rtl:translate-x-1/2"
+                                     style="inset-inline-start: 50%" >Sep 28</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap end-0"
+                                    >Sep 29</span>
+                                                    </div>
+</div>
+                </div></div>
+</div>
+                    <div data-slot="realtime-counter" data-live="true"
+    class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+    <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground"><span class="inline-flex items-center gap-2">
+                <span aria-hidden="true" class="relative flex size-2.5">
+                    <span class="absolute inline-flex size-full rounded-full bg-nq-success opacity-60 motion-safe:animate-ping"></span>                    <span class="relative inline-flex size-2.5 rounded-full bg-nq-success"></span>
+                </span>
+                Right now
+                <span class="text-caption font-normal text-muted-foreground">Live</span>
+            </span></h3>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Active users in the last 30 minutes</div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div class="flex flex-wrap items-end justify-between gap-4">
+            <div role="status" aria-label="42 active users" class="text-display text-foreground tabular-nums" data-slot="realtime-value">
+                <bdi data-slot="num" data-numeric="" class="tabular-nums">42</bdi>
+            </div>
+                            <div data-slot="mini-bar"  role="img" aria-label="Users per minute, last 30 minutes"  class="shrink-0 h-12 w-40">
+    <div class="flex size-full items-end gap-0.5 pt-0.5">
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 20%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 40%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 20%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 60%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 40%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 80%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 60%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 40%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 60%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 100%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 80%; background-color: var(--primary); opacity: 0.35"></span>
+                    <span class="min-w-0 flex-1 rounded-[2px]"
+                style="height: 60%; background-color: var(--primary); opacity: 1"></span>
+            </div>
+</div>
+                    </div>
+                                    <div class="grid gap-4 sm:grid-cols-2">
+                                    <section aria-label="Top active pages" class="flex flex-col gap-2">
+                        <h4 class="text-label text-muted-foreground">Top active pages</h4>
+                        <ul class="flex flex-col gap-1.5">
+                                                            <li class="flex items-center justify-between gap-3 text-body-sm">
+                                                                            <bdi dir="ltr" class="min-w-0 truncate text-foreground">/</bdi>
+                                                                        <bdi data-slot="num" data-numeric="" class="tabular-nums text-muted-foreground">18</bdi>
+                                </li>
+                                                            <li class="flex items-center justify-between gap-3 text-body-sm">
+                                                                            <bdi dir="ltr" class="min-w-0 truncate text-foreground">/pricing</bdi>
+                                                                        <bdi data-slot="num" data-numeric="" class="tabular-nums text-muted-foreground">9</bdi>
+                                </li>
+                                                    </ul>
+                    </section>
+                                    <section aria-label="Top countries" class="flex flex-col gap-2">
+                        <h4 class="text-label text-muted-foreground">Top countries</h4>
+                        <ul class="flex flex-col gap-1.5">
+                                                            <li class="flex items-center justify-between gap-3 text-body-sm">
+                                                                            <span class="min-w-0 truncate text-foreground" dir="auto">🇸🇦 Saudi Arabia</span>
+                                                                        <bdi data-slot="num" data-numeric="" class="tabular-nums text-muted-foreground">21</bdi>
+                                </li>
+                                                            <li class="flex items-center justify-between gap-3 text-body-sm">
+                                                                            <span class="min-w-0 truncate text-foreground" dir="auto">🇪🇬 Egypt</span>
+                                                                        <bdi data-slot="num" data-numeric="" class="tabular-nums text-muted-foreground">11</bdi>
+                                </li>
+                                                    </ul>
+                    </section>
+                            </div></div>
+</div>
+            </div>
+    <div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('sources')" x-modelable="value" x-id="['nq-tabs']" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="underline" aria-orientation="horizontal" x-bind="list"
+    class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-4 border-b border-border">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('sources')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Sources</button>
+            <button type="button" data-slot="tabs-tab" x-bind="tab('pages')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Pages</button>
+            <button type="button" data-slot="tabs-tab" x-bind="tab('audience')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Audience</button>
+            <span data-slot="tabs-indicator" aria-hidden="true"
+    class="absolute -z-10 transition-[left,width] duration-200 ease-nq left-[var(--active-tab-left)] w-[var(--active-tab-width)] bottom-0 h-0.5 rounded-full bg-primary"></span>
+</div>
+        <div data-slot="tabs-panel" x-bind="panel('sources')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus grid gap-4 lg:grid-cols-2"><div data-slot="breakdown-table"      class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+            <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Default channel group</h3></div>
+        <div data-slot="card-content" class="px-0"><div data-slot="table-container" role="region" tabindex="0"  aria-label="Default channel group"     class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+    <table data-slot="table" data-density="default"
+                  class="w-full caption-bottom border-collapse text-body-sm">
+        <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Channel</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Sessions</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 hidden text-end sm:table-cell">Share</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Change</th></tr></thead>
+                <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     data-row="organic" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">Organic Search</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 100%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">12,400</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">57.1%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+10.7%</bdi></td></tr>
+                                                                    <tr data-slot="table-row"     data-row="direct" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">Direct</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 49.1935%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">6,100</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">28.1%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-danger-text"><bdi data-slot="num" data-numeric="">-4.7%</bdi></td></tr>
+                                                                    <tr data-slot="table-row"     data-row="social" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">Organic Social</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 25.8065%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">3,200</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">14.7%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+18.5%</bdi></td></tr></tbody>
+    </table>
+</div></div>
+</div>
+            <div data-slot="breakdown-table"      class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+            <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Source / medium</h3></div>
+        <div data-slot="card-content" class="px-0"><div data-slot="table-container" role="region" tabindex="0"  aria-label="Source / medium"     class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+    <table data-slot="table" data-density="default"
+                  class="w-full caption-bottom border-collapse text-body-sm">
+        <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Source / medium</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Sessions</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 hidden text-end sm:table-cell">Share</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Change</th></tr></thead>
+                <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     data-row="g" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><bdi dir="ltr" class="block truncate">google / organic</bdi>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 100%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">11,800</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">65.9%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+8.3%</bdi></td></tr>
+                                                                    <tr data-slot="table-row"     data-row="d" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><bdi dir="ltr" class="block truncate">(direct) / (none)</bdi>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 51.6949%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">6,100</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">34.1%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-danger-text"><bdi data-slot="num" data-numeric="">-4.7%</bdi></td></tr></tbody>
+    </table>
+</div></div>
+</div></div>
+        <div data-slot="tabs-panel" x-bind="panel('pages')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div data-slot="breakdown-table"      class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+            <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Top pages</h3></div>
+        <div data-slot="card-content" class="px-0"><div data-slot="table-container" role="region" tabindex="0"  aria-label="Top pages"     class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+    <table data-slot="table" data-density="default"
+                  class="w-full caption-bottom border-collapse text-body-sm">
+        <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Page</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Sessions</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 hidden text-end sm:table-cell">Share</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Change</th></tr></thead>
+                <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     data-row="home" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><bdi dir="ltr" class="block truncate">/</bdi>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 100%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">9,800</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">57.6%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+7.7%</bdi></td></tr>
+                                                                    <tr data-slot="table-row"     data-row="pricing" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><bdi dir="ltr" class="block truncate">/pricing</bdi>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 43.8776%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">4,300</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">25.3%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+10.3%</bdi></td></tr>
+                                                                    <tr data-slot="table-row"     data-row="docs" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><bdi dir="ltr" class="block truncate">/docs/getting-started</bdi>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 29.5918%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">2,900</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">17.1%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+16%</bdi></td></tr></tbody>
+    </table>
+</div></div>
+</div></div>
+        <div data-slot="tabs-panel" x-bind="panel('audience')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus grid gap-4 lg:grid-cols-2"><div data-slot="breakdown-table"      class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+            <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Countries</h3></div>
+        <div data-slot="card-content" class="px-0"><div data-slot="table-container" role="region" tabindex="0"  aria-label="Countries"     class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+    <table data-slot="table" data-density="default"
+                  class="w-full caption-bottom border-collapse text-body-sm">
+        <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Country</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Users</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 hidden text-end sm:table-cell">Share</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Change</th></tr></thead>
+                <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     data-row="SA" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">🇸🇦 Saudi Arabia</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 100%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">8,300</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">55.3%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+9.2%</bdi></td></tr>
+                                                                    <tr data-slot="table-row"     data-row="EG" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">🇪🇬 Egypt</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 49.3976%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">4,100</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">27.3%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-danger-text"><bdi data-slot="num" data-numeric="">-2.4%</bdi></td></tr>
+                                                                    <tr data-slot="table-row"     data-row="AE" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">🇦🇪 United Arab Emirates</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 31.3253%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">2,600</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">17.3%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+13%</bdi></td></tr></tbody>
+    </table>
+</div></div>
+</div>
+            <div class="flex flex-col gap-4">
+                <div data-slot="breakdown-table"      class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+            <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Devices</h3></div>
+        <div data-slot="card-content" class="px-0"><div data-slot="table-container" role="region" tabindex="0"  aria-label="Devices"     class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+    <table data-slot="table" data-density="default"
+                  class="w-full caption-bottom border-collapse text-body-sm">
+        <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Device</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Users</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 hidden text-end sm:table-cell">Share</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Change</th></tr></thead>
+                <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     data-row="mobile" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">Mobile</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 100%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">11,200</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">63.6%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+10.9%</bdi></td></tr>
+                                                                    <tr data-slot="table-row"     data-row="desktop" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">Desktop</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 57.1429%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">6,400</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">36.4%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+6.7%</bdi></td></tr></tbody>
+    </table>
+</div></div>
+</div>
+                                    <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Sessions by day</h3>
+                            <div data-slot="card-description" class="text-body-sm text-muted-foreground">Darker days had more sessions</div></div>
+                        <div data-slot="card-content" class="px-4 overflow-x-auto"><div data-slot="heatmap" dir="ltr" lang="en" style="--heat:var(--nq-tag-teal);--cell:14px;--gap:3px" x-data="nqHeatmap(JSON.parse('{\u0022from\u0022:\u00222026-09-01\u0022,\u0022to\u0022:\u00222026-09-29\u0022,\u0022rtl\u0022:false}'))"
+    class="inline-flex max-w-full flex-col gap-2 text-caption text-muted-foreground">
+    <div class="overflow-x-auto pb-1">
+        <div class="flex gap-[var(--gap)]">
+            <div aria-hidden="true" class="flex flex-col gap-[var(--gap)] pe-1">
+                <span class="h-4"></span>
+                                    <span class="flex h-[var(--cell)] items-center whitespace-nowrap leading-none"></span>
+                                    <span class="flex h-[var(--cell)] items-center whitespace-nowrap leading-none">Mon</span>
+                                    <span class="flex h-[var(--cell)] items-center whitespace-nowrap leading-none"></span>
+                                    <span class="flex h-[var(--cell)] items-center whitespace-nowrap leading-none">Wed</span>
+                                    <span class="flex h-[var(--cell)] items-center whitespace-nowrap leading-none"></span>
+                                    <span class="flex h-[var(--cell)] items-center whitespace-nowrap leading-none">Fri</span>
+                                    <span class="flex h-[var(--cell)] items-center whitespace-nowrap leading-none"></span>
+                            </div>
+            <div role="grid" aria-label="Sessions by day" class="flex gap-[var(--gap)]" x-on:keydown="key($event)" x-on:focusin="focus($event)" x-on:focusout="blur()" x-on:pointerover="hover($event)" x-on:pointerout="blur()">
+                                    <div class="flex flex-col gap-[var(--gap)]">
+                        <span aria-hidden="true" class="h-4 w-[var(--cell)] overflow-visible whitespace-nowrap leading-4">Sep</span>
+                        <div role="row" class="flex flex-col gap-[var(--gap)]">
+                                                                                                <span role="presentation" class="size-[var(--cell)] shrink-0 rounded-[3px]"></span>
+                                                                                                                                <span role="presentation" class="size-[var(--cell)] shrink-0 rounded-[3px]"></span>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 1, 2026: No contributions" data-date="2026-09-01" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 1, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 2, 2026: No contributions" data-date="2026-09-02" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 2, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 3, 2026: No contributions" data-date="2026-09-03" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 3, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 4, 2026: No contributions" data-date="2026-09-04" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 4, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 5, 2026: No contributions" data-date="2026-09-05" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 5, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                    </div>
+                    </div>
+                                    <div class="flex flex-col gap-[var(--gap)]">
+                        <span aria-hidden="true" class="h-4 w-[var(--cell)] overflow-visible whitespace-nowrap leading-4"></span>
+                        <div role="row" class="flex flex-col gap-[var(--gap)]">
+                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 6, 2026: No contributions" data-date="2026-09-06" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 6, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 7, 2026: No contributions" data-date="2026-09-07" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 7, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 8, 2026: No contributions" data-date="2026-09-08" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 8, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 9, 2026: No contributions" data-date="2026-09-09" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 9, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 10, 2026: No contributions" data-date="2026-09-10" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 10, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 11, 2026: No contributions" data-date="2026-09-11" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 11, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 12, 2026: No contributions" data-date="2026-09-12" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 12, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                    </div>
+                    </div>
+                                    <div class="flex flex-col gap-[var(--gap)]">
+                        <span aria-hidden="true" class="h-4 w-[var(--cell)] overflow-visible whitespace-nowrap leading-4"></span>
+                        <div role="row" class="flex flex-col gap-[var(--gap)]">
+                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 13, 2026: No contributions" data-date="2026-09-13" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 13, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 14, 2026: No contributions" data-date="2026-09-14" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 14, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 15, 2026: No contributions" data-date="2026-09-15" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 15, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 16, 2026: No contributions" data-date="2026-09-16" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 16, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 17, 2026: No contributions" data-date="2026-09-17" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 17, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 18, 2026: No contributions" data-date="2026-09-18" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 18, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 19, 2026: No contributions" data-date="2026-09-19" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 19, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                    </div>
+                    </div>
+                                    <div class="flex flex-col gap-[var(--gap)]">
+                        <span aria-hidden="true" class="h-4 w-[var(--cell)] overflow-visible whitespace-nowrap leading-4"></span>
+                        <div role="row" class="flex flex-col gap-[var(--gap)]">
+                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 20, 2026: No contributions" data-date="2026-09-20" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 20, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 21, 2026: No contributions" data-date="2026-09-21" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 21, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 22, 2026: No contributions" data-date="2026-09-22" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 22, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 23, 2026: No contributions" data-date="2026-09-23" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 23, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 24, 2026: No contributions" data-date="2026-09-24" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 24, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 25, 2026: No contributions" data-date="2026-09-25" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 25, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 26, 2026: No contributions" data-date="2026-09-26" data-level="0"
+                                        data-tip-count="No contributions" data-tip-date="Sep 26, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                    </div>
+                    </div>
+                                    <div class="flex flex-col gap-[var(--gap)]">
+                        <span aria-hidden="true" class="h-4 w-[var(--cell)] overflow-visible whitespace-nowrap leading-4"></span>
+                        <div role="row" class="flex flex-col gap-[var(--gap)]">
+                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 27, 2026: 880 contributions" data-date="2026-09-27" data-level="4"
+                                        data-tip-count="880 contributions" data-tip-date="Sep 27, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[var(--heat)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="-1" aria-label="Sep 28, 2026: 930 contributions" data-date="2026-09-28" data-level="4"
+                                        data-tip-count="930 contributions" data-tip-date="Sep 28, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[var(--heat)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                                                    <div role="gridcell" tabindex="0" aria-label="Sep 29, 2026: 960 contributions" data-date="2026-09-29" data-level="4"
+                                        data-tip-count="960 contributions" data-tip-date="Sep 29, 2026"
+                                        class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[var(--heat)] outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus hover:outline hover:outline-1 hover:outline-nq-line-strong"></div>
+                                                                                                                                <span role="presentation" class="size-[var(--cell)] shrink-0 rounded-[3px]"></span>
+                                                                                                                                <span role="presentation" class="size-[var(--cell)] shrink-0 rounded-[3px]"></span>
+                                                                                                                                <span role="presentation" class="size-[var(--cell)] shrink-0 rounded-[3px]"></span>
+                                                                                                                                <span role="presentation" class="size-[var(--cell)] shrink-0 rounded-[3px]"></span>
+                                                                                    </div>
+                    </div>
+                            </div>
+        </div>
+    </div>
+            <div data-slot="heatmap-legend" class="flex items-center gap-1.5 self-end">
+            <span>Less</span>
+            <span aria-hidden="true" class="flex gap-[var(--gap)]">
+                                    <span data-level="0" class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_9%,transparent)]"></span>
+                                    <span data-level="1" class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_35%,transparent)]"></span>
+                                    <span data-level="2" class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_55%,transparent)]"></span>
+                                    <span data-level="3" class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[color-mix(in_oklab,var(--heat)_78%,transparent)]"></span>
+                                    <span data-level="4" class="size-[var(--cell)] shrink-0 rounded-[3px] bg-[var(--heat)]"></span>
+                            </span>
+            <span>More</span>
+        </div>
+        <div data-slot="tooltip-content" role="tooltip" x-ref="tip" x-show="tipOpen" style="display:none;position:fixed;left:0;top:0" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background">
+        <strong class="font-semibold" x-text="tipCount"></strong>
+        <span class="block opacity-80" x-text="tipDate"></span>
+    </div>
+</div></div></div>
+                            </div></div>
+</div>
+            </div>

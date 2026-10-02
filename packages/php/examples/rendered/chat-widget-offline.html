@@ -1,0 +1,140 @@
+<div class="relative h-[34rem] w-full">
+    <div data-slot="chat-widget" x-data="nqChatWidget(JSON.parse('{\u0022open\u0022:true,\u0022maxFileMb\u0022:5,\u0022visitor\u0022:0,\u0022labels\u0022:{\u0022launcher\u0022:\u0022Open chat\u0022,\u0022close\u0022:\u0022Close chat\u0022,\u0022sendFailed\u0022:\u0022Could not send. Try again.\u0022,\u0022fileTooBig\u0022:\u0022{name} is larger than {mb} MB\u0022,\u0022removeFile\u0022:\u0022Remove {name}\u0022,\u0022formRequired\u0022:\u0022Required\u0022,\u0022formInvalidEmail\u0022:\u0022Enter a valid email address\u0022}}'))" x-modelable="open"
+    x-bind:data-open="open ? '' : null" x-on:keydown="onKey($event)"
+        class="z-50 flex flex-col items-end gap-3 absolute bottom-4 end-4">
+    <section role="dialog" aria-labelledby="nq-cw-000001-title" x-show="open"         class="flex h-[min(34rem,calc(100dvh-7rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-floating border border-border bg-card shadow-floating">
+        <header class="flex items-center gap-3 bg-primary px-4 py-3 text-primary-foreground">
+            <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-8 text-caption rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Layla" >L</span>
+    </span>
+            <div class="flex min-w-0 flex-1 flex-col">
+                <h2 id="nq-cw-000001-title" dir="auto" class="truncate text-label">Chat with us</h2>
+                <p class="flex items-center gap-1.5 truncate text-caption opacity-90">
+                    <span aria-hidden="true" class="size-2 shrink-0 rounded-full bg-nq-line-strong"></span>
+                    <span class="sr-only">Offline. </span>
+                    <span dir="auto" class="truncate">We are away, leave a message</span>
+                </p>
+            </div>
+            <button data-slot="button"
+     type="button"                     x-on:click="close()" aria-label="Close chat" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 size-control-sm p-0 text-primary-foreground hover:bg-primary-foreground/15">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+        </header>
+        <div data-slot="chat-thread" x-data="nqChatThread" x-on:nq-retry.stop="retry($event)" class="relative flex min-h-0 flex-col flex-1">
+    <div x-ref="scroller" x-on:scroll="onScroll()" role="log" aria-live="polite" aria-relevant="additions" aria-label="Chat with us" tabindex="0"
+        class="min-h-0 flex-1 overflow-y-auto overscroll-contain outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+        <div x-ref="content" class="flex flex-col gap-3 p-4"><div data-slot="chat-message" data-side="assistant"          class="flex max-w-[85%] items-start gap-2 self-start">
+            <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full mt-0.5">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Layla" >L</span>
+    </span>
+        <div class="flex min-w-0 flex-col gap-1 items-start">
+                    <div class="flex items-center gap-2 text-caption text-muted-foreground">
+                <span class="text-label text-foreground">Layla</span>                            </div>
+                <div data-slot="chat-bubble"             class="min-w-0 rounded-card px-3 py-2 text-body border border-border bg-card text-nq-fg-body">
+                                                <p dir="auto" class="whitespace-pre-wrap text-start [overflow-wrap:anywhere]">We are not around right now. Leave your details and we will write back by email.</p>
+                                                </div>
+            </div>
+</div>
+                                                                <div data-slot="chat-message" data-side="assistant"          data-id="m1" class="flex max-w-[85%] items-start gap-2 self-start">
+            <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full mt-0.5">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Layla" >L</span>
+    </span>
+        <div class="flex min-w-0 flex-col gap-1 items-start">
+                    <div class="flex items-center gap-2 text-caption text-muted-foreground">
+                <span class="text-label text-foreground">Layla</span>                <time data-slot="date-time" datetime="2026-09-29T08:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">8:00 AM</time>
+            </div>
+                <div data-slot="chat-bubble"             class="min-w-0 rounded-card px-3 py-2 text-body border border-border bg-card text-nq-fg-body">
+                                                <p dir="auto" class="whitespace-pre-wrap text-start [overflow-wrap:anywhere]">We are back at 9:00.</p>
+                                                </div>
+            </div>
+</div>
+            <template x-for="m in outbox" x-bind:key="m.id">
+                <div data-slot="chat-message" data-side="user" x-bind:data-status="m.status" class="flex max-w-[85%] items-start gap-2 flex-row-reverse self-end">
+                    <div class="flex min-w-0 flex-col gap-1 items-end">
+                        <div data-slot="chat-bubble" class="min-w-0 rounded-card px-3 py-2 text-body bg-secondary text-secondary-foreground">
+                            <p x-show="m.text" x-text="m.text" dir="auto" class="whitespace-pre-wrap text-start [overflow-wrap:anywhere]"></p>
+                            <ul x-show="m.files.length" class="mt-2 flex flex-col gap-1.5">
+                                <template x-for="name in m.files">
+                                    <li><span dir="auto" class="inline-flex items-center gap-1 text-body-sm"><svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/>
+</svg><span x-text="name"></span></span></li>
+                                </template>
+                            </ul>
+                        </div>
+                        <div data-slot="chat-status" class="flex items-center gap-1.5 text-caption text-muted-foreground">
+                            <span x-show="m.status === 'sending'" role="status">Sending…</span>
+                            <span x-show="m.status === 'sent'" class="flex items-center gap-1.5"><svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg><span>Sent</span></span>
+                        </div>
+                    </div>
+                </div>
+            </template></div>
+    </div>
+    <button data-slot="chat-jump"
+     type="button"                     x-show="away" x-cloak="x-cloak" x-on:click="jump()" aria-label="Jump to latest" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover size-control-sm p-0 absolute end-4 bottom-3 rounded-full shadow-sm">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 5v14"/>
+  <path d="m19 12-7 7-7-7"/>
+</svg></button>
+</div>
+        <p role="alert" x-show="error" x-text="error" style="display: none" class="px-4 pb-2 text-caption text-nq-danger-text"></p>
+                    <div data-slot="chat-widget-sent" role="status" x-show="sent" style="display: none" class="flex flex-col items-center gap-2 border-t border-border p-6 text-center">
+                <svg aria-hidden="true" class="size-8 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                <p class="text-label text-foreground">Thanks, we got it</p>
+                <p class="text-body-sm text-muted-foreground">We will reply to your email as soon as we are back.</p>
+                <button data-slot="button"
+     type="button"                     x-on:click="again()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        Send another</button>
+            </div>
+            <form data-slot="chat-widget-offline" novalidate x-show="! sent" x-on:submit.prevent="submitOffline()" class="flex flex-col gap-3 border-t border-border p-4">
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="nameBad" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Your name</label>
+                    <input data-slot="input" type="text"
+                    x-model="form.name" x-on:input="touch()" dir="auto" autocomplete="name" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text">Required</div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="emailBad" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Email</label>
+                    <input data-slot="input" type="email"
+     dir="ltr"                 x-model="form.email" x-on:input="touch()" autocomplete="email" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="emailError()">Required</span></div>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="messageBad" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">How can we help?</label>
+                    <textarea data-slot="textarea"
+                x-model="form.message" x-on:input="touch()" dir="auto" rows="3" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                    <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text">Required</div>
+</div>
+                <p role="alert" x-show="offlineError" x-text="offlineError" style="display: none" class="text-caption text-nq-danger-text"></p>
+                <button data-slot="button"
+     type="submit"                     x-bind:disabled="busy" x-bind:aria-busy="busy ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Send message</button>
+            </form>
+            </section>
+    <button data-slot="button"
+     type="button"                     x-ref="launcher" x-on:click="toggle()" x-bind:aria-label="launcherLabel()" x-bind:aria-expanded="open ? &#039;true&#039; : &#039;false&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] p-0 relative size-14 rounded-full shadow-floating">
+        <svg x-show="open" style="" aria-hidden="true" class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>        <svg x-show="! open" style="display: none" aria-hidden="true" class="size-6 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/>
+</svg>                    <span x-show="! open"  style="display: none"  class="absolute -end-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-nq-danger px-1 text-caption tabular-nums text-primary-foreground">
+                <span aria-hidden="true">2</span>
+                <span class="sr-only">2 unread</span>
+            </span></button>
+</div>
+</div>

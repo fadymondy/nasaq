@@ -1,0 +1,451 @@
+<div class="flex w-full max-w-xl flex-col gap-6">
+    <form data-slot="activity-composer" novalidate x-data="nqActivityComposer(JSON.parse('{\u0022kind\u0022:\u0022note\u0022,\u0022when\u0022:\u00222026-09-29T09:00\u0022,\u0022t\u0022:{\u0022bodyLabel\u0022:{\u0022note\u0022:\u0022Note\u0022,\u0022call\u0022:\u0022What was discussed\u0022,\u0022meeting\u0022:\u0022Minutes\u0022,\u0022task\u0022:\u0022What needs doing\u0022},\u0022bodyHint\u0022:{\u0022note\u0022:\u0022Write a note\\u2026\u0022,\u0022call\u0022:\u0022Summarise the call\\u2026\u0022,\u0022meeting\u0022:\u0022Decisions and next steps\\u2026\u0022,\u0022task\u0022:\u0022Follow up on\\u2026\u0022},\u0022whenLabel\u0022:{\u0022note\u0022:\u0022When\u0022,\u0022call\u0022:\u0022When\u0022,\u0022meeting\u0022:\u0022When\u0022,\u0022task\u0022:\u0022Due\u0022},\u0022submit\u0022:{\u0022note\u0022:\u0022Log note\u0022,\u0022call\u0022:\u0022Log call\u0022,\u0022meeting\u0022:\u0022Log meeting\u0022,\u0022task\u0022:\u0022Add task\u0022},\u0022errors\u0022:{\u0022empty\u0022:\u0022Write something first.\u0022,\u0022badDate\u0022:\u0022Pick a valid date and time.\u0022,\u0022badDuration\u0022:\u0022Duration must be between 0 and 1440 minutes.\u0022},\u0022failed\u0022:\u0022That did not work. Try again.\u0022}}'))" x-on:submit.prevent="submit()"
+    class="flex min-w-0 flex-col gap-3 rounded-card border border-border bg-card p-3">
+    <div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('note')" x-modelable="value" x-id="['nq-tabs']" x-model="kind" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="segmented" aria-orientation="horizontal" x-bind="list"
+    aria-label="Kind of activity" class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-fit gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('note')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/>
+  <path d="M2 6h4"/>
+  <path d="M2 10h4"/>
+  <path d="M2 14h4"/>
+  <path d="M2 18h4"/>
+  <path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>
+</svg>                    Note</button>
+                            <button type="button" data-slot="tabs-tab" x-bind="tab('call')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg>                    Call</button>
+                            <button type="button" data-slot="tabs-tab" x-bind="tab('meeting')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg>                    Meeting</button>
+                            <button type="button" data-slot="tabs-tab" x-bind="tab('task')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 5h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="m3 17 2 2 4-4"/>
+  <rect x="3" y="4" width="6" height="6" rx="1"/>
+</svg>                    Task</button>
+                        <span data-slot="tabs-indicator" aria-hidden="true"
+    class="absolute -z-10 transition-[left,width] duration-200 ease-nq left-[var(--active-tab-left)] w-[var(--active-tab-width)] top-[var(--active-tab-top)] h-[var(--active-tab-height)] rounded-[calc(var(--radius-control)-2px)] bg-background shadow-xs"></span>
+</div>
+</div>
+    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  x-text="t.bodyLabel[kind]" class="text-label text-foreground data-disabled:opacity-50 sr-only">Note</label>
+        <textarea data-slot="textarea"
+                rows="3" dir="auto" x-model="body" x-bind:placeholder="t.bodyHint[kind]" x-bind:disabled="busy" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+</div>
+    <div class="flex flex-wrap items-end gap-3">
+        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5 min-w-44 flex-1">
+    <label data-slot="field-label"  x-text="t.whenLabel[kind]" class="text-label text-foreground data-disabled:opacity-50">When</label>
+            <input data-slot="input" type="datetime-local"
+     dir="ltr"                 value="2026-09-29T09:00" x-model="when" x-bind:disabled="busy" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+</div>
+        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-show="timed" style="display: none" class="flex flex-col gap-1.5 w-40">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Duration (minutes)</label>
+            <input data-slot="input" type="number"
+     dir="ltr"                 min="0" max="1440" inputmode="numeric" x-model="duration" x-bind:disabled="busy" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+</div>
+        <button data-slot="button"
+     type="submit"                     x-bind:disabled="busy" x-bind:aria-busy="busy || null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>            <span x-text="t.submit[kind]">Log note</span></button>
+    </div>
+    <p x-show="error" style="display: none" x-text="error" role="alert" class="text-body-sm text-nq-danger-text"></p>
+</form>
+    <div data-slot="activity-timeline" x-data="nqActivityTimeline(JSON.parse('{\u0022ids\u0022:[\u0022a1\u0022,\u0022a2\u0022,\u0022a3\u0022,\u0022a4\u0022,\u0022a5\u0022],\u0022labels\u0022:{\u0022failed\u0022:\u0022That did not work. Try again.\u0022}}'))" class="flex min-w-0 flex-col gap-5">
+                                    <section aria-label="Planned tasks" class="flex flex-col gap-2">
+                    <h3 class="flex items-center gap-2 text-label text-foreground">
+                        Planned
+                        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">2</bdi></span>
+                    </h3>
+                    <ol data-slot="timeline" class="m-0 flex list-none flex-col p-0"><li data-slot="timeline-item" data-activity-id="a3" data-kind="task"  x-data="nqContextMenu()"  class="group/timeline grid grid-cols-[2rem_1fr] gap-x-3">
+    <div  data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger"  class="contents">
+        <div class="flex flex-col items-center">
+            <span data-slot="timeline-marker" class="flex size-8 shrink-0 items-center justify-center">
+                <span class="flex size-8 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground [&_svg]:size-4"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 5h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="m3 17 2 2 4-4"/>
+  <rect x="3" y="4" width="6" height="6" rx="1"/>
+</svg></span>
+            </span>
+            <span aria-hidden="true" data-slot="timeline-rail" class="my-1 w-px flex-1 bg-border group-last/timeline:hidden"></span>
+        </div>
+        <div data-slot="timeline-content" class="flex min-w-0 flex-col gap-1 pb-6 pt-1 group-last/timeline:pb-0">
+            <div class="flex items-baseline justify-between gap-3">
+                <p class="min-w-0 text-body-sm font-medium text-foreground">
+                                            <span class="flex flex-wrap items-center gap-2">
+                            Task
+                                                        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text">Overdue</span>
+                                                    </span>
+                                    </p>
+                <time data-slot="date-time" datetime="2026-09-28T09:00:00+00:00" dir="auto"  title="Sep 28, 2026"     class="tabular-nums [unicode-bidi:isolate] shrink-0 text-caption text-muted-foreground">1 day ago</time>
+            </div>
+                            <p class="text-body-sm text-muted-foreground">
+                                            <span dir="auto" class="block whitespace-pre-wrap text-foreground">Confirm the kickoff date</span>
+                                    </p>
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <span class="text-caption text-muted-foreground">by Omar Nasser</span>
+                                                                <label class="flex items-center gap-2 text-body-sm text-foreground">
+                            <span class="contents" x-on:click="toggleTask(2, true, $el)"><button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 aria-label="Mark done: Confirm the kickoff date" data-action="toggle" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+</span>
+                            Due
+                        </label>
+                                                                <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="Activity actions" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        data-action="toggle" x-on:click="toggleTask(2, true)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Mark done: Confirm the kickoff date</div>
+                                                                <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-action="delete" x-on:click="removeActivity(2)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div></div>
+</template></div>
+                                    </div>
+                    </div>
+    </div>
+            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        data-action="toggle" x-on:click="toggleTask(2, true)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Mark done: Confirm the kickoff date</div>
+                        <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                            <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-action="delete" x-on:click="removeActivity(2)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div></div>
+</template>
+    </li>
+                                                    <li data-slot="timeline-item" data-activity-id="a2" data-kind="task"  x-data="nqContextMenu()"  class="group/timeline grid grid-cols-[2rem_1fr] gap-x-3">
+    <div  data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger"  class="contents">
+        <div class="flex flex-col items-center">
+            <span data-slot="timeline-marker" class="flex size-8 shrink-0 items-center justify-center">
+                <span class="flex size-8 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground [&_svg]:size-4"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 5h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="m3 17 2 2 4-4"/>
+  <rect x="3" y="4" width="6" height="6" rx="1"/>
+</svg></span>
+            </span>
+            <span aria-hidden="true" data-slot="timeline-rail" class="my-1 w-px flex-1 bg-border group-last/timeline:hidden"></span>
+        </div>
+        <div data-slot="timeline-content" class="flex min-w-0 flex-col gap-1 pb-6 pt-1 group-last/timeline:pb-0">
+            <div class="flex items-baseline justify-between gap-3">
+                <p class="min-w-0 text-body-sm font-medium text-foreground">
+                                            <span class="flex flex-wrap items-center gap-2">
+                            Task
+                                                                                                            </span>
+                                    </p>
+                <time data-slot="date-time" datetime="2026-10-02T09:00:00+00:00" dir="auto"  title="Oct 2, 2026"     class="tabular-nums [unicode-bidi:isolate] shrink-0 text-caption text-muted-foreground">3 days from now</time>
+            </div>
+                            <p class="text-body-sm text-muted-foreground">
+                                            <span dir="auto" class="block whitespace-pre-wrap text-foreground">Send the revised quote</span>
+                                    </p>
+                                        <div class="flex flex-wrap items-center gap-2">
+                                                                <label class="flex items-center gap-2 text-body-sm text-foreground">
+                            <span class="contents" x-on:click="toggleTask(1, true, $el)"><button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 aria-label="Mark done: Send the revised quote" data-action="toggle" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+</span>
+                            Due
+                        </label>
+                                                                <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="Activity actions" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        data-action="toggle" x-on:click="toggleTask(1, true)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Mark done: Send the revised quote</div>
+                                                                <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-action="delete" x-on:click="removeActivity(1)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div></div>
+</template></div>
+                                    </div>
+                    </div>
+    </div>
+            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        data-action="toggle" x-on:click="toggleTask(1, true)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Mark done: Send the revised quote</div>
+                        <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                            <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-action="delete" x-on:click="removeActivity(1)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div></div>
+</template>
+    </li></ol>
+                </section>
+                                        <section aria-label="Activity history" class="flex flex-col gap-2">
+                    <h3 class="text-label text-foreground">History</h3>
+                    <ol data-slot="timeline" class="m-0 flex list-none flex-col p-0"><li data-slot="timeline-item" data-activity-id="a1" data-kind="call"  x-data="nqContextMenu()"  class="group/timeline grid grid-cols-[2rem_1fr] gap-x-3">
+    <div  data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger"  class="contents">
+        <div class="flex flex-col items-center">
+            <span data-slot="timeline-marker" class="flex size-8 shrink-0 items-center justify-center">
+                <span class="flex size-8 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground [&_svg]:size-4"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg></span>
+            </span>
+            <span aria-hidden="true" data-slot="timeline-rail" class="my-1 w-px flex-1 bg-border group-last/timeline:hidden"></span>
+        </div>
+        <div data-slot="timeline-content" class="flex min-w-0 flex-col gap-1 pb-6 pt-1 group-last/timeline:pb-0">
+            <div class="flex items-baseline justify-between gap-3">
+                <p class="min-w-0 text-body-sm font-medium text-foreground">
+                                            <span class="flex flex-wrap items-center gap-2">
+                            Call
+                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">20 min</span>
+                                                                                </span>
+                                    </p>
+                <time data-slot="date-time" datetime="2026-09-28T10:00:00+00:00" dir="auto"  title="Sep 28, 2026"     class="tabular-nums [unicode-bidi:isolate] shrink-0 text-caption text-muted-foreground">23 hours ago</time>
+            </div>
+                            <p class="text-body-sm text-muted-foreground">
+                                            <span dir="auto" class="block whitespace-pre-wrap text-foreground">Walked through the proposal and pricing.</span>
+                                    </p>
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <span class="text-caption text-muted-foreground">by Sara Ali</span>
+                                                                                    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="Activity actions" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-action="delete" x-on:click="removeActivity(0)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div></div>
+</template></div>
+                                    </div>
+                    </div>
+    </div>
+            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-action="delete" x-on:click="removeActivity(0)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div></div>
+</template>
+    </li>
+                                                    <li data-slot="timeline-item" data-activity-id="a4" data-kind="event"  x-data="nqContextMenu()"  class="group/timeline grid grid-cols-[2rem_1fr] gap-x-3">
+    <div  data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger"  class="contents">
+        <div class="flex flex-col items-center">
+            <span data-slot="timeline-marker" class="flex size-8 shrink-0 items-center justify-center">
+                <span class="flex size-8 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground [&_svg]:size-4"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/>
+</svg></span>
+            </span>
+            <span aria-hidden="true" data-slot="timeline-rail" class="my-1 w-px flex-1 bg-border group-last/timeline:hidden"></span>
+        </div>
+        <div data-slot="timeline-content" class="flex min-w-0 flex-col gap-1 pb-6 pt-1 group-last/timeline:pb-0">
+            <div class="flex items-baseline justify-between gap-3">
+                <p class="min-w-0 text-body-sm font-medium text-foreground">
+                                            <span class="font-normal text-muted-foreground">Stage moved to Proposal</span>
+                                    </p>
+                <time data-slot="date-time" datetime="2026-09-27T08:00:00+00:00" dir="auto"  title="Sep 27, 2026"     class="tabular-nums [unicode-bidi:isolate] shrink-0 text-caption text-muted-foreground">2 days ago</time>
+            </div>
+                            <p class="text-body-sm text-muted-foreground">
+                                            <span>by Omar Nasser</span>
+                                    </p>
+                                        <div class="flex flex-wrap items-center gap-2">
+                                                                                    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="Activity actions" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-action="delete" x-on:click="removeActivity(3)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div></div>
+</template></div>
+                                    </div>
+                    </div>
+    </div>
+            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-action="delete" x-on:click="removeActivity(3)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div></div>
+</template>
+    </li>
+                                                    <li data-slot="timeline-item" data-activity-id="a5" data-kind="task"  x-data="nqContextMenu()"  class="group/timeline grid grid-cols-[2rem_1fr] gap-x-3">
+    <div  data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger"  class="contents">
+        <div class="flex flex-col items-center">
+            <span data-slot="timeline-marker" class="flex size-8 shrink-0 items-center justify-center">
+                <span class="flex size-8 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground [&_svg]:size-4"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 5h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="m3 17 2 2 4-4"/>
+  <rect x="3" y="4" width="6" height="6" rx="1"/>
+</svg></span>
+            </span>
+            <span aria-hidden="true" data-slot="timeline-rail" class="my-1 w-px flex-1 bg-border group-last/timeline:hidden"></span>
+        </div>
+        <div data-slot="timeline-content" class="flex min-w-0 flex-col gap-1 pb-6 pt-1 group-last/timeline:pb-0">
+            <div class="flex items-baseline justify-between gap-3">
+                <p class="min-w-0 text-body-sm font-medium text-foreground">
+                                            <span class="flex flex-wrap items-center gap-2">
+                            Task
+                                                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Done</span>
+                        </span>
+                                    </p>
+                <time data-slot="date-time" datetime="2026-09-25T09:00:00+00:00" dir="auto"  title="Sep 25, 2026"     class="tabular-nums [unicode-bidi:isolate] shrink-0 text-caption text-muted-foreground">4 days ago</time>
+            </div>
+                            <p class="text-body-sm text-muted-foreground">
+                                            <span dir="auto" class="block whitespace-pre-wrap text-muted-foreground line-through">Share the case study</span>
+                                    </p>
+                                        <div class="flex flex-wrap items-center gap-2">
+                                                                <label class="flex items-center gap-2 text-body-sm text-foreground">
+                            <span class="contents" x-on:click="toggleTask(4, false, $el)"><button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(true, false)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 aria-label="Reopen: Share the case study" data-action="toggle" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+</span>
+                            Done
+                        </label>
+                                                                <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="Activity actions" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        data-action="toggle" x-on:click="toggleTask(4, false)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Reopen: Share the case study</div>
+                                                                <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-action="delete" x-on:click="removeActivity(4)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div></div>
+</template></div>
+                                    </div>
+                    </div>
+    </div>
+            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        data-action="toggle" x-on:click="toggleTask(4, false)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Reopen: Share the case study</div>
+                        <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                            <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-action="delete" x-on:click="removeActivity(4)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div></div>
+</template>
+    </li></ol>
+                </section>
+                            <p x-show="error" style="display: none" x-text="error" role="alert" class="text-body-sm text-nq-danger-text"></p>
+    </div>
+</div>

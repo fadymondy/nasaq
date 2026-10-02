@@ -1,0 +1,251 @@
+<div data-slot="docs-shell" x-data="nqDocsShell(JSON.parse('{\u0022nav\u0022:[{\u0022id\u0022:\u0022intro\u0022,\u0022title\u0022:\u0022Introduction\u0022},{\u0022id\u0022:\u0022guides\u0022,\u0022title\u0022:\u0022Guides\u0022,\u0022children\u0022:[{\u0022id\u0022:\u0022install\u0022,\u0022title\u0022:\u0022Installation\u0022}]}],\u0022page\u0022:\u0022intro\u0022,\u0022ids\u0022:[\u0022why\u0022],\u0022offset\u0022:96,\u0022navHref\u0022:\u0022\\\/docs\\\/{id}\u0022,\u0022noMatch\u0022:\u0022No pages match \\u201c{query}\\u201d.\u0022}'))" class="flex min-h-dvh flex-col bg-background text-foreground">
+    <header class="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border bg-background/90 px-3 backdrop-blur sm:px-4">
+        <button data-slot="button"
+     type="button"                     aria-label="Open navigation" x-on:click="drawer = true" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0 lg:hidden">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 5h16"/>
+  <path d="M4 12h16"/>
+  <path d="M4 19h16"/>
+</svg></button>
+        <div class="flex min-w-0 items-center gap-2 font-semibold">Nasaq Docs</div>
+        <div class="ms-auto flex items-center gap-1"></div>
+    </header>
+    <div class="mx-auto flex w-full max-w-[90rem] flex-1">
+        <aside data-slot="docs-sidebar" class="sticky top-14 hidden h-[calc(100dvh-3.5rem)] w-64 shrink-0 overflow-y-auto border-e border-border p-3 lg:block">
+            <nav aria-label="Documentation" x-effect="filterTree($el, term)" class="flex flex-col gap-3">
+            <div role="group" data-slot="input-group"
+    class="group/input-group flex min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 h-control-sm"><div data-slot="input-group-addon" data-align="start"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-first ps-3 pe-1"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg></div>
+            <input data-slot="input-group-input"     type="search" x-model="term" placeholder="Filter pages" aria-label="Filter pages" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px]" />
+            <div data-slot="input-group-addon" data-align="end"
+    x-show="term !== &#039;&#039;" style="display: none" class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-3"><button type="button" aria-label="Clear filter" x-on:click="term = ''"
+                    class="rounded-[2px] outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button></div></div>
+        <div data-slot="tree-view" role="tree" x-data="nqTreeView(JSON.parse('{\u0022nodes\u0022:[{\u0022id\u0022:\u0022intro\u0022,\u0022parent\u0022:null,\u0022expandable\u0022:false,\u0022lazy\u0022:false,\u0022disabled\u0022:false,\u0022text\u0022:\u0022Introduction\u0022},{\u0022id\u0022:\u0022guides\u0022,\u0022parent\u0022:null,\u0022expandable\u0022:true,\u0022lazy\u0022:false,\u0022disabled\u0022:false,\u0022text\u0022:\u0022Guides\u0022},{\u0022id\u0022:\u0022install\u0022,\u0022parent\u0022:\u0022guides\u0022,\u0022expandable\u0022:false,\u0022lazy\u0022:false,\u0022disabled\u0022:false,\u0022text\u0022:\u0022Installation\u0022}],\u0022expanded\u0022:[],\u0022selected\u0022:[\u0022intro\u0022],\u0022mode\u0022:\u0022single\u0022,\u0022dir\u0022:null}'))" x-modelable="selected" x-on:keydown="onKeydown($event)"
+        aria-label="Documentation" x-model="picked" class="flex flex-col gap-0.5 text-body text-foreground">
+                            <div data-slot="tree-view-item" data-node-id="intro" x-bind="item('intro')"
+             data-selected                                     tabindex="0"
+            aria-level="1" aria-setsize="2" aria-posinset="1"
+                         aria-selected="true"             style=" padding-inline-start:0.375rem"
+            class="flex min-h-8 cursor-default items-center gap-1.5 rounded-control pe-2 outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-[selected]:bg-nq-selected data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+            <span data-slot="tree-view-toggle" class="flex size-5 shrink-0 items-center justify-center text-muted-foreground"
+                >
+                            </span>
+                        <span class="min-w-0 flex-1 truncate">Introduction</span>
+        </div>
+                            <div data-slot="tree-view-item" data-node-id="guides" x-bind="item('guides')"
+                                                tabindex="-1"
+            aria-level="1" aria-setsize="2" aria-posinset="2"
+             aria-expanded="false"              aria-selected="false"             style=" padding-inline-start:0.375rem"
+            class="flex min-h-8 cursor-default items-center gap-1.5 rounded-control pe-2 outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-[selected]:bg-nq-selected data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+            <span data-slot="tree-view-toggle" class="flex size-5 shrink-0 items-center justify-center text-muted-foreground"
+                 x-on:click.stop="toggle('guides')" >
+                                    <span x-show="loading.includes('guides')" style="display:none" role="status" class="inline-flex">
+                        <svg data-slot="spinner" aria-hidden="true" class="size-3.5 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <span class="sr-only">Loading</span>
+                    </span>
+                    <span x-show="!loading.includes('guides')" class="contents">
+                        <span x-show="expanded.includes('guides')" class="contents"  style="display:none" ><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></span>
+                        <span x-show="!expanded.includes('guides')" class="contents" ><svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100 size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></span>
+                    </span>
+                            </span>
+                        <span class="min-w-0 flex-1 truncate">Guides</span>
+        </div>
+                            <div data-slot="tree-view-item" data-node-id="install" x-bind="item('install')"
+                                                tabindex="-1"
+            aria-level="2" aria-setsize="1" aria-posinset="1"
+                         aria-selected="false"             style=" display:none;  padding-inline-start:1.625rem"
+            class="flex min-h-8 cursor-default items-center gap-1.5 rounded-control pe-2 outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-[selected]:bg-nq-selected data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+            <span data-slot="tree-view-toggle" class="flex size-5 shrink-0 items-center justify-center text-muted-foreground"
+                >
+                            </span>
+                        <span class="min-w-0 flex-1 truncate">Installation</span>
+        </div>
+    </div>
+    <p x-show="noMatch()" x-text="noMatchText()" style="display: none" class="px-2 text-body-sm text-muted-foreground"></p>
+</nav>
+        </aside>
+        <main class="min-w-0 flex-1 px-4 py-8 sm:px-8 lg:px-10">
+            <article class="mx-auto flex max-w-[46rem] flex-col gap-6">
+                                    <nav data-slot="breadcrumb" aria-label="Breadcrumb"><ol data-slot="breadcrumb-list" class="flex min-w-0 flex-wrap items-center gap-1.5 text-body-sm text-muted-foreground"><li data-slot="breadcrumb-item" class="inline-flex min-w-0 items-center gap-1.5">Docs</li>
+                                                            <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&_svg]:size-3.5">
+            <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>    </li>
+                                <li data-slot="breadcrumb-item" class="inline-flex min-w-0 items-center gap-1.5"><span data-slot="breadcrumb-page" aria-current="page" class="truncate text-foreground">Introduction</span></li></ol></nav>
+                <header class="flex flex-col gap-3">
+                    <div class="flex flex-wrap items-start justify-between gap-3">
+                        <h1 data-slot="text" dir="auto" class="text-h1 text-foreground min-w-0 text-start">Introduction</h1>
+                                                    <span class="contents" x-data="nqCopyButton('# Introduction\n\n## Why\n\nText.\n\n\u003E [!TIP]\n\u003E Start small.\n', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 data-copied:text-nq-success-text shrink-0">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>        Copy page</button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Copied" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span>
+                                            </div>
+                                    </header>
+                                    <details class="rounded-card border border-border px-3 py-2 xl:hidden">
+                        <summary class="flex cursor-pointer list-none items-center gap-2 rounded-[2px] text-body-sm font-medium outline-none focus-visible:outline-2 focus-visible:outline-nq-focus">
+                            <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 5h13"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="M3 10a2 2 0 0 0 2 2h3"/>
+  <path d="M3 5v12a2 2 0 0 0 2 2h3"/>
+</svg>                            On this page
+                        </summary>
+                        <nav data-slot="table-of-contents" aria-label="On this page" class="flex flex-col gap-2 mt-2 [&>p]:sr-only">
+        <p class="eyebrow">On this page</p>
+        <ol class="flex flex-col border-s border-border">
+                            <li>
+                    <a href="#why" data-id="why" dir="auto" x-on:click="go($event)" x-bind:aria-current="isActive($el) ? 'location' : null"
+                        x-bind:class="isActive($el) ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'"
+                        class="-ms-px block border-s-2 py-1 text-body-sm outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-nq-focus ps-3">Why</a>
+                </li>
+                    </ol>
+    </nav>
+                    </details>
+                <div data-slot="docs-body" class="min-w-0">
+                                            <div data-slot="post-body" class="flex min-w-0 flex-col text-nq-fg-body gap-5 text-[1.0625rem] leading-relaxed"><h2 id="why" data-slot="text" dir="auto" style="scroll-margin-top: 96px" class="text-h2 text-foreground group/heading mt-4 text-start first:mt-0">Why<a href="#why" aria-label="Link to this section" class="ms-2 inline-flex align-middle text-muted-foreground opacity-0 outline-none transition-opacity duration-150 group-hover/heading:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-nq-focus"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg></a></h2>
+<p data-slot="text" dir="auto" class="text-body text-nq-fg-body text-start">Text.</p>
+<aside data-slot="callout" data-kind="tip" class="flex gap-3 rounded-card border p-4 text-start">
+    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+  <path d="M9 18h6"/>
+  <path d="M10 22h4"/>
+</svg>    <div class="flex min-w-0 flex-col gap-1">
+        <p class="text-label text-foreground">Tip</p>
+        <div dir="auto" class="flex flex-col gap-2 text-body-sm text-nq-fg-body [&_p]:m-0"><p data-slot="text" dir="auto" class="text-body text-nq-fg-body text-start">Start small.</p></div>
+    </div>
+</aside>
+</div>
+                                    </div>
+                                    <nav aria-label="Previous and next pages" class="grid gap-3 sm:grid-cols-2">
+                                                    <span></span>
+                                                                            <a href="/docs/install" x-on:click="visit(&#039;install&#039;, $event)" class="flex min-w-0 flex-col gap-1 rounded-card border border-border p-4 text-start outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus sm:col-start-2 sm:text-end">
+    <span class="flex items-center gap-1 text-caption text-muted-foreground sm:justify-end">
+                Next
+        <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100 size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>    </span>
+    <span dir="auto" class="truncate font-medium">Installation</span>
+    </a>
+                                            </nav>
+                            </article>
+        </main>
+        <aside data-slot="docs-toc" class="sticky top-14 hidden h-[calc(100dvh-3.5rem)] w-56 shrink-0 overflow-y-auto p-4 xl:block">
+            <nav data-slot="table-of-contents" aria-label="On this page" class="flex flex-col gap-2">
+        <p class="eyebrow">On this page</p>
+        <ol class="flex flex-col border-s border-border">
+                            <li>
+                    <a href="#why" data-id="why" dir="auto" x-on:click="go($event)" x-bind:aria-current="isActive($el) ? 'location' : null"
+                        x-bind:class="isActive($el) ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'"
+                        class="-ms-px block border-s-2 py-1 text-body-sm outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-nq-focus ps-3">Why</a>
+                </li>
+                    </ol>
+    </nav>
+        </aside>
+    </div>
+    <div data-slot="sheet" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="drawer" class="contents">
+    <template x-teleport="body">
+    <div data-slot="sheet-portal">
+        <div data-slot="sheet-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 dark:bg-nq-bg/60"></div>
+        <div data-slot="sheet-content" data-side="start" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed z-50 flex flex-col bg-popover text-popover-foreground outline-none shadow-floating transition-[translate,opacity] duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 inset-y-0 start-0 h-dvh w-[min(24rem,100vw)] border-e border-border data-starting-style:-translate-x-8 data-ending-style:-translate-x-8 rtl:data-starting-style:translate-x-8 rtl:data-ending-style:translate-x-8 p-3">
+            <h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-label text-foreground sr-only">Documentation</h2>
+            <p data-slot="sheet-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground sr-only">Documentation</p>
+            <div class="mt-8 min-h-0 flex-1 overflow-y-auto">
+                <nav aria-label="Documentation" x-effect="filterTree($el, term)" class="flex flex-col gap-3">
+            <div role="group" data-slot="input-group"
+    class="group/input-group flex min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 h-control-sm"><div data-slot="input-group-addon" data-align="start"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-first ps-3 pe-1"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg></div>
+            <input data-slot="input-group-input"     type="search" x-model="term" placeholder="Filter pages" aria-label="Filter pages" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px]" />
+            <div data-slot="input-group-addon" data-align="end"
+    x-show="term !== &#039;&#039;" style="display: none" class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-3"><button type="button" aria-label="Clear filter" x-on:click="term = ''"
+                    class="rounded-[2px] outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button></div></div>
+        <div data-slot="tree-view" role="tree" x-data="nqTreeView(JSON.parse('{\u0022nodes\u0022:[{\u0022id\u0022:\u0022intro\u0022,\u0022parent\u0022:null,\u0022expandable\u0022:false,\u0022lazy\u0022:false,\u0022disabled\u0022:false,\u0022text\u0022:\u0022Introduction\u0022},{\u0022id\u0022:\u0022guides\u0022,\u0022parent\u0022:null,\u0022expandable\u0022:true,\u0022lazy\u0022:false,\u0022disabled\u0022:false,\u0022text\u0022:\u0022Guides\u0022},{\u0022id\u0022:\u0022install\u0022,\u0022parent\u0022:\u0022guides\u0022,\u0022expandable\u0022:false,\u0022lazy\u0022:false,\u0022disabled\u0022:false,\u0022text\u0022:\u0022Installation\u0022}],\u0022expanded\u0022:[],\u0022selected\u0022:[\u0022intro\u0022],\u0022mode\u0022:\u0022single\u0022,\u0022dir\u0022:null}'))" x-modelable="selected" x-on:keydown="onKeydown($event)"
+        aria-label="Documentation" x-model="picked" class="flex flex-col gap-0.5 text-body text-foreground">
+                            <div data-slot="tree-view-item" data-node-id="intro" x-bind="item('intro')"
+             data-selected                                     tabindex="0"
+            aria-level="1" aria-setsize="2" aria-posinset="1"
+                         aria-selected="true"             style=" padding-inline-start:0.375rem"
+            class="flex min-h-8 cursor-default items-center gap-1.5 rounded-control pe-2 outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-[selected]:bg-nq-selected data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+            <span data-slot="tree-view-toggle" class="flex size-5 shrink-0 items-center justify-center text-muted-foreground"
+                >
+                            </span>
+                        <span class="min-w-0 flex-1 truncate">Introduction</span>
+        </div>
+                            <div data-slot="tree-view-item" data-node-id="guides" x-bind="item('guides')"
+                                                tabindex="-1"
+            aria-level="1" aria-setsize="2" aria-posinset="2"
+             aria-expanded="false"              aria-selected="false"             style=" padding-inline-start:0.375rem"
+            class="flex min-h-8 cursor-default items-center gap-1.5 rounded-control pe-2 outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-[selected]:bg-nq-selected data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+            <span data-slot="tree-view-toggle" class="flex size-5 shrink-0 items-center justify-center text-muted-foreground"
+                 x-on:click.stop="toggle('guides')" >
+                                    <span x-show="loading.includes('guides')" style="display:none" role="status" class="inline-flex">
+                        <svg data-slot="spinner" aria-hidden="true" class="size-3.5 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <span class="sr-only">Loading</span>
+                    </span>
+                    <span x-show="!loading.includes('guides')" class="contents">
+                        <span x-show="expanded.includes('guides')" class="contents"  style="display:none" ><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></span>
+                        <span x-show="!expanded.includes('guides')" class="contents" ><svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100 size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></span>
+                    </span>
+                            </span>
+                        <span class="min-w-0 flex-1 truncate">Guides</span>
+        </div>
+                            <div data-slot="tree-view-item" data-node-id="install" x-bind="item('install')"
+                                                tabindex="-1"
+            aria-level="2" aria-setsize="1" aria-posinset="1"
+                         aria-selected="false"             style=" display:none;  padding-inline-start:1.625rem"
+            class="flex min-h-8 cursor-default items-center gap-1.5 rounded-control pe-2 outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-[selected]:bg-nq-selected data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+            <span data-slot="tree-view-toggle" class="flex size-5 shrink-0 items-center justify-center text-muted-foreground"
+                >
+                            </span>
+                        <span class="min-w-0 flex-1 truncate">Installation</span>
+        </div>
+    </div>
+    <p x-show="noMatch()" x-text="noMatchText()" style="display: none" class="px-2 text-body-sm text-muted-foreground"></p>
+</nav>
+            </div>
+                            <button type="button" data-slot="sheet-close" x-on:click="close()" aria-label="Close navigation"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</div>

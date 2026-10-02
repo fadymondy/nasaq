@@ -1,0 +1,891 @@
+<div data-slot="analytics-page" data-connected="true" x-data="nqAnalyticsPage(JSON.parse('{\u0022id\u0022:\u0022gsc\u0022,\u0022refreshing\u0022:false}'))"
+    class="flex w-full flex-col gap-6">
+    <header class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+        <div class="flex min-w-0 flex-col gap-1">
+            <h1 class="text-h1 text-foreground">Search Console</h1>
+                            <p class="text-pretty text-body-sm text-muted-foreground">How nasaq.dev performs in Google Search</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                <div role="group" data-slot="period-toggle" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u002228\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Period" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('7')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">7 days</button>
+            <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('28')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">28 days</button>
+            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('90')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">90 days</button>
+</div>                                <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Disconnect</button>
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disconnect Google Search Console?</h2>
+                            <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">This page goes back to the connect screen. Nothing is deleted from your account.</p></div>
+        <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+            <button data-slot="alert-dialog-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="disconnect()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Disconnect</button></div>
+        </div>
+    </div>
+</template>
+</div>
+            </div>
+            </header>
+                        <p class="-mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Connected" >Connected</span>
+</span>
+                                    <span>Connected to <bdi dir="ltr">owner@nasaq.dev</bdi></span>
+                                            </p>
+                            <div class="contents" x-data="nqSearchConsolePage">
+        <div data-slot="metric-tiles" role="group" aria-label="Key metrics" x-data="nqMetricTiles('clicks')" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3">
+                                                <button type="button" x-bind:aria-pressed="String(selected === 'clicks')" x-on:click="select('clicks')" class="rounded-card text-start outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <div data-slot="stat-card"  data-trend="up" data-tone="positive"   data-metric="clicks" x-bind:class="selected === &quot;clicks&quot; ? &#039;border-primary ring-1 ring-primary&#039; : &#039;&#039;" class="flex flex-col gap-3 rounded-card border bg-card px-4 py-4 text-card-foreground h-full border-primary ring-1 ring-primary">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 4.1 12 6"/>
+  <path d="m5.1 8-2.9-.8"/>
+  <path d="m6 12-1.9 2"/>
+  <path d="M7.2 2.2 8 5.1"/>
+  <path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Total clicks</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">9,420</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">+9.4%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 8,610</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-7d641d55" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,6C10.27,5.73,18.53,5.47,26.8,5.2C35.07,4.93,43.33,4.67,51.6,4.4C59.87,4.13,68.13,3.87,76.4,3.6C84.67,3.33,92.93,3.07,101.2,2.8C109.47,2.53,117.73,2.27,126,2L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-7d641d55)" stroke="none" />        <path d="M2,6C10.27,5.73,18.53,5.47,26.8,5.2C35.07,4.93,43.33,4.67,51.6,4.4C59.87,4.13,68.13,3.87,76.4,3.6C84.67,3.33,92.93,3.07,101.2,2.8C109.47,2.53,117.73,2.27,126,2" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                            </button>
+                                                            <button type="button" x-bind:aria-pressed="String(selected === 'impressions')" x-on:click="select('impressions')" class="rounded-card text-start outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <div data-slot="stat-card"  data-trend="up" data-tone="positive"   data-metric="impressions" x-bind:class="selected === &quot;impressions&quot; ? &#039;border-primary ring-1 ring-primary&#039; : &#039;&#039;" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground h-full">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Total impressions</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">214,000</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">+8.1%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 198,000</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-79099f09" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,5.19C10.27,4.95,18.53,4.72,26.8,4.48C35.07,4.24,43.33,3.95,51.6,3.77C59.87,3.59,68.13,3.59,76.4,3.42C84.67,3.24,92.93,2.95,101.2,2.71C109.47,2.47,117.73,2.24,126,2L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-79099f09)" stroke="none" />        <path d="M2,5.19C10.27,4.95,18.53,4.72,26.8,4.48C35.07,4.24,43.33,3.95,51.6,3.77C59.87,3.59,68.13,3.59,76.4,3.42C84.67,3.24,92.93,2.95,101.2,2.71C109.47,2.47,117.73,2.24,126,2" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                            </button>
+                                                            <button type="button" x-bind:aria-pressed="String(selected === 'ctr')" x-on:click="select('ctr')" class="rounded-card text-start outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <div data-slot="stat-card"  data-trend="up" data-tone="positive"   data-metric="ctr" x-bind:class="selected === &quot;ctr&quot; ? &#039;border-primary ring-1 ring-primary&#039; : &#039;&#039;" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground h-full">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="19" x2="5" y1="5" y2="19"/>
+  <circle cx="6.5" cy="6.5" r="2.5"/>
+  <circle cx="17.5" cy="17.5" r="2.5"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Average CTR</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">4.4%</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">+1.1%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 4.4%</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-52f5a7b6" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,2.76C10.27,2.65,18.53,2.55,26.8,2.44C35.07,2.34,43.33,2.13,51.6,2.13C59.87,2.13,68.13,2.13,76.4,2.13C84.67,2.13,92.93,2,101.2,2C109.47,2,117.73,2.08,126,2.13L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-52f5a7b6)" stroke="none" />        <path d="M2,2.76C10.27,2.65,18.53,2.55,26.8,2.44C35.07,2.34,43.33,2.13,51.6,2.13C59.87,2.13,68.13,2.13,76.4,2.13C84.67,2.13,92.93,2,101.2,2C109.47,2,117.73,2.08,126,2.13" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                            </button>
+                                                            <button type="button" x-bind:aria-pressed="String(selected === 'position')" x-on:click="select('position')" class="rounded-card text-start outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <div data-slot="stat-card"  data-trend="down" data-tone="positive"   data-metric="position" x-bind:class="selected === &quot;position&quot; ? &#039;border-primary ring-1 ring-primary&#039; : &#039;&#039;" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground h-full">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Average position</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">11.8</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 17h6v-6"/>
+  <path d="m22 17-8.5-8.5-5 5L2 7"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">-6.3%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 12.6</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-5aa0f1bc" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,2C10.27,2.15,18.53,2.3,26.8,2.44C35.07,2.59,43.33,2.74,51.6,2.89C59.87,3.04,68.13,3.22,76.4,3.33C84.67,3.44,92.93,3.48,101.2,3.56C109.47,3.63,117.73,3.7,126,3.78L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-5aa0f1bc)" stroke="none" />        <path d="M2,2C10.27,2.15,18.53,2.3,26.8,2.44C35.07,2.59,43.33,2.74,51.6,2.89C59.87,3.04,68.13,3.22,76.4,3.33C84.67,3.44,92.93,3.48,101.2,3.56C109.47,3.63,117.73,3.7,126,3.78" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                            </button>
+                        </div>
+        <div data-slot="time-series-panel"  x-data="nqTimeSeriesPanel('clicks', true)"
+    class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+    <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Performance</h3>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Select a tile to chart it. Average position improves as it gets lower.</div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="max-w-full overflow-x-auto">
+                    <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022clicks\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Metric" x-model="pressed" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('clicks')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Total clicks</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('impressions')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Total impressions</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('ctr')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Average CTR</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('position')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Average position</button>
+</div>
+                </div>
+                                        <label class="flex items-center gap-2 text-body-sm text-muted-foreground">
+                    <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="compare" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                    Compare with previous period
+                </label>
+                    </div>
+                                                    <div class="contents" data-metric="clicks" x-show="metric === 'clicks'" >
+                    <div data-slot="time-series-total" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-caption text-muted-foreground">Total</span>
+                        <span class="text-h2 text-foreground tabular-nums">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">1,010</bdi>
+                        </span>
+                                                    <span class="text-label text-nq-success-text" x-show="compare" >
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums">+12.8%</bdi>
+                            </span>
+                                            </div>
+                    <div data-slot="chart"  role="img" aria-label="Total clicks, Sep 27 to Sep 29"   style="--color-current: var(--primary); --color-previous: var(--muted-foreground)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+                            <div aria-hidden="true" class="relative w-11 shrink-0 text-end text-muted-foreground">
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 100%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">0</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 75%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">100</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 50%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">200</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 25%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">300</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 0%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">400</bdi>
+                                                                            </span>
+                                                            </div>
+                            <div data-slot="time-series-plot" class="relative min-w-0 flex-1" x-data="nqTimeSeriesChart(JSON.parse('[{\u0022x\u0022:0,\u0022y\u0022:20,\u0022date\u0022:\u0022Sep 27\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Total clicks\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022320\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022290\u0022}]},{\u0022x\u0022:50,\u0022y\u0022:15,\u0022date\u0022:\u0022Sep 28\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Total clicks\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022340\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022300\u0022}]},{\u0022x\u0022:100,\u0022y\u0022:12.5,\u0022date\u0022:\u0022Sep 29\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Total clicks\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022350\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022305\u0022}]}]'))" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 100%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 75%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 50%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 25%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 0%"></span>
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <defs>
+                                        <linearGradient id="nq-ts-a25c4da7" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" style="stop-color: var(--color-current); stop-opacity: 0.28" />
+                                            <stop offset="100%" style="stop-color: var(--color-current); stop-opacity: 0.02" />
+                                        </linearGradient>
+                                    </defs>
+                                                                                                                <path data-slot="time-series-previous" x-show="compare"  d="M0,27.5C16.67,26.67,33.33,25.63,50,25C66.67,24.38,83.33,24.17,100,23.75" fill="none" stroke="var(--color-previous)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                                        <path d="M0,20C16.67,18.33,33.33,16.25,50,15C66.67,13.75,83.33,13.33,100,12.5L100,100L0,100Z" fill="url(#nq-ts-a25c4da7)" stroke="none" />
+                                    <path data-slot="time-series-current" d="M0,20C16.67,18.33,33.33,16.25,50,15C66.67,13.75,83.33,13.33,100,12.5" fill="none" stroke="var(--color-current)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+                                </svg>
+                                                                <div class="contents" x-show="hover !== null" style="display: none">
+                                    <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 w-px bg-border" x-bind:style="lineStyle"></span>
+                                    <span aria-hidden="true" data-slot="chart-dot" class="pointer-events-none absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-current)] ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="dotStyle"></span>
+                                    <div class="pointer-events-none absolute top-0 z-10 ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="tipStyle">
+                                        <div data-slot="chart-tooltip" dir="ltr" class="grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md">
+                                            <div class="text-label" x-text="tip.date"></div>
+                                            <div class="grid gap-1">
+                                                <template x-for="row in tip.rows" x-bind:key="row.k">
+                                                    <div class="flex items-center gap-2" x-show="row.k === 'current' || compare">
+                                                        <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]" x-bind:style="{ backgroundColor: row.color }"></span>
+                                                        <span class="text-muted-foreground" x-text="row.label"></span>
+                                                        <span class="ms-auto ps-3 text-label tabular-nums" x-text="row.text"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-hidden="true" class="relative h-4 ms-[3.25rem]">
+                                                                                            <span class="absolute top-0 whitespace-nowrap start-0"
+                                    >Sep 27</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap ltr:-translate-x-1/2 rtl:translate-x-1/2"
+                                     style="inset-inline-start: 50%" >Sep 28</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap end-0"
+                                    >Sep 29</span>
+                                                    </div>
+</div>
+                </div>
+                                            <div class="contents" data-metric="impressions" x-show="metric === 'impressions'"  style="display: none" >
+                    <div data-slot="time-series-total" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-caption text-muted-foreground">Total</span>
+                        <span class="text-h2 text-foreground tabular-nums">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">22,900</bdi>
+                        </span>
+                                                    <span class="text-label text-nq-success-text" x-show="compare" >
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums">+9%</bdi>
+                            </span>
+                                            </div>
+                    <div data-slot="chart"  role="img" aria-label="Total impressions, Sep 27 to Sep 29"   style="--color-current: var(--nq-tag-purple); --color-previous: var(--muted-foreground)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+                            <div aria-hidden="true" class="relative w-11 shrink-0 text-end text-muted-foreground">
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 100%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">0</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 75%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">2K</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 50%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">4K</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 25%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">6K</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 0%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">8K</bdi>
+                                                                            </span>
+                                                            </div>
+                            <div data-slot="time-series-plot" class="relative min-w-0 flex-1" x-data="nqTimeSeriesChart(JSON.parse('[{\u0022x\u0022:0,\u0022y\u0022:8.75,\u0022date\u0022:\u0022Sep 27\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Total impressions\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u00227,300\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u00226,900\u0022}]},{\u0022x\u0022:50,\u0022y\u0022:3.75,\u0022date\u0022:\u0022Sep 28\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Total impressions\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u00227,700\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u00227,000\u0022}]},{\u0022x\u0022:100,\u0022y\u0022:1.25,\u0022date\u0022:\u0022Sep 29\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Total impressions\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u00227,900\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u00227,100\u0022}]}]'))" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 100%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 75%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 50%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 25%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 0%"></span>
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <defs>
+                                        <linearGradient id="nq-ts-abc74cca" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" style="stop-color: var(--color-current); stop-opacity: 0.28" />
+                                            <stop offset="100%" style="stop-color: var(--color-current); stop-opacity: 0.02" />
+                                        </linearGradient>
+                                    </defs>
+                                                                                                                <path data-slot="time-series-previous" x-show="compare"  d="M0,13.75C16.67,13.33,33.33,12.92,50,12.5C66.67,12.08,83.33,11.67,100,11.25" fill="none" stroke="var(--color-previous)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                                        <path d="M0,8.75C16.67,7.08,33.33,5,50,3.75C66.67,2.5,83.33,2.08,100,1.25L100,100L0,100Z" fill="url(#nq-ts-abc74cca)" stroke="none" />
+                                    <path data-slot="time-series-current" d="M0,8.75C16.67,7.08,33.33,5,50,3.75C66.67,2.5,83.33,2.08,100,1.25" fill="none" stroke="var(--color-current)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+                                </svg>
+                                                                <div class="contents" x-show="hover !== null" style="display: none">
+                                    <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 w-px bg-border" x-bind:style="lineStyle"></span>
+                                    <span aria-hidden="true" data-slot="chart-dot" class="pointer-events-none absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-current)] ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="dotStyle"></span>
+                                    <div class="pointer-events-none absolute top-0 z-10 ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="tipStyle">
+                                        <div data-slot="chart-tooltip" dir="ltr" class="grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md">
+                                            <div class="text-label" x-text="tip.date"></div>
+                                            <div class="grid gap-1">
+                                                <template x-for="row in tip.rows" x-bind:key="row.k">
+                                                    <div class="flex items-center gap-2" x-show="row.k === 'current' || compare">
+                                                        <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]" x-bind:style="{ backgroundColor: row.color }"></span>
+                                                        <span class="text-muted-foreground" x-text="row.label"></span>
+                                                        <span class="ms-auto ps-3 text-label tabular-nums" x-text="row.text"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-hidden="true" class="relative h-4 ms-[3.25rem]">
+                                                                                            <span class="absolute top-0 whitespace-nowrap start-0"
+                                    >Sep 27</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap ltr:-translate-x-1/2 rtl:translate-x-1/2"
+                                     style="inset-inline-start: 50%" >Sep 28</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap end-0"
+                                    >Sep 29</span>
+                                                    </div>
+</div>
+                </div>
+                                            <div class="contents" data-metric="ctr" x-show="metric === 'ctr'"  style="display: none" >
+                    <div data-slot="time-series-total" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-caption text-muted-foreground">Average</span>
+                        <span class="text-h2 text-foreground tabular-nums">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">4.4%</bdi>
+                        </span>
+                                                    <span class="text-label text-nq-success-text" x-show="compare" >
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums">+3.5%</bdi>
+                            </span>
+                                            </div>
+                    <div data-slot="chart"  role="img" aria-label="Average CTR, Sep 27 to Sep 29"   style="--color-current: var(--nq-tag-teal); --color-previous: var(--muted-foreground)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+                            <div aria-hidden="true" class="relative w-11 shrink-0 text-end text-muted-foreground">
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 100%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">0%</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 66.67%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">2%</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 33.33%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">4%</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 0%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">6%</bdi>
+                                                                            </span>
+                                                            </div>
+                            <div data-slot="time-series-plot" class="relative min-w-0 flex-1" x-data="nqTimeSeriesChart(JSON.parse('[{\u0022x\u0022:0,\u0022y\u0022:27,\u0022date\u0022:\u0022Sep 27\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Average CTR\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u00224.4%\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u00224.2%\u0022}]},{\u0022x\u0022:50,\u0022y\u0022:26.33,\u0022date\u0022:\u0022Sep 28\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Average CTR\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u00224.4%\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u00224.3%\u0022}]},{\u0022x\u0022:100,\u0022y\u0022:26.17,\u0022date\u0022:\u0022Sep 29\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Average CTR\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u00224.4%\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u00224.3%\u0022}]}]'))" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 100%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 66.67%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 33.33%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 0%"></span>
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <defs>
+                                        <linearGradient id="nq-ts-3cacf0c9" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" style="stop-color: var(--color-current); stop-opacity: 0.28" />
+                                            <stop offset="100%" style="stop-color: var(--color-current); stop-opacity: 0.02" />
+                                        </linearGradient>
+                                    </defs>
+                                                                                                                <path data-slot="time-series-previous" x-show="compare"  d="M0,30C16.67,29.56,33.33,28.95,50,28.67C66.67,28.39,83.33,28.44,100,28.33" fill="none" stroke="var(--color-previous)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                                        <path d="M0,27C16.67,26.78,33.33,26.47,50,26.33C66.67,26.19,83.33,26.22,100,26.17L100,100L0,100Z" fill="url(#nq-ts-3cacf0c9)" stroke="none" />
+                                    <path data-slot="time-series-current" d="M0,27C16.67,26.78,33.33,26.47,50,26.33C66.67,26.19,83.33,26.22,100,26.17" fill="none" stroke="var(--color-current)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+                                </svg>
+                                                                <div class="contents" x-show="hover !== null" style="display: none">
+                                    <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 w-px bg-border" x-bind:style="lineStyle"></span>
+                                    <span aria-hidden="true" data-slot="chart-dot" class="pointer-events-none absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-current)] ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="dotStyle"></span>
+                                    <div class="pointer-events-none absolute top-0 z-10 ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="tipStyle">
+                                        <div data-slot="chart-tooltip" dir="ltr" class="grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md">
+                                            <div class="text-label" x-text="tip.date"></div>
+                                            <div class="grid gap-1">
+                                                <template x-for="row in tip.rows" x-bind:key="row.k">
+                                                    <div class="flex items-center gap-2" x-show="row.k === 'current' || compare">
+                                                        <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]" x-bind:style="{ backgroundColor: row.color }"></span>
+                                                        <span class="text-muted-foreground" x-text="row.label"></span>
+                                                        <span class="ms-auto ps-3 text-label tabular-nums" x-text="row.text"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-hidden="true" class="relative h-4 ms-[3.25rem]">
+                                                                                            <span class="absolute top-0 whitespace-nowrap start-0"
+                                    >Sep 27</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap ltr:-translate-x-1/2 rtl:translate-x-1/2"
+                                     style="inset-inline-start: 50%" >Sep 28</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap end-0"
+                                    >Sep 29</span>
+                                                    </div>
+</div>
+                </div>
+                                            <div class="contents" data-metric="position" x-show="metric === 'position'"  style="display: none" >
+                    <div data-slot="time-series-total" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-caption text-muted-foreground">Average</span>
+                        <span class="text-h2 text-foreground tabular-nums">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">11.8</bdi>
+                        </span>
+                                                    <span class="text-label text-nq-success-text" x-show="compare" >
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums">-6.3%</bdi>
+                            </span>
+                                            </div>
+                    <div data-slot="chart"  role="img" aria-label="Average position, Sep 27 to Sep 29"   style="--color-current: var(--nq-tag-orange); --color-previous: var(--muted-foreground)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+                            <div aria-hidden="true" class="relative w-11 shrink-0 text-end text-muted-foreground">
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 10%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">11</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 43.33%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">12</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 76.67%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">13</bdi>
+                                                                            </span>
+                                                            </div>
+                            <div data-slot="time-series-plot" class="relative min-w-0 flex-1" x-data="nqTimeSeriesChart(JSON.parse('[{\u0022x\u0022:0,\u0022y\u0022:40,\u0022date\u0022:\u0022Sep 27\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Average position\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u002211.9\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u002212.7\u0022}]},{\u0022x\u0022:50,\u0022y\u0022:36.67,\u0022date\u0022:\u0022Sep 28\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Average position\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u002211.8\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u002212.6\u0022}]},{\u0022x\u0022:100,\u0022y\u0022:33.33,\u0022date\u0022:\u0022Sep 29\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Average position\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u002211.7\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u002212.5\u0022}]}]'))" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 10%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 43.33%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 76.67%"></span>
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <defs>
+                                        <linearGradient id="nq-ts-c9f9fb8a" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" style="stop-color: var(--color-current); stop-opacity: 0.28" />
+                                            <stop offset="100%" style="stop-color: var(--color-current); stop-opacity: 0.02" />
+                                        </linearGradient>
+                                    </defs>
+                                                                                                                <path data-slot="time-series-previous" x-show="compare"  d="M0,66.67C16.67,65.56,33.33,64.44,50,63.33C66.67,62.22,83.33,61.11,100,60" fill="none" stroke="var(--color-previous)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                                        <path d="M0,40C16.67,38.89,33.33,37.78,50,36.67C66.67,35.56,83.33,34.44,100,33.33L100,100L0,100Z" fill="url(#nq-ts-c9f9fb8a)" stroke="none" />
+                                    <path data-slot="time-series-current" d="M0,40C16.67,38.89,33.33,37.78,50,36.67C66.67,35.56,83.33,34.44,100,33.33" fill="none" stroke="var(--color-current)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+                                </svg>
+                                                                <div class="contents" x-show="hover !== null" style="display: none">
+                                    <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 w-px bg-border" x-bind:style="lineStyle"></span>
+                                    <span aria-hidden="true" data-slot="chart-dot" class="pointer-events-none absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-current)] ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="dotStyle"></span>
+                                    <div class="pointer-events-none absolute top-0 z-10 ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="tipStyle">
+                                        <div data-slot="chart-tooltip" dir="ltr" class="grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md">
+                                            <div class="text-label" x-text="tip.date"></div>
+                                            <div class="grid gap-1">
+                                                <template x-for="row in tip.rows" x-bind:key="row.k">
+                                                    <div class="flex items-center gap-2" x-show="row.k === 'current' || compare">
+                                                        <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]" x-bind:style="{ backgroundColor: row.color }"></span>
+                                                        <span class="text-muted-foreground" x-text="row.label"></span>
+                                                        <span class="ms-auto ps-3 text-label tabular-nums" x-text="row.text"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-hidden="true" class="relative h-4 ms-[3.25rem]">
+                                                                                            <span class="absolute top-0 whitespace-nowrap start-0"
+                                    >Sep 27</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap ltr:-translate-x-1/2 rtl:translate-x-1/2"
+                                     style="inset-inline-start: 50%" >Sep 28</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap end-0"
+                                    >Sep 29</span>
+                                                    </div>
+</div>
+                </div></div>
+</div>
+    </div>
+    <div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('queries')" x-modelable="value" x-id="['nq-tabs']" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="underline" aria-orientation="horizontal" x-bind="list"
+    class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-4 border-b border-border">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('queries')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Queries</button>
+            <button type="button" data-slot="tabs-tab" x-bind="tab('pages')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Pages</button>
+            <button type="button" data-slot="tabs-tab" x-bind="tab('countries')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Countries</button>
+            <button type="button" data-slot="tabs-tab" x-bind="tab('devices')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Devices</button>
+            <span data-slot="tabs-indicator" aria-hidden="true"
+    class="absolute -z-10 transition-[left,width] duration-200 ease-nq left-[var(--active-tab-left)] w-[var(--active-tab-width)] bottom-0 h-0.5 rounded-full bg-primary"></span>
+</div>
+        <div data-slot="tabs-panel" x-bind="panel('queries')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div data-slot="search-performance-table" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Search queries</h3></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div x-data="nqDataTable(JSON.parse('[{\u0022id\u0022:\u0022q1\u0022,\u0022label\u0022:\u0022nasaq design system\u0022,\u0022clicks\u0022:1820,\u0022impressions\u0022:22000,\u0022ctr\u0022:0.08272727272727273,\u0022position\u0022:3.2,\u0022clicksText\u0022:\u00221,820\u0022,\u0022clicksDelta\u0022:\u0022+21%\u0022,\u0022clicksTone\u0022:\u0022text-nq-success-text\u0022,\u0022impressionsText\u0022:\u002222,000\u0022,\u0022ctrText\u0022:\u00228.3%\u0022,\u0022positionText\u0022:\u00223.2\u0022,\u0022positionDiff\u0022:\u0022-0.7\u0022,\u0022positionTone\u0022:\u0022text-nq-success-text\u0022},{\u0022id\u0022:\u0022q2\u0022,\u0022label\u0022:\u0022arabic rtl components\u0022,\u0022clicks\u0022:960,\u0022impressions\u0022:18000,\u0022ctr\u0022:0.05333333333333334,\u0022position\u0022:6.8,\u0022clicksText\u0022:\u0022960\u0022,\u0022clicksDelta\u0022:\u0022-5%\u0022,\u0022clicksTone\u0022:\u0022text-nq-danger-text\u0022,\u0022impressionsText\u0022:\u002218,000\u0022,\u0022ctrText\u0022:\u00225.3%\u0022,\u0022positionText\u0022:\u00226.8\u0022,\u0022positionDiff\u0022:\u0022+0.7\u0022,\u0022positionTone\u0022:\u0022text-nq-danger-text\u0022}]'), JSON.parse('[{\u0022id\u0022:\u0022label\u0022,\u0022header\u0022:\u0022Query\u0022,\u0022sortable\u0022:true,\u0022searchable\u0022:true},{\u0022id\u0022:\u0022clicks\u0022,\u0022header\u0022:\u0022Clicks\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022},{\u0022id\u0022:\u0022impressions\u0022,\u0022header\u0022:\u0022Impressions\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022},{\u0022id\u0022:\u0022ctr\u0022,\u0022header\u0022:\u0022CTR\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022},{\u0022id\u0022:\u0022position\u0022,\u0022header\u0022:\u0022Position\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022}]'), JSON.parse('{\u0022pageSize\u0022:10,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022range\u0022:\u0022{from}\\u2013{to} of {total}\u0022}}'))" x-init="sorting = [{ id: 'clicks', direction: 'desc' }]" class="flex min-w-0 flex-col gap-3">
+            <div data-slot="data-table-toolbar" class="flex flex-wrap items-center gap-2">
+                <div data-slot="data-table-search" class="relative w-full sm:w-64">
+                    <svg aria-hidden="true" class="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                    <input data-slot="input" type="search"
+                    x-model="query" x-on:keydown.escape="if (query) { $event.preventDefault(); query = &#039;&#039; }" placeholder="Filter queries…" aria-label="Filter queries…" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm ps-8 pe-8 text-body-sm [&::-webkit-search-cancel-button]:hidden">
+                    <button type="button" x-show="query" aria-label="Clear search" x-on:click="query = ''" style="display: none"
+                        class="absolute end-1.5 top-1/2 inline-flex size-5 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                    </button>
+                </div>
+            </div>
+            <div data-slot="table-container" role="region" tabindex="0" aria-label="Search queries"                 class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                <div data-slot="table" role="table" aria-label="Search queries" x-bind:style="'grid-template-columns: repeat(' + shownCount() + ', auto)'" class="grid w-full min-w-max text-body-sm">
+                    <div data-slot="table-header" role="rowgroup" class="contents">
+                        <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid border-b border-border">
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="label" x-show="shown['label']" x-bind:class="pad" x-bind:aria-sort="ariaSort('label')"
+                                    class="flex items-center h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('label', $event.shiftKey)" x-bind:class="sortOf('label') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus ">
+                                        <span>Query</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('label')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('label') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('label') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="clicks" x-show="shown['clicks']" x-bind:class="pad" x-bind:aria-sort="ariaSort('clicks')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('clicks', $event.shiftKey)" x-bind:class="sortOf('clicks') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Clicks</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('clicks')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('clicks') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('clicks') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="impressions" x-show="shown['impressions']" x-bind:class="pad" x-bind:aria-sort="ariaSort('impressions')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('impressions', $event.shiftKey)" x-bind:class="sortOf('impressions') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Impressions</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('impressions')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('impressions') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('impressions') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="ctr" x-show="shown['ctr']" x-bind:class="pad" x-bind:aria-sort="ariaSort('ctr')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('ctr', $event.shiftKey)" x-bind:class="sortOf('ctr') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>CTR</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('ctr')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('ctr') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('ctr') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="position" x-show="shown['position']" x-bind:class="pad" x-bind:aria-sort="ariaSort('position')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('position', $event.shiftKey)" x-bind:class="sortOf('position') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Position</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('position')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('position') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('position') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                    </div>
+                    </div>
+                                            <div role="rowgroup" class="contents" data-slot="table-body" x-show="rowCount === 0" style="display: none">
+                            <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid border-0">
+                                <div role="cell" data-slot="table-cell" class="col-span-full h-auto p-0 whitespace-normal">
+                                    <div x-show="isFiltered" style="display: none">
+                                        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 py-12 text-center rounded-card border-0">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No matching results</p>
+                    <p class="text-body-sm text-muted-foreground">Try a different search or clear the filters.</p>
+            </div>
+    <button type="button" x-on:click="resetFilters()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-border bg-card text-foreground font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus h-control-sm px-3">Clear filters</button>
+    </div>
+                                    </div>
+                                    <div x-show="! isFiltered" style="display: none">
+                                        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 py-12 text-center rounded-card border-0">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No search data for this period</p>
+            </div>
+    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <template x-for="(row, index) in pageRows" x-bind:key="rid(row)">
+                            <div role="rowgroup" class="contents" data-slot="table-body">
+                                <div role="row" data-slot="table-row" data-row x-bind:tabindex="index === 0 ? 0 : -1"
+                                    x-on:keydown="rowKey($event, row, index, false)"                                     class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus hover:bg-nq-hover ">
+                                    <div role="cell" data-slot="table-cell" data-cell-col="label" x-show="shown['label']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap">
+                                                                                    <span class="block max-w-[28ch] truncate sm:max-w-[40ch]" dir="auto" x-text="row.label"></span>
+                                                                            </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="clicks" x-show="shown['clicks']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <div class="flex flex-col items-end">
+                                            <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.clicksText"></bdi>
+                                            <bdi data-slot="num" data-numeric x-show="row.clicksDelta" x-bind:class="row.clicksTone" x-text="row.clicksDelta" style="display: none" class="tabular-nums text-caption"></bdi>
+                                        </div>
+                                    </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="impressions" x-show="shown['impressions']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.impressionsText"></bdi>
+                                    </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="ctr" x-show="shown['ctr']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.ctrText"></bdi>
+                                    </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="position" x-show="shown['position']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <div class="flex flex-col items-end" title="Lower is better">
+                                            <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.positionText"></bdi>
+                                            <bdi data-slot="num" data-numeric x-show="row.positionDiff" x-bind:class="row.positionTone" x-text="row.positionDiff" style="display: none" class="tabular-nums text-caption"></bdi>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                                    </div>
+            </div>
+                    </div></div></div></div>
+        <div data-slot="tabs-panel" x-bind="panel('pages')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div data-slot="search-performance-table" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Search pages</h3></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div x-data="nqDataTable(JSON.parse('[{\u0022id\u0022:\u0022p1\u0022,\u0022label\u0022:\u0022https:\\\/\\\/nasaq.dev\\\/\u0022,\u0022clicks\u0022:3100,\u0022impressions\u0022:41000,\u0022ctr\u0022:0.07560975609756097,\u0022position\u0022:4.1,\u0022clicksText\u0022:\u00223,100\u0022,\u0022clicksDelta\u0022:\u0022+11%\u0022,\u0022clicksTone\u0022:\u0022text-nq-success-text\u0022,\u0022impressionsText\u0022:\u002241,000\u0022,\u0022ctrText\u0022:\u00227.6%\u0022,\u0022positionText\u0022:\u00224.1\u0022,\u0022positionDiff\u0022:\u0022-0.3\u0022,\u0022positionTone\u0022:\u0022text-nq-success-text\u0022},{\u0022id\u0022:\u0022p2\u0022,\u0022label\u0022:\u0022https:\\\/\\\/nasaq.dev\\\/docs\u0022,\u0022clicks\u0022:1500,\u0022impressions\u0022:26000,\u0022ctr\u0022:0.057692307692307696,\u0022position\u0022:7.3,\u0022clicksText\u0022:\u00221,500\u0022,\u0022clicksDelta\u0022:\u0022\u0022,\u0022clicksTone\u0022:\u0022text-muted-foreground\u0022,\u0022impressionsText\u0022:\u002226,000\u0022,\u0022ctrText\u0022:\u00225.8%\u0022,\u0022positionText\u0022:\u00227.3\u0022,\u0022positionDiff\u0022:\u0022\u0022,\u0022positionTone\u0022:\u0022text-muted-foreground\u0022}]'), JSON.parse('[{\u0022id\u0022:\u0022label\u0022,\u0022header\u0022:\u0022Page\u0022,\u0022sortable\u0022:true,\u0022searchable\u0022:true},{\u0022id\u0022:\u0022clicks\u0022,\u0022header\u0022:\u0022Clicks\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022},{\u0022id\u0022:\u0022impressions\u0022,\u0022header\u0022:\u0022Impressions\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022},{\u0022id\u0022:\u0022ctr\u0022,\u0022header\u0022:\u0022CTR\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022},{\u0022id\u0022:\u0022position\u0022,\u0022header\u0022:\u0022Position\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022}]'), JSON.parse('{\u0022pageSize\u0022:10,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022range\u0022:\u0022{from}\\u2013{to} of {total}\u0022}}'))" x-init="sorting = [{ id: 'clicks', direction: 'desc' }]" class="flex min-w-0 flex-col gap-3">
+            <div data-slot="data-table-toolbar" class="flex flex-wrap items-center gap-2">
+                <div data-slot="data-table-search" class="relative w-full sm:w-64">
+                    <svg aria-hidden="true" class="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                    <input data-slot="input" type="search"
+                    x-model="query" x-on:keydown.escape="if (query) { $event.preventDefault(); query = &#039;&#039; }" placeholder="Filter pages…" aria-label="Filter pages…" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm ps-8 pe-8 text-body-sm [&::-webkit-search-cancel-button]:hidden">
+                    <button type="button" x-show="query" aria-label="Clear search" x-on:click="query = ''" style="display: none"
+                        class="absolute end-1.5 top-1/2 inline-flex size-5 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                    </button>
+                </div>
+            </div>
+            <div data-slot="table-container" role="region" tabindex="0" aria-label="Search pages"                 class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                <div data-slot="table" role="table" aria-label="Search pages" x-bind:style="'grid-template-columns: repeat(' + shownCount() + ', auto)'" class="grid w-full min-w-max text-body-sm">
+                    <div data-slot="table-header" role="rowgroup" class="contents">
+                        <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid border-b border-border">
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="label" x-show="shown['label']" x-bind:class="pad" x-bind:aria-sort="ariaSort('label')"
+                                    class="flex items-center h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('label', $event.shiftKey)" x-bind:class="sortOf('label') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus ">
+                                        <span>Page</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('label')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('label') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('label') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="clicks" x-show="shown['clicks']" x-bind:class="pad" x-bind:aria-sort="ariaSort('clicks')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('clicks', $event.shiftKey)" x-bind:class="sortOf('clicks') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Clicks</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('clicks')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('clicks') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('clicks') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="impressions" x-show="shown['impressions']" x-bind:class="pad" x-bind:aria-sort="ariaSort('impressions')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('impressions', $event.shiftKey)" x-bind:class="sortOf('impressions') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Impressions</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('impressions')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('impressions') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('impressions') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="ctr" x-show="shown['ctr']" x-bind:class="pad" x-bind:aria-sort="ariaSort('ctr')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('ctr', $event.shiftKey)" x-bind:class="sortOf('ctr') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>CTR</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('ctr')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('ctr') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('ctr') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="position" x-show="shown['position']" x-bind:class="pad" x-bind:aria-sort="ariaSort('position')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('position', $event.shiftKey)" x-bind:class="sortOf('position') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Position</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('position')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('position') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('position') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                    </div>
+                    </div>
+                                            <div role="rowgroup" class="contents" data-slot="table-body" x-show="rowCount === 0" style="display: none">
+                            <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid border-0">
+                                <div role="cell" data-slot="table-cell" class="col-span-full h-auto p-0 whitespace-normal">
+                                    <div x-show="isFiltered" style="display: none">
+                                        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 py-12 text-center rounded-card border-0">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No matching results</p>
+                    <p class="text-body-sm text-muted-foreground">Try a different search or clear the filters.</p>
+            </div>
+    <button type="button" x-on:click="resetFilters()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-border bg-card text-foreground font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus h-control-sm px-3">Clear filters</button>
+    </div>
+                                    </div>
+                                    <div x-show="! isFiltered" style="display: none">
+                                        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 py-12 text-center rounded-card border-0">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No search data for this period</p>
+            </div>
+    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <template x-for="(row, index) in pageRows" x-bind:key="rid(row)">
+                            <div role="rowgroup" class="contents" data-slot="table-body">
+                                <div role="row" data-slot="table-row" data-row x-bind:tabindex="index === 0 ? 0 : -1"
+                                    x-on:keydown="rowKey($event, row, index, false)"                                     class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus hover:bg-nq-hover ">
+                                    <div role="cell" data-slot="table-cell" data-cell-col="label" x-show="shown['label']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap">
+                                                                                    <bdi dir="ltr" class="block max-w-[28ch] truncate sm:max-w-[48ch]" x-text="row.label"></bdi>
+                                                                            </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="clicks" x-show="shown['clicks']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <div class="flex flex-col items-end">
+                                            <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.clicksText"></bdi>
+                                            <bdi data-slot="num" data-numeric x-show="row.clicksDelta" x-bind:class="row.clicksTone" x-text="row.clicksDelta" style="display: none" class="tabular-nums text-caption"></bdi>
+                                        </div>
+                                    </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="impressions" x-show="shown['impressions']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.impressionsText"></bdi>
+                                    </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="ctr" x-show="shown['ctr']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.ctrText"></bdi>
+                                    </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="position" x-show="shown['position']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <div class="flex flex-col items-end" title="Lower is better">
+                                            <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.positionText"></bdi>
+                                            <bdi data-slot="num" data-numeric x-show="row.positionDiff" x-bind:class="row.positionTone" x-text="row.positionDiff" style="display: none" class="tabular-nums text-caption"></bdi>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                                    </div>
+            </div>
+                    </div></div></div></div>
+        <div data-slot="tabs-panel" x-bind="panel('countries')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div data-slot="breakdown-table"      class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+            <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Countries</h3></div>
+        <div data-slot="card-content" class="px-0"><div data-slot="table-container" role="region" tabindex="0"  aria-label="Countries"     class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+    <table data-slot="table" data-density="default"
+                  class="w-full caption-bottom border-collapse text-body-sm">
+        <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Country</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Clicks</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 hidden text-end sm:table-cell">Share</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Change</th></tr></thead>
+                <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     data-row="SA" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">🇸🇦 Saudi Arabia</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 100%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">4,100</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">64.1%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+10.8%</bdi></td></tr>
+                                                                    <tr data-slot="table-row"     data-row="EG" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">🇪🇬 Egypt</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 56.0976%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">2,300</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">35.9%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-danger-text"><bdi data-slot="num" data-numeric="">-4.2%</bdi></td></tr></tbody>
+    </table>
+</div></div>
+</div></div>
+        <div data-slot="tabs-panel" x-bind="panel('devices')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div data-slot="breakdown-table"      class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+            <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Devices</h3></div>
+        <div data-slot="card-content" class="px-0"><div data-slot="table-container" role="region" tabindex="0"  aria-label="Devices"     class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+    <table data-slot="table" data-density="default"
+                  class="w-full caption-bottom border-collapse text-body-sm">
+        <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><th data-slot="table-head" scope="col" class="h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3">Device</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Clicks</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 hidden text-end sm:table-cell">Share</th>
+                        <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Change</th></tr></thead>
+                <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     data-row="mobile" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">Mobile</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 100%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">6,100</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">66.3%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+10.9%</bdi></td></tr>
+                                                                    <tr data-slot="table-row"     data-row="desktop" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 min-w-40 max-w-0 sm:min-w-56"><span class="block truncate" dir="auto">Desktop</span>
+                                                                                                <span aria-hidden="true" data-slot="breakdown-bar" class="mt-1.5 block h-1.5 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-[var(--bar)]" style="--bar: var(--primary); width: 50.8197%"></span>
+                                </span></td>
+                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">3,100</bdi></td>
+                                                            <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 hidden text-end tabular-nums text-muted-foreground sm:table-cell"><bdi data-slot="num" data-numeric="" class="tabular-nums">33.7%</bdi></td>
+                                                                                        <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums text-nq-success-text"><bdi data-slot="num" data-numeric="">+6.9%</bdi></td></tr></tbody>
+    </table>
+</div></div>
+</div></div>
+</div>
+            </div>
