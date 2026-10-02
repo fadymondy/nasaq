@@ -1,0 +1,502 @@
+<div class="h-[640px]">
+    <div data-slot="workflow-canvas" dir="ltr" style="height: 100%; min-height: 480px" x-data="nqWorkflowCanvas(JSON.parse('{\u0022graph\u0022:{\u0022nodes\u0022:[],\u0022edges\u0022:[]},\u0022types\u0022:[{\u0022id\u0022:\u0022webhook\u0022,\u0022label\u0022:\u0022Webhook\u0022,\u0022category\u0022:\u0022trigger\u0022,\u0022icon\u0022:\u0022webhook\u0022,\u0022role\u0022:\u0022trigger\u0022,\u0022fields\u0022:[{\u0022name\u0022:\u0022path\u0022,\u0022label\u0022:\u0022Path\u0022,\u0022kind\u0022:\u0022text\u0022,\u0022required\u0022:true}],\u0022defaults\u0022:{}},{\u0022id\u0022:\u0022http\u0022,\u0022label\u0022:\u0022HTTP request\u0022,\u0022category\u0022:\u0022action\u0022,\u0022icon\u0022:\u0022globe\u0022,\u0022fields\u0022:[{\u0022name\u0022:\u0022url\u0022,\u0022label\u0022:\u0022URL\u0022,\u0022kind\u0022:\u0022url\u0022,\u0022required\u0022:true}],\u0022defaults\u0022:{}},{\u0022id\u0022:\u0022mail\u0022,\u0022label\u0022:\u0022Send email\u0022,\u0022category\u0022:\u0022action\u0022,\u0022icon\u0022:\u0022mail\u0022,\u0022defaults\u0022:{}}],\u0022categories\u0022:[{\u0022id\u0022:\u0022trigger\u0022,\u0022label\u0022:\u0022Triggers\u0022},{\u0022id\u0022:\u0022action\u0022,\u0022label\u0022:\u0022Actions\u0022}],\u0022runs\u0022:null,\u0022versions\u0022:null,\u0022currentVersion\u0022:null,\u0022direction\u0022:\u0022horizontal\u0022,\u0022readOnly\u0022:false,\u0022saveable\u0022:true,\u0022runnable\u0022:false,\u0022restorable\u0022:false,\u0022defaultRunId\u0022:null,\u0022rtl\u0022:false,\u0022icons\u0022:{\u0022__unknown\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 class=\\u0022size-4\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Ccircle cx=\\u002212\\u0022 cy=\\u002212\\u0022 r=\\u002210\\u0022\\\/\\u003E\\n  \\u003Cline x1=\\u002212\\u0022 x2=\\u002212\\u0022 y1=\\u00228\\u0022 y2=\\u002212\\u0022\\\/\\u003E\\n  \\u003Cline x1=\\u002212\\u0022 x2=\\u002212.01\\u0022 y1=\\u002216\\u0022 y2=\\u002216\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022,\u0022webhook\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 class=\\u0022size-4\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Cpath d=\\u0022M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 0 1 2 17c.01-.7.2-1.4.57-2\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022m6 17 3.13-5.78c.53-.97.1-2.18-.5-3.1a4 4 0 1 1 6.89-4.06\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022m12 6 3.13 5.73C15.66 12.7 16.9 13 18 13a4 4 0 0 1 0 8\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022,\u0022http\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 class=\\u0022size-4\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Ccircle cx=\\u002212\\u0022 cy=\\u002212\\u0022 r=\\u002210\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022M2 12h20\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022,\u0022mail\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 class=\\u0022size-4\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Cpath d=\\u0022m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7\\u0022\\\/\\u003E\\n  \\u003Crect x=\\u00222\\u0022 y=\\u00224\\u0022 width=\\u002220\\u0022 height=\\u002216\\u0022 rx=\\u00222\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022},\u0022glyphs\u0022:{\u0022idle\u0022:\u0022\u0022,\u0022running\u0022:\u0022\\u003Csvg data-slot=\\u0022spinner\\u0022 aria-hidden=\\u0022true\\u0022 class=\\u0022size-4 animate-spin motion-reduce:animate-none shrink-0\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Cpath d=\\u0022M21 12a9 9 0 1 1-6.219-8.56\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022,\u0022success\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 class=\\u0022size-4 shrink-0\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Ccircle cx=\\u002212\\u0022 cy=\\u002212\\u0022 r=\\u002210\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022m9 12 2 2 4-4\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022,\u0022error\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 class=\\u0022size-4 shrink-0\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Ccircle cx=\\u002212\\u0022 cy=\\u002212\\u0022 r=\\u002210\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022m15 9-6 6\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022m9 9 6 6\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022,\u0022skipped\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 class=\\u0022size-4 shrink-0\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Ccircle cx=\\u002212\\u0022 cy=\\u002212\\u0022 r=\\u002210\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022M8 12h8\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022,\u0022waiting\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 class=\\u0022size-4 shrink-0\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Ccircle cx=\\u002212\\u0022 cy=\\u002212\\u0022 r=\\u002210\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022M12 6v6l4 2\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022},\u0022border\u0022:{\u0022idle\u0022:\u0022border-border\u0022,\u0022running\u0022:\u0022border-nq-info\u0022,\u0022success\u0022:\u0022border-nq-success\u0022,\u0022error\u0022:\u0022border-nq-danger\u0022,\u0022skipped\u0022:\u0022border-border border-dashed\u0022,\u0022waiting\u0022:\u0022border-nq-warning\u0022},\u0022tone\u0022:{\u0022idle\u0022:\u0022text-muted-foreground\u0022,\u0022running\u0022:\u0022text-nq-info-text\u0022,\u0022success\u0022:\u0022text-nq-success-text\u0022,\u0022error\u0022:\u0022text-nq-danger-text\u0022,\u0022skipped\u0022:\u0022text-muted-foreground\u0022,\u0022waiting\u0022:\u0022text-nq-warning-text\u0022},\u0022t\u0022:{\u0022canvas\u0022:\u0022Workflow canvas\u0022,\u0022addStep\u0022:\u0022Add step\u0022,\u0022validate\u0022:\u0022Validation\u0022,\u0022noProblems\u0022:\u0022No problems found\u0022,\u0022problems\u0022:\u0022:n to fix\u0022,\u0022runs\u0022:\u0022Executions\u0022,\u0022versions\u0022:\u0022Versions\u0022,\u0022run\u0022:\u0022Run\u0022,\u0022save\u0022:\u0022Save\u0022,\u0022saving\u0022:\u0022Saving\u0022,\u0022saved\u0022:\u0022Saved\u0022,\u0022unsaved\u0022:\u0022Unsaved changes\u0022,\u0022tidy\u0022:\u0022Tidy up\u0022,\u0022readOnly\u0022:\u0022Read only\u0022,\u0022runBlocked\u0022:\u0022Fix the errors before running\u0022,\u0022previewing\u0022:\u0022Previewing version :v. Editing is off.\u0022,\u0022exitPreview\u0022:\u0022Back to current\u0022,\u0022pickerTitle\u0022:\u0022What happens next?\u0022,\u0022pickerStart\u0022:\u0022Choose how this workflow starts.\u0022,\u0022pickerAfter\u0022:\u0022Choose a step to add after :name.\u0022,\u0022pickerSearch\u0022:\u0022Search steps\u0022,\u0022pickerNone\u0022:\u0022No step matches \\u0022:q\\u0022.\u0022,\u0022close\u0022:\u0022Close\u0022,\u0022settings\u0022:\u0022Settings\u0022,\u0022output\u0022:\u0022Output\u0022,\u0022name\u0022:\u0022Name\u0022,\u0022nameHelp\u0022:\u0022Shown on the node. Leave empty to use the step\\u0027s own name.\u0022,\u0022noFields\u0022:\u0022This step has no settings.\u0022,\u0022unknownType\u0022:\u0022Unknown step\u0022,\u0022remove\u0022:\u0022Remove step\u0022,\u0022addNext\u0022:\u0022Add next step\u0022,\u0022required\u0022:\u0022Required\u0022,\u0022noOutput\u0022:\u0022Nothing to show. This step did not run in the selected execution.\u0022,\u0022runStatus\u0022:\u0022Status\u0022,\u0022duration\u0022:\u0022Duration\u0022,\u0022items\u0022:\u0022Items\u0022,\u0022errorLabel\u0022:\u0022Error\u0022,\u0022insertHere\u0022:\u0022Insert a step here\u0022,\u0022addAfter\u0022:\u0022Add a step after :name\u0022,\u0022runsTitle\u0022:\u0022Executions\u0022,\u0022runsHint\u0022:\u0022Pick one to see how it ran on the canvas.\u0022,\u0022runsNone\u0022:\u0022No executions yet. Run the workflow to see one here.\u0022,\u0022replay\u0022:\u0022Replay\u0022,\u0022stopReplay\u0022:\u0022Stop\u0022,\u0022clearOverlay\u0022:\u0022Hide overlay\u0022,\u0022seconds\u0022:\u0022:n s\u0022,\u0022minutes\u0022:\u0022:n min\u0022,\u0022milliseconds\u0022:\u0022:n ms\u0022,\u0022versionsTitle\u0022:\u0022Version history\u0022,\u0022versionsHint\u0022:\u0022Every save, newest first. Preview one on the canvas, then restore it.\u0022,\u0022versionLabel\u0022:\u0022Version :v\u0022,\u0022current\u0022:\u0022Current\u0022,\u0022preview\u0022:\u0022Preview\u0022,\u0022restore\u0022:\u0022Restore\u0022,\u0022restoring\u0022:\u0022Restoring\u0022,\u0022restoreTitle\u0022:\u0022Restore version :v?\u0022,\u0022restoreBody\u0022:\u0022The current workflow is saved as a new version first, so you can come back to it.\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022by\u0022:\u0022by :name\u0022,\u0022zoomIn\u0022:\u0022Zoom in\u0022,\u0022zoomOut\u0022:\u0022Zoom out\u0022,\u0022fit\u0022:\u0022Fit to view\u0022,\u0022lock\u0022:\u0022Lock the canvas\u0022,\u0022unlock\u0022:\u0022Unlock the canvas\u0022,\u0022minimap\u0022:\u0022Overview map\u0022,\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022,\u0022status\u0022:{\u0022idle\u0022:\u0022Not run\u0022,\u0022running\u0022:\u0022Running\u0022,\u0022success\u0022:\u0022Succeeded\u0022,\u0022error\u0022:\u0022Failed\u0022,\u0022skipped\u0022:\u0022Skipped\u0022,\u0022waiting\u0022:\u0022Waiting\u0022},\u0022issue\u0022:{\u0022empty\u0022:\u0022The workflow is empty. Add a trigger to start it.\u0022,\u0022no-trigger\u0022:\u0022There is no trigger. Add a step that starts the workflow.\u0022,\u0022multiple-triggers\u0022:\u0022:node is a second trigger. A workflow has one.\u0022,\u0022unknown-type\u0022:\u0022:node uses a step that is not installed.\u0022,\u0022missing-field\u0022:\u0022:node needs \\u0022:field\\u0022.\u0022,\u0022unreachable\u0022:\u0022:node is not connected to the trigger, so it never runs.\u0022,\u0022cycle\u0022:\u0022:node is part of a loop. Steps cannot lead back to themselves.\u0022,\u0022trigger-input\u0022:\u0022:node is a trigger, so nothing can lead into it.\u0022}}}'))" x-on:keydown="onKey($event)"
+    x-on:nq-workflow-save="$event.detail.waitUntil(fetch(&#039;/api/flows&#039;, { method: &#039;PUT&#039;, body: JSON.stringify($event.detail.graph) }))" class="relative flex min-w-0 flex-col overflow-hidden rounded-card border border-border bg-background">
+    <div role="toolbar" aria-label="Workflow canvas" class="flex flex-wrap items-center gap-2 border-b border-border bg-card px-3 py-2">
+        <h2 class="me-2 min-w-0 truncate text-label text-foreground">New workflow</h2>        <span data-slot="badge"  style="display: none"     x-show="dirty" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Unsaved changes</span>
+        <span data-slot="badge"     x-show="!dirty" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Saved</span>
+                <div class="ms-auto flex flex-wrap items-center gap-2">
+            <button data-slot="button"
+     type="button"                     x-show="editable" x-bind:disabled="pickerTypesCount === 0" x-on:click="openPicker()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>                Add step</button>
+            <button data-slot="button"
+     type="button"                     x-show="editable" x-bind:disabled="nodes.length === 0" x-on:click="tidy()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"/>
+    <path d="m14 7 3 3"/>
+    <path d="M5 6v4"/>
+    <path d="M19 14v4"/>
+    <path d="M10 2v2"/>
+    <path d="M7 8H3"/>
+    <path d="M21 16h-4"/>
+    <path d="M11 3H9"/>
+</svg>                Tidy up</button>
+            <div data-slot="workflow-validation" x-data="nqPopover(false)" x-modelable="open" x-id="['nq-popover']" class="contents">
+    <button data-slot="popover-trigger"
+     type="button"                     x-bind:data-popup-open="open ? &#039;&#039; : undefined" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" :aria-expanded="open" aria-label="Validation" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="problems.length === 0" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                    <svg aria-hidden="true" x-show="problems.length !== 0" style="display: none" x-bind:class="errorCount === 0 ? 'text-nq-warning-text' : 'text-nq-danger-text'" class="text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>                    <span x-text="problems.length === 0 ? t.validate : problemsText">Validation</span></button>
+                <template x-teleport="body">
+    <div data-slot="popover-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.6="$refs.trigger"
+        class="z-50 max-w-[var(--available-width)] rounded-floating border border-border bg-popover p-4 text-body-sm text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 w-80"><p x-show="problems.length === 0" class="flex items-center gap-2 text-body-sm">
+                        <svg aria-hidden="true" class="size-4 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                        No problems found
+                    </p>
+                    <ul x-show="problems.length !== 0" style="display: none" class="flex flex-col gap-1" aria-label="Validation">
+                        <template x-for="p in problems" :key="p.key">
+                            <li>
+                                <button type="button" :disabled="!p.nodeId" x-on:click="goIssue(p); close()"
+                                    class="flex w-full items-start gap-2 rounded-control p-1.5 text-start text-body-sm outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-default disabled:hover:bg-transparent">
+                                    <svg aria-hidden="true" x-bind:class="p.error ? 'text-nq-danger-text' : 'text-nq-warning-text'" class="mt-0.5 size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>                                    <span x-text="p.text"></span>
+                                </button>
+                            </li>
+                        </template>
+                    </ul></div>
+</template>
+</div>
+                <button data-slot="button"
+     type="button"                     x-show="cfg.runs !== null" style="display: none" x-bind:aria-pressed="panelKind === &#039;runs&#039;" x-bind:class="panelKind === &#039;runs&#039; ? &#039;border-border bg-card&#039; : &#039;&#039;" x-on:click="togglePanel(&#039;runs&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 5h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="m3 17 2 2 4-4"/>
+  <path d="m3 7 2 2 4-4"/>
+</svg>                    Executions</button>
+                <button data-slot="button"
+     type="button"                     x-show="cfg.versions !== null" style="display: none" x-bind:aria-pressed="panelKind === &#039;versions&#039;" x-bind:class="panelKind === &#039;versions&#039; ? &#039;border-border bg-card&#039; : &#039;&#039;" x-on:click="togglePanel(&#039;versions&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+  <path d="M12 7v5l4 2"/>
+</svg>                    Versions</button>
+                            <button data-slot="button"
+     type="button"                     x-show="editable" x-bind:disabled="saveDisabled" x-on:click="save()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;save&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                    <svg aria-hidden="true" x-show="busy !== 'save'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+  <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/>
+  <path d="M7 3v4a1 1 0 0 0 1 1h7"/>
+</svg>                    <span x-text="busy === 'save' ? t.saving : t.save">Save</span></button>
+                                </div>
+    </div>
+    <p x-show="message" x-text="message" role="alert" style="display: none" class="border-b border-border bg-nq-danger-soft px-3 py-1.5 text-body-sm text-nq-danger-text"></p>
+    <div x-show="previewing" role="status" style="display: none" class="flex flex-wrap items-center gap-2 border-b border-border bg-nq-info-soft px-3 py-1.5 text-body-sm text-nq-info-text">
+        <span x-text="previewText"></span>
+        <button data-slot="button"
+     type="button"                     x-on:click="exitPreview()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5 ms-auto">
+        Back to current</button>
+    </div>
+    <template x-if="runBar">
+        <div role="status" class="flex flex-wrap items-center gap-2 border-b border-border bg-secondary px-3 py-1.5 text-body-sm">
+            <span class="inline-flex" aria-hidden="true" x-bind:class="runBar.tone" x-html="runBar.glyph"></span>
+            <span x-text="runBar.label"></span>
+            <span x-show="runBar.duration !== ''" class="text-muted-foreground"><bdi x-text="runBar.duration"></bdi></span>
+            <span x-show="runBar.progress !== ''" class="text-muted-foreground"><bdi x-text="runBar.progress"></bdi></span>
+        </div>
+    </template>
+    <div class="relative min-h-0 flex-1" dir="ltr">
+        <div x-ref="surface" data-slot="workflow-surface" role="application" aria-label="Workflow canvas" class="absolute inset-0 touch-none overflow-hidden bg-background"
+            x-bind:class="locked ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'" x-bind:style="surfaceStyle"
+            x-on:pointerdown="panDown($event)" x-on:click="paneClick($event)" x-on:wheel="onWheel($event)">
+            <div class="absolute left-0 top-0 origin-top-left" x-bind:class="animate ? 'transition-transform duration-200' : ''" x-bind:style="worldStyle">
+                <svg class="pointer-events-none absolute left-0 top-0 overflow-visible" width="1" height="1" aria-hidden="true" x-html="edgeSvg"
+                    x-on:click.stop="edgeClick($event)" x-on:pointerover="edgeOver($event, true)" x-on:pointerout="edgeOver($event, false)"></svg>
+                <template x-for="e in edgeLabels" :key="e.id">
+                    <div data-flow-ui class="absolute flex items-center gap-1" :style="e.style" x-on:pointerenter="setHover(e.id)" x-on:pointerleave="setHover(null)">
+                        <span x-show="e.showText" class="rounded-full border border-border bg-card px-1.5 text-caption text-muted-foreground"><bdi x-text="e.text"></bdi></span>
+                        <button x-show="e.showInsert" type="button" data-slot="workflow-edge-insert" aria-label="Insert a step here" title="Insert a step here"
+                            class="flex size-6 items-center justify-center rounded-full border border-border bg-card text-muted-foreground outline-none transition-colors hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus" x-on:click.stop="insertOnEdge(e.id)">
+                            <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>                        </button>
+                    </div>
+                </template>
+                <template x-for="n in nodes" :key="n.id">
+                    <div class="absolute" :style="'left:' + n.left + ';top:' + n.top">
+                        <div dir="ltr" data-slot="workflow-node" :data-node-id="n.id" :data-status="n.status" :data-selected="n.selected ? 'true' : null" :data-type="n.type" role="group" tabindex="0" :aria-label="n.title"
+                            :style="n.size"
+                            class="relative flex touch-none items-center gap-3 rounded-card border bg-card px-3 py-2.5 text-start text-foreground shadow-xs transition-colors outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"
+                            :class="[n.border, n.trigger ? 'rounded-s-[28px]' : '', n.selected ? 'outline-2 outline-offset-2 outline-nq-focus' : '', n.status === 'running' ? 'shadow-[0_0_0_3px_color-mix(in_oklab,var(--nq-info)_18%,transparent)]' : '', n.errorIdle ? 'border-nq-danger/60' : '', n.editable ? 'cursor-grab' : 'cursor-pointer']"
+                            x-on:click="nodeClick(n.id)" x-on:keydown="nodeKey(n.id, $event)" x-on:pointerdown="nodeDown(n.id, $event)">
+                            <span x-show="!n.trigger" aria-hidden="true" data-handle="target" class="absolute size-2.5 rounded-full border border-nq-line-strong bg-card"
+                                :class="n.horizontal ? 'left-0 top-1/2 -translate-x-1/2 -translate-y-1/2' : 'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2'"></span>
+                            <span class="flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-foreground [&_svg]:size-4" x-html="n.icon"></span>
+                            <span class="min-w-0 flex-1">
+                                <span class="block truncate text-label" :title="n.title" x-text="n.title"></span>
+                                <span class="block truncate text-caption text-muted-foreground" :title="n.subtitle" x-text="n.subtitle"></span>
+                                <span x-show="n.detail !== ''" class="block truncate text-caption text-muted-foreground"><bdi x-text="n.detail"></bdi></span>
+                            </span>
+                            <span x-show="n.hasRun" role="img" class="inline-flex" :aria-label="n.statusLabel" :class="n.tone" x-html="n.glyph"></span>
+                            <span x-show="n.showIssue" role="img" :aria-label="n.issueLabel">
+                                <svg aria-hidden="true" x-show="n.hasError" class="size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>                                <svg aria-hidden="true" x-show="!n.hasError" class="size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>                            </span>
+                            <template x-for="o in n.outputs" :key="o.id || 'out'">
+                                <span class="contents">
+                                    <span aria-hidden="true" data-handle="source" :data-handle-id="o.id" class="absolute size-2.5 rounded-full border border-nq-line-strong bg-card touch-none" :class="n.editable ? 'cursor-crosshair' : ''" :style="o.handleStyle"
+                                        x-on:pointerdown.stop="connectDown(n.id, o.id || null, $event)"></span>
+                                    <template x-if="n.branching"><span aria-hidden="true" class="pointer-events-none absolute -translate-y-1/2 rounded-sm bg-secondary px-1 text-caption text-muted-foreground"
+                                        :class="n.horizontal ? 'right-3' : 'bottom-1 -translate-x-1/2 translate-y-0'" :style="o.labelStyle" x-text="o.label"></span></template>
+                                    <template x-if="n.editable && !o.used"><button type="button" data-slot="workflow-node-add" :aria-label="o.addLabel" :title="o.addLabel" :style="o.addStyle"
+                                        class="absolute flex size-6 items-center justify-center rounded-full border border-border bg-card text-muted-foreground outline-none transition-colors hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus" :class="n.horizontal ? '-translate-y-1/2' : '-translate-x-1/2'"
+                                        x-on:pointerdown.stop x-on:click.stop="openPicker({ sourceId: n.id, sourceHandle: o.id || null })">
+                                        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>                                    </button></template>
+                                </span>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+        <div data-flow-ui class="absolute bottom-3 left-3 z-[5] flex items-end gap-2">
+            <div class="flex flex-col overflow-hidden rounded-control border border-border bg-card shadow-xs" role="group" aria-label="Workflow canvas">
+                <button data-slot="button"
+     type="button"                     aria-label="Zoom in" title="Zoom in" x-on:click="zoomBy(1.25)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 rounded-none">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg></button>
+                <button data-slot="button"
+     type="button"                     aria-label="Zoom out" title="Zoom out" x-on:click="zoomBy(0.8)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 rounded-none border-t border-border">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg></button>
+                <button data-slot="button"
+     type="button"                     aria-label="Fit to view" title="Fit to view" x-on:click="fit(0.25)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 rounded-none border-t border-border">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="m21 3-7 7"/>
+  <path d="m3 21 7-7"/>
+  <path d="M9 21H3v-6"/>
+</svg></button>
+                <button data-slot="button"
+     type="button"                     x-bind:aria-label="locked ? t.unlock : t.lock" x-bind:title="locked ? t.unlock : t.lock" x-bind:aria-pressed="locked" x-on:click="toggleLock()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 rounded-none border-t border-border">
+        <svg aria-hidden="true" x-show="locked" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</svg>                    <svg aria-hidden="true" x-show="!locked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+  <path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+</svg></button>
+            </div>
+            <span class="rounded-control border border-border bg-card px-2 py-1 text-caption text-muted-foreground tabular-nums" aria-hidden="true"><bdi x-text="zoomPct + '%'">100%</bdi></span>
+        </div>
+        <svg data-flow-ui data-slot="workflow-minimap" role="img" aria-label="Overview map" width="160" height="104" viewBox="0 0 1 1" x-bind:view-box.camel="miniView" preserveAspectRatio="xMidYMid meet"
+            class="absolute bottom-3 right-3 z-[5] cursor-pointer rounded-control border border-border bg-card shadow-xs max-sm:hidden" x-html="miniSvg" x-on:pointerdown.stop="miniDown($event)"></svg>
+        <div x-show="empty"  class="pointer-events-none absolute inset-0 flex items-center justify-center p-6" dir="ltr">
+            <div class="pointer-events-auto flex max-w-xs flex-col items-center gap-3 text-center">
+                <p class="text-body-sm text-muted-foreground">The workflow is empty. Add a trigger to start it.</p>
+                <button data-slot="button"
+     type="button"                     x-show="editable" x-on:click="openPicker()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>                    Add step</button>
+            </div>
+        </div>
+        <aside x-show="panelKind !== ''" style="display: none" data-slot="workflow-side-panel" aria-label="Workflow canvas" dir="ltr"
+            class="absolute inset-y-0 end-0 z-10 flex w-full max-w-sm flex-col border-s border-border bg-card shadow-floating">
+            <template x-if="panelKind === 'picker'">
+                <div data-slot="workflow-node-picker" class="flex h-full min-h-0 flex-col" x-on:keydown.escape="closePanel()">
+                    <div data-slot="workflow-panel-header" class="flex items-start gap-3 border-b border-border px-4 py-3">
+        <div class="min-w-0 flex-1">
+        <h2 class="text-label text-foreground"  x-text="t.pickerTitle" >What happens next?</h2>
+        <p class="text-caption text-muted-foreground"  x-text="pickerHint" ></p>
+    </div>
+    <button data-slot="button"
+     type="button"                     aria-label="Close" title="Close" x-on:click="closePanel()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+</div>
+                    <div class="relative border-b border-border px-4 py-3">
+                        <svg aria-hidden="true" class="pointer-events-none absolute start-7 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                        <input data-slot="input" type="text"
+                    placeholder="Search steps" aria-label="Search steps" role="combobox" aria-expanded="true" x-init="$el.focus()" x-on:input="setQuery($event.target.value)" x-on:keydown="pickerKey($event)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control ps-9">
+                    </div>
+                    <div role="listbox" aria-label="What happens next?" class="min-h-0 flex-1 overflow-y-auto py-2">
+                        <p x-show="pickerEmpty" x-text="pickerNone" class="px-4 py-6 text-center text-body-sm text-muted-foreground"></p>
+                        <template x-for="g in pickerGroupsVm" :key="g.id">
+                            <div role="group" :aria-label="g.label" class="pb-2">
+                                <p class="eyebrow px-4 pb-1 pt-2" x-text="g.label"></p>
+                                <template x-for="s in g.steps" :key="s.id">
+                                    <button type="button" role="option" tabindex="-1" :aria-selected="s.active" :data-pick-type="s.id"
+                                        class="flex w-full items-start gap-3 px-4 py-2.5 text-start transition-colors" :class="s.active ? 'bg-nq-hover' : 'hover:bg-nq-hover'"
+                                        x-on:mouseenter="hoverStep(s.idx)" x-on:click="pick(s.id)">
+                                        <span class="flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary [&_svg]:size-4" x-html="s.icon"></span>
+                                        <span class="min-w-0">
+                                            <span class="block text-label text-foreground" x-text="s.label"></span>
+                                            <span x-show="s.description !== ''" class="block text-caption text-muted-foreground" x-text="s.description"></span>
+                                        </span>
+                                    </button>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            <template x-if="panelKind === 'config' && cfgVm">
+                <div data-slot="workflow-config-panel" class="flex h-full min-h-0 flex-col">
+                    <div data-slot="workflow-panel-header" class="flex items-start gap-3 border-b border-border px-4 py-3">
+            <span class="flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary [&_svg]:size-4"  x-html="cfgVm.icon" ></span>
+        <div class="min-w-0 flex-1">
+        <h2 class="text-label text-foreground"  x-text="cfgVm.title" ></h2>
+        <p class="text-caption text-muted-foreground"  x-text="cfgVm.hint" ></p>
+    </div>
+    <button data-slot="button"
+     type="button"                     aria-label="Close" title="Close" x-on:click="closePanel()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+</div>
+                    <div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('settings')" x-modelable="value" x-id="['nq-tabs']" x-model="cfgTab" class="flex flex-col min-h-0 flex-1 gap-0">
+    <div data-slot="tabs-list" data-variant="underline" aria-orientation="horizontal" x-bind="list"
+    class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-4 border-b border-border px-4">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('settings')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Settings</button>
+                            <button type="button" data-slot="tabs-tab" x-bind="tab('output')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Output</button>
+                            <span data-slot="tabs-indicator" aria-hidden="true"
+    class="absolute -z-10 transition-[left,width] duration-200 ease-nq left-[var(--active-tab-left)] w-[var(--active-tab-width)] bottom-0 h-0.5 rounded-full bg-primary"></span>
+</div>
+                        <div class="min-h-0 flex-1 overflow-y-auto">
+                            <div data-slot="tabs-panel" x-bind="panel('settings')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div class="flex flex-col gap-4 p-4">
+                                    <div class="flex flex-col gap-1.5">
+                                        <label for="nq-wf-name" class="text-label text-foreground">Name</label>
+                                        <input id="nq-wf-name" type="text" data-slot="input" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control" x-bind:value="cfgVm.name" x-bind:placeholder="cfgVm.namePlaceholder" x-bind:disabled="cfgVm.readOnly" x-on:input="setLabel($event.target.value)">
+                                        <p class="text-caption text-muted-foreground">Shown on the node. Leave empty to use the step&#039;s own name.</p>
+                                    </div>
+                                    <p x-show="cfgVm.noFields" class="text-body-sm text-muted-foreground">This step has no settings.</p>
+                                    <template x-for="f in fields" :key="f.name">
+                                        <div>
+                                            <div x-show="f.isBool" class="flex items-center justify-between gap-3">
+                                                <div class="min-w-0">
+                                                    <span class="text-label text-foreground" x-text="f.label"></span>
+                                                    <p x-show="f.help !== ''" class="text-caption text-muted-foreground" x-text="f.help"></p>
+                                                </div>
+                                                <button type="button" role="switch" data-slot="switch" :aria-checked="f.checked ? 'true' : 'false'" :aria-label="f.label" :disabled="f.disabled" :data-checked="f.checked ? '' : null" :data-unchecked="f.checked ? null : ''"
+                                                    class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50"
+                                                    x-on:click="toggleField(f.name)">
+                                                    <span data-slot="switch-thumb" class="block size-4 rounded-full bg-background shadow-xs transition-[translate] duration-150 ease-nq" :class="f.checked ? 'translate-x-3.5 rtl:-translate-x-3.5 bg-primary-foreground' : ''"></span>
+                                                </button>
+                                            </div>
+                                            <div x-show="!f.isBool" class="flex flex-col gap-1.5" :data-invalid="f.invalid ? '' : null">
+                                                <label :for="'nq-wf-f-' + f.name" class="text-label text-foreground">
+                                                    <span x-text="f.label"></span>
+                                                    <span x-show="f.required" aria-hidden="true" class="ms-1 text-nq-danger-text">*</span>
+                                                </label>
+                                                <select x-show="f.isSelect" :id="f.isSelect ? 'nq-wf-f-' + f.name : null" data-slot="select" :disabled="f.disabled" :aria-invalid="f.invalid ? 'true' : null" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control"
+                                                    x-on:change="setField(f.name, $event.target.value)">
+                                                    <option value="" :selected="f.text === ''" x-text="f.placeholder"></option>
+                                                    <template x-for="o in f.options" :key="o.value">
+                                                        <option :value="o.value" :selected="o.value === f.text" x-text="o.label"></option>
+                                                    </template>
+                                                </select>
+                                                <textarea x-show="f.isArea" :id="f.isArea ? 'nq-wf-f-' + f.name : null" data-slot="textarea" :rows="f.isCode ? 5 : 3" :dir="f.isCode ? 'ltr' : null" :spellcheck="f.isCode ? 'false' : null" :placeholder="f.placeholder" :disabled="f.disabled" :aria-invalid="f.invalid ? 'true' : null"
+                                                    class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2" :class="f.isCode ? 'font-mono text-caption' : ''" x-bind:value="f.text" x-on:input="setField(f.name, $event.target.value)"></textarea>
+                                                <input x-show="f.isInput" :id="f.isInput ? 'nq-wf-f-' + f.name : null" data-slot="input" :type="f.inputType" :inputmode="f.inputMode || null" :dir="f.ltr ? 'ltr' : null" :placeholder="f.placeholder" :disabled="f.disabled" :aria-invalid="f.invalid ? 'true' : null"
+                                                    class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control" x-bind:value="f.text" x-on:input="setField(f.name, $event.target.value, f.kind)">
+                                                <p x-show="f.help !== ''" class="text-caption text-muted-foreground" x-text="f.help"></p>
+                                                <div x-show="f.invalid" role="alert" class="text-caption text-nq-danger-text">Required</div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template x-for="m in otherIssues" :key="m">
+                                        <p class="flex items-start gap-2 text-body-sm text-nq-warning-text">
+                                            <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>                                            <span x-text="m"></span>
+                                        </p>
+                                    </template>
+                                </div></div>
+                            <div data-slot="tabs-panel" x-bind="panel('output')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div x-show="cfgVm.hasRun" class="flex flex-col gap-3 p-4">
+                                    <dl class="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-2 text-body-sm">
+                                        <dt class="text-muted-foreground">Status</dt>
+                                        <dd class="flex items-center gap-1.5">
+                                            <span class="inline-flex" aria-hidden="true" :class="cfgVm.tone" x-html="cfgVm.glyph"></span>
+                                            <span x-text="cfgVm.statusLabel"></span>
+                                        </dd>
+                                        <template x-if="cfgVm.duration !== ''">
+                                            <dt class="text-muted-foreground">Duration</dt>
+                                        </template>
+                                        <template x-if="cfgVm.duration !== ''">
+                                            <dd><bdi x-text="cfgVm.duration"></bdi></dd>
+                                        </template>
+                                        <template x-if="cfgVm.items !== ''">
+                                            <dt class="text-muted-foreground">Items</dt>
+                                        </template>
+                                        <template x-if="cfgVm.items !== ''">
+                                            <dd><bdi x-text="cfgVm.items"></bdi></dd>
+                                        </template>
+                                    </dl>
+                                    <div x-show="cfgVm.error !== ''" role="alert" class="rounded-control border border-nq-danger/40 bg-nq-danger-soft p-3 text-body-sm text-nq-danger-text">
+                                        <p class="font-medium">Error</p>
+                                        <p dir="auto" x-text="cfgVm.error"></p>
+                                    </div>
+                                    <figure x-show="cfgVm.output !== ''" data-slot="code-block" data-language="json" dir="ltr" class="relative m-0 overflow-hidden rounded-surface border border-border bg-nq-surface-soft text-start">
+                                        <pre role="region" tabindex="0" aria-label="Output" class="m-0 max-h-72 overflow-auto bg-transparent p-3 font-mono text-code text-foreground outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus"><code x-text="cfgVm.output"></code></pre>
+                                    </figure>
+                                </div>
+                                <p x-show="!cfgVm.hasRun" class="p-4 text-body-sm text-muted-foreground">Nothing to show. This step did not run in the selected execution.</p></div>
+                        </div>
+</div>
+                    <div x-show="!cfgVm.readOnly" class="flex items-center gap-2 border-t border-border px-4 py-3">
+                        <button data-slot="button"
+     type="button"                     x-on:click="addNext()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>                            Add next step</button>
+                        <button data-slot="button"
+     type="button"                     x-on:click="removeNode(panelState.id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm px-2.5 ms-auto text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>                            Remove step</button>
+                    </div>
+                </div>
+            </template>
+                <template x-if="panelKind === 'runs'">
+                    <div data-slot="workflow-runs-panel" class="flex h-full min-h-0 flex-col">
+                        <div data-slot="workflow-panel-header" class="flex items-start gap-3 border-b border-border px-4 py-3">
+            <span class="flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary [&_svg]:size-4" ><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 5h8"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="m3 17 2 2 4-4"/>
+  <path d="m3 7 2 2 4-4"/>
+</svg></span>
+        <div class="min-w-0 flex-1">
+        <h2 class="text-label text-foreground" >Executions</h2>
+        <p class="text-caption text-muted-foreground" >Pick one to see how it ran on the canvas.</p>
+    </div>
+    <button data-slot="button"
+     type="button"                     aria-label="Close" title="Close" x-on:click="closePanel()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+</div>
+                        <div x-show="runId !== null" class="flex items-center gap-2 border-b border-border px-4 py-2">
+                            <button data-slot="button"
+     type="button"                     x-on:click="toggleReplay()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="cursor !== null" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+</svg>                                <svg aria-hidden="true" x-show="cursor === null" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>
+</svg>                                <span x-text="replayLabel">Replay</span></button>
+                            <button data-slot="button"
+     type="button"                     x-on:click="clearRun()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>                                Hide overlay</button>
+                        </div>
+                        <p x-show="runsVm.length === 0" class="p-4 text-body-sm text-muted-foreground">No executions yet. Run the workflow to see one here.</p>
+                        <ol class="min-h-0 flex-1 divide-y divide-border overflow-y-auto">
+                            <template x-for="r in runsVm" :key="r.id">
+                                <li :data-run-row="r.id" :class="r.selected ? 'bg-nq-selected' : ''">
+                                    <button type="button" :aria-pressed="r.selected" class="flex w-full items-center gap-3 px-4 py-3 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus" x-on:click="selectRun(r.id)">
+                                        <span class="inline-flex size-5 shrink-0 items-center justify-center [&_svg]:size-5" role="img" :aria-label="r.statusLabel" :class="r.tone" x-html="r.glyph"></span>
+                                        <span class="min-w-0 flex-1">
+                                            <span class="block text-label text-foreground" x-text="r.statusLabel"></span>
+                                            <span class="block truncate text-caption text-muted-foreground"><span x-html="r.dateHtml"></span><span x-show="r.trigger !== ''"> · <span x-text="r.trigger"></span></span></span>
+                                        </span>
+                                        <span x-show="r.duration !== ''" class="shrink-0 text-caption text-muted-foreground tabular-nums"><bdi x-text="r.duration"></bdi></span>
+                                    </button>
+                                </li>
+                            </template>
+                        </ol>
+                    </div>
+                </template>
+                <template x-if="panelKind === 'versions'">
+                    <div data-slot="workflow-versions-panel" class="flex h-full min-h-0 flex-col">
+                        <div data-slot="workflow-panel-header" class="flex items-start gap-3 border-b border-border px-4 py-3">
+            <span class="flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-secondary [&_svg]:size-4" ><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+  <path d="M12 7v5l4 2"/>
+</svg></span>
+        <div class="min-w-0 flex-1">
+        <h2 class="text-label text-foreground" >Version history</h2>
+        <p class="text-caption text-muted-foreground" >Every save, newest first. Preview one on the canvas, then restore it.</p>
+    </div>
+    <button data-slot="button"
+     type="button"                     aria-label="Close" title="Close" x-on:click="closePanel()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+</div>
+                        <p x-show="restoreError !== ''" x-text="restoreError" role="alert" style="display: none" class="border-b border-border bg-nq-danger-soft px-4 py-2 text-body-sm text-nq-danger-text"></p>
+                        <ol class="min-h-0 flex-1 divide-y divide-border overflow-y-auto">
+                            <template x-for="v in versionsVm" :key="v.version">
+                                <li :data-version-row="v.version" class="px-4 py-3" :class="v.previewing ? 'bg-nq-selected' : ''">
+                                    <button type="button" :aria-pressed="v.previewing" class="block w-full text-start outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus" x-on:click="previewVersion(v.version)">
+                                        <span class="flex flex-wrap items-center gap-2">
+                                            <span class="text-label text-foreground" x-text="v.label"></span>
+                                            <span data-slot="badge"     x-show="v.current" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Current</span>
+                                            <span data-slot="badge"     x-show="v.previewing" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Preview</span>
+                                        </span>
+                                        <span class="block text-caption text-muted-foreground"><span x-html="v.dateHtml"></span><span x-show="v.by !== ''"> · <span x-text="v.by"></span></span></span>
+                                        <span x-show="v.note !== ''" class="mt-1 block text-body-sm text-foreground" x-text="v.note"></span>
+                                    </button>
+                                    <button data-slot="button"
+     type="button"                     data-restore="data-restore" x-show="v.canRestore" x-on:click="askRestore(v.version)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 mt-2">
+        Restore</button>
+                                </li>
+                            </template>
+                        </ol>
+                    </div>
+                </template>
+        </aside>
+    </div>
+        <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="confirmOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" x-text="confirmTitle" class="text-h3 text-foreground"></h2>
+                    <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">The current workflow is saved as a new version first, so you can come back to it.</p></div>
+                <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="workflow-restore-confirm"
+     type="button"                     x-on:click.capture="close()" x-bind:disabled="restoreBusy" x-on:click="doRestore()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-text="restoreBusy ? t.restoring : t.restore">Restore</span></button></div>
+        </div>
+    </div>
+</template>
+</div>
+</div>
+</div>

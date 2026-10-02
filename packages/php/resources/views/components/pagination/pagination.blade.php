@@ -21,9 +21,9 @@
     $ellipsis = 'flex size-control-sm items-center justify-center text-muted-foreground';
     $more = $t::t('More pages', 'المزيد من الصفحات');
 @endphp
-<nav data-slot="pagination" aria-label="{{ $label ?? $t::t('Pagination', 'ترقيم الصفحات') }}"
+<nav data-slot="{{ $attributes->get('data-slot', 'pagination') }}" aria-label="{{ $label ?? $t::t('Pagination', 'ترقيم الصفحات') }}"
     x-data="nqPagination({{ $page }}, {{ $pageCount }}, {{ (int) $siblings }}, {{ (int) $boundaries }})" x-modelable="page"
-    {{ $attributes->cn('w-fit max-w-full') }}>
+    {{ $attributes->except('data-slot')->cn('w-fit max-w-full') }}>
     <ul class="flex flex-wrap items-center gap-1">
         <li>
             <x-nq::button variant="ghost" size="icon-sm" aria-label="{{ $previousLabel ?? $t::t('Previous', 'السابق') }}" :disabled="$page <= 1"

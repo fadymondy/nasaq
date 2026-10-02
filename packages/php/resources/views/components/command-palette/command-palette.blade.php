@@ -37,8 +37,8 @@
     $placeholderText = $placeholder ?? \Nasaq\Nasaq::t('Search or run a command…', 'ابحث أو نفّذ أمرًا…');
     $filter = $t('filter', 'Filter…', 'تصفية…');
 @endphp
-<div data-slot="command-palette-root" x-data="nqCommandPalette({!! $js($rows) !!}, {!! $js((object) $options) !!})" x-modelable="open"
-    x-on:keydown.window="onHotkey($event)" x-on:nq-command-palette-open.window="show()" x-on:nq-command-palette-toggle.window="toggle()" {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'command-palette-root') }}" x-data="nqCommandPalette({!! $js($rows) !!}, {!! $js((object) $options) !!})" x-modelable="open"
+    x-on:keydown.window="onHotkey($event)" x-on:nq-command-palette-open.window="show()" x-on:nq-command-palette-toggle.window="toggle()" {{ $attributes->except('data-slot')->cn('contents') }}>
     <template x-teleport="body">
         <div data-slot="command-palette-portal">
             <div data-slot="command-palette-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 dark:bg-nq-bg/60 {{ $fade }}"></div>

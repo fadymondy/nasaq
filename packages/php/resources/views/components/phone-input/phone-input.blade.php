@@ -17,8 +17,8 @@
     ], fn ($v) => $v !== null);
     $inner = $attributes->except(['class', 'x-model', 'x-on:phone-change', '@phone-change']);
 @endphp
-<div data-slot="phone-input-root" x-data="nqPhoneInput(@js($value), @js($options))" x-modelable="value" x-id="['nq-phone']"
-    {{ $attributes->only(['x-model', 'x-on:phone-change', '@phone-change'])->cn('block w-full min-w-0') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'phone-input-root') }}" x-data="nqPhoneInput(@js($value), @js($options))" x-modelable="value" x-id="['nq-phone']"
+    {{ $attributes->except('data-slot')->only(['x-model', 'x-on:phone-change', '@phone-change'])->cn('block w-full min-w-0') }}>
     <div role="group" data-slot="phone-input" x-ref="anchor" @if ($invalid) data-invalid @endif
         class="{{ \Nasaq\Cn::merge('group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50', $attributes->get('class', '')) }}">
         <button data-slot="phone-input-country" x-ref="trigger" x-bind="trigger" @disabled($disabled)

@@ -19,8 +19,8 @@
 @if (! $required)
     {{ $slot }}
 @else
-    <main data-slot="forced-update-gate" data-status="{{ $status }}" x-data="nqAppUpdate(@js($config))" x-on:nq-update-state.window="set($event.detail)" x-bind:data-status="status"
-        {{ $attributes->cn('flex min-h-dvh flex-col items-center justify-center gap-8 bg-background p-6 text-center text-foreground') }}>
+    <main data-slot="{{ $attributes->get('data-slot', 'forced-update-gate') }}" data-status="{{ $status }}" x-data="nqAppUpdate(@js($config))" x-on:nq-update-state.window="set($event.detail)" x-bind:data-status="status"
+        {{ $attributes->except('data-slot')->cn('flex min-h-dvh flex-col items-center justify-center gap-8 bg-background p-6 text-center text-foreground') }}>
         @if ($hasLogo)
             {{ $logo }}
         @else

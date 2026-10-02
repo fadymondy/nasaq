@@ -7,9 +7,9 @@
 @php
     $orientation = $orientation === 'vertical' ? 'vertical' : 'horizontal';
 @endphp
-<div data-slot="resizable-group" data-orientation="{{ $orientation }}"
+<div data-slot="{{ $attributes->get('data-slot', 'resizable-group') }}" data-orientation="{{ $orientation }}"
     x-data="nqResizable(@js(['orientation' => $orientation, 'id' => $id, 'keyboardResizeBy' => (int) $keyboardResizeBy]))"
     style="display:flex;flex-direction:{{ $orientation === 'vertical' ? 'column' : 'row' }};overflow:hidden"
-    {{ $attributes->cn('size-full') }}>
+    {{ $attributes->except('data-slot')->cn('size-full') }}>
     {{ $slot }}
 </div>

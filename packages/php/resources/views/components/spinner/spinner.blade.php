@@ -3,9 +3,9 @@
 @props(['label' => null])
 @if ($label)
     <span role="status" class="inline-flex">
-        <x-lucide-loader-circle data-slot="spinner" aria-hidden="true" {{ $attributes->cn('size-4 animate-spin motion-reduce:animate-none') }} />
+        <x-lucide-loader-circle data-slot="{{ $attributes->get('data-slot', 'spinner') }}" aria-hidden="true" {{ $attributes->except('data-slot')->cn('size-4 animate-spin motion-reduce:animate-none') }} />
         <span class="sr-only">{{ $label }}</span>
     </span>
 @else
-    <x-lucide-loader-circle data-slot="spinner" aria-hidden="true" {{ $attributes->cn('size-4 animate-spin motion-reduce:animate-none') }} />
+    <x-lucide-loader-circle data-slot="{{ $attributes->get('data-slot', 'spinner') }}" aria-hidden="true" {{ $attributes->except('data-slot')->cn('size-4 animate-spin motion-reduce:animate-none') }} />
 @endif

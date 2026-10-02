@@ -27,8 +27,8 @@
     $own = ['x-model', 'x-on:nq-mentions-change', '@nq-mentions-change'];
     $avatar = 'inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full';
 @endphp
-<div data-slot="mention-textarea" x-data="nqMentionTextarea(@js((string) $value), {!! $optionsJs !!})" x-modelable="text" x-id="['nq-mention']"
-    {{ $attributes->only($own)->cn('relative w-full', $wrapperClass) }}>
+<div data-slot="{{ $attributes->get('data-slot', 'mention-textarea') }}" x-data="nqMentionTextarea(@js((string) $value), {!! $optionsJs !!})" x-modelable="text" x-id="['nq-mention']"
+    {{ $attributes->except('data-slot')->only($own)->cn('relative w-full', $wrapperClass) }}>
     <x-nq::field.textarea x-bind="area" x-ref="area" {{ $attributes->except($own) }}>{{ $value }}</x-nq::field.textarea>
     <ul x-show="open()" x-cloak :id="listId()" role="listbox" aria-label="{{ $strings['list'] }}" data-slot="mention-list" :style="listStyle()" @mousedown.prevent
         class="absolute z-50 max-h-56 w-64 max-w-full overflow-y-auto rounded-floating border border-border bg-popover p-1 text-body-sm text-popover-foreground shadow-floating">

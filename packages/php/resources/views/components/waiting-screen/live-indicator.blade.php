@@ -14,8 +14,8 @@
     $dot = $connection === 'live' ? 'bg-nq-success-text' : 'bg-nq-warning-text';
     $cfg = ['updatedAt' => $updatedAt, 'frozen' => $now !== null, 'serverNow' => $clock, 'justNow' => $t['updatedNow'], 'ago' => $t['updated']];
 @endphp
-<span data-slot="queue-live" data-connection="{{ $connection }}" role="status" aria-label="{{ $t['connection'] }}: {{ $text }}" @if ($updatedAt !== null && $now === null) x-data="nqQueueLive(@js($cfg))" @endif
-    {{ $attributes->cn('inline-flex items-center gap-1.5 text-caption text-muted-foreground') }}>
+<span data-slot="{{ $attributes->get('data-slot', 'queue-live') }}" data-connection="{{ $connection }}" role="status" aria-label="{{ $t['connection'] }}: {{ $text }}" @if ($updatedAt !== null && $now === null) x-data="nqQueueLive(@js($cfg))" @endif
+    {{ $attributes->except('data-slot')->cn('inline-flex items-center gap-1.5 text-caption text-muted-foreground') }}>
     @if ($connection === 'offline')
         <x-lucide-wifi-off aria-hidden="true" class="size-3.5 text-nq-danger-text" />
     @else

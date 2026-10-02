@@ -12,8 +12,8 @@
     $t = \Nasaq\Nasaq::class;
 @endphp
 {{-- gap-x-3 + gap-y-1: Cn::merge treats gap-x/gap-y as the same group as gap (shared Cn.php), so class() is used instead of cn(). --}}
-<div role="status" data-slot="impersonation-banner" data-mode="{{ $mode }}" x-data="nqImpersonationBanner(@js($exitUrl))"
-    {{ $attributes->class(['flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 text-body-sm', $preview ? 'bg-nq-info-soft text-nq-info-text' : 'bg-nq-warning-soft text-nq-warning-text', 'sticky top-0 z-40' => $sticky]) }}>
+<div role="status" data-slot="{{ $attributes->get('data-slot', 'impersonation-banner') }}" data-mode="{{ $mode }}" x-data="nqImpersonationBanner(@js($exitUrl))"
+    {{ $attributes->except('data-slot')->class(['flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 text-body-sm', $preview ? 'bg-nq-info-soft text-nq-info-text' : 'bg-nq-warning-soft text-nq-warning-text', 'sticky top-0 z-40' => $sticky]) }}>
     @if ($preview)<x-lucide-eye aria-hidden="true" class="size-4 shrink-0" />@else<x-lucide-shield-user aria-hidden="true" class="size-4 shrink-0" />@endif
     <span class="min-w-0 flex-1">
         <span class="font-medium">{{ $preview ? $t::t("Previewing as {$name}.", "معاينة بصفة {$name}.") : $t::t("You are viewing the app as {$name}.", "أنت تتصفح التطبيق بصفة {$name}.") }}</span>

@@ -14,8 +14,8 @@
         return ['label' => $f['label'] ?? '', 'hint' => $f['hint'] ?? null, 'included' => ($f['included'] ?? true) !== false];
     }, (array) $features);
 @endphp
-<article data-slot="plan-card" @if ($highlighted) data-highlighted @endif @if ($current) data-current @endif aria-labelledby="{{ $id }}"
-    {{ $attributes->cn([
+<article data-slot="{{ $attributes->get('data-slot', 'plan-card') }}" @if ($highlighted) data-highlighted @endif @if ($current) data-current @endif aria-labelledby="{{ $id }}"
+    {{ $attributes->except('data-slot')->cn([
         'relative flex min-w-0 flex-col gap-5 rounded-card p-6',
         $highlighted
             ? 'bg-[color-mix(in_oklab,var(--nq-brand)_9%,var(--nq-surface))] shadow-lg ring-2 ring-nq-brand/50'

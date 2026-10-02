@@ -1,0 +1,58 @@
+<div class="flex flex-col gap-4">
+    <div class="flex items-center gap-3">
+        <span data-slot="focus-status" data-state="focus"     class="inline-flex h-7 max-w-full items-center gap-1.5 rounded-full border px-2.5 text-caption font-medium border-primary/40 bg-[color-mix(in_oklab,var(--nq-action)_12%,transparent)] text-foreground">
+    <svg aria-hidden="true" class="size-3.5 shrink-0 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 18V5"/>
+  <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/>
+  <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/>
+  <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/>
+  <path d="M18 18a4 4 0 0 0 2-7.464"/>
+  <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/>
+  <path d="M6 18a4 4 0 0 1-2-7.464"/>
+  <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/>
+</svg>    <span class="truncate">In focus</span>
+    <span dir="ltr" class="tabular-nums text-muted-foreground" aria-label="12:34 left">12:34</span></span>
+        <span data-slot="focus-avatar" data-state="focus" class="relative inline-flex shrink-0">
+    <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-8 text-caption rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Fady Mondy" >FM</span>
+    </span>
+            <span role="img" aria-label="In focus" title="In focus"
+            class="absolute -bottom-0.5 -end-0.5 grid place-items-center rounded-full border-2 border-background size-4 bg-primary text-primary-foreground">
+            <svg aria-hidden="true" class="size-2.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 18V5"/>
+  <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/>
+  <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/>
+  <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/>
+  <path d="M18 18a4 4 0 0 0 2-7.464"/>
+  <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/>
+  <path d="M6 18a4 4 0 0 1-2-7.464"/>
+  <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/>
+</svg>        </span>
+    </span>
+    </div>
+    <div data-slot="do-not-disturb"
+    x-data="{ dnd: true }" x-modelable="dnd" x-bind:data-state="dnd ? 'on' : 'off'"
+    class="flex items-center justify-between gap-4 max-w-md">
+    <div class="flex min-w-0 flex-col gap-0.5">
+        <label for="nq-dnd-000001" class="inline-flex items-center gap-2 text-label text-foreground">
+            <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M17 17H4a1 1 0 0 1-.74-1.673C4.59 13.956 6 12.499 6 8a6 6 0 0 1 .258-1.742"/>
+  <path d="m2 2 20 20"/>
+  <path d="M8.668 3.01A6 6 0 0 1 18 8c0 2.687.77 4.653 1.707 6.05"/>
+</svg>            Do not disturb
+        </label>
+        <p class="text-body-sm text-muted-foreground">
+            Silences notifications and shows you as busy to your team.
+            <span class="ms-1 text-nq-warning-text" x-show="dnd" >Until ⁦6:00 PM⁩</span>        </p>
+    </div>
+    <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 id="nq-dnd-000001" x-model="dnd" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+</div>
+</div>

@@ -39,7 +39,7 @@
     ];
     $rowButtons = 'flex shrink-0 flex-wrap gap-2';
 @endphp
-<div data-slot="backup-manager" x-data="nqBackupManager(@js($config))" {{ $attributes->cn('w-full max-w-5xl') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'backup-manager') }}" x-data="nqBackupManager(@js($config))" {{ $attributes->except('data-slot')->cn('w-full max-w-5xl') }}>
 <x-nq::card class="w-full">
     <x-nq::card.header class="sm:flex sm:items-start sm:justify-between sm:gap-4">
         <div class="flex flex-col gap-1.5">

@@ -25,8 +25,8 @@
     ];
 @endphp
 <div role="region" aria-roledescription="carousel" aria-label="{{ $label ?? $t('Carousel', 'شريط الشرائح') }}" dir="{{ $dir }}" lang="{{ $locale ?? app()->getLocale() }}" tabindex="0"
-    data-slot="carousel" x-data="nqCarousel({!! \Illuminate\Support\Js::from($options) !!})" x-bind="root"
-    {{ $attributes->cn('relative rounded-card outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus') }}>
+    data-slot="{{ $attributes->get('data-slot', 'carousel') }}" x-data="nqCarousel({!! \Illuminate\Support\Js::from($options) !!})" x-bind="root"
+    {{ $attributes->except('data-slot')->cn('relative rounded-card outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus') }}>
     {{ $slot }}
     {{-- Live region: only while autoplay is off, so a rotating carousel does not chatter. --}}
     <div class="sr-only" aria-atomic="true" x-bind="live"></div>

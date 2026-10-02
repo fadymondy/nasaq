@@ -3,7 +3,7 @@
      Every panel is rendered; the inactive ones are hidden. --}}
 @aware(['value' => null, 'items' => null])
 @props(['id', 'label' => null])
-<div data-slot="account-settings-content" data-section="{{ $id }}" role="region" x-bind="panel(@js($id))"
+<div data-slot="{{ $attributes->get('data-slot', 'account-settings-content') }}" data-section="{{ $id }}" role="region" x-bind="panel(@js($id))"
     @if ($label) aria-label="{{ $label }}" @endif
     @if ((string) $value !== (string) $id) hidden @endif
-    {{ $attributes->cn('flex min-w-0 flex-col gap-6') }}>{{ $slot }}</div>
+    {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-6') }}>{{ $slot }}</div>

@@ -5,11 +5,11 @@
     $unit = fn ($v) => $v === null || $v === '' ? null : (is_numeric($v) ? $v.'px' : (string) $v);
     $initial = is_string($defaultSize) && str_ends_with(trim($defaultSize), '%') ? (float) $defaultSize : null;
 @endphp
-<div data-slot="resizable-panel"
+<div data-slot="{{ $attributes->get('data-slot', 'resizable-panel') }}"
     @if ($unit($defaultSize)) data-default-size="{{ $unit($defaultSize) }}" @endif
     @if ($unit($minSize)) data-min-size="{{ $unit($minSize) }}" @endif
     @if ($unit($maxSize)) data-max-size="{{ $unit($maxSize) }}" @endif
     @if ($unit($collapsedSize)) data-collapsed-size="{{ $unit($collapsedSize) }}" @endif
     @if ($collapsible) data-collapsible @endif
     style="flex:{{ $initial ?? 1 }} 1 0px;overflow:hidden"
-    {{ $attributes->cn('min-w-0') }}>{{ $slot }}</div>
+    {{ $attributes->except('data-slot')->cn('min-w-0') }}>{{ $slot }}</div>

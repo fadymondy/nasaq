@@ -14,7 +14,7 @@
     $over = array_values(array_filter($items, fn ($i) => nq_um_overage($i) > 0));
     $pressed = count(array_filter($items, fn ($i) => nq_um_tone($i['used'], $i['limit'] ?? null, $thresholds) !== 'ok')) > 0;
 @endphp
-<div data-slot="usage-summary" @if ($loading) aria-busy="true" @endif {{ $attributes->cn("flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground") }}>
+<div data-slot="{{ $attributes->get('data-slot', 'usage-summary') }}" @if ($loading) aria-busy="true" @endif {{ $attributes->except('data-slot')->cn("flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground") }}>
     <x-nq::card.header>
         <x-nq::card.title as="h3" class="flex items-center gap-2">
             {{ $t['planUsage'] }}

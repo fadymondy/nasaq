@@ -22,5 +22,5 @@
     }
     $text = $relative ? $date->copy()->locale(substr($locale, 0, 2))->diffForHumans() : $absolute;
 @endphp
-<time data-slot="date-time" datetime="{{ $date->toIso8601String() }}" dir="auto" @if ($title ?? $relative) title="{{ $title ?? $absolute }}" @endif
-    {{ $attributes->cn('tabular-nums [unicode-bidi:isolate]') }}>{{ $text }}</time>
+<time data-slot="{{ $attributes->get('data-slot', 'date-time') }}" datetime="{{ $date->toIso8601String() }}" dir="auto" @if ($title ?? $relative) title="{{ $title ?? $absolute }}" @endif
+    {{ $attributes->except('data-slot')->cn('tabular-nums [unicode-bidi:isolate]') }}>{{ $text }}</time>

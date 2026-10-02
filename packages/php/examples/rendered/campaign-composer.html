@@ -1,0 +1,315 @@
+<div data-slot="campaign-composer" x-data="nqCampaignComposer(JSON.parse('{\u0022audiences\u0022:[{\u0022id\u0022:\u0022all\u0022,\u0022label\u0022:\u0022Everyone\u0022,\u0022counts\u0022:{\u0022email\u0022:1240,\u0022whatsapp\u0022:610}}],\u0022variables\u0022:[{\u0022key\u0022:\u0022name\u0022,\u0022label\u0022:\u0022Name\u0022,\u0022sample\u0022:\u0022Sara\u0022}],\u0022defaultValue\u0022:{\u0022audienceId\u0022:\u0022all\u0022,\u0022subject\u0022:\u0022Hello\u0022,\u0022body\u0022:\u0022\\u003Cp\\u003EHi there\\u003C\\\/p\\u003E\u0022},\u0022canSend\u0022:true,\u0022canSendTest\u0022:true,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022channel\u0022:\u0022Channel\u0022,\u0022channels\u0022:{\u0022email\u0022:\u0022Email\u0022,\u0022whatsapp\u0022:\u0022WhatsApp\u0022},\u0022audience\u0022:\u0022Audience\u0022,\u0022audiencePlaceholder\u0022:\u0022Choose who gets it\u0022,\u0022reach\u0022:\u0022Will reach\u0022,\u0022peopleOne\u0022:\u0022person\u0022,\u0022peopleMany\u0022:\u0022people\u0022,\u0022counting\u0022:\u0022Counting\\u2026\u0022,\u0022countFailed\u0022:\u0022Could not count this audience.\u0022,\u0022subject\u0022:\u0022Subject\u0022,\u0022subjectHint\u0022:\u0022What they see before opening.\u0022,\u0022body\u0022:\u0022Message\u0022,\u0022whatsappBody\u0022:\u0022Message text\u0022,\u0022htmlBody\u0022:\u0022Message (HTML)\u0022,\u0022whatsappHint\u0022:\u0022Plain text. WhatsApp allows up to 1,024 characters.\u0022,\u0022variables\u0022:\u0022Variables\u0022,\u0022variablesHint\u0022:\u0022Filled in for each person.\u0022,\u0022insert\u0022:\u0022Insert {label}\u0022,\u0022copyVariable\u0022:\u0022Copy {label} variable\u0022,\u0022preview\u0022:\u0022Preview\u0022,\u0022previewFrame\u0022:\u0022Email preview\u0022,\u0022desktop\u0022:\u0022Desktop\u0022,\u0022mobile\u0022:\u0022Mobile\u0022,\u0022from\u0022:\u0022From\u0022,\u0022to\u0022:\u0022To\u0022,\u0022footerEmail\u0022:\u0022You get this because you subscribed. Unsubscribe any time.\u0022,\u0022footerWhatsapp\u0022:\u0022Reply STOP to unsubscribe.\u0022,\u0022sendTest\u0022:\u0022Send a test\u0022,\u0022testTitle\u0022:\u0022Send a test\u0022,\u0022testEmail\u0022:\u0022Send the test to this address. It uses sample values for the variables.\u0022,\u0022testWhatsapp\u0022:\u0022Send the test to your own workspace number only. It uses sample values for the variables.\u0022,\u0022testToEmail\u0022:\u0022Email address\u0022,\u0022testToWhatsapp\u0022:\u0022WhatsApp number\u0022,\u0022testSent\u0022:\u0022Test sent\u0022,\u0022testInvalid\u0022:\u0022Enter a valid address or number.\u0022,\u0022send\u0022:\u0022Send campaign\u0022,\u0022sendTitle\u0022:\u0022Send to {n} {people}?\u0022,\u0022sendBody\u0022:\u0022This goes out right away and cannot be recalled. Send a test first if you have not.\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022confirmSend\u0022:\u0022Send now\u0022,\u0022checks\u0022:\u0022Before you send\u0022,\u0022issues\u0022:{\u0022audience-none\u0022:\u0022Choose an audience.\u0022,\u0022audience-empty\u0022:\u0022This audience has no one reachable on this channel.\u0022,\u0022subject-empty\u0022:\u0022Add a subject.\u0022,\u0022body-empty\u0022:\u0022Write the message.\u0022,\u0022body-too-long\u0022:\u0022The message is over the WhatsApp limit.\u0022,\u0022variable-unknown\u0022:\u0022The message uses a variable that does not exist.\u0022},\u0022ready\u0022:\u0022Ready to send.\u0022,\u0022failed\u0022:\u0022That did not work. Try again.\u0022,\u0022sending\u0022:\u0022Sending\u0022,\u0022sentOf\u0022:\u0022{sent} of {total} sent\u0022,\u0022failedCount\u0022:\u0022{n} failed\u0022,\u0022done\u0022:\u0022Sent to everyone.\u0022,\u0022partial\u0022:\u0022Finished, but some did not go through.\u0022,\u0022stop\u0022:\u0022Stop sending\u0022,\u0022characters\u0022:\u0022{n} \\\/ {max}\u0022,\u0022noPreview\u0022:\u0022Nothing to preview yet\u0022}}'))" x-modelable="progress"
+    class="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+    <div class="flex min-w-0 flex-col gap-5" x-bind:inert="locked ? '' : null">
+        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Channel</label>
+            <div role="group" data-slot="campaign-channel" aria-label="Channel" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5" x-on:keydown="channelKey($event)">
+                                    <button type="button" data-slot="toggle" aria-pressed="true" x-bind:aria-pressed="channel === 'email' ? 'true' : 'false'"
+                        x-bind:data-pressed="channel === 'email' ? '' : null"  data-pressed  x-on:click="setChannel('email')" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Email</button>
+                                    <button type="button" data-slot="toggle" aria-pressed="false" x-bind:aria-pressed="channel === 'whatsapp' ? 'true' : 'false'"
+                        x-bind:data-pressed="channel === 'whatsapp' ? '' : null"  x-on:click="setChannel('whatsapp')" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">WhatsApp</button>
+                            </div>
+</div>
+        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Audience</label>
+            <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="audienceId" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? 'Choose who gets it'" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('all', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('all')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Everyone</span>
+</div>
+    </div>
+</template>
+    </div>
+            <template x-if="audience && audience.description"><p data-slot="field-description" class="text-caption text-muted-foreground"><span x-text="audience.description"></span></p>
+</template>
+</div>
+        <div role="status" aria-live="polite" data-slot="campaign-audience-count" class="flex items-center gap-3 rounded-card border border-border bg-nq-surface-soft p-3">
+            <svg data-slot="icon" aria-hidden="true" class="size-5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg>            <div class="flex flex-col">
+                <span class="text-caption text-muted-foreground">Will reach</span>
+                <span x-show="countState === 'none'" class="text-body-sm text-muted-foreground">—</span>
+                <span x-show="countState === 'error'" style="display: none" class="text-body-sm text-destructive">Could not count this audience.</span>
+                <span x-show="countState === 'loading'" style="display: none" class="text-body-sm text-muted-foreground">Counting…</span>
+                <span x-show="countState === 'ready'" style="display: none" class="text-body font-medium text-foreground tabular-nums"><bdi data-slot="num" data-numeric="" x-text="countText"></bdi></span>
+            </div>
+        </div>
+        <template x-if="isEmail">
+            <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Subject</label>
+                <input data-slot="input" type="text"
+                    x-model="subject" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                <p data-slot="field-description" class="text-caption text-muted-foreground">What they see before opening.</p>
+</div>
+        </template>
+        <div class="flex flex-col gap-2">
+            <span id="nq-cc-000001-body" class="text-label text-foreground" x-text="isEmail ? labels.body : labels.whatsappBody">Message</span>
+            <template x-if="isEmail">
+                <div class="contents">
+                                            <textarea data-slot="textarea"
+                x-model="body" dir="ltr" rows="10" aria-label="Message (HTML)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2 font-mono text-code"></textarea>
+                                    </div>
+            </template>
+            <template x-if="! isEmail">
+                <div class="contents">
+                    <textarea data-slot="textarea"
+                x-model="body" rows="8" aria-labelledby="nq-cc-000001-body" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                    <div class="flex items-center justify-between gap-2 text-caption text-muted-foreground">
+                        <span>Plain text. WhatsApp allows up to 1,024 characters.</span>
+                        <bdi dir="ltr" x-bind:class="tooLong ? 'text-destructive' : ''" x-text="charsText"></bdi>
+                    </div>
+                </div>
+            </template>
+                            <div role="group" aria-label="Variables" class="flex flex-wrap items-center gap-1.5">
+                    <span class="text-caption text-muted-foreground">Variables. Filled in for each person.</span>
+                    <template x-if="isEmail">
+                        <div class="contents">
+                                                            <span class="contents" x-data="nqCopyButton('{{name}}', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>        Name</button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span>
+                                                    </div>
+                    </template>
+                    <template x-if="! isEmail">
+                        <div class="contents">
+                                                            <button data-slot="button"
+     type="button"                     aria-label="Insert Name" x-on:click="insert(&#039;name&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Name</button>
+                                                    </div>
+                    </template>
+                </div>
+                    </div>
+    </div>
+    <div class="flex min-w-0 flex-col gap-4">
+        <template x-if="isEmail">
+            <div data-slot="email-template-preview" class="flex min-w-0 flex-col gap-3">
+                <div class="flex items-center justify-between gap-2">
+                    <span class="text-label text-foreground">Preview</span>
+                    <div role="group" aria-label="Preview" class="inline-flex gap-0.5 rounded-control bg-nq-surface-soft p-0.5">
+                        <button data-slot="button"
+     type="button"                     aria-label="Desktop" x-bind:variant="device === &#039;desktop&#039; ? &#039;secondary&#039; : &#039;ghost&#039;" x-bind:aria-pressed="device === &#039;desktop&#039; ? &#039;true&#039; : &#039;false&#039;" x-on:click="device = &#039;desktop&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="14" x="2" y="3" rx="2"/>
+  <line x1="8" x2="16" y1="21" y2="21"/>
+  <line x1="12" x2="12" y1="17" y2="21"/>
+</svg></button>
+                        <button data-slot="button"
+     type="button"                     aria-label="Mobile" x-bind:variant="device === &#039;mobile&#039; ? &#039;secondary&#039; : &#039;ghost&#039;" x-bind:aria-pressed="device === &#039;mobile&#039; ? &#039;true&#039; : &#039;false&#039;" x-on:click="device = &#039;mobile&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+  <path d="M12 18h.01"/>
+</svg></button>
+                    </div>
+                </div>
+                <div class="flex justify-center rounded-card border border-border bg-secondary p-3">
+                    <div class="flex w-full flex-col overflow-hidden rounded-card border border-border bg-card" x-bind:data-device="device" x-bind:class="device === 'mobile' ? 'max-w-[375px]' : 'max-w-[680px]'">
+                        <div class="flex flex-col gap-0.5 border-b border-border px-4 py-3 text-body-sm">
+                            <span class="truncate text-label text-foreground" x-text="previewSubject"></span>
+                            <template x-if="sender">
+                                <span class="flex flex-wrap items-center gap-x-1 text-muted-foreground">
+                                    From: <span class="text-foreground" x-text="sender.name"></span> <bdi dir="ltr" x-text="'<' + sender.email + '>'"></bdi>
+                                </span>
+                            </template>
+                            <template x-if="recipient">
+                                <span class="flex flex-wrap items-center gap-x-1 text-muted-foreground">
+                                    To: <bdi dir="ltr" x-text="recipient"></bdi>
+                                </span>
+                            </template>
+                        </div>
+                        <iframe title="Email preview" sandbox="" x-bind:srcdoc="srcdoc" class="h-[520px] w-full border-0 bg-secondary"></iframe>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template x-if="! isEmail">
+            <div class="flex flex-col gap-3">
+                <span class="text-label text-foreground">Preview</span>
+                <div class="flex justify-center rounded-card border border-border bg-secondary p-4">
+                    <div class="flex w-full max-w-[22rem] flex-col gap-1 rounded-card rounded-ss-none border border-border bg-card p-3 text-body-sm">
+                        <p x-show="bodyText" dir="auto" class="whitespace-pre-wrap break-words text-foreground" x-text="bodyText"></p>
+                        <p x-show="! bodyText" class="text-muted-foreground">Nothing to preview yet</p>
+                        <p class="text-caption text-muted-foreground">Reply STOP to unsubscribe.</p>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <section aria-label="Before you send" class="flex flex-col gap-2 rounded-card border border-border p-3">
+            <h3 class="text-label text-foreground">Before you send</h3>
+            <p x-show="ready" style="display: none" class="flex items-center gap-1.5 text-body-sm text-nq-success-text">
+                <svg data-slot="icon" aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                Ready to send.
+            </p>
+            <ul x-show="! ready" class="flex flex-col gap-1">
+                <template x-for="i in issueItems" :key="i.key">
+                    <li class="flex items-center gap-1.5 text-body-sm" x-bind:class="tried ? 'text-destructive' : 'text-muted-foreground'">
+                        <svg data-slot="icon" aria-hidden="true" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>                        <span x-text="i.text"></span>
+                    </li>
+                </template>
+            </ul>
+        </section>
+        <template x-if="sendError"><div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="sendError"></span></div>
+            </div>
+    </div>
+</template>
+        <template x-if="progress">
+            <section aria-label="Sending" class="flex flex-col gap-2 rounded-card border border-border p-3">
+                <div data-slot="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" x-bind:aria-valuenow="prog.percent" x-bind:aria-valuetext="prog.percent + '%'" x-bind:aria-label="progLabel"
+                    x-bind:data-tone="prog.state === 'done' ? 'success' : (prog.state === 'partial' ? 'warning' : 'default')" class="flex w-full flex-col gap-1.5">
+                    <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+                        <span class="text-label text-foreground" x-text="progLabel"></span>
+                        <span aria-hidden="true" class="text-muted-foreground tabular-nums" x-text="prog.percent + '%'"></span>
+                    </div>
+                    <div data-slot="progress-track" class="relative block h-2 w-full overflow-hidden rounded-full bg-nq-surface-soft">
+                        <div data-slot="progress-indicator" x-bind:style="'inset-inline-start:0;width:' + prog.percent + '%'"
+                            x-bind:class="{ 'bg-primary': prog.state === 'sending', 'bg-nq-success': prog.state === 'done', 'bg-nq-warning': prog.state === 'partial' }"
+                            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none"></div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center justify-between gap-2 text-body-sm text-muted-foreground">
+                    <span aria-live="polite" x-text="progText"></span>
+                    <template x-if="progress.failed > 0"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"><span x-text="failedText"></span></span>
+</template>
+                    <template x-if="prog.state === 'sending'"><button data-slot="button"
+     type="button"                     x-on:click="stop()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Stop sending</button>
+</template>
+                </div>
+            </section>
+        </template>
+        <div class="flex flex-wrap items-center justify-end gap-2">
+            <template x-if="canSendTest">
+                <button data-slot="button"
+     type="button"                     x-bind:disabled="locked ? &#039;&#039; : null" x-on:click="openTest()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Send a test</button>
+            </template>
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="(locked || ! canSend) ? &#039;&#039; : null" x-bind:aria-busy="sending ? &#039;true&#039; : null" x-on:click="trySend()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/>
+  <path d="m21.854 2.147-10.94 10.939"/>
+</svg>                Send campaign</button>
+        </div>
+    </div>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="testOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form novalidate class="flex flex-col gap-4" x-on:submit.prevent="sendTest()">
+                <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Send a test</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-text="testDescription"></span></p></div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50"><span x-text="testToLabel"></span></label>
+                    <template x-if="isEmail"><input data-slot="input" type="email"
+     dir="ltr"                 x-model="testTo" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+</template>
+                    <template x-if="! isEmail"><input data-slot="input" type="tel"
+     dir="ltr"                 x-model="testTo" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+</template>
+</div>
+                <template x-if="testNote && testNote.tone === 'danger'"><div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="testNote.text"></span></div>
+            </div>
+    </div>
+</template>
+                <template x-if="testNote && testNote.tone === 'success'"><div data-slot="alert" data-tone="success" role="status"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-success/30 bg-nq-success-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="testNote.text"></span></div>
+            </div>
+    </div>
+</template>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="testOpen = false" x-bind:disabled="testBusy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="submit"                     x-bind:aria-busy="testBusy ? &#039;true&#039; : null" x-bind:disabled="testBusy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/>
+  <path d="m21.854 2.147-10.94 10.939"/>
+</svg>                        Send a test</button></div>
+            </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+    <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="confirmOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground"><span x-text="sendTitle"></span></h2>
+                <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">This goes out right away and cannot be recalled. Send a test first if you have not.</p></div>
+            <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                <button data-slot="alert-dialog-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="start()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Send now</button></div>
+        </div>
+    </div>
+</template>
+</div>
+</div>

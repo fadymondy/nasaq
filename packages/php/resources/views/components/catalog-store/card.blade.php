@@ -7,9 +7,9 @@
     $price = $item['price'] ?? null;
     $free = empty($price) || (float) ($price['amount'] ?? 0) === 0.0;
 @endphp
-<article data-slot="catalog-card" data-item="{{ $item['id'] }}" data-state="{{ $installed ? 'installed' : 'available' }}"
+<article data-slot="{{ $attributes->get('data-slot', 'catalog-card') }}" data-item="{{ $item['id'] }}" data-state="{{ $installed ? 'installed' : 'available' }}"
     x-bind:data-state="stateOf('{{ $item['id'] }}')"
-    {{ $attributes->cn('relative flex h-full flex-col gap-3 rounded-card border border-border bg-card p-4 shadow-xs transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nq-focus hover:bg-nq-hover') }}>
+    {{ $attributes->except('data-slot')->cn('relative flex h-full flex-col gap-3 rounded-card border border-border bg-card p-4 shadow-xs transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nq-focus hover:bg-nq-hover') }}>
     <div class="flex items-start gap-3">
         <x-nq::catalog-store.icon :icon="$item['icon'] ?? null" />
         <div class="min-w-0 flex-1">

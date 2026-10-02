@@ -29,7 +29,7 @@
         </x-nq::stat-card.grid>
     </section>
 @else
-    <section data-slot="vitals" @if ($hideHeading) aria-label="{{ $t['title'] }}" @endif {{ $attributes->cn('flex flex-col gap-4') }}>
+    <section data-slot="{{ $attributes->get('data-slot', 'vitals') }}" @if ($hideHeading) aria-label="{{ $t['title'] }}" @endif {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
         @unless ($hideHeading)
             <header class="flex flex-wrap items-baseline justify-between gap-2">
                 <h2 class="text-h3 text-foreground">{{ $t['title'] }}</h2>

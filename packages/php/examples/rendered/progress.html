@@ -7,3 +7,31 @@
             class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-primary"></div>
     </div>
 </div>
+<div class="mt-6 flex flex-col gap-3" x-data="{ pct: 30 }">
+    <div data-slot="progress" data-tone="default" role="progressbar"  aria-labelledby="nq-progress-0d951ba4-label"     aria-valuemin="0" aria-valuemax="100"  aria-valuenow="30"     aria-valuetext="30%" data-progressing x-data="nqProgress(JSON.parse('{\u0022value\u0022:30,\u0022min\u0022:0,\u0022max\u0022:100,\u0022locale\u0022:\u0022en\u0022,\u0022fixedText\u0022:false}'))" x-modelable="value" x-effect="sync(pct)"
+    id="live-progress" class="flex w-full flex-col gap-1.5">
+            <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+            <span id="nq-progress-0d951ba4-label" class="text-label text-foreground">Live upload</span>            <span aria-hidden="true" data-progress-value class="text-muted-foreground tabular-nums">30%</span>        </div>
+        <div data-slot="progress-track" data-progressing class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-2">
+        <div data-slot="progress-indicator" data-progressing style="inset-inline-start:0;width:30%"
+            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-primary"></div>
+    </div>
+</div>
+    <div data-slot="progress" data-tone="default" role="progressbar"  aria-labelledby="nq-progress-73f23e22-label"     aria-valuemin="0" aria-valuemax="100"  aria-valuenow="30"     aria-valuetext="30%" data-progressing x-data="nqProgress(JSON.parse('{\u0022value\u0022:30,\u0022min\u0022:0,\u0022max\u0022:100,\u0022locale\u0022:\u0022en\u0022,\u0022fixedText\u0022:false}'))" x-modelable="value" x-effect="sync(value)"
+    id="model-progress" x-model="pct" class="flex w-full flex-col gap-1.5">
+            <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+            <span id="nq-progress-73f23e22-label" class="text-label text-foreground">Same value, x-model</span>            <span aria-hidden="true" data-progress-value class="text-muted-foreground tabular-nums">30%</span>        </div>
+        <div data-slot="progress-track" data-progressing class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-2">
+        <div data-slot="progress-indicator" data-progressing style="inset-inline-start:0;width:30%"
+            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-primary"></div>
+    </div>
+</div>
+    <div class="flex gap-2">
+        <button data-slot="button"
+     type="button"                     id="live-more" x-on:click="pct = Math.min(100, pct + 35)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Add 35%</button>
+        <button data-slot="button"
+     type="button"                     id="live-wait" x-on:click="pct = null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Indeterminate</button>
+    </div>
+</div>

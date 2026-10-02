@@ -32,8 +32,8 @@
     }
     $uid = 'nq-hk-'.substr(md5(json_encode($items)), 0, 6);
 @endphp
-<div data-slot="hotkey-bindings" x-data="nqHotkeyBindings(@js($items), {!! $optionsJs !!})"
-    {{ $attributes->cn('flex min-w-0 flex-col gap-5') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'hotkey-bindings') }}" x-data="nqHotkeyBindings(@js($items), {!! $optionsJs !!})"
+    {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-5') }}>
     <div @if (! $title) x-show="differing().length > 0" x-cloak style="display: none" @endif class="flex flex-wrap items-center justify-between gap-2">
         @if ($title)<h2 class="text-title text-foreground">{{ $title }}</h2>@else<span></span>@endif
         <x-nq::button type="button" variant="ghost" size="sm" x-show="differing().length > 0" x-cloak style="display: none" @click="resetAll()">

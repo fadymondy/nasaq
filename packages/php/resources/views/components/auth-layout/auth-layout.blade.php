@@ -14,7 +14,7 @@
     $size = $variant === 'split' ? 104 : 112;
 @endphp
 @if ($variant === 'split')
-    <div data-slot="auth-layout" data-variant="split" {{ $attributes->cn('grid min-h-dvh bg-background text-foreground lg:grid-cols-2') }}>
+    <div data-slot="{{ $attributes->get('data-slot', 'auth-layout') }}" data-variant="split" {{ $attributes->except('data-slot')->cn('grid min-h-dvh bg-background text-foreground lg:grid-cols-2') }}>
         <aside data-slot="auth-layout-panel" class="relative isolate hidden flex-col justify-between gap-8 overflow-hidden border-e border-border bg-muted p-10 text-foreground lg:flex">
             @if ($backdrop) <x-nq::auth-layout.backdrop /> @endif
             @if ($has($panel)) {{ $panel }}
@@ -44,7 +44,7 @@
         </div>
     </div>
 @else
-    <div data-slot="auth-layout" data-variant="card" {{ $attributes->cn('relative isolate flex min-h-dvh flex-col items-center overflow-hidden bg-background p-4 text-foreground sm:p-6') }}>
+    <div data-slot="{{ $attributes->get('data-slot', 'auth-layout') }}" data-variant="card" {{ $attributes->except('data-slot')->cn('relative isolate flex min-h-dvh flex-col items-center overflow-hidden bg-background p-4 text-foreground sm:p-6') }}>
         @if ($backdrop) <x-nq::auth-layout.backdrop /> @endif
         <main data-slot="auth-layout-main" class="flex w-full max-w-[26rem] flex-1 flex-col justify-center gap-4 py-8">
             <x-nq::card data-auth-card data-auth-stagger class="gap-6 px-6 py-8 sm:px-10 sm:py-10">

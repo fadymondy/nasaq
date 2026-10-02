@@ -3,6 +3,6 @@
      Use <x-nq::sheet> for side panels. open: start open (x-modelable, so wire:model and x-model work).
      Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['open' => false])
-<div data-slot="drawer" x-data="nqDrawer(@js((bool) $open))" x-modelable="open" x-id="['nq-dialog']" {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'drawer') }}" x-data="nqDrawer(@js((bool) $open))" x-modelable="open" x-id="['nq-dialog']" {{ $attributes->except('data-slot')->cn('contents') }}>
     {{ $slot }}
 </div>

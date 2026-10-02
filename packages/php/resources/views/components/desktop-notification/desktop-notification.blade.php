@@ -17,10 +17,10 @@
         ? $t['now']
         : null;
 @endphp
-<div role="alert" data-slot="desktop-notification" data-platform="{{ $platform }}"
+<div role="alert" data-slot="{{ $attributes->get('data-slot', 'desktop-notification') }}" data-platform="{{ $platform }}"
     x-data="nqDesktopNotification({{ (int) $dismissAfter }})"
     x-on:mouseenter="pause()" x-on:mouseleave="resume()" x-on:focusin="pause()" x-on:focusout="resume()"
-    {{ $attributes->cn(['group/dn relative flex w-[22rem] max-w-full gap-2 border border-border text-foreground shadow-floating', 'flex-col p-3', $mac ? 'rounded-[1.1rem] bg-popover/90 backdrop-blur-xl' : 'rounded-card bg-card']) }}>
+    {{ $attributes->except('data-slot')->cn(['group/dn relative flex w-[22rem] max-w-full gap-2 border border-border text-foreground shadow-floating', 'flex-col p-3', $mac ? 'rounded-[1.1rem] bg-popover/90 backdrop-blur-xl' : 'rounded-card bg-card']) }}>
     <div class="flex min-w-0 flex-1 gap-3 {{ $mac ? '' : 'items-start' }}">
         <span class="shrink-0 self-start {{ $mac ? 'size-10' : 'size-6' }}">
             @if ($hasIcon)

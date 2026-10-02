@@ -15,8 +15,8 @@
     $featured = $variant === 'featured';
     $compact = $variant === 'compact';
 @endphp
-<article data-slot="post-card" data-variant="{{ $variant }}"
-    {{ $attributes->cn([
+<article data-slot="{{ $attributes->get('data-slot', 'post-card') }}" data-variant="{{ $variant }}"
+    {{ $attributes->except('data-slot')->cn([
         'group/post relative flex min-w-0 gap-4',
         $featured ? '@3xl:grid @3xl:grid-cols-2 @3xl:items-center @3xl:gap-8 flex-col' : 'flex-col',
         $compact ? 'gap-2 rounded-card border border-border bg-card p-4 transition-colors duration-150 ease-nq hover:bg-nq-hover' : '',

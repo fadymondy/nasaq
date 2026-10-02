@@ -12,7 +12,7 @@
         'gallery' => 'Widget gallery',
     ], $labels);
 @endphp
-<div data-slot="widget-gallery" role="list" aria-label="{{ $t['gallery'] }}" x-data="nqWidgetGallery(@js(array_values($added)))" x-modelable="added"
-    {{ $attributes->cn('grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr))]') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'widget-gallery') }}" role="list" aria-label="{{ $t['gallery'] }}" x-data="nqWidgetGallery(@js(array_values($added)))" x-modelable="added"
+    {{ $attributes->except('data-slot')->cn('grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr))]') }}>
     {{ $slot }}
 </div>

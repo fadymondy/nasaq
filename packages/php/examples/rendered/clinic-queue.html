@@ -1,0 +1,308 @@
+<div data-slot="clinic-queue" x-data="nqClinicQueue(JSON.parse('{\u0022failed\u0022:\u0022That did not work. Try again.\u0022}'))" class="flex flex-col gap-4">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-col">
+            <h2 class="text-h3">Patient queue</h2>
+            <p class="text-body-sm text-muted-foreground">Next in line: A-016</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <span data-slot="queue-live" data-connection="live" role="status" aria-label="Connection: Live"     class="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+            <span aria-hidden="true" class="relative flex size-2">
+            <span class="absolute inline-flex size-full rounded-full opacity-60 motion-safe:animate-ping bg-nq-success-text"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-nq-success-text"></span>
+        </span>
+        <span class="font-medium text-foreground">Live</span>
+    </span>
+                            <button data-slot="button"
+     type="button"                     x-on:click="act(&#039;call-next&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M22 8c0-2.3-.8-4.3-2-6"/>
+  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
+  <path d="M4 2C2.8 3.7 2 5.7 2 8"/>
+</svg>                    Call next
+                    <bdi dir="ltr" class="rounded-control bg-primary-foreground/20 px-1.5 font-mono tabular-nums">A-016</bdi></button>
+                    </div>
+    </div>
+    <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+            <div data-slot="alert" data-tone="warning" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground">A-015 has not answered for 7 min. Call again or skip.</div>
+            </div>
+    </div>
+    <section aria-label="With you now" class="grid gap-3 sm:grid-cols-2">
+                                    <div data-slot="clinic-queue-active" data-status="serving" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground flex items-center gap-2"><bdi dir="ltr" class="font-mono text-h3 tabular-nums">A-014</bdi>
+                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-brand/40 bg-[color-mix(in_oklab,var(--nq-brand)_14%,transparent)] text-foreground">In visit</span></h3>
+                        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Layla Hassan · Room 2</div></div>
+                    <div data-slot="card-content" class="px-4 flex flex-wrap gap-2"><button data-slot="button"
+     type="button"                     x-on:click="act(&#039;finish&#039;, &#039;q1&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Finish visit</button></div></div>
+                            <div data-slot="clinic-queue-active" data-status="called" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground flex items-center gap-2"><bdi dir="ltr" class="font-mono text-h3 tabular-nums">A-015</bdi>
+                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Called</span></h3>
+                        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Omar Nasser · Room 2</div></div>
+                    <div data-slot="card-content" class="px-4 flex flex-wrap gap-2"><button data-slot="button"
+     type="button"                     x-on:click="act(&#039;start&#039;, &#039;q2&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Start visit</button>
+                                                    <button data-slot="button"
+     type="button"                     x-on:click="act(&#039;recall&#039;, &#039;q2&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Call again</button>
+                                                    <button data-slot="button"
+     type="button"                     x-on:click="act(&#039;skip&#039;, &#039;q2&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Skip</button>
+                                                    <button data-slot="button"
+     type="button"                     x-on:click="act(&#039;no-show&#039;, &#039;q2&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Mark no-show</button></div></div>
+                        </section>
+    <div data-slot="data-table" class="flex min-w-0 flex-col gap-3">
+        <div data-slot="table-container" role="region" tabindex="0" aria-label="Patients in the queue"
+            class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+            <div data-slot="table" role="table" aria-label="Patients in the queue" data-density="default" style="grid-template-columns: repeat(6, auto)" class="grid w-full min-w-max text-body-sm"
+                x-on:keydown="rowKey($event)">
+                <div data-slot="table-header" role="rowgroup" class="contents">
+                    <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid border-b border-border">
+                                                    <div role="columnheader" data-slot="table-head" data-col="ticket" class="flex items-center h-row px-4 py-3 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground ">Ticket</div>
+                                                    <div role="columnheader" data-slot="table-head" data-col="patient" class="flex items-center h-row px-4 py-3 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground ">Patient</div>
+                                                    <div role="columnheader" data-slot="table-head" data-col="priority" class="flex items-center h-row px-4 py-3 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground ">Priority</div>
+                                                    <div role="columnheader" data-slot="table-head" data-col="status" class="flex items-center h-row px-4 py-3 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground ">Status</div>
+                                                    <div role="columnheader" data-slot="table-head" data-col="waited" class="flex items-center h-row px-4 py-3 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground text-end justify-end">Waiting</div>
+                                                <div role="columnheader" data-slot="table-head" class="flex items-center h-row w-12 px-4 py-3 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground"><span class="sr-only">Actions</span></div>
+                    </div>
+                </div>
+                                                                        <div role="rowgroup" class="contents" data-slot="table-body">
+                        <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="group/row col-span-full grid grid-cols-subgrid border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-popup-open:bg-nq-hover" role="row" data-row="data-row" tabindex="0" data-ticket="A-014"><div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap"><bdi dir="ltr" class="font-mono font-semibold tabular-nums">A-014</bdi></div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">Layla Hassan</div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">
+                                                                            <span class="text-muted-foreground">Walk-in</span>
+                                                                    </div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-brand/40 bg-[color-mix(in_oklab,var(--nq-brand)_14%,transparent)] text-foreground">In visit</span>
+</div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap text-end justify-end"><span class="tabular-nums">25 min</span></div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row w-12 px-4 py-3 pe-2 text-end align-middle whitespace-nowrap">
+                                                                            <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="data-table-row-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="Actions for A-014" tabindex="-1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground opacity-0 group-hover/row:opacity-100 group-focus-within/row:opacity-100 data-popup-open:opacity-100 pointer-coarse:opacity-100">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;finish&#039;, &#039;q1&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>                                                        Finish visit</div></div>
+</template></div>
+                                                                    </div></div>
+                                                            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;finish&#039;, &#039;q1&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>                                            Finish visit</div></div>
+</template></div>
+                    </div>
+                                                        <div role="rowgroup" class="contents" data-slot="table-body">
+                        <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="group/row col-span-full grid grid-cols-subgrid border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-popup-open:bg-nq-hover" role="row" data-row="data-row" tabindex="-1" data-ticket="A-015"><div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap"><bdi dir="ltr" class="font-mono font-semibold tabular-nums">A-015</bdi></div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">Omar Nasser</div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">
+                                                                            <span class="text-muted-foreground">Appointment</span>
+                                                                    </div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Called</span>
+</div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap text-end justify-end"><span class="tabular-nums">20 min</span></div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row w-12 px-4 py-3 pe-2 text-end align-middle whitespace-nowrap">
+                                                                            <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="data-table-row-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="Actions for A-015" tabindex="-1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground opacity-0 group-hover/row:opacity-100 group-focus-within/row:opacity-100 data-popup-open:opacity-100 pointer-coarse:opacity-100">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;start&#039;, &#039;q2&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z"/>
+  <circle cx="12" cy="12" r="10"/>
+</svg>                                                        Start visit</div>
+                                                                                                                                                        <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;recall&#039;, &#039;q2&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>
+  <path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/>
+  <path d="M8 6v8"/>
+</svg>                                                        Call again</div>
+                                                                                                                                                            <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                                                                                        <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;skip&#039;, &#039;q2&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 4v16"/>
+  <path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z"/>
+</svg>                                                        Skip</div>
+                                                                                                                                                        <div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="act(&#039;no-show&#039;, &#039;q2&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <line x1="17" x2="22" y1="8" y2="13"/>
+  <line x1="22" x2="17" y1="8" y2="13"/>
+</svg>                                                        Mark no-show</div></div>
+</template></div>
+                                                                    </div></div>
+                                                            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;start&#039;, &#039;q2&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z"/>
+  <circle cx="12" cy="12" r="10"/>
+</svg>                                            Start visit</div>
+                                                                                                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;recall&#039;, &#039;q2&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>
+  <path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/>
+  <path d="M8 6v8"/>
+</svg>                                            Call again</div>
+                                                                                                                        <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                                                                <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;skip&#039;, &#039;q2&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 4v16"/>
+  <path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z"/>
+</svg>                                            Skip</div>
+                                                                                                                    <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="act(&#039;no-show&#039;, &#039;q2&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <line x1="17" x2="22" y1="8" y2="13"/>
+  <line x1="22" x2="17" y1="8" y2="13"/>
+</svg>                                            Mark no-show</div></div>
+</template></div>
+                    </div>
+                                                        <div role="rowgroup" class="contents" data-slot="table-body">
+                        <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="group/row col-span-full grid grid-cols-subgrid border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-popup-open:bg-nq-hover" role="row" data-row="data-row" tabindex="-1" data-ticket="A-016"><div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap"><bdi dir="ltr" class="font-mono font-semibold tabular-nums">A-016</bdi></div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">Sara Khalil</div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">
+                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text">Urgent</span>
+                                                                    </div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Waiting</span>
+</div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap text-end justify-end"><span class="tabular-nums">10 min</span></div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row w-12 px-4 py-3 pe-2 text-end align-middle whitespace-nowrap">
+                                                                            <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="data-table-row-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="Actions for A-016" tabindex="-1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground opacity-0 group-hover/row:opacity-100 group-focus-within/row:opacity-100 data-popup-open:opacity-100 pointer-coarse:opacity-100">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;call&#039;, &#039;q3&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 2a9 9 0 0 1 9 9"/>
+  <path d="M13 6a5 5 0 0 1 5 5"/>
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg>                                                        Call now</div></div>
+</template></div>
+                                                                    </div></div>
+                                                            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;call&#039;, &#039;q3&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 2a9 9 0 0 1 9 9"/>
+  <path d="M13 6a5 5 0 0 1 5 5"/>
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg>                                            Call now</div></div>
+</template></div>
+                    </div>
+                                                        <div role="rowgroup" class="contents" data-slot="table-body">
+                        <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="group/row col-span-full grid grid-cols-subgrid border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-popup-open:bg-nq-hover" role="row" data-row="data-row" tabindex="-1" data-ticket="A-017"><div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap"><bdi dir="ltr" class="font-mono font-semibold tabular-nums">A-017</bdi></div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">Hadi Mansour</div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">
+                                                                            <span class="text-muted-foreground">Appointment</span>
+                                                                    </div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Waiting</span>
+</div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap text-end justify-end"><span class="tabular-nums">8 min</span></div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row w-12 px-4 py-3 pe-2 text-end align-middle whitespace-nowrap">
+                                                                            <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="data-table-row-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="Actions for A-017" tabindex="-1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground opacity-0 group-hover/row:opacity-100 group-focus-within/row:opacity-100 data-popup-open:opacity-100 pointer-coarse:opacity-100">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;call&#039;, &#039;q4&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 2a9 9 0 0 1 9 9"/>
+  <path d="M13 6a5 5 0 0 1 5 5"/>
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg>                                                        Call now</div></div>
+</template></div>
+                                                                    </div></div>
+                                                            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;call&#039;, &#039;q4&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 2a9 9 0 0 1 9 9"/>
+  <path d="M13 6a5 5 0 0 1 5 5"/>
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg>                                            Call now</div></div>
+</template></div>
+                    </div>
+                                                        <div role="rowgroup" class="contents" data-slot="table-body">
+                        <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="group/row col-span-full grid grid-cols-subgrid border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-popup-open:bg-nq-hover" role="row" data-row="data-row" tabindex="-1" data-ticket="A-018"><div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap"><bdi dir="ltr" class="font-mono font-semibold tabular-nums">A-018</bdi></div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">Nour Aziz</div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">
+                                                                            <span class="text-muted-foreground">Walk-in</span>
+                                                                    </div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap"><span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Waiting</span>
+</div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap text-end justify-end"><span class="tabular-nums">5 min</span></div>
+                                <div role="cell" data-slot="table-cell" class="flex items-center h-row w-12 px-4 py-3 pe-2 text-end align-middle whitespace-nowrap">
+                                                                            <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="data-table-row-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="Actions for A-018" tabindex="-1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground opacity-0 group-hover/row:opacity-100 group-focus-within/row:opacity-100 data-popup-open:opacity-100 pointer-coarse:opacity-100">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                            <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;call&#039;, &#039;q5&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 2a9 9 0 0 1 9 9"/>
+  <path d="M13 6a5 5 0 0 1 5 5"/>
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg>                                                        Call now</div></div>
+</template></div>
+                                                                    </div></div>
+                                                            <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;call&#039;, &#039;q5&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 2a9 9 0 0 1 9 9"/>
+  <path d="M13 6a5 5 0 0 1 5 5"/>
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg>                                            Call now</div></div>
+</template></div>
+                    </div>
+                            </div>
+        </div>
+    </div>
+    <p class="sr-only" aria-live="polite">Patient queue: <bdi data-slot="num" data-numeric="" class="tabular-nums">3</bdi>
+</p>
+</div>

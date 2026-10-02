@@ -12,8 +12,8 @@
     );
     $variant = ['open' => 'border-nq-success/40 bg-nq-success-soft text-nq-success-text', 'limited' => 'border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text', 'closed' => 'border-border bg-secondary text-foreground'][$status];
 @endphp
-<span data-slot="availability-badge" data-status="{{ $status }}"
-    {{ $attributes->cn('inline-flex h-6 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-[4px] border px-2 text-body-sm font-medium [&_svg]:size-3 '.$variant) }}>
+<span data-slot="{{ $attributes->get('data-slot', 'availability-badge') }}" data-status="{{ $status }}"
+    {{ $attributes->except('data-slot')->cn('inline-flex h-6 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-[4px] border px-2 text-body-sm font-medium [&_svg]:size-3 '.$variant) }}>
     <span aria-hidden="true" class="size-1.5 rounded-full bg-current {{ $status === 'open' ? 'motion-safe:animate-pulse' : '' }}"></span>
     {{ $t[$status] }}
     @if ($note !== null || $slot->isNotEmpty())<span class="font-normal opacity-80">{{ $slot->isNotEmpty() ? $slot : $note }}</span>@endif

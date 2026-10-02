@@ -24,7 +24,7 @@
     $hasIcon = isset($icon) && $icon instanceof \Illuminate\View\ComponentSlot && ! $icon->isEmpty();
     $hide = fn (bool $cond) => $cond ? 'display: none' : '';
 @endphp
-<div data-slot="install-prompt-root" x-data="nqInstallPrompt(@js($config))" x-modelable="open" x-id="['nq-dialog']" {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'install-prompt-root') }}" x-data="nqInstallPrompt(@js($config))" x-modelable="open" x-id="['nq-dialog']" {{ $attributes->except('data-slot')->cn('contents') }}>
     <template x-teleport="body">
         <div data-slot="dialog-portal">
             <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 {{ $fade }}"></div>

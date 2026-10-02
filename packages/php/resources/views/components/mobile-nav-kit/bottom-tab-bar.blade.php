@@ -11,8 +11,8 @@
     $tab = 'relative flex min-h-14 w-full flex-col items-center justify-center gap-0.5 rounded-control px-2 py-1.5 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-primary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus';
     $hasBadge = fn ($i) => isset($i['badge']) && $i['badge'] !== 0 && $i['badge'] !== '' && $i['badge'] !== '0';
 @endphp
-<nav data-slot="bottom-tab-bar" aria-label="{{ $label }}" x-data="nqBottomTabBar({!! $js($value) !!}, {!! $js(array_column($items, 'value')) !!})" x-modelable="value"
-    {{ $attributes->cn([
+<nav data-slot="{{ $attributes->get('data-slot', 'bottom-tab-bar') }}" aria-label="{{ $label }}" x-data="nqBottomTabBar({!! $js($value) !!}, {!! $js(array_column($items, 'value')) !!})" x-modelable="value"
+    {{ $attributes->except('data-slot')->cn([
         'z-30 border-t border-border bg-card pb-[env(safe-area-inset-bottom)] text-foreground',
         'sticky bottom-0' => $position === 'sticky',
         'fixed inset-x-0 bottom-0' => $position === 'fixed',

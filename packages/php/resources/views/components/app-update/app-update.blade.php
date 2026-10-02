@@ -24,10 +24,10 @@
     $now = $status === 'ready' ? 'ready' : ($status === 'error' ? 'error' : 'plain');
     $config = ['status' => $status, 'progress' => $progress, 'locale' => $locale, 't' => array_intersect_key($t, array_flip(['pillAvailable', 'pillDownloading', 'pillReady', 'pillError']))];
 @endphp
-<button type="button" data-slot="update-pill" data-status="{{ $status }}" @if ($version) title="{{ nq_au_fill($t['pillHint'], ['version' => $version]) }}" @endif
+<button type="button" data-slot="{{ $attributes->get('data-slot', 'update-pill') }}" data-status="{{ $status }}" @if ($version) title="{{ nq_au_fill($t['pillHint'], ['version' => $version]) }}" @endif
     x-data="nqAppUpdate(@js($config))" x-on:nq-update-state.window="set($event.detail)" x-bind:data-status="status"
     x-bind:class="{ '{{ $tone['ready'] }}': status === 'ready', '{{ $tone['error'] }}': status === 'error', '{{ $tone['plain'] }}': status === 'available' || status === 'downloading' }"
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         'relative inline-flex h-control-sm items-center gap-1.5 overflow-hidden rounded-full border px-3 text-label outline-none focus-visible:outline-2 focus-visible:outline-nq-focus',
         $tone[$now],
     ]) }}>

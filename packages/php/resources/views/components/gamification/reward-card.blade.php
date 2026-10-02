@@ -13,8 +13,8 @@
     $canClaim = $status === 'available' && $short === 0 && $claimable;
     $btn = 'inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5';
 @endphp
-<div data-slot="reward-card" data-status="{{ $status }}" data-rarity="{{ $rarity }}" x-data="nqRewardCard(@js($t['failed']))"
-    {{ $attributes->cn('flex flex-col rounded-card border border-border bg-card text-card-foreground min-w-0 gap-3 overflow-hidden py-0', $status === 'locked' ? 'opacity-80' : '') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'reward-card') }}" data-status="{{ $status }}" data-rarity="{{ $rarity }}" x-data="nqRewardCard(@js($t['failed']))"
+    {{ $attributes->except('data-slot')->cn('flex flex-col rounded-card border border-border bg-card text-card-foreground min-w-0 gap-3 overflow-hidden py-0', $status === 'locked' ? 'opacity-80' : '') }}>
     <div class="grid h-32 place-items-center border-b [&_svg]:size-12 {{ $s['soft'] }} {{ $s['ring'] }} {{ $s['text'] }}">
         @if ($art && ! $art->isEmpty()){{ $art }}@else<x-lucide-gift aria-hidden="true" />@endif
     </div>

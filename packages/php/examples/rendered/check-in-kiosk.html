@@ -1,0 +1,209 @@
+<div data-slot="check-in-kiosk" x-data="nqCheckInKiosk(JSON.parse('{\u0022bookings\u0022:[{\u0022id\u0022:\u0022b1\u0022,\u0022code\u0022:\u0022BK-7F3Q9K\u0022,\u0022phone\u0022:\u00220100 123 4567\u0022,\u0022name\u0022:\u0022Layla Hassan\u0022,\u0022startsAt\u0022:1790673000000},{\u0022id\u0022:\u0022b2\u0022,\u0022code\u0022:\u0022BK-4M8TX2\u0022,\u0022phone\u0022:\u00220111 222 3333\u0022,\u0022name\u0022:\u0022Omar Nasser\u0022,\u0022startsAt\u0022:1790673900000},{\u0022id\u0022:\u0022b3\u0022,\u0022code\u0022:\u0022BK-BBBBBB\u0022,\u0022phone\u0022:\u00220122 000 1111\u0022,\u0022name\u0022:\u0022Hadi Mansour\u0022,\u0022startsAt\u0022:1790673600000},{\u0022id\u0022:\u0022b4\u0022,\u0022code\u0022:\u0022BK-CCCCCC\u0022,\u0022phone\u0022:\u00220122 000 1111\u0022,\u0022name\u0022:\u0022Hadi Jr\u0022,\u0022startsAt\u0022:1790674200000}],\u0022allowWalkIn\u0022:true,\u0022earlyMinutes\u0022:60,\u0022windowMinutes\u0022:240,\u0022resetSeconds\u0022:20,\u0022now\u0022:1790672400000,\u0022defaultMode\u0022:\u0022scan\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022title\u0022:\u0022Check in\u0022,\u0022subtitle\u0022:\u0022Scan your booking code or type your phone number.\u0022,\u0022modeScan\u0022:\u0022Scan code\u0022,\u0022modePhone\u0022:\u0022Phone number\u0022,\u0022scanLabel\u0022:\u0022Booking code\u0022,\u0022scanHint\u0022:\u0022Hold your ticket\\u0027s QR code to the scanner, or type the code, such as BK-7F3Q9K.\u0022,\u0022scanPlaceholder\u0022:\u0022Scan or type the code\u0022,\u0022phoneLabel\u0022:\u0022Mobile number\u0022,\u0022keypad\u0022:\u0022Number pad\u0022,\u0022backspace\u0022:\u0022Delete last digit\u0022,\u0022clear\u0022:\u0022Clear\u0022,\u0022find\u0022:\u0022Find my booking\u0022,\u0022finding\u0022:\u0022Looking\u0022,\u0022checkingIn\u0022:\u0022Checking you in\u0022,\u0022multiple\u0022:\u0022We found more than one booking. Which one is yours?\u0022,\u0022none\u0022:\u0022We could not find a booking for that.\u0022,\u0022noneWalkIn\u0022:\u0022You can still join the line without a booking.\u0022,\u0022walkIn\u0022:\u0022Join the line without a booking\u0022,\u0022tooEarly\u0022:\u0022Your visit is at :time. You can check in from :opens.\u0022,\u0022back\u0022:\u0022Try again\u0022,\u0022ticketTitle\u0022:\u0022You are checked in\u0022,\u0022ticketNumber\u0022:\u0022Your ticket\u0022,\u0022aheadNext\u0022:\u0022You are next.\u0022,\u0022aheadOne\u0022:\u00221 person is ahead of you.\u0022,\u0022aheadMany\u0022:\u0022:n people are ahead of you.\u0022,\u0022waitNow\u0022:\u0022You will be called any moment.\u0022,\u0022wait\u0022:\u0022Estimated wait: about :n min.\u0022,\u0022watch\u0022:\u0022Watch the screen for your number. We will call you.\u0022,\u0022done\u0022:\u0022Done\u0022,\u0022autoReset\u0022:\u0022This screen resets in :n s\u0022,\u0022failed\u0022:\u0022We could not check you in. Please ask reception.\u0022,\u0022bookingLine\u0022:\u0022:name, :time\u0022,\u0022invalidPhone\u0022:\u0022Enter at least 9 digits.\u0022,\u0022qrLabel\u0022:\u0022QR code of your ticket\u0022}}'))" x-bind:data-view="view"
+    x-on:nq-check-in="$event.detail.promise = Promise.resolve({ entry: { ticket: &#039;A-021&#039; }, position: 3, waitMinutes: 20 })" class="mx-auto flex w-full max-w-xl flex-col gap-4">
+    <div class="flex flex-col gap-1 text-center">
+        <h2 class="text-h1" x-text="view === 'ticket' ? sentence('ticketTitle') : sentence('title')">Check in</h2>
+        <p class="text-body text-muted-foreground" x-show="view !== 'ticket'">Scan your booking code or type your phone number.</p>
+    </div>
+    <div data-slot="card" x-show="view === &#039;input&#039; || view === &#039;busy&#039;" x-bind:aria-busy="busy ? &#039;true&#039; : null" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><div role="group" aria-label="Check in" class="col-span-full grid grid-cols-2 gap-2">
+                <template x-if="mode === 'scan'">
+                    <button data-slot="button"
+     type="button"                     aria-pressed="true" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="5" height="5" x="3" y="3" rx="1"/>
+  <rect width="5" height="5" x="16" y="3" rx="1"/>
+  <rect width="5" height="5" x="3" y="16" rx="1"/>
+  <path d="M21 16h-3a2 2 0 0 0-2 2v3"/>
+  <path d="M21 21v.01"/>
+  <path d="M12 7v3a2 2 0 0 1-2 2H7"/>
+  <path d="M3 12h.01"/>
+  <path d="M12 3h.01"/>
+  <path d="M12 16v.01"/>
+  <path d="M16 12h1"/>
+  <path d="M21 12v.01"/>
+  <path d="M12 21v-1"/>
+</svg>Scan code</button>
+                </template>
+                <template x-if="mode !== 'scan'">
+                    <button data-slot="button"
+     type="button"                     aria-pressed="false" x-on:click="setMode(&#039;scan&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="5" height="5" x="3" y="3" rx="1"/>
+  <rect width="5" height="5" x="16" y="3" rx="1"/>
+  <rect width="5" height="5" x="3" y="16" rx="1"/>
+  <path d="M21 16h-3a2 2 0 0 0-2 2v3"/>
+  <path d="M21 21v.01"/>
+  <path d="M12 7v3a2 2 0 0 1-2 2H7"/>
+  <path d="M3 12h.01"/>
+  <path d="M12 3h.01"/>
+  <path d="M12 16v.01"/>
+  <path d="M16 12h1"/>
+  <path d="M21 12v.01"/>
+  <path d="M12 21v-1"/>
+</svg>Scan code</button>
+                </template>
+                <template x-if="mode === 'phone'">
+                    <button data-slot="button"
+     type="button"                     aria-pressed="true" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg>Phone number</button>
+                </template>
+                <template x-if="mode !== 'phone'">
+                    <button data-slot="button"
+     type="button"                     aria-pressed="false" x-on:click="setMode(&#039;phone&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg>Phone number</button>
+                </template>
+            </div></div>
+        <div data-slot="card-content" class="px-4 flex flex-col gap-4"><form x-show="mode === 'scan'" x-on:submit.prevent="submitScan()" class="flex flex-col gap-3">
+                <label for="kiosk-code" class="text-label">Booking code</label>
+                <input data-slot="input" type="text"
+     dir="ltr"                 id="kiosk-code" autocomplete="off" spellcheck="false" placeholder="Scan or type the code" x-ref="code" x-model="code" x-bind:disabled="busy ? &#039;&#039; : null" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-14 text-center font-mono text-h3">
+                <p class="text-caption text-muted-foreground">Hold your ticket&#039;s QR code to the scanner, or type the code, such as BK-7F3Q9K.</p>
+                <button data-slot="button"
+     type="submit"                     x-bind:disabled="(! code.trim() || busy) ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg><span x-text="findLabel">Find my booking</span></button>
+            </form>
+            <div x-show="mode === 'phone'" style="display: none" class="flex flex-col gap-3">
+                <span id="kiosk-phone-label" class="text-label">Mobile number</span>
+                <output aria-labelledby="kiosk-phone-label" dir="ltr" class="flex h-14 items-center justify-center rounded-control border border-border bg-background font-mono text-h2 tabular-nums">
+                    <span x-show="phone" x-text="phone"></span>
+                    <span x-show="! phone" class="text-muted-foreground">01X XXXX XXXX</span>
+                </output>
+                <div role="group" aria-label="Number pad" class="grid grid-cols-3 gap-2" dir="ltr">
+                                            <button data-slot="button"
+     type="button"                     x-on:click="press(&#039;1&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 h-16 text-h2">
+        1</button>
+                                            <button data-slot="button"
+     type="button"                     x-on:click="press(&#039;2&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 h-16 text-h2">
+        2</button>
+                                            <button data-slot="button"
+     type="button"                     x-on:click="press(&#039;3&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 h-16 text-h2">
+        3</button>
+                                            <button data-slot="button"
+     type="button"                     x-on:click="press(&#039;4&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 h-16 text-h2">
+        4</button>
+                                            <button data-slot="button"
+     type="button"                     x-on:click="press(&#039;5&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 h-16 text-h2">
+        5</button>
+                                            <button data-slot="button"
+     type="button"                     x-on:click="press(&#039;6&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 h-16 text-h2">
+        6</button>
+                                            <button data-slot="button"
+     type="button"                     x-on:click="press(&#039;7&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 h-16 text-h2">
+        7</button>
+                                            <button data-slot="button"
+     type="button"                     x-on:click="press(&#039;8&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 h-16 text-h2">
+        8</button>
+                                            <button data-slot="button"
+     type="button"                     x-on:click="press(&#039;9&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 h-16 text-h2">
+        9</button>
+                                        <button data-slot="button"
+     type="button"                     x-on:click="clearPhone()" x-bind:disabled="(! phone || busy) ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover px-5 text-body h-16">
+        Clear</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="press(&#039;0&#039;)" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 h-16 text-h2">
+        0</button>
+                    <button data-slot="button"
+     type="button"                     aria-label="Delete last digit" x-on:click="backspace()" x-bind:disabled="(! phone || busy) ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover px-5 text-body h-16">
+        <svg aria-hidden="true" class="rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 5a2 2 0 0 0-1.344.519l-6.328 5.74a1 1 0 0 0 0 1.481l6.328 5.741A2 2 0 0 0 10 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/>
+  <path d="m12 9 6 6"/>
+  <path d="m18 9-6 6"/>
+</svg></button>
+                </div>
+                <button data-slot="button"
+     type="button"                     x-on:click="submitPhone()" x-bind:disabled="(! phoneReady || busy) ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg><span x-text="findLabel">Find my booking</span></button>
+                <p x-show="phone && ! phoneReady" class="text-caption text-muted-foreground">Enter at least 9 digits.</p>
+            </div></div></div>
+    <template x-if="view === 'choose'">
+        <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">We found more than one booking. Which one is yours?</h3></div>
+            <div data-slot="card-content" class="px-4 flex flex-col gap-2"><template x-for="b in choices" :key="b.id">
+                    <button data-slot="button"
+     type="button"                     x-on:click="pick(b.id)" class="inline-flex shrink-0 select-none items-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-5 text-body h-auto justify-between py-3">
+        <span x-text="bookingLine(b)"></span>
+                        <bdi dir="ltr" class="font-mono text-caption text-muted-foreground" x-text="b.code"></bdi></button>
+                </template>
+                <button data-slot="button"
+     type="button"                     x-on:click="reset()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Try again</button></div></div>
+    </template>
+    <div x-show="view === 'message'" style="display: none" class="flex flex-col gap-3">
+        <div data-slot="alert" data-tone="warning" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="messageText"></span></div>
+            </div>
+    </div>
+        <button data-slot="button"
+     type="button"                     x-show="walkIn" style="display: none" x-on:click="walkInCheckIn()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 21a8 8 0 0 1 13.292-6"/>
+  <circle cx="10" cy="8" r="5"/>
+  <path d="M19 16v6"/>
+  <path d="M22 19h-6"/>
+</svg>Join the line without a booking</button>
+        <button data-slot="button"
+     type="button"                     x-on:click="reset()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        Try again</button>
+    </div>
+    <template x-if="view === 'ticket'">
+        <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><div data-slot="card-description" class="text-body-sm flex items-center gap-2 text-nq-success-text"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Your ticket</div></div>
+            <div data-slot="card-content" role="status" class="px-4 flex flex-col items-center gap-4"><bdi dir="ltr" data-slot="kiosk-ticket" class="font-mono text-[5rem] font-semibold leading-none tracking-wider tabular-nums" x-text="ticketText"></bdi>
+                <div class="flex flex-col items-center gap-1 text-center text-body">
+                    <p x-show="result && result.position !== undefined" x-text="ahead"></p>
+                    <p x-show="result && result.waitMinutes !== undefined" class="inline-flex items-center gap-1.5"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 22h14"/>
+  <path d="M5 2h14"/>
+  <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
+  <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+</svg><span x-text="waitText"></span></p>
+                    <p class="text-muted-foreground">Watch the screen for your number. We will call you.</p>
+                </div>
+                <div data-slot="qr-code" data-module-style="square" data-eye-style="square" dir="ltr"
+    x-data="nqQrCode(JSON.parse('{\u0022value\u0022:\u0022\u0022,\u0022moduleStyle\u0022:\u0022square\u0022,\u0022eyeStyle\u0022:\u0022square\u0022,\u0022ecc\u0022:\u0022M\u0022,\u0022margin\u0022:4,\u0022fg\u0022:\u0022black\u0022,\u0022bg\u0022:\u0022white\u0022,\u0022eyeFg\u0022:null,\u0022logo\u0022:null,\u0022size\u0022:120,\u0022pngSize\u0022:1024,\u0022downloadName\u0022:\u0022qr-code\u0022,\u0022label\u0022:\u0022QR code of your ticket\u0022,\u0022labelFor\u0022:\u0022QR code for {value}\u0022}'))"
+    x-modelable="value"
+    x-model="qr" class="inline-flex flex-col items-center gap-3">
+    <svg data-slot="qr-code-svg" role="img"
+     width="120" height="120"     x-bind:aria-label="name" x-bind:viewBox="viewBox" x-bind:shape-rendering="shape" x-bind:style="{ background: bg }"
+    style="background: white"
+    class="aspect-square rounded-control border border-border">
+    <path x-bind:d="layout.modules" x-bind:fill="fg" />
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[0].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[0].pupil" />
+    </g>
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[1].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[1].pupil" />
+    </g>
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[2].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[2].pupil" />
+    </g>
+    <image x-show="layout.logo" style="display: none" x-bind:href="layout.logo?.src" x-bind:x="layout.logo?.x" x-bind:y="layout.logo?.y"
+        x-bind:width="layout.logo?.size" x-bind:height="layout.logo?.size" preserveAspectRatio="xMidYMid meet" />
+</svg>
+<p x-show="error" style="display: none" role="alert" class="text-caption text-nq-danger-text">Could not create the file. Try again.</p>
+</div>
+                <button data-slot="button"
+     type="button"                     x-on:click="reset()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-[calc(var(--nq-control)+8px)] px-5 text-body self-stretch">
+        Done</button>
+                <p class="text-caption text-muted-foreground" x-text="autoReset"></p></div></div>
+    </template>
+</div>

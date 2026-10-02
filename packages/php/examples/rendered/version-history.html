@@ -1,0 +1,287 @@
+<div data-slot="version-history" x-data="nqVersionHistory(JSON.parse('{\u0022versions\u0022:[{\u0022id\u0022:\u0022v3\u0022,\u0022version\u0022:3,\u0022content\u0022:\u0022{\\n  \\u0022plan\\u0022: \\u0022free\\u0022,\\n  \\u0022limit\\u0022: 200,\\n  \\u0022currency\\u0022: \\u0022USD\\u0022\\n}\u0022},{\u0022id\u0022:\u0022v2\u0022,\u0022version\u0022:2,\u0022content\u0022:\u0022{\\n  \\u0022plan\\u0022: \\u0022free\\u0022,\\n  \\u0022limit\\u0022: 100,\\n  \\u0022currency\\u0022: \\u0022USD\\u0022\\n}\u0022},{\u0022id\u0022:\u0022v1\u0022,\u0022version\u0022:1,\u0022content\u0022:\u0022{\\n  \\u0022plan\\u0022: \\u0022free\\u0022,\\n  \\u0022limit\\u0022: 100\\n}\u0022}],\u0022liveId\u0022:\u0022v3\u0022,\u0022selected\u0022:null,\u0022restorable\u0022:true,\u0022t\u0022:{\u0022version\u0022:\u0022Version :n\u0022,\u0022added\u0022:\u0022:n added\u0022,\u0022removed\u0022:\u0022:n removed\u0022,\u0022unchanged\u0022:\u0022:n unchanged lines\u0022,\u0022restoreTitle\u0022:\u0022Restore version :n?\u0022,\u0022failed\u0022:\u0022Could not restore. Try again.\u0022}}'))" x-id="['nq-vh-compare']"     x-on:nq-version-restore="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(done, 300)))" class="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-start">
+    <section aria-label="Versions" x-bind:class="selected !== null ? 'hidden lg:block' : ''" class="min-w-0 rounded-card border border-border bg-card">
+                    <ol class="divide-y divide-border">
+                                    <li data-version-row="3" x-bind:class="selected === 'v3' ? 'bg-nq-selected' : ''">
+                        <button type="button" x-bind:aria-pressed="selected === 'v3' ? 'true' : 'false'" x-on:click="toggle('v3')"
+                            class="block w-full px-4 py-3 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                            <span class="flex flex-wrap items-center gap-2">
+                                <span class="text-label text-foreground">Version 3</span>
+                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Current</span>
+                            </span>
+                            <span class="block text-caption text-muted-foreground">
+                                <time data-slot="date-time" datetime="2026-09-28T23:30:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 28, 2026, 11:30 PM</time>
+                                 · by Sara                            </span>
+                            <span dir="auto" class="mt-1 block text-body-sm text-foreground">Raised the free tier limit</span>                        </button>
+                    </li>
+                                    <li data-version-row="2" x-bind:class="selected === 'v2' ? 'bg-nq-selected' : ''">
+                        <button type="button" x-bind:aria-pressed="selected === 'v2' ? 'true' : 'false'" x-on:click="toggle('v2')"
+                            class="block w-full px-4 py-3 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                            <span class="flex flex-wrap items-center gap-2">
+                                <span class="text-label text-foreground">Version 2</span>
+                                                            </span>
+                            <span class="block text-caption text-muted-foreground">
+                                <time data-slot="date-time" datetime="2026-09-28T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 28, 2026, 12:00 AM</time>
+                                 · by Omar                            </span>
+                            <span dir="auto" class="mt-1 block text-body-sm text-foreground">Added currency</span>                        </button>
+                    </li>
+                                    <li data-version-row="1" x-bind:class="selected === 'v1' ? 'bg-nq-selected' : ''">
+                        <button type="button" x-bind:aria-pressed="selected === 'v1' ? 'true' : 'false'" x-on:click="toggle('v1')"
+                            class="block w-full px-4 py-3 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                            <span class="flex flex-wrap items-center gap-2">
+                                <span class="text-label text-foreground">Version 1</span>
+                                                            </span>
+                            <span class="block text-caption text-muted-foreground">
+                                <time data-slot="date-time" datetime="2026-09-27T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 27, 2026, 12:00 AM</time>
+                                 · by Sara                            </span>
+                                                    </button>
+                    </li>
+                            </ol>
+            </section>
+    <section x-bind:class="selected === null ? 'hidden lg:block' : ''" x-bind:aria-label="selected === null ? 'Choose a version' : versionLabel(current)" class="min-w-0 rounded-card border border-border bg-card p-4">
+        <div x-show="selected === null" >
+            <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+  <path d="M12 7v5l4 2"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">Choose a version</p>
+                    <p class="text-body-sm text-muted-foreground">Pick a version to read it, compare it and restore it.</p>
+            </div>
+    </div>
+        </div>
+        <div x-show="selected !== null"  style="display: none"  class="flex flex-col gap-4">
+            <header class="flex flex-wrap items-start gap-3">
+                <button data-slot="button"
+     type="button"                     aria-label="Back to versions" title="Back to versions" x-on:click="toggle(null)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 lg:hidden">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg></button>
+                <div class="min-w-0 flex-1">
+                                            <div x-show="selected === 'v3'"  style="display: none" >
+                            <div class="flex flex-wrap items-center gap-2">
+                                <h2 class="text-h4 text-foreground">Version 3</h2>
+                                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Current</span>
+                                                            </div>
+                            <p class="text-body-sm text-muted-foreground">
+                                <time data-slot="date-time" datetime="2026-09-28T23:30:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 28, 2026, 11:30 PM</time>
+                                 · by Sara                            </p>
+                            <p dir="auto" class="mt-1 text-body-sm text-foreground">Raised the free tier limit</p>                        </div>
+                                            <div x-show="selected === 'v2'"  style="display: none" >
+                            <div class="flex flex-wrap items-center gap-2">
+                                <h2 class="text-h4 text-foreground">Version 2</h2>
+                                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Read only</span>
+                                                            </div>
+                            <p class="text-body-sm text-muted-foreground">
+                                <time data-slot="date-time" datetime="2026-09-28T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 28, 2026, 12:00 AM</time>
+                                 · by Omar                            </p>
+                            <p dir="auto" class="mt-1 text-body-sm text-foreground">Added currency</p>                        </div>
+                                            <div x-show="selected === 'v1'"  style="display: none" >
+                            <div class="flex flex-wrap items-center gap-2">
+                                <h2 class="text-h4 text-foreground">Version 1</h2>
+                                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Read only</span>
+                                                            </div>
+                            <p class="text-body-sm text-muted-foreground">
+                                <time data-slot="date-time" datetime="2026-09-27T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 27, 2026, 12:00 AM</time>
+                                 · by Sara                            </p>
+                                                    </div>
+                                    </div>
+                                    <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="dialogOpen" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     style="display: none;" aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" x-show="canRestore" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+</svg>                            Restore this version</button>
+                        <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground"><span x-text="restoreTitle"></span></h2>
+                                <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">Restoring saves it as a new version on top. Nothing is deleted, and you can go back.</p></div>
+                            <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" x-bind:disabled="busy" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                                <button data-slot="version-restore-confirm"
+     type="button"                     x-on:click="restore()" x-bind:disabled="busy" x-bind:aria-busy="busy ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="busy"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                                    <span x-text="busy ? 'Restoring' : 'Restore'"></span></button></div>
+        </div>
+    </div>
+</template>
+</div>
+                            </header>
+            <p role="alert" x-show="error" x-text="error" style="display: none" class="rounded-control bg-nq-danger-soft px-3 py-2 text-body-sm text-nq-danger-text"></p>
+            <div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('preview')" x-modelable="value" x-id="['nq-tabs']" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="underline" aria-orientation="horizontal" x-bind="list"
+    class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-4 border-b border-border">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('preview')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Preview</button>
+                    <button type="button" data-slot="tabs-tab" x-bind="tab('changes')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Changes</button>
+</div>
+                <div data-slot="tabs-panel" x-bind="panel('preview')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div x-show="selected === 'v3'"  style="display: none" >
+                            <figure data-slot="code-block" data-language="json" dir="ltr" x-data="nqCodeBlock(JSON.parse('{\u0022code\u0022:\u0022{\\n  \\u0022plan\\u0022: \\u0022free\\u0022,\\n  \\u0022limit\\u0022: 200,\\n  \\u0022currency\\u0022: \\u0022USD\\u0022\\n}\u0022,\u0022language\u0022:\u0022json\u0022}'))" x-bind:data-highlighted="highlighted ? '' : null"
+    class="group/code relative m-0 overflow-hidden rounded-surface border border-border bg-nq-surface-soft text-start [--shiki-foreground:var(--nq-fg)] [--shiki-background:transparent] [--shiki-token-comment:var(--nq-fg-muted)] [--shiki-token-keyword:var(--nq-accent-text)] [--shiki-token-string:var(--nq-success-text)] [--shiki-token-string-expression:var(--nq-success-text)] [--shiki-token-constant:var(--nq-warning-text)] [--shiki-token-function:var(--nq-info-text)] [--shiki-token-parameter:var(--nq-fg-body)] [--shiki-token-punctuation:var(--nq-fg-muted)] [--shiki-token-link:var(--nq-info-text)]">
+            <div class="absolute end-1.5 top-1.5 z-10 opacity-0 transition-opacity duration-150 ease-nq focus-within:opacity-100 group-hover/code:opacity-100 pointer-coarse:opacity-100">
+            <span class="contents" x-data="nqCopyButton('{\n  \u0022plan\u0022: \u0022free\u0022,\n  \u0022limit\u0022: 200,\n  \u0022currency\u0022: \u0022USD\u0022\n}', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     aria-label="Copy code" x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Code copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span>
+        </div>
+        <pre data-slot="code-block-pre" role="region" tabindex="0" aria-label="Version 3"
+        class="m-0 overflow-auto bg-transparent py-3 font-mono text-code text-[var(--shiki-foreground)] outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus max-h-[28rem]"><code class="block w-max min-w-full"><span data-line="1"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>{</span></span><span data-line="2"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>  &quot;plan&quot;: &quot;free&quot;,</span></span><span data-line="3"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>  &quot;limit&quot;: 200,</span></span><span data-line="4"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>  &quot;currency&quot;: &quot;USD&quot;</span></span><span data-line="5"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>}</span></span></code></pre>
+</figure>
+                        </div>
+                                            <div x-show="selected === 'v2'"  style="display: none" >
+                            <figure data-slot="code-block" data-language="json" dir="ltr" x-data="nqCodeBlock(JSON.parse('{\u0022code\u0022:\u0022{\\n  \\u0022plan\\u0022: \\u0022free\\u0022,\\n  \\u0022limit\\u0022: 100,\\n  \\u0022currency\\u0022: \\u0022USD\\u0022\\n}\u0022,\u0022language\u0022:\u0022json\u0022}'))" x-bind:data-highlighted="highlighted ? '' : null"
+    class="group/code relative m-0 overflow-hidden rounded-surface border border-border bg-nq-surface-soft text-start [--shiki-foreground:var(--nq-fg)] [--shiki-background:transparent] [--shiki-token-comment:var(--nq-fg-muted)] [--shiki-token-keyword:var(--nq-accent-text)] [--shiki-token-string:var(--nq-success-text)] [--shiki-token-string-expression:var(--nq-success-text)] [--shiki-token-constant:var(--nq-warning-text)] [--shiki-token-function:var(--nq-info-text)] [--shiki-token-parameter:var(--nq-fg-body)] [--shiki-token-punctuation:var(--nq-fg-muted)] [--shiki-token-link:var(--nq-info-text)]">
+            <div class="absolute end-1.5 top-1.5 z-10 opacity-0 transition-opacity duration-150 ease-nq focus-within:opacity-100 group-hover/code:opacity-100 pointer-coarse:opacity-100">
+            <span class="contents" x-data="nqCopyButton('{\n  \u0022plan\u0022: \u0022free\u0022,\n  \u0022limit\u0022: 100,\n  \u0022currency\u0022: \u0022USD\u0022\n}', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     aria-label="Copy code" x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Code copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span>
+        </div>
+        <pre data-slot="code-block-pre" role="region" tabindex="0" aria-label="Version 2"
+        class="m-0 overflow-auto bg-transparent py-3 font-mono text-code text-[var(--shiki-foreground)] outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus max-h-[28rem]"><code class="block w-max min-w-full"><span data-line="1"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>{</span></span><span data-line="2"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>  &quot;plan&quot;: &quot;free&quot;,</span></span><span data-line="3"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>  &quot;limit&quot;: 100,</span></span><span data-line="4"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>  &quot;currency&quot;: &quot;USD&quot;</span></span><span data-line="5"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>}</span></span></code></pre>
+</figure>
+                        </div>
+                                            <div x-show="selected === 'v1'"  style="display: none" >
+                            <figure data-slot="code-block" data-language="json" dir="ltr" x-data="nqCodeBlock(JSON.parse('{\u0022code\u0022:\u0022{\\n  \\u0022plan\\u0022: \\u0022free\\u0022,\\n  \\u0022limit\\u0022: 100\\n}\u0022,\u0022language\u0022:\u0022json\u0022}'))" x-bind:data-highlighted="highlighted ? '' : null"
+    class="group/code relative m-0 overflow-hidden rounded-surface border border-border bg-nq-surface-soft text-start [--shiki-foreground:var(--nq-fg)] [--shiki-background:transparent] [--shiki-token-comment:var(--nq-fg-muted)] [--shiki-token-keyword:var(--nq-accent-text)] [--shiki-token-string:var(--nq-success-text)] [--shiki-token-string-expression:var(--nq-success-text)] [--shiki-token-constant:var(--nq-warning-text)] [--shiki-token-function:var(--nq-info-text)] [--shiki-token-parameter:var(--nq-fg-body)] [--shiki-token-punctuation:var(--nq-fg-muted)] [--shiki-token-link:var(--nq-info-text)]">
+            <div class="absolute end-1.5 top-1.5 z-10 opacity-0 transition-opacity duration-150 ease-nq focus-within:opacity-100 group-hover/code:opacity-100 pointer-coarse:opacity-100">
+            <span class="contents" x-data="nqCopyButton('{\n  \u0022plan\u0022: \u0022free\u0022,\n  \u0022limit\u0022: 100\n}', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     aria-label="Copy code" x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Code copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span>
+        </div>
+        <pre data-slot="code-block-pre" role="region" tabindex="0" aria-label="Version 1"
+        class="m-0 overflow-auto bg-transparent py-3 font-mono text-code text-[var(--shiki-foreground)] outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus max-h-[28rem]"><code class="block w-max min-w-full"><span data-line="1"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>{</span></span><span data-line="2"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>  &quot;plan&quot;: &quot;free&quot;,</span></span><span data-line="3"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>  &quot;limit&quot;: 100</span></span><span data-line="4"  class="flex min-h-[1lh] border-s-2 border-transparent pe-4 whitespace-pre ps-3"><span data-code-line>}</span></span></code></pre>
+</figure>
+                        </div></div>
+                <div data-slot="tabs-panel" x-bind="panel('changes')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div class="flex flex-col gap-3">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <span class="text-label text-foreground" x-bind:id="$id('nq-vh-compare')">Compare with</span>
+                            <div data-slot="select" x-data="nqSelect('previous', false)" x-modelable="value" x-id="['nq-select']" x-model="baseline" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        x-bind:aria-labelledby="$id(&#039;nq-vh-compare&#039;)" class="flex h-control min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] w-56">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                                <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('previous', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('previous')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Previous version</span>
+</div>
+                                    <div data-slot="select-item" x-bind="item('current', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('current')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Current version</span>
+</div>
+                                                                            <div data-slot="select-item" x-bind="item('v3', false)"
+    x-show="selected !== &#039;v3&#039;" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('v3')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Version 3</span>
+</div>
+                                                                            <div data-slot="select-item" x-bind="item('v2', false)"
+    x-show="selected !== &#039;v2&#039;" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('v2')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Version 2</span>
+</div>
+                                                                            <div data-slot="select-item" x-bind="item('v1', false)"
+    x-show="selected !== &#039;v1&#039;" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('v1')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Version 1</span>
+</div>
+    </div>
+</template>
+    </div>
+                            <span x-show="showStats" style="display: none" class="flex gap-2 text-body-sm tabular-nums" aria-live="polite">
+                                <span class="text-nq-success-text" x-text="'+ ' + fill(':n added', stats.added)"></span>
+                                <span class="text-nq-danger-text" x-text="'− ' + fill(':n removed', stats.removed)"></span>
+                            </span>
+                        </div>
+                        <p x-show="base === null" class="text-body-sm text-muted-foreground">This is the first version. There is nothing to compare it with.</p>
+                        <p x-show="showIdentical" style="display: none" class="text-body-sm text-muted-foreground">No differences.</p>
+                        <div x-show="showStats" style="display: none" dir="ltr" role="table" aria-label="Differences" data-slot="version-diff"
+                            class="overflow-x-auto rounded-control border border-border font-mono text-code">
+                            <template x-for="(it, i) in items" :key="i">
+                                <div>
+                                    <div x-show="it.type === 'gap'" role="row" dir="auto" class="bg-nq-surface-soft px-3 py-1 text-center text-caption text-muted-foreground" x-text="fill(':n unchanged lines', it.count)"></div>
+                                    <div x-show="it.type !== 'gap'" role="row" x-bind:data-diff="it.type === 'gap' ? null : it.type" x-bind:class="rowClass(it)">
+                                        <span role="cell" aria-hidden="true" class="w-10 shrink-0 select-none px-2 text-end text-muted-foreground tabular-nums" x-text="it.oldLine ?? ''"></span>
+                                        <span role="cell" aria-hidden="true" class="w-10 shrink-0 select-none px-2 text-end text-muted-foreground tabular-nums" x-text="it.newLine ?? ''"></span>
+                                        <span role="cell" class="w-6 shrink-0 select-none text-center font-semibold" x-bind:aria-label="it.type === 'add' ? 'Added' : (it.type === 'del' ? 'Removed' : null)"
+                                            x-text="it.type === 'add' ? '+' : (it.type === 'del' ? '−' : '')"></span>
+                                        <span role="cell" class="whitespace-pre pe-3 text-foreground" x-text="it.text || ' '"></span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div></div>
+</div>
+        </div>
+    </section>
+</div>

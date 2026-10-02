@@ -11,6 +11,6 @@
     $exp = $currencyExponent !== null ? (int) $currencyExponent : nq_sl_exponent($code);
     $f = nq_sl_filters($filters);
 @endphp
-<div data-slot="store-facet-sidebar" role="group" aria-label="{{ nq_sl_t('facets') }}" {{ $attributes->cn('flex flex-col') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'store-facet-sidebar') }}" role="group" aria-label="{{ nq_sl_t('facets') }}" {{ $attributes->except('data-slot')->cn('flex flex-col') }}>
     @include('nasaq::components.store-listing._facets', ['target' => $target, 'f' => $f, 'facets' => $facets, 'exp' => $exp, 'code' => $code, 'optionIds' => $optionIds])
 </div>

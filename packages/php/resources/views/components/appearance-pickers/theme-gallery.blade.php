@@ -12,7 +12,7 @@
     $uid = 'nq-theme-'.substr(md5(json_encode([$themes, $name])), 0, 8);
     $cols = [2 => 'grid-cols-2', 3 => 'grid-cols-2 sm:grid-cols-3', 4 => 'grid-cols-2 sm:grid-cols-4'][(int) $columns] ?? 'grid-cols-2 sm:grid-cols-4';
 @endphp
-<div data-slot="theme-gallery" {{ $attributes->except('aria-label')->cn('flex min-w-0 flex-col gap-2') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'theme-gallery') }}" {{ $attributes->except('data-slot')->except('aria-label')->cn('flex min-w-0 flex-col gap-2') }}>
     @if ($label !== false)<div id="{{ $uid }}" class="text-label text-foreground">{{ $heading }}</div>@endif
     <div role="radiogroup" x-data="nqRadioGroup(@js($current))" x-modelable="value" x-bind="root"
         @if ($label !== false) aria-labelledby="{{ $uid }}" @else aria-label="{{ $attributes->get('aria-label', $t['theme']) }}" @endif

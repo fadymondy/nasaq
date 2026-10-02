@@ -48,7 +48,7 @@
     $pageCount = $pg['pageCount'];
     $lastVisible = $visible ? end($visible)['id'] : null;
 @endphp
-<div data-slot="store-listing" x-data="nqStoreListing(@js($config))" x-on:nq-wishlist-change="onWish($event)" {{ $attributes->cn('flex min-w-0 flex-col gap-4') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'store-listing') }}" x-data="nqStoreListing(@js($config))" x-on:nq-wishlist-change="onWish($event)" {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-4') }}>
     <div x-ref="top" class="scroll-mt-20"></div>
     @if ($title)
         <h1 class="text-h1 text-foreground">{{ $title }}</h1>

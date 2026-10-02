@@ -9,7 +9,7 @@
     $iconClass = \Nasaq\Cn::merge('shrink-0', $dense ? 'size-4' : 'size-[18px]', $tone === 'neutral' ? 'text-muted-foreground' : $toneText[$tone]);
 @endphp
 @if ($selectable)
-<div data-slot="glance-row" {{ $attributes }}>
+<div data-slot="{{ $attributes->get('data-slot', 'glance-row') }}" {{ $attributes->except('data-slot') }}>
     <button type="button" x-on:click="$dispatch('nq-select')" class="{{ \Nasaq\Cn::merge($base, 'outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus') }}">
         @if ($icon)<x-dynamic-component :component="'lucide-'.$icon" aria-hidden="true" class="{{ $iconClass }}" />@endif
         <span class="min-w-0 flex-1 text-start">

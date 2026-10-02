@@ -15,7 +15,7 @@
     $language = fn (string $code) => class_exists(\Locale::class) ? (\Locale::getDisplayLanguage($code, app()->getLocale()) ?: $code) : $code;
     $clamp = $lines ? "display: -webkit-box; -webkit-line-clamp: {$lines}; -webkit-box-orient: vertical" : null;
 @endphp
-<div data-slot="translatable-text" data-showing="{{ $showing ? 'translation' : 'original' }}" x-data="nqTranslatable(@js($init))" x-bind="root" {{ $attributes->cn('flex min-w-0 flex-col gap-1.5') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'translatable-text') }}" data-showing="{{ $showing ? 'translation' : 'original' }}" x-data="nqTranslatable(@js($init))" x-bind="root" {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-1.5') }}>
     <p data-slot="user-text" dir="auto" lang="{{ $showing ? $target : $sourceLang }}" x-bind="body" @if ($clamp) style="{{ $clamp }}" @endif
         class="block min-w-0 text-start [unicode-bidi:plaintext] text-body text-foreground {{ $lines ? 'overflow-hidden break-words' : '' }}">{{ $showing ? $translation : $original }}</p>
     @if ($canToggle)

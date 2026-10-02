@@ -20,7 +20,7 @@
     $locale ??= app()->getLocale();
     $currency ??= \Nasaq\Nasaq::currency($locale);
 @endphp
-<div data-slot="wallet" x-data="nqWallet()" x-on:nq-wallet-open="open($event.detail && $event.detail.dialog)" {{ $attributes->cn('flex flex-col gap-6') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'wallet') }}" x-data="nqWallet()" x-on:nq-wallet-open="open($event.detail && $event.detail.dialog)" {{ $attributes->except('data-slot')->cn('flex flex-col gap-6') }}>
     <x-nq::wallet.balance :balance="$balance" :pending="$pending" :currency="$currency" :trend="$trend" :top-up="$topUp" :payout="$payout" :loading="$loading" :labels="$labels" :locale="$locale" />
     <x-nq::wallet.transactions :transactions="$transactions" :currency="$currency" :loading="$loading" :labels="$labels" :locale="$locale" />
     @if ($topUp)

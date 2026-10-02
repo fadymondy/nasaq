@@ -1,0 +1,277 @@
+<div x-data x-on:nq-merge="$event.detail.waitUntil(new Promise((resolve) => setTimeout(resolve, 400)))">
+    <section data-slot="contact-merge" aria-labelledby="contact-merge-00000001-title" x-data="nqContactMerge(JSON.parse('{\u0022fields\u0022:[{\u0022id\u0022:\u0022name\u0022,\u0022label\u0022:\u0022Name\u0022,\u0022multi\u0022:false,\u0022ltr\u0022:false},{\u0022id\u0022:\u0022email\u0022,\u0022label\u0022:\u0022Email\u0022,\u0022multi\u0022:false,\u0022ltr\u0022:true},{\u0022id\u0022:\u0022phone\u0022,\u0022label\u0022:\u0022Phone\u0022,\u0022multi\u0022:false,\u0022ltr\u0022:true},{\u0022id\u0022:\u0022company\u0022,\u0022label\u0022:\u0022Company\u0022,\u0022multi\u0022:false,\u0022ltr\u0022:false},{\u0022id\u0022:\u0022jobTitle\u0022,\u0022label\u0022:\u0022Job title\u0022,\u0022multi\u0022:false,\u0022ltr\u0022:false},{\u0022id\u0022:\u0022owner\u0022,\u0022label\u0022:\u0022Owner\u0022,\u0022multi\u0022:false,\u0022ltr\u0022:false},{\u0022id\u0022:\u0022tags\u0022,\u0022label\u0022:\u0022Tags\u0022,\u0022multi\u0022:true,\u0022ltr\u0022:false}],\u0022records\u0022:[{\u0022id\u0022:\u0022c1\u0022,\u0022name\u0022:\u0022Sara Alharbi\u0022,\u0022values\u0022:{\u0022name\u0022:\u0022Sara Alharbi\u0022,\u0022email\u0022:\u0022sara@example.com\u0022,\u0022phone\u0022:\u0022+966 50 123 4567\u0022,\u0022company\u0022:\u0022Nasaq\u0022,\u0022tags\u0022:[\u0022vip\u0022]}},{\u0022id\u0022:\u0022c2\u0022,\u0022name\u0022:\u0022Sara Al-Harbi\u0022,\u0022values\u0022:{\u0022name\u0022:\u0022Sara Al-Harbi\u0022,\u0022email\u0022:\u0022sara@example.com\u0022,\u0022phone\u0022:\u0022+966 55 987 6543\u0022,\u0022jobTitle\u0022:\u0022Designer\u0022,\u0022tags\u0022:[\u0022lead\u0022,\u0022vip\u0022]}}],\u0022survivor\u0022:\u0022c1\u0022,\u0022choices\u0022:{\u0022name\u0022:\u0022c1\u0022,\u0022email\u0022:\u0022c1\u0022,\u0022phone\u0022:\u0022c1\u0022,\u0022company\u0022:\u0022c1\u0022,\u0022jobTitle\u0022:\u0022c2\u0022,\u0022owner\u0022:\u0022c1\u0022,\u0022tags\u0022:\u0022all\u0022},\u0022title\u0022:\u0022Merge into {name}?\u0022,\u0022failed\u0022:\u0022The merge did not go through. Nothing was changed.\u0022}'))"
+    class="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
+    <div class="flex min-w-0 flex-col gap-6">
+        <header class="flex flex-col gap-1">
+            <h2 id="contact-merge-00000001-title" class="text-title-md text-foreground">Merge duplicate contacts</h2>
+            <p class="text-body text-muted-foreground">Choose the record that stays, then pick which value survives wherever the records disagree.</p>
+        </header>
+        <fieldset class="flex min-w-0 flex-col gap-2">
+            <legend class="text-label text-foreground">Keep this record</legend>
+            <p class="text-body-sm text-muted-foreground">Its history stays. The others are folded into it and deleted.</p>
+            <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('c1')" x-modelable="value" x-bind="root"
+                x-model="survivor" aria-label="Keep this record" class="flex-col grid gap-2 sm:grid-cols-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('c1')"
+    aria-checked="true" tabindex="0"
+     data-checked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('c1')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex flex-col gap-0.5">
+                            <span class="flex items-center gap-2">
+                                <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Sara Alharbi" >SA</span>
+    </span>
+                                <span dir="auto" class="truncate">Sara Alharbi</span>
+                            </span>
+                                                            <span class="flex flex-wrap gap-x-3 text-caption font-normal text-muted-foreground">
+                                    <span>Created <time data-slot="date-time" datetime="2026-03-29T09:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Mar 29, 2026</time>
+</span>                                    <span>Deals <bdi data-slot="num" data-numeric="" class="tabular-nums">2</bdi>
+</span>                                </span>
+                                                    </span></span>
+            </span>
+    </button>
+                                    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('c2')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('c2')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex flex-col gap-0.5">
+                            <span class="flex items-center gap-2">
+                                <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Sara Al-Harbi" >SA</span>
+    </span>
+                                <span dir="auto" class="truncate">Sara Al-Harbi</span>
+                            </span>
+                                                            <span class="flex flex-wrap gap-x-3 text-caption font-normal text-muted-foreground">
+                                    <span>Created <time data-slot="date-time" datetime="2026-08-29T09:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Aug 29, 2026</time>
+</span>                                    <span>Deals <bdi data-slot="num" data-numeric="" class="tabular-nums">1</bdi>
+</span><span>Notes <bdi data-slot="num" data-numeric="" class="tabular-nums">4</bdi>
+</span>                                </span>
+                                                    </span></span>
+            </span>
+    </button>
+    </div>
+        </fieldset>
+        <div class="flex min-w-0 flex-col gap-4">
+            <h3 class="flex items-center gap-2 text-title-sm text-foreground">3 fields differ</h3>
+                            <fieldset data-slot="contact-merge-field" class="flex min-w-0 flex-col gap-2">
+                    <legend class="mb-2 text-label text-foreground">Name</legend>
+                    <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('c1')" x-modelable="value" x-bind="root"
+                x-model="choices[config.fields[0].id]" aria-label="Name" class="flex-col grid gap-2 sm:grid-cols-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('c1')"
+    aria-checked="true" tabindex="0"
+     data-checked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('c1')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span dir="auto">Sara Alharbi</span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">from Sara Alharbi</span>    </span>
+    </button>
+                                                                                                                                            <button type="button" role="radio" data-slot="radio-card" x-bind="radio('c2')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('c2')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span dir="auto">Sara Al-Harbi</span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">from Sara Al-Harbi</span>    </span>
+    </button>
+    </div>
+                </fieldset>
+                            <fieldset data-slot="contact-merge-field" class="flex min-w-0 flex-col gap-2">
+                    <legend class="mb-2 text-label text-foreground">Phone</legend>
+                    <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('c1')" x-modelable="value" x-bind="root"
+                x-model="choices[config.fields[2].id]" aria-label="Phone" class="flex-col grid gap-2 sm:grid-cols-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('c1')"
+    aria-checked="true" tabindex="0"
+     data-checked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('c1')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><bdi dir="ltr" class="tabular-nums">+966 50 123 4567</bdi></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">from Sara Alharbi</span>    </span>
+    </button>
+                                                                                                                                            <button type="button" role="radio" data-slot="radio-card" x-bind="radio('c2')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('c2')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><bdi dir="ltr" class="tabular-nums">+966 55 987 6543</bdi></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">from Sara Al-Harbi</span>    </span>
+    </button>
+    </div>
+                </fieldset>
+                            <fieldset data-slot="contact-merge-field" class="flex min-w-0 flex-col gap-2">
+                    <legend class="mb-2 text-label text-foreground">Tags</legend>
+                    <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('all')" x-modelable="value" x-bind="root"
+                x-model="choices[config.fields[6].id]" aria-label="Tags" class="flex-col grid gap-2 sm:grid-cols-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('all')"
+    aria-checked="true" tabindex="0"
+     data-checked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('all')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground">Combine all</span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Everything from every record</span>    </span>
+    </button>
+                                                                                                                                        <button type="button" role="radio" data-slot="radio-card" x-bind="radio('c1')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('c1')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span dir="auto">vip</span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">from Sara Alharbi</span>    </span>
+    </button>
+                                                                                                                                            <button type="button" role="radio" data-slot="radio-card" x-bind="radio('c2')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('c2')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span dir="auto">lead, vip</span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">from Sara Al-Harbi</span>    </span>
+    </button>
+    </div>
+                </fieldset>
+                                        <details class="rounded-card border border-border bg-card px-3 py-2 text-body-sm">
+                    <summary class="cursor-pointer text-muted-foreground">Same in every record</summary>
+                    <dl class="mt-2 grid gap-x-4 gap-y-1 sm:grid-cols-[8rem_1fr]">
+                                                                                <div class="contents">
+                                <dt class="text-muted-foreground">Email</dt>
+                                <dd><bdi dir="ltr" class="tabular-nums">sara@example.com</bdi></dd>
+                            </div>
+                                                                                <div class="contents">
+                                <dt class="text-muted-foreground">Company</dt>
+                                <dd><span dir="auto">Nasaq</span></dd>
+                            </div>
+                                                                                <div class="contents">
+                                <dt class="text-muted-foreground">Job title</dt>
+                                <dd><span dir="auto">Designer</span></dd>
+                            </div>
+                                            </dl>
+                </details>
+                    </div>
+    </div>
+    <aside aria-label="After the merge" class="flex min-w-0 flex-col gap-3 lg:sticky lg:top-4 lg:self-start">
+        <div data-slot="card" class="flex flex-col rounded-card border border-border bg-card text-card-foreground gap-3 p-4"><div class="flex flex-col gap-0.5">
+                <h3 class="text-title-sm text-foreground">After the merge</h3>
+                <p class="text-caption text-muted-foreground">This is the contact that will exist.</p>
+            </div>
+            <dl data-slot="contact-merge-result" class="flex flex-col gap-2 text-body-sm">
+                <template x-for="row in rows" :key="row.id">
+                    <div class="flex flex-col">
+                        <dt class="text-caption text-muted-foreground" x-text="row.label"></dt>
+                        <dd class="min-w-0 break-words text-foreground">
+                            <span x-show="row.tags" style="display: none" class="flex flex-wrap gap-1">
+                                <template x-for="tag in row.items" :key="tag"><span data-slot="badge"     x-text="tag" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground"></span>
+</template>
+                            </span>
+                            <bdi x-show="! row.tags && row.ltr" style="display: none" dir="ltr" class="tabular-nums" x-text="row.text"></bdi>
+                            <span x-show="! row.tags && ! row.ltr" style="display: none" dir="auto" x-text="row.text"></span>
+                        </dd>
+                    </div>
+                </template>
+            </dl>
+                            <div class="flex flex-col gap-1 border-t border-border pt-3">
+                    <span class="text-label text-foreground">Moves over</span>
+                    <ul class="flex flex-col gap-0.5 text-body-sm text-muted-foreground">
+                        <li>Linked accounts: <bdi data-slot="num" data-numeric="" class="tabular-nums">2</bdi>
+</li>                        <li>Deals: <bdi data-slot="num" data-numeric="" class="tabular-nums">3</bdi>
+</li><li>Notes: <bdi data-slot="num" data-numeric="" class="tabular-nums">4</bdi>
+</li>                    </ul>
+                </div>
+                                        <div class="flex flex-col gap-1 border-t border-border pt-3">
+                    <span class="text-label text-foreground">Consent</span>
+                    <ul class="flex flex-col gap-1 text-body-sm">
+                                                    <li class="flex items-center justify-between gap-2">
+                                <span>Email</span>
+                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text">Opted out</span>
+                            </li>
+                                                    <li class="flex items-center justify-between gap-2">
+                                <span>WhatsApp</span>
+                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Opted in</span>
+                            </li>
+                                            </ul>
+                    <p class="flex items-start gap-1.5 text-caption text-muted-foreground">
+                        <svg aria-hidden="true" class="mt-0.5 size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 16v-4"/>
+  <path d="M12 8h.01"/>
+</svg>                        If any record opted out, the merged contact stays opted out.
+                    </p>
+                </div></div>
+        <div class="flex flex-wrap gap-2">
+            <button data-slot="button"
+     type="button"                     x-on:click="ask()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)] flex-1">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="18" cy="18" r="3"/>
+  <circle cx="6" cy="6" r="3"/>
+  <path d="M6 21V9a9 9 0 0 0 9 9"/>
+</svg>                Merge 2 contacts</button>
+                            <button data-slot="button"
+     type="button"                     x-on:click="cancel()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    </div>
+    </aside>
+    <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="confirming" class="contents">
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground"><span x-text="confirmTitle">Merge into Sara Alharbi?</span></h2>
+                <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">The other record is deleted. This cannot be undone.</p></div>
+            <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+            <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" x-bind:disabled="busy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                <button data-slot="button"
+     type="button"                     x-on:click="submit()" x-bind:disabled="busy ? &#039;&#039; : null" x-bind:aria-busy="busy ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                    Merge
+                    <svg aria-hidden="true" class="rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg></button></div>
+        </div>
+    </div>
+</template>
+</div>
+</section>
+</div>

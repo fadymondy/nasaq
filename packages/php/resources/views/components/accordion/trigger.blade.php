@@ -3,12 +3,12 @@
 @aware(['value', 'defaultValue' => [], 'multiple' => false, 'disabled' => false])
 @php($open = in_array((string) $value, array_map('strval', array_slice(array_values((array) $defaultValue), 0, $multiple ? null : 1)), true))
 <h3 data-slot="accordion-header" class="m-0 flex">
-    <button type="button" data-slot="accordion-trigger" x-on:click="toggle(v)"
+    <button type="button" data-slot="{{ $attributes->get('data-slot', 'accordion-trigger') }}" x-on:click="toggle(v)"
         :id="$id('nq-accordion', 'trigger-' + v)" :aria-controls="$id('nq-accordion', 'panel-' + v)"
         :aria-expanded="isOpen(v)" :data-panel-open="isOpen(v) ? '' : undefined"
         aria-expanded="{{ $open ? 'true' : 'false' }}" @if ($open) data-panel-open @endif
         @if ($disabled) disabled data-disabled @endif
-        {{ $attributes->cn([
+        {{ $attributes->except('data-slot')->cn([
             'group flex w-full items-center justify-between gap-3 px-4 py-3 text-start text-label text-foreground outline-none',
             'transition-colors duration-150 ease-nq hover:bg-nq-hover',
             'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus',

@@ -30,6 +30,7 @@ Reference ports to copy the patterns from: **button** and **spinner** (static), 
 - **Money**: USD by default, SAR when the locale is Arabic. Vue `formatMoney`/`defaultCurrency` from `lib/money`, Blade `Nasaq::money()`, Alpine `$nq.money()` / `x-nq-money`. Never another default currency.
 - **Icons**: Vue uses `lucide-vue-next`, Blade uses `<x-lucide-name />` (mallardduck/blade-lucide-icons), same icon names as React's `lucide-react`.
 - **Props**: same names and defaults as React (camelCase in Vue props, kebab-case attributes in Blade). Controlled state: Vue `v-model` / `v-model:open` (`modelValue`/`open` + `update:*` + `default*`), Blade roots are `x-modelable` so `wire:model` and `x-model` work.
+- **Context menus**: where React gives rows, cards or items a context menu (right-click, long-press, Shift+F10), the port has it too: Vue `NqContextMenuActions`, Blade `<x-nq::context-menu>` (and the data-table's row actions). It is not optional.
 - **Not portable as-is** (React-only libraries such as recharts, tiptap, xyflow, shiki, dnd-kit): Vue uses the closest Vue library already in packages/vue's deps or a well-known Vue equivalent (ask before adding a heavy dependency; note it in the progress file). Blade renders the static markup and Alpine adds the behaviour; if the behaviour needs a big library, render the static/server state, load the library lazily from a CDN inside the Alpine module, or mark the stack as `n/a` in the progress file with a one-line reason. Never ship a visually different component.
 
 ## Vue
@@ -37,6 +38,9 @@ Reference ports to copy the patterns from: **button** and **spinner** (static), 
 - `<script setup lang="ts">`, props interface with JSDoc copied from React, `class?: HTMLAttributes["class"]` merged with `cn`.
 - Interactive primitives come from **reka-ui** (Dialog, Popover, Menu, Select, Tabs, Tooltip, Checkbox …); map Reka's `data-state` to the Base UI attributes the React classes need (see `NqTabsTab.vue`, `NqDialogContent.vue`). Enter/exit animations use `lib/presence.ts` (`data-starting-style` / `data-ending-style` hooks).
 - Names: `Nq` + React name (`Button` → `NqButton`, `DialogTrigger` → `NqDialogTrigger`). Also export the non-component helpers React exports (`buttonVariants`, types).
+- A generic component (`<script setup lang="ts" generic="T">`) declares its props inline, `defineProps<{ … }>()`, not through a named `interface Props` (vue-tsc fails with TS4025 on a private name). Do the same if vue-tsc reports TS4025 on any component.
+- The package index re-exports every folder with `export *`, so helper names must be unique across components: prefix them (`journalTotals`, not `totals`).
+- A component that renders a fragment or a wrapper without its own element (`v-if`/`v-else` roots, Reka roots) sets `inheritAttrs: false` and binds `$attrs` on the real element, so `data-slot` and `aria-*` overrides land.
 - `index.ts` exports every part; the example `packages/vue/examples/<name>.vue` imports from `"@fadymondy/nasaq/vue"` and mirrors the README Quick start.
 - Test with `@vue/test-utils` in happy-dom: markup, classes merge, state attributes, keyboard, aria wiring, v-model.
 
@@ -57,7 +61,9 @@ Reference ports to copy the patterns from: **button** and **spinner** (static), 
 - Never render a static value for an attribute that Alpine binds (`disabled`, `aria-*`, `data-*`, `role`, `src`): Alpine does not replace it on later updates. Server-render the initial state through the binding itself, or set it from `x-effect`. Bound boolean attributes take `null` to remove them (`undefined` becomes `""`).
 - Inside a method, `$el` is the element that fired the event, not the `x-data` root (and events from a teleported part don't bubble to the host). Store the root in `init()` (`this.root = this.$el`) and dispatch from it.
 - An `x-model` expression is read in the scope of the element that has it; don't reuse a name (`open`, `invalid`) that an inner component's scope already owns.
-- Blade escapes `{{ }}` inside component attributes twice; use `{!! Js::from(...) !!}` or `{!! !!}` for JS values in attributes.
+- Blade escapes `{{ }}` inside component attributes twice; use `{!! Js::from(...) !!}` or `{!! !!}` for JS values in attributes. `{!! !!}` only works on plain HTML tags, not inside an `<x-nq::…>` tag.
+- An Alpine expression passed as an attribute to another `<x-nq::…>` component is escaped twice too: never put `&&`, `<`, `>` or an apostrophe in it. Use a ternary (`open ? close() : null`), backtick strings, or a method on the component.
+- Don't bind `x-model` on a child component to a parent property with the same name as the child's own state (`rows` on a data-table): the child reads its own.
 - Static components (badge, card, separator …) need no module; the rendered HTML is the whole port.
 - The rendered example is produced from the Blade example: `php scripts/render-examples.php <name>` in packages/php. Never hand-edit `examples/rendered/*.html`. Examples render with a frozen clock (`TestCase::NOW`, 2026-09-29 09:00) and a counter for `Str::random`, so `now()` and generated ids are fine in examples and components.
 - Test behaviour in `packages/html/test/<name>.test.ts` by loading `../php/examples/rendered/<name>.html` under real Alpine with the plugin (copy the setup from `alpine.test.ts`).

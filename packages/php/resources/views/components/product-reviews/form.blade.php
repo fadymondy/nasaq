@@ -10,7 +10,7 @@
     $config = ['askFit' => (bool) $askFit, 'askName' => (bool) $askName, 'defaultName' => $defaultName, 'rules' => $rules, 'labels' => (object) $labels];
     $hide = 'display: none';
 @endphp
-<div data-slot="product-review-form" x-data="nqProductReviewForm(@js($config))" {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'product-review-form') }}" x-data="nqProductReviewForm(@js($config))" {{ $attributes->except('data-slot')->cn('contents') }}>
     <div x-show="state === 'done'" style="{{ $hide }}" role="status" class="flex flex-col items-center gap-2 py-8 text-center">
         <x-lucide-circle-check aria-hidden="true" class="size-10 text-nq-success" />
         <p class="text-h3 text-foreground" x-text="t.reviewThanks"></p>

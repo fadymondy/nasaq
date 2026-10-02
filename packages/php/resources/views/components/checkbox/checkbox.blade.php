@@ -10,13 +10,13 @@
     $mark = $checked || $indeterminate;
     $off = ($disabled ?? false) || $attributes->flag('disabled');
 @endphp
-<button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(@js($checked), @js($indeterminate))" x-modelable="checked" x-bind="root"
+<button type="button" role="checkbox" data-slot="{{ $attributes->get('data-slot', 'checkbox') }}" x-data="nqCheckbox(@js($checked), @js($indeterminate))" x-modelable="checked" x-bind="root"
     aria-checked="{{ $indeterminate ? 'mixed' : ($checked ? 'true' : 'false') }}"
     @if ($indeterminate) data-indeterminate @elseif ($checked) data-checked @else data-unchecked @endif
     @if ($required) aria-required="true" @endif
     @if ($invalid) data-invalid aria-invalid="true" @endif
     @if ($off) disabled data-disabled @endif
-    {{ $attributes->except('disabled')->cn([
+    {{ $attributes->except('data-slot')->except('disabled')->cn([
         'relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none',
         'transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus',

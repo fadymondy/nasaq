@@ -45,7 +45,7 @@
     $savings = nq_pricing_savings($choices);
     $ctaInitial = $name !== '' ? nq_pricing_fill($t['upgradeTo'], ['name' => $name]) : $t['upgradeNow'];
 @endphp
-<div data-slot="upgrade-prompt" x-data="nqUpgradePrompt({{ \Illuminate\Support\Js::from($options) }})" x-modelable="open" x-id="['nq-dialog']" {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'upgrade-prompt') }}" x-data="nqUpgradePrompt({{ \Illuminate\Support\Js::from($options) }})" x-modelable="open" x-id="['nq-dialog']" {{ $attributes->except('data-slot')->cn('contents') }}>
     {{ $slot }}
     <template x-teleport="body">
         <div data-slot="dialog-portal">

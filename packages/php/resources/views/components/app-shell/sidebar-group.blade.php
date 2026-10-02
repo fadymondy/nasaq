@@ -7,7 +7,7 @@
     $labelRow = 'group/label flex h-[calc(var(--spacing-nav-row)-4px)] items-center gap-1 ps-2 pe-1 group-data-collapsed/sidebar:hidden';
 @endphp
 @if ($collapsible)
-    <div data-slot="sidebar-group" role="group" @if ($label) x-bind:aria-label="(rail && collapsed) ? @js($label) : null" @endif {{ $attributes }}>
+    <div data-slot="{{ $attributes->get('data-slot', 'sidebar-group') }}" role="group" @if ($label) x-bind:aria-label="(rail && collapsed) ? @js($label) : null" @endif {{ $attributes->except('data-slot') }}>
     <x-nq::collapsible :open="$defaultOpen" class="group/group flex flex-col">
         @if ($label)
             <div class="{{ $labelRow }}">
@@ -25,8 +25,8 @@
     </x-nq::collapsible>
     </div>
 @else
-    <div data-slot="sidebar-group" role="group" @if ($label) x-bind:aria-label="(rail && collapsed) ? @js($label) : null" @endif
-        {{ $attributes->cn('flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0') }}>
+    <div data-slot="{{ $attributes->get('data-slot', 'sidebar-group') }}" role="group" @if ($label) x-bind:aria-label="(rail && collapsed) ? @js($label) : null" @endif
+        {{ $attributes->except('data-slot')->cn('flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0') }}>
         @if ($label || $hasAction)
             <div class="{{ $labelRow }}">
                 <div class="min-w-0 flex-1 truncate text-caption font-medium text-muted-foreground">{{ $label }}</div>

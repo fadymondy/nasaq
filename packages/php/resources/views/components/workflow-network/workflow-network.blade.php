@@ -33,7 +33,7 @@
     $config = ['ids' => $ids, 'links' => $links === null ? null : array_values((array) $links), 'layout' => $layout, 'highlight' => $highlight, 'animate' => (bool) $animate, 'uid' => $uid];
     $cardBase = 'relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border border-border bg-card p-3 text-start shadow-xs';
 @endphp
-<figure data-slot="workflow-network" data-layout="{{ $vertical ? 'vertical' : 'horizontal' }}" x-data="nqWorkflowNetwork(@js($config))" {{ $attributes->cn('m-0 w-full') }}>
+<figure data-slot="{{ $attributes->get('data-slot', 'workflow-network') }}" data-layout="{{ $vertical ? 'vertical' : 'horizontal' }}" x-data="nqWorkflowNetwork(@js($config))" {{ $attributes->except('data-slot')->cn('m-0 w-full') }}>
     @if ($title)
         <h3 class="mb-2 text-h3 text-foreground">{{ $title }}</h3>
     @endif

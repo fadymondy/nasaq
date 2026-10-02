@@ -10,8 +10,8 @@
     $text = $saved ? $t::t('Saved', 'محفوظ') : $t::t('Save', 'حفظ');
 @endphp
 <span class="contents" x-data="nqBookmark(@js($saved), @js((bool) $showLabel))" x-modelable="saved">
-    <x-nq::button data-slot="bookmark-button" :variant="$variant" :size="$size ?? ($showLabel ? 'md' : 'icon')" :disabled="$disabled" :data-saved="$saved ? '' : null"
-        aria-pressed="{{ $saved ? 'true' : 'false' }}" :aria-label="$showLabel ? null : $text" x-bind="button" {{ $attributes->cn($saved ? 'text-primary' : '') }}>
+    <x-nq::button data-slot="{{ $attributes->get('data-slot', 'bookmark-button') }}" :variant="$variant" :size="$size ?? ($showLabel ? 'md' : 'icon')" :disabled="$disabled" :data-saved="$saved ? '' : null"
+        aria-pressed="{{ $saved ? 'true' : 'false' }}" :aria-label="$showLabel ? null : $text" x-bind="button" {{ $attributes->except('data-slot')->cn($saved ? 'text-primary' : '') }}>
         <x-lucide-bookmark aria-hidden="true" x-bind:class="saved ? 'fill-current' : ''" class="{{ $saved ? 'fill-current' : '' }}" />
         @if ($showLabel)<span x-text="text">{{ $text }}</span>@endif
     </x-nq::button>

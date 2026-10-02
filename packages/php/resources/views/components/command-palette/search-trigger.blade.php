@@ -7,9 +7,9 @@
     $label ??= \Nasaq\Nasaq::t('Search…', 'بحث…');
     $icon = $variant === 'icon';
 @endphp
-<button type="button" data-slot="search-trigger" aria-keyshortcuts="Meta+K Control+K" x-data="nqSearchTrigger" x-on:click="press($event)"
+<button type="button" data-slot="{{ $attributes->get('data-slot', 'search-trigger') }}" aria-keyshortcuts="Meta+K Control+K" x-data="nqSearchTrigger" x-on:click="press($event)"
     @if ($icon) aria-label="{{ $label }}" title="{{ $label }}" @endif
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         'flex h-control min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control border border-border bg-card px-2 text-body-sm text-muted-foreground',
         'transition-colors duration-150 ease-nq outline-none hover:border-nq-line-strong hover:text-foreground',
         'focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0',

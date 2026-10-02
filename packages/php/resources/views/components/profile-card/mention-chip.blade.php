@@ -8,7 +8,7 @@
     $hoverClass = \Nasaq\Cn::merge($chip, 'cursor-pointer hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus', (string) $attributes->get('class'));
 @endphp
 @if (! $person || $kind !== 'person')
-    <span data-slot="mention-chip" data-kind="{{ $kind }}" {{ $attributes->cn($chip) }}>
+    <span data-slot="{{ $attributes->get('data-slot', 'mention-chip') }}" data-kind="{{ $kind }}" {{ $attributes->except('data-slot')->cn($chip) }}>
         @if ($kind !== 'person')<x-lucide-users aria-hidden="true" />@endif
         <span class="truncate">{{ '@'.$name }}</span>
     </span>

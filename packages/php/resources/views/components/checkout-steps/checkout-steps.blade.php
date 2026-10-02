@@ -88,8 +88,8 @@
     $perText = $interval === 'year' ? $t('yearly') : $t('monthly');
     $amountClass = 'tabular-nums';
 @endphp
-<div data-slot="checkout-steps" data-step="{{ $step }}" x-effect="$el.setAttribute('data-step', step)" x-data="nqCheckoutSteps(@js($config))" x-id="['nq-checkout']"
-    {{ $attributes->cn('@container flex flex-col gap-6') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'checkout-steps') }}" data-step="{{ $step }}" x-effect="$el.setAttribute('data-step', step)" x-data="nqCheckoutSteps(@js($config))" x-id="['nq-checkout']"
+    {{ $attributes->except('data-slot')->cn('@container flex flex-col gap-6') }}>
     <nav aria-label="{{ $t('steps') }}" class="flex flex-col gap-2">
         <ol data-slot="stepper" data-orientation="horizontal" class="m-0 flex list-none flex-row items-start p-0">
             @foreach ($steps as $i => $id)

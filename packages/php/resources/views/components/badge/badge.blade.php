@@ -19,8 +19,8 @@
         $attributes->get('style'),
     ])->filter()->implode('; ');
 @endphp
-<span data-slot="badge" @if ($style) style="{{ $style }}" @endif
-    {{ $attributes->except('style')->cn([
+<span data-slot="{{ $attributes->get('data-slot', 'badge') }}" @if ($style) style="{{ $style }}" @endif
+    {{ $attributes->except('data-slot')->except('style')->cn([
         'inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3',
         $variants[$variant] ?? $variants['neutral'],
     ]) }}>{{ $slot }}</span>

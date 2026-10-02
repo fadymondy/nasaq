@@ -20,9 +20,9 @@
     $hold = $placeholder ?? \Nasaq\Nasaq::t('Type and press Enter', 'اكتب ثم اضغط Enter');
     $removeLabel = fn () => \Nasaq\Nasaq::t('Remove', 'إزالة');
 @endphp
-<div data-slot="tag-input" x-data="nqTagInput(@js(array_values((array) $value)), {!! $optionsJs !!})" x-modelable="tags" x-bind="root"
+<div data-slot="{{ $attributes->get('data-slot', 'tag-input') }}" x-data="nqTagInput(@js(array_values((array) $value)), {!! $optionsJs !!})" x-modelable="tags" x-bind="root"
     @if ($disabled) data-disabled @endif @if ($invalid) data-invalid @endif
-    {{ $attributes->only(['class', 'x-model', 'x-on:reject', '@reject'])->cn('relative w-full') }}>
+    {{ $attributes->except('data-slot')->only(['class', 'x-model', 'x-on:reject', '@reject'])->cn('relative w-full') }}>
     <div data-slot="tag-input-box" x-bind="box"
         class="{{ \Nasaq\Cn::merge('flex min-h-control w-full min-w-0 flex-wrap items-center gap-1.5 rounded-control border border-input bg-card px-2 py-1 text-body text-foreground min-h-[max(var(--nq-control),var(--nq-touch-min,0px))] transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger', $disabled ? 'cursor-not-allowed opacity-50' : '') }}">
         <template x-for="(tag, i) in tags" :key="tag">
@@ -34,10 +34,10 @@
                 </button>
             </span>
         </template>
-        <input data-slot="tag-input-field" x-ref="field" x-bind="field" autocomplete="off" @if ($disabled) disabled @endif
+        <input data-slot="{{ $attributes->get('data-slot', 'tag-input-field') }}" x-ref="field" x-bind="field" autocomplete="off" @if ($disabled) disabled @endif
             :placeholder="tags.length ? undefined : @js($hold)"
             @if ($suggestions) role="combobox" aria-autocomplete="list" :aria-controls="listId()" @endif
-            {{ $attributes->except(['class', 'x-model', 'x-on:reject', '@reject'])->cn('h-7 min-w-24 flex-1 border-0 bg-transparent px-1 text-body outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]') }}>
+            {{ $attributes->except('data-slot')->except(['class', 'x-model', 'x-on:reject', '@reject'])->cn('h-7 min-w-24 flex-1 border-0 bg-transparent px-1 text-body outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]') }}>
     </div>
     @if ($suggestions)
         <ul x-show="showList()" x-cloak style="display: none" :id="listId()" role="listbox" aria-label="{{ \Nasaq\Nasaq::t('Suggestions', 'اقتراحات') }}" data-slot="tag-input-suggestions"

@@ -21,8 +21,8 @@
     $js = fn ($v) => \Illuminate\Support\Js::from($v);
     $config = ['failed' => $t['failed'], 'unpairTitle' => $t['unpairTitle']];
 @endphp
-<section data-slot="kill-switch" data-paused="{{ $isPaused ? 'true' : 'false' }}" aria-label="{{ $t['title'] }}" x-data="nqKillSwitch(@js($config))"
-    {{ $attributes->cn('flex flex-col gap-4') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'kill-switch') }}" data-paused="{{ $isPaused ? 'true' : 'false' }}" aria-label="{{ $t['title'] }}" x-data="nqKillSwitch(@js($config))"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
     <x-nq::card :class="$isPaused ? 'border-nq-danger/40' : ''">
         <x-nq::card.header>
             <x-nq::card.title as="h2" class="flex items-center gap-2">

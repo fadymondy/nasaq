@@ -17,5 +17,5 @@
     $kebab = \Illuminate\Support\Str::kebab($name);
     $mirror = $directional ?? in_array(\Illuminate\Support\Str::studly($kebab), $directionalIcons, true);
 @endphp
-<x-dynamic-component :component="'lucide-'.$kebab" data-slot="icon"
-    {{ $attributes->cn([$mirror ? 'rtl:-scale-x-100' : ''])->merge($label ? ['role' => 'img', 'aria-label' => $label] : ['aria-hidden' => 'true']) }} />
+<x-dynamic-component :component="'lucide-'.$kebab" data-slot="{{ $attributes->get('data-slot', 'icon') }}"
+    {{ $attributes->except('data-slot')->cn([$mirror ? 'rtl:-scale-x-100' : ''])->merge($label ? ['role' => 'img', 'aria-label' => $label] : ['aria-hidden' => 'true']) }} />

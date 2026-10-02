@@ -14,8 +14,8 @@
     $installed = $state === 'installed';
     $label = $installed ? $l['open'] : ($state === 'update' ? $l['update'] : ($free ? $l['get'] : $l['install']));
 @endphp
-<x-nq::button data-slot="install-button" data-state="{{ $state }}" :variant="$installed ? 'ghost' : ($variant ?? 'secondary')" :size="$size"
-    :href="$href" :loading="$state === 'installing'" aria-label="{{ $label }} {{ $appName }}" {{ $attributes }}>
+<x-nq::button data-slot="{{ $attributes->get('data-slot', 'install-button') }}" data-state="{{ $state }}" :variant="$installed ? 'ghost' : ($variant ?? 'secondary')" :size="$size"
+    :href="$href" :loading="$state === 'installing'" aria-label="{{ $label }} {{ $appName }}" {{ $attributes->except('data-slot') }}>
     @if ($installed)<x-lucide-check aria-hidden="true" class="text-nq-success-text" />@endif
     {{ $label }}
 </x-nq::button>

@@ -12,10 +12,32 @@
 // `rows` is x-modelable. Bubbling events: `nq-data-table-row-click` { row }, `nq-data-table-action` { action, row },
 // `nq-data-table-selection` { ids }, and `nq-data-table-edit` { row, column, value, promise? }. A listener may set `event.detail.promise`
 // (a Promise, or one resolving to { error }); until it settles the cell shows the new value as pending, and on an error it rolls back.
-// Not ported here: column pinning, resizing and the row context menu of the other stacks.
+//
+// Cells. Besides text | number | date | currency | status | tag | boolean a column can be: mono (code font), datetime (date + time; `format: 'relative'`
+// shows "2 hours ago" with the absolute time as the title), meter (a 0..max quantity bar: `max`, `warnAt` 0.8, `dangerAt` 0.95), avatar (initials or the
+// `src` field's image, the value as the name and `secondary` the field shown under it), link (`href`: a row field, or a template such as "/issues/{key}"; `target`),
+// and `template` ("{first} {last}") on a text column. React's escape hatch is `cell: (row) => ReactNode`; here it is a named Blade slot per column
+// (`<x-slot name="cell_title">…row.title…</x-slot>`) rendered in the row's scope, so any Alpine markup can read `row`.
+//
+// Row actions. `actions` ([{ id, group?, visibleWhen?, disabledWhen? }]) mirror the Blade `row-actions`. A condition is { field, in | notIn | eq | ne | empty } or { any | all: [condition, …] };
+// `actionsKey` names a row field listing the action ids that row allows. The same list opens as a context menu (right-click, long-press, Shift+F10 or
+// the Menu key on a row) unless `contextMenu: false`; inputs, links and Shift + right-click keep the browser's menu.
+// Not ported here: column pinning and resizing of the other stacks.
 
 import { cellKey, coerceEditValue, inRange, isActiveRange, nextSorting, sameCellValue, sortTableRows, type CellValue, type DataTableRange, type DataTableSort } from "./data-table-logic";
 import type { Magics, Register } from "./types";
+
+type Condition = { field?: string; in?: unknown[]; notIn?: unknown[]; eq?: unknown; ne?: unknown; empty?: boolean; any?: Condition[]; all?: Condition[] };
+interface Action {
+  id: string;
+  group?: string | null;
+  visibleWhen?: Condition;
+  disabledWhen?: Condition;
+}
+// The Alpine runtime has $data; the slim AlpineLike type does not list it.
+type WithData = { $data(el: Element): Record<string, unknown> };
+const NATIVE = 'input, textarea, select, a[href], [contenteditable=""], [contenteditable="true"]';
+const isMenuKey = (e: KeyboardEvent) => (e.key === "F10" && e.shiftKey) || e.key === "ContextMenu";
 
 type Row = Record<string, unknown>;
 interface Option {
@@ -28,7 +50,26 @@ interface Column {
   id: string;
   key?: string;
   header?: string;
-  type?: "text" | "number" | "date" | "currency" | "status" | "tag" | "boolean";
+  type?: "text" | "number" | "date" | "datetime" | "currency" | "status" | "tag" | "boolean" | "mono" | "meter" | "avatar" | "link";
+  /** avatar and text cells: the row field shown as a second line. */
+  secondary?: string;
+  secondaryDir?: string;
+  /** avatar: a row field that, when truthy, adds an outline badge (text: badgeLabel) after the name. */
+  badge?: string;
+  badgeLabel?: string;
+  /** avatar: the row field holding the image URL. */
+  src?: string;
+  /** link: a row field, or a template such as "/issues/{key}". */
+  href?: string;
+  target?: string;
+  /** text: "{first} {last}" filled from the row. */
+  template?: string;
+  /** datetime: absolute (default) or relative. */
+  format?: "absolute" | "relative";
+  /** meter: the full-scale value (100) and the fractions where it turns warning and danger. */
+  max?: number;
+  warnAt?: number;
+  dangerAt?: number;
   sortable?: boolean;
   searchable?: boolean;
   hideable?: boolean;
@@ -50,6 +91,12 @@ interface Options {
   expand?: string;
   /** Row field that names a row for "Select …" and "Actions for …". Default: the key. */
   nameKey?: string;
+  /** Row actions, for per-row visibility and the context menu. */
+  actions?: Action[];
+  /** Row field listing the action ids that row allows. */
+  actionsKey?: string;
+  /** Open the actions as a context menu. Default true. */
+  contextMenu?: boolean;
   labels?: Partial<Record<string, string>>;
 }
 interface Labels {
@@ -107,6 +154,13 @@ interface State extends Magics {
   failed: Record<string, string>;
   announce: string;
   active: number;
+  actions: Action[];
+  actionsKey: string;
+  contextMenu: boolean;
+  ctxRow: Row | null;
+  ctxReturn: HTMLElement | null;
+  ctxOpen: boolean;
+  press: ReturnType<typeof setTimeout> | undefined;
   locale: string;
   labels: Labels;
   root: HTMLElement | null;
@@ -140,6 +194,13 @@ export const dataTable: Register = (Alpine) => {
     failed: {} as Record<string, string>,
     announce: "",
     active: 0,
+    actions: (options.actions ?? []).map((a) => ({ ...a })),
+    actionsKey: options.actionsKey ?? "",
+    contextMenu: options.contextMenu !== false,
+    ctxRow: null as Row | null,
+    ctxReturn: null as HTMLElement | null,
+    ctxOpen: false,
+    press: undefined as ReturnType<typeof setTimeout> | undefined,
     locale: options.locale ?? (typeof document !== "undefined" ? document.documentElement.lang || "en" : "en"),
     labels: { ...LABELS, ...options.labels } as Labels,
     root: null as HTMLElement | null,
@@ -183,6 +244,8 @@ export const dataTable: Register = (Alpine) => {
       if (v === null || v === undefined || v === "") return null;
       if (col.type === "number" || col.type === "currency") return Number(v);
       if (col.type === "date") return new Date(`${String(v)}T00:00:00`);
+      if (col.type === "datetime") return this.when(v);
+      if (col.type === "meter") return Number(v);
       if (col.type === "status" || col.type === "tag") return this.opt(col, v)?.label ?? String(v);
       return String(v);
     },
@@ -206,8 +269,74 @@ export const dataTable: Register = (Alpine) => {
         return this.nf(Number(v), { style: "currency", currency: code });
       }
       if (col.type === "date") return new Intl.DateTimeFormat(`${this.locale}-u-nu-latn`, { dateStyle: "medium" }).format(new Date(`${String(v)}T00:00:00`));
+      if (col.type === "datetime") return col.format === "relative" ? this.relative(v) : this.absolute(v);
+      if (col.type === "meter") return this.nf(Number(v) / (col.max ?? 100), { style: "percent", maximumFractionDigits: 0 });
       if (col.type === "status" || col.type === "tag") return this.opt(col, v)?.label ?? String(v);
+      if (col.template && row && Object.keys(row).length) return this.fillRow(col.template, row);
       return String(v);
+    },
+    /** A date or date-time value as a Date; a date without a time is local midnight. */
+    when(this: State, v: unknown): Date {
+      const t = String(v);
+      return new Date(/^\d{4}-\d{2}-\d{2}$/.test(t) ? `${t}T00:00:00` : t);
+    },
+    absolute(this: State, v: unknown): string {
+      const d = this.when(v);
+      return Number.isNaN(d.getTime()) ? String(v) : new Intl.DateTimeFormat(`${this.locale}-u-nu-latn`, { dateStyle: "medium", timeStyle: "short" }).format(d);
+    },
+    relative(this: State, v: unknown): string {
+      const d = this.when(v);
+      if (Number.isNaN(d.getTime())) return String(v);
+      const secs = Math.round((d.getTime() - Date.now()) / 1000);
+      const units: [Intl.RelativeTimeFormatUnit, number][] = [["year", 31536000], ["month", 2592000], ["week", 604800], ["day", 86400], ["hour", 3600], ["minute", 60]];
+      const [unit, size] = units.find(([, n]) => Math.abs(secs) >= n) ?? (["second", 1] as [Intl.RelativeTimeFormatUnit, number]);
+      return new Intl.RelativeTimeFormat(`${this.locale}-u-nu-latn`, { numeric: "auto" }).format(Math.round(secs / size), unit);
+    },
+    /** The absolute time, for a relative cell's title. */
+    absoluteOf(this: State, row: Row, col: Column): string {
+      const v = this.val(row, col);
+      return v === null || v === undefined || v === "" ? "" : this.absolute(v);
+    },
+    isoOf(this: State, row: Row, col: Column): string | null {
+      const v = this.val(row, col);
+      const d = v === null || v === undefined || v === "" ? null : this.when(v);
+      return d && !Number.isNaN(d.getTime()) ? d.toISOString() : null;
+    },
+    fillRow(template: string, row: Row): string {
+      return template.replace(/\{(\w+)\}/g, (_m, k: string) => String(row[k] ?? ""));
+    },
+    /** Initials of a name: first and last word, first user-perceived character of each. */
+    initials(name: unknown): string {
+      const words = String(name ?? "").trim().split(/\s+/).filter(Boolean);
+      const first = (w: string) => [...new Intl.Segmenter().segment(w)][0]?.segment ?? "";
+      return ((words[0] ? first(words[0]) : "") + (words.length > 1 ? first(words[words.length - 1]!) : "")).toUpperCase();
+    },
+    secondary(this: State, row: Row, col: Column): string {
+      const v = col.secondary ? row[col.secondary] : "";
+      return v === null || v === undefined ? "" : String(v);
+    },
+    avatarSrc(this: State, row: Row, col: Column): string {
+      const v = col.src ? row[col.src] : "";
+      return v === null || v === undefined ? "" : String(v);
+    },
+    href(this: State, row: Row, col: Column): string | null {
+      const h = col.href;
+      const url = h ? (h.includes("{") ? this.fillRow(h, row) : String(row[h] ?? h)) : this.val(row, col) == null ? "" : String(this.val(row, col));
+      // A row value must never become a script URL.
+      return !url || /^\s*(javascript|data|vbscript):/i.test(url) ? null : url;
+    },
+    /** 0..1 of a meter cell. */
+    meterFraction(this: State, row: Row, col: Column): number {
+      const n = Number(this.shownValue(row, col));
+      const max = col.max ?? 100;
+      return Number.isFinite(n) && max > 0 ? Math.max(0, Math.min(1, n / max)) : 0;
+    },
+    meterTone(this: State, row: Row, col: Column): string {
+      const f = this.meterFraction(row, col);
+      return f >= (col.dangerAt ?? 0.95) ? "danger" : f >= (col.warnAt ?? 0.8) ? "warning" : "default";
+    },
+    meterWidth(this: State, row: Row, col: Column): string {
+      return `inset-inline-start:0;width:${Math.round(this.meterFraction(row, col) * 10000) / 100}%`;
     },
     tone(this: State, row: Row, col: Column): string {
       return this.opt(col, this.shownValue(row, col))?.tone ?? "neutral";
@@ -428,7 +557,100 @@ export const dataTable: Register = (Alpine) => {
       if (window.getSelection()?.toString()) return;
       this.root?.dispatchEvent(new CustomEvent("nq-data-table-row-click", { bubbles: true, detail: { row: { ...row } } }));
     },
+    /* ---- per-row actions and the context menu ---- */
+    matches(this: State, row: Row, c: Condition | undefined): boolean {
+      if (!c) return true;
+      if (c.any) return c.any.some((x) => this.matches(row, x));
+      if (c.all) return c.all.every((x) => this.matches(row, x));
+      const v = row[c.field ?? ""];
+      if (c.in) return c.in.map(String).includes(String(v));
+      if (c.notIn) return !c.notIn.map(String).includes(String(v));
+      if (c.eq !== undefined) return String(v) === String(c.eq);
+      if (c.ne !== undefined) return String(v) !== String(c.ne);
+      if (c.empty !== undefined) return (v === null || v === undefined || v === "" || (Array.isArray(v) && v.length === 0)) === c.empty;
+      return true;
+    },
+    /** Whether action `i` shows for this row. */
+    actionOn(this: State, row: Row, i: number): boolean {
+      const a = this.actions[i];
+      if (!a || !row) return false;
+      const allowed = this.actionsKey ? row[this.actionsKey] : undefined;
+      if (Array.isArray(allowed) && !allowed.map(String).includes(a.id)) return false;
+      return this.matches(row, a.visibleWhen);
+    },
+    /** Whether action `i` is disabled for this row. */
+    actionOff(this: State, row: Row, i: number): boolean {
+      const a = this.actions[i];
+      return !!a?.disabledWhen && this.matches(row, a.disabledWhen);
+    },
+    hasActions(this: State, row: Row): boolean {
+      return this.actions.some((_a, i) => this.actionOn(row, i));
+    },
+    /** A separator shows before action `i` when it starts a new group among the visible actions. */
+    sepBefore(this: State, row: Row, i: number): boolean {
+      if (!this.actionOn(row, i)) return false;
+      for (let j = i - 1; j >= 0; j--) if (this.actionOn(row, j)) return (this.actions[j]!.group ?? null) !== (this.actions[i]!.group ?? null);
+      return false;
+    },
+    menuEl(this: State): HTMLElement | null {
+      return this.root?.querySelector<HTMLElement>('[data-slot="data-table-context-menu"]') ?? null;
+    },
+    /** Opens the row's actions as a context menu. Returns false when the row has none (or the menu is off). */
+    openRowMenu(this: State, row: Row, rowEl: HTMLElement, x: number, y: number, keyboard: boolean): boolean {
+      const host = this.menuEl();
+      if (!this.contextMenu || !host || !this.hasActions(row)) return false;
+      const menu = (Alpine as unknown as WithData).$data(host) as unknown as { openAt(x: number, y: number, keyboard?: boolean): void };
+      this.ctxRow = row;
+      this.ctxReturn = rowEl;
+      menu.openAt(x, y, keyboard);
+      return true;
+    },
+    rowContext(this: State, row: Row, event: MouseEvent) {
+      if (event.shiftKey || (event.target as Element).closest?.(NATIVE)) return;
+      if (this.openRowMenu(row, event.currentTarget as HTMLElement, event.clientX, event.clientY, false)) event.preventDefault();
+    },
+    rowTouch(this: State, row: Row, event: TouchEvent) {
+      const t = event.touches[0];
+      if (!t || (event.target as Element).closest?.(NATIVE)) return;
+      const el = event.currentTarget as HTMLElement;
+      clearTimeout(this.press);
+      this.press = setTimeout(() => this.openRowMenu(row, el, t.clientX, t.clientY, false), 500);
+    },
+    rowTouchEnd(this: State) {
+      clearTimeout(this.press);
+    },
+    /** Shift+F10 or the Menu key on a row (or something in it): the context menu at the row, else the ⋯ button. */
+    rowMenuKey(this: State, row: Row, event: KeyboardEvent): boolean {
+      if (!isMenuKey(event) || (event.target as Element).closest?.(NATIVE)) return false;
+      const rowEl = event.currentTarget as HTMLElement;
+      const rect = (event.target as HTMLElement).getBoundingClientRect();
+      const rtl = getComputedStyle(rowEl).direction === "rtl";
+      if (this.openRowMenu(row, rowEl, rtl ? rect.right - 24 : rect.left + 24, rect.top + rect.height / 2, true)) {
+        event.preventDefault();
+        return true;
+      }
+      const trigger = rowEl.querySelector<HTMLElement>("[data-slot=data-table-row-actions]");
+      if (trigger && this.hasActions(row)) {
+        event.preventDefault();
+        trigger.click();
+        return true;
+      }
+      return false;
+    },
+    /** Called when the context menu closes: focus goes back to the row it was opened on. */
+    menuClosed(this: State, open: boolean) {
+      this.ctxOpen = open;
+      if (open || !this.ctxReturn) return;
+      const back = this.ctxReturn;
+      this.ctxReturn = null;
+      void this.$nextTick(() => {
+        const a = document.activeElement;
+        if (!a || a === document.body || !document.contains(a)) back.focus({ preventScroll: true });
+      });
+    },
     act(this: State, action: string, row: Row) {
+      const i = this.actions.findIndex((a) => a.id === action);
+      if (i >= 0 && (!this.actionOn(row, i) || this.actionOff(row, i))) return;
       this.root?.dispatchEvent(new CustomEvent("nq-data-table-action", { bubbles: true, detail: { action, row: { ...row } } }));
     },
     focusRow(this: State, index: number) {
@@ -439,6 +661,7 @@ export const dataTable: Register = (Alpine) => {
       target.focus();
     },
     rowKey(this: State & { pageRows: Row[] }, event: KeyboardEvent, row: Row, index: number, clickable: boolean) {
+      if (this.rowMenuKey(row, event)) return;
       if (event.target !== event.currentTarget) return;
       const last = this.pageRows.length - 1;
       const to = ({ ArrowDown: index + 1, ArrowUp: index - 1, Home: 0, End: last } as Record<string, number>)[event.key];

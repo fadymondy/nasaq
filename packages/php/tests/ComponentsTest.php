@@ -64,6 +64,13 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('1M', Blade::render('<x-nq::numeric :value="999950" compact />'));
     }
 
+    public function test_parts_take_a_data_slot_override_and_aware_props_are_optional(): void
+    {
+        $this->assertStringContainsString('data-slot="search-box"', Blade::render('<x-nq::input-group data-slot="search-box"><x-nq::input-group.input /></x-nq::input-group>'));
+        $this->assertStringContainsString('name="email"', Blade::render('<x-nq::field.input name="email" />'));
+        $this->assertStringContainsString('disabled', Blade::render('<x-nq::toggle-group><x-nq::toggle-group.toggle value="a" disabled>A</x-nq::toggle-group.toggle></x-nq::toggle-group>'));
+    }
+
     public function test_arabic_currency_is_sar(): void
     {
         app()->setLocale('ar');

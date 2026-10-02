@@ -19,8 +19,8 @@
     $config = ['permission' => $permission, 'subscribed' => $subscribed, 'devices' => array_map(fn ($d) => ['id' => $d['id'], 'current' => (bool) ($d['current'] ?? false)], $devices)];
     $hide = fn (bool $cond) => $cond ? 'display: none' : '';
 @endphp
-<section data-slot="push-opt-in" aria-labelledby="{{ $id }}" x-data="nqPushOptIn(@js($config))" x-on:nq-permission="onPermission($event)"
-    {{ $attributes->cn('flex w-full max-w-xl flex-col gap-4 rounded-card border border-border bg-card p-4') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'push-opt-in') }}" aria-labelledby="{{ $id }}" x-data="nqPushOptIn(@js($config))" x-on:nq-permission="onPermission($event)"
+    {{ $attributes->except('data-slot')->cn('flex w-full max-w-xl flex-col gap-4 rounded-card border border-border bg-card p-4') }}>
     <header class="flex flex-col gap-1">
         <h2 id="{{ $id }}" class="text-h3">{{ $t['pushTitle'] }}</h2>
         <p class="text-body-sm text-muted-foreground">{{ $t['pushDescription'] }}</p>

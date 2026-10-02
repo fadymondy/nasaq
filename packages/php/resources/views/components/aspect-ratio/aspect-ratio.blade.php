@@ -2,8 +2,8 @@
      ratio: width over height (16 / 9, 4 / 3, 1). Direct img, video and iframe children fill the box. --}}
 @props(['ratio' => 16 / 9])
 @php $style = 'aspect-ratio: '.$ratio.($attributes->get('style') ? '; '.$attributes->get('style') : ''); @endphp
-<div data-slot="aspect-ratio" style="{{ $style }}"
-    {{ $attributes->except('style')->cn([
+<div data-slot="{{ $attributes->get('data-slot', 'aspect-ratio') }}" style="{{ $style }}"
+    {{ $attributes->except('data-slot')->except('style')->cn([
         'relative w-full overflow-hidden',
         '[&>iframe]:absolute [&>iframe]:inset-0 [&>iframe]:size-full [&>img]:absolute [&>img]:inset-0 [&>img]:size-full [&>img]:object-cover [&>video]:absolute [&>video]:inset-0 [&>video]:size-full [&>video]:object-cover',
     ]) }}>{{ $slot }}</div>

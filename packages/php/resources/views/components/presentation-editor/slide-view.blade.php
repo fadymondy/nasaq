@@ -24,9 +24,9 @@
         return '<template x-if="lines('.$S.'.'.$field.').length"><p dir="auto" class="'.e(\Nasaq\Cn::merge('whitespace-pre-line text-start', $class)).'" x-text="'.$S.'.'.$field.'"></p></template>';
     };
 @endphp
-<div data-slot="slide" :data-layout="{{ $S }}.layout" @if ($decorative) aria-hidden="true" @endif
+<div data-slot="{{ $attributes->get('data-slot', 'slide') }}" :data-layout="{{ $S }}.layout" @if ($decorative) aria-hidden="true" @endif
     :class="themeClass({{ $S }})"
-    {{ $attributes->cn('@container relative aspect-video w-full overflow-hidden') }}>
+    {{ $attributes->except('data-slot')->cn('@container relative aspect-video w-full overflow-hidden') }}>
     <div class="absolute inset-0 p-[6cqw]">
         <template x-if="{{ $S }}.layout === 'title'">
             <div class="flex h-full flex-col justify-center gap-[2cqw]">

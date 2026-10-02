@@ -54,7 +54,7 @@
     $valuePlaceholder = $t::t('Address, number or @handle', 'عنوان أو رقم أو @معرّف');
     $labelPlaceholder = $t::t('Work, personal…', 'عمل، شخصي…');
 @endphp
-<section data-slot="contact-identities" aria-labelledby="{{ $uid }}-title" x-data="nqContactIdentities(@js($config))" {{ $attributes->cn('flex min-w-0 flex-col gap-6') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'contact-identities') }}" aria-labelledby="{{ $uid }}-title" x-data="nqContactIdentities(@js($config))" {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-6') }}>
     <div class="flex min-w-0 flex-col gap-3">
         <header class="flex flex-wrap items-start justify-between gap-2">
             <div class="flex min-w-0 flex-col gap-0.5">

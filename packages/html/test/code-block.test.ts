@@ -49,3 +49,26 @@ describe("code-block (Blade example)", () => {
     expect(host.querySelector('[data-slot="inline-code"]')!.getAttribute("dir")).toBe("ltr");
   });
 });
+
+describe("code-block (code-expr)", () => {
+  it("follows the expression: lines, numbers, highlighting and the copy value", async () => {
+    const host = await mountHtml(rendered("code-block"));
+    const root = host.querySelector<HTMLElement>("#live-code")!;
+    const lines = () => [...root.querySelectorAll<HTMLElement>("[data-line]")];
+    expect(lines()).toHaveLength(1);
+    expect(root.hasAttribute("data-highlighted")).toBe(true);
+
+    host.querySelector<HTMLElement>("#live-code-change")!.click();
+    await tick(80);
+    expect(lines().map((l) => l.querySelector("[data-code-line]")!.textContent)).toEqual(["pnpm add nasaq", "pnpm dlx nasaq init"]);
+    expect(lines().map((l) => l.querySelector("[aria-hidden]")!.textContent)).toEqual(["1", "2"]);
+    expect(root.hasAttribute("data-highlighted")).toBe(true);
+    expect(lines()[0]!.querySelector<HTMLElement>("[data-code-line] span")).not.toBeNull();
+
+    let copied = "";
+    Object.defineProperty(navigator, "clipboard", { value: { writeText: async (t: string) => void (copied = t) }, configurable: true });
+    root.querySelector<HTMLElement>('[data-slot="copy-button"]')!.click();
+    await tick();
+    expect(copied).toBe("pnpm add nasaq\npnpm dlx nasaq init");
+  });
+});

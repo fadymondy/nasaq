@@ -61,8 +61,8 @@
     };
     $tone = $kind === 'server-error' ? 'text-nq-danger-text' : ($kind === 'maintenance' ? 'text-nq-warning-text' : ($offline ? ($online ? 'text-nq-success-text' : 'text-nq-warning-text') : 'text-muted-foreground'));
 @endphp
-<main data-slot="error-page" data-kind="{{ $kind }}" x-data="nqErrorPage({{ $online ? 'true' : 'false' }}, {{ $offline ? 'true' : 'false' }})"
-    {{ $attributes->cn(['flex flex-col items-center justify-center gap-8 bg-background p-6 text-center text-foreground', 'min-h-dvh' => $fullScreen]) }}>
+<main data-slot="{{ $attributes->get('data-slot', 'error-page') }}" data-kind="{{ $kind }}" x-data="nqErrorPage({{ $online ? 'true' : 'false' }}, {{ $offline ? 'true' : 'false' }})"
+    {{ $attributes->except('data-slot')->cn(['flex flex-col items-center justify-center gap-8 bg-background p-6 text-center text-foreground', 'min-h-dvh' => $fullScreen]) }}>
     @if ($logo instanceof \Illuminate\View\ComponentSlot && ! $logo->isEmpty())
         {{ $logo }}
     @elseif ($logo !== false)

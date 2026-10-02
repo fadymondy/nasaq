@@ -9,7 +9,7 @@
     $styles = ['done' => 'border-primary bg-primary', 'current' => 'border-primary bg-transparent ring-2 ring-primary/30', 'todo' => 'border-nq-line-strong bg-transparent'];
     $label = \Nasaq\Nasaq::t("{$finished} of {$count} focus sessions done in this set", "{$finished} من {$count} جلسات تركيز أُنجزت في هذه الدورة");
 @endphp
-<div data-slot="cycle-dots" role="img" @if ($live) :aria-label="cyclesLabel()" @else aria-label="{{ $label }}" @endif {{ $attributes->cn('inline-flex items-center gap-2') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'cycle-dots') }}" role="img" @if ($live) :aria-label="cyclesLabel()" @else aria-label="{{ $label }}" @endif {{ $attributes->except('data-slot')->cn('inline-flex items-center gap-2') }}>
     @for ($i = 0; $i < $count; $i++)
         @php $state = $i < $finished ? 'done' : ($active && $i === $finished ? 'current' : 'todo'); @endphp
         @if ($live)

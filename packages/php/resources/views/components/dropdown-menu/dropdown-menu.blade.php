@@ -2,4 +2,4 @@
      Parts: trigger, content, item (variant="danger", shortcut, disabled), checkbox-item, radio-group + radio-item, group, label, separator, shortcut, sub + sub-trigger + sub-content.
      open: start open (false). open is x-modelable: x-model="$wire.menuOpen". Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['open' => false])
-<div data-slot="dropdown-menu" x-data="nqDropdownMenu(@js((bool) $open))" x-modelable="open" {{ $attributes->cn('contents') }}>{{ $slot }}</div>
+<div data-slot="{{ $attributes->get('data-slot', 'dropdown-menu') }}" x-data="nqDropdownMenu(@js((bool) $open))" x-modelable="open" {{ $attributes->except('data-slot')->cn('contents') }}>{{ $slot }}</div>

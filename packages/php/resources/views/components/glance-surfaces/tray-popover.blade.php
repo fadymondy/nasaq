@@ -3,7 +3,7 @@
      caret: start | center | end (default) | false.   <x-slot:header-end> sits at the inline end of the header.
      actions: arrays with id, label, icon (lucide name), shortcut, danger. Choosing one dispatches a bubbling "nq-action" event with { id }. --}}
 @props(['title', 'subtitle' => null, 'caret' => 'end', 'actions' => [], 'headerEnd' => null])
-<div data-slot="tray-popover" role="group" aria-label="{{ $title }}" {{ $attributes->cn('relative w-80 max-w-full rounded-xl border border-border bg-card text-foreground shadow-lg') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'tray-popover') }}" role="group" aria-label="{{ $title }}" {{ $attributes->except('data-slot')->cn('relative w-80 max-w-full rounded-xl border border-border bg-card text-foreground shadow-lg') }}>
     @if ($caret && $caret !== 'false')
         <span aria-hidden="true" class="{{ \Nasaq\Cn::merge('absolute -top-1.5 size-3 rotate-45 border-t border-s border-border bg-card', ['start' => 'start-5', 'end' => 'end-5', 'center' => 'start-1/2 -ms-1.5'][$caret] ?? '') }}"></span>
     @endif

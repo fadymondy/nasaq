@@ -17,7 +17,7 @@
     $meterTone = ['ok' => 'default', 'warning' => 'warning', 'danger' => 'danger', 'over' => 'danger'];
     $hasHint = $hint !== null && (string) $hint !== '';
 @endphp
-<div data-slot="usage-meter" data-tone="{{ $tone }}" @if ($limit === null) data-unlimited="true" @endif {{ $attributes->except('aria-label')->cn('flex min-w-0 flex-col gap-1.5') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'usage-meter') }}" data-tone="{{ $tone }}" @if ($limit === null) data-unlimited="true" @endif {{ $attributes->except('data-slot')->except('aria-label')->cn('flex min-w-0 flex-col gap-1.5') }}>
     <div class="flex items-baseline justify-between gap-3 text-body-sm">
         <span data-slot="usage-meter-label" class="min-w-0 truncate text-label text-foreground">{{ $label }}</span>
         <span data-slot="usage-meter-value" class="shrink-0 text-muted-foreground tabular-nums"><bdi class="text-foreground">{{ $amount($used) }}</bdi>@if ($limit !== null) {{ $t['of'] }} <bdi>{{ $amount($limit) }}</bdi>@endif</span>

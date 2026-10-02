@@ -7,8 +7,8 @@
 @php
     $options = array_filter(['src' => $src, 'accept' => $accept, 'maxSize' => $maxSize, 'disabled' => $disabled ?: null], fn ($v) => $v !== null);
 @endphp
-<div data-slot="image-upload" x-data="nqImageUpload({{ \Illuminate\Support\Js::from((object) $options)->toHtml() }})" x-modelable="file" x-id="['nq-upload']"
-    {{ $attributes->cn('flex flex-col items-start gap-2') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'image-upload') }}" x-data="nqImageUpload({{ \Illuminate\Support\Js::from((object) $options)->toHtml() }})" x-modelable="file" x-id="['nq-upload']"
+    {{ $attributes->except('data-slot')->cn('flex flex-col items-start gap-2') }}>
     <div x-show="preview()" x-cloak style="display: none" data-slot="image-upload-preview" class="relative size-32 overflow-hidden rounded-floating border border-border bg-nq-surface-soft">
         <img :src="preview()" alt="{{ $alt }}" class="size-full object-cover">
         <div x-show="showProgress()" x-cloak style="display: none" class="absolute inset-x-0 bottom-0 bg-card/80 p-2">

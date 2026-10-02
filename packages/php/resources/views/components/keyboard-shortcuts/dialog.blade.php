@@ -17,7 +17,7 @@
         'max-h-[85dvh] w-[min(56rem,calc(100vw-2rem))] max-w-none overflow-y-auto',
     );
 @endphp
-<div data-slot="shortcuts-dialog-root" x-data="nqShortcutsDialog(@js((bool) $open), @js($hotkey))" x-modelable="shown" x-on:keydown.window="onKey($event)" {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'shortcuts-dialog-root') }}" x-data="nqShortcutsDialog(@js((bool) $open), @js($hotkey))" x-modelable="shown" x-on:keydown.window="onKey($event)" {{ $attributes->except('data-slot')->cn('contents') }}>
     <x-nq::dialog x-model="shown">
         <template x-teleport="body">
             <div data-slot="dialog-portal">

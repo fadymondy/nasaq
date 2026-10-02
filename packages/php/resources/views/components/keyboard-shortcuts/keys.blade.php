@@ -102,9 +102,9 @@
 @else
     @if ($own)<span class="contents" x-data="nqShortcutKeys('auto')">@endif
     @foreach ($variants as $variant)
-        <span data-slot="shortcut-keys" dir="ltr" role="img" aria-label="{{ $variant['spoken'] }}"
+        <span data-slot="{{ $attributes->get('data-slot', 'shortcut-keys') }}" dir="ltr" role="img" aria-label="{{ $variant['spoken'] }}"
             @if ($both) x-show="{{ $variant['apple'] ? 'apple' : '! apple' }}" @if ($variant['apple']) style="display: none;" @endif @endif
-            {{ $attributes->cn('inline-flex flex-wrap items-center gap-x-1.5 gap-y-1') }}>
+            {{ $attributes->except('data-slot')->cn('inline-flex flex-wrap items-center gap-x-1.5 gap-y-1') }}>
             @foreach ($variant['steps'] as $i => $stepCaps)
                 @if ($i > 0)<span aria-hidden="true" class="text-caption text-muted-foreground">{{ $then }}</span>@endif
                 <span aria-hidden="true" class="inline-flex items-center gap-0.5">

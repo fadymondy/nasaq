@@ -22,8 +22,8 @@
     $convertText = $convertLabel ?? $T('Convert', 'تحويل');
     $fade = 'transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0';
 @endphp
-<section data-slot="approval-queue" aria-label="{{ $title ?? $T('Approvals', 'الموافقات') }}" x-data="nqApprovalQueue(@js(array_values((array) $items)), {!! \Illuminate\Support\Js::from((object) $options)->toHtml() !!})" x-modelable="items"
-    {{ $attributes->cn('flex flex-col gap-4') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'approval-queue') }}" aria-label="{{ $title ?? $T('Approvals', 'الموافقات') }}" x-data="nqApprovalQueue(@js(array_values((array) $items)), {!! \Illuminate\Support\Js::from((object) $options)->toHtml() !!})" x-modelable="items"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
     <div class="flex flex-wrap items-center justify-between gap-3">
         <p class="text-body-sm text-muted-foreground" aria-live="polite" x-text="waitingText()"></p>
         <div role="tablist" aria-label="{{ $T('Filter the queue', 'تصفية الطابور') }}" data-slot="tabs-list" class="inline-flex items-center gap-1 rounded-control bg-secondary p-1">

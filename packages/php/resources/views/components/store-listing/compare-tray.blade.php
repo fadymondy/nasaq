@@ -2,8 +2,8 @@
      A sticky tray with a slot per product to compare (up to compare-max), the count, Clear all and Compare. It shows once something is picked.
      Reads the listing's compareIds, slots, removeCompare(), clearCompare() and compareOpen. --}}
 @include('nasaq::components.store-listing._strings')
-<section data-slot="store-compare-tray" aria-label="{{ nq_sl_t('compareTray') }}" x-show="compareIds.length" style="display: none"
-    {{ $attributes->cn('sticky bottom-3 z-30 mx-auto flex w-full max-w-3xl flex-wrap items-center gap-3 rounded-floating border border-border bg-popover p-3 shadow-floating') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'store-compare-tray') }}" aria-label="{{ nq_sl_t('compareTray') }}" x-show="compareIds.length" style="display: none"
+    {{ $attributes->except('data-slot')->cn('sticky bottom-3 z-30 mx-auto flex w-full max-w-3xl flex-wrap items-center gap-3 rounded-floating border border-border bg-popover p-3 shadow-floating') }}>
     <ul class="flex min-w-0 basis-full items-center gap-2 sm:flex-1 sm:basis-0">
         <template x-for="(p, i) in slots" x-bind:key="p ? p.id : 'slot-' + i">
             <li class="relative">

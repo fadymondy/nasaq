@@ -3,7 +3,7 @@
      later ones upcoming. orientation: horizontal (runs along the inline axis, so right to left in RTL) | vertical.
      Items count themselves in order; no JavaScript needed. --}}
 @props(['current' => 0, 'orientation' => 'horizontal'])
-<ol data-slot="stepper" data-orientation="{{ $orientation }}" {{ $attributes->cn(['m-0 flex list-none p-0', $orientation === 'horizontal' ? 'flex-row items-start' : 'flex-col']) }}>
+<ol data-slot="{{ $attributes->get('data-slot', 'stepper') }}" data-orientation="{{ $orientation }}" {{ $attributes->except('data-slot')->cn(['m-0 flex list-none p-0', $orientation === 'horizontal' ? 'flex-row items-start' : 'flex-col']) }}>
     {{ $slot }}
 </ol>
 @php

@@ -34,8 +34,8 @@
     ];
     $config = ['slots' => $list, 'value' => $value === null ? null : $iso($value), 'day' => $startDay, 'today' => $todayKey, 'locale' => $loc, 'hour12' => $hour12 === null ? null : (bool) $hour12, 'strings' => $strings];
 @endphp
-<div data-slot="slot-picker" dir="{{ $rtl ? 'rtl' : 'ltr' }}" lang="{{ $loc }}" x-data="nqSlotPicker(@js($config))" x-modelable="chosen"
-    {{ $attributes->cn('flex flex-col gap-4 sm:flex-row') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'slot-picker') }}" dir="{{ $rtl ? 'rtl' : 'ltr' }}" lang="{{ $loc }}" x-data="nqSlotPicker(@js($config))" x-modelable="chosen"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 sm:flex-row') }}>
     <x-nq::calendar :value="$startDay" :min="$min" :max="$max" :disabled="$blocked" :today="$todayKey" :locale="$loc" :dir="$rtl ? 'rtl' : 'ltr'" x-model="pickDay" />
     <div data-slot="slot-picker-times" class="flex min-w-48 flex-1 flex-col gap-2">
         <h3 aria-live="polite" class="text-label font-semibold"><bdi x-text="dayLabel"></bdi></h3>

@@ -70,8 +70,8 @@
     ];
     $uid = 'nq-integration-'.substr(md5(json_encode($rows)), 0, 6);
 @endphp
-<div data-slot="integration-connector" x-data="nqIntegrationConnector({!! \Illuminate\Support\Js::from($init) !!})"
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'integration-connector') }}" x-data="nqIntegrationConnector({!! \Illuminate\Support\Js::from($init) !!})"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full') }}>
     @unless ($bare)
         <x-nq::card.header>
             <x-nq::card.title as="h2">{{ $s['title'] }}</x-nq::card.title>

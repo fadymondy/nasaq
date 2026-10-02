@@ -8,8 +8,8 @@
 <template x-teleport="body">
     <div data-slot="dialog-portal">
         <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 {{ $fade }}"></div>
-        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
-            {{ $attributes->cn([
+        <div data-slot="{{ $attributes->get('data-slot', 'dialog-content') }}" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            {{ $attributes->except('data-slot')->cn([
                 'fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4',
                 'rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none',
                 'max-h-[calc(100dvh-2rem)] overflow-y-auto',

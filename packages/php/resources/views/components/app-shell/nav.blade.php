@@ -14,7 +14,7 @@
     $label = $attributes->get('aria-label') ?: \Nasaq\Nasaq::t('Sections', 'الأقسام');
     $barItem = 'relative flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-control px-1 py-1.5 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus';
 @endphp
-<nav data-slot="app-nav" aria-label="{{ $label }}" {{ $attributes->except('aria-label')->cn(['shrink-0 border-b border-border bg-background max-md:hidden', '[&_[data-slot=app-nav-icon]]:hidden' => $icons === 'mobile']) }}>
+<nav data-slot="{{ $attributes->get('data-slot', 'app-nav') }}" aria-label="{{ $label }}" {{ $attributes->except('data-slot')->except('aria-label')->cn(['shrink-0 border-b border-border bg-background max-md:hidden', '[&_[data-slot=app-nav-icon]]:hidden' => $icons === 'mobile']) }}>
     <div class="flex items-center gap-1 overflow-x-auto px-2 [scrollbar-width:none]">{!! implode('', array_column($items, 0)) !!}</div>
 </nav>
 <nav data-slot="app-nav-bar" aria-label="{{ $label }}" class="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-sm md:hidden">

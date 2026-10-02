@@ -7,7 +7,7 @@
     $vals = array_map(fn ($d) => is_array($d) ? $d['value'] : $d, array_values($data));
     $max = max(0, ...($vals ?: [0]));
 @endphp
-<div data-slot="mini-bar" @if ($label) role="img" aria-label="{{ $label }}" @else aria-hidden="true" @endif {{ $attributes->cn('h-8 w-32 shrink-0') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'mini-bar') }}" @if ($label) role="img" aria-label="{{ $label }}" @else aria-hidden="true" @endif {{ $attributes->except('data-slot')->cn('h-8 w-32 shrink-0') }}>
     <div class="flex size-full items-end gap-0.5 pt-0.5">
         @foreach ($vals as $i => $v)
             <span class="min-w-0 flex-1 rounded-[2px]"

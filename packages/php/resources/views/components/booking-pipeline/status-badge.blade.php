@@ -23,7 +23,7 @@
         'info' => 'border-nq-info/40 bg-nq-info-soft text-nq-info-text',
     ];
 @endphp
-<span data-slot="booking-status-badge" data-status="{{ $status }}" {{ $attributes->cn(['inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3', $variants[$variant], 'gap-1']) }}>
+<span data-slot="{{ $attributes->get('data-slot', 'booking-status-badge') }}" data-status="{{ $status }}" {{ $attributes->except('data-slot')->cn(['inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3', $variants[$variant], 'gap-1']) }}>
     @unless ($hideIcon)<x-dynamic-component :component="'lucide-'.$icon" aria-hidden="true" class="size-3" />@endunless
     {{ \Nasaq\Nasaq::t($en, $ar) }}
 </span>

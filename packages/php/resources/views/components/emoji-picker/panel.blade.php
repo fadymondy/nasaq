@@ -10,8 +10,8 @@
     $empty = \Nasaq\Nasaq::t('No emoji found for “:q”.', 'لا توجد رموز مطابقة لـ «:q».');
     $lit = fn (string $s) => '`'.str_replace(['`', '${', chr(92)], '', $s).'`';
 @endphp
-<div data-slot="emoji-picker" x-data="nqEmojiPicker(@js($skinTone), @js((int) $columns))" x-on:keydown="onKey($event)"
-    {{ $attributes->cn('isolate flex h-80 w-72 flex-col bg-popover text-popover-foreground') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'emoji-picker') }}" x-data="nqEmojiPicker(@js($skinTone), @js((int) $columns))" x-on:keydown="onKey($event)"
+    {{ $attributes->except('data-slot')->cn('isolate flex h-80 w-72 flex-col bg-popover text-popover-foreground') }}>
     <div class="flex items-center gap-2 border-b border-border p-2">
         <div class="relative min-w-0 flex-1">
             <x-nq::icon name="search" aria-hidden="true" class="pointer-events-none absolute inset-y-0 start-2.5 my-auto size-4 text-muted-foreground" />

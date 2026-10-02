@@ -14,8 +14,8 @@
     ];
     $config = ['lines' => array_values($lines), 'prompt' => $prompt, 'streaming' => (bool) $streaming, 'follow' => (bool) $follow, 'maxLines' => (int) $maxLines, 'wrap' => (bool) $wrap, 'strings' => $strings];
 @endphp
-<div data-slot="terminal" dir="ltr" x-data="nqTerminal(@js($config))" x-bind:data-streaming="streaming ? '' : null"
-    {{ $attributes->cn('relative flex min-w-0 flex-col overflow-hidden rounded-surface border border-border bg-nq-surface-soft text-start') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'terminal') }}" dir="ltr" x-data="nqTerminal(@js($config))" x-bind:data-streaming="streaming ? '' : null"
+    {{ $attributes->except('data-slot')->cn('relative flex min-w-0 flex-col overflow-hidden rounded-surface border border-border bg-nq-surface-soft text-start') }}>
     <div data-slot="terminal-header" class="flex h-row shrink-0 items-center justify-between gap-2 border-b border-border ps-3 pe-1.5">
         <span class="flex min-w-0 items-center gap-2 font-mono text-caption text-muted-foreground">
             <span class="truncate">{{ $title ?? $t('Terminal', 'الطرفية') }}</span>

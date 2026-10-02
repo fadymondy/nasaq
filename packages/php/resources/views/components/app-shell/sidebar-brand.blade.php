@@ -7,8 +7,8 @@
     $name = $label ?? ucfirst($key);
 @endphp
 <x-nq::app-shell.rail-tip :name="$name">
-    <a data-slot="sidebar-brand" href="{{ $href }}" x-bind:aria-label="(rail && collapsed) ? @js($name) : null"
-        {{ $attributes->cn([
+    <a data-slot="{{ $attributes->get('data-slot', 'sidebar-brand') }}" href="{{ $href }}" x-bind:aria-label="(rail && collapsed) ? @js($name) : null"
+        {{ $attributes->except('data-slot')->cn([
             'flex h-control shrink-0 items-center gap-2 rounded-control px-2 outline-none',
             'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus',
             'group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0',

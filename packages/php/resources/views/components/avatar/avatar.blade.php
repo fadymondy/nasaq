@@ -11,8 +11,8 @@
     $initials = mb_strtoupper(($words ? $first($words[0]) : '').(count($words) > 1 ? $first($words[count($words) - 1]) : ''));
     $composed = $slot->isNotEmpty();
 @endphp
-<span data-slot="avatar" x-data="nqAvatar({{ $src && ! $composed ? 400 : 0 }})"
-    {{ $attributes->cn([
+<span data-slot="{{ $attributes->get('data-slot', 'avatar') }}" x-data="nqAvatar({{ $src && ! $composed ? 400 : 0 }})"
+    {{ $attributes->except('data-slot')->cn([
         'inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground',
         $sizes[$size] ?? $sizes['md'],
         $shapes[$shape] ?? $shapes['circle'],

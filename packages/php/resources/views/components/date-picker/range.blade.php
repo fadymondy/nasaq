@@ -17,7 +17,7 @@
     $range = ['from' => is_array($value) ? ($value['from'] ?? null) : null, 'to' => is_array($value) ? ($value['to'] ?? null) : null];
     $init = ['value' => $range, 'locale' => $locale, 'calendar' => $calendar, 'placeholder' => $placeholder];
 @endphp
-<div data-slot="date-range-picker" x-data="nqDateRangePicker({!! \Illuminate\Support\Js::from($init) !!})" x-modelable="period" {{ $attributes->whereStartsWith(['x-model', 'wire:model'])->merge(['class' => 'contents']) }}>
+<div data-slot="{{ $attributes->get('data-slot', 'date-range-picker') }}" x-data="nqDateRangePicker({!! \Illuminate\Support\Js::from($init) !!})" x-modelable="period" {{ $attributes->except('data-slot')->whereStartsWith(['x-model', 'wire:model'])->merge(['class' => 'contents']) }}>
     <x-nq::popover :open="$open">
         <x-nq::date-picker.trigger icon="calendar-days" :initial="$placeholder" {{ $attributes->whereDoesntStartWith(['x-model', 'wire:model'])->except('name') }} />
         @if ($fieldName)

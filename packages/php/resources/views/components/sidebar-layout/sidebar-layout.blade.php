@@ -22,6 +22,6 @@
         'moved' => $moved ?? \Nasaq\Nasaq::t(':label, position :position of :total', ':label، الموضع :position من :total'),
     ];
 @endphp
-<div data-slot="sidebar-layout" x-data="nqSidebarLayout(@js($config))" x-modelable="open" x-id="['nq-dialog']" {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'sidebar-layout') }}" x-data="nqSidebarLayout(@js($config))" x-modelable="open" x-id="['nq-dialog']" {{ $attributes->except('data-slot')->cn('contents') }}>
     {{ $slot }}
 </div>

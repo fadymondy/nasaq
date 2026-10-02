@@ -1,0 +1,333 @@
+<div class="flex flex-col gap-8">
+    <div data-slot="device-approval" x-data="nqDeviceApproval(JSON.parse('{\u0022status\u0022:\u0022pending\u0022,\u0022expiresAt\u0022:\u00222026-09-29T09:10:00\u0022,\u0022now\u0022:\u00222026-09-29T09:00:00\u0022,\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022,\u0022labels\u0022:{\u0022title\u0022:\u0022Approve this device?\u0022,\u0022description\u0022:\u0022{client} wants to sign in to your account. Check that the code below matches the one on the device.\u0022,\u0022signedInAs\u0022:\u0022Signing in as {name}\u0022,\u0022code\u0022:\u0022Code\u0022,\u0022device\u0022:\u0022Device\u0022,\u0022platform\u0022:\u0022Platform\u0022,\u0022browser\u0022:\u0022Browser\u0022,\u0022ip\u0022:\u0022IP address\u0022,\u0022location\u0022:\u0022Location\u0022,\u0022requested\u0022:\u0022Requested\u0022,\u0022scopes\u0022:\u0022It will be able to\u0022,\u0022warning\u0022:\u0022Only approve if you started this yourself. If you do not recognise it, deny it and change your password.\u0022,\u0022approve\u0022:\u0022Approve\u0022,\u0022deny\u0022:\u0022Deny\u0022,\u0022expiresIn\u0022:\u0022Expires in {time}\u0022,\u0022approvedTitle\u0022:\u0022Device approved\u0022,\u0022approvedDescription\u0022:\u0022You can go back to the device. It will sign in in a few seconds.\u0022,\u0022deniedTitle\u0022:\u0022Request denied\u0022,\u0022deniedDescription\u0022:\u0022The device was not given access. You can close this page.\u0022,\u0022expiredTitle\u0022:\u0022This code expired\u0022,\u0022expiredDescription\u0022:\u0022Codes only last a few minutes. Start again on the device to get a new one.\u0022,\u0022another\u0022:\u0022Enter another code\u0022,\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022}}'))" x-modelable="status" x-bind:data-status="shown()"
+    x-bind:aria-busy="pendingKind ? 'true' : null" x-on:nq-device-approve="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(done, 300)))" x-on:nq-device-deny="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(() =&gt; done({ error: &#039;Could not deny right now.&#039; }), 300)))" class="flex flex-col rounded-card border border-border bg-card text-card-foreground mx-auto w-full max-w-md gap-5 p-6 sm:p-8">
+            <div role="status" class="flex flex-col items-center gap-4 text-center" style="display: none" x-show="is('approved')">
+            <span class="inline-flex size-12 items-center justify-center rounded-full bg-nq-success-soft text-nq-success-text">
+                <svg aria-hidden="true" class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>            </span>
+            <h1 class="text-h2 text-foreground">Device approved</h1>
+            <p class="text-body-sm text-muted-foreground">You can go back to the device. It will sign in in a few seconds.</p>
+                    </div>
+            <div role="status" class="flex flex-col items-center gap-4 text-center" style="display: none" x-show="is('denied')">
+            <span class="inline-flex size-12 items-center justify-center rounded-full bg-nq-danger-soft text-nq-danger-text">
+                <svg aria-hidden="true" class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M4.929 4.929 19.07 19.071"/>
+</svg>            </span>
+            <h1 class="text-h2 text-foreground">Request denied</h1>
+            <p class="text-body-sm text-muted-foreground">The device was not given access. You can close this page.</p>
+                    </div>
+            <div role="status" class="flex flex-col items-center gap-4 text-center" style="display: none" x-show="is('expired')">
+            <span class="inline-flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+                <svg aria-hidden="true" class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 2h4"/>
+  <path d="M4.6 11a8 8 0 0 0 1.7 8.7 8 8 0 0 0 8.7 1.7"/>
+  <path d="M7.4 7.4a8 8 0 0 1 10.3 1 8 8 0 0 1 .9 10.2"/>
+  <path d="m2 2 20 20"/>
+  <path d="M12 12v-2"/>
+</svg>            </span>
+            <h1 class="text-h2 text-foreground">This code expired</h1>
+            <p class="text-body-sm text-muted-foreground">Codes only last a few minutes. Start again on the device to get a new one.</p>
+                            <button data-slot="button"
+     type="button"                     x-on:click="enterAnother()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Enter another code</button>
+                    </div>
+        <div class="flex flex-col gap-5" x-show="is('pending')">
+        <header class="flex flex-col gap-1.5">
+            <h1 class="text-h2 text-foreground">Approve this device?</h1>
+            <p class="text-body-sm text-muted-foreground">Mahaam Desktop wants to sign in to your account. Check that the code below matches the one on the device.</p>
+                    </header>
+        <div class="flex flex-col items-center gap-1 rounded-card border border-border bg-muted/50 py-4">
+            <span class="text-caption text-muted-foreground">Code</span>
+            <span data-slot="device-code" dir="ltr" class="font-mono text-h1 tracking-[0.12em] text-foreground">WDJB-MJHT</span>
+            <span dir="ltr" class="text-caption text-muted-foreground tabular-nums" style="display: none" x-show="hasExpiry()" x-text="expiresLabel()"></span>
+        </div>
+        <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-body-sm">
+                                                <div class="col-span-2 grid grid-cols-subgrid">
+                        <dt class="text-muted-foreground">Device</dt>
+                        <dd class="m-0 text-start text-foreground">Fady MacBook Pro</dd>
+                    </div>
+                                                                <div class="col-span-2 grid grid-cols-subgrid">
+                        <dt class="text-muted-foreground">Platform</dt>
+                        <dd class="m-0 text-start text-foreground">macOS 15</dd>
+                    </div>
+                                                                                            <div class="col-span-2 grid grid-cols-subgrid">
+                        <dt class="text-muted-foreground">IP address</dt>
+                        <dd class="m-0 text-start text-foreground"><bdi dir="ltr" class="font-mono">203.0.113.7</bdi></dd>
+                    </div>
+                                                                <div class="col-span-2 grid grid-cols-subgrid">
+                        <dt class="text-muted-foreground">Location</dt>
+                        <dd class="m-0 text-start text-foreground">Riyadh, Saudi Arabia</dd>
+                    </div>
+                                                        <div class="col-span-2 grid grid-cols-subgrid">
+                    <dt class="text-muted-foreground">Requested</dt>
+                    <dd class="m-0 text-start text-foreground"><time data-slot="date-time" datetime="2026-09-29T08:58:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Sep 29, 2026, 8:58 AM</time>
+</dd>
+                </div>
+                    </dl>
+                    <div class="flex flex-col gap-1.5">
+                <p class="text-label text-foreground">It will be able to</p>
+                <ul class="m-0 flex list-disc flex-col gap-0.5 ps-5 text-body-sm text-muted-foreground">
+                                            <li>Read your projects</li>
+                                            <li>Log time</li>
+                                    </ul>
+            </div>
+                <div data-slot="alert" data-tone="warning" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground">Only approve if you started this yourself. If you do not recognise it, deny it and change your password.</div>
+            </div>
+    </div>
+        <div data-slot="alert" data-tone="danger" role="alert"
+        style="display: none" x-show="error" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+        <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <button data-slot="button"
+     type="button"                     x-on:click="decide(&#039;deny&#039;)" x-bind:disabled="off(&#039;deny&#039;)" x-bind:data-disabled="off(&#039;deny&#039;) ? &#039;&#039; : null" x-bind:aria-busy="pendingKind === &#039;deny&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <template x-if="pendingKind === 'deny'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                Deny</button>
+            <button data-slot="button"
+     type="button"                     x-on:click="decide(&#039;approve&#039;)" x-bind:disabled="off(&#039;approve&#039;)" x-bind:data-disabled="off(&#039;approve&#039;) ? &#039;&#039; : null" x-bind:aria-busy="pendingKind === &#039;approve&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <template x-if="pendingKind === 'approve'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                Approve</button>
+        </div>
+    </div>
+</div>
+    <form data-slot="device-code-entry" novalidate x-data="nqDeviceCodeEntry(JSON.parse('{\u0022length\u0022:8,\u0022defaultCode\u0022:\u0022wdjb\u0022,\u0022names\u0022:[\u0022code\u0022],\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022,\u0022labels\u0022:{\u0022group\u0022:\u0022Device code\u0022,\u0022submit\u0022:\u0022Continue\u0022,\u0022incomplete\u0022:\u0022Enter all {length} characters.\u0022,\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022}}'))" x-bind:aria-busy="pending ? 'true' : null"
+    x-on:submit.prevent="onSubmit()" x-on:nq-device-code="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(() =&gt; done($event.detail.code === &#039;WDJBMJHT&#039; ? undefined : { error: &#039;That code is not valid.&#039; }), 200)))" class="flex w-full flex-col gap-4">
+    <div class="flex flex-col gap-4" x-effect="markInvalid($el)">
+        <div role="group" dir="ltr" data-slot="otp-input" x-data="nqOtpInput('wdjb', 8, 'alphanumeric')" x-modelable="value"
+    aria-label="Device code" aria-describedby="nq-device-000001-message" x-model="code" x-on:complete="onComplete($event.detail)" class="inline-flex items-center gap-2 self-center uppercase">
+            <input data-slot="otp-input-box" x-bind="box(0)" type="text" value="w"
+             data-filled             aria-label="Digit 1 of 8"
+            inputmode="text" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+               autofocus             class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(1)" type="text" value="d"
+             data-filled             aria-label="Digit 2 of 8"
+            inputmode="text" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(2)" type="text" value="j"
+             data-filled             aria-label="Digit 3 of 8"
+            inputmode="text" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(3)" type="text" value="b"
+             data-filled             aria-label="Digit 4 of 8"
+            inputmode="text" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(4)" type="text" value=""
+                        aria-label="Digit 5 of 8"
+            inputmode="text" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(5)" type="text" value=""
+                        aria-label="Digit 6 of 8"
+            inputmode="text" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(6)" type="text" value=""
+                        aria-label="Digit 7 of 8"
+            inputmode="text" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(7)" type="text" value=""
+                        aria-label="Digit 8 of 8"
+            inputmode="text" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+        <input type="hidden" name="code" :value="value" value="wdjb" /></div>
+        <p id="nq-device-000001-message" role="alert" class="text-center text-caption text-nq-danger-text" style="display: none" x-show="message()" x-text="message()"></p>
+    </div>
+    <button data-slot="button"
+     type="submit"                     x-bind:disabled="pending" x-bind:data-disabled="pending ? &#039;&#039; : null" x-bind:aria-busy="pending ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <template x-if="pending"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+        Continue</button>
+</form>
+    <div data-slot="device-code-display" x-data="nqDeviceCodeDisplay(JSON.parse('{\u0022status\u0022:\u0022pending\u0022,\u0022expiresAt\u0022:\u00222026-09-29T09:10:00\u0022,\u0022now\u0022:\u00222026-09-29T09:00:00\u0022,\u0022labels\u0022:{\u0022title\u0022:\u0022Sign in on your phone or computer\u0022,\u0022description\u0022:\u0022Go to the address below and enter this code, or scan the QR code.\u0022,\u0022address\u0022:\u0022Address\u0022,\u0022yourCode\u0022:\u0022Your code\u0022,\u0022scan\u0022:\u0022QR code to open the sign-in page\u0022,\u0022waiting\u0022:\u0022Waiting for approval\u0022,\u0022expiresIn\u0022:\u0022Expires in {time}\u0022,\u0022approvedDevice\u0022:\u0022Approved. Signing you in\u0022,\u0022deniedDevice\u0022:\u0022The request was denied.\u0022,\u0022expiredTitle\u0022:\u0022This code expired\u0022,\u0022refresh\u0022:\u0022Get a new code\u0022}}'))" x-modelable="status" x-bind:data-status="shown()"
+    class="flex flex-col rounded-card border border-border bg-card text-card-foreground mx-auto w-full max-w-lg gap-5 p-6 text-center sm:p-8">
+        <header class="flex flex-col gap-1.5">
+        <h1 class="text-h2 text-foreground">Sign in on your phone or computer</h1>
+        <p class="text-body-sm text-muted-foreground">Go to the address below and enter this code, or scan the QR code.</p>
+    </header>
+    <div class="flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:justify-center sm:gap-6">
+        <div class="flex flex-col items-center gap-1" data-slot="device-code-qr" x-bind:class="is('pending') ? '' : 'opacity-50'">
+            <div class="rounded-card border border-border bg-white p-1">
+                <div data-slot="qr-code" data-module-style="square" data-eye-style="square" dir="ltr"
+    x-data="nqQrCode(JSON.parse('{\u0022value\u0022:\u0022https:\\\/\\\/nasaq.app\\\/device?user_code=WDJBMJHT\u0022,\u0022moduleStyle\u0022:\u0022square\u0022,\u0022eyeStyle\u0022:\u0022square\u0022,\u0022ecc\u0022:\u0022M\u0022,\u0022margin\u0022:1,\u0022fg\u0022:\u0022black\u0022,\u0022bg\u0022:\u0022white\u0022,\u0022eyeFg\u0022:null,\u0022logo\u0022:null,\u0022size\u0022:148,\u0022pngSize\u0022:1024,\u0022downloadName\u0022:\u0022qr-code\u0022,\u0022label\u0022:\u0022QR code to open the sign-in page\u0022,\u0022labelFor\u0022:\u0022QR code for {value}\u0022}'))"
+    x-modelable="value"
+    class="inline-flex flex-col items-center gap-3">
+    <svg data-slot="qr-code-svg" role="img"
+     width="148" height="148"     x-bind:aria-label="name" x-bind:viewBox="viewBox" x-bind:shape-rendering="shape" x-bind:style="{ background: bg }"
+    style="background: white"
+    class="aspect-square rounded-control border border-border">
+    <path x-bind:d="layout.modules" x-bind:fill="fg" />
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[0].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[0].pupil" />
+    </g>
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[1].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[1].pupil" />
+    </g>
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[2].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[2].pupil" />
+    </g>
+    <image x-show="layout.logo" style="display: none" x-bind:href="layout.logo?.src" x-bind:x="layout.logo?.x" x-bind:y="layout.logo?.y"
+        x-bind:width="layout.logo?.size" x-bind:height="layout.logo?.size" preserveAspectRatio="xMidYMid meet" />
+</svg>
+<p x-show="error" style="display: none" role="alert" class="text-caption text-nq-danger-text">Could not create the file. Try again.</p>
+</div>
+            </div>
+        </div>
+        <div class="flex min-w-0 flex-1 flex-col items-stretch gap-3 text-start">
+            <div class="flex flex-col gap-1">
+                <span class="text-caption text-muted-foreground">Address</span>
+                <div data-slot="copy-field" class="contents">
+    <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><input data-slot="input-group-input"  dir="ltr"     readonly="readonly" value="https://nasaq.app/device" aria-label="Address" x-on:focus="$el.select()" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start" />
+        <div data-slot="input-group-addon" data-align="end"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-3"><span class="contents" x-data="nqCopyButton('https:\/\/nasaq.app\/device', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     aria-label="Copy" x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span></div></div>
+</div>
+            </div>
+            <div class="flex flex-col gap-1">
+                <span class="text-caption text-muted-foreground">Your code</span>
+                <div class="flex items-center justify-between gap-2 rounded-control border border-border bg-muted/50 py-2 ps-4 pe-2" x-bind:class="is('pending') ? '' : 'opacity-60'">
+                    <span data-slot="device-code" dir="ltr" class="font-mono text-h2 tracking-[0.12em] text-foreground">WDJB-MJHT</span>
+                    <span class="contents" x-data="nqCopyButton('WDJB-MJHT', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     aria-label="Copy" x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover size-control-sm p-0 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div aria-live="polite" role="status" data-slot="device-code-status" class="flex flex-col items-center gap-2">
+        <p class="inline-flex items-center gap-2 text-body-sm text-muted-foreground" x-show="is('pending')">
+            <svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>            Waiting for approval
+            <span dir="ltr" class="tabular-nums" style="display: none" x-show="expiresLabel()" x-text="'· ' + expiresLabel()"></span>
+        </p>
+        <p class="inline-flex items-center gap-2 text-body-sm text-nq-success-text" style="display: none" x-show="is('approved')">
+            <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>            Approved. Signing you in
+        </p>
+        <p class="inline-flex items-center gap-2 text-body-sm text-nq-danger-text" style="display: none" x-show="is('denied')">
+            <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M4.929 4.929 19.07 19.071"/>
+</svg>            The request was denied.
+        </p>
+        <div class="flex flex-col items-center gap-2" style="display: none" x-show="is('expired')">
+            <p class="inline-flex items-center gap-2 text-body-sm text-muted-foreground">
+                <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 2h4"/>
+  <path d="M4.6 11a8 8 0 0 0 1.7 8.7 8 8 0 0 0 8.7 1.7"/>
+  <path d="M7.4 7.4a8 8 0 0 1 10.3 1 8 8 0 0 1 .9 10.2"/>
+  <path d="m2 2 20 20"/>
+  <path d="M12 12v-2"/>
+</svg>                This code expired
+            </p>
+                            <button data-slot="button"
+     type="button"                     x-on:click="$dispatch(&#039;nq-device-refresh&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Get a new code</button>
+                    </div>
+    </div>
+</div>
+    <div data-slot="device-handoff" x-data="" data-state="failed" class="flex flex-col rounded-card border border-border bg-card text-card-foreground mx-auto w-full max-w-md items-center gap-5 p-8 text-center"><div class="flex items-center gap-3 text-muted-foreground" aria-hidden="true">
+        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/>
+  <path d="M20.054 15.987H3.946"/>
+</svg>        <span class="h-px w-8 bg-border"></span>
+        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+  <path d="M12 18h.01"/>
+</svg>    </div>
+    <div data-slot="device-handoff-mark"><svg data-slot="product-mark" viewBox="0 0 100 100" width="44" height="44"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+            <g class="dark:hidden">
+                            <rect x="0" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="80" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="20" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="60" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+        <g class="hidden dark:block">
+                            <rect x="0" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="80" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="20" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="60" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+    </svg>
+</div>
+    <h1 class="text-h2 text-foreground">Open Mahaam Desktop</h1>
+    <div role="alert" class="flex items-center gap-2 text-body-sm text-muted-foreground">
+                <p>We could not open Mahaam Desktop. Make sure it is installed, then try again.</p>
+    </div>
+    <a data-slot="button"
+     href="mahaam://auth/callback?token=abc"                     x-on:click="$dispatch(&#039;nq-device-open&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body w-full sm:w-auto">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</svg>        Try again</a>
+            <a href="/app" class="text-body-sm text-foreground underline underline-offset-4">Continue in the browser instead</a>
+                <div class="flex w-full flex-col items-center gap-1.5 border-t border-border pt-4">
+            <span class="text-caption text-muted-foreground">Or type this code in the app</span>
+            <span class="inline-flex items-center gap-1">
+                <span dir="ltr" class="font-mono text-h3 tracking-[0.12em] text-foreground">WDJB-MJHT</span>
+                <span class="contents" x-data="nqCopyButton('WDJB-MJHT', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     aria-label="Copy" x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span>
+            </span>
+        </div>
+                <button data-slot="button"
+     type="button"                     x-on:click="$dispatch(&#039;nq-device-cancel&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        Cancel sign-in</button></div>
+</div>

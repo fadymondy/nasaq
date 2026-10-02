@@ -74,9 +74,9 @@
         return $dow === '*' && $num($dom, 31) && (int) $dom >= 1 ? 'simple' : 'cron';
     })($value);
 @endphp
-<div data-slot="cron-builder" role="group" aria-label="{{ $label ?? $t::t('Schedule', 'الجدولة') }}"
+<div data-slot="{{ $attributes->get('data-slot', 'cron-builder') }}" role="group" aria-label="{{ $label ?? $t::t('Schedule', 'الجدولة') }}"
     x-data="nqCronBuilder(@js($config))" x-modelable="cron" x-id="['nq-cron']"
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card p-4') }}>
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card p-4') }}>
     @if (count($presetList))
         <div role="group" aria-label="{{ $t::t('Common schedules', 'جداول شائعة') }}" class="flex flex-wrap gap-2">
             @foreach ($presetList as $p)

@@ -8,7 +8,7 @@
     $js = fn ($v) => \Illuminate\Support\Js::from($v);
     $label = 'picked ? `'.str_replace(['`', '${', chr(92)], '', $chosen).'`.replace(`:name`, picked) : `'.str_replace(['`', '${', chr(92)], '', $trigger).'`';
 @endphp
-<div data-slot="icon-picker-root" x-data="{ picked: @js($value) }" x-modelable="picked" {{ $attributes->whereStartsWith('x-model')->merge(['class' => 'contents']) }}>
+<div data-slot="{{ $attributes->get('data-slot', 'icon-picker-root') }}" x-data="{ picked: @js($value) }" x-modelable="picked" {{ $attributes->except('data-slot')->whereStartsWith('x-model')->merge(['class' => 'contents']) }}>
     <x-nq::popover :open="$open">
         <x-nq::popover.trigger variant="secondary" size="icon" :disabled="$disabled" {{ $attributes->whereDoesntStartWith('x-model') }}
             :x-bind:aria-label="$label" :x-bind:title="'picked || `'.str_replace(['`', '${', chr(92)], '', $trigger).'`'" aria-label="{{ $trigger }}">

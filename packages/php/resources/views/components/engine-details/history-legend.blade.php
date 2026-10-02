@@ -13,7 +13,7 @@
     ];
     $glyph = ['on_protocol' => ['circle-check', 'text-nq-success-text'], 'off_protocol' => ['circle-x', 'text-nq-danger-text'], 'unevaluated' => ['circle-dashed', 'text-muted-foreground']];
 @endphp
-<ul data-slot="engine-history-legend" aria-label="{{ $t['legend'] }}" {{ $attributes->cn('m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-caption text-muted-foreground') }}>
+<ul data-slot="{{ $attributes->get('data-slot', 'engine-history-legend') }}" aria-label="{{ $t['legend'] }}" {{ $attributes->except('data-slot')->cn('m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-caption text-muted-foreground') }}>
     @foreach ($cell as $verdict => $shape)
         <li class="flex items-center gap-1.5">
             <span aria-hidden="true" class="{{ \Nasaq\Cn::merge('size-3', $shape) }}"></span>

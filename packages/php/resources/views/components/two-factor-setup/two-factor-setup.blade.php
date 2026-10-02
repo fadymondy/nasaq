@@ -76,9 +76,9 @@
     $uid = 'nq-2fa-'.substr(md5((string) $otpauthUri), 0, 6);
     $hide = fn (bool $shown) => $shown ? '' : 'display: none';
 @endphp
-<div data-slot="two-factor-setup" x-data="nqTwoFactorSetup({!! $js($init) !!})" x-modelable="enabled" x-id="['nq-2fa']"
+<div data-slot="{{ $attributes->get('data-slot', 'two-factor-setup') }}" x-data="nqTwoFactorSetup({!! $js($init) !!})" x-modelable="enabled" x-id="['nq-2fa']"
     x-bind:data-state="enabled ? 'enabled' : 'step-' + step"
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-lg') }}>
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-lg') }}>
     {{-- Enabled --}}
     <div class="contents" x-show="enabled" @unless ($enabled) style="display: none" @endunless>
         <x-nq::card.header>

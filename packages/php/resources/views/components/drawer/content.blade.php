@@ -5,9 +5,9 @@
 <template x-teleport="body">
     <div data-slot="drawer-portal">
         <div data-slot="drawer-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 motion-reduce:transition-none dark:bg-nq-bg/60"></div>
-        <div data-slot="drawer-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+        <div data-slot="{{ $attributes->get('data-slot', 'drawer-content') }}" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
             :data-dragging="dragAttr" :style="shift"
-            {{ $attributes->cn([
+            {{ $attributes->except('data-slot')->cn([
                 'fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[85dvh] w-full max-w-xl flex-col rounded-t-floating border border-b-0 border-border bg-popover text-popover-foreground shadow-floating outline-none',
                 'transition-[translate,opacity] duration-200 ease-nq data-starting-style:translate-y-8 data-starting-style:opacity-0 data-ending-style:translate-y-8 data-ending-style:opacity-0',
                 'data-dragging:transition-none motion-reduce:transition-none',

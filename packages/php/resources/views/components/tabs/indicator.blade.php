@@ -1,7 +1,7 @@
 {{-- The moving highlight behind (segmented) or under (underline) the active tab. The runtime sets --active-tab-*. --}}
 @aware(['variant' => 'segmented'])
-<span data-slot="tabs-indicator" aria-hidden="true"
-    {{ $attributes->cn([
+<span data-slot="{{ $attributes->get('data-slot', 'tabs-indicator') }}" aria-hidden="true"
+    {{ $attributes->except('data-slot')->cn([
         'absolute -z-10 transition-[left,width] duration-200 ease-nq',
         'left-[var(--active-tab-left)] w-[var(--active-tab-width)]',
         $variant === 'segmented'

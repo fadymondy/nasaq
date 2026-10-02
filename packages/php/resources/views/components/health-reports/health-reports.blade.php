@@ -38,7 +38,7 @@
     $engineIcon = ['hydration' => 'droplets', 'caffeine' => 'coffee', 'gerd' => 'bed-double', 'medication' => 'pill', 'triggers' => 'utensils', 'cycle' => 'calendar-heart', 'contraceptive' => 'calendar-clock'];
     $stack = fn (string $a, string $b, string $ca, string $cb) => [$a => ['label' => $t[$a], 'color' => $ca], $b => ['label' => $t[$b], 'color' => $cb]];
 @endphp
-<div data-slot="health-report" role="region" aria-labelledby="{{ $headingId }}" x-data="nqHealthReport(@js($active))" {{ $attributes->cn('flex flex-col gap-6') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'health-report') }}" role="region" aria-labelledby="{{ $headingId }}" x-data="nqHealthReport(@js($active))" {{ $attributes->except('data-slot')->cn('flex flex-col gap-6') }}>
     <header class="flex flex-col gap-4">
         <div class="flex flex-wrap items-start justify-between gap-3">
             <div class="flex min-w-0 flex-col gap-1">

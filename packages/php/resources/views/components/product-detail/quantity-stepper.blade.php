@@ -7,8 +7,8 @@
 @php
     $btn = 'inline-flex h-control w-11 items-center justify-center text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent [&_svg]:size-4';
 @endphp
-<div data-slot="product-quantity" x-data="nqProductQuantity(@js((int) $value), @js($max))" x-modelable="value"
-    {{ $attributes->cn('flex flex-col gap-1') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'product-quantity') }}" x-data="nqProductQuantity(@js((int) $value), @js($max))" x-modelable="value"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-1') }}>
     <div role="group" aria-label="{{ \Nasaq\Nasaq::t('Quantity', 'الكمية') }}" class="inline-flex w-fit items-center overflow-hidden rounded-control border border-border bg-card">
         <button type="button" aria-label="{{ \Nasaq\Nasaq::t('Decrease quantity', 'تقليل الكمية') }}" class="{{ $btn }}"
             x-on:click="commit(clamped - 1)" :disabled="disabled || clamped <= 1" @if ($disabled || (int) $value <= 1) disabled @endif>

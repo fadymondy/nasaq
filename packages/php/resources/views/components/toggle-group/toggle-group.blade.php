@@ -4,10 +4,10 @@
      variant: segmented (default, a tinted track, the pressed item raised) | outline (bordered, joined buttons).
      For switching panels of content use <x-nq::tabs>. Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['variant' => 'segmented', 'defaultValue' => [], 'multiple' => false, 'disabled' => false, 'orientation' => 'horizontal'])
-<div role="group" data-slot="toggle-group" data-variant="{{ $variant }}" data-orientation="{{ $orientation }}"
+<div role="group" data-slot="{{ $attributes->get('data-slot', 'toggle-group') }}" data-variant="{{ $variant }}" data-orientation="{{ $orientation }}"
     x-data="nqToggleGroup(@js(array_values((array) $defaultValue)), @js((bool) $multiple))" x-modelable="value" x-bind="root"
     @if ($multiple) data-multiple @endif
     @if ($disabled) data-disabled @endif
-    {{ $attributes->cn(['flex w-fit max-w-full', $variant === 'segmented' ? 'gap-0.5 rounded-control bg-secondary p-0.5' : 'rounded-control']) }}>
+    {{ $attributes->except('data-slot')->cn(['flex w-fit max-w-full', $variant === 'segmented' ? 'gap-0.5 rounded-control bg-secondary p-0.5' : 'rounded-control']) }}>
     {{ $slot }}
 </div>

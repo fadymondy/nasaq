@@ -4,6 +4,6 @@
      open: start open. Bind it to Livewire with wire:model or x-model (open is x-modelable).
      Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['open' => false])
-<div data-slot="alert-dialog" x-data="nqAlertDialog(@js((bool) $open))" x-modelable="open" x-id="['nq-alert-dialog']" {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'alert-dialog') }}" x-data="nqAlertDialog(@js((bool) $open))" x-modelable="open" x-id="['nq-alert-dialog']" {{ $attributes->except('data-slot')->cn('contents') }}>
     {{ $slot }}
 </div>

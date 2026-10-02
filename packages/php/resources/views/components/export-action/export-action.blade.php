@@ -60,9 +60,9 @@
     $trigger = $T('Export', 'تصدير');
     $off = $disabled || $nothing;
 @endphp
-<div data-slot="export-action"
+<div data-slot="{{ $attributes->get('data-slot', 'export-action') }}"
     x-data="nqExportAction({!! \Illuminate\Support\Js::from($cols)->toHtml() !!}, {!! \Illuminate\Support\Js::from((object) $scopesJs)->toHtml() !!}, {!! \Illuminate\Support\Js::from((object) $options)->toHtml() !!})"
-    {{ $attributes->cn('contents') }}>
+    {{ $attributes->except('data-slot')->cn('contents') }}>
     @if ($mode === 'menu')
         <x-nq::dropdown-menu>
             <x-nq::dropdown-menu.trigger :variant="$variant" :size="$size" :disabled="$off" data-slot="export-button">

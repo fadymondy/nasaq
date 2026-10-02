@@ -53,8 +53,8 @@
     ];
     $total = $posts->count();
 @endphp
-<section data-slot="blog-index" aria-labelledby="{{ $uid }}-h" x-data="nqBlogIndex(@js($config))"
-    {{ $attributes->cn('@container flex flex-col gap-8') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'blog-index') }}" aria-labelledby="{{ $uid }}-h" x-data="nqBlogIndex(@js($config))"
+    {{ $attributes->except('data-slot')->cn('@container flex flex-col gap-8') }}>
     <x-nq::section-header as="h1" :heading-id="$uid.'-h'" :title="$title ?? $t('title')" :description="$description ?? $t('description')" :action="$actions" />
 
     @if ($featured)

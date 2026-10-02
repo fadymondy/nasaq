@@ -30,7 +30,7 @@
         $sorted = nq_store_events_newest_first($events);
         $kindIcon = ['placed' => 'shopping-bag', 'payment' => 'circle-dollar-sign', 'shipment' => 'truck', 'delivery' => 'package-check', 'refund' => 'undo-2', 'cancel' => 'ban', 'note' => 'sticky-note', 'other' => 'check'];
     @endphp
-    <section data-slot="store-order-timeline" data-variant="activity" aria-label="{{ $t['activity'] }}" {{ $attributes->cn('flex flex-col gap-4') }}>
+    <section data-slot="{{ $attributes->get('data-slot', 'store-order-timeline') }}" data-variant="activity" aria-label="{{ $t['activity'] }}" {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
         @if ($addNote)
             <form class="flex flex-col gap-2" x-data="nqStoreOrderTimeline" x-on:submit.prevent="submit()">
                 <x-nq::field.textarea aria-label="{{ $t['addNote'] }}" placeholder="{{ $t['notePlaceholder'] }}" rows="2" x-model="note" />
@@ -72,7 +72,7 @@
             return $d->getTimezone()->getName() === 'Z' ? $d->setTimezone('UTC') : $d;
         };
     @endphp
-    <section data-slot="store-order-timeline" data-variant="tracking" aria-label="{{ $t['tracking'] }}" {{ $attributes->cn('flex flex-col gap-4') }}>
+    <section data-slot="{{ $attributes->get('data-slot', 'store-order-timeline') }}" data-variant="tracking" aria-label="{{ $t['tracking'] }}" {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
         @if ($model['terminal'])
             <div class="flex flex-wrap items-center gap-2 rounded-card border border-border bg-secondary px-3 py-2 text-body-sm text-foreground">
                 @if ($model['terminal']['kind'] === 'cancelled')

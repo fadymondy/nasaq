@@ -12,9 +12,9 @@
     $options = array_filter(['optimistic' => $optimistic ? null : false], fn ($v) => $v !== null);
     $hintId = 'nq-kanban-hint-'.substr(md5(json_encode($columns)), 0, 6);
 @endphp
-<div data-slot="kanban-board" role="group" aria-label="{{ $label ?? $T('Kanban board', 'لوحة كانبان') }}"
+<div data-slot="{{ $attributes->get('data-slot', 'kanban-board') }}" role="group" aria-label="{{ $label ?? $T('Kanban board', 'لوحة كانبان') }}"
     x-data="nqKanbanBoard({!! \Illuminate\Support\Js::from(array_values((array) $columns))->toHtml() !!}, {!! \Illuminate\Support\Js::from(array_values((array) $cards))->toHtml() !!}, {!! \Illuminate\Support\Js::from((object) $options)->toHtml() !!})" x-modelable="cards"
-    {{ $attributes->cn('flex w-full items-start gap-4 overflow-x-auto pb-2') }}>
+    {{ $attributes->except('data-slot')->cn('flex w-full items-start gap-4 overflow-x-auto pb-2') }}>
     <p id="{{ $hintId }}" class="sr-only">{{ $instructions ?? $T('To pick up a card, press Space or Enter. Use the arrow keys to move it within or between columns, Space or Enter to drop it, Escape to cancel.', 'لالتقاط بطاقة اضغط مسافة أو إدخال. استخدم مفاتيح الأسهم لنقلها داخل العمود أو بين الأعمدة، ومسافة أو إدخال لإفلاتها، وEscape للإلغاء.') }}</p>
     <template x-for="column in columns" :key="column.id">
         <section data-slot="kanban-column" x-bind:data-column-id="column.id" x-bind:data-over="overColumn() === column.id ? '' : null"

@@ -8,13 +8,13 @@
     $checked = (bool) $checked;
     $off = ($disabled ?? false) || $attributes->flag('disabled');
 @endphp
-<button type="button" role="switch" data-slot="switch" x-data="nqSwitch(@js($checked))" x-modelable="checked" x-bind="root"
+<button type="button" role="switch" data-slot="{{ $attributes->get('data-slot', 'switch') }}" x-data="nqSwitch(@js($checked))" x-modelable="checked" x-bind="root"
     aria-checked="{{ $checked ? 'true' : 'false' }}"
     @if ($checked) data-checked @else data-unchecked @endif
     @if ($required) aria-required="true" @endif
     @if ($invalid) data-invalid aria-invalid="true" @endif
     @if ($off) disabled data-disabled @endif
-    {{ $attributes->except('disabled')->cn([
+    {{ $attributes->except('data-slot')->except('disabled')->cn([
         'relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none',
         'transition-colors duration-150 ease-nq data-checked:bg-primary',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus',

@@ -12,8 +12,8 @@
     $s = nq_gm_rarity_style($rarity);
     $a['earnedAt'] ??= now();
 @endphp
-<div role="status" aria-live="polite" data-slot="achievement-unlock-toast" x-data="nqUnlockToast(@js((int) $duration), @js((bool) $open))" x-on:nq-open="show()"
-    {{ $attributes->cn($floating ? 'pointer-events-none fixed inset-x-4 bottom-4 z-50 sm:inset-x-auto sm:end-4 sm:w-96' : 'w-full') }}>
+<div role="status" aria-live="polite" data-slot="{{ $attributes->get('data-slot', 'achievement-unlock-toast') }}" x-data="nqUnlockToast(@js((int) $duration), @js((bool) $open))" x-on:nq-open="show()"
+    {{ $attributes->except('data-slot')->cn($floating ? 'pointer-events-none fixed inset-x-4 bottom-4 z-50 sm:inset-x-auto sm:end-4 sm:w-96' : 'w-full') }}>
     <div x-ref="card" x-show="open" data-rarity="{{ $rarity }}" style="{{ $open ? '' : 'display: none' }}"
         x-on:pointerenter="pause()" x-on:pointerleave="resume()" x-on:focusin="pause()" x-on:focusout="resume()"
         class="{{ \Nasaq\Cn::merge('pointer-events-auto relative flex items-center gap-3 rounded-floating border bg-popover p-3 text-popover-foreground shadow-floating', $s['ring']) }}">

@@ -1,0 +1,1362 @@
+<div class="flex flex-col gap-10">
+    <div data-slot="store-orders-list" x-data="nqStoreOrdersList(JSON.parse('{\u0022orders\u0022:[{\u0022id\u0022:\u0022o1\u0022,\u0022number\u0022:\u0022#1042\u0022,\u0022placedAt\u0022:\u00222026-09-27T10:15:00Z\u0022,\u0022status\u0022:\u0022paid\u0022,\u0022payment\u0022:\u0022paid\u0022,\u0022customer\u0022:{\u0022name\u0022:\u0022Mona Salem\u0022,\u0022email\u0022:\u0022mona@example.com\u0022,\u0022phone\u0022:\u0022+966 50 123 4567\u0022},\u0022lines\u0022:[{\u0022id\u0022:\u0022l1\u0022,\u0022productId\u0022:\u0022p1\u0022,\u0022variantId\u0022:\u0022v1\u0022,\u0022name\u0022:\u0022Coffee beans 250g\u0022,\u0022unitPrice\u0022:1800,\u0022quantity\u0022:2},{\u0022id\u0022:\u0022l2\u0022,\u0022productId\u0022:\u0022p2\u0022,\u0022variantId\u0022:\u0022v2\u0022,\u0022name\u0022:\u0022Paper filters\u0022,\u0022unitPrice\u0022:600,\u0022quantity\u0022:1}],\u0022shippingAddress\u0022:{\u0022name\u0022:\u0022Mona Salem\u0022,\u0022line1\u0022:\u002212 Olaya St\u0022,\u0022city\u0022:\u0022Riyadh\u0022,\u0022country\u0022:\u0022SA\u0022},\u0022totals\u0022:{\u0022subtotal\u0022:4200,\u0022discount\u0022:0,\u0022shipping\u0022:500,\u0022tax\u0022:0,\u0022total\u0022:4700,\u0022itemCount\u0022:3,\u0022savings\u0022:0}},{\u0022id\u0022:\u0022o2\u0022,\u0022number\u0022:\u0022#1041\u0022,\u0022placedAt\u0022:\u00222026-09-26T08:00:00Z\u0022,\u0022status\u0022:\u0022pending\u0022,\u0022payment\u0022:\u0022pending\u0022,\u0022customer\u0022:{\u0022name\u0022:\u0022Omar Haddad\u0022,\u0022email\u0022:\u0022omar@example.com\u0022},\u0022lines\u0022:[{\u0022id\u0022:\u0022l3\u0022,\u0022productId\u0022:\u0022p1\u0022,\u0022variantId\u0022:\u0022v1\u0022,\u0022name\u0022:\u0022Coffee beans 250g\u0022,\u0022unitPrice\u0022:1800,\u0022quantity\u0022:1}],\u0022totals\u0022:{\u0022subtotal\u0022:1800,\u0022discount\u0022:0,\u0022shipping\u0022:0,\u0022tax\u0022:0,\u0022total\u0022:1800,\u0022itemCount\u0022:1,\u0022savings\u0022:0}}],\u0022views\u0022:[],\u0022builtIn\u0022:[{\u0022id\u0022:\u0022all\u0022,\u0022name\u0022:\u0022All orders\u0022,\u0022filters\u0022:{}},{\u0022id\u0022:\u0022to-fulfil\u0022,\u0022name\u0022:\u0022To fulfil\u0022,\u0022filters\u0022:{\u0022payment\u0022:[\u0022paid\u0022,\u0022cod\u0022],\u0022fulfilment\u0022:[\u0022unfulfilled\u0022,\u0022partial\u0022]}},{\u0022id\u0022:\u0022unpaid\u0022,\u0022name\u0022:\u0022Unpaid\u0022,\u0022filters\u0022:{\u0022payment\u0022:[\u0022pending\u0022,\u0022authorized\u0022,\u0022failed\u0022]}},{\u0022id\u0022:\u0022delivered\u0022,\u0022name\u0022:\u0022Delivered\u0022,\u0022filters\u0022:{\u0022status\u0022:[\u0022delivered\u0022]}},{\u0022id\u0022:\u0022refunds\u0022,\u0022name\u0022:\u0022Refunds\u0022,\u0022filters\u0022:{\u0022payment\u0022:[\u0022refunded\u0022,\u0022partially-refunded\u0022]}}],\u0022pageSize\u0022:10,\u0022currency\u0022:\u0022USD\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022orders\u0022:\u0022Orders\u0022,\u0022views\u0022:\u0022Saved views\u0022,\u0022viewAll\u0022:\u0022All orders\u0022,\u0022viewToFulfil\u0022:\u0022To fulfil\u0022,\u0022viewUnpaid\u0022:\u0022Unpaid\u0022,\u0022viewDelivered\u0022:\u0022Delivered\u0022,\u0022viewRefunds\u0022:\u0022Refunds\u0022,\u0022deleteView\u0022:\u0022Delete view\u0022,\u0022saveView\u0022:\u0022Save view\u0022,\u0022saveViewText\u0022:\u0022Keep the current filters as a view you can open again.\u0022,\u0022viewName\u0022:\u0022View name\u0022,\u0022searchOrders\u0022:\u0022Search by order, customer or product\u0022,\u0022exportCsv\u0022:\u0022Export CSV\u0022,\u0022exportSelected\u0022:\u0022Export selected\u0022,\u0022printSlips\u0022:\u0022Print packing slips\u0022,\u0022printInvoices\u0022:\u0022Print invoices\u0022,\u0022printSlip\u0022:\u0022Print packing slip\u0022,\u0022printInvoice\u0022:\u0022Print invoice\u0022,\u0022openOrder\u0022:\u0022Open order\u0022,\u0022loadError\u0022:\u0022Orders could not be loaded.\u0022,\u0022noOrders\u0022:\u0022No orders yet\u0022,\u0022noOrdersText\u0022:\u0022Orders show up here as soon as customers check out.\u0022,\u0022noMatch\u0022:\u0022No orders match\u0022,\u0022noMatchHint\u0022:\u0022Try a different search or clear the filters.\u0022,\u0022clearFilters\u0022:\u0022Clear filters\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022save\u0022:\u0022Save\u0022,\u0022retry\u0022:\u0022Try again\u0022,\u0022back\u0022:\u0022Back\u0022,\u0022document\u0022:\u0022Document\u0022,\u0022print\u0022:\u0022Print\u0022,\u0022order\u0022:\u0022Order\u0022,\u0022date\u0022:\u0022Date\u0022,\u0022customer\u0022:\u0022Customer\u0022,\u0022payment\u0022:\u0022Payment\u0022,\u0022fulfilment\u0022:\u0022Fulfilment\u0022,\u0022status\u0022:\u0022Status\u0022,\u0022items\u0022:\u0022items\u0022,\u0022total\u0022:\u0022Total\u0022,\u0022someSkipped\u0022:\u0022{n} selected orders cannot be fulfilled and will be skipped\u0022,\u0022markFulfilled\u0022:\u0022Mark {n} fulfilled\u0022,\u0022markFulfilledOne\u0022:\u0022Mark fulfilled\u0022,\u0022backToOrders\u0022:\u0022Back to orders\u0022,\u0022placedOn\u0022:\u0022Placed on\u0022,\u0022packingSlip\u0022:\u0022Packing slip\u0022,\u0022invoice\u0022:\u0022Invoice\u0022,\u0022cancelOrder\u0022:\u0022Cancel order\u0022,\u0022cannotCancel\u0022:\u0022This order can no longer be cancelled.\u0022,\u0022refund\u0022:\u0022Refund\u0022,\u0022fulfil\u0022:\u0022Fulfil\u0022,\u0022unpaidTitle\u0022:\u0022Payment not received\u0022,\u0022unpaidText\u0022:\u0022Nothing has been paid on this order yet, so it cannot be refunded.\u0022,\u0022subtotal\u0022:\u0022Subtotal\u0022,\u0022discount\u0022:\u0022Discount\u0022,\u0022shipping\u0022:\u0022Shipping\u0022,\u0022free\u0022:\u0022Free\u0022,\u0022tax\u0022:\u0022Tax\u0022,\u0022refunded\u0022:\u0022Refunded\u0022,\u0022netPaid\u0022:\u0022Net paid\u0022,\u0022due\u0022:\u0022Due\u0022,\u0022restocked\u0022:\u0022Returned to stock\u0022,\u0022timeline\u0022:\u0022Timeline\u0022,\u0022noteAdded\u0022:\u0022Note added\u0022,\u0022shippingAddress\u0022:\u0022Shipping address\u0022,\u0022billingAddress\u0022:\u0022Billing address\u0022,\u0022noAddress\u0022:\u0022No address on this order\u0022,\u0022sameAsShipping\u0022:\u0022Same as shipping address\u0022,\u0022shipment\u0022:\u0022Shipment\u0022,\u0022trackShipment\u0022:\u0022Track shipment\u0022,\u0022noTracking\u0022:\u0022Nothing has shipped yet.\u0022,\u0022carrier\u0022:\u0022Carrier\u0022,\u0022trackingNumber\u0022:\u0022Tracking number\u0022,\u0022shippedOf\u0022:\u0022{a} of {b} shipped\u0022,\u0022shippedCount\u0022:\u0022{n} shipped\u0022,\u0022toShipCount\u0022:\u0022{n} to ship\u0022,\u0022refundedCount\u0022:\u0022{n} refunded\u0022,\u0022shippedAll\u0022:\u0022All items shipped\u0022,\u0022shippedSome\u0022:\u0022Shipment recorded\u0022,\u0022fulfilTitle\u0022:\u0022Fulfil items\u0022,\u0022fulfilText\u0022:\u0022Choose what goes in this shipment. You can ship the rest later.\u0022,\u0022quantity\u0022:\u0022Quantity\u0022,\u0022trackingOptional\u0022:\u0022Optional. The customer sees it in their account.\u0022,\u0022willCompleteOrder\u0022:\u0022This shipment completes the order.\u0022,\u0022willPartlyShip\u0022:\u0022Some items will stay unshipped.\u0022,\u0022pickUnits\u0022:\u0022Pick at least one unit to ship.\u0022,\u0022markShipped\u0022:\u0022Mark as shipped\u0022,\u0022refundIssued\u0022:\u0022Refund recorded\u0022,\u0022refundTitle\u0022:\u0022Refund order\u0022,\u0022refundLeft\u0022:\u0022Still refundable\u0022,\u0022refundBy\u0022:\u0022Refund by\u0022,\u0022byLines\u0022:\u0022Items\u0022,\u0022byAmount\u0022:\u0022Amount\u0022,\u0022byAmountText\u0022:\u0022Refund a set amount, for example a goodwill credit.\u0022,\u0022refundShipping\u0022:\u0022Refund shipping\u0022,\u0022restock\u0022:\u0022Return items to stock\u0022,\u0022restockText\u0022:\u0022Adds unshipped and returned units back to inventory.\u0022,\u0022refundAmount\u0022:\u0022Amount to refund\u0022,\u0022reason\u0022:\u0022Reason\u0022,\u0022reasonPlaceholder\u0022:\u0022Why is this being refunded? Only your team sees this.\u0022,\u0022refundTotal\u0022:\u0022Refund total\u0022,\u0022issueRefund\u0022:\u0022Issue refund\u0022,\u0022refundInvalid\u0022:\u0022Check the refund details.\u0022,\u0022shippingDone\u0022:\u0022Shipping has already been refunded.\u0022,\u0022refundUnpaid\u0022:\u0022This order has no payment to refund.\u0022,\u0022refundOver\u0022:\u0022The most you can refund is {max}.\u0022,\u0022refundLineOver\u0022:\u0022Only {max} left to refund on this line.\u0022,\u0022cancelTitle\u0022:\u0022Cancel order {n}?\u0022,\u0022cancelRefunds\u0022:\u0022The customer will be refunded in full and unshipped items go back to stock.\u0022,\u0022cancelNoRefund\u0022:\u0022Nothing was paid, so nothing will be refunded.\u0022,\u0022keepOrder\u0022:\u0022Keep order\u0022,\u0022cancelled\u0022:\u0022Order cancelled\u0022,\u0022taxId\u0022:\u0022Tax number\u0022,\u0022shipTo\u0022:\u0022Ship to\u0022,\u0022billTo\u0022:\u0022Bill to\u0022,\u0022item\u0022:\u0022Item\u0022,\u0022unitPrice\u0022:\u0022Unit price\u0022,\u0022toPack\u0022:\u0022To pack\u0022,\u0022packed\u0022:\u0022Packed\u0022,\u0022slipNote\u0022:\u0022Check each item as you pack it. Prices are not shown on this slip.\u0022,\u0022documentsCount\u0022:\u0022{n} documents\u0022,\u0022documentsCountOne\u0022:\u00221 document\u0022,\u0022abandoned\u0022:\u0022Abandoned carts\u0022,\u0022statAbandoned\u0022:\u0022Abandoned carts\u0022,\u0022statAtRisk\u0022:\u0022Value at risk\u0022,\u0022statRecovered\u0022:\u0022Recovered\u0022,\u0022statRate\u0022:\u0022Recovery rate\u0022,\u0022noCarts\u0022:\u0022No abandoned carts\u0022,\u0022noCartsText\u0022:\u0022Carts left behind by shoppers will appear here.\u0022,\u0022loadErrorCarts\u0022:\u0022Abandoned carts could not be loaded.\u0022,\u0022guest\u0022:\u0022Guest\u0022,\u0022sendRecovery\u0022:\u0022Send recovery email\u0022,\u0022recoveryTitle\u0022:\u0022Send a recovery email\u0022,\u0022recoveryText\u0022:\u0022A reminder with a link back to the cart goes to\u0022,\u0022discountPercent\u0022:\u0022Discount offered (%)\u0022,\u0022discountHint\u0022:\u0022Up to {max}%. Leave at 0 to offer none.\u0022,\u0022recoveryMessage\u0022:\u0022Personal message\u0022,\u0022recoveryPlaceholder\u0022:\u0022Optional. Added above the cart in the email.\u0022,\u0022blockRecovered\u0022:\u0022Already recovered\u0022,\u0022blockLost\u0022:\u0022Too old to recover\u0022,\u0022blockNoEmail\u0022:\u0022No email address\u0022,\u0022blockLimit\u0022:\u0022Email limit reached\u0022,\u0022blockTooSoon\u0022:\u0022Wait {min} more min\u0022,\u0022blockCooldown\u0022:\u0022Next email in {h} h\u0022,\u0022idleMinutes\u0022:\u0022{n} min idle\u0022,\u0022idleHours\u0022:\u0022{n} h idle\u0022,\u0022idleDays\u0022:\u0022{n} days idle\u0022,\u0022emailsSent\u0022:\u0022{n} emails sent\u0022,\u0022emailsSentOne\u0022:\u00221 email sent\u0022,\u0022stage.cart\u0022:\u0022Left the cart\u0022,\u0022stage.checkout\u0022:\u0022Left checkout\u0022,\u0022stage.payment\u0022:\u0022Left at payment\u0022,\u0022recovery.new\u0022:\u0022Not emailed\u0022,\u0022recovery.emailed\u0022:\u0022Emailed\u0022,\u0022recovery.recovered\u0022:\u0022Recovered\u0022,\u0022recovery.lost\u0022:\u0022Lost\u0022,\u0022recovery.no-email\u0022:\u0022No email\u0022},\u0022labels\u0022:{\u0022status\u0022:{\u0022pending\u0022:{\u0022label\u0022:\u0022Pending\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022paid\u0022:{\u0022label\u0022:\u0022Paid\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022processing\u0022:{\u0022label\u0022:\u0022Processing\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022partially-fulfilled\u0022:{\u0022label\u0022:\u0022Partly shipped\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022fulfilled\u0022:{\u0022label\u0022:\u0022Fulfilled\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022shipped\u0022:{\u0022label\u0022:\u0022Shipped\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022out-for-delivery\u0022:{\u0022label\u0022:\u0022Out for delivery\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022delivered\u0022:{\u0022label\u0022:\u0022Delivered\u0022,\u0022variant\u0022:\u0022success\u0022},\u0022cancelled\u0022:{\u0022label\u0022:\u0022Cancelled\u0022,\u0022variant\u0022:\u0022neutral\u0022},\u0022refunded\u0022:{\u0022label\u0022:\u0022Refunded\u0022,\u0022variant\u0022:\u0022neutral\u0022},\u0022partially-refunded\u0022:{\u0022label\u0022:\u0022Partly refunded\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022returned\u0022:{\u0022label\u0022:\u0022Returned\u0022,\u0022variant\u0022:\u0022neutral\u0022}},\u0022payment\u0022:{\u0022pending\u0022:{\u0022label\u0022:\u0022Unpaid\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022authorized\u0022:{\u0022label\u0022:\u0022Authorised\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022paid\u0022:{\u0022label\u0022:\u0022Paid\u0022,\u0022variant\u0022:\u0022success\u0022},\u0022partially-refunded\u0022:{\u0022label\u0022:\u0022Partly refunded\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022refunded\u0022:{\u0022label\u0022:\u0022Refunded\u0022,\u0022variant\u0022:\u0022neutral\u0022},\u0022failed\u0022:{\u0022label\u0022:\u0022Failed\u0022,\u0022variant\u0022:\u0022danger\u0022},\u0022cod\u0022:{\u0022label\u0022:\u0022Cash on delivery\u0022,\u0022variant\u0022:\u0022info\u0022}},\u0022fulfilment\u0022:{\u0022unfulfilled\u0022:{\u0022label\u0022:\u0022Unfulfilled\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022partial\u0022:{\u0022label\u0022:\u0022Partly fulfilled\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022fulfilled\u0022:{\u0022label\u0022:\u0022Fulfilled\u0022,\u0022variant\u0022:\u0022success\u0022},\u0022none\u0022:{\u0022label\u0022:\u0022Nothing to ship\u0022,\u0022variant\u0022:\u0022neutral\u0022}}},\u0022now\u0022:\u00222026-09-29T09:00:00Z\u0022,\u0022loading\u0022:false,\u0022error\u0022:false}'))" class="flex min-w-0 flex-col gap-3">
+    <div role="group" aria-label="Saved views" class="flex flex-wrap items-center gap-1.5">
+        <template x-for="view in allViews" x-bind:key="view.id">
+            <span class="inline-flex items-center rounded-control border" x-bind:class="current && current.id === view.id ? 'border-primary bg-nq-selected' : 'border-border bg-card'">
+                <button type="button" x-bind:aria-pressed="current && current.id === view.id ? 'true' : 'false'" x-on:click="pick(view)"
+                    class="inline-flex h-control-sm items-center gap-1.5 rounded-control px-2.5 text-label text-foreground outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                    <span x-text="view.name"></span>
+                    <span class="text-caption text-muted-foreground tabular-nums" x-text="num(counts[view.id] ?? 0)"></span>
+                </button>
+                <button type="button" x-show="isSaved(view.id)" x-on:click="removeSaved(view)" x-bind:aria-label="'Delete view: ' + view.name"
+                    class="me-1 inline-flex size-5 items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                </button>
+            </span>
+        </template>
+        <button data-slot="button"
+     type="button"                     x-show="isFiltered ? ! current : false" x-on:click="openSave()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>            Save view</button>
+    </div>
+    <div data-slot="data-table-toolbar" class="flex flex-wrap items-center gap-2">
+        <div class="relative w-full min-w-40 sm:w-64">
+            <svg aria-hidden="true" class="pointer-events-none absolute inset-y-0 start-2.5 my-auto size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>            <input data-slot="input" type="search"
+                    aria-label="Search by order, customer or product" placeholder="Search by order, customer or product" x-model="query" x-on:keydown.escape="query = &#039;&#039;" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm ps-8">
+        </div>
+                    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" data-facet="status" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M8 12h8"/>
+  <path d="M12 8v8"/>
+</svg>                    Status
+                    <span class="text-caption text-muted-foreground tabular-nums" x-show="Object.keys(filters.status ?? []).length > 0" x-text="(filters.status ?? []).length"></span></button>
+                <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;pending&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Pending
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;paid&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Paid
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;processing&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Processing
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;partially-fulfilled&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Partly shipped
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;fulfilled&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Fulfilled
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;shipped&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Shipped
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;out-for-delivery&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Out for delivery
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;delivered&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Delivered
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;cancelled&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Cancelled
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;refunded&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Refunded
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;partially-refunded&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Partly refunded
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.status[&#039;returned&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Returned
+</div></div>
+</template></div>
+                    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" data-facet="payment" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M8 12h8"/>
+  <path d="M12 8v8"/>
+</svg>                    Payment
+                    <span class="text-caption text-muted-foreground tabular-nums" x-show="Object.keys(filters.payment ?? []).length > 0" x-text="(filters.payment ?? []).length"></span></button>
+                <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.payment[&#039;pending&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Unpaid
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.payment[&#039;authorized&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Authorised
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.payment[&#039;paid&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Paid
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.payment[&#039;partially-refunded&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Partly refunded
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.payment[&#039;refunded&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Refunded
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.payment[&#039;failed&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Failed
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.payment[&#039;cod&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Cash on delivery
+</div></div>
+</template></div>
+                    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" data-facet="fulfilment" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M8 12h8"/>
+  <path d="M12 8v8"/>
+</svg>                    Fulfilment
+                    <span class="text-caption text-muted-foreground tabular-nums" x-show="Object.keys(filters.fulfilment ?? []).length > 0" x-text="(filters.fulfilment ?? []).length"></span></button>
+                <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.fulfilment[&#039;unfulfilled&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Unfulfilled
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.fulfilment[&#039;partial&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Partly fulfilled
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.fulfilment[&#039;fulfilled&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Fulfilled
+</div>
+                                            <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet.fulfilment[&#039;none&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    Nothing to ship
+</div></div>
+</template></div>
+                <button data-slot="button"
+     type="button"                     x-bind:disabled="filtered.length === 0" x-on:click="exportOrders(filtered)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 ms-auto">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>            Export CSV</button>
+    </div>
+    <div data-slot="data-table-bulk-actions" x-show="selected.length > 0" class="flex flex-wrap items-center gap-2 rounded-card border border-border bg-secondary px-3 py-2">
+        <button data-slot="button"
+     type="button"                     x-bind:disabled="eligible.length === 0" x-bind:title="skippedHint" x-on:click="markFulfilled(eligible)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22V12"/>
+  <path d="m16 17 2 2 4-4"/>
+  <path d="M21 11.127V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.32-.753"/>
+  <path d="M3.29 7 12 12l8.71-5"/>
+  <path d="m7.5 4.27 8.997 5.148"/>
+</svg>            <span x-text="markLabel"></span></button>
+        <button data-slot="button"
+     type="button"                     x-on:click="print(selected, &#039;packing-slip&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
+  <path d="M15 18H9"/>
+  <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
+  <circle cx="17" cy="18" r="2"/>
+  <circle cx="7" cy="18" r="2"/>
+</svg>            Print packing slips</button>
+        <button data-slot="button"
+     type="button"                     x-on:click="print(selected, &#039;invoice&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/>
+  <rect x="6" y="14" width="12" height="8" rx="1"/>
+</svg>            Print invoices</button>
+        <button data-slot="button"
+     type="button"                     x-on:click="exportOrders(selected)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>            Export selected</button>
+    </div>
+    <template x-if="error">
+        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">Orders could not be loaded.</p>
+            </div>
+    </div>
+    </template>
+    <div x-show="loading ? ! error : false" class="flex flex-col gap-2">
+        <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-10"></div>
+<div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-10"></div>
+<div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-10"></div>
+    </div>
+    <template x-if="loading ? false : (error ? false : orders.length === 0)">
+        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22v-9"/>
+  <path d="M15.17 2.21a1.67 1.67 0 0 1 1.63 0L21 4.57a1.93 1.93 0 0 1 0 3.36L8.82 14.79a1.655 1.655 0 0 1-1.64 0L3 12.43a1.93 1.93 0 0 1 0-3.36z"/>
+  <path d="M20 13v3.87a2.06 2.06 0 0 1-1.11 1.83l-6 3.08a1.93 1.93 0 0 1-1.78 0l-6-3.08A2.06 2.06 0 0 1 4 16.87V13"/>
+  <path d="M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No orders yet</p>
+                    <p class="text-body-sm text-muted-foreground">Orders show up here as soon as customers check out.</p>
+            </div>
+    </div>
+    </template>
+    <template x-if="loading ? false : (error ? false : (orders.length > 0 ? filtered.length === 0 : false))">
+        <div class="flex flex-col items-center gap-3">
+            <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m13.5 8.5-5 5"/>
+  <path d="m8.5 8.5 5 5"/>
+  <circle cx="11" cy="11" r="8"/>
+  <path d="m21 21-4.3-4.3"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No orders match</p>
+                    <p class="text-body-sm text-muted-foreground">Try a different search or clear the filters.</p>
+            </div>
+    </div>
+            <button data-slot="button"
+     type="button"                     x-on:click="clear()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Clear filters</button>
+        </div>
+    </template>
+    <div x-show="loading ? false : (error ? false : filtered.length > 0)" data-slot="data-table" class="relative w-full overflow-x-auto rounded-card border border-border bg-card">
+        <div role="table" aria-label="Orders" class="table w-full min-w-[48rem] border-collapse">
+            <div role="rowgroup" class="table-header-group border-b border-border">
+                <div role="row" class="table-row">
+                    <div role="columnheader" class="table-cell w-10 px-3">
+                        <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 aria-label="Orders" x-on:click="toggleAll(! allOnPage)" x-bind:checked="allOnPage" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+                    </div>
+                                            <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground" x-bind:aria-sort="ariaSort('number')">
+                            <button type="button" class="inline-flex items-center gap-1 font-medium hover:text-foreground" x-on:click="sortBy('number')">Order</button>
+                        </div>
+                                            <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground" x-bind:aria-sort="ariaSort('date')">
+                            <button type="button" class="inline-flex items-center gap-1 font-medium hover:text-foreground" x-on:click="sortBy('date')">Date</button>
+                        </div>
+                                            <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground" x-bind:aria-sort="ariaSort('customer')">
+                            <button type="button" class="inline-flex items-center gap-1 font-medium hover:text-foreground" x-on:click="sortBy('customer')">Customer</button>
+                        </div>
+                                        <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Payment</div>
+                    <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Fulfilment</div>
+                    <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Status</div>
+                    <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground text-end" x-bind:aria-sort="ariaSort('total')">
+                        <button type="button" class="inline-flex items-center gap-1 font-medium hover:text-foreground" x-on:click="sortBy('total')">Total</button>
+                    </div>
+                    <div role="columnheader" class="table-cell w-10"><span class="sr-only">Open order</span></div>
+                </div>
+            </div>
+            <div role="rowgroup" class="table-row-group divide-y divide-border">
+                <template x-for="o in rows" x-bind:key="o.id">
+                    <div role="row" data-slot="store-order-row" x-data="nqContextMenu()" x-bind="trigger" x-bind:data-selected="sel[o.id] ? '' : null"
+                        x-on:click="open(o)" class="table-row cursor-pointer hover:bg-nq-hover data-[selected]:bg-nq-selected">
+                        <div role="cell" class="table-cell px-3" x-on:click.stop>
+                            <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="sel[o.id]" x-bind:aria-label="o.number" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+                        </div>
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground font-medium" x-text="o.number"></div>
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground text-muted-foreground" x-text="date(o.placedAt)"></div>
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground">
+                            <span class="flex min-w-0 flex-col">
+                                <span class="truncate" x-text="o.customer.name"></span>
+                                <span dir="ltr" class="truncate text-start text-caption text-muted-foreground" x-show="o.customer.email" x-text="o.customer.email"></span>
+                            </span>
+                        </div>
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground"><span data-slot="badge" x-bind:class="chipClass(paymentChip(o.payment).variant)" x-text="paymentChip(o.payment).label"
+    class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3"></span>
+</div>
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground"><span data-slot="badge" x-bind:class="chipClass(fulfilmentChip(o).variant)" x-text="fulfilmentChip(o).label"
+    class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3"></span>
+</div>
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground"><span data-slot="badge" x-bind:class="chipClass(statusChip(o.status).variant)" x-text="statusChip(o.status).label"
+    class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3"></span>
+</div>
+                        <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-body-sm text-foreground text-end tabular-nums" x-text="money(o.totals.total)"></div>
+                        <div role="cell" class="table-cell px-1" x-on:click.stop>
+                            <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="row-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" x-bind:aria-label="&#039;Open order, &#039; + o.number" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground data-popup-open:text-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-48"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="open(o)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+  <path d="M10 9H8"/>
+  <path d="M16 13H8"/>
+  <path d="M16 17H8"/>
+</svg>Open order</div>
+                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-show="canFulfil(o)" x-on:click="markFulfilled([o])" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22V12"/>
+  <path d="m16 17 2 2 4-4"/>
+  <path d="M21 11.127V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.32-.753"/>
+  <path d="M3.29 7 12 12l8.71-5"/>
+  <path d="m7.5 4.27 8.997 5.148"/>
+</svg>Mark fulfilled</div>
+                                    <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="print([o], &#039;packing-slip&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
+  <path d="M15 18H9"/>
+  <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
+  <circle cx="17" cy="18" r="2"/>
+  <circle cx="7" cy="18" r="2"/>
+</svg>Print packing slip</div>
+                                    <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="print([o], &#039;invoice&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/>
+  <rect x="6" y="14" width="12" height="8" rx="1"/>
+</svg>Print invoice</div></div>
+</template></div>
+                        </div>
+                        <template x-teleport="body">
+                            <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+                                class="fixed z-50 min-w-48 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="open(o)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+  <path d="M10 9H8"/>
+  <path d="M16 13H8"/>
+  <path d="M16 17H8"/>
+</svg>Open order</div>
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-show="canFulfil(o)" x-on:click="markFulfilled([o])" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22V12"/>
+  <path d="m16 17 2 2 4-4"/>
+  <path d="M21 11.127V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.32-.753"/>
+  <path d="M3.29 7 12 12l8.71-5"/>
+  <path d="m7.5 4.27 8.997 5.148"/>
+</svg>Mark fulfilled</div>
+                                <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="print([o], &#039;packing-slip&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
+  <path d="M15 18H9"/>
+  <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
+  <circle cx="17" cy="18" r="2"/>
+  <circle cx="7" cy="18" r="2"/>
+</svg>Print packing slip</div>
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="print([o], &#039;invoice&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/>
+  <rect x="6" y="14" width="12" height="8" rx="1"/>
+</svg>Print invoice</div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+    <div x-show="filtered.length > pageSize" class="flex items-center justify-between gap-2 text-body-sm text-muted-foreground">
+        <span class="tabular-nums" x-text="num(Math.min(page, pages)) + ' / ' + num(pages)"></span>
+        <div class="flex gap-2">
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="page &lt;= 1" x-on:click="page = page - 1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg><span class="sr-only">Previous page</span></button>
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="page &gt;= pages" x-on:click="page = page + 1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg><span class="sr-only">Next page</span></button>
+        </div>
+    </div>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="saving" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="store-save-view" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-w-sm">
+            <form class="flex flex-col gap-4" x-on:submit.prevent="saveView()">
+                <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Save view</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Keep the current filters as a view you can open again.</p></div>
+                <input data-slot="input" type="text"
+                    aria-label="View name" placeholder="View name" x-model="viewName" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="saving = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="submit"                     x-bind:disabled="viewName.trim() === &#039;&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Save</button></div>
+            </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</div>
+    <div data-slot="store-order-detail" x-data="nqStoreOrderDetail(JSON.parse('{\u0022order\u0022:{\u0022id\u0022:\u0022o1\u0022,\u0022number\u0022:\u0022#1042\u0022,\u0022placedAt\u0022:\u00222026-09-27T10:15:00Z\u0022,\u0022status\u0022:\u0022paid\u0022,\u0022payment\u0022:\u0022paid\u0022,\u0022customer\u0022:{\u0022name\u0022:\u0022Mona Salem\u0022,\u0022email\u0022:\u0022mona@example.com\u0022,\u0022phone\u0022:\u0022+966 50 123 4567\u0022},\u0022lines\u0022:[{\u0022id\u0022:\u0022l1\u0022,\u0022productId\u0022:\u0022p1\u0022,\u0022variantId\u0022:\u0022v1\u0022,\u0022name\u0022:\u0022Coffee beans 250g\u0022,\u0022unitPrice\u0022:1800,\u0022quantity\u0022:2},{\u0022id\u0022:\u0022l2\u0022,\u0022productId\u0022:\u0022p2\u0022,\u0022variantId\u0022:\u0022v2\u0022,\u0022name\u0022:\u0022Paper filters\u0022,\u0022unitPrice\u0022:600,\u0022quantity\u0022:1}],\u0022shippingAddress\u0022:{\u0022name\u0022:\u0022Mona Salem\u0022,\u0022line1\u0022:\u002212 Olaya St\u0022,\u0022city\u0022:\u0022Riyadh\u0022,\u0022country\u0022:\u0022SA\u0022},\u0022totals\u0022:{\u0022subtotal\u0022:4200,\u0022discount\u0022:0,\u0022shipping\u0022:500,\u0022tax\u0022:0,\u0022total\u0022:4700,\u0022itemCount\u0022:3,\u0022savings\u0022:0}},\u0022refunds\u0022:[],\u0022currency\u0022:\u0022USD\u0022,\u0022actor\u0022:\u0022Mona\u0022,\u0022carriers\u0022:[\u0022Bosta\u0022,\u0022Aramex\u0022,\u0022DHL\u0022,\u0022Egypt Post\u0022],\u0022trackingTemplate\u0022:null,\u0022canBack\u0022:true,\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022orders\u0022:\u0022Orders\u0022,\u0022views\u0022:\u0022Saved views\u0022,\u0022viewAll\u0022:\u0022All orders\u0022,\u0022viewToFulfil\u0022:\u0022To fulfil\u0022,\u0022viewUnpaid\u0022:\u0022Unpaid\u0022,\u0022viewDelivered\u0022:\u0022Delivered\u0022,\u0022viewRefunds\u0022:\u0022Refunds\u0022,\u0022deleteView\u0022:\u0022Delete view\u0022,\u0022saveView\u0022:\u0022Save view\u0022,\u0022saveViewText\u0022:\u0022Keep the current filters as a view you can open again.\u0022,\u0022viewName\u0022:\u0022View name\u0022,\u0022searchOrders\u0022:\u0022Search by order, customer or product\u0022,\u0022exportCsv\u0022:\u0022Export CSV\u0022,\u0022exportSelected\u0022:\u0022Export selected\u0022,\u0022printSlips\u0022:\u0022Print packing slips\u0022,\u0022printInvoices\u0022:\u0022Print invoices\u0022,\u0022printSlip\u0022:\u0022Print packing slip\u0022,\u0022printInvoice\u0022:\u0022Print invoice\u0022,\u0022openOrder\u0022:\u0022Open order\u0022,\u0022loadError\u0022:\u0022Orders could not be loaded.\u0022,\u0022noOrders\u0022:\u0022No orders yet\u0022,\u0022noOrdersText\u0022:\u0022Orders show up here as soon as customers check out.\u0022,\u0022noMatch\u0022:\u0022No orders match\u0022,\u0022noMatchHint\u0022:\u0022Try a different search or clear the filters.\u0022,\u0022clearFilters\u0022:\u0022Clear filters\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022save\u0022:\u0022Save\u0022,\u0022retry\u0022:\u0022Try again\u0022,\u0022back\u0022:\u0022Back\u0022,\u0022document\u0022:\u0022Document\u0022,\u0022print\u0022:\u0022Print\u0022,\u0022order\u0022:\u0022Order\u0022,\u0022date\u0022:\u0022Date\u0022,\u0022customer\u0022:\u0022Customer\u0022,\u0022payment\u0022:\u0022Payment\u0022,\u0022fulfilment\u0022:\u0022Fulfilment\u0022,\u0022status\u0022:\u0022Status\u0022,\u0022items\u0022:\u0022items\u0022,\u0022total\u0022:\u0022Total\u0022,\u0022someSkipped\u0022:\u0022{n} selected orders cannot be fulfilled and will be skipped\u0022,\u0022markFulfilled\u0022:\u0022Mark {n} fulfilled\u0022,\u0022markFulfilledOne\u0022:\u0022Mark fulfilled\u0022,\u0022backToOrders\u0022:\u0022Back to orders\u0022,\u0022placedOn\u0022:\u0022Placed on\u0022,\u0022packingSlip\u0022:\u0022Packing slip\u0022,\u0022invoice\u0022:\u0022Invoice\u0022,\u0022cancelOrder\u0022:\u0022Cancel order\u0022,\u0022cannotCancel\u0022:\u0022This order can no longer be cancelled.\u0022,\u0022refund\u0022:\u0022Refund\u0022,\u0022fulfil\u0022:\u0022Fulfil\u0022,\u0022unpaidTitle\u0022:\u0022Payment not received\u0022,\u0022unpaidText\u0022:\u0022Nothing has been paid on this order yet, so it cannot be refunded.\u0022,\u0022subtotal\u0022:\u0022Subtotal\u0022,\u0022discount\u0022:\u0022Discount\u0022,\u0022shipping\u0022:\u0022Shipping\u0022,\u0022free\u0022:\u0022Free\u0022,\u0022tax\u0022:\u0022Tax\u0022,\u0022refunded\u0022:\u0022Refunded\u0022,\u0022netPaid\u0022:\u0022Net paid\u0022,\u0022due\u0022:\u0022Due\u0022,\u0022restocked\u0022:\u0022Returned to stock\u0022,\u0022timeline\u0022:\u0022Timeline\u0022,\u0022noteAdded\u0022:\u0022Note added\u0022,\u0022shippingAddress\u0022:\u0022Shipping address\u0022,\u0022billingAddress\u0022:\u0022Billing address\u0022,\u0022noAddress\u0022:\u0022No address on this order\u0022,\u0022sameAsShipping\u0022:\u0022Same as shipping address\u0022,\u0022shipment\u0022:\u0022Shipment\u0022,\u0022trackShipment\u0022:\u0022Track shipment\u0022,\u0022noTracking\u0022:\u0022Nothing has shipped yet.\u0022,\u0022carrier\u0022:\u0022Carrier\u0022,\u0022trackingNumber\u0022:\u0022Tracking number\u0022,\u0022shippedOf\u0022:\u0022{a} of {b} shipped\u0022,\u0022shippedCount\u0022:\u0022{n} shipped\u0022,\u0022toShipCount\u0022:\u0022{n} to ship\u0022,\u0022refundedCount\u0022:\u0022{n} refunded\u0022,\u0022shippedAll\u0022:\u0022All items shipped\u0022,\u0022shippedSome\u0022:\u0022Shipment recorded\u0022,\u0022fulfilTitle\u0022:\u0022Fulfil items\u0022,\u0022fulfilText\u0022:\u0022Choose what goes in this shipment. You can ship the rest later.\u0022,\u0022quantity\u0022:\u0022Quantity\u0022,\u0022trackingOptional\u0022:\u0022Optional. The customer sees it in their account.\u0022,\u0022willCompleteOrder\u0022:\u0022This shipment completes the order.\u0022,\u0022willPartlyShip\u0022:\u0022Some items will stay unshipped.\u0022,\u0022pickUnits\u0022:\u0022Pick at least one unit to ship.\u0022,\u0022markShipped\u0022:\u0022Mark as shipped\u0022,\u0022refundIssued\u0022:\u0022Refund recorded\u0022,\u0022refundTitle\u0022:\u0022Refund order\u0022,\u0022refundLeft\u0022:\u0022Still refundable\u0022,\u0022refundBy\u0022:\u0022Refund by\u0022,\u0022byLines\u0022:\u0022Items\u0022,\u0022byAmount\u0022:\u0022Amount\u0022,\u0022byAmountText\u0022:\u0022Refund a set amount, for example a goodwill credit.\u0022,\u0022refundShipping\u0022:\u0022Refund shipping\u0022,\u0022restock\u0022:\u0022Return items to stock\u0022,\u0022restockText\u0022:\u0022Adds unshipped and returned units back to inventory.\u0022,\u0022refundAmount\u0022:\u0022Amount to refund\u0022,\u0022reason\u0022:\u0022Reason\u0022,\u0022reasonPlaceholder\u0022:\u0022Why is this being refunded? Only your team sees this.\u0022,\u0022refundTotal\u0022:\u0022Refund total\u0022,\u0022issueRefund\u0022:\u0022Issue refund\u0022,\u0022refundInvalid\u0022:\u0022Check the refund details.\u0022,\u0022shippingDone\u0022:\u0022Shipping has already been refunded.\u0022,\u0022refundUnpaid\u0022:\u0022This order has no payment to refund.\u0022,\u0022refundOver\u0022:\u0022The most you can refund is {max}.\u0022,\u0022refundLineOver\u0022:\u0022Only {max} left to refund on this line.\u0022,\u0022cancelTitle\u0022:\u0022Cancel order {n}?\u0022,\u0022cancelRefunds\u0022:\u0022The customer will be refunded in full and unshipped items go back to stock.\u0022,\u0022cancelNoRefund\u0022:\u0022Nothing was paid, so nothing will be refunded.\u0022,\u0022keepOrder\u0022:\u0022Keep order\u0022,\u0022cancelled\u0022:\u0022Order cancelled\u0022,\u0022taxId\u0022:\u0022Tax number\u0022,\u0022shipTo\u0022:\u0022Ship to\u0022,\u0022billTo\u0022:\u0022Bill to\u0022,\u0022item\u0022:\u0022Item\u0022,\u0022unitPrice\u0022:\u0022Unit price\u0022,\u0022toPack\u0022:\u0022To pack\u0022,\u0022packed\u0022:\u0022Packed\u0022,\u0022slipNote\u0022:\u0022Check each item as you pack it. Prices are not shown on this slip.\u0022,\u0022documentsCount\u0022:\u0022{n} documents\u0022,\u0022documentsCountOne\u0022:\u00221 document\u0022,\u0022abandoned\u0022:\u0022Abandoned carts\u0022,\u0022statAbandoned\u0022:\u0022Abandoned carts\u0022,\u0022statAtRisk\u0022:\u0022Value at risk\u0022,\u0022statRecovered\u0022:\u0022Recovered\u0022,\u0022statRate\u0022:\u0022Recovery rate\u0022,\u0022noCarts\u0022:\u0022No abandoned carts\u0022,\u0022noCartsText\u0022:\u0022Carts left behind by shoppers will appear here.\u0022,\u0022loadErrorCarts\u0022:\u0022Abandoned carts could not be loaded.\u0022,\u0022guest\u0022:\u0022Guest\u0022,\u0022sendRecovery\u0022:\u0022Send recovery email\u0022,\u0022recoveryTitle\u0022:\u0022Send a recovery email\u0022,\u0022recoveryText\u0022:\u0022A reminder with a link back to the cart goes to\u0022,\u0022discountPercent\u0022:\u0022Discount offered (%)\u0022,\u0022discountHint\u0022:\u0022Up to {max}%. Leave at 0 to offer none.\u0022,\u0022recoveryMessage\u0022:\u0022Personal message\u0022,\u0022recoveryPlaceholder\u0022:\u0022Optional. Added above the cart in the email.\u0022,\u0022blockRecovered\u0022:\u0022Already recovered\u0022,\u0022blockLost\u0022:\u0022Too old to recover\u0022,\u0022blockNoEmail\u0022:\u0022No email address\u0022,\u0022blockLimit\u0022:\u0022Email limit reached\u0022,\u0022blockTooSoon\u0022:\u0022Wait {min} more min\u0022,\u0022blockCooldown\u0022:\u0022Next email in {h} h\u0022,\u0022idleMinutes\u0022:\u0022{n} min idle\u0022,\u0022idleHours\u0022:\u0022{n} h idle\u0022,\u0022idleDays\u0022:\u0022{n} days idle\u0022,\u0022emailsSent\u0022:\u0022{n} emails sent\u0022,\u0022emailsSentOne\u0022:\u00221 email sent\u0022,\u0022stage.cart\u0022:\u0022Left the cart\u0022,\u0022stage.checkout\u0022:\u0022Left checkout\u0022,\u0022stage.payment\u0022:\u0022Left at payment\u0022,\u0022recovery.new\u0022:\u0022Not emailed\u0022,\u0022recovery.emailed\u0022:\u0022Emailed\u0022,\u0022recovery.recovered\u0022:\u0022Recovered\u0022,\u0022recovery.lost\u0022:\u0022Lost\u0022,\u0022recovery.no-email\u0022:\u0022No email\u0022},\u0022labels\u0022:{\u0022status\u0022:{\u0022pending\u0022:{\u0022label\u0022:\u0022Pending\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022paid\u0022:{\u0022label\u0022:\u0022Paid\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022processing\u0022:{\u0022label\u0022:\u0022Processing\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022partially-fulfilled\u0022:{\u0022label\u0022:\u0022Partly shipped\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022fulfilled\u0022:{\u0022label\u0022:\u0022Fulfilled\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022shipped\u0022:{\u0022label\u0022:\u0022Shipped\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022out-for-delivery\u0022:{\u0022label\u0022:\u0022Out for delivery\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022delivered\u0022:{\u0022label\u0022:\u0022Delivered\u0022,\u0022variant\u0022:\u0022success\u0022},\u0022cancelled\u0022:{\u0022label\u0022:\u0022Cancelled\u0022,\u0022variant\u0022:\u0022neutral\u0022},\u0022refunded\u0022:{\u0022label\u0022:\u0022Refunded\u0022,\u0022variant\u0022:\u0022neutral\u0022},\u0022partially-refunded\u0022:{\u0022label\u0022:\u0022Partly refunded\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022returned\u0022:{\u0022label\u0022:\u0022Returned\u0022,\u0022variant\u0022:\u0022neutral\u0022}},\u0022payment\u0022:{\u0022pending\u0022:{\u0022label\u0022:\u0022Unpaid\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022authorized\u0022:{\u0022label\u0022:\u0022Authorised\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022paid\u0022:{\u0022label\u0022:\u0022Paid\u0022,\u0022variant\u0022:\u0022success\u0022},\u0022partially-refunded\u0022:{\u0022label\u0022:\u0022Partly refunded\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022refunded\u0022:{\u0022label\u0022:\u0022Refunded\u0022,\u0022variant\u0022:\u0022neutral\u0022},\u0022failed\u0022:{\u0022label\u0022:\u0022Failed\u0022,\u0022variant\u0022:\u0022danger\u0022},\u0022cod\u0022:{\u0022label\u0022:\u0022Cash on delivery\u0022,\u0022variant\u0022:\u0022info\u0022}},\u0022fulfilment\u0022:{\u0022unfulfilled\u0022:{\u0022label\u0022:\u0022Unfulfilled\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022partial\u0022:{\u0022label\u0022:\u0022Partly fulfilled\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022fulfilled\u0022:{\u0022label\u0022:\u0022Fulfilled\u0022,\u0022variant\u0022:\u0022success\u0022},\u0022none\u0022:{\u0022label\u0022:\u0022Nothing to ship\u0022,\u0022variant\u0022:\u0022neutral\u0022}}},\u0022now\u0022:\u00222026-09-29T09:00:00Z\u0022}'))" class="flex min-w-0 flex-col gap-4">
+    <header class="flex flex-wrap items-start justify-between gap-3">
+        <div class="flex min-w-0 flex-col gap-2">
+            <button data-slot="button"
+     type="button"                     x-show="canBack" x-on:click="back()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5 -ms-2 w-fit">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg>                Back to orders</button>
+            <div class="flex flex-wrap items-center gap-2">
+                <h1 class="text-h2 font-semibold text-foreground" x-text="order.number"></h1>
+                <span data-slot="badge" x-bind:class="chipClass(statusChip(order.status).variant)" x-text="statusChip(order.status).label"
+    class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3"></span>
+                <span data-slot="badge" x-bind:class="chipClass(paymentChip(order.payment).variant)" x-text="paymentChip(order.payment).label"
+    class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3"></span>
+                <span data-slot="badge" x-bind:class="chipClass(fulfilmentChip(order).variant)" x-text="fulfilmentChip(order).label"
+    class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3"></span>
+            </div>
+            <p class="text-body-sm text-muted-foreground">Placed on <time class="tabular-nums [unicode-bidi:isolate]" x-bind:datetime="order.placedAt" x-text="date(order.placedAt, 'long', true)"></time></p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+            <button data-slot="button"
+     type="button"                     x-on:click="print(&#039;packing-slip&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
+  <path d="M15 18H9"/>
+  <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
+  <circle cx="17" cy="18" r="2"/>
+  <circle cx="7" cy="18" r="2"/>
+</svg>Packing slip</button>
+            <button data-slot="button"
+     type="button"                     x-on:click="print(&#039;invoice&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/>
+  <rect x="6" y="14" width="12" height="8" rx="1"/>
+</svg>Invoice</button>
+            <button data-slot="button"
+     type="button"                     data-action="cancel" x-bind:disabled="! cancellable" x-bind:title="cancellable ? null : &#039;This order can no longer be cancelled.&#039;" x-on:click="cancelOpen = true" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M4.929 4.929 19.07 19.071"/>
+</svg>Cancel order</button>
+            <button data-slot="button"
+     type="button"                     data-action="refund" x-bind:disabled="! refundable" x-on:click="openRefund()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 14 4 9l5-5"/>
+  <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>
+</svg>Refund</button>
+            <button data-slot="button"
+     type="button"                     data-action="fulfil" x-bind:disabled="! shippable" x-on:click="openFulfil()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22V12"/>
+  <path d="m16 17 2 2 4-4"/>
+  <path d="M21 11.127V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.32-.753"/>
+  <path d="M3.29 7 12 12l8.71-5"/>
+  <path d="m7.5 4.27 8.997 5.148"/>
+</svg>Fulfil</button>
+        </div>
+    </header>
+    <template x-if="order.payment === 'pending'">
+        <div data-slot="alert" data-tone="warning" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                    <div data-slot="alert-title" class="text-label text-foreground">Payment not received</div>
+                            <div data-slot="alert-description" class="text-body-sm text-muted-foreground">Nothing has been paid on this order yet, so it cannot be refunded.</div>
+            </div>
+    </div>
+    </template>
+    <div class="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div class="flex min-w-0 flex-col gap-4">
+            <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground">items</h2>
+                    <div data-slot="card-action" class="col-start-2 row-span-2 row-start-1 self-start justify-self-end text-body-sm text-muted-foreground"><span x-text="tt('shippedOf', { a: num(progress.shipped), b: num(progress.total) })"></span></div></div>
+                <div data-slot="card-content" class="px-4 flex flex-col"><ul class="m-0 flex list-none flex-col divide-y divide-border p-0">
+                        <template x-for="line in order.lines" x-bind:key="line.id">
+                            <li data-slot="store-order-line" class="flex flex-wrap items-center gap-3 py-3 first:pt-0 last:pb-0">
+                                <img x-show="line.image" x-bind:src="line.image" alt="" class="size-14 shrink-0 rounded-control border border-border bg-secondary object-cover" />
+                                <span x-show="! line.image" aria-hidden="true" class="size-14 shrink-0 rounded-control border border-border bg-secondary"></span>
+                                <div class="flex min-w-0 flex-1 basis-40 flex-col gap-1">
+                                    <span class="truncate text-body-sm font-medium text-foreground" x-text="line.name"></span>
+                                    <span class="text-caption text-muted-foreground" x-show="line.variantLabel" x-text="line.variantLabel"></span>
+                                    <span class="flex flex-wrap gap-1.5">
+                                        <span data-slot="badge" x-show="lineFulfilled(line) > 0" x-text="tt('shippedCount', { n: lineFulfilled(line) })" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium border-nq-success/40 bg-nq-success-soft text-nq-success-text"></span>
+                                        <span data-slot="badge" x-show="lineOutstanding(line) > 0" x-text="tt('toShipCount', { n: lineOutstanding(line) })" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text"></span>
+                                        <span data-slot="badge" x-show="lineRefunded(line) > 0" x-text="tt('refundedCount', { n: lineRefunded(line) })" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium border-border bg-secondary text-foreground"></span>
+                                    </span>
+                                </div>
+                                <div class="flex shrink-0 items-baseline gap-2 text-body-sm text-muted-foreground tabular-nums">
+                                    <span x-text="money(line.unitPrice)"></span>
+                                    <span aria-hidden="true">×</span>
+                                    <span x-text="num(line.quantity)"></span>
+                                </div>
+                                <span class="w-24 shrink-0 text-end text-body-sm font-medium text-foreground tabular-nums" x-text="money(line.unitPrice * line.quantity)"></span>
+                            </li>
+                        </template>
+                    </ul></div></div>
+            <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground">Payment</h2>
+                    <div data-slot="card-action" class="col-start-2 row-span-2 row-start-1 self-start justify-self-end"><span data-slot="badge" x-bind:class="chipClass(paymentChip(order.payment).variant)" x-text="paymentChip(order.payment).label"
+    class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3"></span></div></div>
+                <div data-slot="card-content" class="px-4"><dl class="m-0 grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 text-body-sm">
+                        <dt class="text-muted-foreground">Subtotal</dt>
+                        <dd class="m-0 text-end tabular-nums" x-text="money(order.totals.subtotal)"></dd>
+                        <dt class="text-muted-foreground" x-show="order.totals.discount > 0">Discount</dt>
+                        <dd class="m-0 text-end tabular-nums" x-show="order.totals.discount > 0" x-text="money(order.totals.discount, true)"></dd>
+                        <dt class="text-muted-foreground">Shipping<span x-show="order.shippingMethod" x-text="order.shippingMethod ? ' (' + order.shippingMethod.label + ')' : ''"></span></dt>
+                        <dd class="m-0 text-end tabular-nums" x-text="order.totals.shipping > 0 ? money(order.totals.shipping) : 'Free'"></dd>
+                        <dt class="text-muted-foreground" x-show="order.totals.tax > 0">Tax</dt>
+                        <dd class="m-0 text-end tabular-nums" x-show="order.totals.tax > 0" x-text="money(order.totals.tax)"></dd>
+                        <dt class="border-t border-border pt-2 font-medium text-foreground">Total</dt>
+                        <dd class="m-0 border-t border-border pt-2 text-end font-semibold text-foreground tabular-nums" x-text="money(summary.total)"></dd>
+                        <dt class="text-muted-foreground" x-show="summary.refunded > 0">Refunded</dt>
+                        <dd class="m-0 text-end tabular-nums" x-show="summary.refunded > 0" x-text="money(summary.refunded, true)"></dd>
+                        <dt class="font-medium text-foreground" x-show="summary.refunded > 0">Net paid</dt>
+                        <dd class="m-0 text-end font-medium tabular-nums" x-show="summary.refunded > 0" x-text="money(summary.net)"></dd>
+                        <dt class="font-medium text-foreground" x-show="summary.due > 0">Due</dt>
+                        <dd class="m-0 text-end font-medium tabular-nums" x-show="summary.due > 0" x-text="money(summary.due)"></dd>
+                    </dl>
+                    <ul x-show="refunds.length > 0" class="m-0 mt-3 flex list-none flex-col gap-1 border-t border-border p-0 pt-3 text-caption text-muted-foreground">
+                        <template x-for="(r, i) in refunds" x-bind:key="r.id ?? i">
+                            <li class="flex flex-wrap justify-between gap-2">
+                                <span x-text="(r.at ? date(r.at) : 'Refunded') + (r.note && r.note !== 'cancel' ? ' · ' + r.note : '') + (r.restock ? ' · Returned to stock' : '')"></span>
+                                <span class="tabular-nums" x-text="money(r.amount, true)"></span>
+                            </li>
+                        </template>
+                    </ul></div></div>
+            <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-label text-foreground">Timeline</h2></div>
+                <div data-slot="card-content" class="px-4"><section data-slot="store-order-timeline" data-variant="activity" aria-label="Timeline" class="flex flex-col gap-4">
+                        <form class="flex flex-col gap-2" x-on:submit.prevent="addNote()">
+                            <textarea data-slot="textarea"
+                aria-label="Add a note" placeholder="Only your team can see notes." rows="2" x-model="note" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                            <button data-slot="button"
+     type="submit"                     x-bind:disabled="note.trim() === &#039;&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 self-end">
+        Add note</button>
+                        </form>
+                        <ol class="m-0 flex list-none flex-col gap-3 p-0">
+                            <template x-for="(e, i) in events" x-bind:key="i">
+                                <li data-slot="store-order-event" class="flex flex-col gap-0.5 border-s-2 border-border ps-3 text-body-sm">
+                                    <span class="flex flex-wrap items-center gap-2 text-foreground"><span x-text="e.label"></span></span>
+                                    <span class="text-muted-foreground" x-show="e.note ?? e.by" x-text="e.note ?? ('by ' + e.by)"></span>
+                                    <time class="text-caption text-muted-foreground tabular-nums" x-bind:datetime="e.at" x-text="date(e.at, 'medium', true)"></time>
+                                </li>
+                            </template>
+                        </ol>
+                    </section></div></div>
+        </div>
+        <aside class="flex min-w-0 flex-col gap-4">
+            <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Customer</h3></div>
+                <div data-slot="card-content" class="px-4 flex flex-col gap-2"><span class="text-body-sm font-medium text-foreground" x-text="order.customer.name"></span>
+                    <a x-show="order.customer.email" x-bind:href="'mailto:' + order.customer.email" dir="ltr" class="inline-flex items-center gap-1.5 text-body-sm text-muted-foreground hover:text-foreground">
+                        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  <rect x="2" y="4" width="20" height="16" rx="2"/>
+</svg><span class="text-start" x-text="order.customer.email"></span>
+                    </a>
+                    <a x-show="order.customer.phone" x-bind:href="'tel:' + order.customer.phone" dir="ltr" class="inline-flex items-center gap-1.5 text-body-sm text-muted-foreground hover:text-foreground">
+                        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg><span class="text-start" x-text="order.customer.phone"></span>
+                    </a></div></div>
+                            <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Shipping address</h3></div>
+                    <div data-slot="card-content" class="px-4 flex flex-col gap-2"><address x-show="order.shippingAddress" class="flex min-w-0 flex-col text-body-sm not-italic text-foreground">
+                            <span class="font-medium" x-text="order.shippingAddress?.name"></span>
+                            <span x-text="order.shippingAddress?.line1"></span>
+                            <span x-show="order.shippingAddress?.line2" x-text="order.shippingAddress?.line2"></span>
+                            <span x-text="order.shippingAddress ? [order.shippingAddress.region, order.shippingAddress.city].filter(Boolean).join(', ') : ''"></span>
+                            <bdi dir="ltr" class="text-start" x-show="order.shippingAddress?.postalCode" x-text="order.shippingAddress?.postalCode"></bdi>
+                            <bdi dir="ltr" class="text-start" x-show="order.shippingAddress?.phone" x-text="order.shippingAddress?.phone"></bdi>
+                        </address>
+                        <p x-show="! order.shippingAddress" class="text-body-sm text-muted-foreground">No address on this order</p>
+                                                    <span x-show="order.shippingMethod" class="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+                                <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+  <circle cx="12" cy="10" r="3"/>
+</svg><span x-text="order.shippingMethod?.label"></span>
+                            </span></div></div>
+                            <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Billing address</h3></div>
+                    <div data-slot="card-content" class="px-4 flex flex-col gap-2"><address x-show="order.billingAddress" class="flex min-w-0 flex-col text-body-sm not-italic text-foreground">
+                            <span class="font-medium" x-text="order.billingAddress?.name"></span>
+                            <span x-text="order.billingAddress?.line1"></span>
+                            <span x-show="order.billingAddress?.line2" x-text="order.billingAddress?.line2"></span>
+                            <span x-text="order.billingAddress ? [order.billingAddress.region, order.billingAddress.city].filter(Boolean).join(', ') : ''"></span>
+                            <bdi dir="ltr" class="text-start" x-show="order.billingAddress?.postalCode" x-text="order.billingAddress?.postalCode"></bdi>
+                            <bdi dir="ltr" class="text-start" x-show="order.billingAddress?.phone" x-text="order.billingAddress?.phone"></bdi>
+                        </address>
+                        <p x-show="! order.billingAddress" class="text-body-sm text-muted-foreground">Same as shipping address</p></div></div>
+                        <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Shipment</h3></div>
+                <div data-slot="card-content" class="px-4 flex flex-col gap-2"><div x-show="order.tracking" class="flex flex-col gap-2">
+                        <span class="text-body-sm text-foreground" x-text="order.tracking?.carrier"></span>
+                        <bdi dir="ltr" class="text-start font-mono text-body-sm text-muted-foreground" x-text="order.tracking?.number"></bdi>
+                        <a x-show="trackUrl" x-bind:href="trackUrl" target="_blank" rel="noreferrer" class="inline-flex items-center gap-1.5 text-body-sm text-foreground underline underline-offset-4">
+                            <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+  <path d="M10 9H8"/>
+  <path d="M16 13H8"/>
+  <path d="M16 17H8"/>
+</svg>Track shipment
+                        </a>
+                    </div>
+                    <p x-show="! order.tracking" class="text-body-sm text-muted-foreground">Nothing has shipped yet.</p></div></div>
+        </aside>
+    </div>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="fulfilOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="store-fulfil-dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-w-lg">
+            <form class="flex flex-col gap-4" x-on:submit.prevent="confirmFulfil()">
+                <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Fulfil items</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Choose what goes in this shipment. You can ship the rest later.</p></div>
+                <ul class="m-0 flex list-none flex-col gap-2 p-0">
+                    <template x-for="line in order.lines" x-bind:key="line.id">
+                        <li class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="min-w-0 flex-1 basis-40 truncate text-body-sm text-foreground" x-text="line.name"></span>
+                            <div class="flex items-center gap-2">
+                                <input data-slot="input" type="number"
+     dir="ltr"                 inputmode="numeric" min="0" x-model.number="fqty[line.id]" x-bind:max="lineOutstanding(line)" x-bind:disabled="lineOutstanding(line) === 0" x-bind:aria-label="&#039;Quantity: &#039; + line.name" class="min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start w-20">
+                                <span class="text-caption text-muted-foreground tabular-nums">/ <span x-text="num(lineOutstanding(line))"></span></span>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+                <div class="grid gap-3 sm:grid-cols-2">
+                    <label class="flex flex-col gap-1.5 text-label text-foreground">
+                        Carrier
+                        <div data-slot="select" x-data="nqSelect('Bosta', false)" x-modelable="value" x-id="['nq-select']" x-model="carrier" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Carrier" class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                            <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('Bosta', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Bosta')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Bosta</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('Aramex', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Aramex')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Aramex</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('DHL', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('DHL')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">DHL</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('Egypt Post', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Egypt Post')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Egypt Post</span>
+</div>
+    </div>
+</template>
+    </div>
+                    </label>
+                    <label class="flex flex-col gap-1.5 text-label text-foreground">
+                        Tracking number
+                        <input data-slot="input" type="text"
+     dir="ltr"                 placeholder="BST880124" x-model="trackNo" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                    </label>
+                </div>
+                <p aria-live="polite" class="text-body-sm text-muted-foreground" x-text="fMessage"></p>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="fulfilOpen = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="submit"                     x-bind:disabled="! fOk" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22V12"/>
+  <path d="m16 17 2 2 4-4"/>
+  <path d="M21 11.127V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.32-.753"/>
+  <path d="M3.29 7 12 12l8.71-5"/>
+  <path d="m7.5 4.27 8.997 5.148"/>
+</svg>Mark as shipped</button></div>
+            </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="refundOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="store-refund-dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-w-lg">
+            <form class="flex flex-col gap-4" x-on:submit.prevent="confirmRefund()">
+                <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Refund order</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Still refundable <span class="tabular-nums" x-text="money(remaining)"></span></p></div>
+                <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022lines\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Refund by" x-model="rMode" class="max-w-full gap-0.5 rounded-control bg-secondary p-0.5 grid w-full grid-cols-2">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('lines')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Items</button>
+                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('amount')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Amount</button>
+</div>
+                <div x-show="rLines" class="flex flex-col gap-4">
+                    <ul class="m-0 flex list-none flex-col gap-2 p-0">
+                        <template x-for="line in order.lines" x-bind:key="line.id">
+                            <li class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="flex min-w-0 flex-1 basis-40 flex-col">
+                                    <span class="truncate text-body-sm text-foreground" x-text="line.name"></span>
+                                    <span class="text-caption text-muted-foreground tabular-nums" x-show="rLineValue(line.id) > 0" x-text="money(rLineValue(line.id))"></span>
+                                </span>
+                                <div class="flex items-center gap-2">
+                                    <input data-slot="input" type="number"
+     dir="ltr"                 inputmode="numeric" min="0" x-model.number="rqty[line.id]" x-bind:max="lineRefundable(line)" x-bind:disabled="lineRefundable(line) === 0" x-bind:aria-label="&#039;Quantity: &#039; + line.name" class="min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start w-20">
+                                    <span class="text-caption text-muted-foreground tabular-nums">/ <span x-text="num(lineRefundable(line))"></span></span>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                    <label class="flex items-center justify-between gap-3 text-body-sm">
+                        <span class="text-foreground">Refund shipping</span>
+                        <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="rShipping" x-bind:disabled="! shippingAvailable" aria-label="Refund shipping" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                    </label>
+                    <label class="flex items-center justify-between gap-3 text-body-sm">
+                        <span class="flex flex-col">
+                            <span class="text-foreground">Return items to stock</span>
+                            <span class="text-caption text-muted-foreground">Adds unshipped and returned units back to inventory.</span>
+                        </span>
+                        <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="rRestock" aria-label="Return items to stock" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                    </label>
+                </div>
+                <label x-show="! rLines" class="flex flex-col gap-1.5 text-label text-foreground">
+                    Amount to refund
+                    <input data-slot="input" type="number"
+     dir="ltr"                 inputmode="decimal" min="0" step="0.01" placeholder="0.00" x-model="rAmount" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                    <span class="text-caption text-muted-foreground">Refund a set amount, for example a goodwill credit.</span>
+                </label>
+                <label class="flex flex-col gap-1.5 text-label text-foreground">
+                    Reason
+                    <textarea data-slot="textarea"
+                rows="2" placeholder="Why is this being refunded? Only your team sees this." x-model="rNote" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                </label>
+                <p role="alert" class="text-body-sm text-nq-danger-text" x-show="rMessage" x-text="rMessage"></p>
+                <p aria-live="polite" class="flex items-baseline justify-between gap-2 border-t border-border pt-3 text-body-sm">
+                    <span class="text-muted-foreground">Refund total</span>
+                    <span class="text-h3 font-semibold text-foreground tabular-nums" x-text="money(rTotal)"></span>
+                </p>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="refundOpen = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="submit"                     x-bind:disabled="! rPlan.ok" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 14 4 9l5-5"/>
+  <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>
+</svg>Issue refund</button></div>
+            </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+    <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="cancelOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="store-cancel-dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground"><span x-text="tt('cancelTitle', { n: order.number })"></span></h2>
+                <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-show="cancelPlan.refundAmount > 0">The customer will be refunded in full and unshipped items go back to stock. <span class="tabular-nums" x-text="money(cancelPlan.refundAmount) + '.'"></span></span>
+                    <span x-show="cancelPlan.refundAmount <= 0">Nothing was paid, so nothing will be refunded.</span></p></div>
+            <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Keep order</button>
+                <button data-slot="alert-dialog-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="confirmCancel()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Cancel order</button></div>
+        </div>
+    </div>
+</template>
+</div>
+</div>
+    <div data-slot="store-abandoned-carts" role="region" aria-label="Abandoned carts" x-data="nqStoreAbandonedCarts(JSON.parse('{\u0022carts\u0022:[{\u0022id\u0022:\u0022c1\u0022,\u0022customer\u0022:{\u0022name\u0022:\u0022Lina Aziz\u0022,\u0022email\u0022:\u0022lina@example.com\u0022},\u0022stage\u0022:\u0022checkout\u0022,\u0022lines\u0022:[{\u0022id\u0022:\u0022cl1\u0022,\u0022name\u0022:\u0022Coffee beans 250g\u0022,\u0022unitPrice\u0022:1800,\u0022quantity\u0022:2}],\u0022updatedAt\u0022:\u00222026-09-28T06:00:00Z\u0022,\u0022emailsSent\u0022:0},{\u0022id\u0022:\u0022c2\u0022,\u0022stage\u0022:\u0022cart\u0022,\u0022lines\u0022:[{\u0022id\u0022:\u0022cl2\u0022,\u0022name\u0022:\u0022Paper filters\u0022,\u0022unitPrice\u0022:600,\u0022quantity\u0022:1}],\u0022updatedAt\u0022:\u00222026-09-29T08:30:00Z\u0022,\u0022emailsSent\u0022:0}],\u0022now\u0022:1790672400000,\u0022rules\u0022:{},\u0022maxDiscountPercent\u0022:20,\u0022loading\u0022:false,\u0022error\u0022:false,\u0022canSend\u0022:true,\u0022currency\u0022:\u0022USD\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022t\u0022:{\u0022orders\u0022:\u0022Orders\u0022,\u0022views\u0022:\u0022Saved views\u0022,\u0022viewAll\u0022:\u0022All orders\u0022,\u0022viewToFulfil\u0022:\u0022To fulfil\u0022,\u0022viewUnpaid\u0022:\u0022Unpaid\u0022,\u0022viewDelivered\u0022:\u0022Delivered\u0022,\u0022viewRefunds\u0022:\u0022Refunds\u0022,\u0022deleteView\u0022:\u0022Delete view\u0022,\u0022saveView\u0022:\u0022Save view\u0022,\u0022saveViewText\u0022:\u0022Keep the current filters as a view you can open again.\u0022,\u0022viewName\u0022:\u0022View name\u0022,\u0022searchOrders\u0022:\u0022Search by order, customer or product\u0022,\u0022exportCsv\u0022:\u0022Export CSV\u0022,\u0022exportSelected\u0022:\u0022Export selected\u0022,\u0022printSlips\u0022:\u0022Print packing slips\u0022,\u0022printInvoices\u0022:\u0022Print invoices\u0022,\u0022printSlip\u0022:\u0022Print packing slip\u0022,\u0022printInvoice\u0022:\u0022Print invoice\u0022,\u0022openOrder\u0022:\u0022Open order\u0022,\u0022loadError\u0022:\u0022Orders could not be loaded.\u0022,\u0022noOrders\u0022:\u0022No orders yet\u0022,\u0022noOrdersText\u0022:\u0022Orders show up here as soon as customers check out.\u0022,\u0022noMatch\u0022:\u0022No orders match\u0022,\u0022noMatchHint\u0022:\u0022Try a different search or clear the filters.\u0022,\u0022clearFilters\u0022:\u0022Clear filters\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022save\u0022:\u0022Save\u0022,\u0022retry\u0022:\u0022Try again\u0022,\u0022back\u0022:\u0022Back\u0022,\u0022document\u0022:\u0022Document\u0022,\u0022print\u0022:\u0022Print\u0022,\u0022order\u0022:\u0022Order\u0022,\u0022date\u0022:\u0022Date\u0022,\u0022customer\u0022:\u0022Customer\u0022,\u0022payment\u0022:\u0022Payment\u0022,\u0022fulfilment\u0022:\u0022Fulfilment\u0022,\u0022status\u0022:\u0022Status\u0022,\u0022items\u0022:\u0022items\u0022,\u0022total\u0022:\u0022Total\u0022,\u0022someSkipped\u0022:\u0022{n} selected orders cannot be fulfilled and will be skipped\u0022,\u0022markFulfilled\u0022:\u0022Mark {n} fulfilled\u0022,\u0022markFulfilledOne\u0022:\u0022Mark fulfilled\u0022,\u0022backToOrders\u0022:\u0022Back to orders\u0022,\u0022placedOn\u0022:\u0022Placed on\u0022,\u0022packingSlip\u0022:\u0022Packing slip\u0022,\u0022invoice\u0022:\u0022Invoice\u0022,\u0022cancelOrder\u0022:\u0022Cancel order\u0022,\u0022cannotCancel\u0022:\u0022This order can no longer be cancelled.\u0022,\u0022refund\u0022:\u0022Refund\u0022,\u0022fulfil\u0022:\u0022Fulfil\u0022,\u0022unpaidTitle\u0022:\u0022Payment not received\u0022,\u0022unpaidText\u0022:\u0022Nothing has been paid on this order yet, so it cannot be refunded.\u0022,\u0022subtotal\u0022:\u0022Subtotal\u0022,\u0022discount\u0022:\u0022Discount\u0022,\u0022shipping\u0022:\u0022Shipping\u0022,\u0022free\u0022:\u0022Free\u0022,\u0022tax\u0022:\u0022Tax\u0022,\u0022refunded\u0022:\u0022Refunded\u0022,\u0022netPaid\u0022:\u0022Net paid\u0022,\u0022due\u0022:\u0022Due\u0022,\u0022restocked\u0022:\u0022Returned to stock\u0022,\u0022timeline\u0022:\u0022Timeline\u0022,\u0022noteAdded\u0022:\u0022Note added\u0022,\u0022shippingAddress\u0022:\u0022Shipping address\u0022,\u0022billingAddress\u0022:\u0022Billing address\u0022,\u0022noAddress\u0022:\u0022No address on this order\u0022,\u0022sameAsShipping\u0022:\u0022Same as shipping address\u0022,\u0022shipment\u0022:\u0022Shipment\u0022,\u0022trackShipment\u0022:\u0022Track shipment\u0022,\u0022noTracking\u0022:\u0022Nothing has shipped yet.\u0022,\u0022carrier\u0022:\u0022Carrier\u0022,\u0022trackingNumber\u0022:\u0022Tracking number\u0022,\u0022shippedOf\u0022:\u0022{a} of {b} shipped\u0022,\u0022shippedCount\u0022:\u0022{n} shipped\u0022,\u0022toShipCount\u0022:\u0022{n} to ship\u0022,\u0022refundedCount\u0022:\u0022{n} refunded\u0022,\u0022shippedAll\u0022:\u0022All items shipped\u0022,\u0022shippedSome\u0022:\u0022Shipment recorded\u0022,\u0022fulfilTitle\u0022:\u0022Fulfil items\u0022,\u0022fulfilText\u0022:\u0022Choose what goes in this shipment. You can ship the rest later.\u0022,\u0022quantity\u0022:\u0022Quantity\u0022,\u0022trackingOptional\u0022:\u0022Optional. The customer sees it in their account.\u0022,\u0022willCompleteOrder\u0022:\u0022This shipment completes the order.\u0022,\u0022willPartlyShip\u0022:\u0022Some items will stay unshipped.\u0022,\u0022pickUnits\u0022:\u0022Pick at least one unit to ship.\u0022,\u0022markShipped\u0022:\u0022Mark as shipped\u0022,\u0022refundIssued\u0022:\u0022Refund recorded\u0022,\u0022refundTitle\u0022:\u0022Refund order\u0022,\u0022refundLeft\u0022:\u0022Still refundable\u0022,\u0022refundBy\u0022:\u0022Refund by\u0022,\u0022byLines\u0022:\u0022Items\u0022,\u0022byAmount\u0022:\u0022Amount\u0022,\u0022byAmountText\u0022:\u0022Refund a set amount, for example a goodwill credit.\u0022,\u0022refundShipping\u0022:\u0022Refund shipping\u0022,\u0022restock\u0022:\u0022Return items to stock\u0022,\u0022restockText\u0022:\u0022Adds unshipped and returned units back to inventory.\u0022,\u0022refundAmount\u0022:\u0022Amount to refund\u0022,\u0022reason\u0022:\u0022Reason\u0022,\u0022reasonPlaceholder\u0022:\u0022Why is this being refunded? Only your team sees this.\u0022,\u0022refundTotal\u0022:\u0022Refund total\u0022,\u0022issueRefund\u0022:\u0022Issue refund\u0022,\u0022refundInvalid\u0022:\u0022Check the refund details.\u0022,\u0022shippingDone\u0022:\u0022Shipping has already been refunded.\u0022,\u0022refundUnpaid\u0022:\u0022This order has no payment to refund.\u0022,\u0022refundOver\u0022:\u0022The most you can refund is {max}.\u0022,\u0022refundLineOver\u0022:\u0022Only {max} left to refund on this line.\u0022,\u0022cancelTitle\u0022:\u0022Cancel order {n}?\u0022,\u0022cancelRefunds\u0022:\u0022The customer will be refunded in full and unshipped items go back to stock.\u0022,\u0022cancelNoRefund\u0022:\u0022Nothing was paid, so nothing will be refunded.\u0022,\u0022keepOrder\u0022:\u0022Keep order\u0022,\u0022cancelled\u0022:\u0022Order cancelled\u0022,\u0022taxId\u0022:\u0022Tax number\u0022,\u0022shipTo\u0022:\u0022Ship to\u0022,\u0022billTo\u0022:\u0022Bill to\u0022,\u0022item\u0022:\u0022Item\u0022,\u0022unitPrice\u0022:\u0022Unit price\u0022,\u0022toPack\u0022:\u0022To pack\u0022,\u0022packed\u0022:\u0022Packed\u0022,\u0022slipNote\u0022:\u0022Check each item as you pack it. Prices are not shown on this slip.\u0022,\u0022documentsCount\u0022:\u0022{n} documents\u0022,\u0022documentsCountOne\u0022:\u00221 document\u0022,\u0022abandoned\u0022:\u0022Abandoned carts\u0022,\u0022statAbandoned\u0022:\u0022Abandoned carts\u0022,\u0022statAtRisk\u0022:\u0022Value at risk\u0022,\u0022statRecovered\u0022:\u0022Recovered\u0022,\u0022statRate\u0022:\u0022Recovery rate\u0022,\u0022noCarts\u0022:\u0022No abandoned carts\u0022,\u0022noCartsText\u0022:\u0022Carts left behind by shoppers will appear here.\u0022,\u0022loadErrorCarts\u0022:\u0022Abandoned carts could not be loaded.\u0022,\u0022guest\u0022:\u0022Guest\u0022,\u0022sendRecovery\u0022:\u0022Send recovery email\u0022,\u0022recoveryTitle\u0022:\u0022Send a recovery email\u0022,\u0022recoveryText\u0022:\u0022A reminder with a link back to the cart goes to\u0022,\u0022discountPercent\u0022:\u0022Discount offered (%)\u0022,\u0022discountHint\u0022:\u0022Up to {max}%. Leave at 0 to offer none.\u0022,\u0022recoveryMessage\u0022:\u0022Personal message\u0022,\u0022recoveryPlaceholder\u0022:\u0022Optional. Added above the cart in the email.\u0022,\u0022blockRecovered\u0022:\u0022Already recovered\u0022,\u0022blockLost\u0022:\u0022Too old to recover\u0022,\u0022blockNoEmail\u0022:\u0022No email address\u0022,\u0022blockLimit\u0022:\u0022Email limit reached\u0022,\u0022blockTooSoon\u0022:\u0022Wait {min} more min\u0022,\u0022blockCooldown\u0022:\u0022Next email in {h} h\u0022,\u0022idleMinutes\u0022:\u0022{n} min idle\u0022,\u0022idleHours\u0022:\u0022{n} h idle\u0022,\u0022idleDays\u0022:\u0022{n} days idle\u0022,\u0022emailsSent\u0022:\u0022{n} emails sent\u0022,\u0022emailsSentOne\u0022:\u00221 email sent\u0022,\u0022stage.cart\u0022:\u0022Left the cart\u0022,\u0022stage.checkout\u0022:\u0022Left checkout\u0022,\u0022stage.payment\u0022:\u0022Left at payment\u0022,\u0022recovery.new\u0022:\u0022Not emailed\u0022,\u0022recovery.emailed\u0022:\u0022Emailed\u0022,\u0022recovery.recovered\u0022:\u0022Recovered\u0022,\u0022recovery.lost\u0022:\u0022Lost\u0022,\u0022recovery.no-email\u0022:\u0022No email\u0022},\u0022labels\u0022:{\u0022status\u0022:{\u0022pending\u0022:{\u0022label\u0022:\u0022Pending\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022paid\u0022:{\u0022label\u0022:\u0022Paid\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022processing\u0022:{\u0022label\u0022:\u0022Processing\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022partially-fulfilled\u0022:{\u0022label\u0022:\u0022Partly shipped\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022fulfilled\u0022:{\u0022label\u0022:\u0022Fulfilled\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022shipped\u0022:{\u0022label\u0022:\u0022Shipped\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022out-for-delivery\u0022:{\u0022label\u0022:\u0022Out for delivery\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022delivered\u0022:{\u0022label\u0022:\u0022Delivered\u0022,\u0022variant\u0022:\u0022success\u0022},\u0022cancelled\u0022:{\u0022label\u0022:\u0022Cancelled\u0022,\u0022variant\u0022:\u0022neutral\u0022},\u0022refunded\u0022:{\u0022label\u0022:\u0022Refunded\u0022,\u0022variant\u0022:\u0022neutral\u0022},\u0022partially-refunded\u0022:{\u0022label\u0022:\u0022Partly refunded\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022returned\u0022:{\u0022label\u0022:\u0022Returned\u0022,\u0022variant\u0022:\u0022neutral\u0022}},\u0022payment\u0022:{\u0022pending\u0022:{\u0022label\u0022:\u0022Unpaid\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022authorized\u0022:{\u0022label\u0022:\u0022Authorised\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022paid\u0022:{\u0022label\u0022:\u0022Paid\u0022,\u0022variant\u0022:\u0022success\u0022},\u0022partially-refunded\u0022:{\u0022label\u0022:\u0022Partly refunded\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022refunded\u0022:{\u0022label\u0022:\u0022Refunded\u0022,\u0022variant\u0022:\u0022neutral\u0022},\u0022failed\u0022:{\u0022label\u0022:\u0022Failed\u0022,\u0022variant\u0022:\u0022danger\u0022},\u0022cod\u0022:{\u0022label\u0022:\u0022Cash on delivery\u0022,\u0022variant\u0022:\u0022info\u0022}},\u0022fulfilment\u0022:{\u0022unfulfilled\u0022:{\u0022label\u0022:\u0022Unfulfilled\u0022,\u0022variant\u0022:\u0022warning\u0022},\u0022partial\u0022:{\u0022label\u0022:\u0022Partly fulfilled\u0022,\u0022variant\u0022:\u0022info\u0022},\u0022fulfilled\u0022:{\u0022label\u0022:\u0022Fulfilled\u0022,\u0022variant\u0022:\u0022success\u0022},\u0022none\u0022:{\u0022label\u0022:\u0022Nothing to ship\u0022,\u0022variant\u0022:\u0022neutral\u0022}}}}'))" class="flex min-w-0 flex-col gap-4">
+            <div data-slot="stat-grid" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3"><div data-slot="stat-card"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="8" cy="21" r="1"/>
+  <circle cx="19" cy="21" r="1"/>
+  <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Abandoned carts</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <span x-text="num(stats.carts)"></span>
+                                    </div>
+                            </div>
+                    </div>
+    </div>
+            <div data-slot="stat-card"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/>
+  <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Value at risk</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <span class="[unicode-bidi:isolate]" x-text="atRisk"></span>
+                                    </div>
+                            </div>
+                    </div>
+    </div>
+            <div data-slot="stat-card"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h8"/>
+  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+  <path d="m16 19 2 2 4-4"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Recovered</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <span x-text="num(stats.recovered)"></span>
+                                    </div>
+                            </div>
+                    </div>
+    </div>
+            <div data-slot="stat-card"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  <rect x="2" y="4" width="20" height="16" rx="2"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Recovery rate</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <span x-text="rate"></span>
+                                    </div>
+                            </div>
+                    </div>
+    </div></div>
+                    <template x-if="carts.length === 0">
+                <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No abandoned carts</p>
+                    <p class="text-body-sm text-muted-foreground">Carts left behind by shoppers will appear here.</p>
+            </div>
+    </div>
+            </template>
+            <ul x-show="carts.length > 0" class="m-0 flex list-none flex-col gap-2 p-0">
+                <template x-for="row in rows" x-bind:key="row.id">
+                    <li data-slot="store-abandoned-cart" class="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-card border border-border bg-card p-3">
+                        <div class="flex min-w-0 flex-1 basis-56 flex-col gap-0.5">
+                            <span class="truncate font-medium" x-text="row.cart.customer?.name ?? t.guest"></span>
+                            <bdi dir="ltr" class="truncate text-start text-body-sm text-muted-foreground" x-show="row.cart.customer?.email" x-text="row.cart.customer?.email"></bdi>
+                            <span class="truncate text-body-sm text-muted-foreground" x-text="row.names"></span>
+                        </div>
+                        <div class="flex flex-col gap-0.5 text-body-sm">
+                            <span class="font-medium tabular-nums [unicode-bidi:isolate]" x-text="row.value"></span>
+                            <span class="text-muted-foreground"><span class="tabular-nums" x-text="row.count"></span> items</span>
+                        </div>
+                        <div class="flex flex-col gap-0.5 text-body-sm text-muted-foreground">
+                            <span x-text="t['stage.' + row.cart.stage]"></span>
+                            <span x-text="row.idle"></span>
+                        </div>
+                        <div class="flex flex-col items-start gap-1">
+                            <span data-slot="badge" x-bind:class="chipClass(statusVariant(row.status))" x-text="t['recovery.' + row.status]" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium"></span>
+                            <span class="text-caption text-muted-foreground" x-show="row.cart.emailsSent > 0" x-text="emailsText(row.cart)"></span>
+                        </div>
+                        <div class="ms-auto flex flex-col items-end gap-1">
+                            <button data-slot="button"
+     type="button"                     data-action="send-recovery" x-bind:disabled="row.gate.ok &amp;&amp; canSend ? null : &#039;&#039;" x-on:click="open(row.cart)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  <rect x="2" y="4" width="20" height="16" rx="2"/>
+</svg>                                Send recovery email</button>
+                            <span class="text-caption text-muted-foreground" x-show="row.why" x-text="row.why"></span>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+            <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="dialogOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-w-md">
+            <form class="flex flex-col gap-4" x-on:submit.prevent="send()">
+                        <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Send a recovery email</h2>
+                            <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">A reminder with a link back to the cart goes to <bdi dir="ltr" x-text="target?.customer?.email"></bdi></p></div>
+                        <label class="flex flex-col gap-1 text-body-sm">
+                            <span class="font-medium">Discount offered (%)</span>
+                            <input data-slot="input" type="number"
+     dir="ltr"                 inputmode="numeric" min="0" x-bind:max="maxPercent" x-model="percent" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                            <span class="text-caption text-muted-foreground"><span x-text="tt('discountHint', { max: maxPercent })"></span> <span class="tabular-nums [unicode-bidi:isolate]" x-text="discountText"></span></span>
+                        </label>
+                        <label class="flex flex-col gap-1 text-body-sm">
+                            <span class="font-medium">Personal message</span>
+                            <textarea data-slot="textarea"
+                rows="3" placeholder="Optional. Added above the cart in the email." x-model="message" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                        </label>
+                        <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="dialogOpen = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                            <button data-slot="button"
+     type="submit"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  <rect x="2" y="4" width="20" height="16" rx="2"/>
+</svg>                                Send recovery email</button></div>
+                    </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+            </div>
+    <div data-slot="store-order-print-view" x-data="nqStoreOrderPrintView(JSON.parse('{\u0022kind\u0022:\u0022packing-slip\u0022}'))" class="flex min-w-0 flex-col gap-4">
+    <style>
+@page { size: A4; margin: 12mm; }
+@media print {
+  html, body { background: white !important; }
+  body * { visibility: hidden !important; }
+  .nq-print-root, .nq-print-root * { visibility: visible !important; }
+  .nq-print-root { position: absolute; inset-block-start: 0; inset-inline-start: 0; width: 100%; margin: 0 !important; padding: 0 !important; }
+  .nq-print-hide { display: none !important; }
+  .nq-print-sheet { border: 0 !important; box-shadow: none !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; color: black !important; background: white !important; break-after: page; page-break-after: always; }
+  .nq-print-sheet:last-child { break-after: auto; page-break-after: auto; }
+  .nq-print-sheet * { color: black !important; border-color: black !important; }
+  .nq-print-sheet tr, .nq-print-sheet li { break-inside: avoid; }
+}
+    </style>
+    <div class="nq-print-hide flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+                            <button data-slot="button"
+     type="button"                     x-on:click="back()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg>                    Back</button>
+                        <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022packing-slip\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Document" x-model="kind" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('invoice')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Invoice</button>
+                <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('packing-slip')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Packing slip</button>
+</div>
+            <span class="text-body-sm text-muted-foreground">1 document</span>
+        </div>
+        <button data-slot="button"
+     type="button"                     x-on:click="print()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/>
+  <rect x="6" y="14" width="12" height="8" rx="1"/>
+</svg>            Print</button>
+    </div>
+    <div class="nq-print-root flex flex-col gap-6">
+                    <article data-slot="store-order-document" data-kind="invoice" aria-label="Invoice #1042"
+    x-show="current === &#039;invoice&#039;" class="nq-print-sheet mx-auto flex w-full max-w-[52rem] flex-col gap-6 rounded-card border border-border bg-card p-8 text-foreground">
+    <header class="flex flex-wrap items-start justify-between gap-4">
+        <div class="flex min-w-0 flex-col gap-1">
+                        <span class="text-h3 font-semibold">Bean &amp; Leaf</span>
+                            <span class="text-body-sm text-muted-foreground">12 Olaya St</span>
+                            <span class="text-body-sm text-muted-foreground">Riyadh</span>
+                                        <span dir="ltr" class="text-start text-body-sm text-muted-foreground">hello@beanleaf.example</span>
+                                                    <span class="text-body-sm text-muted-foreground">Tax number: <bdi dir="ltr">300-123-456</bdi></span>
+                    </div>
+        <div class="flex flex-col items-end gap-1 text-end">
+            <h2 class="text-h2 font-semibold">Invoice</h2>
+            <span class="text-body-sm">Order <bdi>#1042</bdi></span>
+            <span class="text-body-sm text-muted-foreground"><time data-slot="date-time" datetime="2026-09-27T10:15:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">September 27, 2026</time>
+</span>
+            <div data-slot="barcode" data-format="CODE128" dir="ltr"
+    x-data="nqBarcode(JSON.parse('{\u0022value\u0022:\u00221042\u0022,\u0022format\u0022:\u0022CODE128\u0022,\u0022showValue\u0022:false,\u0022height\u0022:36,\u0022barWidth\u0022:1.5,\u0022margin\u0022:0,\u0022fg\u0022:\u0022black\u0022,\u0022bg\u0022:\u0022white\u0022,\u0022pngSize\u0022:1200,\u0022downloadName\u0022:\u0022barcode\u0022,\u0022jsbarcodeSrc\u0022:null}'))"
+    x-modelable="value"
+    x-bind:data-invalid="message ? '' : null"
+    aria-label="Order #1042" class="inline-flex max-w-full flex-col items-center gap-3">
+    <p x-show="message" style="display: none" role="alert" dir="auto" x-text="message"
+    class="rounded-control border border-dashed border-border px-4 py-6 text-center text-body-sm text-nq-danger-text"></p>
+<svg data-slot="barcode-svg" role="img" x-show="!message" x-bind:aria-label="name" x-bind:style="{ background: bg }" style="background: white"
+    class="h-auto max-w-full rounded-control border border-border"></svg>
+<p x-show="error" style="display: none" role="alert" class="text-caption text-nq-danger-text">Could not create the file. Try again.</p>
+</div>
+        </div>
+    </header>
+    <div class="grid gap-4 sm:grid-cols-2">
+        <div class="flex min-w-0 flex-col gap-0.5 text-body-sm"><h3 class="text-caption font-semibold uppercase tracking-wide text-muted-foreground">Ship to</h3><address class="flex flex-col not-italic text-foreground"><span class="font-medium">Mona Salem</span><span>12 Olaya St</span><span>Riyadh</span></address></div>
+                    <div class="flex min-w-0 flex-col gap-0.5 text-body-sm"><h3 class="text-caption font-semibold uppercase tracking-wide text-muted-foreground">Bill to</h3><address class="flex flex-col not-italic text-foreground"><span class="font-medium">Mona Salem</span><span>12 Olaya St</span><span>Riyadh</span></address></div>
+            </div>
+    <table class="w-full border-collapse text-body-sm">
+        <thead>
+            <tr class="border-b border-border text-start text-caption uppercase tracking-wide text-muted-foreground">
+                                <th scope="col" class="py-2 text-start font-medium">Item</th>
+                <th scope="col" class="py-2 text-end font-medium">Quantity</th>
+                                    <th scope="col" class="py-2 text-end font-medium">Unit price</th>
+                    <th scope="col" class="py-2 text-end font-medium">Total</th>
+                            </tr>
+        </thead>
+        <tbody>
+                            <tr class="border-b border-border align-top">
+                                        <td class="py-2 pe-2">
+                        <span class="font-medium">Coffee beans 250g</span>
+                                                                            <span dir="ltr" class="block text-start text-caption text-muted-foreground">v1</span>
+                                            </td>
+                    <td class="py-2 text-end"><span class="tabular-nums [unicode-bidi:isolate]">2</span></td>
+                                            <td class="py-2 text-end"><span class="tabular-nums [unicode-bidi:isolate]">$18.00</span></td>
+                        <td class="py-2 text-end"><span class="tabular-nums [unicode-bidi:isolate]">$36.00</span></td>
+                                    </tr>
+                            <tr class="border-b border-border align-top">
+                                        <td class="py-2 pe-2">
+                        <span class="font-medium">Paper filters</span>
+                                                                            <span dir="ltr" class="block text-start text-caption text-muted-foreground">v2</span>
+                                            </td>
+                    <td class="py-2 text-end"><span class="tabular-nums [unicode-bidi:isolate]">1</span></td>
+                                            <td class="py-2 text-end"><span class="tabular-nums [unicode-bidi:isolate]">$6.00</span></td>
+                        <td class="py-2 text-end"><span class="tabular-nums [unicode-bidi:isolate]">$6.00</span></td>
+                                    </tr>
+                    </tbody>
+    </table>
+            <dl class="m-0 ms-auto grid w-full max-w-xs grid-cols-[1fr_auto] gap-x-6 gap-y-1 text-body-sm">
+            <dt class="text-muted-foreground">Subtotal</dt>
+            <dd class="m-0 text-end"><span class="tabular-nums [unicode-bidi:isolate]">$42.00</span></dd>
+                        <dt class="text-muted-foreground">Shipping</dt>
+            <dd class="m-0 text-end"><span class="tabular-nums [unicode-bidi:isolate]">$5.00</span></dd>
+                        <dt class="border-t border-border pt-1 font-semibold">Total</dt>
+            <dd class="m-0 border-t border-border pt-1 text-end font-semibold"><span class="tabular-nums [unicode-bidi:isolate]">$47.00</span></dd>
+                                </dl>
+        </article>
+            <article data-slot="store-order-document" data-kind="packing-slip" aria-label="Packing slip #1042"
+    x-show="current === &#039;packing-slip&#039;" class="nq-print-sheet mx-auto flex w-full max-w-[52rem] flex-col gap-6 rounded-card border border-border bg-card p-8 text-foreground">
+    <header class="flex flex-wrap items-start justify-between gap-4">
+        <div class="flex min-w-0 flex-col gap-1">
+                        <span class="text-h3 font-semibold">Bean &amp; Leaf</span>
+                            <span class="text-body-sm text-muted-foreground">12 Olaya St</span>
+                            <span class="text-body-sm text-muted-foreground">Riyadh</span>
+                                        <span dir="ltr" class="text-start text-body-sm text-muted-foreground">hello@beanleaf.example</span>
+                                            </div>
+        <div class="flex flex-col items-end gap-1 text-end">
+            <h2 class="text-h2 font-semibold">Packing slip</h2>
+            <span class="text-body-sm">Order <bdi>#1042</bdi></span>
+            <span class="text-body-sm text-muted-foreground"><time data-slot="date-time" datetime="2026-09-27T10:15:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">September 27, 2026</time>
+</span>
+            <div data-slot="barcode" data-format="CODE128" dir="ltr"
+    x-data="nqBarcode(JSON.parse('{\u0022value\u0022:\u00221042\u0022,\u0022format\u0022:\u0022CODE128\u0022,\u0022showValue\u0022:false,\u0022height\u0022:36,\u0022barWidth\u0022:1.5,\u0022margin\u0022:0,\u0022fg\u0022:\u0022black\u0022,\u0022bg\u0022:\u0022white\u0022,\u0022pngSize\u0022:1200,\u0022downloadName\u0022:\u0022barcode\u0022,\u0022jsbarcodeSrc\u0022:null}'))"
+    x-modelable="value"
+    x-bind:data-invalid="message ? '' : null"
+    aria-label="Order #1042" class="inline-flex max-w-full flex-col items-center gap-3">
+    <p x-show="message" style="display: none" role="alert" dir="auto" x-text="message"
+    class="rounded-control border border-dashed border-border px-4 py-6 text-center text-body-sm text-nq-danger-text"></p>
+<svg data-slot="barcode-svg" role="img" x-show="!message" x-bind:aria-label="name" x-bind:style="{ background: bg }" style="background: white"
+    class="h-auto max-w-full rounded-control border border-border"></svg>
+<p x-show="error" style="display: none" role="alert" class="text-caption text-nq-danger-text">Could not create the file. Try again.</p>
+</div>
+        </div>
+    </header>
+    <div class="grid gap-4 sm:grid-cols-2">
+        <div class="flex min-w-0 flex-col gap-0.5 text-body-sm"><h3 class="text-caption font-semibold uppercase tracking-wide text-muted-foreground">Ship to</h3><address class="flex flex-col not-italic text-foreground"><span class="font-medium">Mona Salem</span><span>12 Olaya St</span><span>Riyadh</span></address></div>
+                    <div class="flex flex-col gap-0.5 text-body-sm">
+                <h3 class="text-caption font-semibold uppercase tracking-wide text-muted-foreground">Shipment</h3>
+                <span>-</span>
+                            </div>
+            </div>
+    <table class="w-full border-collapse text-body-sm">
+        <thead>
+            <tr class="border-b border-border text-start text-caption uppercase tracking-wide text-muted-foreground">
+                                    <th scope="col" class="w-8 py-2 text-start font-medium"><span class="sr-only">Packed</span></th>
+                                <th scope="col" class="py-2 text-start font-medium">Item</th>
+                <th scope="col" class="py-2 text-end font-medium">To pack</th>
+                            </tr>
+        </thead>
+        <tbody>
+                            <tr class="border-b border-border align-top">
+                                            <td class="py-2"><span aria-hidden="true" class="inline-block size-4 rounded-sm border border-border"></span></td>
+                                        <td class="py-2 pe-2">
+                        <span class="font-medium">Coffee beans 250g</span>
+                                                                            <span dir="ltr" class="block text-start text-caption text-muted-foreground">v1</span>
+                                            </td>
+                    <td class="py-2 text-end"><span class="tabular-nums [unicode-bidi:isolate]">2</span></td>
+                                    </tr>
+                            <tr class="border-b border-border align-top">
+                                            <td class="py-2"><span aria-hidden="true" class="inline-block size-4 rounded-sm border border-border"></span></td>
+                                        <td class="py-2 pe-2">
+                        <span class="font-medium">Paper filters</span>
+                                                                            <span dir="ltr" class="block text-start text-caption text-muted-foreground">v2</span>
+                                            </td>
+                    <td class="py-2 text-end"><span class="tabular-nums [unicode-bidi:isolate]">1</span></td>
+                                    </tr>
+                    </tbody>
+    </table>
+            <p class="text-body-sm text-muted-foreground">Check each item as you pack it. Prices are not shown on this slip.</p>
+        </article>
+            </div>
+</div>
+</div>

@@ -21,7 +21,7 @@
     $sevVariant = ['critical' => 'danger', 'high' => 'danger', 'medium' => 'warning', 'low' => 'neutral'];
     $sevBar = ['critical' => 'bg-nq-danger', 'high' => 'bg-nq-danger/60', 'medium' => 'bg-nq-warning', 'low' => 'bg-muted-foreground/40'];
 @endphp
-<div data-slot="vuln-report" data-risk="{{ $tone }}" {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'vuln-report') }}" data-risk="{{ $tone }}" {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full') }}>
     <x-nq::card.header>
         <div class="flex flex-wrap items-center justify-between gap-2">
             <x-nq::card.title as="h3" class="flex items-center gap-2">

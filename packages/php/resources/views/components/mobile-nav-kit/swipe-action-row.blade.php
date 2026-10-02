@@ -14,9 +14,9 @@
     ];
     $panels = [['side' => 'start', 'list' => array_values($startActions)], ['side' => 'end', 'list' => array_values($endActions)]];
 @endphp
-<div data-slot="swipe-action-row" x-data="nqSwipeRow({{ count($startActions) }}, {{ count($endActions) }}, {{ $disabled ? 'true' : 'false' }})"
+<div data-slot="{{ $attributes->get('data-slot', 'swipe-action-row') }}" x-data="nqSwipeRow({{ count($startActions) }}, {{ count($endActions) }}, {{ $disabled ? 'true' : 'false' }})"
     x-bind:data-state="state" x-on:pointerdown.document="away($event)" x-on:click.capture="clickCapture($event)"
-    {{ $attributes->cn('relative overflow-hidden bg-card') }}>
+    {{ $attributes->except('data-slot')->cn('relative overflow-hidden bg-card') }}>
     @foreach ($panels as $panel)
         @if (count($panel['list']))
             <div data-slot="swipe-actions" data-side="{{ $panel['side'] }}" x-bind:inert="state !== '{{ $panel['side'] }}'"

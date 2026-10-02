@@ -20,9 +20,9 @@
     ], (array) $labels);
     $prompt = str_replace('{text}', "\u{2068}".$phrase."\u{2069}", $l['confirmPrompt']);
 @endphp
-<x-nq::account-settings.settings-section tone="danger" data-slot="danger-zone" :heading-level="$headingLevel"
+<x-nq::account-settings.settings-section tone="danger" data-slot="{{ $attributes->get('data-slot', 'danger-zone') }}" :heading-level="$headingLevel"
     :title="$title ?? $t::t('Danger zone', 'منطقة الخطر')"
-    {{ $attributes }}>
+    {{ $attributes->except('data-slot') }}>
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between" x-data="nqDangerZone(@js(['phrase' => $phrase, 'failed' => $l['failed']]))">
         <div class="min-w-0">
             <p class="text-label text-foreground">{{ $heading ?? $t::t('Delete account', 'حذف الحساب') }}</p>

@@ -4,7 +4,7 @@
      Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['models' => [], 'value' => null, 'name' => null, 'disabled' => false, 'label' => null])
 <x-nq::select :value="$value" :name="$name" {{ $attributes->whereStartsWith(['x-model', 'wire:model']) }}>
-    <x-nq::select.trigger data-slot="ai-model-select" aria-label="{{ $label ?? \Nasaq\Nasaq::t('Model', 'النموذج') }}" :disabled="$disabled" {{ $attributes->whereDoesntStartWith(['x-model', 'wire:model']) }}>
+    <x-nq::select.trigger data-slot="{{ $attributes->get('data-slot', 'ai-model-select') }}" aria-label="{{ $label ?? \Nasaq\Nasaq::t('Model', 'النموذج') }}" :disabled="$disabled" {{ $attributes->except('data-slot')->whereDoesntStartWith(['x-model', 'wire:model']) }}>
         <x-nq::select.value />
     </x-nq::select.trigger>
     <x-nq::select.content>

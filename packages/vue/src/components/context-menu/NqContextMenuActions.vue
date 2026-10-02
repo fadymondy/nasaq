@@ -22,6 +22,8 @@ interface Props {
   class?: HTMLAttributes["class"];
 }
 const props = withDefaults(defineProps<Props>(), { as: "div", keyboard: true });
+// Attributes (data-slot, aria-*, listeners) land on the region element, not on the menu root, which renders nothing.
+defineOptions({ inheritAttrs: false });
 const groups = computed(() => groupActions(props.actions));
 const inert = computed(() => props.disabled || !props.actions.length);
 
@@ -44,9 +46,9 @@ function onKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <component :is="props.as" v-if="inert" :class="props.class"><slot /></component>
+  <component :is="props.as" v-if="inert" v-bind="$attrs" :class="props.class"><slot /></component>
   <NqContextMenu v-else>
-    <NqContextMenuTrigger :as="props.as" :class="cn('data-popup-open:bg-nq-hover', props.class)" @contextmenu.capture="onContextMenu" @keydown="onKeydown">
+    <NqContextMenuTrigger v-bind="$attrs" :as="props.as" :class="cn('data-popup-open:bg-nq-hover', props.class)" @contextmenu.capture="onContextMenu" @keydown="onKeydown">
       <slot />
     </NqContextMenuTrigger>
     <NqContextMenuContent class="min-w-44">

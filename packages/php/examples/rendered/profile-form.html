@@ -1,0 +1,541 @@
+<form data-slot="profile-form" novalidate x-data="nqProfileForm(JSON.parse('{\u0022values\u0022:{\u0022name\u0022:\u0022Sara Haddad\u0022,\u0022username\u0022:\u0022sara.haddad\u0022,\u0022email\u0022:\u0022sara@sahab.studio\u0022,\u0022phone\u0022:\u0022+966501234567\u0022,\u0022bio\u0022:\u0022Product designer building bilingual interfaces.\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022timezone\u0022:\u0022Asia\\\/Riyadh\u0022,\u0022location\u0022:\u0022Riyadh, Saudi Arabia\u0022,\u0022website\u0022:\u0022https:\\\/\\\/sara.example.com\u0022},\u0022hasLocation\u0022:true,\u0022hasWebsite\u0022:true,\u0022hasCheck\u0022:true,\u0022debounce\u0022:400,\u0022bioMax\u0022:160,\u0022locale\u0022:\u0022en\u0022,\u0022emailVerified\u0022:false,\u0022labels\u0022:{\u0022name\u0022:\u0022Display name\u0022,\u0022nameHelp\u0022:\u0022Shown on your profile and next to your activity.\u0022,\u0022nameRequired\u0022:\u0022Enter your name.\u0022,\u0022username\u0022:\u0022Username\u0022,\u0022usernameHelp\u0022:\u00223 to 30 letters, numbers, dots, dashes or underscores.\u0022,\u0022usernameFormat\u0022:\u0022Use 3 to 30 letters, numbers, dots, dashes or underscores. Start and end with a letter or number.\u0022,\u0022usernameChecking\u0022:\u0022Checking availability\u0022,\u0022usernameAvailable\u0022:\u0022\\u2066{x}\\u2069 is available.\u0022,\u0022usernameTaken\u0022:\u0022That username is taken. Try another one.\u0022,\u0022usernameCheckFailed\u0022:\u0022Availability could not be checked. It will be verified when you save.\u0022,\u0022email\u0022:\u0022Email\u0022,\u0022emailHelp\u0022:\u0022Used to sign in and for account notices.\u0022,\u0022verified\u0022:\u0022Verified\u0022,\u0022unverified\u0022:\u0022Not verified\u0022,\u0022resend\u0022:\u0022Resend verification email\u0022,\u0022resending\u0022:\u0022Sending\u0022,\u0022resent\u0022:\u0022Verification email sent to \\u2066{x}\\u2069.\u0022,\u0022resendFailed\u0022:\u0022The email could not be sent. Try again.\u0022,\u0022changeEmail\u0022:\u0022Change email\u0022,\u0022changeEmailTitle\u0022:\u0022Change your email\u0022,\u0022changeEmailDescription\u0022:\u0022We send a confirmation link to the new address. Enter your password to continue.\u0022,\u0022newEmail\u0022:\u0022New email\u0022,\u0022emailInvalid\u0022:\u0022Enter a valid email address.\u0022,\u0022emailSame\u0022:\u0022That is already your email.\u0022,\u0022currentPassword\u0022:\u0022Current password\u0022,\u0022passwordRequired\u0022:\u0022Enter your password.\u0022,\u0022sendConfirmation\u0022:\u0022Send confirmation link\u0022,\u0022changeEmailFailed\u0022:\u0022Your email could not be changed. Try again.\u0022,\u0022pendingEmail\u0022:\u0022We sent a confirmation link to \\u2066{x}\\u2069. Your email changes once you confirm it.\u0022,\u0022phone\u0022:\u0022Phone\u0022,\u0022phoneHelp\u0022:\u0022Used to recover your account. Never shown to others.\u0022,\u0022bio\u0022:\u0022Bio\u0022,\u0022bioHelp\u0022:\u0022A short line about you.\u0022,\u0022language\u0022:\u0022Language\u0022,\u0022timezone\u0022:\u0022Time zone\u0022,\u0022timezoneSearch\u0022:\u0022Search time zones\u0022,\u0022timezoneEmpty\u0022:\u0022No time zone found.\u0022,\u0022clear\u0022:\u0022Clear\u0022,\u0022open\u0022:\u0022Open list\u0022,\u0022unsaved\u0022:\u0022You have unsaved changes\u0022,\u0022discard\u0022:\u0022Discard\u0022,\u0022save\u0022:\u0022Save changes\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022saved\u0022:\u0022Profile updated.\u0022,\u0022saveFailed\u0022:\u0022Your profile could not be saved. Try again.\u0022,\u0022dismiss\u0022:\u0022Dismiss\u0022,\u0022publicProfile\u0022:\u0022Public profile\u0022,\u0022publicProfileHint\u0022:\u0022Everyone can see this on your profile page.\u0022,\u0022account\u0022:\u0022Account\u0022,\u0022accountHint\u0022:\u0022Private. Used to sign in and to recover your account.\u0022,\u0022preferences\u0022:\u0022Preferences\u0022,\u0022preferencesHint\u0022:\u0022How dates, times and the interface are shown to you.\u0022,\u0022location\u0022:\u0022Location\u0022,\u0022locationHelp\u0022:\u0022City and country, as you want it shown.\u0022,\u0022website\u0022:\u0022Website\u0022,\u0022websiteHelp\u0022:\u0022Your site or portfolio.\u0022,\u0022websiteInvalid\u0022:\u0022Enter a full link that starts with https:\\\/\\\/.\u0022,\u0022viewProfile\u0022:\u0022View public profile\u0022,\u0022preview\u0022:\u0022Profile preview\u0022}}'))" x-on:submit.prevent="save()" x-bind:aria-busy="saving ? 'true' : null"
+    class="@container flex flex-col gap-6">
+    <template x-if="formError !== null">
+        <div data-slot="alert" data-tone="danger" role="alert"
+     x-data="nqAlert()" x-modelable="open" x-show="open"     x-on:nq:dismiss="formError = null" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="formError"></span></div>
+            </div>
+            <div data-slot="alert-actions" class="ms-3 flex items-center gap-1">
+                            <button data-slot="button"
+     type="button"                     aria-label="Dismiss" x-on:click="dismiss()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground [&_svg]:size-3.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+    </template>
+    <template x-if="notice !== null && ! dirty">
+        <div data-slot="alert" data-tone="success" role="status"
+     x-data="nqAlert()" x-modelable="open" x-show="open"     x-on:nq:dismiss="notice = null" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-success/30 bg-nq-success-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="notice"></span></div>
+            </div>
+            <div data-slot="alert-actions" class="ms-3 flex items-center gap-1">
+                            <button data-slot="button"
+     type="button"                     aria-label="Dismiss" x-on:click="dismiss()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground [&_svg]:size-3.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+    </template>
+    <div class="grid grid-cols-1 gap-8 @3xl:grid-cols-[16rem_minmax(0,1fr)] @3xl:gap-10">
+        <aside aria-label="Profile preview" data-slot="profile-form-preview" class="flex min-w-0 flex-col gap-4 @3xl:sticky @3xl:top-6 @3xl:self-start">
+                            <div data-slot="avatar-upload" x-data="nqAvatarUpload(JSON.parse('{\u0022name\u0022:\u0022Sara Haddad\u0022,\u0022accept\u0022:\u0022image\\\/png,image\\\/jpeg,image\\\/webp\u0022,\u0022maxSize\u0022:5242880,\u0022outputSize\u0022:256,\u0022outputType\u0022:\u0022image\\\/webp\u0022,\u0022quality\u0022:0.9,\u0022maxZoom\u0022:4,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022upload\u0022:\u0022Upload photo\u0022,\u0022change\u0022:\u0022Change photo\u0022,\u0022remove\u0022:\u0022Remove photo\u0022,\u0022hint\u0022:\u0022{types}, up to {max}. You can also drop or paste an image.\u0022,\u0022dropping\u0022:\u0022Drop to use this photo\u0022,\u0022adjust\u0022:\u0022Adjust your photo\u0022,\u0022viewport\u0022:\u0022Photo position\u0022,\u0022instructions\u0022:\u0022Drag the photo to move it. Arrow keys move it, plus and minus zoom.\u0022,\u0022zoom\u0022:\u0022Zoom\u0022,\u0022zoomIn\u0022:\u0022Zoom in\u0022,\u0022zoomOut\u0022:\u0022Zoom out\u0022,\u0022save\u0022:\u0022Save photo\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022uploading\u0022:\u0022Uploading\u0022,\u0022images\u0022:\u0022images\u0022,\u0022wrongType\u0022:\u0022That file type is not supported. Use {types}.\u0022,\u0022tooLarge\u0022:\u0022That photo is larger than {max}.\u0022,\u0022unreadable\u0022:\u0022That image could not be read. Try another one.\u0022,\u0022saveFailed\u0022:\u0022The photo could not be saved. Try again.\u0022,\u0022removeFailed\u0022:\u0022The photo could not be removed. Try again.\u0022,\u0022saved\u0022:\u0022Photo updated.\u0022,\u0022removed\u0022:\u0022Photo removed.\u0022,\u0022units\u0022:\u0022B,KB,MB,GB,TB\u0022}}'))"
+    x-bind:data-dragging="dragging ? '' : null" x-bind:data-editing="editing ? '' : null"
+    x-on:dragenter="dragEnter($event)" x-on:dragover="dragOver($event)" x-on:dragleave="dragLeave()" x-on:drop="drop($event)" x-on:paste="paste($event)"
+    class="flex flex-col gap-3">
+    <div role="group" aria-label="Adjust your photo" data-slot="avatar-upload-editor" x-show="editing" style="display: none"
+        class="flex flex-col gap-4 rounded-floating border border-border bg-card p-4 ">
+        <div class="flex flex-col items-center gap-2">
+            <div dir="ltr" role="group" tabindex="0" aria-label="Photo position" aria-describedby="nq-avatar-help" data-slot="avatar-upload-viewport"
+                x-on:pointerdown="pointerDown($event)" x-on:pointermove="pointerMove($event)" x-on:pointerup="endDrag()" x-on:pointercancel="endDrag()" x-on:keydown="cropKey($event)"
+                class="relative size-56 max-w-full shrink-0 cursor-grab touch-none select-none overflow-hidden rounded-control bg-nq-surface-soft outline-none active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <img x-ref="image" alt="" draggable="false" class="pointer-events-none absolute max-w-none" style="visibility: hidden"
+                    x-bind:src="sourceUrl" x-bind:style="imageStyle" x-on:load="onImageLoad()" x-on:error="onImageError()">
+                <span aria-hidden="true" class="pointer-events-none absolute inset-0 border border-nq-fg/30 rounded-full" style="box-shadow: 0 0 0 100vmax color-mix(in oklab, var(--nq-fg) 45%, transparent)"></span>
+            </div>
+            <p id="nq-avatar-help" class="max-w-56 text-center text-caption text-muted-foreground">Drag the photo to move it. Arrow keys move it, plus and minus zoom.</p>
+        </div>
+        <div class="flex min-w-0 flex-1 flex-col justify-between gap-4">
+            <div class="flex items-center gap-2" x-bind:inert="busy !== '' || ! natural ? '' : null" x-bind:class="busy !== '' || ! natural ? 'opacity-50' : ''">
+                <button data-slot="button"
+     type="button"                     aria-label="Zoom out" x-on:click="setZoom(zoom - 0.25)" x-bind:disabled="zoom &lt;= 1 ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="11" cy="11" r="8"/>
+  <line x1="21" x2="16.65" y1="21" y2="16.65"/>
+  <line x1="8" x2="14" y1="11" y2="11"/>
+</svg></button>
+                <div data-slot="slider" x-data="nqSlider(JSON.parse('{\u0022value\u0022:1,\u0022min\u0022:1,\u0022max\u0022:4,\u0022step\u0022:0.01,\u0022disabled\u0022:false,\u0022minStepsBetweenThumbs\u0022:0,\u0022format\u0022:{\u0022style\u0022:\u0022percent\u0022,\u0022maximumFractionDigits\u0022:0}}'))" x-modelable="model"     x-model="zoom" aria-label="Zoom" class="flex w-full flex-col gap-2 data-disabled:opacity-50">
+        <div data-slot="slider-control"  x-on:pointerdown="down($event)" class="flex h-5 w-full touch-none select-none items-center">
+        <div data-slot="slider-track" x-ref="track" class="relative h-1.5 w-full rounded-full bg-nq-surface-soft">
+            <div data-slot="slider-range" :style="rangeStyle()" style="position: absolute; top: 0; bottom: 0; inset-inline-start: 0px; inset-inline-end: calc(100% - calc(0% + 8.00px))" class="rounded-full bg-primary"></div>
+                            <div data-slot="slider-thumb" role="slider" tabindex="0"
+                                        aria-valuemin="1" aria-valuemax="4" aria-orientation="horizontal"
+                    :aria-valuenow="values[0]" :aria-valuetext="fmt(values[0])" :data-dragging="dragging && active === 0 ? '' : undefined"
+                                        x-on:keydown="key($event, 0)" :style="thumbStyle(0)"
+                    style="inset-inline-start: calc(0% + 8.00px); top: 50%; translate: -50% -50%; position: absolute"
+                    class="size-4 rounded-full border border-primary bg-card shadow-xs outline-none transition-[box-shadow] duration-150 ease-nq motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-dragging:shadow-md data-disabled:pointer-events-none"></div>
+                                    </div>
+    </div>
+    </div>
+                <button data-slot="button"
+     type="button"                     aria-label="Zoom in" x-on:click="setZoom(zoom + 0.25)" x-bind:disabled="zoom &gt;= maxZoom ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="11" cy="11" r="8"/>
+  <line x1="21" x2="16.65" y1="21" y2="16.65"/>
+  <line x1="11" x2="11" y1="8" y2="14"/>
+  <line x1="8" x2="14" y1="11" y2="11"/>
+</svg></button>
+            </div>
+            <div class="flex flex-col gap-3">
+                <div x-show="uploading" role="progressbar" aria-label="Uploading" aria-valuemin="0" aria-valuemax="100" x-bind:aria-valuenow="progress" style="display: none"
+                    data-slot="progress" class="flex w-full flex-col gap-1.5">
+                    <span class="block h-1 w-full overflow-hidden rounded-full bg-nq-surface-soft"><span class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none" x-bind:style="'width: ' + progress + '%'"></span></span>
+                </div>
+                <div class="flex flex-wrap justify-end gap-2">
+                    <button data-slot="button"
+     type="button"                     x-on:click="reset()" x-bind:disabled="busy !== &#039;&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="save()" x-bind:aria-busy="uploading ? &#039;true&#039; : null" x-bind:disabled="! natural || busy !== &#039;&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-show="uploading" style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                        Save photo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-slot="avatar-upload-idle" x-show="! editing" class="flex gap-4 flex-col items-start gap-3">
+        <button type="button" data-slot="avatar-upload-trigger" aria-describedby="nq-avatar-hint" x-on:click="openPicker()"
+            x-bind:aria-label="current ? 'Change photo' : 'Upload photo'" x-bind:disabled="locked ? '' : null"             class="group relative shrink-0 outline-none rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50">
+            <span data-slot="avatar" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground rounded-full size-32 text-h1 ring-1 ring-border @3xl:size-56 @3xl:text-display">
+                <img data-slot="avatar-image" alt="Sara Haddad" class="size-full object-cover" x-show="current" x-bind:src="current"  style="display: none" >
+                <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-show="! current"                      role="img" aria-label="Sara Haddad" >SH</span>
+            </span>
+            <span aria-hidden="true" x-bind:class="dragging ? 'border-2 border-dashed border-nq-focus opacity-100' : ''"
+                class="absolute inset-0 flex items-center justify-center bg-nq-fg/50 text-nq-bg opacity-0 transition-opacity duration-150 ease-nq group-hover:opacity-100 group-focus-visible:opacity-100 group-disabled:hidden rounded-full">
+                <svg data-slot="icon" aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/>
+  <circle cx="12" cy="13" r="3"/>
+</svg>            </span>
+        </button>
+        <div class="flex min-w-0 flex-col gap-2">
+            <div class="flex flex-wrap gap-2">
+                <button data-slot="button"
+     type="button"                     x-on:click="openPicker()" x-bind:disabled="locked ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v12"/>
+  <path d="m17 8-5-5-5 5"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+</svg>                    <span x-text="current ? 'Change photo' : 'Upload photo'">Upload photo</span></button>
+                                    <button data-slot="button"
+     type="button"                     x-show="current" x-on:click="removePhoto()" x-bind:aria-busy="busy === &#039;removing&#039; ? &#039;true&#039; : null" x-bind:disabled="disabled || busy === &#039;saving&#039; || busy === &#039;removing&#039; ? &#039;&#039; : null" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <span x-show="busy === 'removing'" style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>                        Remove photo</button>
+                            </div>
+            <p id="nq-avatar-hint" class="text-caption text-muted-foreground" x-text="hintText"></p>
+        </div>
+    </div>
+    <p role="alert" data-slot="avatar-upload-error" x-show="error" x-text="error" class="text-caption text-nq-danger-text" style="display: none"></p>
+    <span role="status" class="sr-only" x-text="status"></span>
+    <input x-ref="input" type="file" class="sr-only" tabindex="-1" aria-hidden="true" accept="image/png,image/jpeg,image/webp" x-bind:disabled="locked ? '' : null"
+        x-on:click.stop x-on:change="onInput($event)" >
+</div>
+                        <div class="flex min-w-0 flex-col gap-1">
+                <p dir="auto" class="truncate text-h2 text-foreground" x-text="shownName">Sara Haddad</p>
+                <p dir="ltr" class="truncate text-start font-mono text-body-sm text-muted-foreground" x-show="username !== ''"  x-text="'@' + username">@sara.haddad</p>
+            </div>
+            <ul class="flex list-none flex-col gap-2 p-0 text-body-sm text-foreground" x-show="location.trim() !== '' || site !== ''" >
+                <li class="flex min-w-0 items-center gap-2" x-show="location.trim() !== ''" >
+                    <svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+  <circle cx="12" cy="10" r="3"/>
+</svg>                    <bdi class="truncate" x-text="location.trim()">Riyadh, Saudi Arabia</bdi>
+                </li>
+                <li class="flex min-w-0 items-center gap-2" x-show="site !== ''" >
+                    <svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+  <path d="M2 12h20"/>
+</svg>                    <span dir="ltr" class="truncate" x-text="site">sara.example.com</span>
+                </li>
+            </ul>
+                            <a data-slot="button"
+     href="/u/sara.haddad"                     as="a" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)] w-full">
+        View public profile<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</svg></a>
+                        <div x-show="bio.trim() !== ''" class="flex flex-col gap-4" >
+                <div data-slot="separator" role="separator" data-orientation="horizontal"
+        class="shrink-0 bg-border h-px w-full"></div>
+                <p dir="auto" class="whitespace-pre-line text-pretty text-body-sm text-nq-fg-body" x-text="bio.trim()">Product designer building bilingual interfaces.</p>
+            </div>
+        </aside>
+        <div class="flex min-w-0 flex-col gap-6">
+            <section aria-labelledby="pf-public" data-slot="profile-form-group" class="flex flex-col gap-5 rounded-card border border-border bg-card p-4 @xl:p-6">
+                <div class="flex flex-col gap-1">
+                    <h3 id="pf-public" class="text-h3 text-foreground">Public profile</h3>
+                    <p class="text-body-sm text-muted-foreground">Everyone can see this on your profile page.</p>
+                </div>
+                <div class="grid grid-cols-1 gap-x-4 gap-y-5 @xl:grid-cols-2">
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="bad.name" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Display name</label>
+                        <input data-slot="input" type="text"
+         name="name"             autocomplete="name" required="required" x-model="name" x-bind:disabled="false" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                        <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errs.name"></span></div>
+                        <p data-slot="field-description" x-show="! bad.name" class="text-caption text-muted-foreground">Shown on your profile and next to your activity.</p>
+</div>
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="bad.username" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Username</label>
+                        <div role="group" data-slot="input-group"
+    dir="ltr" class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><div data-slot="input-group-addon" data-align="start"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-first ps-3 pe-1"><span data-slot="input-group-text" class="select-none whitespace-nowrap">@</span></div>
+                            <input data-slot="input-group-input"  dir="ltr"     name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="30" x-model="username" x-bind:disabled="false" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start" />
+                            <div data-slot="input-group-addon" data-align="end"
+    x-show="check.status === &#039;idle&#039; || check.status === &#039;error&#039; ? false : true" style="display: none" class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-3"><template x-if="check.status === 'checking'"><svg data-slot="spinner" aria-hidden="true" class="animate-spin motion-reduce:animate-none size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                                <template x-if="check.status === 'available'"><svg aria-hidden="true" class="size-4 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg></template>
+                                <template x-if="check.status === 'taken'"><svg aria-hidden="true" class="size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg></template></div></div>
+                        <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errs.username"></span></div>
+                        <p x-show="! bad.username" data-slot="field-description" aria-live="polite" class="text-caption text-muted-foreground" x-bind:class="check.status === 'available' ? 'text-nq-success-text' : ''" x-text="hint">3 to 30 letters, numbers, dots, dashes or underscores.</p>
+</div>
+                </div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="bad.bio" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Bio</label>
+                    <textarea data-slot="textarea"
+     name="bio"             autocomplete="off" rows="3" maxlength="160" x-model="bio" x-bind:disabled="false" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0 flex-1">
+                            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errs.bio"></span></div>
+                            <p data-slot="field-description" x-show="! bad.bio" class="text-caption text-muted-foreground">A short line about you.</p>
+                        </div>
+                        <span data-slot="profile-form-counter" dir="ltr" class="shrink-0 text-caption text-muted-foreground tabular-nums" x-text="counter">47/160</span>
+                    </div>
+</div>
+                                    <div class="grid grid-cols-1 gap-x-4 gap-y-5 @xl:grid-cols-2">
+                                                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="bad.location" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Location</label>
+                                <input data-slot="input" type="text"
+         name="location"             autocomplete="address-level2" x-model="location" x-bind:disabled="false" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                                <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errs.location"></span></div>
+                                <p data-slot="field-description" x-show="! bad.location" class="text-caption text-muted-foreground">City and country, as you want it shown.</p>
+</div>
+                                                                            <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="bad.website" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Website</label>
+                                <input data-slot="input" type="url"
+         name="website"             dir="ltr" autocomplete="url" inputmode="url" spellcheck="false" placeholder="https://" x-model="website" x-bind:disabled="false" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                                <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errs.website"></span></div>
+                                <p data-slot="field-description" x-show="! bad.website" class="text-caption text-muted-foreground">Your site or portfolio.</p>
+</div>
+                                            </div>
+                            </section>
+            <section aria-labelledby="pf-account" data-slot="profile-form-group" class="flex flex-col gap-5 rounded-card border border-border bg-card p-4 @xl:p-6">
+                <div class="flex flex-col gap-1">
+                    <h3 id="pf-account" class="text-h3 text-foreground">Account</h3>
+                    <p class="text-body-sm text-muted-foreground">Private. Used to sign in and to recover your account.</p>
+                </div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <div class="flex flex-wrap items-center gap-2">
+                        <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Email</label>
+                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>Not verified</span>
+                                            </div>
+                    <input data-slot="input" type="email"
+         name="email"             dir="ltr" readonly="readonly" autocomplete="email" value="sara@sahab.studio" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                    <p data-slot="field-description" class="text-caption text-muted-foreground">Used to sign in and for account notices.</p>
+                                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                            <button data-slot="button"
+     type="button"                     x-on:click="resendVerification()" x-bind:aria-busy="resend === &#039;sending&#039; ? &#039;true&#039; : null" x-bind:data-disabled="resend === &#039;sent&#039; ? &#039;&#039; : null" x-bind:disabled="resend === &#039;sent&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="resend === &#039;sending&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                <span x-text="resend === 'sending' ? 'Sending' : 'Resend verification email'">Resend verification email</span></button>
+                            <span aria-live="polite" class="text-caption" x-bind:class="resend === 'failed' ? 'text-nq-danger-text' : 'text-nq-success-text'" x-text="resendMsg"></span>
+                        </div>
+                                        <template x-if="pendingEmail !== null">
+                        <div data-slot="alert" data-tone="info" role="status"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-info/30 bg-nq-info-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-info-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="'We sent a confirmation link to \u2066{x}\u2069. Your email changes once you confirm it.'.replace('{x}', pendingEmail)"></span></div>
+            </div>
+    </div>
+                    </template>
+                                            <div>
+                            <button data-slot="button"
+     type="button"                     x-on:click="emailOpen = true" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Change email</button>
+                            <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="emailOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form novalidate class="grid gap-4" x-on:submit.prevent.stop="submitEmail()">
+                                        <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Change your email</h2>
+                                            <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">We send a confirmation link to the new address. Enter your password to continue.</p></div>
+                                        <template x-if="emailError !== null">
+                                            <div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="emailError"></span></div>
+            </div>
+    </div>
+                                        </template>
+                                        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="emailErrors.email" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">New email</label>
+                                            <input data-slot="input" type="email"
+         name="new-email"             dir="ltr" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" x-model="newEmail" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                                            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="emailErrors.email"></span></div>
+</div>
+                                        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="emailErrors.password" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Current password</label>
+                                            <div data-slot="password-input" x-data="nqPasswordInput('', JSON.parse('{\u0022visible\u0022:false,\u0022score\u0022:null,\u0022rules\u0022:null,\u0022levels\u0022:[\u0022Very weak\u0022,\u0022Weak\u0022,\u0022Fair\u0022,\u0022Good\u0022,\u0022Strong\u0022]}'))" x-modelable="value"
+    class="flex w-full flex-col gap-2">
+    <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><input data-slot="input-group-input"     x-model="password" x-bind:type="shown ? &#039;text&#039; : &#039;password&#039;" type="password" value="" autocapitalize="none" autocorrect="off" spellcheck="false" id="pf-current-password" name="current-password" autocomplete="current-password" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px]" />
+        <div data-slot="input-group-addon" data-align="end"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-1.5"><button data-slot="password-input-toggle"
+     type="button"                     x-bind="toggle" aria-label="Show password" aria-pressed="false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg x-show="shown" x-cloak="1" style="display: none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>                <svg x-show="!shown" x-cloak="1" style="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg></button></div></div>
+        </div>
+                                            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="emailErrors.password"></span></div>
+</div>
+                                        <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="emailOpen = false" x-bind:disabled="emailBusy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                                            <button data-slot="button"
+     type="submit"                     x-bind:aria-busy="emailBusy ? &#039;true&#039; : null" x-bind:data-disabled="emailBusy ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="emailBusy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                Send confirmation link</button></div>
+                                    </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+                        </div>
+</div>
+                <div class="grid grid-cols-1 gap-x-4 gap-y-5 @xl:grid-cols-2">
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="bad.phone" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Phone</label>
+                        <div data-slot="phone-input-root" x-data="nqPhoneInput('+966501234567', JSON.parse('{\u0022defaultCountry\u0022:\u0022SA\u0022,\u0022locale\u0022:\u0022en\u0022}'))" x-modelable="value" x-id="['nq-phone']"
+    x-model="phone" class="block w-full min-w-0">
+    <div role="group" data-slot="phone-input" x-ref="anchor"         class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50">
+        <button data-slot="phone-input-country" x-ref="trigger" x-bind="trigger"             class="order-first flex h-full shrink-0 cursor-default items-center gap-1.5 border-e border-input ps-3 pe-2 text-body-sm text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:bg-nq-hover data-[state=open]:bg-nq-hover disabled:cursor-not-allowed">
+            <span data-slot="country-flag" aria-hidden="true" x-html="flag"
+                class="relative inline-block aspect-[3/2] h-[1em] shrink-0 overflow-hidden rounded-[2px] bg-muted align-[-0.125em] text-[1.125rem] [&>svg]:block [&>svg]:size-full after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:ring-1 after:ring-foreground/15 after:ring-inset"></span>
+            <bdi dir="ltr" class="tabular-nums" x-text="'+' + country().dial">+966</bdi>
+            <svg aria-hidden="true" class="size-3.5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>        </button>
+        <input data-slot="input-group-input" dir="ltr" x-bind="field"              class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start tabular-nums">
+                    <input type="hidden" name="phone" :value="value">
+            </div>
+    <template x-teleport="body">
+        <div data-slot="phone-input-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.anchor" :dir="lang === 'ar' ? 'rtl' : 'ltr'"
+            class="z-50 w-[max(var(--anchor-width),18rem)] overflow-hidden rounded-floating border border-border bg-popover text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div class="border-b border-border p-1.5">
+                <input data-slot="phone-input-search" x-ref="search" x-bind="search"
+                    class="h-control-sm w-full min-w-0 rounded-control border-0 bg-transparent px-2 text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+            </div>
+            <div class="max-h-64 overflow-y-auto p-1.5">
+                <template x-if="open"><div class="contents"><template x-for="c in matches()" :key="c.iso">
+                    <div data-slot="combobox-item" x-bind="item(c)"
+                        class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected">
+                        <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+                            <span x-show="c.iso === iso" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+                        </span>
+                        <span class="flex min-w-0 flex-1 items-center gap-2">
+                            <span data-slot="country-flag" aria-hidden="true" x-data="nqCountryFlag(c.iso)" x-html="svg"
+                                class="relative inline-block aspect-[3/2] h-[1em] shrink-0 overflow-hidden rounded-[2px] bg-muted align-[-0.125em] text-[1rem] [&>svg]:block [&>svg]:size-full after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:ring-1 after:ring-foreground/15 after:ring-inset"></span>
+                            <span class="min-w-0 flex-1 truncate" x-text="c.label"></span>
+                            <bdi dir="ltr" class="shrink-0 text-muted-foreground tabular-nums" x-text="'+' + c.dial"></bdi>
+                        </span>
+                    </div>
+                </template></div></template>
+                <div x-bind="emptyState" class="px-2.5 py-2 text-body-sm text-muted-foreground">No country found.</div>
+            </div>
+        </div>
+    </template>
+</div>
+                        <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errs.phone"></span></div>
+                        <p data-slot="field-description" x-show="! bad.phone" class="text-caption text-muted-foreground">Used to recover your account. Never shown to others.</p>
+</div>
+                </div>
+            </section>
+            <section aria-labelledby="pf-prefs" data-slot="profile-form-group" class="flex flex-col gap-5 rounded-card border border-border bg-card p-4 @xl:p-6">
+                <div class="flex flex-col gap-1">
+                    <h3 id="pf-prefs" class="text-h3 text-foreground">Preferences</h3>
+                    <p class="text-body-sm text-muted-foreground">How dates, times and the interface are shown to you.</p>
+                </div>
+                <div class="grid grid-cols-1 gap-x-4 gap-y-5 @xl:grid-cols-2">
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Language</label>
+                        <div data-slot="select" x-data="nqSelect('en', false)" x-modelable="value" x-id="['nq-select']" x-model="locale" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                            <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('en', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('en')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">English</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('ar', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('ar')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">العربية</span>
+</div>
+    </div>
+</template>
+            <template x-if="multiple">
+            <template x-for="v in value" :key="v"><input type="hidden" name="locale[]" :value="v"></template>
+        </template>
+        <template x-if="!multiple"><input type="hidden" name="locale" :value="value ?? ''"></template>
+    </div>
+</div>
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Time zone</label>
+                        <div data-slot="combobox" x-data="nqCombobox('Asia\/Riyadh', false)" x-modelable="value" x-id="['nq-combobox']" x-model="timezone" class="contents">
+    <div data-slot="combobox-input-group" x-ref="anchor"
+    class="flex min-h-control min-w-0 w-full items-center gap-1 rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 h-control ps-3 pe-1.5">
+    <input data-slot="combobox-input" x-ref="input" x-bind="input"
+                placeholder="Search time zones" class="h-full min-w-0 flex-1 border-0 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+        <button data-slot="combobox-trigger" x-bind="trigger" aria-label="Open list"
+        class="flex size-6 shrink-0 cursor-default items-center justify-center rounded-control text-muted-foreground outline-none hover:text-foreground focus-visible:outline-1 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></button>
+</div>
+                            <template x-teleport="body">
+    <div data-slot="combobox-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.anchor"
+        class="z-50 w-[var(--anchor-width)] max-h-[min(var(--available-height),20rem)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="combobox-empty" x-bind="emptyState" class="px-2.5 py-2 text-body-sm text-muted-foreground empty:hidden">No time zone found.</div>
+                                <div data-slot="combobox-list" class="outline-none"><div data-slot="combobox-item" x-bind="item('Asia\/Riyadh', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Asia\/Riyadh')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate"><bdi>Riyadh (GMT+3)</bdi></span>
+</div>
+                                                                            <div data-slot="combobox-item" x-bind="item('Africa\/Cairo', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Africa\/Cairo')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate"><bdi>Cairo (GMT+2)</bdi></span>
+</div>
+                                                                            <div data-slot="combobox-item" x-bind="item('Europe\/London', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('Europe\/London')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate"><bdi>London (GMT+1)</bdi></span>
+</div></div>
+    </div>
+</template>
+    </div>
+                        <input type="hidden" name="timezone" x-bind:value="timezone" value="Asia/Riyadh">
+</div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <span role="status" class="sr-only" x-text="dirty ? 'You have unsaved changes' : (notice ?? '')"></span>
+    <div role="region" aria-label="You have unsaved changes" data-slot="profile-form-savebar" x-show="dirty" style="display: none"
+        class="sticky bottom-4 z-10 flex flex-wrap items-center justify-between gap-3 rounded-floating border border-border bg-popover p-3 text-popover-foreground shadow-floating">
+        <p class="flex items-center gap-2 text-body-sm"><svg aria-hidden="true" class="size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>You have unsaved changes</p>
+        <div class="flex gap-2">
+            <button data-slot="button"
+     type="button"                     x-on:click="discard()" x-bind:disabled="saving ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Discard</button>
+            <button data-slot="button"
+     type="submit"                     x-bind:aria-busy="saving ? &#039;true&#039; : null" x-bind:data-disabled="(blocked || saving) ? &#039;&#039; : null" x-bind:disabled="blocked" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="saving" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                Save changes</button>
+        </div>
+    </div>
+</form>

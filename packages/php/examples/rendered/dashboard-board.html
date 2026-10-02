@@ -1,0 +1,368 @@
+<section data-slot="dashboard-board" aria-label="Dashboard"
+    x-data="nqDashboardBoard(JSON.parse('[{\u0022type\u0022:\u0022revenue\u0022,\u0022title\u0022:\u0022Revenue\u0022,\u0022description\u0022:\u0022Revenue this month\u0022,\u0022defaultCols\u0022:2,\u0022defaultSettings\u0022:{\u0022range\u0022:\u002230d\u0022},\u0022fields\u0022:[{\u0022key\u0022:\u0022range\u0022,\u0022label\u0022:\u0022Range\u0022,\u0022type\u0022:\u0022select\u0022,\u0022options\u0022:[{\u0022value\u0022:\u00227d\u0022,\u0022label\u0022:\u00227 days\u0022},{\u0022value\u0022:\u002230d\u0022,\u0022label\u0022:\u002230 days\u0022}]}]},{\u0022type\u0022:\u0022orders\u0022,\u0022title\u0022:\u0022Orders\u0022,\u0022description\u0022:\u0022Orders in the queue\u0022},{\u0022type\u0022:\u0022notes\u0022,\u0022title\u0022:\u0022Notes\u0022,\u0022unique\u0022:true}]'), JSON.parse('[{\u0022id\u0022:\u0022revenue-1\u0022,\u0022type\u0022:\u0022revenue\u0022,\u0022cols\u0022:2,\u0022rows\u0022:1},{\u0022id\u0022:\u0022orders-1\u0022,\u0022type\u0022:\u0022orders\u0022,\u0022cols\u0022:1,\u0022rows\u0022:1}]'), JSON.parse('{\u0022defaultLayout\u0022:[{\u0022id\u0022:\u0022revenue-1\u0022,\u0022type\u0022:\u0022revenue\u0022,\u0022cols\u0022:2,\u0022rows\u0022:1},{\u0022id\u0022:\u0022orders-1\u0022,\u0022type\u0022:\u0022orders\u0022,\u0022cols\u0022:1,\u0022rows\u0022:1}],\u0022rowHeight\u0022:200,\u0022locale\u0022:\u0022en\u0022}'))" x-modelable="layout"
+    class="flex w-full min-w-0 flex-col gap-4">
+    <div hidden data-slot="dashboard-board-widgets"><template data-board-widget="revenue"><p class="text-h2 font-semibold" x-text="setting(card, 'range') === '7d' ? '$12,400' : '$48,200'"></p></template>
+    <template data-board-widget="orders"><p class="text-h2 font-semibold">318</p></template>
+    <template data-board-widget="notes"><p class="text-body-sm">Ship the Q4 report on Monday.</p></template></div>
+    <div class="flex flex-wrap items-center gap-3">
+                    <h2 class="me-auto text-h3 font-semibold">Overview</h2>
+                <template x-if="editing">
+            <div class="contents">
+                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-brand/40 bg-[color-mix(in_oklab,var(--nq-brand)_14%,transparent)] text-foreground"><span x-text="s.editing"></span></span>
+                <button data-slot="button"
+     type="button"                     x-bind:disabled="saving" x-on:click="showAdd()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg> Add widget</button>
+                <template x-if="hasDefault()">
+                    <button data-slot="button"
+     type="button"                     x-bind:disabled="saving" x-on:click="resetToDefault()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+</svg> Reset to default</button>
+                </template>
+                <button data-slot="button"
+     type="button"                     x-bind:disabled="saving" x-on:click="stopEditing()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                <button data-slot="button"
+     type="button"                     x-bind:disabled="!canSave()" x-bind:aria-busy="saving ? &#039;true&#039; : null" x-on:click="save()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg x-show="saving" x-cloak="1" style="display: none" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                    <svg x-show="!saving" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                    <span x-show="!saving">Save</span><span x-show="saving" x-cloak style="display: none">Saving</span></button>
+            </div>
+        </template>
+        <template x-if="!editing">
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="!canEdit()" x-on:click="startEditing()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+  <path d="m15 5 4 4"/>
+</svg> Customise</button>
+        </template>
+    </div>
+    <p x-show="editing" x-cloak style="display: none" class="text-body-sm text-muted-foreground">Drag cards to reorder, resize them, pin the ones you always want first.</p>
+    <p x-show="saveError" x-cloak style="display: none" role="alert" class="text-body-sm text-danger">Could not save the dashboard. Your changes are still here, try again.</p>
+    <div data-slot="error-state" role="alert" style="display: none;" x-show="error" x-cloak="x-cloak" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-nq-danger-text">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">Could not load the dashboard</p>
+            </div>
+    </div>
+    <div data-slot="loading-state" role="status" aria-live="polite" x-show="loading" x-cloak="x-cloak" style="display: none" class="flex flex-col gap-2">
+    <span class="sr-only">Loading…</span>
+                        <div class="flex h-row items-center gap-3 border-b border-border px-1">
+                <div data-slot="skeleton" aria-hidden="true" class="bg-secondary motion-safe:animate-pulse size-5 rounded-[4px]"></div>
+                <div data-slot="skeleton" aria-hidden="true" style="inline-size: 62%" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-3"></div>
+            </div>
+                    <div class="flex h-row items-center gap-3 border-b border-border px-1">
+                <div data-slot="skeleton" aria-hidden="true" class="bg-secondary motion-safe:animate-pulse size-5 rounded-[4px]"></div>
+                <div data-slot="skeleton" aria-hidden="true" style="inline-size: 44%" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-3"></div>
+            </div>
+                    <div class="flex h-row items-center gap-3 border-b border-border px-1">
+                <div data-slot="skeleton" aria-hidden="true" class="bg-secondary motion-safe:animate-pulse size-5 rounded-[4px]"></div>
+                <div data-slot="skeleton" aria-hidden="true" style="inline-size: 54%" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-3"></div>
+            </div>
+                    <div class="flex h-row items-center gap-3 border-b border-border px-1">
+                <div data-slot="skeleton" aria-hidden="true" class="bg-secondary motion-safe:animate-pulse size-5 rounded-[4px]"></div>
+                <div data-slot="skeleton" aria-hidden="true" style="inline-size: 38%" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-3"></div>
+            </div>
+            </div>
+    <div data-slot="empty-state" x-show="isEmpty()" x-cloak="x-cloak" style="display: none" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="7" height="9" x="3" y="3" rx="1"/>
+  <rect width="7" height="5" x="14" y="3" rx="1"/>
+  <rect width="7" height="9" x="14" y="12" rx="1"/>
+  <rect width="7" height="5" x="3" y="16" rx="1"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">This dashboard is empty</p>
+                    <p class="text-body-sm text-muted-foreground">Add widgets to see your numbers here.</p>
+            </div>
+    </div>
+    <ul x-ref="grid" x-show="showGrid()" x-cloak style="display: none" x-bind:style="gridStyle()" aria-label="Dashboard" class="grid w-full list-none p-0">
+        <template x-for="card in list" :key="card.id">
+            <li x-bind:data-board-id="card.id" x-bind:data-dragging="activeId === card.id ? '' : null" x-bind:style="cardStyle(card)" x-bind:class="cardClass(card)" class="min-w-0">
+                <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents h-full w-full"><div data-slot="dashboard-board-card" x-bind="trigger" x-ref="trigger" class="relative h-full w-full">
+                        <div x-bind:class="surfaceClass(card)" class="flex flex-col rounded-card border border-border bg-card text-card-foreground h-full w-full gap-0 overflow-hidden py-0">
+                            <div class="flex min-h-11 items-center gap-2 border-b border-border px-3 py-1.5">
+                                <template x-if="editing">
+                                    <button type="button" x-bind:data-board-handle="card.id" aria-roledescription="draggable card" x-bind:aria-label="handleLabel(card)"
+                                        x-bind:aria-pressed="activeId === card.id ? 'true' : 'false'" title="To reorder, focus the drag handle and press Space, then use the arrow keys. Or open the actions menu and choose Move earlier or Move later."
+                                        x-on:pointerdown="handleDown($event, card.id)" x-on:keydown="handleKey($event, card.id)"
+                                        class="-ms-1 flex size-8 shrink-0 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring active:cursor-grabbing"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="1"/>
+  <circle cx="9" cy="5" r="1"/>
+  <circle cx="9" cy="19" r="1"/>
+  <circle cx="15" cy="12" r="1"/>
+  <circle cx="15" cy="5" r="1"/>
+  <circle cx="15" cy="19" r="1"/>
+</svg></button>
+                                </template>
+                                <h3 class="min-w-0 flex-1 truncate text-body-sm font-medium" x-text="widgetTitle(card)"></h3>
+                                <span x-show="card.pinned" x-cloak style="display: none" role="img" aria-label="Pinned" class="inline-flex"><svg class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 17v5"/>
+  <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>
+</svg></span>
+                                <template x-if="editing">
+                                    <span dir="ltr" role="img" x-bind:aria-label="sizeAria(card)" class="shrink-0 text-caption tabular-nums text-muted-foreground" x-text="sizeText(card)"></span>
+                                </template>
+                                <template x-if="editing">
+                                    <button data-slot="button"
+     type="button"                     x-bind:aria-pressed="card.pinned ? &#039;true&#039; : &#039;false&#039;" x-bind:aria-label="pinLabel(card)" x-on:click="togglePinned(card)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg x-show="card.pinned" x-cloak="1" style="display: none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 17v5"/>
+  <path d="M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89"/>
+  <path d="m2 2 20 20"/>
+  <path d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11"/>
+</svg>                                        <svg x-show="!card.pinned" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 17v5"/>
+  <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>
+</svg></button>
+                                </template>
+                                <template x-if="hasMenu(card)">
+                                    <button data-slot="button"
+     type="button"                     data-board-more="data-board-more" x-bind:aria-label="moreLabel(card)" x-on:click="onlySettings(card) ? openSettings(card) : openAt($el.getBoundingClientRect().left, $el.getBoundingClientRect().bottom, true)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg x-show="onlySettings(card)" x-cloak="1" style="display: none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 17H5"/>
+  <path d="M19 7h-9"/>
+  <circle cx="17" cy="17" r="3"/>
+  <circle cx="7" cy="7" r="3"/>
+</svg>                                        <svg x-show="!onlySettings(card)" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                </template>
+                            </div>
+                            <div x-bind:inert="editing ? '' : null" x-init="mountWidget($el, card)" class="min-h-0 flex-1 overflow-auto p-3">
+                                <p x-show="!known(card)" x-cloak style="display: none" class="text-body-sm text-muted-foreground">This widget is not available any more.</p>
+                            </div>
+                        </div>
+                        <template x-if="editing">
+                            <button type="button" tabindex="-1" aria-hidden="true" data-board-grip x-on:pointerdown="gripDown($event, card)"
+                                class="absolute bottom-1 end-1 z-10 flex size-6 cursor-nwse-resize touch-none items-center justify-center rounded-control text-muted-foreground hover:bg-muted rtl:cursor-nesw-resize"><svg aria-hidden="true" class="size-4 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 19H5v-6"/>
+  <path d="M13 5h6v6"/>
+  <path d="M19 5 5 19"/>
+</svg></button>
+                        </template>
+                    </div>
+                    <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><template x-if="editing">
+                            <div class="contents">
+                                <div data-slot="context-menu-group" role="group" ><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-bind:data-disabled="off(card, &#039;wider&#039;) ? &#039;&#039; : null" x-bind:aria-disabled="off(card, &#039;wider&#039;) ? &#039;true&#039; : null" x-on:click="resizeBy(card, 1, 0)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 15 6 6"/>
+  <path d="m15 9 6-6"/>
+  <path d="M21 16v5h-5"/>
+  <path d="M21 8V3h-5"/>
+  <path d="M3 16v5h5"/>
+  <path d="m3 21 6-6"/>
+  <path d="M3 8V3h5"/>
+  <path d="M9 9 3 3"/>
+</svg> Wider</div>
+                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-bind:data-disabled="off(card, &#039;narrower&#039;) ? &#039;&#039; : null" x-bind:aria-disabled="off(card, &#039;narrower&#039;) ? &#039;true&#039; : null" x-on:click="resizeBy(card, -1, 0)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 15 6 6m-6-6v4.8m0-4.8h4.8"/>
+  <path d="M9 19.8V15m0 0H4.2M9 15l-6 6"/>
+  <path d="M15 4.2V9m0 0h4.8M15 9l6-6"/>
+  <path d="M9 4.2V9m0 0H4.2M9 9 3 3"/>
+</svg> Narrower</div>
+                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-bind:data-disabled="off(card, &#039;taller&#039;) ? &#039;&#039; : null" x-bind:aria-disabled="off(card, &#039;taller&#039;) ? &#039;true&#039; : null" x-on:click="resizeBy(card, 0, 1)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 15 6 6"/>
+  <path d="m15 9 6-6"/>
+  <path d="M21 16v5h-5"/>
+  <path d="M21 8V3h-5"/>
+  <path d="M3 16v5h5"/>
+  <path d="m3 21 6-6"/>
+  <path d="M3 8V3h5"/>
+  <path d="M9 9 3 3"/>
+</svg> Taller</div>
+                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-bind:data-disabled="off(card, &#039;shorter&#039;) ? &#039;&#039; : null" x-bind:aria-disabled="off(card, &#039;shorter&#039;) ? &#039;true&#039; : null" x-on:click="resizeBy(card, 0, -1)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 15 6 6m-6-6v4.8m0-4.8h4.8"/>
+  <path d="M9 19.8V15m0 0H4.2M9 15l-6 6"/>
+  <path d="M15 4.2V9m0 0h4.8M15 9l6-6"/>
+  <path d="M9 4.2V9m0 0H4.2M9 9 3 3"/>
+</svg> Shorter</div></div>
+                                <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                <div data-slot="context-menu-group" role="group" ><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-bind:data-disabled="off(card, &#039;earlier&#039;) ? &#039;&#039; : null" x-bind:aria-disabled="off(card, &#039;earlier&#039;) ? &#039;true&#039; : null" x-on:click="move(card, -1)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 12 7-7 7 7"/>
+  <path d="M12 19V5"/>
+</svg> Move earlier</div>
+                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-bind:data-disabled="off(card, &#039;later&#039;) ? &#039;&#039; : null" x-bind:aria-disabled="off(card, &#039;later&#039;) ? &#039;true&#039; : null" x-on:click="move(card, 1)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 5v14"/>
+  <path d="m19 12-7 7-7-7"/>
+</svg> Move later</div>
+                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="togglePinned(card)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 17v5"/>
+  <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>
+</svg> <span x-text="pinLabel(card)"></span></div></div>
+                                <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                            </div>
+                        </template>
+                        <template x-if="hasFields(card)">
+                            <div class="contents">
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="openSettings(card)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 17H5"/>
+  <path d="M19 7h-9"/>
+  <circle cx="17" cy="17" r="3"/>
+  <circle cx="7" cy="7" r="3"/>
+</svg> Settings</div>
+                            </div>
+                        </template>
+                        <template x-if="editing">
+                            <div class="contents">
+                                <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" x-show="hasFields(card)" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="removeItem(card)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg> Remove</div>
+                            </div>
+                        </template></div>
+</template></div>
+            </li>
+        </template>
+    </ul>
+    <p role="status" aria-live="polite" class="sr-only" x-text="live"></p>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="adding" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Add a widget</h2>
+                <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Pick a widget to add to the end of the dashboard.</p></div>
+            <ul class="flex flex-col divide-y divide-border rounded-control border border-border">
+                <template x-for="w in widgets" :key="w.type">
+                    <li class="flex items-center gap-3 px-3 py-2.5">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-body font-medium" x-text="w.title"></p>
+                            <p x-show="w.description" class="text-caption text-muted-foreground" x-text="w.description"></p>
+                            <p x-show="taken(w)" x-cloak style="display: none" class="text-caption text-muted-foreground">Already on the dashboard</p>
+                        </div>
+                        <button data-slot="button"
+     type="button"                     x-bind:disabled="taken(w)" x-bind:aria-label="&#039;Add widget: &#039; + w.title" x-on:click="addWidget(w)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg> Add widget</button>
+                    </li>
+                </template>
+            </ul>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="settingsOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground"><span x-text="settingsHeading"></span></h2>
+                <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">These are saved with your dashboard.</p></div>
+            <form class="grid gap-4" x-on:submit.prevent="saveSettings()">
+                <template x-for="f in settingsFields" :key="f.key">
+                    <div class="contents">
+                        <template x-if="f.type === 'toggle'">
+                            <div class="flex items-center justify-between gap-3">
+                                <span x-bind:id="'nq-bs-' + f.key" class="text-body" x-text="f.label"></span>
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="form[f.key]" x-bind:aria-labelledby="&#039;nq-bs-&#039; + f.key" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </div>
+                        </template>
+                        <template x-if="f.type === 'select'">
+                            <div class="grid gap-1.5">
+                                <span x-bind:id="'nq-bs-' + f.key" class="text-label font-medium" x-text="f.label"></span>
+                                <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="form[f.key]" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        x-bind:aria-labelledby="&#039;nq-bs-&#039; + f.key" class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                                    <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <template x-for="o in f.options" :key="o.value">
+                                            <div data-slot="select-item" x-bind="item(o.value, false)" x-effect="reg(o.value, o.label)"
+                                                class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+                                                <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center"><span x-show="isSelected(o.value)" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span></span>
+                                                <span data-slot="select-item-text" class="min-w-0 flex-1 truncate" x-text="o.label"></span>
+                                            </div>
+                                        </template>
+    </div>
+</template>
+    </div>
+                            </div>
+                        </template>
+                        <template x-if="f.type === 'number'">
+                            <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50"><span x-text="f.label"></span></label>
+                                <input data-slot="input" type="number"
+     dir="ltr"                 inputmode="numeric" x-bind:min="f.min" x-bind:max="f.max" x-bind:step="f.step" x-model.number="form[f.key]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+</div>
+                        </template>
+                        <template x-if="f.type === 'text'">
+                            <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50"><span x-text="f.label"></span></label>
+                                <input data-slot="input" type="text"
+                    x-bind:placeholder="f.placeholder" x-model="form[f.key]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+</div>
+                        </template>
+                    </div>
+                </template>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="settingsOpen = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="submit"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Save settings</button></div>
+            </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</section>

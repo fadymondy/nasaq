@@ -14,7 +14,7 @@
     $rowLabel = 'text-label text-foreground sm:w-32 sm:shrink-0';
     $sizes = ['sm', 'md', 'lg', 'xl'];
 @endphp
-<div data-slot="reading-settings" x-data="nqReadingSettings(@js($p), @js((bool) $disabled))" x-modelable="prefs" {{ $attributes->cn('flex min-w-0 flex-col gap-4') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'reading-settings') }}" x-data="nqReadingSettings(@js($p), @js((bool) $disabled))" x-modelable="prefs" {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-4') }}>
     @if (in_array('fontSize', $controls, true))
         <div class="{{ $row }}">
             <div class="{{ $rowLabel }}">{{ $t['fontSize'] }}</div>

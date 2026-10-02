@@ -33,8 +33,8 @@
     $id = 'nq-au-'.substr(md5(json_encode([$release['version'] ?? '', $locale])), 0, 8);
     $config = ['open' => (bool) $open, 'status' => $status, 'progress' => $progress, 'speed' => $speed, 'size' => $size, 'locale' => $locale, 't' => array_intersect_key($t, array_flip(['retry', 'download', 'remaining']))];
 @endphp
-<div data-slot="sheet" x-data="nqAppUpdateSheet(@js($config))" x-modelable="open" x-id="['nq-dialog']" x-on:nq-update-state.window="set($event.detail)"
-    {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'sheet') }}" x-data="nqAppUpdateSheet(@js($config))" x-modelable="open" x-id="['nq-dialog']" x-on:nq-update-state.window="set($event.detail)"
+    {{ $attributes->except('data-slot')->cn('contents') }}>
     <template x-teleport="body">
         <div data-slot="sheet-portal">
             <div data-slot="sheet-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 dark:bg-nq-bg/60"></div>

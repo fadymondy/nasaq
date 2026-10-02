@@ -1,0 +1,505 @@
+<section data-slot="stock-ledger" x-data="nqStockLedger(JSON.parse('{\u0022products\u0022:[{\u0022id\u0022:\u0022beans\u0022,\u0022name\u0022:\u0022Coffee beans 250g\u0022,\u0022sku\u0022:\u0022RTL-001\u0022,\u0022unit\u0022:\u0022pcs\u0022,\u0022reorderPoint\u0022:12},{\u0022id\u0022:\u0022filter\u0022,\u0022name\u0022:\u0022Paper filters\u0022,\u0022sku\u0022:\u0022RTL-014\u0022,\u0022unit\u0022:\u0022box\u0022,\u0022reorderPoint\u0022:4}],\u0022warehouses\u0022:[{\u0022id\u0022:\u0022ruh\u0022,\u0022name\u0022:\u0022Riyadh\u0022,\u0022code\u0022:\u0022RUH\u0022},{\u0022id\u0022:\u0022jed\u0022,\u0022name\u0022:\u0022Jeddah\u0022,\u0022code\u0022:\u0022JED\u0022}],\u0022movements\u0022:[{\u0022id\u0022:\u0022m1\u0022,\u0022date\u0022:\u00222026-09-01\u0022,\u0022productId\u0022:\u0022beans\u0022,\u0022warehouseId\u0022:\u0022ruh\u0022,\u0022type\u0022:\u0022receive\u0022,\u0022quantity\u0022:40,\u0022reference\u0022:\u0022PO-2041\u0022},{\u0022id\u0022:\u0022m2\u0022,\u0022date\u0022:\u00222026-09-05\u0022,\u0022productId\u0022:\u0022beans\u0022,\u0022warehouseId\u0022:\u0022ruh\u0022,\u0022type\u0022:\u0022issue\u0022,\u0022quantity\u0022:-8,\u0022reference\u0022:\u0022SO-5520\u0022},{\u0022id\u0022:\u0022m3\u0022,\u0022date\u0022:\u00222026-09-08\u0022,\u0022productId\u0022:\u0022beans\u0022,\u0022warehouseId\u0022:\u0022jed\u0022,\u0022type\u0022:\u0022receive\u0022,\u0022quantity\u0022:10,\u0022reference\u0022:\u0022PO-2043\u0022},{\u0022id\u0022:\u0022m4\u0022,\u0022date\u0022:\u00222026-09-10\u0022,\u0022productId\u0022:\u0022filter\u0022,\u0022warehouseId\u0022:\u0022ruh\u0022,\u0022type\u0022:\u0022receive\u0022,\u0022quantity\u0022:3,\u0022reference\u0022:\u0022PO-2044\u0022}],\u0022asOf\u0022:null,\u0022canRecord\u0022:true,\u0022locale\u0022:\u0022en\u0022,\u0022today\u0022:\u00222026-09-29\u0022,\u0022t\u0022:{\u0022inStock\u0022:\u0022In stock\u0022,\u0022low\u0022:\u0022Low\u0022,\u0022out\u0022:\u0022Out\u0022,\u0022errQuantity\u0022:\u0022Enter a quantity above zero.\u0022,\u0022errProduct\u0022:\u0022Pick a product.\u0022,\u0022errWarehouse\u0022:\u0022Pick a warehouse.\u0022,\u0022errSame\u0022:\u0022Pick two different warehouses.\u0022,\u0022errStock\u0022:\u0022Not enough stock: only {n} available here.\u0022,\u0022errSave\u0022:\u0022Could not save the movement.\u0022,\u0022receive\u0022:\u0022Receive\u0022,\u0022issue\u0022:\u0022Issue\u0022,\u0022adjust\u0022:\u0022Adjust\u0022,\u0022transfer\u0022:\u0022Transfer\u0022,\u0022reorderAt\u0022:\u0022Reorder at\u0022}}'))" class="flex w-full min-w-0 flex-col gap-6">
+    <div class="flex min-w-0 flex-col gap-3">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <h2 class="text-title-sm text-foreground">On hand</h2>
+                            <button data-slot="button"
+     type="button"                     x-on:click="openRecord(&#039;receive&#039;, productId)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>                    Record movement</button>
+                    </div>
+        <template x-if="products.length === 0">
+            <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22v-9"/>
+  <path d="M15.17 2.21a1.67 1.67 0 0 1 1.63 0L21 4.57a1.93 1.93 0 0 1 0 3.36L8.82 14.79a1.655 1.655 0 0 1-1.64 0L3 12.43a1.93 1.93 0 0 1 0-3.36z"/>
+  <path d="M20 13v3.87a2.06 2.06 0 0 1-1.11 1.83l-6 3.08a1.93 1.93 0 0 1-1.78 0l-6-3.08A2.06 2.06 0 0 1 4 16.87V13"/>
+  <path d="M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No products to track</p>
+                    <p class="text-body-sm text-muted-foreground">Add products and warehouses to see stock.</p>
+            </div>
+    </div>
+        </template>
+        <div x-show="products.length > 0" data-slot="stock-on-hand" class="relative w-full overflow-x-auto rounded-card border border-border bg-card">
+            <div role="table" class="table w-full min-w-[34rem] border-collapse">
+                <div role="caption" class="sr-only">On hand</div>
+                <div role="rowgroup" class="table-header-group border-b border-border">
+                    <div role="row" class="table-row">
+                        <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground sticky start-0 z-10 bg-card">Product</div>
+                                                    <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground" title="Riyadh">RUH</div>
+                                                    <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground" title="Jeddah">JED</div>
+                                                <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground">Total</div>
+                        <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Status</div>
+                        <div role="columnheader" class="table-cell w-10"><span class="sr-only">Product actions</span></div>
+                    </div>
+                </div>
+                <div role="rowgroup" class="table-row-group divide-y divide-border">
+                    <template x-for="row in matrix.rows" :key="row.product.id">
+                        <div role="row" data-slot="stock-row" x-data="nqContextMenu()" x-bind="trigger" x-bind:data-level="row.level" x-bind:data-selected="productId === row.product.id ? '' : null" class="table-row data-[selected]:bg-nq-hover">
+                            <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground sticky start-0 z-10 bg-card">
+                                <div class="flex min-w-0 flex-col">
+                                    <button type="button" class="truncate text-start font-medium hover:underline" x-on:click="select(row.product.id)" x-text="row.product.name"></button>
+                                    <span class="flex items-center gap-1.5 text-caption text-muted-foreground">
+                                        <bdi dir="ltr" class="tabular-nums" x-text="row.product.sku"></bdi>
+                                        <span x-show="row.product.unit" x-text="row.product.unit"></span>
+                                    </span>
+                                </div>
+                            </div>
+                                                            <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums" x-bind:class="(row.cells['ruh'] ?? 0) < 0 ? 'text-danger' : ''" x-text="num(row.cells['ruh'] ?? 0, true)"></div>
+                                                            <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums" x-bind:class="(row.cells['jed'] ?? 0) < 0 ? 'text-danger' : ''" x-text="num(row.cells['jed'] ?? 0, true)"></div>
+                                                        <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums font-medium" x-text="num(row.total)"></div>
+                            <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground">
+                                <span data-slot="badge"     x-bind:class="{ &#039;hidden&#039;: row.level !== &#039;ok&#039; }" x-text="levelLabel(&#039;ok&#039;)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text"></span>
+                                <span data-slot="badge"     x-bind:class="{ &#039;hidden&#039;: row.level !== &#039;low&#039; }" x-text="levelLabel(&#039;low&#039;)" x-bind:title="row.product.reorderPoint != null ? &#039;Reorder at &#039; + row.product.reorderPoint : null" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text"></span>
+                                <span data-slot="badge"     x-bind:class="{ &#039;hidden&#039;: row.level !== &#039;out&#039; }" x-text="levelLabel(&#039;out&#039;)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"></span>
+                            </div>
+                            <div role="cell" class="table-cell px-1">
+                                <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="line-item-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" x-bind:aria-label="&#039;Product actions, &#039; + row.product.name" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground data-popup-open:text-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                    <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="select(row.product.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 5h13"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="M3 10a2 2 0 0 0 2 2h3"/>
+  <path d="M3 5v12a2 2 0 0 0 2 2h3"/>
+</svg>View movements</div>
+                                                                                    <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                            <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="openRecord(&#039;receive&#039;, row.product.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 12H3"/>
+  <path d="m11 18 6-6-6-6"/>
+  <path d="M21 5v14"/>
+</svg>Receive</div>
+                                            <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="openRecord(&#039;issue&#039;, row.product.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 5v14"/>
+  <path d="M21 12H7"/>
+  <path d="m15 18 6-6-6-6"/>
+</svg>Issue</div>
+                                            <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="openRecord(&#039;adjust&#039;, row.product.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 5H3"/>
+  <path d="M12 19H3"/>
+  <path d="M14 3v4"/>
+  <path d="M16 17v4"/>
+  <path d="M21 12h-9"/>
+  <path d="M21 19h-5"/>
+  <path d="M21 5h-7"/>
+  <path d="M8 10v4"/>
+  <path d="M8 12H3"/>
+</svg>Adjust</div></div>
+</template></div>
+                            </div>
+                            <template x-teleport="body">
+                                <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+                                    class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="select(row.product.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 5h13"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="M3 10a2 2 0 0 0 2 2h3"/>
+  <path d="M3 5v12a2 2 0 0 0 2 2h3"/>
+</svg>View movements</div>
+                                                                            <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                        <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="openRecord(&#039;receive&#039;, row.product.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 12H3"/>
+  <path d="m11 18 6-6-6-6"/>
+  <path d="M21 5v14"/>
+</svg>Receive</div>
+                                        <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="openRecord(&#039;issue&#039;, row.product.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 5v14"/>
+  <path d="M21 12H7"/>
+  <path d="m15 18 6-6-6-6"/>
+</svg>Issue</div>
+                                        <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="openRecord(&#039;adjust&#039;, row.product.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 5H3"/>
+  <path d="M12 19H3"/>
+  <path d="M14 3v4"/>
+  <path d="M16 17v4"/>
+  <path d="M21 12h-9"/>
+  <path d="M21 19h-5"/>
+  <path d="M21 5h-7"/>
+  <path d="M8 10v4"/>
+  <path d="M8 12H3"/>
+</svg>Adjust</div>
+                                                                    </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+                <div role="rowgroup" class="table-footer-group border-t border-border bg-muted/40">
+                    <div role="row" class="table-row">
+                        <div role="rowheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground sticky start-0 z-10 bg-muted/40 font-semibold text-foreground">Total</div>
+                                                    <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums font-medium" x-text="num(matrix.warehouseTotals['ruh'] ?? 0)"></div>
+                                                    <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums font-medium" x-text="num(matrix.warehouseTotals['jed'] ?? 0)"></div>
+                                                <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums font-semibold" x-text="num(matrix.total)"></div>
+                        <div role="cell" colspan="2" class="table-cell"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="text-caption text-muted-foreground">Flagged low at or under the reorder point.</p>
+    </div>
+            <div class="flex min-w-0 flex-col gap-3">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <h2 class="text-title-sm text-foreground">Movements</h2>
+                <div class="flex flex-wrap gap-2">
+                    <div data-slot="select" x-data="nqSelect('beans', false)" x-modelable="value" x-id="['nq-select']" x-model="productId" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Product" class="flex h-control w-full items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-w-44">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                        <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('beans', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('beans')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Coffee beans 250g</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('filter', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('filter')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Paper filters</span>
+</div>
+    </div>
+</template>
+    </div>
+                    <div data-slot="select" x-data="nqSelect('__all__', false)" x-modelable="value" x-id="['nq-select']" x-model="warehouseId" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Warehouse" class="flex h-control w-full items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-w-44">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                        <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('__all__', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('__all__')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">All warehouses</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('ruh', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('ruh')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Riyadh</span>
+</div>
+                                                            <div data-slot="select-item" x-bind="item('jed', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('jed')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Jeddah</span>
+</div>
+    </div>
+</template>
+    </div>
+                </div>
+            </div>
+            <template x-if="statement.length === 0">
+                <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 5h13"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="M3 10a2 2 0 0 0 2 2h3"/>
+  <path d="M3 5v12a2 2 0 0 0 2 2h3"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No movements yet</p>
+                    <p class="text-body-sm text-muted-foreground">Record a receive, issue or adjustment and it shows here.</p>
+            </div>
+    </div>
+            </template>
+            <div x-show="statement.length > 0" data-slot="stock-movements" class="relative w-full overflow-x-auto rounded-card border border-border bg-card">
+                <div role="table" class="table w-full min-w-[36rem] border-collapse">
+                    <div role="caption" class="sr-only">Movements. Balance after each movement.</div>
+                    <div role="rowgroup" class="table-header-group border-b border-border">
+                        <div role="row" class="table-row">
+                            <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Date</div>
+                            <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Movement</div>
+                            <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Warehouse</div>
+                            <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Reference</div>
+                            <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground">Change</div>
+                            <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground">Balance</div>
+                        </div>
+                    </div>
+                    <div role="rowgroup" class="table-row-group divide-y divide-border">
+                        <template x-for="r in statement" :key="r.movement.id">
+                            <div role="row" data-slot="stock-movement" class="table-row">
+                                <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground whitespace-nowrap" x-text="date(r.movement.date)"></div>
+                                <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground">
+                                    <span data-slot="badge"     x-show="r.movement.type === &#039;receive&#039;" x-text="t.receive" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text"></span>
+                                    <span data-slot="badge"     x-show="r.movement.type === &#039;issue&#039;" x-text="t.issue" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"></span>
+                                    <span data-slot="badge"     x-show="r.movement.type === &#039;adjust&#039;" x-text="t.adjust" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text"></span>
+                                    <div x-show="r.movement.note" class="mt-0.5 text-caption text-muted-foreground" x-text="r.movement.note"></div>
+                                </div>
+                                <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground" x-text="warehouseName(r.movement.warehouseId)"></div>
+                                <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground"><bdi dir="ltr" class="tabular-nums" x-text="r.movement.reference || '–'"></bdi></div>
+                                <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums" x-bind:class="r.change < 0 ? 'text-danger' : 'text-success'" x-text="num(r.change, false, true)"></div>
+                                <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums font-medium" x-bind:class="r.balance < 0 ? 'text-danger' : ''" x-text="num(r.balance)"></div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="dialogOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="stock-record" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-w-lg">
+            <form class="flex flex-col gap-4" novalidate x-on:submit.prevent="submit()">
+                    <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Record movement</h2>
+                        <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Stock changes only through movements. Pick what happened and how many.</p></div>
+                    <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup([], false)" x-modelable="value" x-bind="root"
+            aria-label="Movement type" x-model="kind" class="max-w-full gap-0.5 rounded-control bg-secondary p-0.5 grid w-full grid-cols-4">
+    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('receive')"             class="inline-flex h-7 shrink-0 items-center justify-center whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs flex-col gap-1 py-2 @container"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 12H3"/>
+  <path d="m11 18 6-6-6-6"/>
+  <path d="M21 5v14"/>
+</svg><span class="text-caption">Receive</span></button>
+                        <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('issue')"             class="inline-flex h-7 shrink-0 items-center justify-center whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs flex-col gap-1 py-2 @container"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 5v14"/>
+  <path d="M21 12H7"/>
+  <path d="m15 18 6-6-6-6"/>
+</svg><span class="text-caption">Issue</span></button>
+                        <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('adjust')"             class="inline-flex h-7 shrink-0 items-center justify-center whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs flex-col gap-1 py-2 @container"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 5H3"/>
+  <path d="M12 19H3"/>
+  <path d="M14 3v4"/>
+  <path d="M16 17v4"/>
+  <path d="M21 12h-9"/>
+  <path d="M21 19h-5"/>
+  <path d="M21 5h-7"/>
+  <path d="M8 10v4"/>
+  <path d="M8 12H3"/>
+</svg><span class="text-caption">Adjust</span></button>
+                        <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('transfer')"             class="inline-flex h-7 shrink-0 items-center justify-center whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs flex-col gap-1 py-2 @container"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 3 4 7l4 4"/>
+  <path d="M4 7h16"/>
+  <path d="m16 21 4-4-4-4"/>
+  <path d="M20 17H4"/>
+</svg><span class="text-caption">Transfer</span></button>
+</div>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <div class="flex flex-col gap-1.5 text-label text-foreground sm:col-span-2">
+                            <span>Product</span>
+                            <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="formProduct" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Product" x-bind:aria-invalid="badProduct ? &#039;true&#039; : null" class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? 'Product'" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                                <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('beans', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('beans')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Coffee beans 250g</span>
+</div>
+                                                                            <div data-slot="select-item" x-bind="item('filter', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('filter')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Paper filters</span>
+</div>
+    </div>
+</template>
+    </div>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-label text-foreground">
+                            <span x-text="kindValue === 'transfer' ? 'From' : 'Warehouse'"></span>
+                            <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="formWarehouse" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Warehouse" class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? 'Warehouse'" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                                <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('ruh', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('ruh')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Riyadh</span>
+</div>
+                                                                            <div data-slot="select-item" x-bind="item('jed', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('jed')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Jeddah</span>
+</div>
+    </div>
+</template>
+    </div>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-label text-foreground" x-show="kindValue === 'transfer'">
+                            <span>To</span>
+                            <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="formTo" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="To" x-bind:aria-invalid="badTo ? &#039;true&#039; : null" class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? 'Warehouse'" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                                <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('ruh', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('ruh')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Riyadh</span>
+</div>
+                                                                            <div data-slot="select-item" x-bind="item('jed', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('jed')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Jeddah</span>
+</div>
+    </div>
+</template>
+    </div>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-label text-foreground" x-show="kindValue === 'adjust'">
+                            <span id="stock-dir">Direction</span>
+                            <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup([], false)" x-modelable="value" x-bind="root"
+            aria-labelledby="stock-dir" x-model="dir" class="max-w-full gap-0.5 rounded-control bg-secondary p-0.5 grid w-full grid-cols-2">
+    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('increase')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Increase</button>
+                                <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('decrease')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Decrease</button>
+</div>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-label text-foreground">
+                            <span>Quantity</span>
+                            <div x-data="nqLineItemDecimal(JSON.parse('{\u0022scale\u0022:3,\u0022kind\u0022:\u0022qty\u0022,\u0022min\u0022:0,\u0022max\u0022:null,\u0022locale\u0022:\u0022en\u0022}'))" x-modelable="value" x-model="qty" class="contents">
+    <div role="group" data-slot="input-group"
+    x-bind:data-invalid="out ? &#039;&#039; : null" class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 min-w-0"><input data-slot="input-group-input" dir="ltr" inputmode="decimal" autocomplete="off" spellcheck="false" x-bind="field"
+            aria-label="Quantity" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-end tabular-nums"></div>
+</div>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-label text-foreground">
+                            <span>Date</span>
+                            <input data-slot="input" type="date"
+     dir="ltr"                 x-model="day" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-label text-foreground">
+                            <span>Reference</span>
+                            <input data-slot="input" type="text"
+     dir="ltr"                 x-model="reference" placeholder="PO-2041, SO-5520, count sheet" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-label text-foreground sm:col-span-2">
+                            <span>Note</span>
+                            <input data-slot="input" type="text"
+                    x-model="note" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                        </div>
+                    </div>
+                    <p x-show="formProduct && formWarehouse" class="flex items-center justify-between gap-3 text-caption text-muted-foreground">
+                        <span>Available here</span>
+                        <span dir="ltr" class="text-body-sm font-medium text-foreground tabular-nums" data-slot="stock-available" x-text="num(available)"></span>
+                    </p>
+                    <div aria-live="polite" class="min-h-5">
+                        <p x-show="shownError" role="alert" class="text-caption text-danger" x-text="shownError"></p>
+                    </div>
+                    <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-on:click="dialogOpen = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                        <button data-slot="button"
+     type="submit"                     x-bind:disabled="busy" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Save movement</button></div>
+                </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+    </section>

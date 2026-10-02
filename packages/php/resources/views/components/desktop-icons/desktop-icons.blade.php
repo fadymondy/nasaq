@@ -26,10 +26,10 @@
     $button = 'group flex w-22 select-none flex-col items-center gap-1.5 rounded-lg p-1.5 text-center outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-nq-focus';
     $caption = 'line-clamp-2 max-w-full rounded-sm px-1 text-caption font-medium break-words';
 @endphp
-<div role="group" aria-label="{{ $label }}" data-slot="desktop-icon-grid" @if ($free) data-free @endif
+<div role="group" aria-label="{{ $label }}" data-slot="{{ $attributes->get('data-slot', 'desktop-icon-grid') }}" @if ($free) data-free @endif
     x-data="nqDesktopIcons({!! $js($rows) !!}, {!! $js((object) $options) !!})" x-modelable="selected"
     x-on:keydown="groupKey($event)" x-on:pointerdown="background($event)"
-    {{ $attributes->cn($free ? 'relative size-full' : 'grid auto-rows-max grid-cols-[repeat(auto-fill,6rem)] content-start gap-2 p-2') }}>
+    {{ $attributes->except('data-slot')->cn($free ? 'relative size-full' : 'grid auto-rows-max grid-cols-[repeat(auto-fill,6rem)] content-start gap-2 p-2') }}>
     <template x-for="(item, index) in visible()" x-bind:key="item.id">
         @if ($free)
             <div data-slot="desktop-icon-position" x-bind:data-dragging="dragging === item.id ? '' : null" x-bind:style="style(item.id, index)"

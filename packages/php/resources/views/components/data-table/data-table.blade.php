@@ -1,21 +1,29 @@
 {{-- <x-nq::data-table label="Issues" :columns="[['id' => 'title', 'header' => 'Title', 'sortable' => true, 'searchable' => true]]" :rows="[['id' => 'MH-1', 'title' => 'Fix login']]" selectable :page-size="20" />
      A sortable, searchable, filterable, paginated table with selection, expandable rows, in-cell editing and row actions.
      label: the accessible name of the table (localise it). rows: arrays keyed by column; x-modelable. row-key: the row field that identifies a row (default "id"). name-key: the field that names a row for "Select …" (default row-key).
-     columns: each ['id', 'header', 'key' (row field, default id), 'type' => text | number | date | currency | status | tag | boolean, 'sortable', 'searchable', 'hideable' (default true), 'hidden', 'align' => start | center | end,
+     columns: each ['id', 'header', 'key' (row field, default id), 'type' => text | mono | number | date | datetime | currency | status | tag | boolean | meter | avatar | link, 'sortable', 'searchable', 'hideable' (default true), 'hidden', 'align' => start | center | end,
        'filter' => true (a facet filter on the column's options), 'range' => true | ['kind' => 'date'], 'options' => [['value', 'label', 'tone' => neutral | info | success | warning | danger, 'hue' => blue …]],
        'currency' => 'USD' (default USD, SAR in Arabic), 'edit' => text | number | date | switch | select].
+     Cell types: mono (code font); datetime (date + time, 'format' => 'relative' shows "2 hours ago" with the absolute time as its title); meter (0..'max' 100 bar, turns warning at 'warnAt' 0.8 and danger at 'dangerAt' 0.95);
+       avatar (initials, or the row field named by 'src' as the image; the value is the name, 'secondary' names the row field shown under it ('secondaryDir' => 'ltr' for emails),
+       'badge' => 'self' + 'badgeLabel' => 'You' draws an outline badge after the name on rows where that field is truthy); link ('href' = a row field, or a template "/issues/{key}"; 'target');
+       'template' => '{first} {last}' fills a text cell from the row.
+     Custom cell (React's `cell: (row) => ReactNode`): a named slot per column, <x-slot name="cell_title"> <b x-text="row.title"></b> </x-slot>. It renders inside each row's Alpine scope, so `row` and the table's methods
+       (shownText(row, col('id')), rid(row)) are in reach. Use column ids made of letters, digits and underscores for slot columns. The slot replaces the built-in cell.
      selectable: a checkbox column and a selection bar. multi-sort: Shift-click adds a sort key. page-size: rows per page (0 = all). page-size-options: [10, 25, 50] adds a rows-per-page choice.
      search: the search box (true; pass a string for the placeholder). view-options: the View menu (true). density-menu: add Density to it. density, frame, bordered, striped, hover: as the table.
-     row-actions: [['id' => 'edit', 'label' => 'Edit', 'icon' => 'pencil', 'danger' => false, 'group' => null]] opens the ⋯ menu. row-click: make rows activatable (click, or Enter on the focused row).
+     row-actions: [['id' => 'edit', 'label' => 'Edit', 'icon' => 'pencil', 'danger' => false, 'group' => null]] opens the ⋯ menu, and the same list opens as a context menu on right-click, long-press, Shift+F10 or the Menu key on a row
+       (context-menu="false" keeps the browser's menu; inputs, links and Shift + right-click always do). Per row: 'visibleWhen' / 'disabledWhen' => ['field' => 'status', 'in' => ['open', 'blocked']] (also 'notIn', 'eq', 'ne', 'empty' => true; 'any' => [cond, …] / 'all' => [cond, …] combine conditions),
+       and actions-key="actions" names a row field that lists the action ids the row allows (rows without it show every action). A row left with no action loses its ⋯ button. row-click: make rows activatable (click, or Enter on the focused row).
      expand: the row field whose text is shown under the row by its chevron. loading, error (a message), labels: ['view' => …, 'columns' => …, …] to override any string.
      Slots: toolbar (more controls after the filters), bulk (actions in the selection bar), empty (when there are no rows at all).
      Events (bubbling): nq-data-table-row-click { row }, nq-data-table-action { action, row }, nq-data-table-selection { ids }, nq-data-table-edit { row, column, value, promise }:
      set event.detail.promise to a Promise (or one resolving to { error }); until it settles the cell shows the value as pending and an error rolls it back.
-     Not ported here: column pinning, resizing and the row context menu. Needs the Alpine runtime (@nasaqScripts). --}}
+     Not ported here: column pinning and resizing. Needs the Alpine runtime (@nasaqScripts). --}}
 @props([
     'label', 'columns' => [], 'rows' => [], 'rowKey' => 'id', 'nameKey' => null, 'selectable' => false, 'multiSort' => false, 'pageSize' => 0, 'pageSizeOptions' => [],
     'search' => true, 'viewOptions' => true, 'densityMenu' => false, 'density' => 'default', 'frame' => false, 'bordered' => false, 'striped' => false, 'hover' => true,
-    'rowActions' => [], 'rowClick' => false, 'expand' => null, 'loading' => false, 'error' => null, 'labels' => [], 'locale' => null,
+    'rowActions' => [], 'actionsKey' => null, 'contextMenu' => true, 'rowClick' => false, 'expand' => null, 'loading' => false, 'error' => null, 'labels' => [], 'locale' => null,
 ])
 @php
     $ar = \Nasaq\Nasaq::rtl();
@@ -60,6 +68,9 @@
         'density' => $density !== 'default' ? $density : null,
         'locale' => $locale ?? ($ar ? 'ar' : 'en'),
         'expand' => $expand,
+        'actions' => array_map(fn ($a) => array_filter(array_intersect_key((array) $a, array_flip(['id', 'group', 'visibleWhen', 'disabledWhen'])), fn ($v) => $v !== null), array_values((array) $rowActions)),
+        'actionsKey' => $actionsKey,
+        'contextMenu' => $contextMenu ? null : false,
         'labels' => array_intersect_key($t, array_flip(['selectRow', 'rowActions', 'expandRow', 'details', 'selected', 'range', 'saving', 'saved', 'saveFailed', 'saveFailedFor', 'invalidNumber', 'invalidDate', 'rangeAtLeast', 'rangeAtMost', 'editCell'])),
     ], fn ($v) => $v !== null);
     $actions = array_values(array_map(fn ($a) => (array) $a, (array) $rowActions));
@@ -281,8 +292,10 @@
                         <div role="row" data-slot="table-row" data-row tabindex="-1" x-bind:tabindex="index === Math.min(active, pageRows.length - 1) ? 0 : -1"
                             x-bind:data-state="isSelected(row) ? 'selected' : null" x-bind:aria-selected="isSelected(row) ? 'true' : null"
                             x-bind:aria-expanded="canExpand(row) ? String(isOpen(row)) : null" x-on:focus="if ($event.target === $event.currentTarget) active = index"
-                            x-on:keydown="rowKey($event, row, index, {{ $clickable ? 'true' : 'false' }})" @if ($clickable) x-on:click="rowClick(row, $event)" @endif
-                            x-bind:class="{{ $striped ? "(index % 2 === 1 ? 'bg-secondary/40 ' : '') + " : '' }}(isOpen(row) ? 'border-b-0' : '')"
+                            x-on:keydown="rowKey($event, row, index, {{ $clickable ? 'true' : 'false' }})"
+                            @if (count($actions) && $contextMenu) x-on:contextmenu="rowContext(row, $event)" x-on:touchstart.passive="rowTouch(row, $event)" x-on:touchmove.passive="rowTouchEnd()" x-on:touchend="rowTouchEnd()" x-on:touchcancel="rowTouchEnd()" @endif
+                            @if ($clickable) x-on:click="rowClick(row, $event)" @endif
+                            x-bind:class="{{ $striped ? "(index % 2 === 1 ? 'bg-secondary/40 ' : '') + " : '' }}(isOpen(row) ? 'border-b-0 ' : '') + (ctxOpen && ctxRow === row ? 'bg-nq-hover' : '')"
                             class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-[state=selected]:bg-nq-selected {{ $hover ? 'hover:bg-nq-hover' : '' }} {{ $clickable ? 'cursor-pointer' : '' }}">
                             @if ($selectable)
                                 <div role="cell" data-slot="table-cell" x-bind:class="pad" class="flex items-center h-row w-10 pe-0 align-middle whitespace-nowrap">
@@ -352,7 +365,9 @@
                                             </template>
                                         @endif
                                         <span @if ($edit) x-show="! isEditing(row, {{ $cx }})" @endif class="flex min-w-0 items-center gap-1.5 {{ str_contains($align, 'text-end') ? 'justify-end' : '' }}" @if ($edit) x-bind:class="isPending(row, {{ $cx }}) ? 'opacity-60' : ''" @endif>
-                                            @if ($c['type'] === 'status')
+                                            @if (isset(${'cell_'.$id}))
+                                                {{ ${'cell_'.$id} }}
+                                            @elseif ($c['type'] === 'status')
                                                 @foreach ($toneIcon as $tone => $icon)
                                                     <span data-slot="status" data-tone="{{ $tone }}" x-show="shownText(row, {{ $cx }}) !== '' && tone(row, {{ $cx }}) === '{{ $tone }}'" {!! $hide !!} class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
                                                         <x-dynamic-component :component="'lucide-'.$icon" aria-hidden="true" class="size-3.5 shrink-0 {{ $toneText[$tone] }}" />
@@ -362,6 +377,37 @@
                                             @elseif ($c['type'] === 'tag')
                                                 <span data-slot="badge" x-show="shownText(row, {{ $cx }}) !== ''" x-bind:style="hueStyle(row, {{ $cx }})" {!! $hide !!}
                                                     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border border-transparent bg-[var(--tag-soft)] px-1.5 text-caption font-medium text-[var(--tag-solid)]" x-text="shownText(row, {{ $cx }})"></span>
+                                            @elseif ($c['type'] === 'mono')
+                                                <bdi dir="ltr" class="min-w-0 truncate font-mono text-code" x-text="shownText(row, {{ $cx }})"></bdi>
+                                            @elseif ($c['type'] === 'datetime')
+                                                <time class="min-w-0 flex-1 tabular-nums" x-bind:datetime="isoOf(row, {{ $cx }})" @if (($c['format'] ?? 'absolute') === 'relative') x-bind:title="absoluteOf(row, {{ $cx }})" @endif x-text="shownText(row, {{ $cx }})"></time>
+                                            @elseif ($c['type'] === 'meter')
+                                                <div data-slot="meter" role="meter" aria-valuemin="0" aria-valuemax="{{ $c['max'] ?? 100 }}" x-bind:aria-valuenow="shownValue(row, {{ $cx }})" x-bind:aria-valuetext="shownText(row, {{ $cx }})"
+                                                    x-bind:data-tone="meterTone(row, {{ $cx }})" aria-label="{{ $c['header'] }}" class="flex w-full min-w-24 items-center gap-2">
+                                                    <div data-slot="meter-track" class="relative block h-1 w-full overflow-hidden rounded-full bg-nq-surface-soft">
+                                                        <div data-slot="meter-indicator" x-bind:style="meterWidth(row, {{ $cx }})"
+                                                            x-bind:class="{ 'bg-primary': meterTone(row, {{ $cx }}) === 'default', 'bg-nq-warning': meterTone(row, {{ $cx }}) === 'warning', 'bg-nq-danger': meterTone(row, {{ $cx }}) === 'danger' }"
+                                                            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none"></div>
+                                                    </div>
+                                                    <span aria-hidden="true" class="shrink-0 text-caption tabular-nums text-muted-foreground" x-text="shownText(row, {{ $cx }})"></span>
+                                                </div>
+                                            @elseif ($c['type'] === 'avatar')
+                                                <span data-slot="avatar" class="relative inline-flex size-8 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-secondary align-middle text-caption font-medium text-secondary-foreground">
+                                                    <span data-slot="avatar-fallback" aria-hidden="true" class="flex size-full items-center justify-center" x-text="initials(shownText(row, {{ $cx }}))"></span>
+                                                    <template x-if="avatarSrc(row, {{ $cx }})"><img data-slot="avatar-image" alt="" x-bind:src="avatarSrc(row, {{ $cx }})" x-on:error="$el.remove()" class="absolute inset-0 size-full object-cover"></template>
+                                                </span>
+                                                <span class="flex min-w-0 flex-col">
+                                                    <span class="flex items-center gap-1.5 truncate text-label text-foreground">
+                                                        <span class="truncate" x-text="shownText(row, {{ $cx }})"></span>
+                                                        @if (! empty($c['badge']))
+                                                            <span data-slot="badge" x-show="row['{{ $c['badge'] }}']" {!! $hide !!} class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border border-border px-1.5 text-caption font-medium text-muted-foreground">{{ $c['badgeLabel'] ?? $c['badge'] }}</span>
+                                                        @endif
+                                                    </span>
+                                                    <bdi @if (! empty($c['secondaryDir'])) dir="{{ $c['secondaryDir'] }}" @endif class="truncate text-caption text-muted-foreground" x-show="secondary(row, {{ $cx }})" x-text="secondary(row, {{ $cx }})" {!! $hide !!}></bdi>
+                                                </span>
+                                            @elseif ($c['type'] === 'link')
+                                                <a data-slot="link" x-bind:href="href(row, {{ $cx }})" @if (! empty($c['target'])) target="{{ $c['target'] }}" rel="noopener noreferrer" @endif
+                                                    class="min-w-0 truncate text-primary underline-offset-4 outline-none hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus" x-text="shownText(row, {{ $cx }})"></a>
                                             @elseif ($c['type'] === 'boolean')
                                                 <span x-text="shownValue(row, {{ $cx }}) === true ? {{ $q($t['yes']) }} : (shownValue(row, {{ $cx }}) === false ? {{ $q($t['no']) }} : '')"></span>
                                             @else
@@ -382,7 +428,7 @@
                             @if (count($actions))
                                 <div role="cell" data-slot="table-cell" x-bind:class="pad" class="flex items-center h-row w-12 pe-2 text-end align-middle whitespace-nowrap">
                                     <x-nq::dropdown-menu>
-                                        <x-nq::dropdown-menu.trigger variant="ghost" size="icon-sm" data-slot="data-table-row-actions" x-bind:aria-label="say('rowActions', row)"
+                                        <x-nq::dropdown-menu.trigger variant="ghost" size="icon-sm" data-slot="data-table-row-actions" x-bind:aria-label="say('rowActions', row)" x-show="hasActions(row)"
                                             x-bind:tabindex="index === Math.min(active, pageRows.length - 1) ? 0 : -1"
                                             class="text-muted-foreground opacity-0 group-hover/row:opacity-100 group-focus-within/row:opacity-100 group-data-[state=selected]/row:opacity-100 data-popup-open:opacity-100 pointer-coarse:opacity-100">
                                             <x-lucide-ellipsis aria-hidden="true" />
@@ -390,13 +436,16 @@
                                         <x-nq::dropdown-menu.content align="end" class="min-w-44">
                                             <x-nq::dropdown-menu.group>
                                                 @foreach ($actions as $k => $a)
-                                                    @if ($k > 0 && ($a['group'] ?? null) !== ($actions[$k - 1]['group'] ?? null))
-                                                        <x-nq::dropdown-menu.separator />
-                                                    @endif
-                                                    <x-nq::dropdown-menu.item :variant="! empty($a['danger']) ? 'danger' : 'default'" :disabled="! empty($a['disabled'])" x-on:click="act('{{ $a['id'] }}', row)">
-                                                        @if (! empty($a['icon']))<x-dynamic-component :component="'lucide-'.$a['icon']" aria-hidden="true" />@endif
-                                                        {{ $a['label'] }}
-                                                    </x-nq::dropdown-menu.item>
+                                                    <template x-if="actionOn(row, {{ $k }})">
+                                                        <div role="none" class="contents">
+                                                            @if ($k > 0)<template x-if="sepBefore(row, {{ $k }})"><x-nq::dropdown-menu.separator /></template>@endif
+                                                            <x-nq::dropdown-menu.item :variant="! empty($a['danger']) ? 'danger' : 'default'" :disabled="! empty($a['disabled'])" x-on:click="act('{{ $a['id'] }}', row)"
+                                                                x-bind:data-disabled="actionOff(row, {{ $k }}) ? '' : null" x-bind:aria-disabled="actionOff(row, {{ $k }}) ? 'true' : null">
+                                                                @if (! empty($a['icon']))<x-dynamic-component :component="'lucide-'.$a['icon']" aria-hidden="true" />@endif
+                                                                {{ $a['label'] }}
+                                                            </x-nq::dropdown-menu.item>
+                                                        </div>
+                                                    </template>
                                                 @endforeach
                                             </x-nq::dropdown-menu.group>
                                         </x-nq::dropdown-menu.content>
@@ -435,6 +484,24 @@
             <button type="button" aria-label="{{ $t['next'] }}" x-bind:disabled="page >= pageCount - 1 ? '' : null" x-on:click="setPage(page + 1)"
                 class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-foreground outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4"><x-lucide-chevron-right aria-hidden="true" class="rtl:-scale-x-100" /></button>
         </nav>
+    @endif
+    @if (count($actions) && $contextMenu)
+        <div data-slot="data-table-context-menu" x-data="nqContextMenu()" x-effect="menuClosed(open)" class="contents">
+            <x-nq::context-menu.content class="min-w-44">
+                @foreach ($actions as $k => $a)
+                    <template x-if="ctxRow && actionOn(ctxRow, {{ $k }})">
+                        <div role="none" class="contents">
+                            @if ($k > 0)<template x-if="sepBefore(ctxRow, {{ $k }})"><x-nq::context-menu.separator /></template>@endif
+                            <x-nq::context-menu.item :variant="! empty($a['danger']) ? 'danger' : 'default'" :disabled="! empty($a['disabled'])" x-on:click="act('{{ $a['id'] }}', ctxRow)"
+                                x-bind:data-disabled="actionOff(ctxRow, {{ $k }}) ? '' : null" x-bind:aria-disabled="actionOff(ctxRow, {{ $k }}) ? 'true' : null">
+                                @if (! empty($a['icon']))<x-dynamic-component :component="'lucide-'.$a['icon']" aria-hidden="true" />@endif
+                                {{ $a['label'] }}
+                            </x-nq::context-menu.item>
+                        </div>
+                    </template>
+                @endforeach
+            </x-nq::context-menu.content>
+        </div>
     @endif
     <span role="status" aria-live="polite" class="sr-only" x-text="announce"></span>
 </div>

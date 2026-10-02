@@ -13,7 +13,7 @@
     $plans = array_values((array) $plans);
     $tint = 'bg-[color-mix(in_oklab,var(--nq-brand)_7%,transparent)]';
 @endphp
-<div data-slot="plan-comparison" @if ($select) x-data @endif {{ $attributes->cn('w-full overflow-x-auto') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'plan-comparison') }}" @if ($select) x-data @endif {{ $attributes->except('data-slot')->cn('w-full overflow-x-auto') }}>
     <table class="w-full min-w-[40rem] border-separate border-spacing-0 text-start">
         @if ($caption)<caption class="sr-only">{{ $caption }}</caption>@endif
         <thead class="sticky top-0 z-1 bg-background">

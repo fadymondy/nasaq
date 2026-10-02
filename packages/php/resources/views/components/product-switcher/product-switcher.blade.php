@@ -16,9 +16,9 @@
     $viewAllClick = '$refs.trigger.dispatchEvent(new CustomEvent(`nq-view-all`, { bubbles: true })); close()';
 @endphp
 <x-nq::popover>
-    <button type="button" data-slot="product-switcher-trigger" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" x-bind:aria-expanded="open" x-bind:data-popup-open="open ? '' : null"
+    <button type="button" data-slot="{{ $attributes->get('data-slot', 'product-switcher-trigger') }}" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" x-bind:aria-expanded="open" x-bind:data-popup-open="open ? '' : null"
         aria-label="{{ $trigger }}" title="{{ $trigger }}"
-        {{ $attributes->cn([
+        {{ $attributes->except('data-slot')->cn([
             'inline-flex size-control-sm items-center justify-center rounded-control text-muted-foreground outline-none',
             'transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground data-popup-open:bg-nq-selected data-popup-open:text-foreground',
             'focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4',

@@ -36,3 +36,45 @@
                     <p class="text-body-sm text-muted-foreground">Post-login redirect</p>
                     </div>
 </li></ol>
+<div class="mt-6" x-data="{ events: [{ title: 'Order placed', time: '2026-09-27T09:00:00Z' }], add() { this.events = [{ title: 'Packed', description: 'Box 2 of 2', time: '2026-09-27T10:00:00Z', actor: { name: 'Khaled Nasser' } }].concat(this.events) } }">
+    <ol data-slot="timeline" x-data="nqTimeline(JSON.parse('{\u0022locale\u0022:\u0022en\u0022}'))" x-effect="sync(events)" id="live-timeline" class="m-0 flex list-none flex-col p-0"><li data-slot="timeline-item" class="group/timeline grid grid-cols-[2rem_1fr] gap-x-3">
+    <div class="flex flex-col items-center">
+        <span data-slot="timeline-marker" class="flex size-8 shrink-0 items-center justify-center">
+                            <span aria-hidden="true" class="size-2.5 rounded-full border-2 border-nq-line bg-background"></span>
+                    </span>
+        <span aria-hidden="true" data-slot="timeline-rail" class="my-1 w-px flex-1 bg-border group-last/timeline:hidden"></span>
+    </div>
+    <div data-slot="timeline-content" class="flex min-w-0 flex-col gap-1 pb-6 pt-1 group-last/timeline:pb-0">
+        <div class="flex items-baseline justify-between gap-3">
+            <p class="min-w-0 text-body-sm font-medium text-foreground">Order placed</p>
+                            <time data-slot="date-time" datetime="2026-09-27T09:00:00+00:00" dir="auto"  title="Sep 27, 2026"     class="tabular-nums [unicode-bidi:isolate] shrink-0 text-caption text-muted-foreground">4 days ago</time>
+                    </div>
+                    </div>
+</li>        <template x-for="(it, i) in items" x-bind:key="i">
+            <li data-slot="timeline-item" data-nq-dynamic class="group/timeline grid grid-cols-[2rem_1fr] gap-x-3">
+                <div class="flex flex-col items-center">
+                    <span data-slot="timeline-marker" class="flex size-8 shrink-0 items-center justify-center">
+                        <template x-if="it.actor">
+                            <span data-slot="avatar" x-data="nqAvatar(it.actor.avatar ? 400 : 0)" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-8 text-caption rounded-full">
+                                <template x-if="it.actor.avatar"><img data-slot="avatar-image" x-bind:src="it.actor.avatar" x-bind:alt="it.actor.name" class="size-full object-cover" style="display: none" x-bind="image"></template>
+                                <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback" x-text="initials(it.actor.name)"></span>
+                            </span>
+                        </template>
+                        <template x-if="! it.actor"><span aria-hidden="true" class="size-2.5 rounded-full border-2 border-nq-line bg-background"></span></template>
+                    </span>
+                    <span aria-hidden="true" data-slot="timeline-rail" class="my-1 w-px flex-1 bg-border group-last/timeline:hidden"></span>
+                </div>
+                <div data-slot="timeline-content" class="flex min-w-0 flex-col gap-1 pb-6 pt-1 group-last/timeline:pb-0">
+                    <div class="flex items-baseline justify-between gap-3">
+                        <p class="min-w-0 text-body-sm font-medium text-foreground" x-text="it.title"></p>
+                        <template x-if="it.time"><time data-slot="date-time" dir="auto" class="shrink-0 text-caption text-muted-foreground tabular-nums [unicode-bidi:isolate]" x-bind:datetime="iso(it.time)" x-bind:title="iso(it.time)" x-text="ago(it.time)"></time></template>
+                    </div>
+                    <template x-if="it.description"><p class="text-body-sm text-muted-foreground" x-text="it.description"></p></template>
+                </div>
+            </li>
+        </template>
+</ol>
+    <button data-slot="button"
+     type="button"                     id="live-add" x-on:click="add()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 mt-3">
+        Add an event</button>
+</div>

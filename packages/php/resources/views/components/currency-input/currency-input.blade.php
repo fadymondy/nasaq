@@ -27,8 +27,8 @@
     $end = \Nasaq\Nasaq::rtl($locale);
     $inner = $attributes->except(['class', 'x-model', 'x-on:currency-change', '@currency-change']);
 @endphp
-<div data-slot="currency-input" data-currency="{{ $code }}" x-data="nqCurrencyInput(@js($value), @js($options))" x-modelable="minor" x-id="['nq-currency']"
-    {{ $attributes->only(['class', 'x-model', 'x-on:currency-change', '@currency-change'])->cn('flex w-full min-w-0 flex-col gap-1') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'currency-input') }}" data-currency="{{ $code }}" x-data="nqCurrencyInput(@js($value), @js($options))" x-modelable="minor" x-id="['nq-currency']"
+    {{ $attributes->except('data-slot')->only(['class', 'x-model', 'x-on:currency-change', '@currency-change'])->cn('flex w-full min-w-0 flex-col gap-1') }}>
     <x-nq::input-group x-bind="group" @class(['pe-0' => $picker])>
         {{-- The addon and input are written out: React overrides the addon data-slot, and HTML keeps the first of a duplicate attribute. --}}
         <div data-slot="currency-symbol" data-align="{{ $end ? 'end' : 'start' }}" x-bind="symbolAddon"

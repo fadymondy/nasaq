@@ -8,4 +8,4 @@
 @php
     $options = array_filter(['autoStart' => $autoStart ?: null, 'speed' => $speed != 1 ? $speed : null, 'total' => $total ?: null, 'done' => $done ?: null], fn ($v) => $v !== null);
 @endphp
-<div data-slot="countdown" x-data="nqCountdown({{ (int) $durationMs }}, {!! \Illuminate\Support\Js::from((object) $options) !!})" {{ $attributes->cn('contents') }}>{{ $slot }}</div>
+<div data-slot="{{ $attributes->get('data-slot', 'countdown') }}" x-data="nqCountdown({{ (int) $durationMs }}, {!! \Illuminate\Support\Js::from((object) $options) !!})" {{ $attributes->except('data-slot')->cn('contents') }}>{{ $slot }}</div>

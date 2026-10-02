@@ -42,8 +42,8 @@
     ];
     $steps = [$t['step1'], $t['step2'], $t['step3']];
 @endphp
-<div data-slot="whatsapp-qr-connect" x-data="nqWhatsappConnect({{ Js::from($config) }})" x-bind:data-status="status" x-on:nq-whatsapp-update="update($event.detail)"
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-2xl') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'whatsapp-qr-connect') }}" x-data="nqWhatsappConnect({{ Js::from($config) }})" x-bind:data-status="status" x-on:nq-whatsapp-update="update($event.detail)"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-2xl') }}>
     <x-nq::card.header>
         <div class="flex flex-wrap items-center justify-between gap-2">
             <x-nq::card.title as="h2">{{ $t['title'] }}</x-nq::card.title>

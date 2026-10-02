@@ -1,0 +1,513 @@
+<div class="flex flex-col gap-10" x-data
+    x-on:nq-trend-action="$event.detail.waitUntil(new Promise((resolve) => setTimeout(resolve, 400)))"
+    x-on:nq-source-toggle="$event.detail.waitUntil(new Promise((resolve) => setTimeout(resolve, 400)))"
+    x-on:nq-source-retry="$event.detail.waitUntil(new Promise((resolve) => setTimeout(resolve, 400)))">
+    <section data-slot="trends-feed" x-data="nqTrendsFeed(JSON.parse('{\u0022topics\u0022:[{\u0022id\u0022:\u0022t1\u0022,\u0022state\u0022:\u0022new\u0022,\u0022extras\u0022:[\u0022share\u0022]},{\u0022id\u0022:\u0022t2\u0022,\u0022state\u0022:\u0022new\u0022,\u0022extras\u0022:[]},{\u0022id\u0022:\u0022t3\u0022,\u0022state\u0022:\u0022saved\u0022,\u0022extras\u0022:[]}],\u0022tab\u0022:\u0022new\u0022,\u0022failed\u0022:{\u0022save\u0022:\u0022Could not save. Try again.\u0022,\u0022review\u0022:\u0022Could not mark reviewed. Try again.\u0022,\u0022dismiss\u0022:\u0022Could not dismiss. Try again.\u0022,\u0022restore\u0022:\u0022Could not restore. Try again.\u0022}}'))" class="flex flex-col gap-4">
+    <div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('new')" x-modelable="value" x-id="['nq-tabs']" x-model="tab" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="segmented" aria-orientation="horizontal" x-bind="list"
+    aria-label="Topic state" class="relative z-0 flex [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-fit gap-0.5 rounded-control bg-secondary p-0.5 max-w-full overflow-x-auto">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('new')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3">New
+                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground ms-1.5"><bdi data-slot="num" data-numeric="" class="tabular-nums">2</bdi></span></button>
+                            <button type="button" data-slot="tabs-tab" x-bind="tab('saved')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3">Saved
+                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground ms-1.5"><bdi data-slot="num" data-numeric="" class="tabular-nums">1</bdi></span></button>
+                            <button type="button" data-slot="tabs-tab" x-bind="tab('reviewed')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3">Reviewed
+                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground ms-1.5"><bdi data-slot="num" data-numeric="" class="tabular-nums">0</bdi></span></button>
+                            <button type="button" data-slot="tabs-tab" x-bind="tab('dismissed')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3">Dismissed
+                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground ms-1.5"><bdi data-slot="num" data-numeric="" class="tabular-nums">0</bdi></span></button>
+</div>
+                    <div data-slot="tabs-panel" x-bind="panel('new')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus mt-4"><div class="flex flex-col gap-6">
+                                                    <div class="flex flex-col gap-3">
+                                <h3 class="text-label font-medium text-muted-foreground">
+                                    Today                                </h3>
+                                <ul class="flex flex-col gap-3">
+                                                                                                                    <li class="min-w-0">
+                                            <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger"><div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full"><div data-slot="card-content" class="px-4 flex flex-col gap-3 pt-4"><div class="flex items-start gap-3">
+                                                                <div class="flex min-w-0 flex-1 flex-col gap-1">
+                                                                    <h4 class="text-body font-medium">Saudi tourism visas go digital</h4>
+                                                                    <p class="text-body-sm text-muted-foreground">A new e-visa flow cuts the wait to minutes.</p>                                                                </div>
+                                                                <div class="flex shrink-0 items-center gap-2">
+                                                                                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/>
+</svg>Hot</span>
+                                                                                                                                        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Score <bdi data-slot="num" data-numeric="" class="tabular-nums">86</bdi></span>
+                                                                </div>
+                                                            </div>
+                                                                                                                            <div>
+                                                                    <p class="text-caption font-medium text-muted-foreground">Why it is trending</p>
+                                                                    <ul class="mt-1 list-disc ps-5 text-body-sm">
+                                                                        <li>Mentioned by 6 outlets</li><li>Up 340% since yesterday</li>                                                                    </ul>
+                                                                </div>
+                                                                                                                        <div class="flex flex-wrap items-center gap-1.5">
+                                                                <span class="text-caption text-muted-foreground">2 outlets</span>
+                                                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Asharq</span>
+<span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Argaam</span>
+                                                            </div>
+                                                            <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     >
+    <button data-slot="collapsible-trigger"
+     type="button"                     x-bind:aria-controls="$id(&#039;nq-collapsible&#039;, &#039;panel&#039;)" x-bind:data-panel-open="open ? &#039;&#039; : undefined" x-on:click="toggle()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5 -ms-2">
+        <svg aria-hidden="true" x-bind:class="open ? 'rotate-180' : ''" class="transition-transform motion-reduce:transition-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg>                                                                    <span x-show="! open">Show 2 articles</span>
+                                                                    <span x-show="open" style="display: none">Hide articles</span></button>
+                                                                <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><ul class="mt-2 flex flex-col divide-y divide-border rounded-control border border-border">
+                                                                                                                                                    <li class="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+                                                                                <div class="min-w-0">
+                                                                                                                                                                            <a href="https://example.com/evisa" target="_blank" rel="noreferrer" class="inline-flex items-center gap-1 text-body-sm font-medium underline-offset-2 hover:underline">
+                                                                                            New e-visa launches
+                                                                                            <svg aria-hidden="true" class="size-3 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</svg>                                                                                            <span class="sr-only">Open</span>
+                                                                                        </a>
+                                                                                                                                                                        <p class="text-caption text-muted-foreground">Asharq · <time data-slot="date-time" datetime="2026-09-29T07:00:00+00:00" dir="auto"  title="Sep 29, 2026"     class="tabular-nums [unicode-bidi:isolate]">2 hours ago</time>
+</p>
+                                                                                </div>
+                                                                            </li>
+                                                                                                                                                    <li class="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+                                                                                <div class="min-w-0">
+                                                                                                                                                                            <span class="text-body-sm font-medium">What the e-visa changes</span>
+                                                                                                                                                                        <p class="text-caption text-muted-foreground">Argaam · <time data-slot="date-time" datetime="2026-09-29T08:00:00+00:00" dir="auto"  title="Sep 29, 2026"     class="tabular-nums [unicode-bidi:isolate]">1 hour ago</time>
+</p>
+                                                                                </div>
+                                                                            </li>
+                                                                                                                                            </ul></div>
+</div>
+                                                            <p role="alert" class="flex items-center gap-1.5 text-body-sm text-nq-danger-text" x-show="failed[0]" style="display: none">
+                                                                <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>                                                                <span x-text="failed[0]"></span>
+                                                            </p>
+                                                                                                                            <div class="flex flex-wrap items-center gap-2 border-t border-border pt-3">
+                                                                                                                                            <button data-slot="button"
+     type="button"                     x-bind:aria-busy="isBusy(0) ? &#039;true&#039; : null" x-bind:disabled="isBusy(0)" x-on:click="act(0, &#039;save&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="isBusy(0)" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                                            <svg aria-hidden="true" x-show="! isBusy(0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
+</svg>                                                                            Save</button>
+                                                                                                                                            <button data-slot="button"
+     type="button"                     x-bind:aria-busy="isBusy(0) ? &#039;true&#039; : null" x-bind:disabled="isBusy(0)" x-on:click="act(0, &#039;review&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="isBusy(0)" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                                            <svg aria-hidden="true" x-show="! isBusy(0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>                                                                            Mark reviewed</button>
+                                                                                                                                            <button data-slot="button"
+     type="button"                     x-bind:aria-busy="isBusy(0) ? &#039;true&#039; : null" x-bind:disabled="isBusy(0)" x-on:click="act(0, &#039;dismiss&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="isBusy(0)" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                                            <svg aria-hidden="true" x-show="! isBusy(0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>                                                                            Dismiss</button>
+                                                                                                                                        <button data-slot="button"
+     type="button"                     aria-label="Actions for Saudi tourism visas go digital" x-on:click="menuAt($el)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 ms-auto">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                                                </div></div></div></div>
+                                                <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(0, &#039;save&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
+</svg>Save</div>
+                                                                                                            <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(0, &#039;review&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>Mark reviewed</div>
+                                                                                                            <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="act(0, &#039;dismiss&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>Dismiss</div>
+                                                                                                                                                                <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                                                                                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="extra(0, 0)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Share</div></div>
+</template></div>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                                    <div class="flex flex-col gap-3">
+                                <h3 class="text-label font-medium text-muted-foreground">
+                                    Yesterday                                </h3>
+                                <ul class="flex flex-col gap-3">
+                                                                                                                    <li class="min-w-0">
+                                            <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger"><div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full"><div data-slot="card-content" class="px-4 flex flex-col gap-3 pt-4"><div class="flex items-start gap-3">
+                                                                <div class="flex min-w-0 flex-1 flex-col gap-1">
+                                                                    <h4 class="text-body font-medium">Riyadh Metro adds two lines</h4>
+                                                                                                                                    </div>
+                                                                <div class="flex shrink-0 items-center gap-2">
+                                                                                                                                        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Score <bdi data-slot="num" data-numeric="" class="tabular-nums">52</bdi></span>
+                                                                </div>
+                                                            </div>
+                                                                                                                        <div class="flex flex-wrap items-center gap-1.5">
+                                                                <span class="text-caption text-muted-foreground">1 outlet</span>
+                                                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">SPA</span>
+                                                            </div>
+                                                            <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     >
+    <button data-slot="collapsible-trigger"
+     type="button"                     x-bind:aria-controls="$id(&#039;nq-collapsible&#039;, &#039;panel&#039;)" x-bind:data-panel-open="open ? &#039;&#039; : undefined" x-on:click="toggle()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5 -ms-2">
+        <svg aria-hidden="true" x-bind:class="open ? 'rotate-180' : ''" class="transition-transform motion-reduce:transition-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg>                                                                    <span x-show="! open">Show 1 article</span>
+                                                                    <span x-show="open" style="display: none">Hide articles</span></button>
+                                                                <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><ul class="mt-2 flex flex-col divide-y divide-border rounded-control border border-border">
+                                                                                                                                                    <li class="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+                                                                                <div class="min-w-0">
+                                                                                                                                                                            <span class="text-body-sm font-medium">Two new lines open</span>
+                                                                                                                                                                        <p class="text-caption text-muted-foreground">SPA · <time data-slot="date-time" datetime="2026-09-28T09:00:00+00:00" dir="auto"  title="Sep 28, 2026"     class="tabular-nums [unicode-bidi:isolate]">1 day ago</time>
+</p>
+                                                                                </div>
+                                                                            </li>
+                                                                                                                                            </ul></div>
+</div>
+                                                            <p role="alert" class="flex items-center gap-1.5 text-body-sm text-nq-danger-text" x-show="failed[1]" style="display: none">
+                                                                <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>                                                                <span x-text="failed[1]"></span>
+                                                            </p>
+                                                                                                                            <div class="flex flex-wrap items-center gap-2 border-t border-border pt-3">
+                                                                                                                                            <button data-slot="button"
+     type="button"                     x-bind:aria-busy="isBusy(1) ? &#039;true&#039; : null" x-bind:disabled="isBusy(1)" x-on:click="act(1, &#039;save&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="isBusy(1)" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                                            <svg aria-hidden="true" x-show="! isBusy(1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
+</svg>                                                                            Save</button>
+                                                                                                                                            <button data-slot="button"
+     type="button"                     x-bind:aria-busy="isBusy(1) ? &#039;true&#039; : null" x-bind:disabled="isBusy(1)" x-on:click="act(1, &#039;review&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="isBusy(1)" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                                            <svg aria-hidden="true" x-show="! isBusy(1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>                                                                            Mark reviewed</button>
+                                                                                                                                            <button data-slot="button"
+     type="button"                     x-bind:aria-busy="isBusy(1) ? &#039;true&#039; : null" x-bind:disabled="isBusy(1)" x-on:click="act(1, &#039;dismiss&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="isBusy(1)" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                                            <svg aria-hidden="true" x-show="! isBusy(1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>                                                                            Dismiss</button>
+                                                                                                                                        <button data-slot="button"
+     type="button"                     aria-label="Actions for Riyadh Metro adds two lines" x-on:click="menuAt($el)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 ms-auto">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                                                </div></div></div></div>
+                                                <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(1, &#039;save&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
+</svg>Save</div>
+                                                                                                            <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(1, &#039;review&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>Mark reviewed</div>
+                                                                                                            <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="act(1, &#039;dismiss&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>Dismiss</div></div>
+</template></div>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                            </div></div>
+                    <div data-slot="tabs-panel" x-bind="panel('saved')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus mt-4"><div class="flex flex-col gap-6">
+                                                    <div class="flex flex-col gap-3">
+                                <h3 class="text-label font-medium text-muted-foreground">
+                                    <time data-slot="date-time" datetime="2026-09-26T12:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Saturday, September 26, 2026</time>
+                                </h3>
+                                <ul class="flex flex-col gap-3">
+                                                                                                                    <li class="min-w-0">
+                                            <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger"><div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full"><div data-slot="card-content" class="px-4 flex flex-col gap-3 pt-4"><div class="flex items-start gap-3">
+                                                                <div class="flex min-w-0 flex-1 flex-col gap-1">
+                                                                    <h4 class="text-body font-medium">Fuel prices hold steady</h4>
+                                                                                                                                    </div>
+                                                                <div class="flex shrink-0 items-center gap-2">
+                                                                                                                                        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Score <bdi data-slot="num" data-numeric="" class="tabular-nums">35</bdi></span>
+                                                                </div>
+                                                            </div>
+                                                                                                                        <div class="flex flex-wrap items-center gap-1.5">
+                                                                <span class="text-caption text-muted-foreground">0 outlets</span>
+                                                                                                                            </div>
+                                                            <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     >
+    <button data-slot="collapsible-trigger"
+     type="button"                     x-bind:aria-controls="$id(&#039;nq-collapsible&#039;, &#039;panel&#039;)" x-bind:data-panel-open="open ? &#039;&#039; : undefined" x-on:click="toggle()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5 -ms-2">
+        <svg aria-hidden="true" x-bind:class="open ? 'rotate-180' : ''" class="transition-transform motion-reduce:transition-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg>                                                                    <span x-show="! open">Show 0 articles</span>
+                                                                    <span x-show="open" style="display: none">Hide articles</span></button>
+                                                                <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><ul class="mt-2 flex flex-col divide-y divide-border rounded-control border border-border">
+                                                                                                                                            </ul></div>
+</div>
+                                                            <p role="alert" class="flex items-center gap-1.5 text-body-sm text-nq-danger-text" x-show="failed[2]" style="display: none">
+                                                                <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>                                                                <span x-text="failed[2]"></span>
+                                                            </p>
+                                                                                                                            <div class="flex flex-wrap items-center gap-2 border-t border-border pt-3">
+                                                                                                                                            <button data-slot="button"
+     type="button"                     x-bind:aria-busy="isBusy(2) ? &#039;true&#039; : null" x-bind:disabled="isBusy(2)" x-on:click="act(2, &#039;review&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="isBusy(2)" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                                            <svg aria-hidden="true" x-show="! isBusy(2)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>                                                                            Mark reviewed</button>
+                                                                                                                                            <button data-slot="button"
+     type="button"                     x-bind:aria-busy="isBusy(2) ? &#039;true&#039; : null" x-bind:disabled="isBusy(2)" x-on:click="act(2, &#039;dismiss&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="isBusy(2)" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                                            <svg aria-hidden="true" x-show="! isBusy(2)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>                                                                            Dismiss</button>
+                                                                                                                                            <button data-slot="button"
+     type="button"                     x-bind:aria-busy="isBusy(2) ? &#039;true&#039; : null" x-bind:disabled="isBusy(2)" x-on:click="act(2, &#039;restore&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="isBusy(2)" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                                            <svg aria-hidden="true" x-show="! isBusy(2)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+</svg>                                                                            Restore</button>
+                                                                                                                                        <button data-slot="button"
+     type="button"                     aria-label="Actions for Fuel prices hold steady" x-on:click="menuAt($el)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 ms-auto">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                                                </div></div></div></div>
+                                                <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(2, &#039;review&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 7 17l-5-5"/>
+  <path d="m22 10-7.5 7.5L13 16"/>
+</svg>Mark reviewed</div>
+                                                                                                            <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="act(2, &#039;dismiss&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>Dismiss</div>
+                                                                                                            <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(2, &#039;restore&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+</svg>Restore</div></div>
+</template></div>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                            </div></div>
+                    <div data-slot="tabs-panel" x-bind="panel('reviewed')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus mt-4"><div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No reviewed topics</p>
+                    <p class="text-body-sm text-muted-foreground">Topics appear here as they are found.</p>
+            </div>
+    </div></div>
+                    <div data-slot="tabs-panel" x-bind="panel('dismissed')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus mt-4"><div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No dismissed topics</p>
+                    <p class="text-body-sm text-muted-foreground">Topics appear here as they are found.</p>
+            </div>
+    </div></div>
+</div>
+</section>
+    <section data-slot="sources-catalogue" x-data="nqSourcesCatalogue(JSON.parse('{\u0022sources\u0022:[{\u0022id\u0022:\u0022s1\u0022,\u0022enabled\u0022:true,\u0022url\u0022:\u0022https:\\\/\\\/example.com\\\/feed\u0022},{\u0022id\u0022:\u0022s2\u0022,\u0022enabled\u0022:true,\u0022url\u0022:null},{\u0022id\u0022:\u0022s3\u0022,\u0022enabled\u0022:false,\u0022url\u0022:null}],\u0022failed\u0022:\u0022Could not change the source. Try again.\u0022}'))" class="flex flex-col gap-4">
+            <p role="status" class="flex items-center gap-2 rounded-control border border-nq-warning/40 bg-nq-warning-soft px-3 py-2 text-body-sm text-nq-warning-text">
+            <svg aria-hidden="true" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>            Tier 1 has no working source, so tier 2 is being used.
+        </p>
+                                        <div class="flex flex-col gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="text-label font-medium">Tier 1</h3>
+                                        <p class="text-caption text-muted-foreground">Primary sources. Preferred whenever one is working.</p>
+                </div>
+                <ul class="flex flex-col divide-y divide-border rounded-card border border-border bg-card">
+                                                                    <li class="min-w-0">
+                            <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="flex flex-wrap items-center gap-3 px-4 py-3 opacity-90"><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="enabled[0]" aria-label="Primary feed enabled" x-bind:disabled="isBusy(0) ? &#039;&#039; : null" x-bind:data-disabled="isBusy(0) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                                                                        <div class="min-w-0 flex-1">
+                                        <p class="truncate text-body font-medium">Primary feed</p>
+                                        <p class="text-caption text-muted-foreground">
+                                            Last fetched: <time data-slot="date-time" datetime="2026-09-29T03:00:00+00:00" dir="auto"  title="Sep 29, 2026"     class="tabular-nums [unicode-bidi:isolate]">6 hours ago</time>
+                                                                                    </p>
+                                        <p role="alert" class="text-caption text-nq-danger-text" x-show="failed[0]" style="display: none" x-text="failed[0]"></p>
+                                    </div>
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>Down</span>
+                                                                            <button data-slot="button"
+     type="button"                     aria-label="Actions for Primary feed" x-on:click="menuAt($el)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button></div>
+                                                                    <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="toggle(0)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Disable</div>
+                                                                                                                            <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="retry(0)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Retry now</div>
+                                                                                                                            <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                            <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="visit(0)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Open the site</div></div>
+</template></div>
+                        </li>
+                                    </ul>
+            </div>
+                                        <div class="flex flex-col gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="text-label font-medium">Tier 2</h3>
+                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Active</span>
+                                        <p class="text-caption text-muted-foreground">Backup sources. Used when tier 1 has nothing working.</p>
+                </div>
+                <ul class="flex flex-col divide-y divide-border rounded-card border border-border bg-card">
+                                                                    <li class="min-w-0">
+                            <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="flex flex-wrap items-center gap-3 px-4 py-3"><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="enabled[1]" aria-label="Backup feed enabled" x-bind:disabled="isBusy(1) ? &#039;&#039; : null" x-bind:data-disabled="isBusy(1) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                                                                        <div class="min-w-0 flex-1">
+                                        <p class="truncate text-body font-medium">Backup feed</p>
+                                        <p class="text-caption text-muted-foreground">
+                                            Last fetched: <time data-slot="date-time" datetime="2026-09-29T08:50:00+00:00" dir="auto"  title="Sep 29, 2026"     class="tabular-nums [unicode-bidi:isolate]">10 minutes ago</time>
+                                             · 1,200 a day                                        </p>
+                                        <p role="alert" class="text-caption text-nq-danger-text" x-show="failed[1]" style="display: none" x-text="failed[1]"></p>
+                                    </div>
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>Slow</span>
+                                                                            <button data-slot="button"
+     type="button"                     aria-label="Actions for Backup feed" x-on:click="menuAt($el)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button></div>
+                                                                    <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="toggle(1)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Disable</div>
+                                                                                                                            <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="retry(1)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Retry now</div></div>
+</template></div>
+                        </li>
+                                    </ul>
+            </div>
+                                        <div class="flex flex-col gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="text-label font-medium">Tier 3</h3>
+                                        <p class="text-caption text-muted-foreground">Last resort. Used when tiers 1 and 2 have nothing working.</p>
+                </div>
+                <ul class="flex flex-col divide-y divide-border rounded-card border border-border bg-card">
+                                                                    <li class="min-w-0">
+                            <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="flex flex-wrap items-center gap-3 px-4 py-3 opacity-90"><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="enabled[2]" aria-label="Last resort enabled" x-bind:disabled="isBusy(2) ? &#039;&#039; : null" x-bind:data-disabled="isBusy(2) ? &#039;&#039; : null" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                                                                        <div class="min-w-0 flex-1">
+                                        <p class="truncate text-body font-medium">Last resort</p>
+                                        <p class="text-caption text-muted-foreground">
+                                            Last fetched: Never                                                                                    </p>
+                                        <p role="alert" class="text-caption text-nq-danger-text" x-show="failed[2]" style="display: none" x-text="failed[2]"></p>
+                                    </div>
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Working</span>
+                                                                            <button data-slot="button"
+     type="button"                     aria-label="Actions for Last resort" x-on:click="menuAt($el)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button></div>
+                                                                    <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="toggle(2)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Enable</div></div>
+</template></div>
+                        </li>
+                                    </ul>
+            </div>
+            </section>
+</div>

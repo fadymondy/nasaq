@@ -39,7 +39,8 @@ names.forEach((n) => depth(n));
 
 const has = {
   vue: (n) => existsSync(join(root, "packages/vue/src/components", n, "index.ts")),
-  blade: (n) => existsSync(join(root, "packages/php/resources/views/components", n)),
+  // A React folder can map to several Blade components (code-block-variants → code-tabs, command-snippet …); its example then names it.
+  blade: (n) => existsSync(join(root, "packages/php/resources/views/components", n)) || existsSync(join(root, "packages/php/examples", `${n}.blade.php`)),
 };
 const box = (n, stack) => (na[n]?.[stack] ? "[-]" : has[stack](n) ? "[x]" : "[ ]");
 const done = names.filter((n) => (has.vue(n) || na[n]?.vue) && (has.blade(n) || na[n]?.blade));

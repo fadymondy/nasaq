@@ -108,10 +108,10 @@ describe("cron-builder (Blade example)", () => {
     const host = await mount();
     let zone = "";
     root(host).addEventListener("time-zone-change", (e) => (zone = (e as CustomEvent).detail.timeZone));
-    const before = host.querySelector('[data-slot="cron-next-runs"] li time')!.textContent;
+    const before = host.querySelector('[data-slot="cron-next-runs"] li time')!.getAttribute("datetime");
     data(host).zone = "America/Los_Angeles";
     await tick();
     expect(zone).toBe("America/Los_Angeles");
-    expect(host.querySelector('[data-slot="cron-next-runs"] li time')!.textContent).not.toBe(before);
+    expect(host.querySelector('[data-slot="cron-next-runs"] li time')!.getAttribute("datetime")).not.toBe(before);
   });
 });

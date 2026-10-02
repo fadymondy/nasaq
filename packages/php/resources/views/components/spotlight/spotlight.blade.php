@@ -10,7 +10,7 @@
     $has = fn ($s) => $s && ! $s->isEmpty();
     $heading = $title ?? ($slot->isEmpty() ? '' : $slot);
 @endphp
-<section data-slot="spotlight" data-size="{{ $size }}" aria-labelledby="{{ $id }}" {{ $attributes->cn('flex') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'spotlight') }}" data-size="{{ $size }}" aria-labelledby="{{ $id }}" {{ $attributes->except('data-slot')->cn('flex') }}>
     <x-nq::product-artwork :brand="$brand" class="@container w-full items-stretch justify-stretch {{ $lg ? 'min-h-[22rem]' : '' }}">
         @if ($lg)
             <div class="grid w-full gap-8 p-6 @md:p-8 @3xl:grid-cols-[minmax(0,1fr)_auto]">

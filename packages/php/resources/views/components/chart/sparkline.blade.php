@@ -72,7 +72,7 @@
     }
     $gid = 'nq-spark-'.substr(md5(json_encode([$vals, $color])), 0, 8);
 @endphp
-<div data-slot="sparkline" @if ($label) role="img" aria-label="{{ $label }}" @else aria-hidden="true" @endif {{ $attributes->cn('h-8 w-32 shrink-0') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'sparkline') }}" @if ($label) role="img" aria-label="{{ $label }}" @else aria-hidden="true" @endif {{ $attributes->except('data-slot')->cn('h-8 w-32 shrink-0') }}>
     <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
         <defs>
             <linearGradient id="{{ $gid }}" x1="0" y1="0" x2="0" y2="1">

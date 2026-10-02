@@ -52,8 +52,8 @@
     $focus = 'outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-nq-focus';
     $chip = 'flex w-full min-w-0 items-center gap-1 rounded-[4px] border px-1.5 py-0.5 text-start text-caption';
 @endphp
-<div data-slot="scheduler" data-view="{{ $view }}" dir="{{ $rtl ? 'rtl' : 'ltr' }}" lang="{{ $loc }}" x-data="nqScheduler(@js($config))" x-bind:data-view="view"
-    {{ $attributes->cn('flex w-full flex-col gap-3 text-body-sm text-foreground') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'scheduler') }}" data-view="{{ $view }}" dir="{{ $rtl ? 'rtl' : 'ltr' }}" lang="{{ $loc }}" x-data="nqScheduler(@js($config))" x-bind:data-view="view"
+    {{ $attributes->except('data-slot')->cn('flex w-full flex-col gap-3 text-body-sm text-foreground') }}>
     <div data-slot="scheduler-toolbar" class="flex flex-wrap items-center gap-2">
         <div class="flex items-center gap-1">
             <x-nq::button variant="ghost" size="icon-sm" x-bind:aria-label="previousLabel" aria-label="{{ $config['strings']['previous'][$view] }}" x-on:click="step(-1)"><x-nq::icon name="chevron-left" /></x-nq::button>

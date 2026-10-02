@@ -34,9 +34,9 @@
 <div data-slot="user-menu-root" x-data="nqThemePref()" class="contents">
 <div x-data="nqLocalePref({!! $js($names) !!})" class="contents">
 <x-nq::dropdown-menu>
-    <button type="button" data-slot="user-menu" x-bind="trigger" x-ref="trigger"
+    <button type="button" data-slot="{{ $attributes->get('data-slot', 'user-menu') }}" x-bind="trigger" x-ref="trigger"
         @if ($top) aria-label="{{ $name }}" @else x-bind:aria-label="typeof rail !== 'undefined' && rail && collapsed ? {!! $js($name) !!} : null" @endif
-        {{ $attributes->cn([
+        {{ $attributes->except('data-slot')->cn([
             'flex w-full items-center gap-2 rounded-control px-1.5 outline-none',
             'transition-colors duration-150 ease-nq hover:bg-nq-hover data-popup-open:bg-nq-selected',
             'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus',

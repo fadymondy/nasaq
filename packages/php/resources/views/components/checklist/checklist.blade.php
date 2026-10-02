@@ -18,8 +18,8 @@
     $T = fn (string $en, string $ar) => \Nasaq\Nasaq::t($en, $ar);
     $box = 'relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1';
 @endphp
-<section data-slot="checklist" aria-label="{{ $T('Checklist', 'قائمة المهام') }}" x-data="nqChecklist(@js(array_values((array) $items)), {!! \Illuminate\Support\Js::from((object) $options)->toHtml() !!})" x-modelable="items"
-    {{ $attributes->cn('flex flex-col gap-3') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'checklist') }}" aria-label="{{ $T('Checklist', 'قائمة المهام') }}" x-data="nqChecklist(@js(array_values((array) $items)), {!! \Illuminate\Support\Js::from((object) $options)->toHtml() !!})" x-modelable="items"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-3') }}>
     @if ($showProgress)
         <div data-slot="progress" role="progressbar" x-show="progress().total > 0" x-cloak style="display: none" aria-valuemin="0" aria-valuemax="100" x-bind:aria-valuenow="progress().percent" x-bind:data-tone="progress().percent === 100 ? 'success' : 'default'" class="flex w-full flex-col gap-1.5">
             <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">

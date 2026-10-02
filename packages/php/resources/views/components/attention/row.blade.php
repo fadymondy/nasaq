@@ -23,9 +23,9 @@
     $dismissLabel ??= \Nasaq\Nasaq::t('Dismiss', 'تجاهل');
     $doneLabel ??= \Nasaq\Nasaq::t('Done', 'تم');
 @endphp
-<li data-slot="attention-item" data-tone="{{ $tone }}" @if ($done) data-done="true" @endif data-id="{{ $item['id'] ?? '' }}"
+<li data-slot="{{ $attributes->get('data-slot', 'attention-item') }}" data-tone="{{ $tone }}" @if ($done) data-done="true" @endif data-id="{{ $item['id'] ?? '' }}"
     @if ($extra) style="display: none" @endif
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         'group/attention relative flex min-h-row items-center gap-3 border-b border-border px-1 py-2',
         'transition-colors duration-150 ease-nq hover:bg-nq-hover' => $interactive,
     ]) }}>

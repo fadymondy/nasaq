@@ -15,9 +15,9 @@
     $config = array_filter(['methods' => $methods, 'labels' => $labels ?: null, 'value' => $value ?: null], fn ($v) => $v !== null);
     $card = $method === 'card';
 @endphp
-<div data-slot="payment-method-form"
+<div data-slot="{{ $attributes->get('data-slot', 'payment-method-form') }}"
     @unless ($shared) x-data="nqPaymentMethodForm(@js($config))" x-modelable="payment" @endunless
-    {{ $attributes->cn('flex flex-col gap-5') }}>
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-5') }}>
     @if (count($methods) > 1)
         <x-nq::radio-group x-model="payment.method" :default-value="$method" :aria-label="$t('method')">
             @if (in_array('card', $methods, true))

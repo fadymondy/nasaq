@@ -1,0 +1,53 @@
+<div class="w-80">
+    <form data-slot="verify-otp-form" novalidate x-data="nqVerifyOtpForm(JSON.parse('{\u0022length\u0022:6,\u0022autoSubmit\u0022:true,\u0022resend\u0022:true,\u0022resendSeconds\u0022:30,\u0022names\u0022:[\u0022code\u0022],\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022,\u0022labels\u0022:{\u0022descriptionEmail\u0022:\u0022Enter the {length}-digit code we sent to {destination}.\u0022,\u0022descriptionSms\u0022:\u0022Enter the {length}-digit code we texted to {destination}.\u0022,\u0022group\u0022:\u0022Verification code\u0022,\u0022submit\u0022:\u0022Verify\u0022,\u0022noCode\u0022:\u0022Did not get a code?\u0022,\u0022resend\u0022:\u0022Resend code\u0022,\u0022resendIn\u0022:\u0022Resend in {time}\u0022,\u0022resent\u0022:\u0022We sent a new code.\u0022,\u0022incomplete\u0022:\u0022Enter all {length} digits.\u0022,\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022}}'))" x-bind:aria-busy="pending ? 'true' : null"
+    x-on:submit.prevent="onSubmit()" x-on:nq-verify-otp="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(() =&gt; done($event.detail.code === &#039;123456&#039; ? undefined : { error: &#039;That code is not right.&#039; }), 300)))" x-on:nq-verify-otp-resend="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(done, 300)))" class="flex w-full flex-col gap-4">
+    <p class="text-body-sm text-muted-foreground">Enter the 6-digit code we sent to <bdi dir="ltr" class="font-medium text-foreground">f•••y@example.com</bdi>.</p>
+    <div class="flex flex-col gap-2" x-effect="markInvalid($el)">
+        <div role="group" dir="ltr" data-slot="otp-input" x-data="nqOtpInput('', 6, 'numeric')" x-modelable="value"
+    aria-label="Verification code" aria-describedby="nq-otp-000001-message" x-model="code" x-on:complete="onComplete($event.detail)" class="inline-flex items-center gap-2 self-center">
+            <input data-slot="otp-input-box" x-bind="box(0)" type="text" value=""
+                        aria-label="Digit 1 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+               autofocus             class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(1)" type="text" value=""
+                        aria-label="Digit 2 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(2)" type="text" value=""
+                        aria-label="Digit 3 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(3)" type="text" value=""
+                        aria-label="Digit 4 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(4)" type="text" value=""
+                        aria-label="Digit 5 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+            <input data-slot="otp-input-box" x-bind="box(5)" type="text" value=""
+                        aria-label="Digit 6 of 6"
+            inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false"
+                          class="size-control min-h-[var(--nq-touch-min,0px)] min-w-0 rounded-control border border-input bg-card p-0 text-center text-body font-medium tabular-nums text-foreground transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]" />
+        <input type="hidden" name="code" :value="value" value="" /></div>
+        <p id="nq-otp-000001-message" role="alert" class="text-center text-caption text-nq-danger-text" style="display: none" x-show="message()" x-text="message()"></p>
+    </div>
+    <button data-slot="button"
+     type="submit"                     x-bind:disabled="pending" x-bind:data-disabled="pending ? &#039;&#039; : null" x-bind:aria-busy="pending ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <template x-if="pending"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+        Verify</button>
+            <div class="flex flex-wrap items-center justify-center gap-x-1 text-body-sm text-muted-foreground">
+            <span>Did not get a code?</span>
+            <button data-slot="verify-otp-resend"
+     type="button"                     x-on:click="resend()" x-bind:disabled="resendOff()" x-bind:data-disabled="resendOff() ? &#039;&#039; : null" x-bind:aria-busy="resendPending ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <template x-if="resendPending"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                <span x-text="resendLabel()">Resend code</span></button>
+        </div>
+        <span role="status" class="sr-only" x-text="resendSent ? 'We sent a new code.' : ''"></span>
+            <div class="text-center text-body-sm"><a href="/login" class="underline underline-offset-2">Use a different email</a></div>
+    </form>
+</div>

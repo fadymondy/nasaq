@@ -15,7 +15,7 @@ import type { Magics, Register } from "./types";
 type State = "idle" | "copied" | "failed";
 
 interface CopyState extends Magics {
-  value: string;
+  value: string | (() => string);
   resetAfter: number;
   state: State;
   timer: ReturnType<typeof setTimeout> | undefined;
@@ -52,17 +52,19 @@ export async function copyText(text: string): Promise<boolean> {
 }
 
 export const copyButton: Register = (Alpine) => {
-  Alpine.data("nqCopyButton", (value = "", resetAfter = 1500) => ({
+  Alpine.data("nqCopyButton", (value: string | (() => string) = "", resetAfter = 1500) => ({
     value,
     resetAfter,
     state: "idle" as State,
     timer: undefined as ReturnType<typeof setTimeout> | undefined,
     async copy(this: CopyState) {
-      const ok = await copyText(this.value);
+      // A function (value-expr) is read now, so the text copied is the live one.
+      const text = String(typeof this.value === "function" ? this.value() : this.value);
+      const ok = await copyText(text);
       clearTimeout(this.timer);
       this.state = ok ? "copied" : "failed";
       this.timer = setTimeout(() => (this.state = "idle"), this.resetAfter);
-      if (ok) this.$dispatch("nq:copy", { text: this.value });
+      if (ok) this.$dispatch("nq:copy", { text });
       else this.$dispatch("nq:copy-error");
     },
   }));

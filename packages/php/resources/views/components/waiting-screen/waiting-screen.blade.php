@@ -29,7 +29,7 @@
             default => null,
         };
     @endphp
-    <div data-slot="waiting-screen" data-status="{{ $status }}" x-data="nqWaitingScreen" {{ $attributes->cn('mx-auto flex w-full max-w-md flex-col gap-4') }}>
+    <div data-slot="{{ $attributes->get('data-slot', 'waiting-screen') }}" data-status="{{ $status }}" x-data="nqWaitingScreen" {{ $attributes->except('data-slot')->cn('mx-auto flex w-full max-w-md flex-col gap-4') }}>
         <div class="flex items-center justify-between gap-2">
             @if ($clinic)
                 <h2 class="text-label font-semibold">{{ $clinic }}</h2>

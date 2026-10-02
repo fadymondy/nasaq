@@ -27,7 +27,7 @@
         return $v.'°'.($f ? 'F' : 'C');
     };
 @endphp
-<div data-slot="weather-widget" data-condition="{{ $condition }}" {{ $attributes->cn('flex flex-col gap-2 rounded-card border border-border bg-card py-4 text-card-foreground') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'weather-widget') }}" data-condition="{{ $condition }}" {{ $attributes->except('data-slot')->cn('flex flex-col gap-2 rounded-card border border-border bg-card py-4 text-card-foreground') }}>
     <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4"><div data-slot="card-title" class="text-label text-foreground">{{ $t['weather'] }}</div></div>
     <div data-slot="card-content" class="flex items-center gap-3 px-4">
         <x-nq::icon :name="$icons[$condition]" class="size-9 shrink-0 text-nq-accent-text" />

@@ -11,7 +11,7 @@
                 class="flex size-5 shrink-0 cursor-default items-center justify-center rounded-[4px] text-muted-foreground outline-none hover:text-foreground [&_svg]:size-3"><x-lucide-x /></button>
         </span>
     </template>
-    <input data-slot="combobox-input" x-ref="input" x-bind="input" :placeholder="hasValue() ? undefined : @js($placeholder ?? '')"
+    <input data-slot="{{ $attributes->get('data-slot', 'combobox-input') }}" x-ref="input" x-bind="input" :placeholder="hasValue() ? undefined : @js($placeholder ?? '')"
         @if ($invalid) data-invalid aria-invalid="true" @endif
-        {{ $attributes->cn('h-full min-w-0 flex-1 border-0 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]', 'h-6 min-w-16 ps-1.5') }}>
+        {{ $attributes->except('data-slot')->cn('h-full min-w-0 flex-1 border-0 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]', 'h-6 min-w-16 ps-1.5') }}>
 </div>

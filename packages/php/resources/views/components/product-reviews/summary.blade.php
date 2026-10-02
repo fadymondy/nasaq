@@ -9,8 +9,8 @@
     $config = ['reviews' => array_values((array) $reviews), 'summary' => $summary, 'labels' => (object) $labels];
     $hide = 'display: none';
 @endphp
-<section data-slot="product-review-summary" @unless ($embedded) x-data="nqProductReviewSummary(@js($config))" @endunless :aria-label="t.reviews"
-    {{ $attributes->cn('grid gap-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-10') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'product-review-summary') }}" @unless ($embedded) x-data="nqProductReviewSummary(@js($config))" @endunless :aria-label="t.reviews"
+    {{ $attributes->except('data-slot')->cn('grid gap-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-10') }}>
     <div class="flex flex-col gap-1">
         <p class="flex items-baseline gap-2">
             <bdi class="text-display tabular-nums text-foreground" x-text="avgText"></bdi>

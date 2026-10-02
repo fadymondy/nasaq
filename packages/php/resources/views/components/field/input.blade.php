@@ -3,12 +3,12 @@
      Works standalone or inside <x-nq::field> (which wires the label, description, error and invalid state). --}}
 @aware(['invalid' => false, 'disabled' => false, 'name' => null])
 @props(['ltr' => false, 'type' => 'text'])
-<input data-slot="input" type="{{ $type }}"
+<input data-slot="{{ $attributes->get('data-slot', 'input') }}" type="{{ $type }}"
     @if ($ltr) dir="ltr" @endif
-    @if ($name && ! $attributes->has('name')) name="{{ $name }}" @endif
-    @if ($invalid) data-invalid aria-invalid="true" @endif
-    @if ($disabled) disabled @endif
-    {{ $attributes->cn([
+    @if (($name ?? null) && ! $attributes->has('name')) name="{{ $name }}" @endif
+    @if ($invalid ?? false) data-invalid aria-invalid="true" @endif
+    @if ($disabled ?? false) disabled @endif
+    {{ $attributes->except('data-slot')->cn([
         'w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground',
         'min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none',
         'placeholder:text-muted-foreground',

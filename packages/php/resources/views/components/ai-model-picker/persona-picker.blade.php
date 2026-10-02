@@ -12,7 +12,7 @@
     $config = ['value' => $first, 'personas' => collect($personas)->mapWithKeys(fn ($p) => [$p['id'] => ['id' => $p['id'], 'name' => $p['name'], 'starters' => array_values($p['starters'] ?? [])]])->all()];
     $startersLabel = Nasaq::t('Try asking', 'جرّب أن تسأل');
 @endphp
-<div data-slot="persona-picker" x-data="nqPersonaPicker(@js($config))" x-modelable="selected" {{ $attributes->cn('flex flex-col gap-4') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'persona-picker') }}" x-data="nqPersonaPicker(@js($config))" x-modelable="selected" {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
     <x-nq::radio-group :default-value="$first" aria-label="{{ Nasaq::t('Personas', 'الشخصيات') }}" x-model="selected" class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         @foreach ($personas as $p)
             <x-nq::radio-group.card :value="$p['id']" :description="$p['description'] ?? null" x-bind:disabled="{{ $disabled ? 'true' : 'false' }}" :data-disabled="$disabled ? '' : null">

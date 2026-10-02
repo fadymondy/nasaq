@@ -10,7 +10,7 @@
     $code = strtoupper($currency ?? \Nasaq\Nasaq::currency($locale));
     $t = nq_pricing_labels((array) $labels, $locale);
 @endphp
-<x-nq::radio-group data-slot="plan-picker" :default-value="$defaultValue" {{ $attributes->cn('flex flex-col gap-2') }}>
+<x-nq::radio-group data-slot="{{ $attributes->get('data-slot', 'plan-picker') }}" :default-value="$defaultValue" {{ $attributes->except('data-slot')->cn('flex flex-col gap-2') }}>
     @foreach ((array) $plans as $plan)
         @php
             $isCurrent = $currentPlanId !== null && ($plan['id'] ?? null) === $currentPlanId;

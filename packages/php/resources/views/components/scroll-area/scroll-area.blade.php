@@ -4,8 +4,8 @@
      viewport-class: classes for the viewport, e.g. padding. The vertical bar sits on the inline-end edge (left in RTL).
      Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['orientation' => 'vertical', 'label' => null, 'viewportClass' => ''])
-<div data-slot="scroll-area" x-data="nqScrollArea()" x-on:pointerenter="hovering = true" x-on:pointerleave="hovering = false"
-    {{ $attributes->except('aria-label')->cn('relative min-h-0 min-w-0 overflow-hidden') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'scroll-area') }}" x-data="nqScrollArea()" x-on:pointerenter="hovering = true" x-on:pointerleave="hovering = false"
+    {{ $attributes->except('data-slot')->except('aria-label')->cn('relative min-h-0 min-w-0 overflow-hidden') }}>
     <div data-slot="scroll-area-viewport" x-ref="viewport" role="region" tabindex="0" aria-label="{{ $label ?? $attributes->get('aria-label') }}"
         class="{{ \Nasaq\Cn::merge('size-full overflow-auto rounded-[inherit] outline-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus', $viewportClass) }}">{{ $slot }}</div>
     @if ($orientation !== 'horizontal')

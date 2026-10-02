@@ -13,8 +13,8 @@
     // Backtick strings: the component attribute bag escapes quotes, and a double escape would break the expression.
     $labelExpr = 'hidden ? `'.addcslashes($t['show'], '`\\$').'` : `'.addcslashes($t['hide'], '`\\$').'`';
 @endphp
-<div data-slot="wallet-balance" x-data="nqWalletBalance()" @if ($loading) aria-busy="true" @endif
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card px-0 py-4 text-card-foreground') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'wallet-balance') }}" x-data="nqWalletBalance()" @if ($loading) aria-busy="true" @endif
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card px-0 py-4 text-card-foreground') }}>
     <x-nq::card.header>
         <x-nq::card.title as="h2" class="flex items-center gap-2 text-muted-foreground">
             <x-lucide-wallet-cards aria-hidden="true" class="size-4" />

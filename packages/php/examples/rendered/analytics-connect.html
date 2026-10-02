@@ -1,0 +1,265 @@
+<div class="flex flex-col gap-10" x-data
+    x-on:nq-connect="$event.detail.wait(new Promise((resolve) => setTimeout(resolve, 400)))"
+    x-on:nq-disconnect="$event.detail.wait(new Promise((resolve) => setTimeout(resolve, 400)))"
+    x-on:nq-refresh="$event.detail.wait(new Promise((resolve) => setTimeout(resolve, 400)))">
+    <section data-slot="analytics-connect" data-status="disconnected" aria-label="Connect Google Analytics"
+    class="mx-auto flex w-full max-w-2xl flex-col items-center gap-6 rounded-card border border-dashed border-border px-4 py-10 text-center sm:px-8">
+    <div class="flex max-w-lg flex-col gap-2">
+        <h2 class="text-h2 text-foreground">Connect Google Analytics</h2>
+        <p class="text-pretty text-body-sm text-muted-foreground">Nasaq reads your Google Analytics data to build this page. It never changes anything in your account.</p>
+    </div>
+            <div class="flex flex-col gap-2 text-start">
+            <h3 class="text-label text-muted-foreground">What you will see</h3>
+            <ul class="flex flex-col gap-1.5">
+                                    <li class="flex items-start gap-2 text-body-sm text-foreground">
+                        <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                        Users and sessions against the previous period
+                    </li>
+                                    <li class="flex items-start gap-2 text-body-sm text-foreground">
+                        <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                        Sources and top pages
+                    </li>
+                            </ul>
+        </div>
+        <div data-slot="integration-connector" x-data="nqIntegrationConnector(JSON.parse('{\u0022services\u0022:{\u0022ga\u0022:{\u0022name\u0022:\u0022Google Analytics\u0022,\u0022scopes\u0022:[{\u0022id\u0022:\u0022analytics.readonly\u0022,\u0022label\u0022:\u0022See your Google Analytics reports\u0022,\u0022required\u0022:true}],\u0022granted\u0022:[\u0022analytics.readonly\u0022]}},\u0022status\u0022:{\u0022ga\u0022:\u0022disconnected\u0022},\u0022account\u0022:{\u0022ga\u0022:null},\u0022strings\u0022:{\u0022dialogTitle\u0022:\u0022Connect {name}\u0022,\u0022dialogBody\u0022:\u0022You will go to {name} to sign in and approve access. Nasaq never sees your password.\u0022,\u0022continue\u0022:\u0022Continue to {name}\u0022,\u0022noPermissions\u0022:\u0022Pick at least one permission.\u0022,\u0022genericError\u0022:\u0022Something went wrong. Try again.\u0022,\u0022permissionsOne\u0022:\u00221 permission\u0022,\u0022permissionsMany\u0022:\u0022{n} permissions\u0022}}'))"
+    class="flex flex-col gap-4 rounded-card border-border text-card-foreground w-full max-w-sm border-0 bg-transparent p-0 text-start [&_[data-slot=card-content]]:p-0 [&_ul]:sm:grid-cols-1 [&_ul]:xl:grid-cols-1">
+        <div data-slot="card-content" class="px-4 pt-6"><div class="flex flex-col gap-5">
+                <div data-slot="alert" data-tone="danger" role="alert"
+     x-data="nqAlert()" x-modelable="open" x-show="open"     x-model="hasError" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+            <div data-slot="alert-actions" class="ms-3 flex items-center gap-1">
+                            <button data-slot="button"
+     type="button"                     aria-label="Dismiss" x-on:click="dismiss()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground [&_svg]:size-3.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+                                    <section class="flex flex-col gap-3" aria-label="Services">
+                                                <ul class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                                                                                            <li data-slot="integration-service" data-service="ga" x-bind:data-status="status['ga']"
+                                    class="flex flex-col gap-3 rounded-card border border-border bg-card p-4">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div class="flex min-w-0 items-center gap-3">
+                                                                                        <div class="flex min-w-0 flex-col">
+                                                <h3 class="truncate text-label text-foreground" dir="auto">Google Analytics</h3>
+                                                                                                    <span data-slot="status" data-tone="neutral" x-show="status[&#039;ga&#039;] === &#039;disconnected&#039;" style="" class="inline-flex min-w-0 items-center gap-1.5 text-foreground text-caption">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+</svg>        <span class="truncate"  title="Not connected" >Not connected</span>
+</span>
+                                                                                                    <span data-slot="status" data-tone="success" x-show="status[&#039;ga&#039;] === &#039;connected&#039;" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-foreground text-caption">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Connected" >Connected</span>
+</span>
+                                                                                                    <span data-slot="status" data-tone="warning" x-show="status[&#039;ga&#039;] === &#039;needs-reauth&#039;" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-foreground text-caption">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>        <span class="truncate"  title="Needs sign-in again" >Needs sign-in again</span>
+</span>
+                                                                                                    <span data-slot="status" data-tone="danger" x-show="status[&#039;ga&#039;] === &#039;error&#039;" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-foreground text-caption">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>        <span class="truncate"  title="Connection problem" >Connection problem</span>
+</span>
+                                                                                                    <span data-slot="status" data-tone="info" x-show="status[&#039;ga&#039;] === &#039;pending&#039;" style="display: none" class="inline-flex min-w-0 items-center gap-1.5 text-foreground text-caption">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-info-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>        <span class="truncate"  title="Connecting…" >Connecting…</span>
+</span>
+                                                                                            </div>
+                                        </div>
+                                    </div>
+                                                                                                            <dl class="grid gap-1 text-caption text-muted-foreground" x-show="isConnected('ga')"  style="display: none" >
+                                                                                <div class="flex flex-wrap gap-1">
+                                            <dt>Last synced</dt>
+                                            <dd>
+                                                                                                    <span x-show="! synced['ga']">Not synced yet</span>
+                                                                                                <span x-show="synced['ga']" style="display: none">Just now</span>
+                                            </dd>
+                                        </div>
+                                        <div class="flex flex-wrap gap-1">
+                                            <dt>Permissions</dt>
+                                            <dd x-text="permissionsLabel('ga')">1 permission</dd>
+                                        </div>
+                                    </dl>
+                                                                        <div class="mt-auto flex flex-wrap items-center gap-2 pt-1">
+                                        <button data-slot="button"
+     type="button"                     x-show="! isConnected(&#039;ga&#039;)" style="" x-on:click="openDialog(&#039;ga&#039;)" x-bind:aria-busy="status[&#039;ga&#039;] === &#039;pending&#039; ? &#039;true&#039; : null" x-bind:disabled="status[&#039;ga&#039;] === &#039;pending&#039; || busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="status[&#039;ga&#039;] === &#039;pending&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                            <svg aria-hidden="true" x-show="status['ga'] !== 'pending'" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg>                                            Connect</button>
+                                        <span class="contents" x-show="isConnected('ga')"  style="display: none" >
+                                            <button data-slot="button"
+     type="button"                     x-show="status[&#039;ga&#039;] !== &#039;connected&#039;" style="" x-on:click="openDialog(&#039;ga&#039;)" x-bind:disabled="busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Reconnect</button>
+                                            <button data-slot="button"
+     type="button"                     x-show="status[&#039;ga&#039;] === &#039;connected&#039;" style="display: none" x-on:click="openDialog(&#039;ga&#039;)" x-bind:disabled="busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Change permissions</button>
+                                            <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" x-bind:disabled="busy !== null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === &#039;ga&#039;" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                                    Disconnect</button>
+                                                <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disconnect Google Analytics?</h2>
+                                                        <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">Nasaq stops reading from this service and deletes the stored access. Data already imported stays. You can connect it again later.</p></div>
+                                                    <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                                                        <button data-slot="confirm-button-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="disconnect(&#039;ga&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Disconnect</button></div>
+        </div>
+    </div>
+</template>
+</div>
+                                        </span>
+                                                                            </div>
+                                </li>
+                                                    </ul>
+                    </section>
+                            </div>
+            <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="dialogOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form data-slot="integration-connect-dialog" class="grid gap-4" novalidate x-on:submit.prevent="submit()">
+                        <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground"><span x-text="dialogTitle"></span></h2>
+                            <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-text="dialogBody"></span></p></div>
+                        <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="dialogError" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="dialogError"></span></div>
+            </div>
+    </div>
+                        <fieldset class="grid gap-2 border-0 p-0">
+                            <legend class="mb-1 text-label text-foreground">Nasaq will be able to</legend>
+                            <ul class="grid gap-1 rounded-card border border-border p-2">
+                                <template x-for="(sc, i) in scopes" :key="sc.id">
+                                    <li class="flex items-start gap-2.5 rounded-control px-2 py-1.5">
+                                        <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-bind:id="&#039;nq-integration-902e47-&#039; + sc.id" x-model="picked[i]" x-bind:disabled="sc.required" x-bind:data-disabled="sc.required ? &#039;&#039; : null" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 mt-0.5">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+                                        <label x-bind:for="'nq-integration-902e47-' + sc.id" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 text-body-sm text-foreground">
+                                            <span x-text="sc.label"></span>
+                                            <span data-slot="badge"     x-show="sc.required" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Required</span>
+                                        </label>
+                                    </li>
+                                </template>
+                            </ul>
+                        </fieldset>
+                        <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-bind:disabled="dialogBusy" x-on:click="closeDialog()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                            <button data-slot="button"
+     type="submit"                     x-bind:disabled="dialogBusy" x-bind:aria-busy="dialogBusy ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="dialogBusy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                                <span x-text="continueLabel"></span></button></div>
+                    </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div></div>
+</div>
+    <p class="text-caption text-muted-foreground">Read-only access. You can disconnect at any time.</p>
+</section>
+    <div data-slot="analytics-page" data-connected="true" x-data="nqAnalyticsPage(JSON.parse('{\u0022id\u0022:\u0022ga\u0022,\u0022refreshing\u0022:false}'))"
+    class="flex w-full flex-col gap-6">
+    <header class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+        <div class="flex min-w-0 flex-col gap-1">
+            <h1 class="text-h1 text-foreground">Google Analytics</h1>
+                            <p class="text-pretty text-body-sm text-muted-foreground">Nasaq blog</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">30 days</span>                                    <button data-slot="button"
+     type="button"                     x-on:click="refresh()" x-bind:aria-busy="refreshing ? &#039;true&#039; : null" x-bind:disabled="refreshing" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="refreshing" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg aria-hidden="true" x-show="! refreshing" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>                        Refresh</button>
+                                <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Disconnect</button>
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disconnect Google Analytics?</h2>
+                            <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">This page goes back to the connect screen. Nothing is deleted from your account.</p></div>
+        <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+            <button data-slot="alert-dialog-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="disconnect()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Disconnect</button></div>
+        </div>
+    </div>
+</template>
+</div>
+            </div>
+            </header>
+                        <p class="-mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Connected" >Connected</span>
+</span>
+                                    <span>Connected to <bdi dir="ltr">fady@example.com</bdi></span>
+                                                    <span>Updated <time data-slot="date-time" datetime="2026-09-29T08:55:00+00:00" dir="auto"  title="Sep 29, 2026"     class="tabular-nums [unicode-bidi:isolate]">5 minutes ago</time>
+</span>
+                            </p>
+                            <p class="text-body-sm text-muted-foreground">The report goes here.</p>
+            </div>
+</div>

@@ -30,7 +30,7 @@
         }
     }
 @endphp
-<div data-slot="stat-card" @if ($delta !== null) data-trend="{{ $trend }}" data-tone="{{ $tone }}" @endif @if ($loading) aria-busy="true" @endif {{ $attributes->cn('flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'stat-card') }}" @if ($delta !== null) data-trend="{{ $trend }}" data-tone="{{ $tone }}" @endif @if ($loading) aria-busy="true" @endif {{ $attributes->except('data-slot')->cn('flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground') }}>
     @if ($loading)
         <div data-slot="stat-card-skeleton" class="flex flex-col gap-3">
             <x-nq::states.skeleton class="h-3.5 w-24" />

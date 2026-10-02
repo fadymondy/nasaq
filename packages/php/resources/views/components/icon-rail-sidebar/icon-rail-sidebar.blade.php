@@ -37,8 +37,8 @@
     $menuTitle = $t('menuTitle', 'Navigation', 'التنقل');
     $subId = 'nq-rail-sub-'.substr(md5(json_encode($sections)), 0, 6);
 @endphp
-<div data-slot="icon-rail-sidebar" x-data="nqIconRail({!! $js((object) $options) !!})" x-modelable="section"
-    {{ $attributes->cn('flex h-full min-h-0 w-full bg-background text-foreground') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'icon-rail-sidebar') }}" x-data="nqIconRail({!! $js((object) $options) !!})" x-modelable="section"
+    {{ $attributes->except('data-slot')->cn('flex h-full min-h-0 w-full bg-background text-foreground') }}>
     <div class="hidden shrink-0 md:flex">
         <x-nq::icon-rail-sidebar.rail :sections="$sections" :label="$railLabel" :sub-id="$subId" :brand="$brand" :footer="$railFooter" />
         <x-nq::icon-rail-sidebar.sub :sections="$sections" :label="$subLabel" :hide-label="$hide" :sub-id="$subId" :active-item="$activeItem" :header="$subHeader" :footer="$subFooter" />

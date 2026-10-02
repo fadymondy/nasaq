@@ -24,8 +24,8 @@
     ];
     $titleHtml = $title ?? $slot;
 @endphp
-<li data-slot="stepper-item" data-status="{{ $status }}"
-    {{ $attributes->except(['@click', 'x-on:click', 'wire:click', 'onclick'])->cn([$vertical ? 'grid grid-cols-[1.75rem_1fr] gap-x-3' : 'group/step flex flex-1 items-start last:flex-none']) }}>
+<li data-slot="{{ $attributes->get('data-slot', 'stepper-item') }}" data-status="{{ $status }}"
+    {{ $attributes->except('data-slot')->except(['@click', 'x-on:click', 'wire:click', 'onclick'])->cn([$vertical ? 'grid grid-cols-[1.75rem_1fr] gap-x-3' : 'group/step flex flex-1 items-start last:flex-none']) }}>
     <{{ $interactive ? 'button type="button"' : 'div' }} {{ $handlers }} data-slot="stepper-step"
         @if ($status === 'current' || ($error && $index === (int) $current)) aria-current="step" @endif
         @if ($interactive && $disabled) disabled @endif

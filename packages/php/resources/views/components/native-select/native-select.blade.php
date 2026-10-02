@@ -3,7 +3,7 @@
      value: the selected option. size: sm | md. invalid: red border. class goes to the wrapper; every other attribute
      (name, required, disabled, id, wire:model, x-model) goes to the <select>. --}}
 @props(['options' => [], 'placeholder' => null, 'size' => 'md', 'value' => null, 'invalid' => false, 'required' => false, 'disabled' => false])
-<div data-slot="native-select" {{ $attributes->only('class')->cn('relative w-full min-w-0') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'native-select') }}" {{ $attributes->except('data-slot')->only('class')->cn('relative w-full min-w-0') }}>
     <select @if ($required) required @endif @if ($disabled) disabled @endif @if ($invalid) aria-invalid="true" data-invalid @endif
         {{ $attributes->except('class')->merge(['class' => \Nasaq\Cn::merge(
             'w-full min-w-0 appearance-none rounded-control border border-input bg-card ps-3 pe-9 text-body text-foreground',

@@ -29,8 +29,8 @@
     $popSide = in_array($side, [null, 'start', 'end'], true) ? 'bottom' : $side;
     $sheetSide = $side === 'start' ? 'start' : 'end';
 @endphp
-<div data-slot="notification-center" data-variant="{{ $variant }}" x-data="nqNotificationCenter({!! $js($rows) !!}, {!! $js((object) $options) !!})" x-modelable="open" x-id="['nq-notification-center']"
-    {{ $attributes->cn('inline-flex') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'notification-center') }}" data-variant="{{ $variant }}" x-data="nqNotificationCenter({!! $js($rows) !!}, {!! $js((object) $options) !!})" x-modelable="open" x-id="['nq-notification-center']"
+    {{ $attributes->except('data-slot')->cn('inline-flex') }}>
     <x-nq::button variant="ghost" size="icon" data-slot="popover-trigger" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" x-bind:aria-expanded="open" x-bind:aria-label="triggerLabel()" :aria-label="$label" class="relative">
         <x-lucide-bell />
         <x-nq::badge variant="accent" data-notification="badge" aria-hidden="true" x-show="count() > 0" class="pointer-events-none absolute -end-1 -top-1 h-4 min-w-4 justify-center px-1 text-[10px]" :style="$badgeStyle"><span x-text="countText()">{{ $badge }}</span></x-nq::badge>

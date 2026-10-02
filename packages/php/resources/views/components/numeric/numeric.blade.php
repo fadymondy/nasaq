@@ -69,4 +69,4 @@
         $text = $style === 'currency' ? strtoupper($currency ?? \Nasaq\Nasaq::currency($locale)).' '.number_format($value, 2) : ($style === 'percent' ? round($value * 100).'%' : number_format($value, $maxFraction ?? (floor($value) == $value ? 0 : 2)));
     }
 @endphp
-<bdi data-slot="num" data-numeric="" {{ $attributes->cn('tabular-nums') }}>{{ $text }}</bdi>
+<bdi data-slot="{{ $attributes->get('data-slot', 'num') }}" data-numeric="" {{ $attributes->except('data-slot')->cn('tabular-nums') }}>{{ $text }}</bdi>

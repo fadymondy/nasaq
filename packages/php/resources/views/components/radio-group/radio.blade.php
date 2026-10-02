@@ -5,11 +5,11 @@
     $checked = $defaultValue !== null && (string) $defaultValue === (string) $value;
     $off = ($disabled ?? false) || $attributes->flag('disabled');
 @endphp
-<button type="button" role="radio" data-slot="radio" x-bind="radio(@js((string) $value))"
+<button type="button" role="radio" data-slot="{{ $attributes->get('data-slot', 'radio') }}" x-bind="radio(@js((string) $value))"
     aria-checked="{{ $checked ? 'true' : 'false' }}" tabindex="{{ $checked ? 0 : -1 }}"
     @if ($checked) data-checked @else data-unchecked @endif
     @if ($off) disabled data-disabled @endif
-    {{ $attributes->except('disabled')->cn([
+    {{ $attributes->except('data-slot')->except('disabled')->cn([
         'relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none',
         'transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus',

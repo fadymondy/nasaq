@@ -27,7 +27,7 @@
     $headingId = 'nq-lb-'.substr(md5(json_encode($entries).$locale), 0, 8);
     $active = $period ?? ($periods[0]['id'] ?? null);
 @endphp
-<section data-slot="leaderboard" aria-labelledby="{{ $headingId }}" x-data="nqLeaderboard(@js($active))" {{ $attributes->cn('min-w-0 overflow-hidden rounded-card border border-border bg-card') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'leaderboard') }}" aria-labelledby="{{ $headingId }}" x-data="nqLeaderboard(@js($active))" {{ $attributes->except('data-slot')->cn('min-w-0 overflow-hidden rounded-card border border-border bg-card') }}>
     <header class="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
         <h2 id="{{ $headingId }}" class="flex items-center gap-2 text-label text-foreground">
             <x-lucide-trophy aria-hidden="true" class="size-4 text-nq-accent-text" />

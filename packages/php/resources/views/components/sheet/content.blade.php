@@ -24,8 +24,8 @@
 <template x-teleport="body">
     <div data-slot="sheet-portal">
         <div data-slot="sheet-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 dark:bg-nq-bg/60"></div>
-        <div data-slot="sheet-content" data-side="{{ $side }}" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
-            {{ $attributes->cn([
+        <div data-slot="{{ $attributes->get('data-slot', 'sheet-content') }}" data-side="{{ $side }}" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            {{ $attributes->except('data-slot')->cn([
                 'fixed z-50 flex flex-col bg-popover text-popover-foreground outline-none shadow-floating',
                 'transition-[translate,opacity] duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0',
                 ...$sides[$side],

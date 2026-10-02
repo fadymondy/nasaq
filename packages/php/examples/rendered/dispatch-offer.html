@@ -1,0 +1,69 @@
+<section data-slot="dispatch-offer" data-mode="courier" aria-label="New delivery offer" x-data="nqDispatchOffer(JSON.parse('{\u0022expiresIn\u0022:30,\u0022windowSeconds\u0022:30,\u0022mode\u0022:\u0022courier\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022title\u0022:\u0022New delivery offer\u0022,\u0022dispatcherTitle\u0022:\u0022Offer to a driver\u0022,\u0022expired\u0022:\u0022Offer expired\u0022}}'))"
+     x-bind:data-expired="expired ? '' : null"  x-bind:class="{ 'opacity-80': expired }"     class="flex flex-col gap-4 rounded-card border border-border bg-card p-4 shadow-md sm:p-5">
+    <header class="flex items-center gap-4">
+                    <div data-slot="timer-ring" aria-hidden="true" x-bind:data-tone="ringTone" data-tone="primary" class="relative inline-flex shrink-0 items-center justify-center" style="width: 64px; height: 64px; max-width: 100%">
+                <svg aria-hidden="true" viewBox="0 0 64 64" class="absolute inset-0 size-full -rotate-90">
+                    <circle cx="32" cy="32" r="29" fill="none" stroke-width="6" class="stroke-nq-line" />
+                    <circle data-slot="timer-ring-arc" cx="32" cy="32" r="29" fill="none" stroke-width="6" stroke-linecap="round"
+                        stroke-dasharray="182.21237390821" x-bind:stroke-dashoffset="dashoffset" stroke-dashoffset="0"
+                        x-bind:class="{ 'stroke-primary': ringTone === 'primary', 'stroke-nq-warning': ringTone === 'warning', 'stroke-muted-foreground': ringTone === 'neutral', 'opacity-0': fraction <= 0 }"
+                        class="stroke-primary transition-[stroke-dashoffset,stroke] duration-500 ease-linear motion-reduce:transition-none" />
+                </svg>
+                <div class="relative flex flex-col items-center justify-center gap-1 text-center">
+                    <span x-bind:class="{ 'text-primary': ringTone === 'primary', 'text-nq-warning-text': ringTone === 'warning', 'text-muted-foreground': ringTone === 'neutral' }"
+                        class="text-label tabular-nums text-primary">
+                        <bdi x-text="left">30</bdi>
+                        <span class="text-caption">s</span>
+                    </span>
+                </div>
+            </div>
+                <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+            <h2 class="text-h3 text-foreground" x-text="title">New delivery offer</h2>
+            <div class="flex flex-wrap items-center gap-x-3 text-body-sm text-muted-foreground">
+                                                            </div>
+        </div>
+        <div class="flex flex-col items-end">
+            <span class="text-caption text-muted-foreground">You earn</span>
+            <bdi data-slot="offer-fee" class="text-h3 tabular-nums text-foreground">$15.00</bdi>
+        </div>
+    </header>
+    <span role="status" aria-live="polite" class="sr-only" x-text="announce">30 seconds left to answer</span>
+    <ol role="list" class="flex flex-col gap-3">
+                                <li data-stop="pickup" class="flex items-start gap-3">
+                <span class="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-foreground [&_svg]:size-4">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/>
+  <path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/>
+  <path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/>
+</svg>                </span>
+                <div class="flex min-w-0 flex-1 flex-col">
+                    <span class="text-caption text-muted-foreground">Pick up</span>
+                    <bdi dir="auto" class="truncate text-label text-foreground">Al-Quds Bakery</bdi>
+                                    </div>
+            </li>
+                                <li data-stop="dropoff" class="flex items-start gap-3">
+                <span class="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-foreground [&_svg]:size-4">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+  <circle cx="12" cy="10" r="3"/>
+</svg>                </span>
+                <div class="flex min-w-0 flex-1 flex-col">
+                    <span class="text-caption text-muted-foreground">Drop off</span>
+                    <bdi dir="auto" class="truncate text-label text-foreground">Sara Odeh</bdi>
+                                    </div>
+            </li>
+            </ol>
+    <footer class="grid grid-cols-2 gap-2">
+        <button data-slot="button"
+     type="button"                     x-on:click="decline()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>            Decline</button>
+            <button data-slot="button" type="button" x-bind:disabled="expired ? '' : null" x-bind:data-disabled="expired ? '' : null"  x-on:click="accept()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                Accept
+            </button>
+            </footer>
+</section>

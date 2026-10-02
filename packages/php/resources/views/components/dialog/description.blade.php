@@ -1,1 +1,1 @@
-<p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" {{ $attributes->cn('text-body-sm text-muted-foreground') }}>{{ $slot }}</p>
+<p data-slot="{{ $attributes->get('data-slot', 'dialog-description') }}" :id="$id('nq-dialog', 'description')" {{ $attributes->except('data-slot')->cn('text-body-sm text-muted-foreground') }}>{{ $slot }}</p>

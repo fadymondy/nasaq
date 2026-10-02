@@ -2,8 +2,8 @@
      A settings line: label and hint on one side, the control (a switch, a select, a button) at the inline end.
      id must equal the entry id in the groups, so a search hit scrolls here. Stacks on narrow screens. --}}
 @props(['id', 'label' => null, 'description' => null])
-<div data-slot="setting-row" data-setting-id="{{ $id }}"
-    {{ $attributes->cn([
+<div data-slot="{{ $attributes->get('data-slot', 'setting-row') }}" data-setting-id="{{ $id }}"
+    {{ $attributes->except('data-slot')->cn([
         'flex flex-col gap-2 rounded-control py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6',
         'data-[highlight=true]:bg-nq-selected data-[highlight=true]:outline-2 data-[highlight=true]:outline-offset-4 data-[highlight=true]:outline-nq-focus',
     ]) }}>

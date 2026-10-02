@@ -34,9 +34,9 @@
     ], fn ($v) => $v !== null);
     $tile = 'inline-flex min-h-control flex-col items-center justify-center gap-0.5 rounded-control border border-border bg-card px-2 py-1.5 text-label tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:hover:bg-card';
 @endphp
-<div data-slot="booking-slots" dir="{{ $rtl ? 'rtl' : 'ltr' }}" lang="{{ str_replace('_', '-', $locale) }}"
+<div data-slot="{{ $attributes->get('data-slot', 'booking-slots') }}" dir="{{ $rtl ? 'rtl' : 'ltr' }}" lang="{{ str_replace('_', '-', $locale) }}"
     x-data="nqBookingSlots({!! \Illuminate\Support\Js::from($list)->toHtml() !!}, {!! \Illuminate\Support\Js::from((object) $options)->toHtml() !!})" x-modelable="value"
-    {{ $attributes->cn('flex flex-col gap-4 sm:flex-row') }}>
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 sm:flex-row') }}>
     <x-nq::calendar x-model="day" class="self-start" :min="$today->format('Y-m-d')" :today="$today->format('Y-m-d')" :disabled="$disabled" :week-starts-on="$weekStartsOn" :locale="$locale" :dir="$rtl ? 'rtl' : 'ltr'" />
     <div data-slot="booking-slots-times" class="flex min-w-0 flex-1 flex-col gap-3" @if ($loading) aria-busy="true" @endif>
         <div class="flex flex-col gap-0.5">

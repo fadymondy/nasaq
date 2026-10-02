@@ -24,7 +24,7 @@
         return [mb_substr($text, 0, $i), mb_substr($text, $i, mb_strlen($term)), mb_substr($text, $i + mb_strlen($term))];
     };
 @endphp
-<aside data-slot="editor-backlinks" aria-label="{{ $L['panel'] }}" {{ $attributes->cn('flex flex-col gap-5') }}>
+<aside data-slot="{{ $attributes->get('data-slot', 'editor-backlinks') }}" aria-label="{{ $L['panel'] }}" {{ $attributes->except('data-slot')->cn('flex flex-col gap-5') }}>
     @foreach ($sections as $s)
         <section aria-labelledby="{{ $uid }}-{{ $s['key'] }}" class="flex flex-col gap-2">
             <h3 id="{{ $uid }}-{{ $s['key'] }}" class="eyebrow flex items-center justify-between">

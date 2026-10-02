@@ -38,8 +38,8 @@
     $toggle = 'inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs';
     $initialRules = (object) $value;
 @endphp
-<form data-slot="limits-editor" novalidate x-data="nqLimitsEditor({!! \Illuminate\Support\Js::from($initialRules) !!}, {!! \Illuminate\Support\Js::from($options) !!})" x-modelable="rules" x-id="['nq-limits']" x-on:submit.prevent="submit()"
-    {{ $attributes->cn('flex flex-col gap-4') }}>
+<form data-slot="{{ $attributes->get('data-slot', 'limits-editor') }}" novalidate x-data="nqLimitsEditor({!! \Illuminate\Support\Js::from($initialRules) !!}, {!! \Illuminate\Support\Js::from($options) !!})" x-modelable="rules" x-id="['nq-limits']" x-on:submit.prevent="submit()"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
     <ul data-slot="limits-editor-list" aria-label="{{ \Nasaq\Nasaq::t('Limits', 'الحدود') }}" class="flex flex-col divide-y divide-border rounded-card border border-border bg-card">
         @foreach ($resources as $res)
             @php

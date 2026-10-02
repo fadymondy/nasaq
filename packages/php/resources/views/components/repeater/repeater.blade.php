@@ -29,8 +29,8 @@
     $listLabel = $label ?? \Nasaq\Nasaq::t('Items', 'العناصر');
     $T = fn (string $en, string $ar) => \Nasaq\Nasaq::t($en, $ar);
 @endphp
-<div data-slot="repeater" x-data="nqRepeater(@js(array_values((array) $items)), {!! $optionsJs !!})" x-modelable="items" x-id="['nq-repeater-body']" @if ($disabled) data-disabled="true" @endif
-    {{ $attributes->cn('flex min-w-0 flex-col gap-3') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'repeater') }}" x-data="nqRepeater(@js(array_values((array) $items)), {!! $optionsJs !!})" x-modelable="items" x-id="['nq-repeater-body']" @if ($disabled) data-disabled="true" @endif
+    {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-3') }}>
     @if ($collapsible)
         <div x-show="count() > 1" x-cloak style="display: none" class="flex items-center justify-between gap-2">
             <span data-slot="repeater-count" class="text-caption tabular-nums text-muted-foreground" x-text="countText()"></span>

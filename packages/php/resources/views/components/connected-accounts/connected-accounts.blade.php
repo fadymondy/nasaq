@@ -45,8 +45,8 @@
     ];
     $uid = 'nq-connected-'.substr(md5(json_encode($rows)), 0, 6);
 @endphp
-<div data-slot="connected-accounts" x-data="nqConnectedAccounts({!! \Illuminate\Support\Js::from($init) !!})" x-modelable="connected"
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-2xl') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'connected-accounts') }}" x-data="nqConnectedAccounts({!! \Illuminate\Support\Js::from($init) !!})" x-modelable="connected"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-2xl') }}>
     <x-nq::card.header>
         <x-nq::card.title as="h2">{{ $s['title'] }}</x-nq::card.title>
         <x-nq::card.description>{{ $s['description'] }}</x-nq::card.description>

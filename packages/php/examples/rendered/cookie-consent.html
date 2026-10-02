@@ -1,0 +1,209 @@
+<div data-slot="cookie-consent-root" class="contents" x-data="nqCookieConsent(JSON.parse('{\u0022categories\u0022:[{\u0022id\u0022:\u0022necessary\u0022,\u0022required\u0022:true},{\u0022id\u0022:\u0022preferences\u0022,\u0022required\u0022:false},{\u0022id\u0022:\u0022analytics\u0022,\u0022required\u0022:false},{\u0022id\u0022:\u0022marketing\u0022,\u0022required\u0022:false}],\u0022consent\u0022:null,\u0022labels\u0022:{\u0022failed\u0022:\u0022Your choices could not be saved. Try again.\u0022}}'))" x-modelable="prefs" x-on:nq-cookie-settings.window="openPrefs()"
+    >
+            <section data-slot="cookie-consent" data-position="bottom" aria-label="Cookie consent" x-show="saved === null"
+            class="z-50 flex flex-col gap-4 rounded-floating border border-border bg-popover p-4 text-popover-foreground shadow-floating sm:p-5 max-w-4xl">
+            <div class="flex min-w-0 flex-1 gap-3">
+                <svg aria-hidden="true" class="mt-0.5 size-5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/>
+  <path d="M8.5 8.5v.01"/>
+  <path d="M16 15.5v.01"/>
+  <path d="M12 12v.01"/>
+  <path d="M11 17v.01"/>
+  <path d="M7 14v.01"/>
+</svg>                <div class="flex min-w-0 flex-col gap-1">
+                    <h2 class="text-label text-foreground">Your privacy choices</h2>
+                    <p class="text-body-sm text-muted-foreground">
+                        We use cookies to keep the site working. With your permission we also use them to understand how it is used and to remember your settings. You can change this at any time.
+                        <a href="/cookies" class="text-foreground underline underline-offset-4">Cookie policy</a>                    </p>
+                    <p role="alert" class="text-caption text-nq-danger-text" x-show="error && ! prefs" x-text="error" style="display: none"></p>
+                </div>
+            </div>
+            <div data-slot="cookie-consent-actions" class="flex flex-col gap-2 sm:flex-row sm:shrink-0">
+                <button data-slot="button"
+     type="button"                     x-on:click="openPrefs()" x-bind:disabled="busy" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Customise</button>
+                <button data-slot="button"
+     type="button"                     x-on:click="reject()" x-bind:disabled="blocked(&#039;reject-all&#039;)" x-bind:aria-busy="pending === &#039;reject-all&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <template x-if="pending === 'reject-all'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                    Reject all</button>
+                <button data-slot="button"
+     type="button"                     x-on:click="accept()" x-bind:disabled="blocked(&#039;accept-all&#039;)" x-bind:aria-busy="pending === &#039;accept-all&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <template x-if="pending === 'accept-all'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                    Accept all</button>
+            </div>
+        </section>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="prefs" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-w-xl">
+            <div data-slot="cookie-preferences" class="contents">
+                <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Cookie preferences</h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Choose which kinds of cookies we may use. Strictly necessary cookies cannot be turned off because the site does not work without them.</p></div>
+                <ul class="m-0 flex list-none flex-col divide-y divide-border p-0">
+                                                                    <li data-slot="cookie-category" data-category="necessary" class="flex flex-col gap-2 py-3 first:pt-0 last:pb-0">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex min-w-0 flex-col gap-0.5">
+                                    <span class="text-label text-foreground">Strictly necessary</span>
+                                    <span class="text-body-sm text-muted-foreground">Keep you signed in, protect against fraud and remember this choice.</span>                                </div>
+                                <div class="flex shrink-0 items-center gap-2">
+                                                                            <span class="text-caption text-muted-foreground">Always on</span>
+                                        <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked              disabled data-disabled     aria-label="Strictly necessary" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                                                                    </div>
+                            </div>
+                                                            <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     >
+    <button data-slot="collapsible-trigger"
+     type="button"                     x-bind:aria-controls="$id(&#039;nq-collapsible&#039;, &#039;panel&#039;)" x-bind:data-panel-open="open ? &#039;&#039; : undefined" x-on:click="toggle()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0 gap-1 text-caption text-muted-foreground no-underline hover:text-foreground">
+        <svg aria-hidden="true" x-bind:class="open ? 'rotate-180' : ''" class="size-3.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg>                                        <span x-show="! open">Show cookies (1)</span>
+                                        <span x-show="open" style="display: none">Hide cookies</span></button>
+                                    <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><div class="mt-2 overflow-x-auto rounded-control border border-border">
+                                            <table class="w-full text-start text-caption">
+                                                <thead class="bg-muted text-muted-foreground">
+                                                    <tr>
+                                                        <th scope="col" class="px-2.5 py-1.5 text-start font-medium">Name</th>
+                                                        <th scope="col" class="px-2.5 py-1.5 text-start font-medium">Purpose</th>
+                                                        <th scope="col" class="px-2.5 py-1.5 text-start font-medium">Duration</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="divide-y divide-border">
+                                                                                                            <tr>
+                                                            <td class="px-2.5 py-1.5 align-top"><bdi dir="ltr" class="font-mono text-foreground">session</bdi></td>
+                                                            <td class="px-2.5 py-1.5 align-top text-muted-foreground">Keeps you signed in</td>
+                                                            <td class="px-2.5 py-1.5 align-top whitespace-nowrap text-muted-foreground">Session</td>
+                                                        </tr>
+                                                                                                    </tbody>
+                                            </table>
+                                        </div></div>
+</div>
+                                                    </li>
+                                                                    <li data-slot="cookie-category" data-category="preferences" class="flex flex-col gap-2 py-3 first:pt-0 last:pb-0">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex min-w-0 flex-col gap-0.5">
+                                    <span class="text-label text-foreground">Preferences</span>
+                                    <span class="text-body-sm text-muted-foreground">Remember your language, theme and layout.</span>                                </div>
+                                <div class="flex shrink-0 items-center gap-2">
+                                                                            <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="draft[ids[1]]" aria-label="Preferences" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                                                                    </div>
+                            </div>
+                                                    </li>
+                                                                    <li data-slot="cookie-category" data-category="analytics" class="flex flex-col gap-2 py-3 first:pt-0 last:pb-0">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex min-w-0 flex-col gap-0.5">
+                                    <span class="text-label text-foreground">Analytics</span>
+                                    <span class="text-body-sm text-muted-foreground">Help us see which pages are used and where things break, in aggregate.</span>                                </div>
+                                <div class="flex shrink-0 items-center gap-2">
+                                                                            <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="draft[ids[2]]" aria-label="Analytics" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                                                                    </div>
+                            </div>
+                                                            <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     >
+    <button data-slot="collapsible-trigger"
+     type="button"                     x-bind:aria-controls="$id(&#039;nq-collapsible&#039;, &#039;panel&#039;)" x-bind:data-panel-open="open ? &#039;&#039; : undefined" x-on:click="toggle()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0 gap-1 text-caption text-muted-foreground no-underline hover:text-foreground">
+        <svg aria-hidden="true" x-bind:class="open ? 'rotate-180' : ''" class="size-3.5 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg>                                        <span x-show="! open">Show cookies (1)</span>
+                                        <span x-show="open" style="display: none">Hide cookies</span></button>
+                                    <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><div class="mt-2 overflow-x-auto rounded-control border border-border">
+                                            <table class="w-full text-start text-caption">
+                                                <thead class="bg-muted text-muted-foreground">
+                                                    <tr>
+                                                        <th scope="col" class="px-2.5 py-1.5 text-start font-medium">Name</th>
+                                                        <th scope="col" class="px-2.5 py-1.5 text-start font-medium">Purpose</th>
+                                                        <th scope="col" class="px-2.5 py-1.5 text-start font-medium">Duration</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="divide-y divide-border">
+                                                                                                            <tr>
+                                                            <td class="px-2.5 py-1.5 align-top"><bdi dir="ltr" class="font-mono text-foreground">_ga</bdi></td>
+                                                            <td class="px-2.5 py-1.5 align-top text-muted-foreground">Tells visits apart, in aggregate</td>
+                                                            <td class="px-2.5 py-1.5 align-top whitespace-nowrap text-muted-foreground">13 months</td>
+                                                        </tr>
+                                                                                                    </tbody>
+                                            </table>
+                                        </div></div>
+</div>
+                                                    </li>
+                                                                    <li data-slot="cookie-category" data-category="marketing" class="flex flex-col gap-2 py-3 first:pt-0 last:pb-0">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex min-w-0 flex-col gap-0.5">
+                                    <span class="text-label text-foreground">Marketing</span>
+                                    <span class="text-body-sm text-muted-foreground">Measure campaigns and show relevant ads on other sites.</span>                                </div>
+                                <div class="flex shrink-0 items-center gap-2">
+                                                                            <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="draft[ids[3]]" aria-label="Marketing" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                                                                    </div>
+                            </div>
+                                                    </li>
+                                    </ul>
+                <template x-if="error">
+                    <div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+                </template>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="reject()" x-bind:disabled="blocked(&#039;reject-all&#039;)" x-bind:aria-busy="pending === &#039;reject-all&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <template x-if="pending === 'reject-all'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                        Reject all</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="accept()" x-bind:disabled="blocked(&#039;accept-all&#039;)" x-bind:aria-busy="pending === &#039;accept-all&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <template x-if="pending === 'accept-all'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                        Accept all</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="saveDraft()" x-bind:disabled="blocked(&#039;custom&#039;)" x-bind:aria-busy="pending === &#039;custom&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="pending === 'custom'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                        Save choices</button></div>
+            </div>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</div>

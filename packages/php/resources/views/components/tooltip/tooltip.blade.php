@@ -15,8 +15,8 @@
 <div data-slot="tooltip" x-data="nqTooltip(@js((int) $delay), @js((bool) $open))" x-modelable="open" x-id="['nq-tooltip']" class="contents">
     <span data-slot="tooltip-trigger" class="contents">{{ $slot }}</span>
     <template x-teleport="body">
-        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.{{ $placement }}.offset.{{ (int) $sideOffset }}="triggerEl"
-            {{ $attributes->cn([
+        <div data-slot="{{ $attributes->get('data-slot', 'tooltip-content') }}" x-bind="popup" x-nq-presence="open" x-anchor.{{ $placement }}.offset.{{ (int) $sideOffset }}="triggerEl"
+            {{ $attributes->except('data-slot')->cn([
                 'z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background',
                 'transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0',
             ]) }}>{{ $tip ?? $content }}</div>

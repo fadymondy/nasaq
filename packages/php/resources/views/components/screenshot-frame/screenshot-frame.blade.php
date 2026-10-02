@@ -7,7 +7,7 @@
     $screenClass = 'relative overflow-hidden bg-background '.($phone ? 'aspect-[9/19] rounded-[1.75rem]' : 'rounded-b-[calc(var(--radius-card)-1px)]');
     $has = fn ($v) => $v !== null && trim((string) $v) !== '';
 @endphp
-<figure data-slot="screenshot-frame" data-variant="{{ $variant }}" {{ $attributes->cn('flex min-w-0 flex-col gap-3 '.($phone ? 'items-center' : '')) }}>
+<figure data-slot="{{ $attributes->get('data-slot', 'screenshot-frame') }}" data-variant="{{ $variant }}" {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-3 '.($phone ? 'items-center' : '')) }}>
     @if ($phone)
         <div class="w-full max-w-[18rem] rounded-[2.25rem] bg-nq-surface-raised p-2 shadow-lg ring-1 ring-border">
             <div data-slot="screenshot-frame-screen" @if ($label) role="img" aria-label="{{ $label }}" @endif class="{{ $screenClass }}">

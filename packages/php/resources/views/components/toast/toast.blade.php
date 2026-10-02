@@ -4,9 +4,9 @@
      duration: ms before a toast leaves (0 keeps it). placement: end (default) | start, vertical: bottom (default) | top.
      The stack sits at the inline end, so it mirrors in RTL. Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['duration' => 4000, 'placement' => 'end', 'vertical' => 'bottom', 'label' => null])
-<section data-slot="toaster" x-data="nqToaster(@js((int) $duration))" x-bind="region" tabindex="-1"
+<section data-slot="{{ $attributes->get('data-slot', 'toaster') }}" x-data="nqToaster(@js((int) $duration))" x-bind="region" tabindex="-1"
     aria-label="{{ $label ?? \Nasaq\Nasaq::t('Notifications', 'الإشعارات') }}" aria-live="polite"
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         'pointer-events-none fixed z-[100] w-[min(356px,calc(100vw-2rem))]',
         $vertical === 'top' ? 'top-4' : 'bottom-4',
         $placement === 'start' ? 'start-4' : 'end-4',

@@ -3,8 +3,8 @@
      compact: the small square used by image-upload. name: names the hidden file input.
      Needs a parent with x-data="nqFileUpload(...)" or "nqImageUpload(...)". --}}
 @props(['compact' => false, 'name' => null])
-<div data-slot="dropzone" x-bind="zone" :aria-describedby="limitsText() ? $id('nq-upload', 'hint') : undefined"
-    {{ $attributes->cn([
+<div data-slot="{{ $attributes->get('data-slot', 'dropzone') }}" x-bind="zone" :aria-describedby="limitsText() ? $id('nq-upload', 'hint') : undefined"
+    {{ $attributes->except('data-slot')->cn([
         'flex min-h-32 cursor-pointer flex-col items-center justify-center gap-2 rounded-floating border border-dashed border-input bg-card p-6 text-center',
         'transition-colors duration-150 ease-nq outline-none',
         'hover:bg-nq-hover focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus',

@@ -49,10 +49,10 @@
     $toggleClass = 'inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs';
     $trackClass = 'flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5';
 @endphp
-<div data-slot="ai-model-picker" data-variant="{{ $variant }}" x-data="nqAiModelPicker(@js($config))" x-modelable="sel" x-id="['nq-ai-model']"
+<div data-slot="{{ $attributes->get('data-slot', 'ai-model-picker') }}" data-variant="{{ $variant }}" x-data="nqAiModelPicker(@js($config))" x-modelable="sel" x-id="['nq-ai-model']"
     x-on:click.capture="if ($event.target.closest('[data-slot=ai-agent-select]')) started = true"
     x-on:pointerdown.document="if (started && ! $el.contains($event.target) && ! $event.target.closest('[data-slot=select-content]')) touched = true"
-    {{ $attributes->cn($variant === 'compact' ? 'flex flex-wrap items-center gap-2' : 'flex flex-col gap-5') }}>
+    {{ $attributes->except('data-slot')->cn($variant === 'compact' ? 'flex flex-wrap items-center gap-2' : 'flex flex-col gap-5') }}>
     @if ($variant === 'compact')
         <x-nq::ai-model-picker.select :models="$models" :value="$first" :disabled="$disabled" x-model="sel.model" class="h-control-sm w-auto min-w-40" />
         <div role="group" aria-label="{{ $effortTitle }}" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal" x-show="efforts().length" @unless ($efforts) style="display: none" @endunless

@@ -1,0 +1,468 @@
+<div class="flex flex-col gap-6">
+    <div data-slot="journal-entry-editor" x-data="nqAccountingEntry(JSON.parse('{\u0022accounts\u0022:[{\u0022id\u0022:\u0022assets\u0022,\u0022code\u0022:\u00221000\u0022,\u0022name\u0022:\u0022Assets\u0022,\u0022type\u0022:\u0022asset\u0022},{\u0022id\u0022:\u0022cash\u0022,\u0022code\u0022:\u00221010\u0022,\u0022name\u0022:\u0022Cash\u0022,\u0022type\u0022:\u0022asset\u0022,\u0022parentId\u0022:\u0022assets\u0022},{\u0022id\u0022:\u0022bank\u0022,\u0022code\u0022:\u00221020\u0022,\u0022name\u0022:\u0022Bank\u0022,\u0022type\u0022:\u0022asset\u0022,\u0022parentId\u0022:\u0022assets\u0022},{\u0022id\u0022:\u0022capital\u0022,\u0022code\u0022:\u00223000\u0022,\u0022name\u0022:\u0022Owner capital\u0022,\u0022type\u0022:\u0022equity\u0022},{\u0022id\u0022:\u0022sales\u0022,\u0022code\u0022:\u00224000\u0022,\u0022name\u0022:\u0022Sales\u0022,\u0022type\u0022:\u0022revenue\u0022},{\u0022id\u0022:\u0022rent\u0022,\u0022code\u0022:\u00225000\u0022,\u0022name\u0022:\u0022Rent\u0022,\u0022type\u0022:\u0022expense\u0022}],\u0022currency\u0022:\u0022SAR\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022number\u0022:\u0022JE-0009\u0022,\u0022date\u0022:null,\u0022memo\u0022:\u0022\u0022,\u0022lines\u0022:[],\u0022readOnly\u0022:false,\u0022canSaveDraft\u0022:true,\u0022today\u0022:\u00222026-09-29\u0022,\u0022t\u0022:{\u0022date\u0022:\u0022Date\u0022,\u0022memo\u0022:\u0022Memo\u0022,\u0022entryNumber\u0022:\u0022Entry number\u0022,\u0022lines\u0022:\u0022Lines\u0022,\u0022account\u0022:\u0022Account\u0022,\u0022debit\u0022:\u0022Debit\u0022,\u0022credit\u0022:\u0022Credit\u0022,\u0022line\u0022:\u0022Line\u0022,\u0022pickAccount\u0022:\u0022Pick an account\u0022,\u0022noAccountMatch\u0022:\u0022No account matches\u0022,\u0022linePlaceholder\u0022:\u0022Line memo\u0022,\u0022addLine\u0022:\u0022Add line\u0022,\u0022removeLine\u0022:\u0022Remove line\u0022,\u0022duplicateLine\u0022:\u0022Duplicate line\u0022,\u0022balanceLine\u0022:\u0022Balance with this line\u0022,\u0022lineActions\u0022:\u0022Line actions\u0022,\u0022totals\u0022:\u0022Totals\u0022,\u0022difference\u0022:\u0022Difference\u0022,\u0022balanced\u0022:\u0022Balanced\u0022,\u0022outOfBalance\u0022:\u0022Out of balance\u0022,\u0022post\u0022:\u0022Post entry\u0022,\u0022saveDraft\u0022:\u0022Save draft\u0022,\u0022problemFewLines\u0022:\u0022An entry needs at least two lines with an amount.\u0022,\u0022problemNoAccount\u0022:\u0022Every line with an amount needs an account.\u0022,\u0022problemBothSides\u0022:\u0022A line is either a debit or a credit, not both.\u0022,\u0022problemNegative\u0022:\u0022Amounts cannot be negative.\u0022,\u0022problemUnbalanced\u0022:\u0022Debits and credits must be equal.\u0022,\u0022problemZero\u0022:\u0022Enter an amount.\u0022}}'))" class="@container flex w-full min-w-0 flex-col gap-4">
+    <div class="grid gap-3 @lg:grid-cols-[10rem_minmax(0,1fr)_auto]">
+        <label class="flex flex-col gap-1.5 text-label text-foreground">
+            Date
+            <input data-slot="input" type="date"
+     dir="ltr"                 x-model="date" x-bind:disabled="readOnly" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+        </label>
+        <label class="flex flex-col gap-1.5 text-label text-foreground">
+            Memo
+            <input data-slot="input" type="text"
+                    x-model="memo" x-bind:disabled="readOnly" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+        </label>
+                    <div class="flex flex-col gap-1.5 text-label text-foreground">
+                Entry number
+                <span class="flex h-control items-center"><bdi dir="ltr" class="text-body-sm tabular-nums text-muted-foreground">JE-0009</bdi></span>
+            </div>
+            </div>
+    <div class="flex flex-col gap-2" role="group" aria-label="Lines">
+        <div aria-hidden="true" class="hidden gap-3 px-3 text-caption text-muted-foreground @2xl:grid @2xl:grid-cols-[minmax(13rem,1.5fr)_minmax(8rem,1fr)_9rem_9rem_2rem]">
+            <span>Account</span>
+            <span>Memo</span>
+            <span class="text-end">Debit</span>
+            <span class="text-end">Credit</span>
+            <span></span>
+        </div>
+        <ul class="flex flex-col gap-2">
+            <template x-for="(line, index) in lines" :key="line.id">
+                <li x-data="nqContextMenu()" x-bind="trigger" class="list-none">
+                    <div data-slot="entry-line" role="group" x-bind:aria-label="`${t.line} ${index + 1}`"
+                        class="grid grid-cols-2 items-start gap-x-3 gap-y-3 rounded-floating border border-border bg-card p-3 @2xl:gap-y-0 @2xl:rounded-control @2xl:grid-cols-[minmax(13rem,1.5fr)_minmax(8rem,1fr)_9rem_9rem_2rem]">
+                        <div class="col-span-2 @2xl:col-span-1">
+                            <div data-slot="combobox" x-data="nqCombobox(null, false)" x-modelable="value" x-id="['nq-combobox']" x-model="line.accountId" class="contents">
+    <div data-slot="combobox-input-group" x-ref="anchor"
+    class="flex min-h-control min-w-0 w-full items-center gap-1 rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 h-control ps-3 pe-1.5">
+    <input data-slot="combobox-input" x-ref="input" x-bind="input"
+                placeholder="Pick an account" x-bind:aria-label="`${t.account}, ${t.line} ${index + 1}`" x-bind:disabled="readOnly" x-bind:data-invalid="noAccount(line) ? &#039;&#039; : null" x-bind:aria-invalid="noAccount(line) ? &#039;true&#039; : null" class="h-full min-w-0 flex-1 border-0 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+        <button data-slot="combobox-trigger" x-bind="trigger" aria-label="Pick an account"
+        class="flex size-6 shrink-0 cursor-default items-center justify-center rounded-control text-muted-foreground outline-none hover:text-foreground focus-visible:outline-1 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></button>
+</div>
+                                <template x-teleport="body">
+    <div data-slot="combobox-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.anchor"
+        class="z-50 w-[var(--anchor-width)] max-h-[min(var(--available-height),20rem)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="combobox-empty" x-bind="emptyState" class="px-2.5 py-2 text-body-sm text-muted-foreground empty:hidden">No account matches</div>
+                                    <div data-slot="combobox-list" class="outline-none"><div data-slot="combobox-item" x-bind="item('cash', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('cash')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate"><span class="flex min-w-0 items-baseline gap-2"><bdi dir="ltr" class="text-caption tabular-nums text-muted-foreground">1010</bdi><span class="truncate">Cash</span></span></span>
+</div>
+                                                                                    <div data-slot="combobox-item" x-bind="item('bank', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('bank')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate"><span class="flex min-w-0 items-baseline gap-2"><bdi dir="ltr" class="text-caption tabular-nums text-muted-foreground">1020</bdi><span class="truncate">Bank</span></span></span>
+</div>
+                                                                                    <div data-slot="combobox-item" x-bind="item('capital', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('capital')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate"><span class="flex min-w-0 items-baseline gap-2"><bdi dir="ltr" class="text-caption tabular-nums text-muted-foreground">3000</bdi><span class="truncate">Owner capital</span></span></span>
+</div>
+                                                                                    <div data-slot="combobox-item" x-bind="item('sales', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('sales')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate"><span class="flex min-w-0 items-baseline gap-2"><bdi dir="ltr" class="text-caption tabular-nums text-muted-foreground">4000</bdi><span class="truncate">Sales</span></span></span>
+</div>
+                                                                                    <div data-slot="combobox-item" x-bind="item('rent', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('rent')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate"><span class="flex min-w-0 items-baseline gap-2"><bdi dir="ltr" class="text-caption tabular-nums text-muted-foreground">5000</bdi><span class="truncate">Rent</span></span></span>
+</div></div>
+    </div>
+</template>
+    </div>
+                        </div>
+                        <div class="col-span-2 @2xl:col-span-1">
+                            <input data-slot="input" type="text"
+                    x-model="line.memo" placeholder="Line memo" x-bind:disabled="readOnly" x-bind:aria-label="`${t.memo}, ${t.line} ${index + 1}`" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <span aria-hidden="true" class="text-caption text-muted-foreground @2xl:hidden">Debit</span>
+                            <div data-slot="currency-input" data-currency="SAR" x-data="nqCurrencyInput(null, JSON.parse('{\u0022currency\u0022:\u0022SAR\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022min\u0022:0,\u0022symbol\u0022:\u0022none\u0022}'))" x-modelable="minor" x-id="['nq-currency']"
+    x-model="line.debit" class="flex w-full min-w-0 flex-col gap-1">
+    <div role="group" data-slot="input-group"
+    x-bind="group" class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><div data-slot="currency-symbol" data-align="start" x-bind="symbolAddon"
+            class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&amp;_svg]:size-4 order-first ps-3 pe-1">
+            <span data-slot="input-group-text" class="select-none whitespace-nowrap"><bdi dir="ltr" x-text="mark()"></bdi></span>
+        </div>
+        <input data-slot="input-group-input" dir="ltr" x-bind="field" autocomplete="off" spellcheck="false"                           x-bind:disabled="readOnly" x-bind:aria-label="`${t.debit}, ${t.line} ${index + 1}`" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start tabular-nums"></div>
+    <span x-show="out()" x-cloak style="display: none" :id="rangeId()" class="sr-only">Amount out of range</span>
+    </div>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <span aria-hidden="true" class="text-caption text-muted-foreground @2xl:hidden">Credit</span>
+                            <div data-slot="currency-input" data-currency="SAR" x-data="nqCurrencyInput(null, JSON.parse('{\u0022currency\u0022:\u0022SAR\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022min\u0022:0,\u0022symbol\u0022:\u0022none\u0022}'))" x-modelable="minor" x-id="['nq-currency']"
+    x-model="line.credit" class="flex w-full min-w-0 flex-col gap-1">
+    <div role="group" data-slot="input-group"
+    x-bind="group" class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><div data-slot="currency-symbol" data-align="start" x-bind="symbolAddon"
+            class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&amp;_svg]:size-4 order-first ps-3 pe-1">
+            <span data-slot="input-group-text" class="select-none whitespace-nowrap"><bdi dir="ltr" x-text="mark()"></bdi></span>
+        </div>
+        <input data-slot="input-group-input" dir="ltr" x-bind="field" autocomplete="off" spellcheck="false"                           x-bind:disabled="readOnly" x-bind:aria-label="`${t.credit}, ${t.line} ${index + 1}`" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start tabular-nums"></div>
+    <span x-show="out()" x-cloak style="display: none" :id="rangeId()" class="sr-only">Amount out of range</span>
+    </div>
+                        </div>
+                        <div class="col-span-2 flex justify-end @2xl:col-span-1">
+                                                            <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="line-item-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" x-bind:aria-label="`${t.lineActions}, ${t.line} ${index + 1}`" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                    <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-bind:disabled="!canBalance(line)" x-on:click="balanceLine(line.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v18"/>
+  <path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/>
+  <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/>
+  <path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/>
+  <path d="M7 21h10"/>
+</svg>Balance with this line</div></div>
+                                        <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                        <div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="duplicate(index)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>Duplicate line</div></div>
+                                        <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                        <div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-bind:disabled="canRemove() ? null : &#039;&#039;" x-on:click="remove(line.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Remove line</div></div></div>
+</template></div>
+                                                    </div>
+                    </div>
+                                            <template x-teleport="body">
+                            <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+                                class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-bind:disabled="!canBalance(line)" x-on:click="balanceLine(line.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v18"/>
+  <path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/>
+  <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/>
+  <path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/>
+  <path d="M7 21h10"/>
+</svg>Balance with this line</div>
+                                <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="duplicate(index)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>Duplicate line</div>
+                                <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-bind:disabled="canRemove() ? null : &#039;&#039;" x-on:click="remove(line.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Remove line</div>
+                            </div>
+                        </template>
+                                    </li>
+            </template>
+        </ul>
+        <div x-show="!readOnly">
+            <button data-slot="button"
+     type="button"                     x-on:click="add()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>Add line</button>
+        </div>
+    </div>
+    <div role="region" aria-label="Totals" class="flex flex-col gap-2 rounded-card border border-border bg-card p-3">
+        <div class="grid grid-cols-2 items-baseline gap-3 @2xl:grid-cols-[minmax(13rem,1.5fr)_minmax(8rem,1fr)_9rem_9rem_2rem]">
+            <span class="col-span-2 text-label text-foreground">Totals</span>
+            <span class="text-end text-label tabular-nums" data-slot="entry-total-debit" x-text="fig(totals.debit)"></span>
+            <span class="text-end text-label tabular-nums" data-slot="entry-total-credit" x-text="fig(totals.credit)"></span>
+            <span class="hidden @2xl:block"></span>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-2" aria-live="polite">
+            <span class="text-body-sm text-muted-foreground">Difference</span>
+            <span class="flex items-center gap-2">
+                <span data-slot="badge"     x-show="totals.balanced" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Balanced</span>
+                <span data-slot="badge"     x-show="isBlank" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Out of balance</span>
+                <span data-slot="badge"     x-show="isOff" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text">Out of balance</span>
+                <span x-show="totals.difference !== 0" class="text-label tabular-nums" data-slot="entry-difference" x-text="fig(difference)"></span>
+            </span>
+        </div>
+        <ul x-show="tried && problems.length > 0" role="alert" class="flex flex-col gap-0.5 text-caption text-nq-danger-text">
+            <template x-for="p in problems" :key="p"><li x-text="p"></li></template>
+        </ul>
+    </div>
+    <div x-show="!readOnly" class="flex flex-wrap justify-end gap-2">
+                    <button data-slot="button"
+     type="button"                     x-bind:disabled="busy === &#039;post&#039;" x-on:click="submit(&#039;draft&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Save draft</button>
+                <button data-slot="entry-post"
+     type="button"                     x-bind:disabled="!canPost" x-on:click="submit(&#039;post&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Post entry</button>
+    </div>
+</div>
+    <div data-slot="trial-balance" x-data="nqAccountingTrial(JSON.parse('{\u0022accounts\u0022:[{\u0022id\u0022:\u0022assets\u0022,\u0022code\u0022:\u00221000\u0022,\u0022name\u0022:\u0022Assets\u0022,\u0022type\u0022:\u0022asset\u0022},{\u0022id\u0022:\u0022cash\u0022,\u0022code\u0022:\u00221010\u0022,\u0022name\u0022:\u0022Cash\u0022,\u0022type\u0022:\u0022asset\u0022,\u0022parentId\u0022:\u0022assets\u0022},{\u0022id\u0022:\u0022bank\u0022,\u0022code\u0022:\u00221020\u0022,\u0022name\u0022:\u0022Bank\u0022,\u0022type\u0022:\u0022asset\u0022,\u0022parentId\u0022:\u0022assets\u0022},{\u0022id\u0022:\u0022capital\u0022,\u0022code\u0022:\u00223000\u0022,\u0022name\u0022:\u0022Owner capital\u0022,\u0022type\u0022:\u0022equity\u0022},{\u0022id\u0022:\u0022sales\u0022,\u0022code\u0022:\u00224000\u0022,\u0022name\u0022:\u0022Sales\u0022,\u0022type\u0022:\u0022revenue\u0022},{\u0022id\u0022:\u0022rent\u0022,\u0022code\u0022:\u00225000\u0022,\u0022name\u0022:\u0022Rent\u0022,\u0022type\u0022:\u0022expense\u0022}],\u0022entries\u0022:[{\u0022id\u0022:\u0022e1\u0022,\u0022number\u0022:\u0022JE-0007\u0022,\u0022date\u0022:\u00222026-09-01\u0022,\u0022memo\u0022:\u0022Opening capital\u0022,\u0022status\u0022:\u0022posted\u0022,\u0022lines\u0022:[{\u0022accountId\u0022:\u0022bank\u0022,\u0022debit\u0022:1000000,\u0022credit\u0022:0},{\u0022accountId\u0022:\u0022capital\u0022,\u0022debit\u0022:0,\u0022credit\u0022:1000000}]},{\u0022id\u0022:\u0022e2\u0022,\u0022number\u0022:\u0022JE-0008\u0022,\u0022date\u0022:\u00222026-09-10\u0022,\u0022memo\u0022:\u0022Cash sale\u0022,\u0022status\u0022:\u0022posted\u0022,\u0022lines\u0022:[{\u0022accountId\u0022:\u0022cash\u0022,\u0022debit\u0022:250000,\u0022credit\u0022:0},{\u0022accountId\u0022:\u0022sales\u0022,\u0022debit\u0022:0,\u0022credit\u0022:250000}]}],\u0022currency\u0022:\u0022SAR\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022asOf\u0022:null,\u0022includeZero\u0022:false,\u0022t\u0022:{\u0022trial\u0022:\u0022Trial balance\u0022,\u0022account\u0022:\u0022Account\u0022,\u0022debit\u0022:\u0022Debit\u0022,\u0022credit\u0022:\u0022Credit\u0022,\u0022total\u0022:\u0022Total\u0022,\u0022trialBalanced\u0022:\u0022Debits equal credits\u0022,\u0022trialOff\u0022:\u0022Debits and credits differ\u0022,\u0022asOf\u0022:\u0022As of\u0022,\u0022empty\u0022:\u0022No posted entries yet\u0022,\u0022emptyText\u0022:\u0022Post a journal entry and it shows here.\u0022,\u0022inCurrency\u0022:\u0022Amounts in\u0022}}'))" class="flex w-full min-w-0 flex-col gap-2">
+    <template x-if="tb.rows.length === 0">
+        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v18"/>
+  <path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/>
+  <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/>
+  <path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/>
+  <path d="M7 21h10"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No posted entries yet</p>
+                    <p class="text-body-sm text-muted-foreground">Post a journal entry and it shows here.</p>
+            </div>
+    </div>
+    </template>
+    <div x-show="tb.rows.length > 0" class="flex flex-col gap-2">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-caption text-muted-foreground">
+            <span>Amounts in <bdi dir="ltr">SAR</bdi></span>
+            <span x-show="asOfText">As of <bdi x-text="asOfText"></bdi></span>
+        </div>
+        <div class="w-full overflow-x-auto rounded-card border border-border bg-card">
+            <div role="table" class="table w-full min-w-[30rem] border-collapse">
+                <div role="caption" class="sr-only">Trial balance</div>
+                <div role="rowgroup" class="table-header-group border-b border-border">
+                    <div role="row" class="table-row">
+                        <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Account</div>
+                        <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground w-36">Debit</div>
+                        <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground w-36">Credit</div>
+                    </div>
+                </div>
+                <div role="rowgroup" class="table-row-group divide-y divide-border">
+                    <template x-for="row in tb.rows" :key="row.account.id">
+                        <div role="row" data-slot="trial-row" class="table-row">
+                            <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground">
+                                <div class="flex items-center gap-2">
+                                    <bdi dir="ltr" class="text-caption tabular-nums text-muted-foreground" x-text="row.account.code"></bdi>
+                                                                            <button type="button" class="min-w-0 truncate text-start hover:underline" x-on:click="select(row.account)" x-text="row.account.name"></button>
+                                                                    </div>
+                            </div>
+                            <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums" x-text="fig(row.debit, true)"></div>
+                            <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums" x-text="fig(row.credit, true)"></div>
+                        </div>
+                    </template>
+                </div>
+                <div role="rowgroup" class="table-footer-group border-t border-border">
+                    <div role="row" class="table-row">
+                        <div role="rowheader" class="table-cell px-3 py-2.5 text-body-sm text-foreground text-start font-medium">Total</div>
+                        <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums font-medium" x-text="fig(tb.debit)"></div>
+                        <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums font-medium" x-text="fig(tb.credit)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center justify-end gap-2" aria-live="polite">
+            <span data-slot="badge"     x-show="tb.balanced" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Debits equal credits</span>
+            <span data-slot="badge"     x-show="!tb.balanced" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text">Debits and credits differ</span>
+            <span x-show="!tb.balanced" class="text-label tabular-nums" x-text="fig(difference)"></span>
+        </div>
+    </div>
+</div>
+    <div data-slot="chart-of-accounts" x-data="nqAccountingChart(JSON.parse('{\u0022accounts\u0022:[{\u0022id\u0022:\u0022assets\u0022,\u0022code\u0022:\u00221000\u0022,\u0022name\u0022:\u0022Assets\u0022,\u0022type\u0022:\u0022asset\u0022},{\u0022id\u0022:\u0022cash\u0022,\u0022code\u0022:\u00221010\u0022,\u0022name\u0022:\u0022Cash\u0022,\u0022type\u0022:\u0022asset\u0022,\u0022parentId\u0022:\u0022assets\u0022},{\u0022id\u0022:\u0022bank\u0022,\u0022code\u0022:\u00221020\u0022,\u0022name\u0022:\u0022Bank\u0022,\u0022type\u0022:\u0022asset\u0022,\u0022parentId\u0022:\u0022assets\u0022},{\u0022id\u0022:\u0022capital\u0022,\u0022code\u0022:\u00223000\u0022,\u0022name\u0022:\u0022Owner capital\u0022,\u0022type\u0022:\u0022equity\u0022},{\u0022id\u0022:\u0022sales\u0022,\u0022code\u0022:\u00224000\u0022,\u0022name\u0022:\u0022Sales\u0022,\u0022type\u0022:\u0022revenue\u0022},{\u0022id\u0022:\u0022rent\u0022,\u0022code\u0022:\u00225000\u0022,\u0022name\u0022:\u0022Rent\u0022,\u0022type\u0022:\u0022expense\u0022}],\u0022entries\u0022:[{\u0022id\u0022:\u0022e1\u0022,\u0022number\u0022:\u0022JE-0007\u0022,\u0022date\u0022:\u00222026-09-01\u0022,\u0022memo\u0022:\u0022Opening capital\u0022,\u0022status\u0022:\u0022posted\u0022,\u0022lines\u0022:[{\u0022accountId\u0022:\u0022bank\u0022,\u0022debit\u0022:1000000,\u0022credit\u0022:0},{\u0022accountId\u0022:\u0022capital\u0022,\u0022debit\u0022:0,\u0022credit\u0022:1000000}]},{\u0022id\u0022:\u0022e2\u0022,\u0022number\u0022:\u0022JE-0008\u0022,\u0022date\u0022:\u00222026-09-10\u0022,\u0022memo\u0022:\u0022Cash sale\u0022,\u0022status\u0022:\u0022posted\u0022,\u0022lines\u0022:[{\u0022accountId\u0022:\u0022cash\u0022,\u0022debit\u0022:250000,\u0022credit\u0022:0},{\u0022accountId\u0022:\u0022sales\u0022,\u0022debit\u0022:0,\u0022credit\u0022:250000}]}],\u0022currency\u0022:\u0022SAR\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022selectedId\u0022:null,\u0022t\u0022:{\u0022chart\u0022:\u0022Chart of accounts\u0022,\u0022account\u0022:\u0022Account\u0022,\u0022type\u0022:\u0022Type\u0022,\u0022balance\u0022:\u0022Balance\u0022,\u0022rowActions\u0022:\u0022Account actions\u0022,\u0022noAccounts\u0022:\u0022No accounts yet\u0022,\u0022noAccountsText\u0022:\u0022Add the first account to start the chart.\u0022,\u0022expand\u0022:\u0022Expand\u0022,\u0022collapse\u0022:\u0022Collapse\u0022,\u0022archived\u0022:\u0022Archived\u0022,\u0022viewStatement\u0022:\u0022View statement\u0022,\u0022addChild\u0022:\u0022Add sub-account\u0022,\u0022archive\u0022:\u0022Archive account\u0022,\u0022restore\u0022:\u0022Restore account\u0022,\u0022asset\u0022:\u0022Asset\u0022,\u0022liability\u0022:\u0022Liability\u0022,\u0022equity\u0022:\u0022Equity\u0022,\u0022revenue\u0022:\u0022Revenue\u0022,\u0022expense\u0022:\u0022Expense\u0022}}'))" class="w-full min-w-0">
+    <template x-if="accounts.length === 0">
+        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 5h13"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="M3 10a2 2 0 0 0 2 2h3"/>
+  <path d="M3 5v12a2 2 0 0 0 2 2h3"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No accounts yet</p>
+                    <p class="text-body-sm text-muted-foreground">Add the first account to start the chart.</p>
+            </div>
+    </div>
+    </template>
+    <div x-show="accounts.length > 0" class="relative w-full overflow-x-auto rounded-card border border-border bg-card">
+        <div role="table" class="table w-full min-w-[32rem] border-collapse">
+            <div role="caption" class="sr-only">Chart of accounts</div>
+            <div role="rowgroup" class="table-header-group border-b border-border">
+                <div role="row" class="table-row">
+                    <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Account</div>
+                    <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground w-28">Type</div>
+                    <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground w-36">Balance</div>
+                    <div role="columnheader" class="table-cell w-10"><span class="sr-only">Account actions</span></div>
+                </div>
+            </div>
+            <div role="rowgroup" class="table-row-group divide-y divide-border">
+                <template x-for="r in tree" :key="r.account.id">
+                    <div role="row" data-slot="account-row" x-data="nqContextMenu()" x-bind="trigger" x-show="!isHidden(r.account)"
+                        x-bind:data-selected="selectedId === r.account.id ? '' : null" x-bind:class="r.account.archived ? 'opacity-60' : ''"
+                        class="table-row data-[selected]:bg-nq-hover">
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground">
+                            <div class="flex items-center gap-2" x-bind:style="`padding-inline-start: ${r.depth * 1.25}rem`">
+                                <button data-slot="button"
+     type="button"                     x-show="r.hasChildren" x-bind:aria-expanded="isCollapsed(r.account.id) ? &#039;false&#039; : &#039;true&#039;" x-bind:aria-label="(isCollapsed(r.account.id) ? t.expand : t.collapse) + &#039;, &#039; + r.account.name" x-on:click="toggle(r.account.id)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" x-bind:class="isCollapsed(r.account.id) ? '-rotate-90 rtl:rotate-90' : ''" class="transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></button>
+                                <span x-show="!r.hasChildren" aria-hidden="true" class="size-control-sm shrink-0"></span>
+                                <bdi dir="ltr" class="text-caption tabular-nums text-muted-foreground" x-text="r.account.code"></bdi>
+                                                                    <button type="button" class="min-w-0 truncate text-start hover:underline" x-bind:class="r.hasChildren ? 'font-medium' : ''" x-on:click="select(r.account)" x-text="r.account.name"></button>
+                                                                <span data-slot="badge"     x-show="r.account.archived" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Archived</span>
+                            </div>
+                        </div>
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground">
+                                                            <span data-slot="badge"     x-show="r.account.type === &#039;asset&#039;" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Asset</span>
+                                                            <span data-slot="badge"     x-show="r.account.type === &#039;liability&#039;" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Liability</span>
+                                                            <span data-slot="badge"     x-show="r.account.type === &#039;equity&#039;" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Equity</span>
+                                                            <span data-slot="badge"     x-show="r.account.type === &#039;revenue&#039;" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Revenue</span>
+                                                            <span data-slot="badge"     x-show="r.account.type === &#039;expense&#039;" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text">Expense</span>
+                                                    </div>
+                        <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums" x-text="balanceOf(r.account.id)"></div>
+                        <div role="cell" class="table-cell px-1">
+                                                            <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="line-item-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" x-bind:aria-label="t.rowActions + &#039;, &#039; + r.account.name" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                    <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="select(r.account)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 5h13"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="M3 10a2 2 0 0 0 2 2h3"/>
+  <path d="M3 5v12a2 2 0 0 0 2 2h3"/>
+</svg>View statement</div>
+                                                <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addChild(r.account)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 10v6"/>
+  <path d="M9 13h6"/>
+  <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+</svg>Add sub-account</div></div>
+                                                                                                                            <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                            <div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="toggleArchive(r.account)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="5" x="2" y="3" rx="1"/>
+  <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/>
+  <path d="M10 12h4"/>
+</svg><span x-text="archiveLabel(r.account)">Archive account</span></div></div></div>
+</template></div>
+                                                    </div>
+                                                    <template x-teleport="body">
+                                <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+                                    class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="select(r.account)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 5h13"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="M3 10a2 2 0 0 0 2 2h3"/>
+  <path d="M3 5v12a2 2 0 0 0 2 2h3"/>
+</svg>View statement</div>
+                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addChild(r.account)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 10v6"/>
+  <path d="M9 13h6"/>
+  <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+</svg>Add sub-account</div>
+                                                                            <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                        <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="toggleArchive(r.account)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="5" x="2" y="3" rx="1"/>
+  <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/>
+  <path d="M10 12h4"/>
+</svg><span x-text="archiveLabel(r.account)">Archive account</span></div>
+                                                                    </div>
+                            </template>
+                                            </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</div>
+    <div data-slot="account-statement" x-data="nqAccountingStatement(JSON.parse('{\u0022account\u0022:{\u0022id\u0022:\u0022cash\u0022,\u0022code\u0022:\u00221010\u0022,\u0022name\u0022:\u0022Cash\u0022,\u0022type\u0022:\u0022asset\u0022,\u0022parentId\u0022:\u0022assets\u0022},\u0022entries\u0022:[{\u0022id\u0022:\u0022e1\u0022,\u0022number\u0022:\u0022JE-0007\u0022,\u0022date\u0022:\u00222026-09-01\u0022,\u0022memo\u0022:\u0022Opening capital\u0022,\u0022status\u0022:\u0022posted\u0022,\u0022lines\u0022:[{\u0022accountId\u0022:\u0022bank\u0022,\u0022debit\u0022:1000000,\u0022credit\u0022:0},{\u0022accountId\u0022:\u0022capital\u0022,\u0022debit\u0022:0,\u0022credit\u0022:1000000}]},{\u0022id\u0022:\u0022e2\u0022,\u0022number\u0022:\u0022JE-0008\u0022,\u0022date\u0022:\u00222026-09-10\u0022,\u0022memo\u0022:\u0022Cash sale\u0022,\u0022status\u0022:\u0022posted\u0022,\u0022lines\u0022:[{\u0022accountId\u0022:\u0022cash\u0022,\u0022debit\u0022:250000,\u0022credit\u0022:0},{\u0022accountId\u0022:\u0022sales\u0022,\u0022debit\u0022:0,\u0022credit\u0022:250000}]}],\u0022currency\u0022:\u0022SAR\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022opening\u0022:0,\u0022t\u0022:{\u0022statement\u0022:\u0022Account statement\u0022,\u0022date\u0022:\u0022Date\u0022,\u0022number\u0022:\u0022Number\u0022,\u0022memo\u0022:\u0022Memo\u0022,\u0022debit\u0022:\u0022Debit\u0022,\u0022credit\u0022:\u0022Credit\u0022,\u0022running\u0022:\u0022Running balance\u0022,\u0022balance\u0022:\u0022Balance\u0022,\u0022noMovements\u0022:\u0022No movements on this account\u0022,\u0022inCurrency\u0022:\u0022Amounts in\u0022,\u0022asset\u0022:\u0022Asset\u0022,\u0022liability\u0022:\u0022Liability\u0022,\u0022equity\u0022:\u0022Equity\u0022,\u0022revenue\u0022:\u0022Revenue\u0022,\u0022expense\u0022:\u0022Expense\u0022}}'))" class="flex w-full min-w-0 flex-col gap-2">
+    <div class="flex flex-wrap items-center gap-2">
+        <bdi dir="ltr" class="text-caption tabular-nums text-muted-foreground">1010</bdi>
+        <h3 class="text-h3 text-foreground">Cash</h3>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Asset</span>
+        <span class="ms-auto text-caption text-muted-foreground">Amounts in <bdi dir="ltr">SAR</bdi></span>
+    </div>
+    <template x-if="rows.length === 0">
+        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No movements on this account</p>
+            </div>
+    </div>
+    </template>
+    <div x-show="rows.length > 0" class="w-full overflow-x-auto rounded-card border border-border bg-card">
+        <div role="table" class="table w-full min-w-[36rem] border-collapse">
+            <div role="caption" class="sr-only">Account statement: Cash</div>
+            <div role="rowgroup" class="table-header-group border-b border-border">
+                <div role="row" class="table-row">
+                    <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground w-32">Date</div>
+                    <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground w-28">Number</div>
+                    <div role="columnheader" class="table-cell px-3 py-2 text-start text-caption font-medium text-muted-foreground">Memo</div>
+                    <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground w-32">Debit</div>
+                    <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground w-32">Credit</div>
+                    <div role="columnheader" dir="ltr" class="table-cell px-3 py-2 text-end text-caption font-medium text-muted-foreground w-36">Running balance</div>
+                </div>
+            </div>
+            <div role="rowgroup" class="table-row-group divide-y divide-border">
+                <div role="row" x-show="opening !== 0" class="table-row text-muted-foreground">
+                    <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground">Balance</div>
+                    <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground"></div>
+                    <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground"></div>
+                    <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground"></div>
+                    <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground"></div>
+                    <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums" x-text="fig(opening)"></div>
+                </div>
+                <template x-for="(r, i) in rows" :key="r.entryId + '-' + i">
+                    <div role="row" data-slot="statement-row" class="table-row">
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground"><bdi x-text="date(r.date)"></bdi></div>
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground"><bdi dir="ltr" class="tabular-nums" x-text="r.number"></bdi></div>
+                        <div role="cell" class="table-cell px-3 py-2.5 text-body-sm text-foreground max-w-64 truncate" x-text="r.memo"></div>
+                        <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums" x-text="fig(r.debit, true)"></div>
+                        <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums" x-text="fig(r.credit, true)"></div>
+                        <div role="cell" dir="ltr" class="table-cell px-3 py-2.5 text-end text-body-sm text-foreground tabular-nums font-medium"><span x-text="fig(r.balance)"></span><span class="sr-only"> Debit</span></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

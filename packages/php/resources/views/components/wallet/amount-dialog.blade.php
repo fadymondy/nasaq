@@ -15,9 +15,9 @@
         'idle' => $idle, 'strings' => ['confirm' => $confirm, 'invalid' => $t['invalid'], 'min' => $t['min'], 'max' => $t['max2'], 'failed' => $t['failedRequest']],
     ];
 @endphp
-<div data-slot="wallet-dialog" data-kind="{{ $kind }}" x-data="nqWalletDialog(@js($config))" x-modelable="isOpen"
+<div data-slot="{{ $attributes->get('data-slot', 'wallet-dialog') }}" data-kind="{{ $kind }}" x-data="nqWalletDialog(@js($config))" x-modelable="isOpen"
     x-on:nq-wallet-error.window="fail($event.detail && $event.detail.message)"
-    {{ $attributes->cn('contents') }}>
+    {{ $attributes->except('data-slot')->cn('contents') }}>
     <x-nq::dialog x-model="isOpen" :open="(bool) $open">
         <x-nq::dialog.content>
             <form novalidate class="grid gap-4" x-on:submit.prevent="submit()">

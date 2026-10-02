@@ -35,8 +35,8 @@
         'labels' => ['working' => $t['working'], 'offHours' => $t['offHours'], 'sameTime' => $t['sameTime'], 'ahead' => $t['ahead'], 'behind' => $t['behind']],
     ], fn ($v) => $v !== null);
 @endphp
-<div data-slot="local-clock" x-data="nqLocalClock({!! \Illuminate\Support\Js::from((object) $options) !!})"
-    {{ $attributes->cn('flex flex-col gap-2 rounded-card border border-border bg-card py-4 text-card-foreground') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'local-clock') }}" x-data="nqLocalClock({!! \Illuminate\Support\Js::from((object) $options) !!})"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-2 rounded-card border border-border bg-card py-4 text-card-foreground') }}>
     <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4"><div data-slot="card-title" class="text-label text-foreground">{{ $t['localTime'] }}</div></div>
     <div data-slot="card-content" class="flex flex-col gap-1 px-4">
         <p class="flex items-baseline gap-2">

@@ -39,7 +39,7 @@
     $config = ['failed' => $t['downloadFailed']];
     $hasLogo = isset($logo) && ! $logo->isEmpty() || ! empty($invoice['from']['logo']);
 @endphp
-<section data-slot="invoice-view" data-status="{{ $status }}" aria-labelledby="{{ $titleId }}" x-data="nqInvoiceView(@js($config))" {{ $attributes->cn('flex flex-col gap-4') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'invoice-view') }}" data-status="{{ $status }}" aria-labelledby="{{ $titleId }}" x-data="nqInvoiceView(@js($config))" {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
     {{-- On paper only the sheet prints: everything else is hidden, the sheet moves to the top, colours are forced to black on white. --}}
     <style>@verbatim
 @media print {

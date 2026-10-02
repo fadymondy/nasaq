@@ -17,7 +17,7 @@
     $hasYearly = count(array_filter($plans, fn ($p) => isset($p['yearly']))) > 0;
     $hasNote = $note !== null && trim((string) $note) !== '';
 @endphp
-<div data-slot="pricing-table" x-data="nqPricingTable(@js($period))" x-modelable="period" {{ $attributes->cn('flex flex-col items-center gap-8') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'pricing-table') }}" x-data="nqPricingTable(@js($period))" x-modelable="period" {{ $attributes->except('data-slot')->cn('flex flex-col items-center gap-8') }}>
     @if ($hasYearly && ! $hidePeriodSwitch)
         <x-nq::pricing-table.billing-period-switch :period="$period" :savings="nq_pricing_savings($plans)" :labels="$labels" x-model="sel" />
     @endif

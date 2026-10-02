@@ -30,9 +30,9 @@
     $vehicleIcons = ['bike' => 'bike', 'motorbike' => 'motorbike', 'car' => 'car', 'van' => 'truck', 'walk' => 'footprints'];
     $ariaLabel = implode(', ', array_filter([$shown, $t[$status], $selected ? $t['selected'] : '']));
 @endphp
-<div data-slot="courier-card" data-status="{{ $status }}" @if ($selected) data-selected @endif
+<div data-slot="{{ $attributes->get('data-slot', 'courier-card') }}" data-status="{{ $status }}" @if ($selected) data-selected @endif
     {{-- ring-2 + ring-primary/30 are appended after the merge: Cn treats ring width and colour as one group. --}}
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         'flex items-center gap-2 rounded-card border border-border bg-card p-3 transition-colors duration-150 ease-nq',
         'border-primary' => $selected,
         'opacity-80' => $status === 'offline',

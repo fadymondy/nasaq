@@ -6,12 +6,12 @@
 @php
     $horizontal = $orientation !== 'vertical';
 @endphp
-<div data-slot="resizable-handle" role="separator" tabindex="0" data-orientation="{{ $orientation }}" aria-orientation="{{ $horizontal ? 'vertical' : 'horizontal' }}"
+<div data-slot="{{ $attributes->get('data-slot', 'resizable-handle') }}" role="separator" tabindex="0" data-orientation="{{ $orientation }}" aria-orientation="{{ $horizontal ? 'vertical' : 'horizontal' }}"
     aria-label="{{ $label ?? \Nasaq\Nasaq::t('Resize panels', 'تغيير حجم اللوحات') }}"
     data-separator="{{ $disabled ? 'disabled' : 'inactive' }}"
     @if ($disabled) data-disabled @endif
     style="touch-action:none;user-select:none"
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         'relative flex shrink-0 items-center justify-center bg-border outline-none transition-colors duration-150 ease-nq',
         $horizontal ? 'w-px after:absolute after:-inset-x-1.5 after:inset-y-0' : 'h-px after:absolute after:-inset-y-1.5 after:inset-x-0',
         'data-[separator=hover]:bg-nq-focus data-[separator=active]:bg-nq-focus',

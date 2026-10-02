@@ -31,9 +31,9 @@
     $countText = str_replace(['{on}', '{all}'], [$on, count($list)], $t['count']);
     $hide = 'style="display: none"';
 @endphp
-<div data-slot="weighted-criteria-card" x-data="nqWeightedCriteriaCard({!! \Illuminate\Support\Js::from($list) !!}, {!! \Illuminate\Support\Js::from((object) $options) !!})" x-modelable="criteria"
+<div data-slot="{{ $attributes->get('data-slot', 'weighted-criteria-card') }}" x-data="nqWeightedCriteriaCard({!! \Illuminate\Support\Js::from($list) !!}, {!! \Illuminate\Support\Js::from((object) $options) !!})" x-modelable="criteria"
     x-bind:data-sent="sent ? '' : null"
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0') }}>
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0') }}>
     <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]">
         <div data-slot="card-title" id="{{ $uid }}-title" class="text-label text-foreground">{{ $title ?? $t['title'] }}</div>
         @if ($description)

@@ -21,8 +21,8 @@
     $tone = ['completed' => 'success', 'pending' => 'warning', 'failed' => 'danger'];
     $titleId = 'nq-wallet-'.substr(md5(json_encode($transactions).$locale), 0, 8);
 @endphp
-<section data-slot="wallet-transactions" aria-labelledby="{{ $titleId }}" x-data="nqWalletTransactions(@js($dirs))"
-    {{ $attributes->cn('flex flex-col gap-4') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'wallet-transactions') }}" aria-labelledby="{{ $titleId }}" x-data="nqWalletTransactions(@js($dirs))"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
     <div class="flex flex-wrap items-center justify-between gap-3">
         <h2 id="{{ $titleId }}" class="text-h3 text-foreground">{{ $t['transactions'] }}</h2>
         <x-nq::toggle-group :default-value="['all']" :aria-label="$t['filter']" x-model="dir">

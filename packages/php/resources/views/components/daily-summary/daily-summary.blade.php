@@ -33,8 +33,8 @@
     $shutdown = $s['shutdownViolations'] ?? null;
     $figure = fn ($key, $unit, $frac = 0) => isset($s[$key]) ? nq_ds_measure($s[$key], $unit, $locale, $frac) : $missingHtml;
 @endphp
-<section data-slot="daily-summary" @if ($day) data-date="{{ $day }}" aria-labelledby="{{ $headingId }}" @endif x-data="nqDailySummary"
-    {{ $attributes->cn('flex flex-col gap-6') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'daily-summary') }}" @if ($day) data-date="{{ $day }}" aria-labelledby="{{ $headingId }}" @endif x-data="nqDailySummary"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-6') }}>
     <header class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex min-w-0 items-center gap-2">
             @if ($switcher && $day)

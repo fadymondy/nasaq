@@ -1,0 +1,289 @@
+<section data-slot="database-explorer" aria-label="Database explorer" x-data="nqDatabaseExplorer(JSON.parse('{\u0022schemas\u0022:[{\u0022name\u0022:\u0022public\u0022,\u0022tables\u0022:[{\u0022name\u0022:\u0022users\u0022,\u0022kind\u0022:\u0022table\u0022,\u0022rowCount\u0022:1280,\u0022columns\u0022:[{\u0022name\u0022:\u0022id\u0022,\u0022type\u0022:\u0022uuid\u0022,\u0022nullable\u0022:false,\u0022primaryKey\u0022:true,\u0022references\u0022:null},{\u0022name\u0022:\u0022email\u0022,\u0022type\u0022:\u0022varchar(120)\u0022,\u0022nullable\u0022:false,\u0022primaryKey\u0022:false,\u0022references\u0022:null},{\u0022name\u0022:\u0022plan\u0022,\u0022type\u0022:\u0022text\u0022,\u0022nullable\u0022:true,\u0022primaryKey\u0022:false,\u0022references\u0022:null},{\u0022name\u0022:\u0022created_at\u0022,\u0022type\u0022:\u0022timestamptz\u0022,\u0022nullable\u0022:false,\u0022primaryKey\u0022:false,\u0022references\u0022:null}]},{\u0022name\u0022:\u0022orders\u0022,\u0022kind\u0022:\u0022table\u0022,\u0022rowCount\u0022:5421,\u0022columns\u0022:[{\u0022name\u0022:\u0022id\u0022,\u0022type\u0022:\u0022uuid\u0022,\u0022nullable\u0022:false,\u0022primaryKey\u0022:true,\u0022references\u0022:null},{\u0022name\u0022:\u0022user_id\u0022,\u0022type\u0022:\u0022uuid\u0022,\u0022nullable\u0022:false,\u0022primaryKey\u0022:false,\u0022references\u0022:\u0022users.id\u0022},{\u0022name\u0022:\u0022total\u0022,\u0022type\u0022:\u0022numeric(10,2)\u0022,\u0022nullable\u0022:false,\u0022primaryKey\u0022:false,\u0022references\u0022:null}]},{\u0022name\u0022:\u0022active_users\u0022,\u0022kind\u0022:\u0022view\u0022,\u0022rowCount\u0022:null,\u0022columns\u0022:[{\u0022name\u0022:\u0022id\u0022,\u0022type\u0022:\u0022uuid\u0022,\u0022nullable\u0022:false,\u0022primaryKey\u0022:false,\u0022references\u0022:null}]}]}],\u0022rowLimit\u0022:100,\u0022defaultQuery\u0022:\u0022\u0022,\u0022defaultTable\u0022:null,\u0022confirmWrites\u0022:true,\u0022locale\u0022:\u0022en\u0022,\u0022strings\u0022:{\u0022title\u0022:\u0022Database explorer\u0022,\u0022tables\u0022:\u0022Tables\u0022,\u0022filterTables\u0022:\u0022Filter tables\u0022,\u0022noTables\u0022:\u0022No tables match.\u0022,\u0022noSchema\u0022:\u0022No tables yet\u0022,\u0022noSchemaBody\u0022:\u0022This database has no tables to browse.\u0022,\u0022rows\u0022:{\u0022one\u0022:\u00221 row\u0022,\u0022two\u0022:\u0022{n} rows\u0022,\u0022few\u0022:\u0022{n} rows\u0022,\u0022many\u0022:\u0022{n} rows\u0022},\u0022editor\u0022:\u0022SQL query\u0022,\u0022editorHint\u0022:\u0022Ctrl or Cmd + Enter to run\u0022,\u0022placeholder\u0022:\u0022SELECT * FROM users LIMIT 100;\u0022,\u0022run\u0022:\u0022Run\u0022,\u0022running\u0022:\u0022Running\u0022,\u0022clear\u0022:\u0022Clear\u0022,\u0022results\u0022:\u0022Results\u0022,\u0022structure\u0022:\u0022Structure\u0022,\u0022history\u0022:\u0022History\u0022,\u0022resultsTable\u0022:\u0022Query results\u0022,\u0022noRun\u0022:\u0022Run a query to see rows here\u0022,\u0022noRunBody\u0022:\u0022Pick a table on the left, or write a query.\u0022,\u0022noRows\u0022:\u0022The query returned no rows\u0022,\u0022affected\u0022:{\u0022one\u0022:\u00221 row affected\u0022,\u0022other\u0022:\u0022{n} rows affected\u0022},\u0022took\u0022:\u0022{n} ms\u0022,\u0022truncated\u0022:\u0022Showing the first {n} rows.\u0022,\u0022exportCsv\u0022:\u0022Download CSV\u0022,\u0022copyCsv\u0022:\u0022Copy CSV\u0022,\u0022copied\u0022:\u0022Copied to clipboard\u0022,\u0022queryFailed\u0022:\u0022The query failed\u0022,\u0022genericError\u0022:\u0022Something went wrong. Try again.\u0022,\u0022null\u0022:\u0022NULL\u0022,\u0022column\u0022:\u0022Column\u0022,\u0022type\u0022:\u0022Type\u0022,\u0022nullable\u0022:\u0022Nullable\u0022,\u0022yes\u0022:\u0022Yes\u0022,\u0022no\u0022:\u0022No\u0022,\u0022primaryKey\u0022:\u0022Primary key\u0022,\u0022references\u0022:\u0022References {target}\u0022,\u0022pickTable\u0022:\u0022Pick a table to see its columns\u0022,\u0022historyEmpty\u0022:\u0022Queries you run appear here\u0022,\u0022historyClear\u0022:\u0022Clear history\u0022,\u0022useQuery\u0022:\u0022Load into the editor\u0022,\u0022writeTitle\u0022:\u0022Run a query that changes data?\u0022,\u0022writeBody\u0022:\u0022This statement does not look read-only. It runs against the live connection and may not be reversible.\u0022,\u0022writeConfirm\u0022:\u0022Run query\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022modifies\u0022:\u0022Changes data\u0022}}'))"
+    class="grid min-w-0 gap-4 lg:grid-cols-[16rem_minmax(0,1fr)]">
+    <aside aria-label="Tables" class="flex min-w-0 flex-col gap-2 rounded-card border border-border bg-card p-2 lg:max-h-[42rem]">
+        <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><div data-slot="input-group-addon" data-align="start"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-first ps-3 pe-1"><svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg></div>
+            <input data-slot="input-group-input"  dir="ltr"     type="search" placeholder="Filter tables" aria-label="Filter tables" x-model="filter" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start" /></div>
+        <div class="max-h-56 min-h-0 overflow-y-auto lg:max-h-none lg:flex-1">
+            <div x-show="noSchemas" data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 rounded-card border border-dashed border-border px-6 py-12 text-center border-0 px-2 py-6" style="display: none">
+                <span class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card text-muted-foreground [&amp;_svg]:size-5"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg></span>
+                <div class="flex max-w-sm flex-col gap-1">
+                    <p class="text-label text-foreground">No tables yet</p>
+                    <p class="text-body-sm text-muted-foreground">This database has no tables to browse.</p>
+                </div>
+            </div>
+            <p x-show="noMatches" style="display: none" class="px-2 py-4 text-center text-body-sm text-muted-foreground">No tables match.</p>
+            <div data-slot="tree-view" role="tree" aria-label="Tables" x-show="nodes.length > 0" x-on:keydown="treeKey($event)" class="flex flex-col gap-0.5 text-body text-foreground">
+                <template x-for="node in nodes" x-bind:key="node.id">
+                    <div data-slot="tree-view-item" role="treeitem" x-bind:data-node-id="node.id"
+                        x-bind:aria-level="node.level" x-bind:aria-setsize="node.size" x-bind:aria-posinset="node.pos"
+                        x-bind:aria-expanded="node.expandable ? String(node.open) : null" x-bind:aria-selected="String(node.selected)"
+                        x-bind:data-selected="node.selected ? '' : null" x-bind:data-expanded="node.open ? '' : null"
+                        x-bind:tabindex="node.id === tabId ? 0 : -1" x-bind:style="'padding-inline-start:' + ((node.level - 1) * 1.25 + 0.375) + 'rem'"
+                        x-on:click="onNode(node)" x-on:focus="if ($event.target === $event.currentTarget) focusId = node.id"
+                        class="flex min-h-8 cursor-default items-center gap-1.5 rounded-control pe-2 outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-[selected]:bg-nq-selected">
+                        <span data-slot="tree-view-toggle" class="flex size-5 shrink-0 items-center justify-center text-muted-foreground" x-on:click.stop="toggle(node.id)">
+                            <template x-if="node.expandable">
+                                <span class="contents">
+                                    <svg aria-hidden="true" x-show="node.open" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg>                                    <svg data-slot="icon" aria-hidden="true" x-show="! node.open" class="rtl:-scale-x-100 size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>                                </span>
+                            </template>
+                        </span>
+                        <span data-slot="tree-view-icon" aria-hidden="true" class="flex shrink-0 items-center text-muted-foreground [&_svg]:size-4">
+                            <svg x-show="node.kind === 'schema'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse cx="12" cy="5" rx="9" ry="3"/>
+  <path d="M3 5V19A9 3 0 0 0 21 19V5"/>
+  <path d="M3 12A9 3 0 0 0 21 12"/>
+</svg>                            <x-lucide-eye x-show="node.kind === 'table' ? node.view : false" style="display: none" />
+                            <x-lucide-table-2 x-show="node.kind === 'table' ? ! node.view : false" style="display: none" />
+                        </span>
+                        <span class="min-w-0 flex-1 truncate">
+                            <template x-if="node.kind === 'schema'"><bdi dir="ltr" x-text="node.name"></bdi></template>
+                            <template x-if="node.kind === 'table'">
+                                <span class="flex min-w-0 items-center justify-between gap-2">
+                                    <bdi dir="ltr" class="truncate font-mono text-code" x-text="node.name"></bdi>
+                                    <span x-show="node.rowCount !== null" class="shrink-0 text-caption text-muted-foreground" x-text="node.rowCount === null ? '' : count(node.rowCount)"></span>
+                                </span>
+                            </template>
+                        </span>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </aside>
+    <div class="flex min-w-0 flex-col gap-3">
+        <div class="flex flex-col gap-2 rounded-card border border-border bg-card p-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <label for="nq-dbx-sql-000001" class="text-label text-foreground">SQL query</label>
+                <span class="text-caption text-muted-foreground">Ctrl or Cmd + Enter to run</span>
+            </div>
+            <textarea data-slot="textarea"
+                id="nq-dbx-sql-000001" dir="ltr" rows="5" placeholder="SELECT * FROM users LIMIT 100;" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" x-model="sql" x-on:keydown="onKeyDown($event)" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] py-2 min-h-28 resize-y font-mono text-code text-start"></textarea>
+            <div class="flex flex-wrap items-center gap-2">
+                <button data-slot="button"
+     type="button"                     x-on:click="request()" x-bind:disabled="! canRun" x-bind:aria-busy="running ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="running" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                    <svg x-show="! running" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>
+</svg>                    <span x-text="running ? config.strings.running : config.strings.run">Run</span></button>
+                <button data-slot="button"
+     type="button"                     x-on:click="clearEditor()" x-bind:disabled="! sql" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Clear</button>
+                <span data-slot="badge"  style="display: none"     x-show="modifies" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Changes data</span>
+            </div>
+        </div>
+        <div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('results')" x-modelable="value" x-id="['nq-tabs']" x-model="tab" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="underline" aria-orientation="horizontal" x-bind="list"
+    aria-label="Database explorer" class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-4 border-b border-border">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('results')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Results</button>
+                <button type="button" data-slot="tabs-tab" x-bind="tab('structure')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Structure</button>
+                <button type="button" data-slot="tabs-tab" x-bind="tab('history')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">History
+                    <span x-show="history.length > 0" style="display: none" class="ms-1.5 text-caption text-muted-foreground tabular-nums" x-text="history.length"></span></button>
+                <span data-slot="tabs-indicator" aria-hidden="true"
+    class="absolute -z-10 transition-[left,width] duration-200 ease-nq left-[var(--active-tab-left)] w-[var(--active-tab-width)] bottom-0 h-0.5 rounded-full bg-primary"></span>
+</div>
+            <div data-slot="tabs-panel" x-bind="panel('results')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div x-show="isError" style="display: none">
+                    <div data-slot="alert" data-tone="danger" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                    <div data-slot="alert-title" class="text-label text-foreground">The query failed</div>
+                            <div data-slot="alert-description" class="text-body-sm text-muted-foreground"><bdi dir="ltr" class="whitespace-pre-wrap font-mono text-code" x-text="errorText"></bdi></div>
+            </div>
+    </div>
+                </div>
+                <div x-show="! hasResult && ! isError" data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 rounded-card border border-dashed border-border px-6 py-12 text-center">
+                    <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card text-muted-foreground [&amp;_svg]:size-5"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>
+</svg></span>
+                    <div class="flex max-w-sm flex-col gap-1">
+                        <p class="text-label text-foreground">Run a query to see rows here</p>
+                        <p class="text-body-sm text-muted-foreground">Pick a table on the left, or write a query.</p>
+                    </div>
+                </div>
+                <div x-show="hasResult" style="display: none" class="flex min-w-0 flex-col gap-3">
+                    <div data-slot="data-table-toolbar" class="flex flex-wrap items-center gap-2">
+                        <p data-slot="database-explorer-summary" role="status" class="text-body-sm text-muted-foreground" x-text="summary"></p>
+                        <div class="ms-auto flex items-center gap-2">
+                            <button data-slot="button"
+     type="button"                     x-on:click="copyCsv()" x-bind:disabled="! hasRows" x-bind:data-copied="copied ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="! copied" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>                                <x-lucide-check aria-hidden="true" x-show="copied" style="display: none" />
+                                Copy CSV</button>
+                            <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only" x-text="copied ? config.strings.copied : ''"></span>
+                            <button data-slot="button"
+     type="button"                     x-on:click="exportCsv()" x-bind:disabled="! hasRows" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>                                Download CSV</button>
+                        </div>
+                    </div>
+                    <div x-show="truncated" style="display: none">
+                        <div data-slot="alert" data-tone="warning" role="alert"
+        class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="truncatedText"></span></div>
+            </div>
+    </div>
+                    </div>
+                    <div x-show="noColumns" data-slot="empty-state" style="display: none" class="flex flex-col items-center justify-center gap-3 rounded-card border border-dashed border-border px-6 py-12 text-center">
+                        <div class="flex max-w-sm flex-col gap-1"><p class="text-label text-foreground" x-text="emptyTitle"></p></div>
+                    </div>
+                    <div x-show="! noColumns" data-slot="table-container" role="region" tabindex="0" aria-label="Query results"
+                        class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                        <div data-slot="table" role="table" aria-label="Query results" x-bind:style="'grid-template-columns: repeat(' + columnsView.length + ', auto)'" class="grid w-full min-w-max text-body-sm">
+                            <div data-slot="table-header" role="rowgroup" class="contents">
+                                <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid border-b border-border">
+                                    <template x-for="col in columnsView" x-bind:key="col.index">
+                                        <div role="columnheader" data-slot="table-head" x-bind:aria-sort="col.aria" x-bind:class="col.align === 'end' ? 'justify-end text-end' : 'text-start'" class="flex items-center h-row px-4 py-3 align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                            <button type="button" x-on:click="sortBy(col.index)" x-bind:class="col.sort ? 'text-foreground' : ''" class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                                                <bdi dir="ltr" class="font-mono" x-text="col.name"></bdi>
+                                                <svg aria-hidden="true" x-show="! col.sort" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                                <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="col.sort === 'asc'" style="display: none" />
+                                                <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="col.sort === 'desc'" style="display: none" />
+                                            </button>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                            <div role="rowgroup" class="contents" data-slot="table-body">
+                                <template x-for="row in pageRows" x-bind:key="row.i">
+                                    <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid group/row border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover">
+                                        <template x-for="(cell, ci) in row.cells" x-bind:key="ci">
+                                            <div role="cell" data-slot="table-cell" x-bind:class="cell.align === 'end' ? 'justify-end text-end' : 'text-start'" class="flex items-center h-row px-4 py-3 align-middle whitespace-nowrap">
+                                                <template x-if="cell.kind === 'null'">
+                                                    <span dir="ltr" class="rounded-[3px] bg-secondary px-1 font-mono text-caption text-muted-foreground">NULL</span>
+                                                </template>
+                                                <template x-if="cell.kind !== 'null'">
+                                                    <bdi dir="ltr" x-bind:title="cell.text" x-bind:class="cell.cls" class="block max-w-72 truncate font-mono text-code" x-text="cell.text"></bdi>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                        <div x-show="noRows" data-slot="empty-state" style="display: none" class="flex flex-col items-center justify-center gap-3 rounded-card border border-dashed border-border px-6 py-12 text-center border-0">
+                            <div class="flex max-w-sm flex-col gap-1"><p class="text-label text-foreground">The query returned no rows</p></div>
+                        </div>
+                    </div>
+                </div></div>
+            <div data-slot="tabs-panel" x-bind="panel('structure')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div x-show="! hasStructure" data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 rounded-card border border-dashed border-border px-6 py-12 text-center">
+                    <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card text-muted-foreground [&amp;_svg]:size-5"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+</svg></span>
+                    <div class="flex max-w-sm flex-col gap-1"><p class="text-label text-foreground">Pick a table to see its columns</p></div>
+                </div>
+                <div x-show="hasStructure" style="display: none" class="overflow-x-auto rounded-card border border-border bg-card">
+                    <div role="table" x-bind:aria-label="structureName" style="grid-template-columns: repeat(4, auto)" class="grid w-full min-w-md text-body-sm">
+                        <div role="rowgroup" class="contents">
+                            <div role="row" class="col-span-full grid grid-cols-subgrid border-b border-border text-start text-caption text-muted-foreground">
+                                <div role="columnheader" class="px-3 py-2 text-start font-medium">Column</div>
+                                <div role="columnheader" class="px-3 py-2 text-start font-medium">Type</div>
+                                <div role="columnheader" class="px-3 py-2 text-start font-medium">Nullable</div>
+                                <div role="columnheader" class="px-3 py-2"></div>
+                            </div>
+                        </div>
+                        <div role="rowgroup" class="contents">
+                            <template x-for="c in structure" x-bind:key="c.name">
+                                <div role="row" class="col-span-full grid grid-cols-subgrid border-b border-border last:border-b-0">
+                                    <div role="rowheader" class="px-3 py-2 text-start font-normal"><bdi dir="ltr" class="font-mono text-code text-foreground" x-text="c.name"></bdi></div>
+                                    <div role="cell" class="px-3 py-2"><bdi dir="ltr" class="font-mono text-code text-muted-foreground" x-text="c.type"></bdi></div>
+                                    <div role="cell" class="px-3 py-2 text-muted-foreground" x-text="c.nullable ? config.strings.yes : config.strings.no"></div>
+                                    <div role="cell" class="px-3 py-2">
+                                        <span class="flex flex-wrap items-center justify-end gap-1.5">
+                                            <span data-slot="badge"  style="display: none"     x-show="c.primaryKey" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/>
+  <path d="m21 2-9.6 9.6"/>
+  <circle cx="7.5" cy="15.5" r="5.5"/>
+</svg>                                                Primary key</span>
+                                            <span data-slot="badge"  style="display: none"     x-show="c.references" x-bind:title="c.references ? refTitle(c.references) : null" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg>                                                <bdi dir="ltr" class="font-mono" x-text="c.references"></bdi></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div></div>
+            <div data-slot="tabs-panel" x-bind="panel('history')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div x-show="history.length === 0" data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 rounded-card border border-dashed border-border px-6 py-12 text-center">
+                    <div class="flex max-w-sm flex-col gap-1"><p class="text-label text-foreground">Queries you run appear here</p></div>
+                </div>
+                <div x-show="history.length > 0" style="display: none" class="flex flex-col gap-2">
+                    <ul class="m-0 flex list-none flex-col overflow-hidden rounded-card border border-border bg-card p-0">
+                        <template x-for="entry in history" x-bind:key="entry">
+                            <li class="border-b border-border last:border-b-0">
+                                <button type="button" title="Load into the editor" x-on:click="useQuery(entry)"
+                                    class="block w-full px-3 py-2 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                                    <bdi dir="ltr" class="block truncate font-mono text-code text-foreground" x-text="oneLine(entry)"></bdi>
+                                </button>
+                            </li>
+                        </template>
+                    </ul>
+                    <div>
+                        <button data-slot="button"
+     type="button"                     x-on:click="clearHistory()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>                            Clear history</button>
+                    </div>
+                </div></div>
+</div>
+    </div>
+    <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="confirmOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Run a query that changes data?</h2>
+                <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">This statement does not look read-only. It runs against the live connection and may not be reversible.</p></div>
+            <bdi dir="ltr" class="block max-h-32 overflow-auto rounded-control border border-border bg-secondary p-2 font-mono text-code" x-text="confirmSql"></bdi>
+            <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                <button data-slot="button"
+     type="button"                     x-on:click="confirmRun()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Run query</button></div>
+        </div>
+    </div>
+</template>
+</div>
+</section>

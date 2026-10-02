@@ -11,8 +11,8 @@
     $money = fn ($m) => nq_sl_money($m, $exp, $code);
     $chipCls = 'inline-flex h-7 items-center gap-1.5 rounded-full border border-border bg-card ps-3 pe-2 text-body-sm outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus';
 @endphp
-<div data-slot="store-active-chips" role="group" aria-label="{{ nq_sl_t('activeFilters') }}" x-show="chips.length" @unless (count($chips)) style="display: none" @endunless
-    {{ $attributes->cn('flex flex-wrap items-center gap-2') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'store-active-chips') }}" role="group" aria-label="{{ nq_sl_t('activeFilters') }}" x-show="chips.length" @unless (count($chips)) style="display: none" @endunless
+    {{ $attributes->except('data-slot')->cn('flex flex-wrap items-center gap-2') }}>
     <template x-for="chip in chips" x-bind:key="chip.id">
         <button type="button" x-bind:aria-label="s('removeFilter', { label: chipLabel(chip) })" x-on:click="removeChip(chip)" class="{{ $chipCls }}">
             <bdi x-text="chipLabel(chip)"></bdi>

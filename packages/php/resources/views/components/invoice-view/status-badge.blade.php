@@ -17,8 +17,8 @@
     ];
     $icons = ['draft' => 'file-clock', 'open' => 'circle-dot', 'paid' => 'circle-check', 'overdue' => 'triangle-alert', 'void' => 'circle-x', 'refunded' => 'rotate-ccw'];
 @endphp
-<span data-slot="invoice-status" data-status="{{ $status }}"
-    {{ $attributes->cn(['inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3', $variants[$status] ?? $variants['draft']]) }}>
+<span data-slot="{{ $attributes->get('data-slot', 'invoice-status') }}" data-status="{{ $status }}"
+    {{ $attributes->except('data-slot')->cn(['inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3', $variants[$status] ?? $variants['draft']]) }}>
     <x-dynamic-component :component="'lucide-'.($icons[$status] ?? 'circle-dot')" aria-hidden="true" />
     {{ $status === 'paid' ? $t['paidStatus'] : $t[$status] }}
 </span>

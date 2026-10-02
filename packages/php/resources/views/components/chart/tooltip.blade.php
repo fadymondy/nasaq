@@ -27,8 +27,8 @@
     $heading = $label !== null ? ($config[(string) $label]['label'] ?? $label) : null;
 @endphp
 @if ($active && count($payload))
-    <div data-slot="chart-tooltip" dir="{{ \Nasaq\Nasaq::rtl() ? 'rtl' : 'ltr' }}"
-        {{ $attributes->cn('grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md') }}>
+    <div data-slot="{{ $attributes->get('data-slot', 'chart-tooltip') }}" dir="{{ \Nasaq\Nasaq::rtl() ? 'rtl' : 'ltr' }}"
+        {{ $attributes->except('data-slot')->cn('grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md') }}>
         @if (! $hideLabel && $heading !== null && $heading !== '')<div class="text-label">{{ $heading }}</div>@endif
         <div class="grid gap-1">
             @foreach ($payload as $item)

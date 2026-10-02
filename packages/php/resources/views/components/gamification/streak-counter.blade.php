@@ -6,7 +6,7 @@
     $locale ??= app()->getLocale();
     $t = nq_gm_words($locale, $labels);
 @endphp
-<div data-slot="streak-counter" @if ($atRisk) data-at-risk @endif {{ $attributes->cn('flex items-center gap-3') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'streak-counter') }}" @if ($atRisk) data-at-risk @endif {{ $attributes->except('data-slot')->cn('flex items-center gap-3') }}>
     <span aria-hidden="true" class="grid size-12 shrink-0 place-items-center rounded-full {{ $current > 0 ? 'bg-nq-warning-soft text-nq-warning-text' : 'bg-secondary text-muted-foreground' }}">
         <x-lucide-flame class="size-6 {{ $current > 0 ? 'fill-current' : '' }}" />
     </span>

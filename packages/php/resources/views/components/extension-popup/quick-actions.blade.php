@@ -2,7 +2,7 @@
      A grid of icon-over-label shortcuts. actions: id, label, icon (a Lucide name), disabled?, external? (shows an external-link mark).
      A click dispatches a bubbling "nq-action" event with detail { id }. columns: 2 | 3. --}}
 @props(['actions' => [], 'columns' => 2, 'label' => null])
-<div data-slot="extension-quick-actions" role="group" aria-label="{{ $label ?? \Nasaq\Nasaq::t('Quick actions', 'إجراءات سريعة') }}" {{ $attributes->cn(['grid gap-2', 'grid-cols-3' => (int) $columns === 3, 'grid-cols-2' => (int) $columns !== 3]) }}>
+<div data-slot="{{ $attributes->get('data-slot', 'extension-quick-actions') }}" role="group" aria-label="{{ $label ?? \Nasaq\Nasaq::t('Quick actions', 'إجراءات سريعة') }}" {{ $attributes->except('data-slot')->cn(['grid gap-2', 'grid-cols-3' => (int) $columns === 3, 'grid-cols-2' => (int) $columns !== 3]) }}>
     @foreach ($actions as $action)
         <button type="button" x-data x-on:click="$dispatch('nq-action', { id: @js($action['id']) })" @if (! empty($action['disabled'])) disabled @endif
             class="relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2 text-label text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50">

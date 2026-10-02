@@ -36,8 +36,8 @@
     ];
     $hide = 'display: none';
 @endphp
-<section data-slot="product-reviews" x-data="nqProductReviews(@js($config))" x-id="['nq-reviews']" :aria-labelledby="$id('nq-reviews')"
-    {{ $attributes->cn('flex flex-col gap-6') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'product-reviews') }}" x-data="nqProductReviews(@js($config))" x-id="['nq-reviews']" :aria-labelledby="$id('nq-reviews')"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-6') }}>
     <header class="flex flex-wrap items-center justify-between gap-3">
         <h2 :id="$id('nq-reviews')" class="text-h2 text-foreground" x-text="t.reviews"></h2>
         <x-nq::button x-show="canSubmit" style="{{ $hide }}" type="button" variant="secondary" x-on:click="writing = true">

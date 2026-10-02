@@ -6,8 +6,8 @@
         : ['group' => 'Theme', 'light' => 'Light', 'dark' => 'Dark', 'system' => 'System'];
     $options = ['light' => 'sun', 'dark' => 'moon', 'system' => 'monitor'];
 @endphp
-<div data-slot="theme-switcher" role="group" aria-label="{{ $labels['group'] }}" x-data="nqThemePref()" x-on:keydown="onKey($event)"
-    {{ $attributes->cn('inline-flex h-control-sm items-center gap-px rounded-control border border-border bg-card p-0.5') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'theme-switcher') }}" role="group" aria-label="{{ $labels['group'] }}" x-data="nqThemePref()" x-on:keydown="onKey($event)"
+    {{ $attributes->except('data-slot')->cn('inline-flex h-control-sm items-center gap-px rounded-control border border-border bg-card p-0.5') }}>
     @foreach ($options as $value => $icon)
         <x-nq::tooltip :content="$labels[$value]">
             <button type="button" aria-label="{{ $labels[$value] }}" x-on:click="set('{{ $value }}')"

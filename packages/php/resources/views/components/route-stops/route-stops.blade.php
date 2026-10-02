@@ -34,7 +34,7 @@
     $icons = ['done' => 'check', 'failed' => 'ban', 'skipped' => 'skip-forward'];
     $count = count($stops);
 @endphp
-<section data-slot="route-stops" aria-label="{{ $t['stops'] }}" {{ $attributes->cn('flex flex-col gap-3') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'route-stops') }}" aria-label="{{ $t['stops'] }}" {{ $attributes->except('data-slot')->cn('flex flex-col gap-3') }}>
     @if (! $hideSummary)
         <header data-slot="route-summary" class="flex flex-wrap items-center justify-between gap-2 text-body-sm">
             <span class="text-foreground">{{ $progress }}</span>

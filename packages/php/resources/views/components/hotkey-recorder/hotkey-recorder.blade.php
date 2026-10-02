@@ -50,8 +50,8 @@
     $btn = 'flex min-h-control min-w-0 flex-1 items-center gap-2 rounded-control border bg-card px-3 text-start text-body text-foreground outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50';
     $cap = 'inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground';
 @endphp
-<div data-slot="hotkey-recorder" x-id="['nq-hotkey']" x-data="nqHotkeyRecorder(@js($value), {!! $optionsJs !!})" x-modelable="value" x-bind="rootAttrs"
-    {{ $attributes->only(['class', 'x-model', 'x-on:nq-hotkey-change', '@nq-hotkey-change'])->cn('flex min-w-0 flex-col gap-1.5') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'hotkey-recorder') }}" x-id="['nq-hotkey']" x-data="nqHotkeyRecorder(@js($value), {!! $optionsJs !!})" x-modelable="value" x-bind="rootAttrs"
+    {{ $attributes->except('data-slot')->only(['class', 'x-model', 'x-on:nq-hotkey-change', '@nq-hotkey-change'])->cn('flex min-w-0 flex-col gap-1.5') }}>
     <div class="flex items-center gap-1.5">
         <button type="button" x-bind="button(@js($label))"
             {{ $attributes->except(['class', 'x-model', 'x-on:nq-hotkey-change', '@nq-hotkey-change'])->merge(['class' => $btn]) }}>

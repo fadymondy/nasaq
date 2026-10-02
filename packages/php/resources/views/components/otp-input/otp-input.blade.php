@@ -15,8 +15,8 @@
         'pointer-coarse:text-[16px]',
     ];
 @endphp
-<div role="group" dir="ltr" data-slot="otp-input" x-data="nqOtpInput(@js($value), {{ (int) $length }}, @js($type))" x-modelable="value"
-    {{ $attributes->cn('inline-flex items-center gap-2') }}>
+<div role="group" dir="ltr" data-slot="{{ $attributes->get('data-slot', 'otp-input') }}" x-data="nqOtpInput(@js($value), {{ (int) $length }}, @js($type))" x-modelable="value"
+    {{ $attributes->except('data-slot')->cn('inline-flex items-center gap-2') }}>
     @for ($i = 0; $i < $length; $i++)
         <input data-slot="otp-input-box" x-bind="box({{ $i }})" type="text" value="{{ $value[$i] ?? '' }}"
             @if (isset($value[$i])) data-filled @endif

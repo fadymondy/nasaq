@@ -8,6 +8,6 @@
     $m = intdiv($whole % 3600, 60);
     $text = $h > 0 ? sprintf('%d:%02d:%02d', $h, $m, $whole % 60) : sprintf('%02d:%02d', $m, $whole % 60);
 @endphp
-<time data-slot="timer-readout" role="timer" aria-label="{{ $label ?? \Nasaq\Nasaq::t('Timer', 'المؤقّت') }}" aria-live="off" dir="ltr"
+<time data-slot="{{ $attributes->get('data-slot', 'timer-readout') }}" role="timer" aria-label="{{ $label ?? \Nasaq\Nasaq::t('Timer', 'المؤقّت') }}" aria-live="off" dir="ltr"
     @if ($live) :datetime="iso()" x-text="clock()" @else datetime="PT{{ intdiv($whole, 60) }}M{{ $whole % 60 }}S" @endif
-    {{ $attributes->cn('font-medium leading-none tabular-nums text-foreground', $size === 'lg' ? 'text-[clamp(3rem,14vw,5.5rem)]' : 'text-[clamp(2rem,9vw,3rem)]') }}>{{ $text }}</time>
+    {{ $attributes->except('data-slot')->cn('font-medium leading-none tabular-nums text-foreground', $size === 'lg' ? 'text-[clamp(3rem,14vw,5.5rem)]' : 'text-[clamp(2rem,9vw,3rem)]') }}>{{ $text }}</time>

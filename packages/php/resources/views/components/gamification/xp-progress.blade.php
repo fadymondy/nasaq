@@ -8,7 +8,7 @@
     $p = nq_gm_level($totalXp, $curve);
     $levelText = nq_gm_say($t, 'level', nq_gm_num($p['level'], $locale));
 @endphp
-<div data-slot="xp-progress" data-level="{{ $p['level'] }}" {{ $attributes->cn('flex items-center gap-3') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'xp-progress') }}" data-level="{{ $p['level'] }}" {{ $attributes->except('data-slot')->cn('flex items-center gap-3') }}>
     <span aria-hidden="true" class="grid size-12 shrink-0 place-items-center rounded-full border-2 border-nq-accent bg-nq-accent/15 text-h3 tabular-nums text-nq-accent-text">{{ nq_gm_num($p['level'], $locale) }}</span>
     <div class="flex min-w-0 flex-1 flex-col gap-1.5">
         <div class="flex items-baseline justify-between gap-2">

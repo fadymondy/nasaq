@@ -99,6 +99,14 @@ describe("context-menu actions", () => {
     expect(w.text()).toBe("row");
   });
 
+  it("puts attributes such as data-slot on the region element", () => {
+    const on = mount(NqContextMenuActions, { props: { actions: [{ id: "a", label: "Open", onSelect: () => {} }] }, attrs: { "data-slot": "row", "aria-label": "Row" }, slots: { default: "row" } });
+    expect(on.find("[data-slot=row]").attributes("aria-label")).toBe("Row");
+    const off = mount(NqContextMenuActions, { props: { actions: [] }, attrs: { "data-slot": "row" }, slots: { default: "row" } });
+    expect(off.find("[data-slot=row]").exists()).toBe(true);
+    on.unmount();
+  });
+
   it("opens a menu from an action list", async () => {
     let hit = 0;
     const w = mount(NqContextMenuActions, { props: { actions: [{ id: "a", label: "Open", onSelect: () => hit++ }] }, slots: { default: "row" }, attachTo: document.body });

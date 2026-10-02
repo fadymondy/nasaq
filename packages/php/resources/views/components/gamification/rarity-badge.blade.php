@@ -7,5 +7,5 @@
     $t = nq_gm_words($locale, $labels);
     $s = nq_gm_rarity_style($rarity);
 @endphp
-<span data-slot="rarity-badge" data-rarity="{{ $rarity }}"
-    {{ $attributes->cn(['inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3', 'border-border text-muted-foreground', 'gap-1', $s['ring'], $s['text']]) }}><x-lucide-star aria-hidden="true" class="fill-current" />{{ $t['rarity'][$rarity] ?? $rarity }}</span>
+<span data-slot="{{ $attributes->get('data-slot', 'rarity-badge') }}" data-rarity="{{ $rarity }}"
+    {{ $attributes->except('data-slot')->cn(['inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3', 'border-border text-muted-foreground', 'gap-1', $s['ring'], $s['text']]) }}><x-lucide-star aria-hidden="true" class="fill-current" />{{ $t['rarity'][$rarity] ?? $rarity }}</span>

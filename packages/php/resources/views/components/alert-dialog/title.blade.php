@@ -1,1 +1,1 @@
-<h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" {{ $attributes->cn('text-h3 text-foreground') }}>{{ $slot }}</h2>
+<h2 data-slot="{{ $attributes->get('data-slot', 'alert-dialog-title') }}" :id="$id('nq-alert-dialog', 'title')" {{ $attributes->except('data-slot')->cn('text-h3 text-foreground') }}>{{ $slot }}</h2>

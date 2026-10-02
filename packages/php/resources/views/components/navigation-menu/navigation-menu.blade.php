@@ -6,8 +6,8 @@
      content into it, resizes it (--popup-width / --popup-height) and slides the content with data-activation-direction.
      Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['value' => null, 'align' => 'start', 'sideOffset' => 8, 'panelClass' => null])
-<nav data-slot="navigation-menu" x-data="nqNavigationMenu(@js($value))" x-bind="root" data-align="{{ $align }}"
-    {{ $attributes->cn(['relative flex w-max max-w-full']) }}>
+<nav data-slot="{{ $attributes->get('data-slot', 'navigation-menu') }}" x-data="nqNavigationMenu(@js($value))" x-bind="root" data-align="{{ $align }}"
+    {{ $attributes->except('data-slot')->cn(['relative flex w-max max-w-full']) }}>
     {{ $slot }}
     <div data-slot="navigation-menu-positioner" data-side="bottom" data-align="{{ $align }}" style="display: none; margin-top: {{ (int) $sideOffset }}px; --available-width: calc(100vw - 2rem)"
         class="absolute left-0 top-full z-50 h-[var(--positioner-height)] w-[var(--positioner-width)] max-w-[var(--available-width)] transition-[inset] duration-300 ease-nq motion-reduce:transition-none data-instant:transition-none before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-['']">

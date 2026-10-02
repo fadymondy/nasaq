@@ -10,7 +10,7 @@
     $on = 'border-primary bg-primary text-primary-foreground';
     $off = 'border-border bg-card text-foreground hover:bg-nq-hover';
 @endphp
-<div data-slot="filter-strip" role="group" aria-label="{{ $label }}" x-data="nqFilterStrip({!! $js($initial) !!}, {!! $js((bool) $multiple) !!})" x-modelable="value" {{ $attributes->cn('relative') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'filter-strip') }}" role="group" aria-label="{{ $label }}" x-data="nqFilterStrip({!! $js($initial) !!}, {!! $js((bool) $multiple) !!})" x-modelable="value" {{ $attributes->except('data-slot')->cn('relative') }}>
     <div data-filter-scroller class="flex snap-x gap-2 overflow-x-auto px-4 py-1 [mask-image:linear-gradient(90deg,transparent,black_1rem,black_calc(100%-1rem),transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         @foreach (array_values($items) as $item)
             @php $v = $js($item['value']); @endphp

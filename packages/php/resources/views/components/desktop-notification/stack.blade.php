@@ -12,8 +12,8 @@
     $shown = array_slice(array_values($items), -$max);
     $ordered = $mac ? array_reverse($shown) : $shown;
 @endphp
-<div role="region" aria-label="{{ $t['stack'] }}" data-slot="desktop-notification-stack"
-    {{ $attributes->cn(['pointer-events-none z-50 flex w-[22rem] max-w-[calc(100%-1.5rem)] flex-col gap-2 p-3', $placement, $mac ? 'end-0 top-0' : 'bottom-0 end-0 justify-end']) }}>
+<div role="region" aria-label="{{ $t['stack'] }}" data-slot="{{ $attributes->get('data-slot', 'desktop-notification-stack') }}"
+    {{ $attributes->except('data-slot')->cn(['pointer-events-none z-50 flex w-[22rem] max-w-[calc(100%-1.5rem)] flex-col gap-2 p-3', $placement, $mac ? 'end-0 top-0' : 'bottom-0 end-0 justify-end']) }}>
     @foreach ($ordered as $item)
         <div data-stack-entry="{{ $item['id'] }}" x-data="nqDesktopNotificationEntry" x-bind:class="shown ? 'translate-x-0 translate-y-0 opacity-100' : '{{ $mac ? 'opacity-0 ltr:translate-x-6 rtl:-translate-x-6' : 'translate-y-4 opacity-0' }}'"
             class="transition-[opacity,translate] duration-200 ease-nq motion-reduce:transition-none">

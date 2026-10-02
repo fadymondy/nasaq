@@ -11,8 +11,8 @@
     $options = array_filter(['source' => $source]);
     $label = \Nasaq\Nasaq::t('Editor status', 'حالة المحرر');
 @endphp
-<div data-slot="editor-status-bar" role="group" aria-label="{{ $label }}" x-data="nqEditorStatus({!! $js((object) $initial) !!}, {!! $js((object) $options) !!})" x-on:nq-editor-status.window="set($event.detail)"
-    {{ $attributes->cn('flex min-h-8 flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t border-border bg-nq-surface-soft px-3 py-1 text-caption text-muted-foreground') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'editor-status-bar') }}" role="group" aria-label="{{ $label }}" x-data="nqEditorStatus({!! $js((object) $initial) !!}, {!! $js((object) $options) !!})" x-on:nq-editor-status.window="set($event.detail)"
+    {{ $attributes->except('data-slot')->cn('flex min-h-8 flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t border-border bg-nq-surface-soft px-3 py-1 text-caption text-muted-foreground') }}>
     <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
         <span x-show="s.line !== undefined" x-text="position()" class="tabular-nums"></span>
         <span x-show="s.selection > 0" x-text="selected()" class="tabular-nums" style="display: none"></span>

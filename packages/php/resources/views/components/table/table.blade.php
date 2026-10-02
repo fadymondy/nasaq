@@ -4,11 +4,11 @@
      density: compact | default | comfortable. frame: rounded border and tinted header. bordered: column lines.
      striped: every other body row tinted. hover: highlight the row under the pointer (default true). --}}
 @props(['label' => null, 'density' => 'default', 'frame' => false, 'bordered' => false, 'striped' => false, 'hover' => true])
-<div data-slot="table-container" role="region" tabindex="0" @if ($label) aria-label="{{ $label }}" @endif
+<div data-slot="{{ $attributes->get('data-slot', 'table-container') }}" role="region" tabindex="0" @if ($label) aria-label="{{ $label }}" @endif
     class="{{ \Nasaq\Cn::merge('relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus', $frame ? 'rounded-card border border-border bg-card' : '') }}">
     <table data-slot="table" data-density="{{ $density }}"
         @if ($frame) data-frame @endif @if ($bordered) data-bordered @endif @if ($striped) data-striped @endif
-        {{ $attributes->cn([
+        {{ $attributes->except('data-slot')->cn([
             'w-full caption-bottom border-collapse text-body-sm',
             '[&_thead]:bg-secondary/50' => $frame,
             '[&_td:not(:last-child)]:border-e [&_td]:border-border [&_th:not(:last-child)]:border-e [&_th]:border-border' => $bordered,

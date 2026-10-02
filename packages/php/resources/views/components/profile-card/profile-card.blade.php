@@ -23,7 +23,7 @@
     $goMention = $go('mention');
     $goProfile = $go('view-profile');
 @endphp
-<div data-slot="profile-card" @if ($presence) data-presence="{{ $presence }}" @endif {{ $attributes->cn('flex min-w-0 flex-col gap-3 text-start') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'profile-card') }}" @if ($presence) data-presence="{{ $presence }}" @endif {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-3 text-start') }}>
     <div class="flex items-start gap-3">
         <x-nq::profile-card.presence-avatar :person="$person" size="lg" />
         <div class="flex min-w-0 flex-1 flex-col">

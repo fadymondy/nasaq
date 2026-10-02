@@ -25,8 +25,8 @@
     ];
     $selected = $value ? array_map('intval', explode(':', (string) $value)) : [null, null];
 @endphp
-<div role="group" dir="{{ $rtl ? 'rtl' : 'ltr' }}" lang="{{ $locale }}" data-slot="time-picker" x-data="nqTimePicker({!! \Illuminate\Support\Js::from($init) !!})" x-modelable="time"
-    {{ $attributes->except(['name'])->cn('inline-flex items-center gap-1.5') }}>
+<div role="group" dir="{{ $rtl ? 'rtl' : 'ltr' }}" lang="{{ $locale }}" data-slot="{{ $attributes->get('data-slot', 'time-picker') }}" x-data="nqTimePicker({!! \Illuminate\Support\Js::from($init) !!})" x-modelable="time"
+    {{ $attributes->except('data-slot')->except(['name'])->cn('inline-flex items-center gap-1.5') }}>
     <select x-model="hourModel" aria-label="{{ $t('Hour', 'الساعة') }}" data-slot="time-picker-hour" @if ($disabled) disabled @endif
         @if ($invalid) data-invalid aria-invalid="true" @endif {{ (new \Illuminate\View\ComponentAttributeBag)->cn($select) }}>
         <option value="" disabled hidden>--</option>

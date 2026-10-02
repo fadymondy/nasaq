@@ -21,8 +21,8 @@
     $hide = 'display: none';
     $uid = 'nq-sub-'.substr(md5($mode.json_encode($keys)), 0, 6);
 @endphp
-<div data-slot="subscription-landing" data-mode="{{ $mode }}" x-data="nqSubscriptionLanding(@js($config))"
-    {{ $attributes->cn('flex min-h-full w-full flex-col items-center justify-center gap-6 p-4 sm:p-8') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'subscription-landing') }}" data-mode="{{ $mode }}" x-data="nqSubscriptionLanding(@js($config))"
+    {{ $attributes->except('data-slot')->cn('flex min-h-full w-full flex-col items-center justify-center gap-6 p-4 sm:p-8') }}>
     @if (filled($brand) || (isset($slot) && ! $slot->isEmpty()))
         <div class="text-h4 text-foreground">{{ filled($brand) ? $brand : $slot }}</div>
     @endif

@@ -11,11 +11,11 @@
     $position = array_search($id, collect($list['items'])->pluck('id')->all(), true);
     $hiddenByDefault = in_array($id, $list['defaultHidden'] ?? [], true);
 @endphp
-<div data-slot="sidebar-sortable-item" data-sortable-id="{{ $id }}"
+<div data-slot="{{ $attributes->get('data-slot', 'sidebar-sortable-item') }}" data-sortable-id="{{ $id }}"
     x-show="isVisible(@js($sec), @js($id))" :style="{ order: position(@js($sec), @js($id)) }"
     x-on:pointerdown="press($event, @js($sec), @js($id))" x-on:click.capture="swallowClick($event)" x-on:dragstart.prevent
     style="order: {{ (int) $position }}; @if ($hiddenByDefault) display: none; @endif"
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         'relative [&_a]:[-webkit-user-drag:none]',
         'data-dragging:z-10 data-dragging:cursor-grabbing data-dragging:*:bg-nq-surface-overlay data-dragging:*:shadow-floating',
     ]) }}>{{ $slot }}</div>

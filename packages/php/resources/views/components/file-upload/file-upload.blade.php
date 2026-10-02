@@ -15,8 +15,8 @@
     ], fn ($v) => $v !== null);
     $fileList = \Nasaq\Nasaq::t('Files', 'الملفات');
 @endphp
-<div data-slot="file-upload" x-data="nqFileUpload({{ \Illuminate\Support\Js::from((object) $options)->toHtml() }})" x-modelable="items" x-id="['nq-upload']"
-    {{ $attributes->cn('flex flex-col gap-3') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'file-upload') }}" x-data="nqFileUpload({{ \Illuminate\Support\Js::from((object) $options)->toHtml() }})" x-modelable="items" x-id="['nq-upload']"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-3') }}>
     <x-nq::file-upload.dropzone :name="$name">{{ $slot }}</x-nq::file-upload.dropzone>
     <ul x-show="rejections.length" x-cloak style="display: none" data-slot="file-upload-errors" role="alert" class="flex flex-col gap-1 text-caption text-nq-danger-text">
         <template x-for="(r, i) in rejections" :key="r.file.name + '-' + i"><li x-text="r.message"></li></template>

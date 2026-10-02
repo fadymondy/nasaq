@@ -10,7 +10,7 @@
         ? $t::t("Showing {$from}–{$to}", "عرض {$from}–{$to}")
         : $t::t("Showing {$from}–{$to} of {$total}", "عرض {$from}–{$to} من {$total}");
 @endphp
-<nav data-slot="cursor-pager" aria-label="{{ $label ?? $t::t('Pagination', 'ترقيم الصفحات') }}" {{ $attributes->cn('flex w-full items-center justify-between gap-3') }}>
+<nav data-slot="{{ $attributes->get('data-slot', 'cursor-pager') }}" aria-label="{{ $label ?? $t::t('Pagination', 'ترقيم الصفحات') }}" {{ $attributes->except('data-slot')->cn('flex w-full items-center justify-between gap-3') }}>
     <p class="text-body-sm text-muted-foreground tabular-nums">{{ $summary ?? new \Illuminate\Support\HtmlString('<bdi>'.e($showing).'</bdi>') }}</p>
     <div class="flex items-center gap-2">
         <x-nq::button data-slot="cursor-pager-previous" size="sm" :href="$hasPrevious && ! $loading ? $previousUrl : null" :disabled="! $hasPrevious || $loading">

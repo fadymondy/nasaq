@@ -27,10 +27,10 @@
     $buttonExtra = 'text-start outline-none transition-transform duration-150 ease-nq active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus';
 @endphp
 @if ($openable)
-<div data-slot="widget-tile" data-size="{{ $size }}" data-surface="{{ $surface }}" class="contents">
-    <button type="button" x-on:click="$dispatch('nq-open')" aria-label="{{ $label }}" {{ $attributes->cn(array_merge($classes, [$buttonExtra])) }}>
+<div data-slot="{{ $attributes->get('data-slot', 'widget-tile') }}" data-size="{{ $size }}" data-surface="{{ $surface }}" class="contents">
+    <button type="button" x-on:click="$dispatch('nq-open')" aria-label="{{ $label }}" {{ $attributes->except('data-slot')->cn(array_merge($classes, [$buttonExtra])) }}>
 @else
-<div data-slot="widget-tile" data-size="{{ $size }}" data-surface="{{ $surface }}" role="group" aria-label="{{ $label }}" {{ $attributes->cn($classes) }}>
+<div data-slot="{{ $attributes->get('data-slot', 'widget-tile') }}" data-size="{{ $size }}" data-surface="{{ $surface }}" role="group" aria-label="{{ $label }}" {{ $attributes->except('data-slot')->cn($classes) }}>
 @endif
     @if ($size === 'circular')
         @if ($progress !== null)

@@ -1,0 +1,321 @@
+<div data-slot="entity-list" x-data="nqEntityList(JSON.parse('[{\u0022id\u0022:\u0022a\u0022,\u0022name\u0022:\u0022Mona Ali\u0022,\u0022company\u0022:\u0022Acme\u0022,\u0022plan\u0022:\u0022Pro\u0022,\u0022tags\u0022:[\u0022vip\u0022]},{\u0022id\u0022:\u0022b\u0022,\u0022name\u0022:\u0022Omar Hassan\u0022,\u0022company\u0022:\u0022Globex\u0022,\u0022plan\u0022:\u0022Team\u0022,\u0022tags\u0022:[\u0022new\u0022,\u0022vip\u0022]},{\u0022id\u0022:\u0022c\u0022,\u0022name\u0022:\u0022Layla Samir\u0022,\u0022company\u0022:\u0022Initech\u0022,\u0022plan\u0022:\u0022Free\u0022,\u0022tags\u0022:[\u0022new\u0022]}]'), JSON.parse('[{\u0022id\u0022:\u0022name\u0022,\u0022header\u0022:\u0022Name\u0022,\u0022sortable\u0022:true,\u0022searchable\u0022:true},{\u0022id\u0022:\u0022company\u0022,\u0022header\u0022:\u0022Company\u0022,\u0022sortable\u0022:true,\u0022searchable\u0022:true},{\u0022id\u0022:\u0022plan\u0022,\u0022header\u0022:\u0022Plan\u0022,\u0022sortable\u0022:true}]'), JSON.parse('{\u0022view\u0022:\u0022cards\u0022,\u0022views\u0022:[\u0022table\u0022,\u0022cards\u0022],\u0022facets\u0022:[{\u0022id\u0022:\u0022tags\u0022,\u0022title\u0022:\u0022Tags\u0022,\u0022options\u0022:[{\u0022value\u0022:\u0022vip\u0022,\u0022label\u0022:\u0022VIP\u0022},{\u0022value\u0022:\u0022new\u0022,\u0022label\u0022:\u0022New\u0022}]}],\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022selectRow\u0022:\u0022Select {name}\u0022,\u0022rowActions\u0022:\u0022Actions for {name}\u0022,\u0022selected\u0022:\u0022{n} selected\u0022,\u0022results\u0022:\u0022{n} results\u0022,\u0022resultsOne\u0022:\u00221 result\u0022}}'))" x-modelable="rows"
+    x-bind:data-view="view" class="flex min-w-0 flex-col gap-3">
+    <div data-slot="data-table-toolbar" class="flex flex-wrap items-center gap-2">
+                    <button type="button" role="checkbox" data-slot="checkbox" aria-label="Select all on this page" x-on:click="togglePage()" x-show="view === 'cards'" style="display: none"
+                x-bind:aria-checked="pageSelection() === 'all' ? 'true' : (pageSelection() === 'some' ? 'mixed' : 'false')"
+                x-bind:data-checked="pageSelection() === 'all' ? '' : null" x-bind:data-indeterminate="pageSelection() === 'some' ? '' : null" aria-checked="false" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus after:absolute after:-inset-1 align-middle me-1">
+                <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="pageSelection() !== 'none'" style="display: none">
+                    <x-lucide-minus aria-hidden="true" x-show="pageSelection() === 'some'" style="display: none" />
+                    <x-lucide-check aria-hidden="true" x-show="pageSelection() === 'all'" style="display: none" />
+                </span>
+            </button>
+                            <div data-slot="data-table-search" class="relative w-full sm:w-64">
+                <svg aria-hidden="true" class="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                <input data-slot="input" type="search"
+                    x-model="query" x-on:keydown.escape="if (query) { $event.preventDefault(); query = &#039;&#039; }" placeholder="Search contacts…" aria-label="Search contacts…" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm ps-8 pe-8 text-body-sm [&::-webkit-search-cancel-button]:hidden">
+                <button type="button" x-show="query" aria-label="Clear search" x-on:click="query = ''" style="display: none"
+                    class="absolute end-1.5 top-1/2 inline-flex size-5 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                    <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                </button>
+            </div>
+                    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" x-bind:class="facetCount(&#039;tags&#039;) ? &#039;&#039; : &#039;border-dashed text-muted-foreground&#039;" data-facet="tags" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 5h20"/>
+  <path d="M6 12h12"/>
+  <path d="M9 19h6"/>
+</svg>                    Tags
+                    <span data-slot="badge" x-show="facetCount('tags')" x-text="facetSummary('tags')" style="display: none"
+                        class="-me-1 inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border border-border px-1.5 text-caption font-medium tabular-nums text-muted-foreground"></span></button>
+                <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-h-80 min-w-48 overflow-y-auto"><div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet[&#039;tags|vip&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    VIP
+</div>
+                                                    <div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: false }" x-modelable="checked" x-bind="item"
+    x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
+    x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+     data-keep-open         x-model="facet[&#039;tags|new&#039;]" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground ps-8">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="checked" class="contents"  style="display:none" ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    New
+</div></div>
+                    <div x-show="facetCount('tags')" style="display: none">
+                        <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                        <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="resetFacet(&#039;tags&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Reset</div>
+                    </div></div>
+</template></div>
+        <button data-slot="entity-list-clear"
+     type="button"                     x-show="isFiltered()" x-on:click="clearAll()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>            Clear filters</button>
+        <div class="ms-auto flex flex-wrap items-center gap-2">
+                                        <div x-show="view === 'cards'" style="display: none">
+                    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="entity-list-sort"
+     type="button"                     x-bind="trigger" x-ref="trigger" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m3 16 4 4 4-4"/>
+  <path d="M7 20V4"/>
+  <path d="m21 8-4-4-4 4"/>
+  <path d="M17 4v16"/>
+</svg>                            Sort</button>
+                        <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-label" role="presentation" class="px-2.5 pt-1.5 pb-1 text-caption font-medium text-muted-foreground">Sort by</div>
+                                                                                                            <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="toggleSort(&#039;name&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><span class="flex-1">Name</span>
+                                            <span aria-hidden="true" class="text-muted-foreground" x-text="sort?.id === 'name' ? (sort.dir === 'asc' ? '↑' : '↓') : ''"></span></div>
+                                                                                                                                                <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="toggleSort(&#039;company&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><span class="flex-1">Company</span>
+                                            <span aria-hidden="true" class="text-muted-foreground" x-text="sort?.id === 'company' ? (sort.dir === 'asc' ? '↑' : '↓') : ''"></span></div>
+                                                                                                                                                <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="toggleSort(&#039;plan&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><span class="flex-1">Plan</span>
+                                            <span aria-hidden="true" class="text-muted-foreground" x-text="sort?.id === 'plan' ? (sort.dir === 'asc' ? '↑' : '↓') : ''"></span></div></div></div>
+</template></div>
+                </div>
+                                        <div role="group" data-slot="toggle-group" aria-label="Layout" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+                                            <button type="button" data-slot="toggle" aria-label="Table view" x-on:click="setView('table')" x-bind:aria-pressed="view === 'table' ? 'true' : 'false'"
+                            x-bind:data-pressed="view === 'table' ? '' : null"
+                            class="inline-flex h-control-sm min-w-control-sm items-center justify-center rounded-[calc(var(--radius-control)-2px)] px-2 text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-sm [&_svg]:size-4">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 5h.01"/>
+  <path d="M3 12h.01"/>
+  <path d="M3 19h.01"/>
+  <path d="M8 5h13"/>
+  <path d="M8 12h13"/>
+  <path d="M8 19h13"/>
+</svg>                        </button>
+                                            <button type="button" data-slot="toggle" aria-label="Card view" x-on:click="setView('cards')" x-bind:aria-pressed="view === 'cards' ? 'true' : 'false'"
+                            x-bind:data-pressed="view === 'cards' ? '' : null"
+                            class="inline-flex h-control-sm min-w-control-sm items-center justify-center rounded-[calc(var(--radius-control)-2px)] px-2 text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-sm [&_svg]:size-4">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="7" height="7" x="3" y="3" rx="1"/>
+  <rect width="7" height="7" x="14" y="3" rx="1"/>
+  <rect width="7" height="7" x="14" y="14" rx="1"/>
+  <rect width="7" height="7" x="3" y="14" rx="1"/>
+</svg>                        </button>
+                                    </div>
+                    </div>
+    </div>
+            <div data-slot="data-table-bulk-actions" role="toolbar" x-bind:aria-label="say('selected').replace('{n}', selectedCount())" x-bind:hidden="selectedCount() === 0" hidden
+            class="flex flex-wrap items-center gap-2 rounded-control bg-nq-selected py-1 ps-3 pe-1">
+            <span aria-live="polite" class="me-auto text-label tabular-nums text-foreground" x-text="say('selected').replace('{n}', selectedCount())"></span>
+                        <button type="button" aria-label="Clear selection" x-on:click="clearSelection()" class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-foreground outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:size-4"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+        </div>
+    <span role="status" aria-live="polite" class="sr-only" x-text="status()"></span>
+        <div x-show="view === 'table'" style="display: none" data-slot="table-container" role="region" tabindex="0" aria-label="Contacts"
+            class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+            <div data-slot="table" role="table" aria-label="Contacts" style="grid-template-columns: repeat(5, auto)" class="grid w-full min-w-max text-body-sm">
+                <div data-slot="table-header" role="rowgroup" class="contents">
+                    <div role="row" class="col-span-full grid grid-cols-subgrid border-b border-border">
+                        <div role="columnheader" class="flex h-row w-10 items-center"><span class="sr-only">Select all on this page</span></div>                                                    <div role="columnheader" data-slot="table-head"  x-bind:aria-sort="sortState('name')"                                 class="flex h-row items-center px-4 text-caption font-medium whitespace-nowrap text-muted-foreground text-start">
+                                                                    <button type="button" x-on:click="toggleSort('name')" class="inline-flex items-center gap-1.5 rounded-control outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                                        Name
+                                        <span aria-hidden="true" x-text="sort?.id === 'name' ? (sort.dir === 'asc' ? '↑' : '↓') : ''"></span>
+                                    </button>
+                                                            </div>
+                                                    <div role="columnheader" data-slot="table-head"  x-bind:aria-sort="sortState('company')"                                 class="flex h-row items-center px-4 text-caption font-medium whitespace-nowrap text-muted-foreground text-start">
+                                                                    <button type="button" x-on:click="toggleSort('company')" class="inline-flex items-center gap-1.5 rounded-control outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                                        Company
+                                        <span aria-hidden="true" x-text="sort?.id === 'company' ? (sort.dir === 'asc' ? '↑' : '↓') : ''"></span>
+                                    </button>
+                                                            </div>
+                                                    <div role="columnheader" data-slot="table-head"  x-bind:aria-sort="sortState('plan')"                                 class="flex h-row items-center px-4 text-caption font-medium whitespace-nowrap text-muted-foreground text-start">
+                                                                    <button type="button" x-on:click="toggleSort('plan')" class="inline-flex items-center gap-1.5 rounded-control outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                                        Plan
+                                        <span aria-hidden="true" x-text="sort?.id === 'plan' ? (sort.dir === 'asc' ? '↑' : '↓') : ''"></span>
+                                    </button>
+                                                            </div>
+                                                <div role="columnheader" class="flex h-row w-12 items-center"><span class="sr-only">Actions for {name}</span></div>                    </div>
+                </div>
+                <div data-slot="table-body" role="rowgroup" class="contents">
+                    <template x-for="(row, index) in pageRows" :key="idOf(row)">
+                                                    <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="group/row col-span-full grid grid-cols-subgrid border-b border-border transition-colors hover:bg-nq-hover data-[state=selected]:bg-nq-selected" role="row" data-row="data-row" x-bind:data-state="isSelected(row) ? `selected` : null" x-on:click="open(row, $event)"><div role="cell" data-slot="table-cell" class="flex h-row w-10 items-center pe-0">
+        <button type="button" role="checkbox" data-slot="checkbox" x-bind:aria-label="say('selectRow', row)" x-on:click="toggleRow(row)" aria-checked="false"
+            x-bind:aria-checked="isSelected(row) ? 'true' : 'false'" x-bind:data-checked="isSelected(row) ? '' : null" x-bind:data-unchecked="isSelected(row) ? null : ''" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus after:absolute after:-inset-1 align-middle">
+            <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="isSelected(row)" style="display: none"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+        </button>
+    </div>
+    <div role="cell" data-slot="table-cell" class="flex h-row items-center px-4 py-3 ">
+        <span class="truncate" x-text="row['name'] ?? '—'"></span>
+    </div>
+    <div role="cell" data-slot="table-cell" class="flex h-row items-center px-4 py-3 ">
+        <span class="truncate" x-text="row['company'] ?? '—'"></span>
+    </div>
+    <div role="cell" data-slot="table-cell" class="flex h-row items-center px-4 py-3 ">
+        <span class="truncate" x-text="row['plan'] ?? '—'"></span>
+    </div>
+<div role="cell" data-slot="table-cell" class="flex h-row w-12 items-center pe-2"><div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="entity-list-row-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" x-bind:aria-label="say(&#039;rowActions&#039;, row)" x-bind:tabindex="index === Math.min(active, pageRows.length - 1) ? 0 : -1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground data-popup-open:opacity-100">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+    <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;open&#039;, row)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</svg>                    Open</div>
+                            <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                <div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="act(&#039;delete&#039;, row)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>                    Delete</div></div></div>
+</template></div>
+</div></div>
+                                <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;open&#039;, row)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</svg>        Open</div>
+    <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+    <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="act(&#039;delete&#039;, row)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>        Delete</div></div>
+</template></div>
+                                            </template>
+                </div>
+            </div>
+        </div>
+        <div x-show="view === 'cards'" style="display: none" role="list" aria-label="Contacts" class="grid gap-3"
+            style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 272px), 1fr)); --entity-card-controls: 3.25rem">
+            <template x-for="(row, index) in pageRows" :key="idOf(row)">
+                                    <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger" class="group/card relative flex min-w-0 flex-col rounded-card border border-border bg-card p-4 text-card-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus data-[state=selected]:border-primary data-[state=selected]:bg-nq-selected" role="listitem" data-card="data-card" x-bind:tabindex="index === Math.min(active, pageRows.length - 1) ? 0 : -1" x-bind:data-state="isSelected(row) ? `selected` : null" x-on:keydown="cardKey($event, row, index)" x-on:click="open(row, $event)" x-on:focus="$event.target === $event.currentTarget ? (active = index) : null"><div class="min-w-0 flex-1"><div class="flex flex-col gap-3">
+            <div class="flex items-center gap-3 pe-[var(--entity-card-controls)]">
+                <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-8 text-caption rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Contact" >C</span>
+    </span>
+                <div class="flex min-w-0 flex-col">
+                    <span class="truncate text-label text-foreground" x-text="row.name"></span>
+                    <span class="truncate text-body-sm text-muted-foreground" x-text="row.company"></span>
+                </div>
+            </div>
+            <div data-slot="card-meta" class="flex items-center justify-between gap-3 text-body-sm">
+    <span class="shrink-0 text-muted-foreground">Plan</span>
+    <span class="min-w-0 truncate text-end"><span x-text="row.plan"></span></span>
+</div>
+        </div></div>
+    <div class="absolute end-2 top-2 flex items-center gap-1">
+                    <button type="button" role="checkbox" data-slot="checkbox" x-bind:aria-label="say('selectRow', row)" x-on:click="toggleRow(row)" aria-checked="false"
+                x-bind:aria-checked="isSelected(row) ? 'true' : 'false'" x-bind:data-checked="isSelected(row) ? '' : null" x-bind:data-unchecked="isSelected(row) ? null : ''"
+                x-bind:tabindex="index === Math.min(active, pageRows.length - 1) ? 0 : -1" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus after:absolute after:-inset-1 align-middle">
+                <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="isSelected(row)" style="display: none"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+            </button>
+                <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="entity-list-row-actions"
+     type="button"                     x-bind="trigger" x-ref="trigger" x-bind:aria-label="say(&#039;rowActions&#039;, row)" x-bind:tabindex="index === Math.min(active, pageRows.length - 1) ? 0 : -1" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground data-popup-open:opacity-100">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+    <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="dropdown-menu-group" role="group" ><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;open&#039;, row)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</svg>                    Open</div>
+                            <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                <div data-slot="dropdown-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="act(&#039;delete&#039;, row)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>                    Delete</div></div></div>
+</template></div>
+    </div></div>
+                        <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-44"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="act(&#039;open&#039;, row)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</svg>        Open</div>
+    <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+    <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="act(&#039;delete&#039;, row)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>        Delete</div></div>
+</template></div>
+                            </template>
+        </div>
+        <div x-show="! hasRows() && noMatches()" style="display: none">
+            <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 py-12 text-center rounded-card border-0">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No matching results</p>
+                    <p class="text-body-sm text-muted-foreground">Try a different search or clear the filters.</p>
+            </div>
+            <div class="mt-1 flex flex-wrap items-center justify-center gap-2"><button data-slot="button"
+     type="button"                     x-on:click="clearAll()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Clear filters</button></div>
+    </div>
+        </div>
+        <div x-show="rows.length === 0" style="display: none">
+            <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 py-12 text-center rounded-card border-0">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">Nothing here yet</p>
+            </div>
+    </div>
+        </div>
+    </div>

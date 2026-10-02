@@ -24,7 +24,7 @@
 @if ($rows->isEmpty())
     <div data-slot="{{ $attributes->get('data-slot', 'provider-switcher') }}" {{ $attributes->except('data-slot')->cn('rounded-card border border-border p-6 text-center text-body-sm text-muted-foreground') }}>{{ $t['empty'] }}</div>
 @else
-    <div data-slot="provider-switcher" x-data="nqProviderSwitcher(@js($state))" {{ $attributes->cn('overflow-hidden rounded-card border border-border bg-card') }}>
+    <div data-slot="{{ $attributes->get('data-slot', 'provider-switcher') }}" x-data="nqProviderSwitcher(@js($state))" {{ $attributes->except('data-slot')->cn('overflow-hidden rounded-card border border-border bg-card') }}>
         <div aria-hidden="true" class="hidden grid-cols-[minmax(0,1fr)_minmax(10rem,14rem)] gap-4 border-b border-border px-4 py-2 text-caption text-muted-foreground sm:grid">
             <span>{{ $t['capability'] }}</span>
             <span>{{ $t['backend'] }}</span>

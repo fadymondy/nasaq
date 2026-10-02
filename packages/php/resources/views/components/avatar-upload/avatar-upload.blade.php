@@ -41,10 +41,10 @@
     $stacked = $layout === 'stacked';
     $avatarSize = $stacked ? 'size-32 text-h1 ring-1 ring-border @3xl:size-56 @3xl:text-display' : 'size-20 text-h3';
 @endphp
-<div data-slot="avatar-upload" x-data="nqAvatarUpload({!! \Illuminate\Support\Js::from((object) $options) !!})"
+<div data-slot="{{ $attributes->get('data-slot', 'avatar-upload') }}" x-data="nqAvatarUpload({!! \Illuminate\Support\Js::from((object) $options) !!})"
     x-bind:data-dragging="dragging ? '' : null" x-bind:data-editing="editing ? '' : null"
     x-on:dragenter="dragEnter($event)" x-on:dragover="dragOver($event)" x-on:dragleave="dragLeave()" x-on:drop="drop($event)" x-on:paste="paste($event)"
-    {{ $attributes->cn('flex flex-col gap-3') }}>
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-3') }}>
     {{-- Editor --}}
     <div role="group" aria-label="{{ $t['adjust'] }}" data-slot="avatar-upload-editor" x-show="editing" style="display: none"
         class="flex flex-col gap-4 rounded-floating border border-border bg-card p-4 {{ $stacked ? '' : 'sm:flex-row' }}">

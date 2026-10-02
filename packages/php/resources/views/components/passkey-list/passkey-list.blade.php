@@ -54,8 +54,8 @@
     ];
     $none = $supported === false;
 @endphp
-<div data-slot="passkey-list" x-data="nqPasskeyList({!! $js($init) !!})"
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-2xl') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'passkey-list') }}" x-data="nqPasskeyList({!! $js($init) !!})"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full max-w-2xl') }}>
     <x-nq::card.header>
         <x-nq::card.title as="h2">{{ $s['title'] }}</x-nq::card.title>
         <x-nq::card.description>{{ $s['description'] }}</x-nq::card.description>

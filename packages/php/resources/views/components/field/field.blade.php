@@ -4,9 +4,9 @@
      Needs the Alpine runtime (@nasaqScripts) for the id wiring. --}}
 @props(['name' => null, 'invalid' => false, 'disabled' => false])
 @php $invalid = (bool) $invalid; @endphp
-<div data-slot="field" x-data="nqField(@js($invalid))" x-modelable="invalid" x-id="['nq-field']"
+<div data-slot="{{ $attributes->get('data-slot', 'field') }}" x-data="nqField(@js($invalid))" x-modelable="invalid" x-id="['nq-field']"
     @if ($disabled) data-disabled @endif
     @if ($invalid) data-invalid @else data-valid @endif
-    {{ $attributes->cn('flex flex-col gap-1.5') }}>
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-1.5') }}>
     {{ $slot }}
 </div>

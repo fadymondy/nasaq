@@ -19,9 +19,9 @@
     $titleId = 'nq-dn-perm-'.substr(md5(json_encode([$permission, $locale, $dismissible])), 0, 8);
     $icon = in_array($step, ['denied', 'unsupported'], true) ? 'off' : 'ring';
 @endphp
-<div role="group" aria-labelledby="{{ $titleId }}" data-slot="desktop-notification-permission" data-step="{{ $step }}"
+<div role="group" aria-labelledby="{{ $titleId }}" data-slot="{{ $attributes->get('data-slot', 'desktop-notification-permission') }}" data-step="{{ $step }}"
     x-data="nqNotificationPermission(@js($permission), @js($copy))" x-effect="$el.setAttribute('data-step', step)"
-    {{ $attributes->cn('flex w-full max-w-md flex-col gap-3 rounded-card border border-border bg-card p-4') }}>
+    {{ $attributes->except('data-slot')->cn('flex w-full max-w-md flex-col gap-3 rounded-card border border-border bg-card p-4') }}>
     <div class="flex items-start gap-3">
         <span aria-hidden="true" class="grid size-9 shrink-0 place-items-center rounded-full {{ $step === 'denied' ? 'bg-nq-warning-soft' : 'bg-secondary' }}"
             x-bind:class="step === 'denied' ? 'bg-nq-warning-soft' : 'bg-secondary'">

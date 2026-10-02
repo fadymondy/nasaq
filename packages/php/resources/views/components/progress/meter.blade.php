@@ -14,9 +14,9 @@
     $id = 'nq-meter-'.substr(md5((string) $label), 0, 8);
     $fill = 'block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none';
 @endphp
-<div data-slot="meter" data-tone="{{ $derived }}" role="meter" @if ($label !== null) aria-labelledby="{{ $id }}-label" @endif
+<div data-slot="{{ $attributes->get('data-slot', 'meter') }}" data-tone="{{ $derived }}" role="meter" @if ($label !== null) aria-labelledby="{{ $id }}-label" @endif
     aria-valuemin="{{ $min }}" aria-valuemax="{{ $max }}" aria-valuenow="{{ $value }}" aria-valuetext="{{ $formatted }}"
-    {{ $attributes->cn('flex w-full flex-col gap-1.5') }}>
+    {{ $attributes->except('data-slot')->cn('flex w-full flex-col gap-1.5') }}>
     @if ($label !== null || $show)
         <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
             @if ($label !== null)<span id="{{ $id }}-label" class="text-label text-foreground">{{ $label }}</span>@else<span></span>@endif

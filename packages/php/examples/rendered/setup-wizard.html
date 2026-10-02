@@ -1,0 +1,243 @@
+<div data-slot="setup-wizard" x-data="nqSetupWizard(JSON.parse('{\u0022steps\u0022:[{\u0022id\u0022:\u0022name\u0022,\u0022title\u0022:\u0022Name\u0022,\u0022description\u0022:null,\u0022optional\u0022:false,\u0022ready\u0022:true},{\u0022id\u0022:\u0022agent\u0022,\u0022title\u0022:\u0022Agent\u0022,\u0022description\u0022:null,\u0022optional\u0022:false,\u0022ready\u0022:true}],\u0022current\u0022:0,\u0022completed\u0022:[\u0022name\u0022],\u0022canFinish\u0022:false,\u0022gateMessage\u0022:\u0022Connect an agent first.\u0022,\u0022labels\u0022:{\u0022stepOf\u0022:\u0022Step {current} of {total}\u0022,\u0022gate\u0022:\u0022Finish these steps first\u0022,\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022,\u0022complete\u0022:\u0022Completed\u0022,\u0022current\u0022:\u0022Current step\u0022,\u0022upcoming\u0022:\u0022Upcoming\u0022}}'))"
+    x-bind:data-state="done ? 'done' : null" x-bind:data-step="done ? null : stepId()"
+    x-bind:class="done ? 'max-w-xl items-center gap-4 p-8 text-center' : 'max-w-4xl gap-0 p-0 md:grid md:grid-cols-[15rem_1fr]'"
+    x-on:nq-step-complete="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(done, 200)))" x-on:nq-finish="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(done, 200)))" class="mx-auto flex w-full flex-col rounded-card border border-border bg-card text-card-foreground">
+    <div class="contents" x-show="! done">
+        <aside class="hidden flex-col gap-5 border-e border-border bg-muted/50 p-6 md:flex">
+                            <div class="flex flex-col gap-1">
+                    <p class="text-label text-foreground">Set up your workspace</p>                                    </div>
+                        <nav aria-label="Setup steps">
+                <ol data-slot="stepper" data-orientation="vertical" class="m-0 flex list-none flex-col p-0">
+                                                                    <li data-slot="stepper-item" x-bind:data-status="status(0)" class="grid grid-cols-[1.75rem_1fr] gap-x-3">
+                            <button type="button" data-slot="stepper-step" x-bind:aria-current="status(0) === 'current' ? 'step' : null" x-bind:disabled="! canGo(0)" x-on:click="railGo(0)"
+                                class="col-span-2 grid grid-cols-subgrid items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                                    x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': status(0) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': status(0) === 'current', 'border-border bg-background text-muted-foreground': status(0) === 'upcoming' }">
+                                    <svg aria-hidden="true" x-show="status(0) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span x-show="status(0) !== 'complete'" style=""><bdi data-slot="num" data-numeric="" class="tabular-nums">1</bdi>
+</span>
+                                </span>
+                                <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                                    <span class="text-label" x-bind:class="status(0) === 'upcoming' ? 'text-muted-foreground' : 'text-foreground'">
+                                        Name
+                                        <span class="sr-only" x-text="'(' + statusLabel(0) + ')'">(Current step)</span>
+                                    </span>
+                                                                    </span>
+                            </button>
+                                                            <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="status(0) === 'complete' ? '' : null"
+                                    x-bind:class="status(0) === 'complete' ? 'bg-primary' : 'bg-border'"
+                                    class="col-start-1 row-start-2 my-1 min-h-6 w-px justify-self-center rounded-full transition-colors duration-150 ease-nq"></span>
+                                                    </li>
+                                                                    <li data-slot="stepper-item" x-bind:data-status="status(1)" class="grid grid-cols-[1.75rem_1fr] gap-x-3">
+                            <button type="button" data-slot="stepper-step" x-bind:aria-current="status(1) === 'current' ? 'step' : null" x-bind:disabled="! canGo(1)" x-on:click="railGo(1)"
+                                class="col-span-2 grid grid-cols-subgrid items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                                    x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': status(1) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': status(1) === 'current', 'border-border bg-background text-muted-foreground': status(1) === 'upcoming' }">
+                                    <svg aria-hidden="true" x-show="status(1) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span x-show="status(1) !== 'complete'" style=""><bdi data-slot="num" data-numeric="" class="tabular-nums">2</bdi>
+</span>
+                                </span>
+                                <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                                    <span class="text-label" x-bind:class="status(1) === 'upcoming' ? 'text-muted-foreground' : 'text-foreground'">
+                                        Agent
+                                        <span class="sr-only" x-text="'(' + statusLabel(1) + ')'">(Upcoming)</span>
+                                    </span>
+                                                                    </span>
+                            </button>
+                                                    </li>
+                                    </ol>
+            </nav>
+        </aside>
+        <div class="flex min-w-0 flex-col gap-5 p-5 sm:p-8">
+            <div class="flex flex-col gap-2 md:hidden">
+                <p class="text-label text-foreground">Set up your workspace</p>                <div data-slot="progress" role="progressbar" aria-label="Setup steps" aria-valuemin="0" aria-valuemax="100" x-bind:aria-valuenow="pct()" x-bind:aria-valuetext="pct() + '%'" class="flex w-full flex-col gap-1.5">
+                    <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+                        <span class="text-label text-foreground" x-text="stepCount()">Step 1 of 2</span><span></span>
+                    </div>
+                    <div data-slot="progress-track" class="relative block h-2 w-full overflow-hidden rounded-full bg-nq-surface-soft">
+                        <div data-slot="progress-indicator" x-bind:style="'inset-inline-start:0;width:' + pct() + '%'" class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none"></div>
+                    </div>
+                </div>
+            </div>
+            <header class="flex flex-col gap-1">
+                <p class="hidden text-caption text-muted-foreground md:block" x-text="stepCount()">Step 1 of 2</p>
+                <h2 x-ref="heading" tabindex="-1" class="text-h2 text-foreground outline-none" x-text="step().title">Name</h2>
+                <p class="text-body-sm text-muted-foreground" x-show="step().description" x-text="step().description" style="display: none;"></p>
+            </header>
+            <div data-slot="setup-wizard-body" x-bind:aria-busy="busy() ? 'true' : null" class="min-w-0">
+                <div data-slot="setup-wizard-step" data-step-id="name" x-show="stepId() === 'name'" style="" class="flex flex-col gap-4">
+    <input aria-label="Name" class="h-control rounded-control border border-border bg-background px-3" />
+</div>
+    <div data-slot="setup-wizard-step" data-step-id="agent" x-show="stepId() === 'agent'" style="display: none;" class="flex flex-col gap-4">
+    <div data-slot="agent-enroll-wait" x-data="nqAgentEnrollWait(JSON.parse('{\u0022status\u0022:\u0022waiting\u0022,\u0022agent\u0022:null,\u0022elapsed\u0022:75,\u0022error\u0022:null}'), 'Waiting {time}')"
+    x-bind:data-status="status" x-on:nq-agent-status.window="set($event.detail)" x-on:nq:retry="$dispatch(&#039;nq-agent-status&#039;, { status: &#039;waiting&#039;, elapsed: 0 })" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1.5">
+        <span class="text-label text-foreground">Install command</span>
+        <div data-slot="copy-field" class="contents">
+    <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 font-mono"><input data-slot="input-group-input"  dir="ltr"     readonly="readonly" value="curl -fsSL https://get.example.com | sh" aria-label="Install command" x-on:focus="$el.select()" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start" />
+        <div data-slot="input-group-addon" data-align="end"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-3"><span class="contents" x-data="nqCopyButton('curl -fsSL https:\/\/get.example.com | sh', 1500)">
+    <button data-slot="copy-button"
+     type="button"                     aria-label="Copy" x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span></div></div>
+</div>
+            </div>
+    <div aria-live="polite" data-slot="agent-enroll-status">
+        <div role="status" x-show="status === 'waiting'" style="" class="flex items-start gap-3 rounded-control border border-border bg-muted/50 p-4">
+            <svg data-slot="spinner" aria-hidden="true" class="animate-spin motion-reduce:animate-none mt-0.5 size-5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>            <div class="flex flex-col gap-0.5">
+                <p class="text-label text-foreground">Waiting for your agent to connect</p>
+                <p class="text-body-sm text-muted-foreground">Run the command on the machine you want to connect. This page updates by itself.</p>
+                <p dir="ltr" class="text-caption text-muted-foreground tabular-nums" x-show="elapsed !== null" x-text="elapsedText()" style="">Waiting 1:15</p>
+            </div>
+        </div>
+        <div data-slot="alert" data-tone="success" role="status"
+        x-show="status === &#039;connected&#039;" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-success/30 bg-nq-success-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                    <div data-slot="alert-title" class="text-label text-foreground">Agent connected</div>
+                            <div data-slot="alert-description" class="text-body-sm text-muted-foreground"><dl class="m-0 mt-1 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5" x-show="agent" style="display: none;">
+                <dt class="text-muted-foreground" x-text="agent ? agent.name : ''"></dt>
+                <dd class="m-0"></dd>
+                <dt class="text-muted-foreground" x-show="agent && agent.host" style="display: none;">Host</dt>
+                <dd dir="ltr" class="m-0 text-start font-mono" x-show="agent && agent.host" x-text="agent ? agent.host : ''" style="display: none;"></dd>
+                <dt class="text-muted-foreground" x-show="agent && agent.system" style="display: none;">System</dt>
+                <dd dir="ltr" class="m-0 text-start" x-show="agent && agent.system" x-text="agent ? agent.system : ''" style="display: none;"></dd>
+                <dt class="text-muted-foreground" x-show="agent && agent.version" style="display: none;">Version</dt>
+                <dd dir="ltr" class="m-0 text-start font-mono" x-show="agent && agent.version" x-text="agent ? agent.version : ''" style="display: none;"></dd>
+            </dl></div>
+            </div>
+    </div>
+                    <div data-slot="alert" data-tone="warning" role="alert"
+        x-show="status === &#039;timeout&#039;" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                    <div data-slot="alert-title" class="text-label text-foreground">No agent has connected yet</div>
+                            <div data-slot="alert-description" class="text-body-sm text-muted-foreground">Check that the command finished without errors and that the machine can reach us, then try again.</div>
+            </div>
+            <div data-slot="alert-actions" class="ms-3 flex items-center gap-1">
+            <button data-slot="button"
+     type="button"                     x-on:click="retry()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>Check again</button>
+                    </div>
+    </div>
+            <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="status === &#039;failed&#039;" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                    <div data-slot="alert-title" class="text-label text-foreground">The agent could not enroll</div>
+                            <div data-slot="alert-description" class="text-body-sm text-muted-foreground"><span x-text="error ? error : 'Check that the command finished without errors and that the machine can reach us, then try again.'">Check that the command finished without errors and that the machine can reach us, then try again.</span></div>
+            </div>
+            <div data-slot="alert-actions" class="ms-3 flex items-center gap-1">
+            <button data-slot="button"
+     type="button"                     x-on:click="retry()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>Check again</button>
+                    </div>
+    </div>
+            </div>
+</div>
+</div>
+            </div>
+            <div data-slot="alert" data-tone="warning" role="alert"
+        x-show="gated()" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span class="block text-label text-foreground" x-text="gateTitle()">Connect an agent first.</span>
+                <ul class="m-0 flex list-disc flex-col gap-0.5 ps-4">
+                    <template x-for="s in missing()" x-bind:key="s.id">
+                        <li><button type="button" class="text-start underline underline-offset-2" x-on:click="goId(s.id)" x-text="s.title"></button></li>
+                    </template>
+                </ul></div>
+            </div>
+    </div>
+            <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+            <footer class="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <button data-slot="button"
+     type="button"                     x-on:click="back()" x-bind:disabled="backOff()" x-bind:data-disabled="backOff() ? &#039;&#039; : null" x-bind:class="first() ? &#039;invisible&#039; : &#039;&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg>                    Back</button>
+                <div class="flex flex-col-reverse gap-2 sm:flex-row">
+                    <button data-slot="button"
+     type="button"                     x-show="canSkip()" x-on:click="skip()" x-bind:disabled="busy()" x-bind:data-disabled="busy() ? &#039;&#039; : null" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Skip for now</button>
+                    <button data-slot="button"
+     type="button"                     x-show="! last()" x-on:click="next()" x-bind:disabled="nextBlocked()" x-bind:data-disabled="nextBlocked() ? &#039;&#039; : null" x-bind:aria-busy="pending === &#039;next&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="pending === 'next'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                        Continue
+                        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     x-show="last()" x-on:click="finish()" x-bind:disabled="finishBlocked()" x-bind:data-disabled="finishBlocked() ? &#039;&#039; : null" x-bind:aria-busy="pending === &#039;finish&#039; ? &#039;true&#039; : null" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="pending === 'finish'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                        Finish setup</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <div class="contents" x-show="done" style="display: none">
+        <span class="inline-flex size-12 items-center justify-center rounded-full bg-nq-success-soft text-nq-success-text">
+            <svg aria-hidden="true" class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        </span>
+        <h2 x-ref="doneHeading" tabindex="-1" class="text-h2 text-foreground outline-none">You are all set</h2>
+        <p class="text-body text-muted-foreground">Setup is complete.</p>
+        <a data-slot="button"
+     href="/"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Open the dashboard</a>
+    </div>
+</div>

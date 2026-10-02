@@ -18,9 +18,9 @@
     $hasBody = isset($slot) && ! $slot->isEmpty();
     $hasAction = $action && ! $action->isEmpty();
 @endphp
-<div data-slot="alert" data-tone="{{ $tone }}" role="{{ $role }}"
+<div data-slot="{{ $attributes->get('data-slot', 'alert') }}" data-tone="{{ $tone }}" role="{{ $role }}"
     @if ($dismissible) x-data="nqAlert()" x-modelable="open" x-show="open" @endif
-    {{ $attributes->cn(['relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start', $tones[$tone]]) }}>
+    {{ $attributes->except('data-slot')->cn(['relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start', $tones[$tone]]) }}>
     <x-dynamic-component :component="'lucide-'.($icon ?? $glyphs[$tone])" aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 {{ $iconText[$tone] }}" />
     <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
         @if ($hasTitle)

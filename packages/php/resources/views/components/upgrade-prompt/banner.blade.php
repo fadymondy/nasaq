@@ -11,9 +11,9 @@
     $hasIcon = $icon && ! $icon->isEmpty();
     $hasAction = $action && ! $action->isEmpty();
 @endphp
-<div data-slot="upgrade-banner" data-tone="{{ $tone }}" role="region" @if (filled($title)) aria-label="{{ $title }}" @endif
+<div data-slot="{{ $attributes->get('data-slot', 'upgrade-banner') }}" data-tone="{{ $tone }}" role="region" @if (filled($title)) aria-label="{{ $title }}" @endif
     @if ($dismissible) x-data="nqUpgradeBanner()" x-modelable="open" x-show="open" @endif
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         '@container flex items-center gap-3 rounded-card px-4 py-3',
         $tone === 'brand' ? 'bg-[color-mix(in_oklab,var(--nq-brand)_10%,var(--nq-surface))] ring-1 ring-nq-brand/25' : 'bg-nq-warning-soft ring-1 ring-nq-warning/30',
     ]) }}>

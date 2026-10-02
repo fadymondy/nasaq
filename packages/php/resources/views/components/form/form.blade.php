@@ -12,7 +12,7 @@
     $messages = collect((array) $errors)->map(fn ($m) => is_array($m) ? ($m[0] ?? null) : $m)->filter()->all();
     $init = ['errors' => (object) $messages, 'formError' => $formError];
 @endphp
-<form data-slot="form" novalidate x-data="nqForm({!! \Illuminate\Support\Js::from($init) !!})" x-on:submit="submit($event)" {{ $attributes->cn('flex flex-col gap-4') }}>
+<form data-slot="{{ $attributes->get('data-slot', 'form') }}" novalidate x-data="nqForm({!! \Illuminate\Support\Js::from($init) !!})" x-on:submit="submit($event)" {{ $attributes->except('data-slot')->cn('flex flex-col gap-4') }}>
     <x-nq::alert tone="danger" x-show="formError" :style="$formError ? null : 'display: none'"><span x-text="formError">{{ $formError }}</span></x-nq::alert>
     {{ $slot }}
 </form>

@@ -9,9 +9,9 @@
 <div x-data="nqThemePref()" class="contents">
     <x-nq::tooltip>
         <x-slot:tip><span x-text="dark ? @js($toLight) : @js($toDark)">{{ $toDark }}</span></x-slot:tip>
-        <x-nq::button variant="ghost" size="icon-sm" data-slot="theme-toggle" x-on:click="toggle()"
+        <x-nq::button variant="ghost" size="icon-sm" data-slot="{{ $attributes->get('data-slot', 'theme-toggle') }}" x-on:click="toggle()"
             x-bind:data-state="dark ? 'dark' : 'light'" :x-bind:aria-label="$ariaBind" aria-label="{{ $toDark }}"
-            {{ $attributes->cn('relative overflow-hidden text-muted-foreground hover:text-foreground') }}>
+            {{ $attributes->except('data-slot')->cn('relative overflow-hidden text-muted-foreground hover:text-foreground') }}>
             <x-nq::icon name="sun" class="{{ $glyph }}" x-bind:class="dark ? 'rotate-90 scale-50 opacity-0' : 'rotate-0 scale-100 opacity-100'" />
             <x-nq::icon name="moon" class="{{ $glyph }}" x-bind:class="dark ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-50 opacity-0'" />
         </x-nq::button>

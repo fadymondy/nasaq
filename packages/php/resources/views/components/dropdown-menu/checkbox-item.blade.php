@@ -1,12 +1,12 @@
 {{-- <x-nq::dropdown-menu.checkbox-item :checked="true">Show grid</x-nq::dropdown-menu.checkbox-item>
      A toggle. checked: initial state (x-modelable: x-model="$wire.grid"). A click does not close the menu unless close-on-click. --}}
 @props(['checked' => false, 'disabled' => false, 'closeOnClick' => false])
-<div data-slot="dropdown-menu-checkbox-item" role="menuitemcheckbox" x-data="{ checked: @js((bool) $checked) }" x-modelable="checked" x-bind="item"
+<div data-slot="{{ $attributes->get('data-slot', 'dropdown-menu-checkbox-item') }}" role="menuitemcheckbox" x-data="{ checked: @js((bool) $checked) }" x-modelable="checked" x-bind="item"
     x-on:click="if (! $el.hasAttribute('data-disabled')) checked = ! checked"
     x-bind:aria-checked="checked ? 'true' : 'false'" x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
     @unless ($closeOnClick) data-keep-open @endunless
     @if ($disabled) data-disabled aria-disabled="true" @endif
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         'relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none',
         'data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50',
         '[&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground',

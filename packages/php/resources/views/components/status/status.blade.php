@@ -15,7 +15,7 @@
     $iconClass = 'size-3.5 shrink-0 '.$toneText[$tone];
     $label = trim(strip_tags((string) $slot));
 @endphp
-<span data-slot="status" data-tone="{{ $tone }}" {{ $attributes->cn(['inline-flex min-w-0 items-center gap-1.5 text-body-sm', $tinted ? $toneText[$tone] : 'text-foreground']) }}>
+<span data-slot="{{ $attributes->get('data-slot', 'status') }}" data-tone="{{ $tone }}" {{ $attributes->except('data-slot')->cn(['inline-flex min-w-0 items-center gap-1.5 text-body-sm', $tinted ? $toneText[$tone] : 'text-foreground']) }}>
     @if (isset($icon) && $icon instanceof \Illuminate\View\ComponentSlot)
         <span aria-hidden="true" class="inline-flex {{ $iconClass }} [&_svg]:size-3.5">{{ $icon }}</span>
     @else

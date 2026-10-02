@@ -11,7 +11,7 @@
         default => ['root' => 'flex-row gap-4 @xl:flex-col @xl:gap-3', 'art' => 'aspect-square w-20 @xl:aspect-[16/10] @xl:w-full', 'artBadge' => 'hidden @xl:inline-flex', 'nameBadge' => 'inline-flex @xl:hidden'],
     };
 @endphp
-<article data-slot="product-card" data-layout="{{ $layout }}" {{ $attributes->cn('group/product flex min-w-0 '.$l['root']) }}>
+<article data-slot="{{ $attributes->get('data-slot', 'product-card') }}" data-layout="{{ $layout }}" {{ $attributes->except('data-slot')->cn('group/product flex min-w-0 '.$l['root']) }}>
     <div data-slot="product-card-artwork" class="{{ \Nasaq\Cn::merge('relative shrink-0 [&>*]:size-full', $l['art']) }}">
         {{ $artwork }}
         @if ($has($badge))

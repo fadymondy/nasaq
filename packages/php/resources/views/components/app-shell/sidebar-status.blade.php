@@ -7,8 +7,8 @@
     $dot = ['success' => 'bg-nq-success', 'warning' => 'bg-nq-warning', 'danger' => 'bg-nq-danger', 'info' => 'bg-nq-info'][$tone] ?? 'bg-nq-success';
 @endphp
 <x-nq::app-shell.rail-tip :name="$name">
-    <a data-slot="sidebar-status" data-tone="{{ $tone }}" @if ($name) x-bind:aria-label="(rail && collapsed) ? @js($name) : null" @endif
-        {{ $attributes->cn([
+    <a data-slot="{{ $attributes->get('data-slot', 'sidebar-status') }}" data-tone="{{ $tone }}" @if ($name) x-bind:aria-label="(rail && collapsed) ? @js($name) : null" @endif
+        {{ $attributes->except('data-slot')->cn([
             'flex h-nav-row items-center gap-2 rounded-control px-2 text-caption text-muted-foreground outline-none',
             'transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground',
             'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus',

@@ -1,0 +1,212 @@
+<div data-slot="lock-screen" data-reason="locked" x-data="nqLockScreen(JSON.parse('{\u0022methods\u0022:[\u0022pin\u0022,\u0022password\u0022],\u0022defaultMethod\u0022:\u0022pin\u0022,\u0022pinLength\u0022:6,\u0022requireCode\u0022:false,\u0022maxAttempts\u0022:3,\u0022lockoutSeconds\u0022:30,\u0022now\u0022:\u00222026-09-29T09:00:00\u0022,\u0022locale\u0022:\u0022en\u0022,\u0022accounts\u0022:[{\u0022name\u0022:\u0022Omar Khalid\u0022,\u0022email\u0022:\u0022omar@example.com\u0022}],\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022,\u0022labels\u0022:{\u0022passwordRequired\u0022:\u0022Enter your password.\u0022,\u0022codeRequired\u0022:\u0022Enter all {length} digits of the code.\u0022,\u0022wrongPin\u0022:\u0022That PIN is not right. {left} tries left.\u0022,\u0022lockout\u0022:\u0022Too many attempts. Try again in {time}.\u0022,\u0022entered\u0022:\u0022{count} of {length} digits entered\u0022,\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022}}'))"
+    x-bind:data-method="method" x-bind:aria-busy="pending ? 'true' : null"
+    x-on:nq-lock-unlock="$event.detail.waitUntil(new Promise((done) =&gt; setTimeout(() =&gt; done($event.detail.secret === &#039;123456&#039; ? undefined : { error: $event.detail.method === &#039;password&#039; ? &#039;That is not right. Try again.&#039; : undefined, fieldErrors: {} }), 200)))" class="relative isolate flex min-h-dvh flex-col overflow-hidden bg-muted text-foreground">
+    <div aria-hidden="true" data-slot="lock-screen-wallpaper" class="absolute inset-0 -z-10">
+                <div class="absolute inset-0 bg-background/55 backdrop-blur-sm"></div>
+    </div>
+            <div data-slot="lock-screen-clock" class="flex flex-col items-center gap-1 px-4 pt-10 text-center sm:pt-14">
+            <time dir="ltr" class="text-[clamp(3rem,10vw,5rem)] leading-none font-light tabular-nums text-foreground" x-text="time"></time>
+            <p class="text-body text-muted-foreground first-letter:uppercase" x-text="date"></p>
+        </div>
+    <main class="mx-auto flex w-full max-w-sm flex-1 flex-col items-center justify-center gap-5 px-4 py-8 text-center">
+                    <div data-slot="lock-screen-mark"><svg data-slot="product-mark" viewBox="0 0 100 100" width="28" height="28"  aria-hidden="true"  shape-rendering="crispEdges"  class="shrink-0">
+            <g class="dark:hidden">
+                            <rect x="0" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="80" y="20" width="20" height="20" fill="#15694A" />
+                            <rect x="20" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="60" y="40" width="20" height="20" fill="#15694A" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+        <g class="hidden dark:block">
+                            <rect x="0" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="80" y="20" width="20" height="20" fill="#4CC495" />
+                            <rect x="20" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="60" y="40" width="20" height="20" fill="#4CC495" />
+                            <rect x="40" y="60" width="20" height="20" fill="#C9A227" />
+                    </g>
+    </svg>
+</div>
+                <div class="flex flex-col items-center gap-2">
+            <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-10 text-label rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Nour Adel" >NA</span>
+    </span>
+            <div class="flex flex-col gap-0.5">
+                <h1 class="text-h3 text-foreground">Nour Adel</h1>
+                 <p dir="ltr" class="text-caption text-muted-foreground">nour@example.com</p>             </div>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+            <p class="inline-flex items-center gap-1.5 text-label text-foreground">
+                 <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="16" r="1"/>
+  <rect x="3" y="10" width="18" height="12" rx="2"/>
+  <path d="M7 10V7a5 5 0 0 1 10 0v3"/>
+</svg>                 Locked
+            </p>
+            <p class="text-body-sm text-muted-foreground">Enter your credentials to continue.</p>
+        </div>
+        <div class="flex w-full flex-col items-center gap-4" x-on:keydown="onKey($event)">
+                            <template x-if="method === 'pin'">
+                    <div data-slot="lock-screen-pad" role="group" aria-label="PIN keypad" tabindex="0" dir="ltr"
+                        class="flex w-full max-w-64 flex-col items-center gap-5 rounded-control outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-nq-focus">
+                        <div class="flex gap-3" aria-hidden="true" x-bind:data-invalid="hasMessage() ? '' : null">
+                                                            <span x-bind:data-filled="filled(0) ? '' : null"
+                                    x-bind:class="[hasMessage() ? 'border-nq-danger' : (filled(0) ? 'border-transparent' : 'border-nq-line-strong'), filled(0) ? (hasMessage() ? 'bg-nq-danger' : 'bg-foreground') : 'bg-transparent']"
+                                    class="size-3 rounded-full border transition-colors duration-150 ease-nq motion-reduce:transition-none"></span>
+                                                            <span x-bind:data-filled="filled(1) ? '' : null"
+                                    x-bind:class="[hasMessage() ? 'border-nq-danger' : (filled(1) ? 'border-transparent' : 'border-nq-line-strong'), filled(1) ? (hasMessage() ? 'bg-nq-danger' : 'bg-foreground') : 'bg-transparent']"
+                                    class="size-3 rounded-full border transition-colors duration-150 ease-nq motion-reduce:transition-none"></span>
+                                                            <span x-bind:data-filled="filled(2) ? '' : null"
+                                    x-bind:class="[hasMessage() ? 'border-nq-danger' : (filled(2) ? 'border-transparent' : 'border-nq-line-strong'), filled(2) ? (hasMessage() ? 'bg-nq-danger' : 'bg-foreground') : 'bg-transparent']"
+                                    class="size-3 rounded-full border transition-colors duration-150 ease-nq motion-reduce:transition-none"></span>
+                                                            <span x-bind:data-filled="filled(3) ? '' : null"
+                                    x-bind:class="[hasMessage() ? 'border-nq-danger' : (filled(3) ? 'border-transparent' : 'border-nq-line-strong'), filled(3) ? (hasMessage() ? 'bg-nq-danger' : 'bg-foreground') : 'bg-transparent']"
+                                    class="size-3 rounded-full border transition-colors duration-150 ease-nq motion-reduce:transition-none"></span>
+                                                            <span x-bind:data-filled="filled(4) ? '' : null"
+                                    x-bind:class="[hasMessage() ? 'border-nq-danger' : (filled(4) ? 'border-transparent' : 'border-nq-line-strong'), filled(4) ? (hasMessage() ? 'bg-nq-danger' : 'bg-foreground') : 'bg-transparent']"
+                                    class="size-3 rounded-full border transition-colors duration-150 ease-nq motion-reduce:transition-none"></span>
+                                                            <span x-bind:data-filled="filled(5) ? '' : null"
+                                    x-bind:class="[hasMessage() ? 'border-nq-danger' : (filled(5) ? 'border-transparent' : 'border-nq-line-strong'), filled(5) ? (hasMessage() ? 'bg-nq-danger' : 'bg-foreground') : 'bg-transparent']"
+                                    class="size-3 rounded-full border transition-colors duration-150 ease-nq motion-reduce:transition-none"></span>
+                                                    </div>
+                        <span role="status" class="sr-only" x-text="count()"></span>
+                        <div class="grid w-full grid-cols-3 gap-2">
+                                                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Digit 1" x-on:click="pressKey(&#039;1&#039;)" x-bind:disabled="off()" x-bind:data-disabled="off() ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        1</button>
+                                                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Digit 2" x-on:click="pressKey(&#039;2&#039;)" x-bind:disabled="off()" x-bind:data-disabled="off() ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        2</button>
+                                                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Digit 3" x-on:click="pressKey(&#039;3&#039;)" x-bind:disabled="off()" x-bind:data-disabled="off() ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        3</button>
+                                                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Digit 4" x-on:click="pressKey(&#039;4&#039;)" x-bind:disabled="off()" x-bind:data-disabled="off() ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        4</button>
+                                                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Digit 5" x-on:click="pressKey(&#039;5&#039;)" x-bind:disabled="off()" x-bind:data-disabled="off() ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        5</button>
+                                                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Digit 6" x-on:click="pressKey(&#039;6&#039;)" x-bind:disabled="off()" x-bind:data-disabled="off() ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        6</button>
+                                                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Digit 7" x-on:click="pressKey(&#039;7&#039;)" x-bind:disabled="off()" x-bind:data-disabled="off() ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        7</button>
+                                                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Digit 8" x-on:click="pressKey(&#039;8&#039;)" x-bind:disabled="off()" x-bind:data-disabled="off() ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        8</button>
+                                                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Digit 9" x-on:click="pressKey(&#039;9&#039;)" x-bind:disabled="off()" x-bind:data-disabled="off() ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        9</button>
+                                                        <span aria-hidden="true"></span>
+                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Digit 0" x-on:click="pressKey(&#039;0&#039;)" x-bind:disabled="off()" x-bind:data-disabled="off() ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        0</button>
+                            <button data-slot="button"
+     type="button"                     tabindex="-1" aria-label="Delete last digit" x-on:click="backspace()" x-bind:disabled="off() || pin.length === 0" x-bind:data-disabled="off() || pin.length === 0 ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover px-[var(--nq-control-pad)] h-14 w-full text-h3 font-normal tabular-nums pointer-coarse:h-16">
+        <svg aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 5a2 2 0 0 0-1.344.519l-6.328 5.74a1 1 0 0 0 0 1.481l6.328 5.741A2 2 0 0 0 10 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/>
+  <path d="m12 9 6 6"/>
+  <path d="m18 9-6 6"/>
+</svg></button>
+                        </div>
+                    </div>
+                </template>
+                            <template x-if="method === 'password'">
+                    <form novalidate data-slot="lock-screen-password" class="flex w-full flex-col gap-3 text-start" x-on:submit.prevent="submitPassword()">
+                        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="bad.secret" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  for="nq-lock-000001-secret" class="text-label text-foreground data-disabled:opacity-50">Password</label>
+                            <div data-slot="password-input" x-data="nqPasswordInput('', JSON.parse('{\u0022visible\u0022:false,\u0022score\u0022:null,\u0022rules\u0022:null,\u0022levels\u0022:[\u0022Very weak\u0022,\u0022Weak\u0022,\u0022Fair\u0022,\u0022Good\u0022,\u0022Strong\u0022]}'))" x-modelable="value"
+    class="flex w-full flex-col gap-2">
+    <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><input data-slot="input-group-input"     x-model="password" x-bind:type="shown ? &#039;text&#039; : &#039;password&#039;" type="password" value="" autocapitalize="none" autocorrect="off" spellcheck="false" id="nq-lock-000001-secret" name="secret" autofocus="autofocus" autocomplete="current-password" x-bind:disabled="locked()" x-bind:aria-invalid="hasMessage() ? &#039;true&#039; : null" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px]" />
+        <div data-slot="input-group-addon" data-align="end"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-1.5"><button data-slot="password-input-toggle"
+     type="button"                     x-bind="toggle" aria-label="Show password" aria-pressed="false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg x-show="shown" x-cloak="1" style="display: none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg>                <svg x-show="!shown" x-cloak="1" style="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg></button></div></div>
+        </div>
+</div>
+                                                <button data-slot="button"
+     type="submit"                     x-bind:disabled="locked()" x-bind:data-disabled="locked() ? &#039;&#039; : null" x-bind:aria-busy="pending ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-[calc(var(--nq-control)+8px)] px-5 text-body">
+        <template x-if="pending"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                            Unlock</button>
+                    </form>
+                </template>
+            <div class="min-h-5 w-full" aria-live="polite">
+                <p role="alert" class="text-caption text-nq-danger-text" style="display: none" x-show="showPlain()" x-text="message()"></p>
+                <div data-slot="alert" data-tone="danger" role="alert"
+        style="display: none" x-show="showAlert()" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="message()"></span></div>
+            </div>
+    </div>
+            </div>
+        </div>
+                    <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+                                    <button data-slot="button"
+     type="button"                     style="display: none" x-show="method !== &#039;pin&#039;" x-on:click="switchMethod(&#039;pin&#039;)" x-bind:disabled="pending" x-bind:data-disabled="pending ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="4" x2="20" y1="9" y2="9"/>
+  <line x1="4" x2="20" y1="15" y2="15"/>
+  <line x1="10" x2="8" y1="3" y2="21"/>
+  <line x1="16" x2="14" y1="3" y2="21"/>
+</svg>                         Use PIN</button>
+                                    <button data-slot="button"
+     type="button"                     style="display: none" x-show="method !== &#039;password&#039;" x-on:click="switchMethod(&#039;password&#039;)" x-bind:disabled="pending" x-bind:data-disabled="pending ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+  <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+</svg>                         Use password</button>
+                            </div>
+                    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="lock-screen-switch"
+     type="button"                     x-bind="trigger" x-ref="trigger" x-bind:disabled="pending" x-bind:data-disabled="pending ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <line x1="19" x2="19" y1="8" y2="14"/>
+  <line x1="22" x2="16" y1="11" y2="11"/>
+</svg>                    Switch account
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></button>
+                <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.top.offset.4="$refs.trigger"
+        aria-label="Accounts on this device" class="z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 w-64"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="switchTo(0)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Omar Khalid" >OK</span>
+    </span>
+                            <span class="flex min-w-0 flex-col text-start">
+                                <span class="truncate text-label">Omar Khalid</span>
+                                 <bdi dir="ltr" class="truncate text-caption text-muted-foreground">omar@example.com</bdi>                             </span></div>
+                                         <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                     <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="switchTo(-1)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <line x1="19" x2="19" y1="8" y2="14"/>
+  <line x1="22" x2="16" y1="11" y2="11"/>
+</svg>                        Sign in to another account</div></div>
+</template></div>
+                            <button data-slot="button"
+     type="button"                     x-on:click="signOut()" x-bind:disabled="pending" x-bind:data-disabled="pending ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        Not you? Sign out</button>
+            </main>
+    </div>

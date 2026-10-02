@@ -13,8 +13,8 @@
         $i++;
     }
 @endphp
-<div data-slot="chart" @if ($label) role="img" aria-label="{{ $label }}" @endif @if ($vars) style="{{ implode('; ', $vars) }}" @endif
-    {{ $attributes->cn([
+<div data-slot="{{ $attributes->get('data-slot', 'chart') }}" @if ($label) role="img" aria-label="{{ $label }}" @endif @if ($vars) style="{{ implode('; ', $vars) }}" @endif
+    {{ $attributes->except('data-slot')->cn([
         'flex aspect-video w-full justify-center text-caption',
         '[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground',
         '[&_.recharts-cartesian-grid_line]:stroke-border',

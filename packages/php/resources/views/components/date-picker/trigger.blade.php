@@ -11,11 +11,11 @@
         'pointer-coarse:text-[16px]',
     ];
 @endphp
-<button type="button" x-ref="trigger" data-slot="date-picker-trigger" aria-haspopup="dialog" x-on:click="toggle()"
+<button type="button" x-ref="trigger" data-slot="{{ $attributes->get('data-slot', 'date-picker-trigger') }}" aria-haspopup="dialog" x-on:click="toggle()"
     :aria-expanded="open" x-bind:data-popup-open="open ? '' : undefined"
     @if ($invalid) data-invalid aria-invalid="true" @endif
     @if ($disabled) disabled data-disabled @endif
-    {{ $attributes->cn($class) }}>
+    {{ $attributes->except('data-slot')->cn($class) }}>
     <span class="min-w-0 flex-1 truncate text-start tabular-nums" x-bind:class="label ? '' : 'text-muted-foreground'" x-bind:data-placeholder="label ? null : ''"
         x-text="label ?? placeholder">{{ $initial }}</span>
     <x-dynamic-component :component="'lucide-'.$icon" aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" />

@@ -15,7 +15,7 @@
     $fieldName = $attributes->get('name', $name);
     $init = ['value' => $value, 'locale' => $locale, 'calendar' => $calendar, 'placeholder' => $placeholder];
 @endphp
-<div data-slot="date-picker" x-data="nqDatePicker({!! \Illuminate\Support\Js::from($init) !!})" x-modelable="date" {{ $attributes->whereStartsWith(['x-model', 'wire:model'])->merge(['class' => 'contents']) }}>
+<div data-slot="{{ $attributes->get('data-slot', 'date-picker') }}" x-data="nqDatePicker({!! \Illuminate\Support\Js::from($init) !!})" x-modelable="date" {{ $attributes->except('data-slot')->whereStartsWith(['x-model', 'wire:model'])->merge(['class' => 'contents']) }}>
     <x-nq::popover :open="$open">
         <x-nq::date-picker.trigger icon="calendar-days" :initial="$placeholder" {{ $attributes->whereDoesntStartWith(['x-model', 'wire:model'])->except('name') }} />
         @if ($fieldName)

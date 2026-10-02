@@ -42,7 +42,7 @@
         'contraceptive' => [[$t['methodsLabel'], e(implode(' · ', array_map(fn ($i) => $t['methods'][$i] ?? $i, $P['methods'])))]],
     };
 @endphp
-<div data-slot="engine-details" data-engine="{{ $engine }}" x-data="nqEngineDetails(@js($active))" {{ $attributes->cn('mx-auto flex w-full max-w-4xl flex-col gap-8') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'engine-details') }}" data-engine="{{ $engine }}" x-data="nqEngineDetails(@js($active))" {{ $attributes->except('data-slot')->cn('mx-auto flex w-full max-w-4xl flex-col gap-8') }}>
     <header class="flex flex-col gap-4">
         @if ($backHref)
             <a href="{{ $backHref }}" data-slot="engine-details-back" class="{{ \Nasaq\Cn::merge('inline-flex h-8 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-control px-3 text-label text-foreground transition-colors hover:bg-accent [&_svg]:size-4', '-ms-2.5 w-fit') }}">

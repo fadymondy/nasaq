@@ -15,8 +15,8 @@
         $earnedOn = true;
     }
 @endphp
-<div role="group" aria-labelledby="{{ $titleId }}" data-slot="achievement-card" data-status="{{ $status }}"
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0') }}>
+<div role="group" aria-labelledby="{{ $titleId }}" data-slot="{{ $attributes->get('data-slot', 'achievement-card') }}" data-status="{{ $status }}"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0') }}>
     <div data-slot="card-content" class="flex flex-col items-center gap-4 px-4 text-center sm:flex-row sm:items-start sm:text-start">
         <x-nq::gamification.medal :achievement="$hidden ? array_diff_key($a, ['icon' => 1]) : $a" size="lg" />
         <div class="flex min-w-0 flex-1 flex-col items-center gap-3 sm:items-start">

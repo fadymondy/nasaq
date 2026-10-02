@@ -37,8 +37,8 @@
     $lastIndex = count($progress['steps']) - 1;
     $icons = ['placed' => 'clipboard-list', 'assigned' => 'user-check', 'picked-up' => 'package-check', 'on-the-way' => 'bike', 'delivered' => 'check'];
 @endphp
-<section data-slot="delivery-tracker" data-status="{{ $status }}" aria-label="{{ $t['title'] }}"
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card p-4 sm:p-5') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'delivery-tracker') }}" data-status="{{ $status }}" aria-label="{{ $t['title'] }}"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card p-4 sm:p-5') }}>
     <header class="flex flex-wrap items-start justify-between gap-3">
         <div class="flex min-w-0 flex-col gap-1">
             @if ($orderNumber)

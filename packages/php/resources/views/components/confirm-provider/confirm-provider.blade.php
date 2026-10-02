@@ -6,7 +6,7 @@
 @php
     $fade = 'transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0';
 @endphp
-<div data-slot="confirm-provider" x-data="nqConfirmProvider()" x-id="['nq-confirm']" x-on:nq:confirm.window="ask($event.detail)" {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'confirm-provider') }}" x-data="nqConfirmProvider()" x-id="['nq-confirm']" x-on:nq:confirm.window="ask($event.detail)" {{ $attributes->except('data-slot')->cn('contents') }}>
     <template x-teleport="body">
         <div data-slot="alert-dialog-portal">
             <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 {{ $fade }}"></div>

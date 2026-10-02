@@ -13,13 +13,13 @@
         $active ? 'font-medium text-foreground' : '',
     ]);
 @endphp
-<!--nq-nav--><a data-slot="app-nav-item" {!! $current !!} {{ $attributes->cn([
+<!--nq-nav--><a data-slot="{{ $attributes->get('data-slot', 'app-nav-item') }}" {!! $current !!} {{ $attributes->except('data-slot')->cn([
     'relative flex h-11 shrink-0 items-center gap-2 px-2 text-body-sm whitespace-nowrap text-muted-foreground outline-none',
     'transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4',
     'after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:rounded-full after:bg-transparent',
     'focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-nq-focus',
     'font-medium text-foreground after:bg-foreground' => $active,
-]) }}>@if ($hasIcon)<span data-slot="app-nav-icon" class="contents">{{ $icon }}</span>@endif{{ $slot }}@if ($hasTrailing)<span class="text-caption text-muted-foreground tabular-nums">{{ $trailing }}</span>@endif</a><!--nq-nav-split--><a data-slot="app-nav-item" {!! $current !!} @if ($active) data-active @endif {{ $attributes->cn($bar) }}><span class="relative inline-flex">{{ $icon }}@if ($hasTrailing)<span aria-hidden="true" class="absolute -end-1 -top-0.5 size-2 rounded-full bg-nq-accent ring-2 ring-background"></span>@endif</span><span class="max-w-full truncate">{{ $slot }}</span></a><!--nq-nav-split--><a data-slot="app-nav-item" {!! $current !!} @if ($active) data-active @endif {{ $attributes->cn([
+]) }}>@if ($hasIcon)<span data-slot="app-nav-icon" class="contents">{{ $icon }}</span>@endif{{ $slot }}@if ($hasTrailing)<span class="text-caption text-muted-foreground tabular-nums">{{ $trailing }}</span>@endif</a><!--nq-nav-split--><a data-slot="{{ $attributes->get('data-slot', 'app-nav-item') }}" {!! $current !!} @if ($active) data-active @endif {{ $attributes->except('data-slot')->cn($bar) }}><span class="relative inline-flex">{{ $icon }}@if ($hasTrailing)<span aria-hidden="true" class="absolute -end-1 -top-0.5 size-2 rounded-full bg-nq-accent ring-2 ring-background"></span>@endif</span><span class="max-w-full truncate">{{ $slot }}</span></a><!--nq-nav-split--><a data-slot="{{ $attributes->get('data-slot', 'app-nav-item') }}" {!! $current !!} @if ($active) data-active @endif {{ $attributes->except('data-slot')->cn([
     'flex h-11 items-center gap-3 rounded-control px-3 text-body text-foreground outline-none',
     'transition-colors duration-150 ease-nq hover:bg-nq-hover [&_svg]:size-5 [&_svg]:text-muted-foreground',
     'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus',

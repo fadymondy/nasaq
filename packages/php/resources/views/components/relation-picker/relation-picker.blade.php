@@ -32,8 +32,8 @@
     $inputClass = 'h-full min-w-0 flex-1 border-0 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]';
     $ph = $placeholder ?? Nasaq::t('Search…', 'ابحث…');
 @endphp
-<div data-slot="relation-picker" x-data="nqRelationPicker(@js($config))" x-modelable="value" x-id="['nq-relation']"
-    x-bind:data-busy="status === 'loading' || createState === 'busy' ? '' : undefined" {{ $attributes->cn('min-w-0') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'relation-picker') }}" x-data="nqRelationPicker(@js($config))" x-modelable="value" x-id="['nq-relation']"
+    x-bind:data-busy="status === 'loading' || createState === 'busy' ? '' : undefined" {{ $attributes->except('data-slot')->cn('min-w-0') }}>
     @if ($multiple)
         <div data-slot="combobox-chips" x-ref="anchor" class="{{ \Nasaq\Cn::merge($group, 'flex-wrap px-1.5 py-1') }}">
             <template x-for="v in selected()" :key="v">

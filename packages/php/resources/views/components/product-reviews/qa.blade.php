@@ -23,7 +23,7 @@
     ];
     $hide = 'display: none';
 @endphp
-<section data-slot="product-qa" x-data="nqProductQA(@js($config))" x-id="['nq-qa']" :aria-labelledby="$id('nq-qa')" {{ $attributes->cn('flex flex-col gap-5') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'product-qa') }}" x-data="nqProductQA(@js($config))" x-id="['nq-qa']" :aria-labelledby="$id('nq-qa')" {{ $attributes->except('data-slot')->cn('flex flex-col gap-5') }}>
     <header class="flex flex-col gap-1">
         <h2 :id="$id('nq-qa')" class="text-h2 text-foreground" x-text="t.qaTitle"></h2>
         <p class="text-caption text-muted-foreground" x-text="qaCountText"></p>

@@ -7,7 +7,7 @@
     $locale ??= app()->getLocale();
     $label = $attributes->get('aria-label') ?? ($labels['couriers'] ?? (str_starts_with($locale, 'ar') ? 'السائقون' : 'Couriers'));
 @endphp
-<ul role="list" data-slot="courier-list" aria-label="{{ $label }}" {{ $attributes->except('aria-label')->cn('flex flex-col gap-2') }}>
+<ul role="list" data-slot="{{ $attributes->get('data-slot', 'courier-list') }}" aria-label="{{ $label }}" {{ $attributes->except('data-slot')->except('aria-label')->cn('flex flex-col gap-2') }}>
     @foreach ($couriers as $courier)
         <li>
             <x-nq::courier-card

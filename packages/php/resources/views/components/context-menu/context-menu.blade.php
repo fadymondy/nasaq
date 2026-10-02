@@ -2,4 +2,4 @@
      Parts: trigger (the region), content, item (variant="danger", shortcut, disabled), checkbox-item, radio-group + radio-item, group, label, separator, shortcut, sub + sub-trigger + sub-content.
      open: start open (false). open is x-modelable. Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['open' => false])
-<div data-slot="context-menu" x-data="nqContextMenu(@js((bool) $open))" x-modelable="open" {{ $attributes->cn('contents') }}>{{ $slot }}</div>
+<div data-slot="{{ $attributes->get('data-slot', 'context-menu') }}" x-data="nqContextMenu(@js((bool) $open))" x-modelable="open" {{ $attributes->except('data-slot')->cn('contents') }}>{{ $slot }}</div>

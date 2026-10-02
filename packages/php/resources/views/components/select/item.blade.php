@@ -1,8 +1,8 @@
 {{-- <x-nq::select.item value="bug">Bug</x-nq::select.item>
      One choice. value must not be empty. --}}
 @props(['value', 'disabled' => false])
-<div data-slot="select-item" x-bind="item(@js($value), @js((bool) $disabled))"
-    {{ $attributes->cn([
+<div data-slot="{{ $attributes->get('data-slot', 'select-item') }}" x-bind="item(@js($value), @js((bool) $disabled))"
+    {{ $attributes->except('data-slot')->cn([
         'relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none',
         'data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50',
     ]) }}>

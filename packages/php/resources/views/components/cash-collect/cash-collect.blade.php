@@ -66,8 +66,8 @@
     $options = array_filter($options, fn ($v) => $v !== null);
     $hide = 'style="display: none"';
 @endphp
-<section data-slot="cash-collect" x-bind:data-state="state" data-state="{{ $state }}" aria-labelledby="{{ $uid }}-title" x-data="nqCashCollect(@js($options))" x-modelable="collected"
-    {{ $attributes->cn('flex flex-col gap-4 rounded-card border border-border bg-card p-4 sm:p-5') }}>
+<section data-slot="{{ $attributes->get('data-slot', 'cash-collect') }}" x-bind:data-state="state" data-state="{{ $state }}" aria-labelledby="{{ $uid }}-title" x-data="nqCashCollect(@js($options))" x-modelable="collected"
+    {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card p-4 sm:p-5') }}>
     <h2 id="{{ $uid }}-title" class="text-h3 text-foreground">{{ $t['title'] }}</h2>
 
     <dl data-slot="cash-breakdown" class="flex flex-col gap-2">

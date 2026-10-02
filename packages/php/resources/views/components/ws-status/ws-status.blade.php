@@ -29,8 +29,8 @@
     $init = ['state' => $state, 'latencyMs' => $latencyMs, 'retryAt' => $retryMs, 'attempt' => $attempt, 'showLatency' => (bool) $showLatency];
 @endphp
 @if ($variant === 'banner')
-    <div data-slot="ws-status" data-variant="banner" data-state="{{ $state }}" x-data="nqWsStatus(@js($init))" x-modelable="state" x-bind="root"
-        {{ $attributes->class(['group/ws flex flex-col gap-3 rounded-card border p-3 sm:flex-row sm:items-center sm:justify-between', $tone[$state][2]]) }}
+    <div data-slot="{{ $attributes->get('data-slot', 'ws-status') }}" data-variant="banner" data-state="{{ $state }}" x-data="nqWsStatus(@js($init))" x-modelable="state" x-bind="root"
+        {{ $attributes->except('data-slot')->class(['group/ws flex flex-col gap-3 rounded-card border p-3 sm:flex-row sm:items-center sm:justify-between', $tone[$state][2]]) }}
         :class="boxClass()">
         <div class="flex min-w-0 items-start gap-3">
             <span aria-hidden="true" class="mt-0.5 size-4 shrink-0 {{ $tone[$state][0] }}" :class="textClass()">
@@ -47,7 +47,7 @@
                     @foreach ($states as $key => $words)<span x-show="state === '{{ $key }}'" x-cloak {!! $hide($state === $key) !!}>{{ $words[1] }}</span>@endforeach
                 </p>
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
-                    <span data-slot="ws-countdown" class="tabular-nums" x-show="countdownText()" x-cloak x-text="countdownText()" {!! $hide($state === 'reconnecting' && $countdown !== '') !!}>{{ $state === 'reconnecting' ? $countdown : '' }}</span>
+                    <span data-slot="{{ $attributes->get('data-slot', 'ws-countdown') }}" class="tabular-nums" x-show="countdownText()" x-cloak x-text="countdownText()" {!! $hide($state === 'reconnecting' && $countdown !== '') !!}>{{ $state === 'reconnecting' ? $countdown : '' }}</span>
                     <span x-show="state === 'reconnecting' && attempt" x-cloak x-text="attemptText()" {!! $hide($state === 'reconnecting' && $attempt) !!}>{{ $state === 'reconnecting' && $attempt ? $t::t("Attempt {$attempt}", "المحاولة {$attempt}") : '' }}</span>
                     @if ($showLatency)<x-nq::ws-status.latency :ms="$latencyMs" :show="$hasLatency" />@endif
                     <span class="inline-flex gap-1" x-show="state === 'reconnecting' || state === 'offline'" x-cloak {!! $hide(in_array($state, ['reconnecting', 'offline'], true) && $lastMs !== null) !!}>
@@ -69,7 +69,7 @@
 @else
     @php $inline = $variant === 'inline'; @endphp
     <div data-slot="ws-status" data-variant="{{ $variant }}" data-state="{{ $state }}" x-data="nqWsStatus(@js($init))" x-modelable="state" x-bind="root"
-        {{ $attributes->cn($inline ? 'inline-flex flex-wrap items-center gap-2' : ['inline-flex h-7 max-w-full items-center gap-2 rounded-full border border-border bg-card ps-2.5 text-body-sm', $canRetry ? 'pe-1' : 'pe-3']) }}
+        {{ $attributes->except('data-slot')->cn($inline ? 'inline-flex flex-wrap items-center gap-2' : ['inline-flex h-7 max-w-full items-center gap-2 rounded-full border border-border bg-card ps-2.5 text-body-sm', $canRetry ? 'pe-1' : 'pe-3']) }}
         @unless ($inline) :class="canRetry() ? 'pe-1' : 'pe-3'" @endunless>
         <span aria-hidden="true" class="relative flex size-2 shrink-0">
             <span x-show="state === 'connected'" x-cloak {!! $hide($state === 'connected') !!} class="absolute inline-flex size-full rounded-full opacity-60 motion-safe:animate-ping bg-nq-success"></span>

@@ -13,13 +13,13 @@
     $t = array_merge($ar ? ['vsPrevious' => 'مقارنة بالفترة السابقة', 'was' => 'كانت', 'group' => 'المؤشرات الرئيسية'] : ['vsPrevious' => 'vs previous period', 'was' => 'was', 'group' => 'Key metrics'], $labels);
 @endphp
 @if ($loading && count($metrics) === 0)
-    <div data-slot="metric-tiles" aria-busy="true" {{ $attributes->cn('grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3') }}>
+    <div data-slot="{{ $attributes->get('data-slot', 'metric-tiles') }}" aria-busy="true" {{ $attributes->except('data-slot')->cn('grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3') }}>
         @for ($i = 0; $i < $skeletons; $i++)
             <x-nq::stat-card label="" :value="0" loading />
         @endfor
     </div>
 @else
-    <div data-slot="metric-tiles" role="group" aria-label="{{ $t['group'] }}" x-data="nqMetricTiles(@js($selected))" {{ $attributes->cn('grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3') }}>
+    <div data-slot="{{ $attributes->get('data-slot', 'metric-tiles') }}" role="group" aria-label="{{ $t['group'] }}" x-data="nqMetricTiles(@js($selected))" {{ $attributes->except('data-slot')->cn('grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3') }}>
         @foreach ($metrics as $m)
             @php
                 $format = $m['format'] ?? [];

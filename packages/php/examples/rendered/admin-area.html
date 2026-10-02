@@ -1,0 +1,659 @@
+<div class="h-[32rem] w-full overflow-hidden rounded-floating border border-border">
+    <div data-slot="admin-area" class="flex h-full min-h-0 w-full flex-col">
+        <div data-slot="icon-rail-sidebar" x-data="nqIconRail(JSON.parse('{\u0022section\u0022:\u0022overview\u0022,\u0022item\u0022:\u0022users\u0022,\u0022subOpen\u0022:true,\u0022subs\u0022:{\u0022overview\u0022:true,\u0022people\u0022:true,\u0022tenants\u0022:true,\u0022security\u0022:true},\u0022owners\u0022:{\u0022dashboard\u0022:\u0022overview\u0022,\u0022activity\u0022:\u0022overview\u0022,\u0022users\u0022:\u0022people\u0022,\u0022roles\u0022:\u0022people\u0022,\u0022invitations\u0022:\u0022people\u0022,\u0022workspaces\u0022:\u0022tenants\u0022,\u0022plans\u0022:\u0022tenants\u0022,\u0022billing\u0022:\u0022tenants\u0022,\u0022invoices\u0022:\u0022tenants\u0022,\u0022coupons\u0022:\u0022tenants\u0022,\u0022audit\u0022:\u0022security\u0022,\u0022sessions\u0022:\u0022security\u0022,\u0022api-keys\u0022:\u0022security\u0022}}'))" x-modelable="section"
+    class="flex h-full w-full bg-background text-foreground min-h-0 flex-1">
+    <div class="hidden shrink-0 md:flex">
+        <nav aria-label="Sections" data-slot="icon-rail" class="flex w-14 shrink-0 flex-col items-center gap-3 border-e border-border bg-card py-3">
+    <div data-slot="icon-rail-brand" class="flex size-10 shrink-0 items-center justify-center"><span class="flex size-9 items-center justify-center rounded-control bg-primary text-primary-foreground [&_svg]:size-5">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                </span></div>    <ul class="flex min-h-0 flex-1 flex-col items-center gap-1 overflow-y-auto px-2 [scrollbar-width:none]" x-on:keydown="railKey($event)">
+                                <li>
+                <a data-rail-button href="#" aria-label="Overview" title="Overview"
+                    x-bind:data-active="section === 'overview'" x-bind:aria-current="section === 'overview' ? 'page' : null"
+                     aria-controls="nq-rail-sub-036dad-overview" x-bind:aria-expanded="section === 'overview' ? subOpen : null"                     x-on:click="pickSection('overview', false, $event, false)" class="relative flex size-10 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-2 data-[active=true]:before:-start-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-nq-accent [&amp;_svg]:size-5 [&amp;_svg]:shrink-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="7" height="9" x="3" y="3" rx="1"/>
+  <rect width="7" height="5" x="14" y="3" rx="1"/>
+  <rect width="7" height="9" x="14" y="12" rx="1"/>
+  <rect width="7" height="5" x="3" y="16" rx="1"/>
+</svg>                                    </a>
+            </li>
+                                <li>
+                <a data-rail-button href="#" aria-label="People" title="People"
+                    x-bind:data-active="section === 'people'" x-bind:aria-current="section === 'people' ? 'page' : null"
+                     aria-controls="nq-rail-sub-036dad-people" x-bind:aria-expanded="section === 'people' ? subOpen : null"                     x-on:click="pickSection('people', false, $event, false)" class="relative flex size-10 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-2 data-[active=true]:before:-start-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-nq-accent [&amp;_svg]:size-5 [&amp;_svg]:shrink-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg>                                    </a>
+            </li>
+                                <li>
+                <a data-rail-button href="#" aria-label="Tenants" title="Tenants"
+                    x-bind:data-active="section === 'tenants'" x-bind:aria-current="section === 'tenants' ? 'page' : null"
+                     aria-controls="nq-rail-sub-036dad-tenants" x-bind:aria-expanded="section === 'tenants' ? subOpen : null"                     x-on:click="pickSection('tenants', false, $event, false)" class="relative flex size-10 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-2 data-[active=true]:before:-start-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-nq-accent [&amp;_svg]:size-5 [&amp;_svg]:shrink-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 12h4"/>
+  <path d="M10 8h4"/>
+  <path d="M14 21v-3a2 2 0 0 0-4 0v3"/>
+  <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/>
+  <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/>
+</svg>                                    </a>
+            </li>
+                                <li>
+                <a data-rail-button href="#" aria-label="Security" title="Security"
+                    x-bind:data-active="section === 'security'" x-bind:aria-current="section === 'security' ? 'page' : null"
+                     aria-controls="nq-rail-sub-036dad-security" x-bind:aria-expanded="section === 'security' ? subOpen : null"                     x-on:click="pickSection('security', false, $event, false)" class="relative flex size-10 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-2 data-[active=true]:before:-start-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-nq-accent [&amp;_svg]:size-5 [&amp;_svg]:shrink-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                                    </a>
+            </li>
+                                <li>
+                <a data-rail-button href="#" aria-label="Settings" title="Settings"
+                    x-bind:data-active="section === 'settings'" x-bind:aria-current="section === 'settings' ? 'page' : null"
+                                        x-on:click="pickSection('settings', false, $event, false)" class="relative flex size-10 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-2 data-[active=true]:before:-start-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-nq-accent [&amp;_svg]:size-5 [&amp;_svg]:shrink-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg>                                    </a>
+            </li>
+            </ul>
+    <div data-slot="icon-rail-footer" class="flex shrink-0 flex-col items-center gap-2"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><button type="button" aria-label="Your account: Sara Alharbi"
+                        class="rounded-full outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Sara Alharbi" >SA</span>
+    </span>
+                    </button></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Sara Alharbi · sara@example.com</div>
+    </template>
+</div></div></nav>
+        <nav  id="nq-rail-sub-036dad-overview"  aria-label="Section navigation: Overview" data-slot="icon-rail-sub" data-section="overview"
+        x-data="{ rail: false, collapsed: false }" x-show="section === 'overview' &amp;&amp; subOpen"
+        class="flex w-60 shrink-0 flex-col gap-2 overflow-hidden border-e border-border bg-background p-shell">
+        <div class="flex h-8 shrink-0 items-center gap-1 ps-2">
+            <h2 class="min-w-0 flex-1 truncate text-label text-foreground">Overview</h2>
+                            <button data-slot="button"
+     type="button"                     aria-label="Hide sub-menu" title="Hide sub-menu" x-on:click="setSub(false)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="M9 3v18"/>
+  <path d="m16 15-3-3 3-3"/>
+</svg></button>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text self-start">Production</span>        <div data-slot="sidebar-content" class="-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]"><div data-slot="sidebar-group" role="group"         class="flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0">
+                <div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Dashboard' : null"         href="#" x-on:click="pickItem(`dashboard`, false, $event)" x-bind:aria-current="(item === `dashboard`) ? `page` : null" x-bind:class="(item === `dashboard`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="7" height="9" x="3" y="3" rx="1"/>
+  <rect width="7" height="5" x="14" y="3" rx="1"/>
+  <rect width="7" height="9" x="14" y="12" rx="1"/>
+  <rect width="7" height="5" x="3" y="16" rx="1"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Dashboard</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Dashboard</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Activity' : null"         href="#" x-on:click="pickItem(`activity`, false, $event)" x-bind:aria-current="(item === `activity`) ? `page` : null" x-bind:class="(item === `activity`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Activity</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Activity</div>
+    </template>
+</div></div>
+    </div></div>
+            </nav>
+            <nav  id="nq-rail-sub-036dad-people"  aria-label="Section navigation: People" data-slot="icon-rail-sub" data-section="people"
+        x-data="{ rail: false, collapsed: false }" x-show="section === 'people' &amp;&amp; subOpen"
+        class="flex w-60 shrink-0 flex-col gap-2 overflow-hidden border-e border-border bg-background p-shell">
+        <div class="flex h-8 shrink-0 items-center gap-1 ps-2">
+            <h2 class="min-w-0 flex-1 truncate text-label text-foreground">People</h2>
+                            <button data-slot="button"
+     type="button"                     aria-label="Hide sub-menu" title="Hide sub-menu" x-on:click="setSub(false)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="M9 3v18"/>
+  <path d="m16 15-3-3 3-3"/>
+</svg></button>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text self-start">Production</span>        <div data-slot="sidebar-content" class="-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]"><div data-slot="sidebar-group" role="group"         class="flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0">
+                <div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Users' : null"         href="#" x-on:click="pickItem(`users`, false, $event)" x-bind:aria-current="(item === `users`) ? `page` : null" x-bind:class="(item === `users`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Users</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Users</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Roles' : null"         href="#" x-on:click="pickItem(`roles`, false, $event)" x-bind:aria-current="(item === `roles`) ? `page` : null" x-bind:class="(item === `roles`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 15H6a4 4 0 0 0-4 4v2"/>
+  <path d="m14.305 16.53.923-.382"/>
+  <path d="m15.228 13.852-.923-.383"/>
+  <path d="m16.852 12.228-.383-.923"/>
+  <path d="m16.852 17.772-.383.924"/>
+  <path d="m19.148 12.228.383-.923"/>
+  <path d="m19.53 18.696-.382-.924"/>
+  <path d="m20.772 13.852.924-.383"/>
+  <path d="m20.772 16.148.924.383"/>
+  <circle cx="18" cy="15" r="3"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Roles</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Roles</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Invitations' : null"         href="#" x-on:click="pickItem(`invitations`, false, $event)" x-bind:aria-current="(item === `invitations`) ? `page` : null" x-bind:class="(item === `invitations`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  <rect x="2" y="4" width="20" height="16" rx="2"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Invitations</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Invitations</div>
+    </template>
+</div></div>
+    </div></div>
+            </nav>
+            <nav  id="nq-rail-sub-036dad-tenants"  aria-label="Section navigation: Tenants" data-slot="icon-rail-sub" data-section="tenants"
+        x-data="{ rail: false, collapsed: false }" x-show="section === 'tenants' &amp;&amp; subOpen"
+        class="flex w-60 shrink-0 flex-col gap-2 overflow-hidden border-e border-border bg-background p-shell">
+        <div class="flex h-8 shrink-0 items-center gap-1 ps-2">
+            <h2 class="min-w-0 flex-1 truncate text-label text-foreground">Tenants</h2>
+                            <button data-slot="button"
+     type="button"                     aria-label="Hide sub-menu" title="Hide sub-menu" x-on:click="setSub(false)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="M9 3v18"/>
+  <path d="m16 15-3-3 3-3"/>
+</svg></button>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text self-start">Production</span>        <div data-slot="sidebar-content" class="-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]"><div data-slot="sidebar-group" role="group"         class="flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0">
+                <div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Workspaces' : null"         href="#" x-on:click="pickItem(`workspaces`, false, $event)" x-bind:aria-current="(item === `workspaces`) ? `page` : null" x-bind:class="(item === `workspaces`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 12h4"/>
+  <path d="M10 8h4"/>
+  <path d="M14 21v-3a2 2 0 0 0-4 0v3"/>
+  <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/>
+  <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Workspaces</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Workspaces</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Plans' : null"         href="#" x-on:click="pickItem(`plans`, false, $event)" x-bind:aria-current="(item === `plans`) ? `page` : null" x-bind:class="(item === `plans`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="14" x="2" y="5" rx="2"/>
+  <line x1="2" x2="22" y1="10" y2="10"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Plans</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Plans</div>
+    </template>
+</div>
+                                                                                                <div data-slot="sidebar-nest" class="contents">
+    <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     class="group/nest flex flex-col group-data-collapsed/sidebar:hidden">
+    <button type="button" x-on:click="toggle()" x-bind:aria-expanded="open"
+            class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 ">
+            <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+  <path d="M13 5v2"/>
+  <path d="M13 17v2"/>
+  <path d="M13 11v2"/>
+</svg></span>            <span class="min-w-0 flex-1 truncate">Billing</span>
+            <svg aria-hidden="true" class="ms-auto size-3.5! text-muted-foreground transition-[rotate] duration-200 ease-nq group-data-open/nest:rotate-90 rtl:-scale-x-100 rtl:group-data-open/nest:-rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>        </button>
+        <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><div class="ms-4 mt-0.5 flex flex-col gap-0.5 border-s border-border ps-2"><a data-slot="sidebar-sub-item"  href="#" x-on:click="pickItem(`invoices`, false, $event)" x-bind:aria-current="(item === `invoices`) ? `page` : null" x-bind:class="(item === `invoices`) ? `bg-nq-selected font-medium text-foreground` : ``" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Invoices</a>
+                                                                                                        <a data-slot="sidebar-sub-item"  href="#" x-on:click="pickItem(`coupons`, false, $event)" x-bind:aria-current="(item === `coupons`) ? `page` : null" x-bind:class="(item === `coupons`) ? `bg-nq-selected font-medium text-foreground` : ``" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Coupons</a></div></div>
+</div>
+    <div data-slot="sidebar-nest-rail" x-data="nqRailFlyout" x-id="['nq-flyout']" class="hidden group-data-collapsed/sidebar:contents">
+        <button type="button" x-ref="trigger" aria-label="Billing" aria-haspopup="dialog" x-bind:aria-expanded="open"
+            x-on:click="toggle()" x-on:pointerenter="hover(true)" x-on:pointerleave="hover(false)" x-bind:data-popup-open="open ? '' : undefined"
+            class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 justify-center px-0 size-control data-popup-open:bg-nq-hover data-popup-open:text-foreground ">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+  <path d="M13 5v2"/>
+  <path d="M13 17v2"/>
+  <path d="M13 11v2"/>
+</svg>
+        </button>
+        <template x-teleport="body">
+            <div data-slot="sidebar-nest-flyout" x-bind="popup" x-nq-presence="open" x-anchor.right-start.offset.8="$refs.trigger"
+                class="z-50 w-auto min-w-44 rounded-floating border border-border bg-popover p-1 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                <div :id="$id('nq-flyout', 'title')" class="px-2 pt-1 pb-1.5 text-caption font-medium text-muted-foreground">Billing</div>
+                <div class="flex flex-col gap-0.5"><a data-slot="sidebar-sub-item"  href="#" x-on:click="pickItem(`invoices`, false, $event)" x-bind:aria-current="(item === `invoices`) ? `page` : null" x-bind:class="(item === `invoices`) ? `bg-nq-selected font-medium text-foreground` : ``" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Invoices</a>
+                                                                                                        <a data-slot="sidebar-sub-item"  href="#" x-on:click="pickItem(`coupons`, false, $event)" x-bind:aria-current="(item === `coupons`) ? `page` : null" x-bind:class="(item === `coupons`) ? `bg-nq-selected font-medium text-foreground` : ``" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Coupons</a></div>
+            </div>
+        </template>
+    </div>
+</div></div>
+    </div></div>
+            </nav>
+            <nav  id="nq-rail-sub-036dad-security"  aria-label="Section navigation: Security" data-slot="icon-rail-sub" data-section="security"
+        x-data="{ rail: false, collapsed: false }" x-show="section === 'security' &amp;&amp; subOpen"
+        class="flex w-60 shrink-0 flex-col gap-2 overflow-hidden border-e border-border bg-background p-shell">
+        <div class="flex h-8 shrink-0 items-center gap-1 ps-2">
+            <h2 class="min-w-0 flex-1 truncate text-label text-foreground">Security</h2>
+                            <button data-slot="button"
+     type="button"                     aria-label="Hide sub-menu" title="Hide sub-menu" x-on:click="setSub(false)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="M9 3v18"/>
+  <path d="m16 15-3-3 3-3"/>
+</svg></button>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text self-start">Production</span>        <div data-slot="sidebar-content" class="-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]"><div data-slot="sidebar-group" role="group"         class="flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0">
+                <div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Audit log' : null"         href="#" x-on:click="pickItem(`audit`, false, $event)" x-bind:aria-current="(item === `audit`) ? `page` : null" x-bind:class="(item === `audit`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 22h2a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v2.85"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+  <path d="M8 14v2.2l1.6 1"/>
+  <circle cx="8" cy="16" r="6"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Audit log</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Audit log</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Sessions' : null"         href="#" x-on:click="pickItem(`sessions`, false, $event)" x-bind:aria-current="(item === `sessions`) ? `page` : null" x-bind:class="(item === `sessions`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="M6.376 18.91a6 6 0 0 1 11.249.003"/>
+  <circle cx="12" cy="11" r="4"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Sessions</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Sessions</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'API keys' : null"         href="#" x-on:click="pickItem(`api-keys`, false, $event)" x-bind:aria-current="(item === `api-keys`) ? `page` : null" x-bind:class="(item === `api-keys`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+  <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">API keys</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">API keys</div>
+    </template>
+</div></div>
+    </div></div>
+            </nav>
+        </div>
+    <div class="flex min-w-0 flex-1 flex-col">
+        <div data-slot="sheet" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" class="contents">
+    <div data-slot="icon-rail-mobile-bar" class="flex h-12 shrink-0 items-center gap-2 border-b border-border px-3 md:hidden">
+                <button data-slot="sheet-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" aria-label="Open navigation" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 5h16"/>
+  <path d="M4 12h16"/>
+  <path d="M4 19h16"/>
+</svg></button>
+                <span class="min-w-0 flex-1 truncate text-label" x-text="JSON.parse('{\u0022overview\u0022:\u0022Overview\u0022,\u0022people\u0022:\u0022People\u0022,\u0022tenants\u0022:\u0022Tenants\u0022,\u0022security\u0022:\u0022Security\u0022,\u0022settings\u0022:\u0022Settings\u0022}')[section]"></span>
+            </div>
+            <template x-teleport="body">
+    <div data-slot="sheet-portal">
+        <div data-slot="sheet-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 dark:bg-nq-bg/60"></div>
+        <div data-slot="sheet-content" data-side="start" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed z-50 flex flex-col bg-popover text-popover-foreground outline-none shadow-floating transition-[translate,opacity] duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 inset-y-0 start-0 h-dvh border-e border-border data-starting-style:-translate-x-8 data-ending-style:-translate-x-8 rtl:data-starting-style:translate-x-8 rtl:data-ending-style:translate-x-8 w-[min(20rem,90vw)] p-0">
+            <h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-label text-foreground sr-only">Navigation</h2>
+                <div data-slot="sheet-body" class="flex-1 overflow-y-auto overscroll-contain flex h-full min-h-0 p-0"><nav aria-label="Sections" data-slot="icon-rail" class="flex w-14 shrink-0 flex-col items-center gap-3 border-e border-border bg-card py-3">
+    <div data-slot="icon-rail-brand" class="flex size-10 shrink-0 items-center justify-center"><span class="flex size-9 items-center justify-center rounded-control bg-primary text-primary-foreground [&_svg]:size-5">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                </span></div>    <ul class="flex min-h-0 flex-1 flex-col items-center gap-1 overflow-y-auto px-2 [scrollbar-width:none]" x-on:keydown="railKey($event)">
+                                <li>
+                <a data-rail-button href="#" aria-label="Overview" title="Overview"
+                    x-bind:data-active="section === 'overview'" x-bind:aria-current="section === 'overview' ? 'page' : null"
+                                        x-on:click="pickSection('overview', false, $event, true) ? close() : null" class="relative flex size-10 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-2 data-[active=true]:before:-start-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-nq-accent [&amp;_svg]:size-5 [&amp;_svg]:shrink-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="7" height="9" x="3" y="3" rx="1"/>
+  <rect width="7" height="5" x="14" y="3" rx="1"/>
+  <rect width="7" height="9" x="14" y="12" rx="1"/>
+  <rect width="7" height="5" x="3" y="16" rx="1"/>
+</svg>                                    </a>
+            </li>
+                                <li>
+                <a data-rail-button href="#" aria-label="People" title="People"
+                    x-bind:data-active="section === 'people'" x-bind:aria-current="section === 'people' ? 'page' : null"
+                                        x-on:click="pickSection('people', false, $event, true) ? close() : null" class="relative flex size-10 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-2 data-[active=true]:before:-start-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-nq-accent [&amp;_svg]:size-5 [&amp;_svg]:shrink-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg>                                    </a>
+            </li>
+                                <li>
+                <a data-rail-button href="#" aria-label="Tenants" title="Tenants"
+                    x-bind:data-active="section === 'tenants'" x-bind:aria-current="section === 'tenants' ? 'page' : null"
+                                        x-on:click="pickSection('tenants', false, $event, true) ? close() : null" class="relative flex size-10 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-2 data-[active=true]:before:-start-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-nq-accent [&amp;_svg]:size-5 [&amp;_svg]:shrink-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 12h4"/>
+  <path d="M10 8h4"/>
+  <path d="M14 21v-3a2 2 0 0 0-4 0v3"/>
+  <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/>
+  <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/>
+</svg>                                    </a>
+            </li>
+                                <li>
+                <a data-rail-button href="#" aria-label="Security" title="Security"
+                    x-bind:data-active="section === 'security'" x-bind:aria-current="section === 'security' ? 'page' : null"
+                                        x-on:click="pickSection('security', false, $event, true) ? close() : null" class="relative flex size-10 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-2 data-[active=true]:before:-start-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-nq-accent [&amp;_svg]:size-5 [&amp;_svg]:shrink-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                                    </a>
+            </li>
+                                <li>
+                <a data-rail-button href="#" aria-label="Settings" title="Settings"
+                    x-bind:data-active="section === 'settings'" x-bind:aria-current="section === 'settings' ? 'page' : null"
+                                        x-on:click="pickSection('settings', false, $event, true) ? close() : null" class="relative flex size-10 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-[active=true]:bg-nq-selected data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-2 data-[active=true]:before:-start-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-nq-accent [&amp;_svg]:size-5 [&amp;_svg]:shrink-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg>                                    </a>
+            </li>
+            </ul>
+    <div data-slot="icon-rail-footer" class="flex shrink-0 flex-col items-center gap-2"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><button type="button" aria-label="Your account: Sara Alharbi"
+                        class="rounded-full outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Sara Alharbi" >SA</span>
+    </span>
+                    </button></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Sara Alharbi · sara@example.com</div>
+    </template>
+</div></div></nav>
+                    <nav  aria-label="Section navigation: Overview" data-slot="icon-rail-sub" data-section="overview"
+        x-data="{ rail: false, collapsed: false }" x-show="section === 'overview'"
+        class="flex w-60 shrink-0 flex-col gap-2 overflow-hidden border-e border-border bg-background p-shell">
+        <div class="flex h-8 shrink-0 items-center gap-1 ps-2">
+            <h2 class="min-w-0 flex-1 truncate text-label text-foreground">Overview</h2>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text self-start">Production</span>        <div data-slot="sidebar-content" class="-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]"><div data-slot="sidebar-group" role="group"         class="flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0">
+                <div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Dashboard' : null"         href="#" x-on:click="pickItem(`dashboard`, false, $event) ? close() : null" x-bind:aria-current="(item === `dashboard`) ? `page` : null" x-bind:class="(item === `dashboard`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="7" height="9" x="3" y="3" rx="1"/>
+  <rect width="7" height="5" x="14" y="3" rx="1"/>
+  <rect width="7" height="9" x="14" y="12" rx="1"/>
+  <rect width="7" height="5" x="3" y="16" rx="1"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Dashboard</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Dashboard</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Activity' : null"         href="#" x-on:click="pickItem(`activity`, false, $event) ? close() : null" x-bind:aria-current="(item === `activity`) ? `page` : null" x-bind:class="(item === `activity`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Activity</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Activity</div>
+    </template>
+</div></div>
+    </div></div>
+            </nav>
+            <nav  aria-label="Section navigation: People" data-slot="icon-rail-sub" data-section="people"
+        x-data="{ rail: false, collapsed: false }" x-show="section === 'people'"
+        class="flex w-60 shrink-0 flex-col gap-2 overflow-hidden border-e border-border bg-background p-shell">
+        <div class="flex h-8 shrink-0 items-center gap-1 ps-2">
+            <h2 class="min-w-0 flex-1 truncate text-label text-foreground">People</h2>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text self-start">Production</span>        <div data-slot="sidebar-content" class="-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]"><div data-slot="sidebar-group" role="group"         class="flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0">
+                <div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Users' : null"         href="#" x-on:click="pickItem(`users`, false, $event) ? close() : null" x-bind:aria-current="(item === `users`) ? `page` : null" x-bind:class="(item === `users`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Users</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Users</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Roles' : null"         href="#" x-on:click="pickItem(`roles`, false, $event) ? close() : null" x-bind:aria-current="(item === `roles`) ? `page` : null" x-bind:class="(item === `roles`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 15H6a4 4 0 0 0-4 4v2"/>
+  <path d="m14.305 16.53.923-.382"/>
+  <path d="m15.228 13.852-.923-.383"/>
+  <path d="m16.852 12.228-.383-.923"/>
+  <path d="m16.852 17.772-.383.924"/>
+  <path d="m19.148 12.228.383-.923"/>
+  <path d="m19.53 18.696-.382-.924"/>
+  <path d="m20.772 13.852.924-.383"/>
+  <path d="m20.772 16.148.924.383"/>
+  <circle cx="18" cy="15" r="3"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Roles</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Roles</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Invitations' : null"         href="#" x-on:click="pickItem(`invitations`, false, $event) ? close() : null" x-bind:aria-current="(item === `invitations`) ? `page` : null" x-bind:class="(item === `invitations`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  <rect x="2" y="4" width="20" height="16" rx="2"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Invitations</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Invitations</div>
+    </template>
+</div></div>
+    </div></div>
+            </nav>
+            <nav  aria-label="Section navigation: Tenants" data-slot="icon-rail-sub" data-section="tenants"
+        x-data="{ rail: false, collapsed: false }" x-show="section === 'tenants'"
+        class="flex w-60 shrink-0 flex-col gap-2 overflow-hidden border-e border-border bg-background p-shell">
+        <div class="flex h-8 shrink-0 items-center gap-1 ps-2">
+            <h2 class="min-w-0 flex-1 truncate text-label text-foreground">Tenants</h2>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text self-start">Production</span>        <div data-slot="sidebar-content" class="-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]"><div data-slot="sidebar-group" role="group"         class="flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0">
+                <div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Workspaces' : null"         href="#" x-on:click="pickItem(`workspaces`, false, $event) ? close() : null" x-bind:aria-current="(item === `workspaces`) ? `page` : null" x-bind:class="(item === `workspaces`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 12h4"/>
+  <path d="M10 8h4"/>
+  <path d="M14 21v-3a2 2 0 0 0-4 0v3"/>
+  <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/>
+  <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Workspaces</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Workspaces</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Plans' : null"         href="#" x-on:click="pickItem(`plans`, false, $event) ? close() : null" x-bind:aria-current="(item === `plans`) ? `page` : null" x-bind:class="(item === `plans`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="14" x="2" y="5" rx="2"/>
+  <line x1="2" x2="22" y1="10" y2="10"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Plans</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Plans</div>
+    </template>
+</div>
+                                                                                                <div data-slot="sidebar-nest" class="contents">
+    <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     class="group/nest flex flex-col group-data-collapsed/sidebar:hidden">
+    <button type="button" x-on:click="toggle()" x-bind:aria-expanded="open"
+            class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 ">
+            <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+  <path d="M13 5v2"/>
+  <path d="M13 17v2"/>
+  <path d="M13 11v2"/>
+</svg></span>            <span class="min-w-0 flex-1 truncate">Billing</span>
+            <svg aria-hidden="true" class="ms-auto size-3.5! text-muted-foreground transition-[rotate] duration-200 ease-nq group-data-open/nest:rotate-90 rtl:-scale-x-100 rtl:group-data-open/nest:-rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>        </button>
+        <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><div class="ms-4 mt-0.5 flex flex-col gap-0.5 border-s border-border ps-2"><a data-slot="sidebar-sub-item"  href="#" x-on:click="pickItem(`invoices`, false, $event) ? close() : null" x-bind:aria-current="(item === `invoices`) ? `page` : null" x-bind:class="(item === `invoices`) ? `bg-nq-selected font-medium text-foreground` : ``" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Invoices</a>
+                                                                                                        <a data-slot="sidebar-sub-item"  href="#" x-on:click="pickItem(`coupons`, false, $event) ? close() : null" x-bind:aria-current="(item === `coupons`) ? `page` : null" x-bind:class="(item === `coupons`) ? `bg-nq-selected font-medium text-foreground` : ``" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Coupons</a></div></div>
+</div>
+    <div data-slot="sidebar-nest-rail" x-data="nqRailFlyout" x-id="['nq-flyout']" class="hidden group-data-collapsed/sidebar:contents">
+        <button type="button" x-ref="trigger" aria-label="Billing" aria-haspopup="dialog" x-bind:aria-expanded="open"
+            x-on:click="toggle()" x-on:pointerenter="hover(true)" x-on:pointerleave="hover(false)" x-bind:data-popup-open="open ? '' : undefined"
+            class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 justify-center px-0 size-control data-popup-open:bg-nq-hover data-popup-open:text-foreground ">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+  <path d="M13 5v2"/>
+  <path d="M13 17v2"/>
+  <path d="M13 11v2"/>
+</svg>
+        </button>
+        <template x-teleport="body">
+            <div data-slot="sidebar-nest-flyout" x-bind="popup" x-nq-presence="open" x-anchor.right-start.offset.8="$refs.trigger"
+                class="z-50 w-auto min-w-44 rounded-floating border border-border bg-popover p-1 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                <div :id="$id('nq-flyout', 'title')" class="px-2 pt-1 pb-1.5 text-caption font-medium text-muted-foreground">Billing</div>
+                <div class="flex flex-col gap-0.5"><a data-slot="sidebar-sub-item"  href="#" x-on:click="pickItem(`invoices`, false, $event) ? close() : null" x-bind:aria-current="(item === `invoices`) ? `page` : null" x-bind:class="(item === `invoices`) ? `bg-nq-selected font-medium text-foreground` : ``" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Invoices</a>
+                                                                                                        <a data-slot="sidebar-sub-item"  href="#" x-on:click="pickItem(`coupons`, false, $event) ? close() : null" x-bind:aria-current="(item === `coupons`) ? `page` : null" x-bind:class="(item === `coupons`) ? `bg-nq-selected font-medium text-foreground` : ``" class="flex h-[calc(var(--spacing-nav-row)-4px)] min-h-[var(--nq-touch-min,0px)] items-center truncate rounded-control px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Coupons</a></div>
+            </div>
+        </template>
+    </div>
+</div></div>
+    </div></div>
+            </nav>
+            <nav  aria-label="Section navigation: Security" data-slot="icon-rail-sub" data-section="security"
+        x-data="{ rail: false, collapsed: false }" x-show="section === 'security'"
+        class="flex w-60 shrink-0 flex-col gap-2 overflow-hidden border-e border-border bg-background p-shell">
+        <div class="flex h-8 shrink-0 items-center gap-1 ps-2">
+            <h2 class="min-w-0 flex-1 truncate text-label text-foreground">Security</h2>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text self-start">Production</span>        <div data-slot="sidebar-content" class="-mx-1 flex min-h-0 flex-1 flex-col gap-[calc(var(--spacing-shell)+--spacing(1))] overflow-y-auto overflow-x-hidden overscroll-contain px-1 [scrollbar-width:thin]"><div data-slot="sidebar-group" role="group"         class="flex flex-col group-data-collapsed/sidebar:border-t group-data-collapsed/sidebar:border-border group-data-collapsed/sidebar:pt-3 group-data-collapsed/sidebar:first:border-0 group-data-collapsed/sidebar:first:pt-0">
+                <div class="flex flex-col gap-0.5"><div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Audit log' : null"         href="#" x-on:click="pickItem(`audit`, false, $event) ? close() : null" x-bind:aria-current="(item === `audit`) ? `page` : null" x-bind:class="(item === `audit`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 22h2a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v2.85"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+  <path d="M8 14v2.2l1.6 1"/>
+  <circle cx="8" cy="16" r="6"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Audit log</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Audit log</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'Sessions' : null"         href="#" x-on:click="pickItem(`sessions`, false, $event) ? close() : null" x-bind:aria-current="(item === `sessions`) ? `page` : null" x-bind:class="(item === `sessions`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+  <path d="M6.376 18.91a6 6 0 0 1 11.249.003"/>
+  <circle cx="12" cy="11" r="4"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">Sessions</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">Sessions</div>
+    </template>
+</div>
+                                                                                                                            <div data-slot="tooltip" x-data="nqTooltip(600, false)" x-modelable="open" x-id="['nq-tooltip']" class="contents">
+    <span data-slot="tooltip-trigger" class="contents"><a data-slot="sidebar-item"          x-bind:aria-label="(rail && collapsed) ? 'API keys' : null"         href="#" x-on:click="pickItem(`api-keys`, false, $event) ? close() : null" x-bind:aria-current="(item === `api-keys`) ? `page` : null" x-bind:class="(item === `api-keys`) ? `bg-nq-selected font-medium text-foreground` : ``" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control px-2 text-start text-body-sm text-sidebar-foreground transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 group-data-collapsed/sidebar:size-control group-data-collapsed/sidebar:justify-center group-data-collapsed/sidebar:px-0">
+        <span data-slot="sidebar-icon" class="contents"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+  <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+</svg></span>        <span class="min-w-0 flex-1 truncate group-data-collapsed/sidebar:hidden">API keys</span>
+            </a></span>
+    <template x-teleport="body">
+        <div data-slot="tooltip-content" x-bind="popup" x-nq-presence="open" x-anchor.right.offset.6="triggerEl"
+            x-bind:class="rail &amp;&amp; collapsed ? &#039;&#039; : &#039;hidden&#039;" class="z-50 max-w-64 rounded-control bg-foreground px-2 py-1 text-caption text-background transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">API keys</div>
+    </template>
+</div></div>
+    </div></div>
+            </nav></div>
+                    </div>
+    </div>
+</template>
+</div>
+        <div x-show="hasSub && ! subOpen" class="hidden px-3 pt-3 md:block">
+            <button data-slot="button"
+     type="button"                     aria-label="Show sub-menu" title="Show sub-menu" x-bind:aria-controls="&#039;nq-rail-sub-036dad-&#039; + section" x-bind:aria-expanded="subOpen" x-on:click="setSub(true)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="M9 3v18"/>
+  <path d="m14 9 3 3-3 3"/>
+</svg></button>
+        </div>
+        <div data-slot="icon-rail-content" class="min-h-0 flex-1 overflow-y-auto"><div data-slot="admin-page" class="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 sm:p-6">
+    <header class="flex flex-col gap-3">
+                    <nav data-slot="breadcrumb" aria-label="Breadcrumb"><ol data-slot="breadcrumb-list" class="flex min-w-0 flex-wrap items-center gap-1.5 text-body-sm text-muted-foreground"><li data-slot="breadcrumb-item" class="inline-flex min-w-0 items-center gap-1.5"><span data-slot="breadcrumb-page" aria-current="page" class="truncate text-foreground">People</span></li>
+                                            <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&_svg]:size-3.5">
+            <svg data-slot="icon" aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>    </li>
+                        <li data-slot="breadcrumb-item" class="inline-flex min-w-0 items-center gap-1.5"><span data-slot="breadcrumb-page" aria-current="page" class="truncate text-foreground">Users</span></li></ol></nav>
+                <div class="flex flex-wrap items-start justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <h1 class="text-h1 text-foreground">Users</h1>
+                            </div>
+                    </div>
+    </header>
+    <p class="text-body-sm text-muted-foreground">Your screen goes here.</p>
+</div></div>
+    </div>
+</div>
+</div>
+</div>

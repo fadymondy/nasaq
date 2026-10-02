@@ -57,8 +57,8 @@
     $orderOn = $orderDiscount !== false && $orderDiscount !== null;
     $odType = $od['type'] ?? 'percent';
 @endphp
-<div data-slot="line-item-editor" data-tax-mode="{{ $taxMode }}" x-data="nqLineItemEditor(@js($config))" x-id="['nq-lines']"
-    {{ $attributes->cn('@container flex min-w-0 flex-col gap-4') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'line-item-editor') }}" data-tax-mode="{{ $taxMode }}" x-data="nqLineItemEditor(@js($config))" x-id="['nq-lines']"
+    {{ $attributes->except('data-slot')->cn('@container flex min-w-0 flex-col gap-4') }}>
     <template x-if="rows.length === 0">
         <x-nq::states.empty :title="$t['empty']" :description="$t['emptyText']" />
     </template>

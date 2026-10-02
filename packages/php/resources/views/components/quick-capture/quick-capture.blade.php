@@ -39,8 +39,8 @@
         <template x-teleport="body">
             <div data-slot="quick-capture-portal">
                 <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
-                <div data-slot="quick-capture" data-presentation="dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
-                    {{ $attributes->cn([
+                <div data-slot="{{ $attributes->get('data-slot', 'quick-capture') }}" data-presentation="dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+                    {{ $attributes->except('data-slot')->cn([
                         'fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4',
                         'rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none',
                         'max-h-[calc(100dvh-2rem)] overflow-y-auto',
@@ -55,8 +55,8 @@
         </template>
     </div>
 @else
-    <div data-slot="quick-capture" data-presentation="panel" x-data="nqQuickCapture({!! $optionsJs !!})" x-id="['nq-qc']"
-        {{ $attributes->cn('flex min-w-0 flex-col gap-4 rounded-floating border border-border bg-popover p-4 text-popover-foreground') }}>
+    <div data-slot="{{ $attributes->get('data-slot', 'quick-capture') }}" data-presentation="panel" x-data="nqQuickCapture({!! $optionsJs !!})" x-id="['nq-qc']"
+        {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-4 rounded-floating border border-border bg-popover p-4 text-popover-foreground') }}>
         <x-nq::quick-capture.form :dialog="false" :page="$page" :destinations="$destinations" :suggested-tags="$suggestedTags" :placeholder="$placeholder" :show-hints="$showHints" />
     </div>
 @endif

@@ -23,7 +23,7 @@
     $span = (int) $columns === 3 ? 'sm:col-span-3' : ((int) $columns === 2 ? 'sm:col-span-2' : '');
     $optLabel = fn (array $item, string $key) => isset($item['options'][$key]) ? $pick($item['options'][$key], 'label') : $key;
 @endphp
-<div data-slot="infolist" role="group" @if ($label) aria-label="{{ $label }}" @endif {{ $attributes->cn('flex flex-col gap-8') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'infolist') }}" role="group" @if ($label) aria-label="{{ $label }}" @endif {{ $attributes->except('data-slot')->cn('flex flex-col gap-8') }}>
     @foreach ($groups as $group)
         @php
             $title = $pick($group, 'title');

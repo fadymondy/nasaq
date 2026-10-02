@@ -21,7 +21,7 @@
     }
     $config = ['days' => $days, 'today' => $todayKey, 'year' => $year, 'month' => $mon, 'start' => $start, 'locale' => str_replace('_', '-', $locale), 'today_label' => $t['today'], 'active_label' => $t['activeDay']];
 @endphp
-<div data-slot="streak-calendar" x-data="nqStreakCalendar(@js($config))" {{ $attributes->cn('flex w-full max-w-sm flex-col gap-2') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'streak-calendar') }}" x-data="nqStreakCalendar(@js($config))" {{ $attributes->except('data-slot')->cn('flex w-full max-w-sm flex-col gap-2') }}>
     <div class="flex items-center justify-between">
         <x-nq::button variant="ghost" size="icon-sm" :aria-label="$t['prevMonth']" x-on:click="go(-1)"><x-lucide-chevron-left aria-hidden="true" class="rtl:-scale-x-100" /></x-nq::button>
         <span aria-live="polite" class="text-label text-foreground" x-ref="title">{{ nq_gm_date(\Carbon\Carbon::create($year, $mon, 1), $locale, 'LLLL y') }}</span>

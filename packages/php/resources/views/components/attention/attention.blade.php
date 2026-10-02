@@ -46,9 +46,9 @@
     $ghost = 'inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5';
 @endphp
 @if ($loading || $total > 0 || filled($empty))
-<section data-slot="attention" aria-labelledby="{{ $headingId }}" @if ($loading) aria-busy="true" @endif
+<section data-slot="{{ $attributes->get('data-slot', 'attention') }}" aria-labelledby="{{ $headingId }}" @if ($loading) aria-busy="true" @endif
     x-data="nqAttention({{ $max }}, {{ $total }})"
-    {{ $attributes->cn('flex flex-col') }}>
+    {{ $attributes->except('data-slot')->cn('flex flex-col') }}>
     <header class="flex min-h-control items-center gap-2 pb-2">
         <h{{ $level }} id="{{ $headingId }}" class="text-label text-foreground">{{ $title ?? $t['title'] }}</h{{ $level }}>
         @if (! $loading && $open > 0 && ! $checklist)

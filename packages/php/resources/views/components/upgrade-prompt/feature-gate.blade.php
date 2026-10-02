@@ -11,7 +11,7 @@
 @if (! $locked)
 {{ $slot }}
 @else
-<div data-slot="feature-gate" data-locked="" x-data {{ $attributes->cn('relative isolate overflow-hidden rounded-card') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'feature-gate') }}" data-locked="" x-data {{ $attributes->except('data-slot')->cn('relative isolate overflow-hidden rounded-card') }}>
     <div aria-hidden="true" inert class="pointer-events-none select-none blur-[3px] saturate-50">{{ $slot }}</div>
     <div class="absolute inset-0 grid place-items-center bg-background/55 p-4">
         <div class="flex max-w-sm flex-col items-center gap-3 rounded-card bg-card p-5 text-center shadow-lg ring-1 ring-border">

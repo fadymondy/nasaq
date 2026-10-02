@@ -13,6 +13,6 @@
             : ['flex-col', "{$b}:first-child:rounded-t-control {$b}:last-child:rounded-b-control", "{$b}+{$b}:-mt-px"],
     ];
 @endphp
-<div role="group" data-slot="button-group" data-orientation="{{ $orientation }}" {{ $attributes->cn(\Illuminate\Support\Arr::flatten($classes)) }}>
+<div role="group" data-slot="{{ $attributes->get('data-slot', 'button-group') }}" data-orientation="{{ $orientation }}" {{ $attributes->except('data-slot')->cn(\Illuminate\Support\Arr::flatten($classes)) }}>
     {{ $slot }}
 </div>

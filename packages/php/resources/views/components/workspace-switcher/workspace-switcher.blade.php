@@ -21,7 +21,7 @@
     };
 @endphp
 @if ($active)
-<div data-slot="workspace-switcher-root" x-data="{ ws: {!! $js($active['id']) !!}, names: {!! $js($names) !!} }" x-modelable="ws" {{ $attributes->cn('contents') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'workspace-switcher-root') }}" x-data="{ ws: {!! $js($active['id']) !!}, names: {!! $js($names) !!} }" x-modelable="ws" {{ $attributes->except('data-slot')->cn('contents') }}>
 <x-nq::dropdown-menu>
     <button type="button" data-slot="workspace-switcher" x-bind="trigger" x-ref="trigger"
         x-bind:aria-label="typeof rail !== 'undefined' && rail && collapsed ? names[ws] : null"

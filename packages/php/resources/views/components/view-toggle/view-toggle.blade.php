@@ -18,7 +18,7 @@
     $current = $defaultValue ?? ($views[0] ?? 'table');
     $item = 'inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs';
 @endphp
-<div data-slot="view-toggle" x-data="nqViewToggle(@js($current), @js($views), @js($storageKey))" x-modelable="value" {{ $attributes->cn('inline-flex') }}>
+<div data-slot="{{ $attributes->get('data-slot', 'view-toggle') }}" x-data="nqViewToggle(@js($current), @js($views), @js($storageKey))" x-modelable="value" {{ $attributes->except('data-slot')->cn('inline-flex') }}>
     <div role="group" aria-label="{{ $names['label'] }}" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal" x-bind="group" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
         @foreach ($views as $view)
             @php

@@ -23,7 +23,7 @@
     ], (array) $labels);
     $config = ['mode' => $pair ? 'pair' : 'server', 'server' => $defaultServer, 'invalidServer' => $t['invalidServer'], 'invalidCode' => $t['invalidCode']];
 @endphp
-<form data-slot="extension-connect" novalidate x-data="nqExtensionConnect(@js($config))" x-on:submit.prevent="submit()" {{ $attributes->cn('flex flex-col gap-3') }}>
+<form data-slot="{{ $attributes->get('data-slot', 'extension-connect') }}" novalidate x-data="nqExtensionConnect(@js($config))" x-on:submit.prevent="submit()" {{ $attributes->except('data-slot')->cn('flex flex-col gap-3') }}>
     <div class="flex flex-col gap-1">
         <h2 class="flex items-center gap-2 text-h3 text-foreground">
             <span aria-hidden="true" class="text-muted-foreground [&_svg]:size-4"><x-lucide-link-2 /></span>

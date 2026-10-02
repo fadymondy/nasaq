@@ -17,11 +17,11 @@
     $shown = $pinned ? max(0, min(100, (float) $value)) : ($active ? 6 : 0);
     $show = $pinned ? $shown > 0 && $shown < 100 : (bool) $active;
 @endphp
-<div data-slot="route-progress" data-state="{{ $show ? 'active' : 'idle' }}"
+<div data-slot="{{ $attributes->get('data-slot', 'route-progress') }}" data-state="{{ $show ? 'active' : 'idle' }}"
     x-data="nqRouteProgress(@js((bool) $active), @js($pinned ? (float) $value : null), @js((int) $interval))" x-bind="root"
     role="progressbar" aria-label="{{ $label ?? \Nasaq\Nasaq::t('Loading', 'جارٍ التحميل') }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ (int) round($shown) }}"
     @unless ($show) aria-hidden="true" @endunless
-    {{ $attributes->cn([
+    {{ $attributes->except('data-slot')->cn([
         'pointer-events-none inset-x-0 top-0 z-[60] h-0.5 overflow-hidden transition-opacity duration-200 ease-nq motion-reduce:transition-none',
         $placement === 'absolute' ? 'absolute' : 'fixed',
         $show ? 'opacity-100' : 'opacity-0',

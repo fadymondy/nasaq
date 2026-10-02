@@ -9,8 +9,8 @@
         'lg' => 'size-11 rounded-card [&_svg]:size-5',
     ];
 @endphp
-<span data-slot="app-glyph" @if ($brand) data-brand="{{ $brand }}" @endif aria-hidden="true"
-    {{ $attributes->cn(['inline-flex shrink-0 items-center justify-center bg-[color-mix(in_oklab,var(--nq-brand)_14%,var(--nq-surface-raised))] text-nq-brand', $sizes[$size] ?? $sizes['md']]) }}>
+<span data-slot="{{ $attributes->get('data-slot', 'app-glyph') }}" @if ($brand) data-brand="{{ $brand }}" @endif aria-hidden="true"
+    {{ $attributes->except('data-slot')->cn(['inline-flex shrink-0 items-center justify-center bg-[color-mix(in_oklab,var(--nq-brand)_14%,var(--nq-surface-raised))] text-nq-brand', $sizes[$size] ?? $sizes['md']]) }}>
     @if ($slot->isEmpty() && $icon)
         <x-dynamic-component :component="'lucide-'.$icon" />
     @else

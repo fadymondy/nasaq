@@ -33,7 +33,7 @@
     };
 @endphp
 @if ($amount == 0)
-    <span data-slot="price" data-free="" {{ $attributes->cn(['text-foreground', $s['root']]) }}>
+    <span data-slot="{{ $attributes->get('data-slot', 'price') }}" data-free="" {{ $attributes->except('data-slot')->cn(['text-foreground', $s['root']]) }}>
         <span class="{{ $s['amount'] }}">{{ $freeLabel ?? ($ar ? 'مجاني' : 'Free') }}</span>
     </span>
 @else
