@@ -7,6 +7,8 @@ import { accountingLedger } from "./accounting-ledger";
 import { activeSessions } from "./active-sessions";
 import { adminTenants } from "./admin-tenants";
 import { adminUsers } from "./admin-users";
+import { agentPersonaEditor } from "./agent-persona-editor";
+import { agentSteps } from "./agent-steps";
 import { aiModelPicker } from "./ai-model-picker";
 import { alert } from "./alert";
 import { alertDialog } from "./alert-dialog";
@@ -19,15 +21,19 @@ import { appShell } from "./app-shell";
 import { appUpdate } from "./app-update";
 import { appearancePickers } from "./appearance-pickers";
 import { approvalQueue } from "./approval-queue";
+import { artifactRenderer } from "./artifact-renderer";
 import { attention } from "./attention";
 import { auditLog } from "./audit-log";
 import { authLayout } from "./auth-layout";
 import { availabilityEditor } from "./availability-editor";
 import { avatar } from "./avatar";
 import { avatarUpload } from "./avatar-upload";
+import { backlinkMonitor } from "./backlink-monitor";
 import { backupManager } from "./backup-manager";
 import { barcode } from "./barcode";
 import { blogIndex } from "./blog-index";
+import { blogPost } from "./blog-post";
+import { bookingFlow } from "./booking-flow";
 import { bookingManage } from "./booking-manage";
 import { bookingPipeline } from "./booking-pipeline";
 import { bookingSlots } from "./booking-slots";
@@ -36,17 +42,20 @@ import { brandingProvider } from "./branding-provider";
 import { breakdownTable } from "./breakdown-table";
 import { calendar } from "./calendar";
 import { campaignComposer } from "./campaign-composer";
+import { cannedReplies } from "./canned-replies";
 import { carousel } from "./carousel";
 import { cashCollect } from "./cash-collect";
 import { catalogStore } from "./catalog-store";
 import { certMonitor } from "./cert-monitor";
 import { changePasswordForm } from "./change-password-form";
+import { chat } from "./chat";
 import { checkInKiosk } from "./check-in-kiosk";
 import { checkbox } from "./checkbox";
 import { checklist } from "./checklist";
 import { checkoutSteps } from "./checkout-steps";
 import { chipGroup } from "./chip-group";
 import { chromeExtensionInstall } from "./chrome-extension-install";
+import { clientPortal } from "./client-portal";
 import { clinicQueue } from "./clinic-queue";
 import { codeBlock } from "./code-block";
 import { codeBlockVariants } from "./code-block-variants";
@@ -54,6 +63,7 @@ import { collapsible } from "./collapsible";
 import { colorPicker } from "./color-picker";
 import { combobox } from "./combobox";
 import { commandPalette } from "./command-palette";
+import { commentThread } from "./comment-thread";
 import { confirmProvider } from "./confirm-provider";
 import { connectedAccounts } from "./connected-accounts";
 import { contactIdentities } from "./contact-identities";
@@ -76,6 +86,7 @@ import { datePicker } from "./date-picker";
 import { deployView } from "./deploy-view";
 import { desktopIcons } from "./desktop-icons";
 import { desktopLocations } from "./desktop-locations";
+import { desktopLoginScreen } from "./desktop-login-screen";
 import { desktopNotification } from "./desktop-notification";
 import { desktopOsShell } from "./desktop-os-shell";
 import { devicePairing } from "./device-pairing";
@@ -93,23 +104,29 @@ import { engineDetails } from "./engine-details";
 import { entityList } from "./entity-list";
 import { envList } from "./env-list";
 import { errorPages } from "./error-pages";
+import { errorTracking } from "./error-tracking";
 import { exportAction } from "./export-action";
 import { extensionPopup } from "./extension-popup";
 import { feedbackReporter } from "./feedback-reporter";
 import { field } from "./field";
 import { fileExplorer } from "./file-explorer";
 import { fileUpload } from "./file-upload";
+import { finopsCost } from "./finops-cost";
 import { forgotPasswordForm } from "./forgot-password-form";
 import { form } from "./form";
+import { funnelChart } from "./funnel-chart";
 import { gamification } from "./gamification";
+import { githubActivity } from "./github-activity";
 import { graphView } from "./graph-view";
 import { healthReports } from "./health-reports";
+import { healthTrackers } from "./health-trackers";
 import { heatmap } from "./heatmap";
 import { hotkeyRecorder } from "./hotkey-recorder";
 import { hoverCard } from "./hover-card";
 import { hrAttendance } from "./hr-attendance";
 import { iconPicker } from "./icon-picker";
 import { iconRailSidebar } from "./icon-rail-sidebar";
+import { idleLock } from "./idle-lock";
 import { impersonationBanner } from "./impersonation-banner";
 import { importWizard } from "./import-wizard";
 import { inlineEdit } from "./inline-edit";
@@ -121,6 +138,7 @@ import { invoiceView } from "./invoice-view";
 import { kanbanBoard } from "./kanban-board";
 import { keyboardShortcuts } from "./keyboard-shortcuts";
 import { keywordPlanner } from "./keyword-planner";
+import { keywordTracker } from "./keyword-tracker";
 import { killSwitch } from "./kill-switch";
 import { knowledgeGaps } from "./knowledge-gaps";
 import { landingPageEditor } from "./landing-page-editor";
@@ -134,6 +152,7 @@ import { loginForm } from "./login-form";
 import { loyaltyPromo } from "./loyalty-promo";
 import { mailSettings } from "./mail-settings";
 import { mapView } from "./map-view";
+import { markdownExtras } from "./markdown-extras";
 import { marketplace } from "./marketplace";
 import { mcpConnect } from "./mcp-connect";
 import { membersManager } from "./members-manager";
@@ -144,16 +163,19 @@ import { mobileNavKit } from "./mobile-nav-kit";
 import { modelRoutingEditor } from "./model-routing-editor";
 import { navigationMenu } from "./navigation-menu";
 import { networkRules } from "./network-rules";
+import { notes } from "./notes";
 import { notificationCenter } from "./notification-center";
 import { notificationPreferences } from "./notification-preferences";
 import { oauthButtons } from "./oauth-buttons";
 import { oauthConsent } from "./oauth-consent";
+import { onboardingFlow } from "./onboarding-flow";
 import { otpInput } from "./otp-input";
 import { pagination } from "./pagination";
 import { passkeyList } from "./passkey-list";
 import { passwordInput } from "./password-input";
 import { personalWidgets } from "./personal-widgets";
 import { phoneInput } from "./phone-input";
+import { planCatalogEditor } from "./plan-catalog-editor";
 import { pomodoro } from "./pomodoro";
 import { popover } from "./popover";
 import { posRegister } from "./pos-register";
@@ -164,8 +186,10 @@ import { productReviews } from "./product-reviews";
 import { productSwitcher } from "./product-switcher";
 import { profileCard } from "./profile-card";
 import { profileForm } from "./profile-form";
+import { profilePage } from "./profile-page";
 import { progress } from "./progress";
 import { providerSwitcher } from "./provider-switcher";
+import { proxyHosts } from "./proxy-hosts";
 import { qrCode } from "./qr-code";
 import { quickCapture } from "./quick-capture";
 import { radioGroup } from "./radio-group";
@@ -174,26 +198,36 @@ import { registerForm } from "./register-form";
 import { relationPicker } from "./relation-picker";
 import { repeater } from "./repeater";
 import { reportEditor } from "./report-editor";
+import { reportFilterBar } from "./report-filter-bar";
 import { repositoryPicker } from "./repository-picker";
 import { resetPasswordForm } from "./reset-password-form";
 import { resizable } from "./resizable";
 import { richTextEditor } from "./rich-text-editor";
 import { routeProgress } from "./route-progress";
+import { ruleBuilder } from "./rule-builder";
+import { runHistory } from "./run-history";
 import { scheduler } from "./scheduler";
 import { schemaRepeater } from "./schema-repeater";
 import { scrollArea } from "./scroll-area";
 import { select } from "./select";
 import { semanticSearch } from "./semantic-search";
+import { seoPages } from "./seo-pages";
 import { seoPreview } from "./seo-preview";
 import { serverAdmin } from "./server-admin";
 import { serverCard } from "./server-card";
+import { sessionExpired } from "./session-expired";
 import { settingsSections } from "./settings-sections";
 import { setupWizard } from "./setup-wizard";
 import { shareAction } from "./share-action";
 import { sidebarLayout } from "./sidebar-layout";
+import { signInFlow } from "./sign-in-flow";
 import { slider } from "./slider";
 import { statusLabelManager } from "./status-label-manager";
+import { statusPageManager } from "./status-page-manager";
+import { stepEditor } from "./step-editor";
 import { stockLedger } from "./stock-ledger";
+import { storeAccount } from "./store-account";
+import { storeCart } from "./store-cart";
 import { storeListing } from "./store-listing";
 import { storeMerch } from "./store-merch";
 import { storeOrderTimeline } from "./store-order-timeline";
@@ -206,6 +240,7 @@ import { tabs } from "./tabs";
 import { tagInput } from "./tag-input";
 import { terminal } from "./terminal";
 import { textUtilities } from "./text-utilities";
+import { timeFields } from "./time-fields";
 import { timeRangePicker } from "./time-range-picker";
 import { timeSeriesPanel } from "./time-series-panel";
 import { timeTracker } from "./time-tracker";
@@ -213,6 +248,7 @@ import { timeline } from "./timeline";
 import { toast } from "./toast";
 import { toggleGroup } from "./toggle-group";
 import { tooltip } from "./tooltip";
+import { trashBin } from "./trash-bin";
 import { treeView } from "./tree-view";
 import { trendsFeed } from "./trends-feed";
 import { twoFactorChallenge } from "./two-factor-challenge";
@@ -227,11 +263,13 @@ import { versionHistory } from "./version-history";
 import { viewToggle } from "./view-toggle";
 import { waitingScreen } from "./waiting-screen";
 import { wallet } from "./wallet";
+import { webVitalsPage } from "./web-vitals-page";
 import { webhooksManager } from "./webhooks-manager";
 import { weightedCriteriaCard } from "./weighted-criteria-card";
 import { whatsappQrConnect } from "./whatsapp-qr-connect";
 import { widgetGallery } from "./widget-gallery";
 import { workflowCanvas } from "./workflow-canvas";
+import { workflowMarketplace } from "./workflow-marketplace";
 import { workflowNetwork } from "./workflow-network";
 import { workspaceSettings } from "./workspace-settings";
 import { wsStatus } from "./ws-status";
@@ -245,6 +283,8 @@ export const components: Record<string, Register> = {
   "active-sessions": activeSessions,
   "admin-tenants": adminTenants,
   "admin-users": adminUsers,
+  "agent-persona-editor": agentPersonaEditor,
+  "agent-steps": agentSteps,
   "ai-model-picker": aiModelPicker,
   "alert": alert,
   "alert-dialog": alertDialog,
@@ -257,15 +297,19 @@ export const components: Record<string, Register> = {
   "app-update": appUpdate,
   "appearance-pickers": appearancePickers,
   "approval-queue": approvalQueue,
+  "artifact-renderer": artifactRenderer,
   "attention": attention,
   "audit-log": auditLog,
   "auth-layout": authLayout,
   "availability-editor": availabilityEditor,
   "avatar": avatar,
   "avatar-upload": avatarUpload,
+  "backlink-monitor": backlinkMonitor,
   "backup-manager": backupManager,
   "barcode": barcode,
   "blog-index": blogIndex,
+  "blog-post": blogPost,
+  "booking-flow": bookingFlow,
   "booking-manage": bookingManage,
   "booking-pipeline": bookingPipeline,
   "booking-slots": bookingSlots,
@@ -274,17 +318,20 @@ export const components: Record<string, Register> = {
   "breakdown-table": breakdownTable,
   "calendar": calendar,
   "campaign-composer": campaignComposer,
+  "canned-replies": cannedReplies,
   "carousel": carousel,
   "cash-collect": cashCollect,
   "catalog-store": catalogStore,
   "cert-monitor": certMonitor,
   "change-password-form": changePasswordForm,
+  "chat": chat,
   "check-in-kiosk": checkInKiosk,
   "checkbox": checkbox,
   "checklist": checklist,
   "checkout-steps": checkoutSteps,
   "chip-group": chipGroup,
   "chrome-extension-install": chromeExtensionInstall,
+  "client-portal": clientPortal,
   "clinic-queue": clinicQueue,
   "code-block": codeBlock,
   "code-block-variants": codeBlockVariants,
@@ -292,6 +339,7 @@ export const components: Record<string, Register> = {
   "color-picker": colorPicker,
   "combobox": combobox,
   "command-palette": commandPalette,
+  "comment-thread": commentThread,
   "confirm-provider": confirmProvider,
   "connected-accounts": connectedAccounts,
   "contact-identities": contactIdentities,
@@ -314,6 +362,7 @@ export const components: Record<string, Register> = {
   "deploy-view": deployView,
   "desktop-icons": desktopIcons,
   "desktop-locations": desktopLocations,
+  "desktop-login-screen": desktopLoginScreen,
   "desktop-notification": desktopNotification,
   "desktop-os-shell": desktopOsShell,
   "device-pairing": devicePairing,
@@ -331,23 +380,29 @@ export const components: Record<string, Register> = {
   "entity-list": entityList,
   "env-list": envList,
   "error-pages": errorPages,
+  "error-tracking": errorTracking,
   "export-action": exportAction,
   "extension-popup": extensionPopup,
   "feedback-reporter": feedbackReporter,
   "field": field,
   "file-explorer": fileExplorer,
   "file-upload": fileUpload,
+  "finops-cost": finopsCost,
   "forgot-password-form": forgotPasswordForm,
   "form": form,
+  "funnel-chart": funnelChart,
   "gamification": gamification,
+  "github-activity": githubActivity,
   "graph-view": graphView,
   "health-reports": healthReports,
+  "health-trackers": healthTrackers,
   "heatmap": heatmap,
   "hotkey-recorder": hotkeyRecorder,
   "hover-card": hoverCard,
   "hr-attendance": hrAttendance,
   "icon-picker": iconPicker,
   "icon-rail-sidebar": iconRailSidebar,
+  "idle-lock": idleLock,
   "impersonation-banner": impersonationBanner,
   "import-wizard": importWizard,
   "inline-edit": inlineEdit,
@@ -359,6 +414,7 @@ export const components: Record<string, Register> = {
   "kanban-board": kanbanBoard,
   "keyboard-shortcuts": keyboardShortcuts,
   "keyword-planner": keywordPlanner,
+  "keyword-tracker": keywordTracker,
   "kill-switch": killSwitch,
   "knowledge-gaps": knowledgeGaps,
   "landing-page-editor": landingPageEditor,
@@ -372,6 +428,7 @@ export const components: Record<string, Register> = {
   "loyalty-promo": loyaltyPromo,
   "mail-settings": mailSettings,
   "map-view": mapView,
+  "markdown-extras": markdownExtras,
   "marketplace": marketplace,
   "mcp-connect": mcpConnect,
   "members-manager": membersManager,
@@ -382,16 +439,19 @@ export const components: Record<string, Register> = {
   "model-routing-editor": modelRoutingEditor,
   "navigation-menu": navigationMenu,
   "network-rules": networkRules,
+  "notes": notes,
   "notification-center": notificationCenter,
   "notification-preferences": notificationPreferences,
   "oauth-buttons": oauthButtons,
   "oauth-consent": oauthConsent,
+  "onboarding-flow": onboardingFlow,
   "otp-input": otpInput,
   "pagination": pagination,
   "passkey-list": passkeyList,
   "password-input": passwordInput,
   "personal-widgets": personalWidgets,
   "phone-input": phoneInput,
+  "plan-catalog-editor": planCatalogEditor,
   "pomodoro": pomodoro,
   "popover": popover,
   "pos-register": posRegister,
@@ -402,8 +462,10 @@ export const components: Record<string, Register> = {
   "product-switcher": productSwitcher,
   "profile-card": profileCard,
   "profile-form": profileForm,
+  "profile-page": profilePage,
   "progress": progress,
   "provider-switcher": providerSwitcher,
+  "proxy-hosts": proxyHosts,
   "qr-code": qrCode,
   "quick-capture": quickCapture,
   "radio-group": radioGroup,
@@ -412,26 +474,36 @@ export const components: Record<string, Register> = {
   "relation-picker": relationPicker,
   "repeater": repeater,
   "report-editor": reportEditor,
+  "report-filter-bar": reportFilterBar,
   "repository-picker": repositoryPicker,
   "reset-password-form": resetPasswordForm,
   "resizable": resizable,
   "rich-text-editor": richTextEditor,
   "route-progress": routeProgress,
+  "rule-builder": ruleBuilder,
+  "run-history": runHistory,
   "scheduler": scheduler,
   "schema-repeater": schemaRepeater,
   "scroll-area": scrollArea,
   "select": select,
   "semantic-search": semanticSearch,
+  "seo-pages": seoPages,
   "seo-preview": seoPreview,
   "server-admin": serverAdmin,
   "server-card": serverCard,
+  "session-expired": sessionExpired,
   "settings-sections": settingsSections,
   "setup-wizard": setupWizard,
   "share-action": shareAction,
   "sidebar-layout": sidebarLayout,
+  "sign-in-flow": signInFlow,
   "slider": slider,
   "status-label-manager": statusLabelManager,
+  "status-page-manager": statusPageManager,
+  "step-editor": stepEditor,
   "stock-ledger": stockLedger,
+  "store-account": storeAccount,
+  "store-cart": storeCart,
   "store-listing": storeListing,
   "store-merch": storeMerch,
   "store-order-timeline": storeOrderTimeline,
@@ -444,6 +516,7 @@ export const components: Record<string, Register> = {
   "tag-input": tagInput,
   "terminal": terminal,
   "text-utilities": textUtilities,
+  "time-fields": timeFields,
   "time-range-picker": timeRangePicker,
   "time-series-panel": timeSeriesPanel,
   "time-tracker": timeTracker,
@@ -451,6 +524,7 @@ export const components: Record<string, Register> = {
   "toast": toast,
   "toggle-group": toggleGroup,
   "tooltip": tooltip,
+  "trash-bin": trashBin,
   "tree-view": treeView,
   "trends-feed": trendsFeed,
   "two-factor-challenge": twoFactorChallenge,
@@ -465,11 +539,13 @@ export const components: Record<string, Register> = {
   "view-toggle": viewToggle,
   "waiting-screen": waitingScreen,
   "wallet": wallet,
+  "web-vitals-page": webVitalsPage,
   "webhooks-manager": webhooksManager,
   "weighted-criteria-card": weightedCriteriaCard,
   "whatsapp-qr-connect": whatsappQrConnect,
   "widget-gallery": widgetGallery,
   "workflow-canvas": workflowCanvas,
+  "workflow-marketplace": workflowMarketplace,
   "workflow-network": workflowNetwork,
   "workspace-settings": workspaceSettings,
   "ws-status": wsStatus,

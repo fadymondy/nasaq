@@ -1,0 +1,191 @@
+<div class="flex max-w-xl flex-col gap-4" x-data="{ picked: '', acted: '' }" x-on:nq-artifact-pick="picked = $event.detail.values.join(', ')" x-on:nq-artifact-action="acted = $event.detail.id">
+    <div data-slot="artifact-renderer" data-kind="table" class="min-w-0">
+            <div data-slot="artifact" data-kind="table" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><div data-slot="card-title" dir="auto" class="text-label text-foreground">Overdue invoices</div></div>
+        <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div data-slot="table-container" role="region" tabindex="0"  aria-label="Overdue invoices"     class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+    <table data-slot="table" data-density="default"
+                  class="w-full caption-bottom border-collapse text-body-sm">
+        <thead data-slot="table-header" class="[&_tr]:border-b [&_tr]:hover:bg-transparent [&_tr]:even:bg-transparent"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><th data-slot="table-head" scope="col" dir="auto" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-start">No.</th>
+                                            <th data-slot="table-head" scope="col" dir="auto" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">Amount</th></tr></thead>
+            <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" dir="auto" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start">INV-1</td>
+                                                                                <td data-slot="table-cell" dir="auto" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">1,200</bdi></td></tr>
+                                    <tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" dir="auto" class="h-row align-middle whitespace-nowrap px-4 py-3 text-start">INV-2</td>
+                                                                                <td data-slot="table-cell" dir="auto" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">480</bdi></td></tr></tbody>
+    </table>
+</div></div></div>
+    </div>
+    <div data-slot="artifact-renderer" data-kind="card" class="min-w-0">
+            <div data-slot="artifact" data-kind="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><div data-slot="card-title" dir="auto" class="text-label text-foreground">Order #42</div></div>
+        <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div class="flex flex-wrap gap-1.5">
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text">Paid</span>
+                            </div>
+                            <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-body-sm">
+                                    <div class="contents">
+                        <dt dir="auto" class="text-muted-foreground">Customer</dt>
+                        <dd dir="auto" class="min-w-0 break-words text-foreground">Lina</dd>
+                    </div>
+                                    <div class="contents">
+                        <dt dir="auto" class="text-muted-foreground">Total</dt>
+                        <dd dir="auto" class="min-w-0 break-words text-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">129.5</bdi>
+</dd>
+                    </div>
+                            </dl></div>
+            <div data-slot="card-footer" class="px-4 flex flex-col items-stretch gap-3"><div data-slot="artifact-actions" x-data="nqArtifactActions(JSON.parse('{\u0022artifactId\u0022:\u0022order-42\u0022,\u0022failed\u0022:\u0022That did not work. Try again.\u0022,\u0022actions\u0022:[{\u0022id\u0022:\u0022refund\u0022,\u0022label\u0022:\u0022Refund\u0022,\u0022confirm\u0022:\u0022Refund this order?\u0022,\u0022danger\u0022:true},{\u0022id\u0022:\u0022receipt\u0022,\u0022label\u0022:\u0022Send receipt\u0022,\u0022confirm\u0022:null,\u0022danger\u0022:false}]}'))" class="contents">
+    <div class="flex flex-wrap items-center gap-2">
+                    <button data-slot="button"
+     type="button"                     x-on:click="press(0)" x-bind:disabled="blocked(0)" x-bind:aria-busy="busy === 0 ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === 0" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                Refund</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="press(1)" x-bind:disabled="blocked(1)" x-bind:aria-busy="busy === 1 ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy === 1" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                Send receipt</button>
+            </div>
+    <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="confirmOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="artifact-confirm" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" x-text="ask.label" class="text-h3 text-foreground"></h2>
+                <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" x-text="ask.confirm" class="text-body-sm text-muted-foreground"></p></div>
+            <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="cancel()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                <button data-slot="button"
+     type="button"                     x-show="! ask.danger" x-on:click="confirmed()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Confirm</button>
+                <button data-slot="button"
+     type="button"                     x-show="ask.danger" style="display: none" x-on:click="confirmed()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Confirm</button></div>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</div>            <p data-slot="artifact-note" dir="auto" class="text-caption text-muted-foreground">Source: billing</p></div></div>
+    </div>
+    <div data-slot="artifact-renderer" data-kind="chart" class="min-w-0">
+            <div data-slot="artifact" data-kind="chart" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><div data-slot="card-title" dir="auto" class="text-label text-foreground">Weekly revenue</div></div>
+        <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div data-slot="chart"  role="img" aria-label="Chart: Weekly revenue"   style="--color-s0: var(--primary)"     class="flex justify-center text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto h-56 w-full flex-col">
+    <svg viewBox="0 0 600 224" class="min-h-0 w-full flex-1" aria-hidden="true" focusable="false">
+            <line x1="44" x2="592" y1="198" y2="198" class="stroke-border" stroke-width="1" /><line x1="44" x2="592" y1="150.5" y2="150.5" class="stroke-border" stroke-width="1" /><line x1="44" x2="592" y1="103" y2="103" class="stroke-border" stroke-width="1" /><line x1="44" x2="592" y1="55.5" y2="55.5" class="stroke-border" stroke-width="1" /><line x1="44" x2="592" y1="8" y2="8" class="stroke-border" stroke-width="1" />            <text x="38" y="202" text-anchor="end" font-size="12" class="fill-muted-foreground">0</text><text x="38" y="154.5" text-anchor="end" font-size="12" class="fill-muted-foreground">50</text><text x="38" y="107" text-anchor="end" font-size="12" class="fill-muted-foreground">100</text><text x="38" y="59.5" text-anchor="end" font-size="12" class="fill-muted-foreground">150</text><text x="38" y="12" text-anchor="end" font-size="12" class="fill-muted-foreground">200</text>            <text x="135.33" y="216" text-anchor="middle" font-size="12" class="fill-muted-foreground">Mon</text><text x="318" y="216" text-anchor="middle" font-size="12" class="fill-muted-foreground">Tue</text><text x="500.67" y="216" text-anchor="middle" font-size="12" class="fill-muted-foreground">Wed</text>                        <path d="M62.27,198V88Q62.27,84,66.27,84H204.4Q208.4,84,208.4,88V198Z" fill="var(--color-s0)" /><path d="M244.93,198V31Q244.93,27,248.93,27H387.07Q391.07,27,391.07,31V198Z" fill="var(--color-s0)" /><path d="M427.6,198V116.5Q427.6,112.5,431.6,112.5H569.73Q573.73,112.5,573.73,116.5V198Z" fill="var(--color-s0)" />                        <rect x="44" width="182.67" y="0" height="224" fill="transparent"><title>Mon
+Revenue: 120</title></rect><rect x="226.67" width="182.67" y="0" height="224" fill="transparent"><title>Tue
+Revenue: 180</title></rect><rect x="409.33" width="182.67" y="0" height="224" fill="transparent"><title>Wed
+Revenue: 90</title></rect>        </svg>
+</div></div></div>
+    </div>
+    <div data-slot="markdown" class="flex min-w-0 flex-col gap-3 text-body text-nq-fg-body"><p data-slot="text" dir="auto" class="text-body text-nq-fg-body text-start">Here is the picture for this week.</p>
+</div>
+    <div data-slot="artifact-list" class="flex min-w-0 flex-col gap-3">
+            <div data-slot="artifact-renderer" data-kind="stats" class="min-w-0">
+            <div data-slot="artifact" data-kind="stats" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0"><div data-slot="card-content" class="px-4 flex flex-col gap-3"><div data-slot="stat-grid" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3"><div data-slot="stat-card"  data-trend="up" data-tone="positive"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Revenue</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">48,210</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">+12.4%</bdi>
+                        </span>
+                                            </div>
+                            </div>
+                    </div>
+    </div>
+                                            <div data-slot="stat-card"  data-trend="down" data-tone="positive"   class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground"><span class="inline-flex items-center gap-1.5"><span aria-hidden="true" data-tone="warning" class="inline-block size-2 shrink-0 rounded-full bg-nq-warning"></span><span class="sr-only">Warning: </span>Open tickets</span></div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">12</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 17h6v-6"/>
+  <path d="m22 17-8.5-8.5-5 5L2 7"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">-8%</bdi>
+                        </span>
+                                            </div>
+                            </div>
+                    </div>
+    </div></div></div></div>
+    </div>
+            <div data-slot="artifact-renderer" data-kind="picker" class="min-w-0">
+            <div data-slot="artifact" data-kind="picker" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><div data-slot="card-title" dir="auto" class="text-label text-foreground">Send a reminder to</div></div>
+        <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div data-slot="artifact-picker" x-data="nqArtifactPicker(JSON.parse('{\u0022artifactId\u0022:\u0022audience\u0022,\u0022multiple\u0022:false,\u0022options\u0022:[\u0022all\u0022,\u0022late\u0022],\u0022value\u0022:[],\u0022failed\u0022:\u0022That did not work. Try again.\u0022}'))" class="flex flex-col gap-3">
+    <div x-bind:inert="locked" x-bind:class="locked ? 'opacity-70' : ''">
+                    <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup(null)" x-modelable="value" x-bind="root"
+                x-model="one" aria-label="Send a reminder to" class="flex flex-col gap-2">
+    <label x-bind:class="one === 'all' ? 'border-primary bg-nq-selected' : ''" class="flex cursor-pointer items-start gap-3 rounded-control border border-border bg-background p-3 text-start">
+                        <button type="button" role="radio" data-slot="radio" x-bind="radio('all')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 after:rounded-full mt-0.5">
+    <span data-slot="radio-indicator" class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('all')"  style="display: none" ></span>
+</button>
+                        <span class="flex min-w-0 flex-col">
+                            <span dir="auto" class="text-body-sm text-foreground">All customers</span>
+                                                    </span>
+                    </label>
+                                    <label x-bind:class="one === 'late' ? 'border-primary bg-nq-selected' : ''" class="flex cursor-pointer items-start gap-3 rounded-control border border-border bg-background p-3 text-start">
+                        <button type="button" role="radio" data-slot="radio" x-bind="radio('late')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 after:rounded-full mt-0.5">
+    <span data-slot="radio-indicator" class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('late')"  style="display: none" ></span>
+</button>
+                        <span class="flex min-w-0 flex-col">
+                            <span dir="auto" class="text-body-sm text-foreground">Late payers</span>
+                            <span dir="auto" class="text-caption text-muted-foreground">More than 30 days</span>                        </span>
+                    </label>
+    </div>
+            </div>
+    <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+    <div class="flex items-center gap-2">
+        <button data-slot="button"
+     type="button"                     x-on:click="submit()" x-bind:disabled="cannotSend" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="busy" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>            <span x-show="sent" style="display: none" class="inline-flex items-center gap-2"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Sent</span>
+            <span x-show="! sent">Send</span></button>
+    </div>
+</div></div></div>
+    </div>
+    </div>
+    <p x-show="picked" style="display: none" class="text-caption text-muted-foreground">Picked: <span x-text="picked"></span></p>
+    <p x-show="acted" style="display: none" class="text-caption text-muted-foreground">Action: <span x-text="acted"></span></p>
+</div>

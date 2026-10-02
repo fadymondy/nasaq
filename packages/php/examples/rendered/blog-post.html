@@ -1,0 +1,400 @@
+<div data-slot="blog-post" x-data="nqBlogPost(JSON.parse('{\u0022ids\u0022:[\u0022why-calm\u0022,\u0022how-to-start\u0022,\u0022check-the-result\u0022],\u0022offset\u0022:96}'))" class="@container flex flex-col gap-8">
+            <div data-slot="reading-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"
+    aria-valuenow="0" x-bind:aria-valuenow="Math.round(progress * 100)" class="sticky top-0 z-30 h-0.5 w-full -mb-8">
+    <div class="h-full bg-primary" style="width: 0%" x-bind:style="{ width: progress * 100 + '%' }"></div>
+</div>
+    <header class="mx-auto flex w-full max-w-3xl flex-col items-start gap-4">
+                <span data-slot="badge"  style="--tag-solid: var(--nq-tag-pink); --tag-soft: var(--nq-tag-pink-soft)"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-transparent bg-[var(--tag-soft)] text-[var(--tag-solid)]">Design</span>
+        <h1 dir="auto" class="text-balance text-display text-foreground">Calm interfaces</h1>
+        <p dir="auto" class="text-pretty text-body text-muted-foreground">Fewer decisions per screen, and why it works.</p>
+        <div class="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-3 border-y border-border py-3">
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+                                    <span class="inline-flex items-center gap-2">
+                        <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-8 text-caption rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Sara Ali" >SA</span>
+    </span>
+                        <span class="flex flex-col leading-tight">
+                            <bdi class="text-label text-foreground">Sara Ali</bdi>
+                                                            <span class="text-caption text-muted-foreground">Design lead</span>
+                                                    </span>
+                    </span>
+                                <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                    <time data-slot="date-time" datetime="2026-04-02T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">April 2, 2026</time>
+                    <span class="inline-flex items-center gap-1">
+                        <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>                        1 min read
+                    </span>
+                                    </p>
+            </div>
+            <div class="flex items-center gap-2">
+                <div data-slot="share-action"
+    x-data="nqShareAction('https:\/\/example.com\/blog\/calm-interfaces', [], JSON.parse('{\u0022title\u0022:\u0022Calm interfaces\u0022,\u0022text\u0022:\u0022Fewer decisions per screen, and why it works.\u0022,\u0022roles\u0022:[{\u0022value\u0022:\u0022viewer\u0022,\u0022label\u0022:\u0022Can view\u0022},{\u0022value\u0022:\u0022commenter\u0022,\u0022label\u0022:\u0022Can comment\u0022},{\u0022value\u0022:\u0022editor\u0022,\u0022label\u0022:\u0022Can edit\u0022}]}'))"
+    class="contents">
+    <button data-slot="share-button"
+     type="button"                     x-on:click="dlg = true" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="18" cy="5" r="3"/>
+  <circle cx="6" cy="12" r="3"/>
+  <circle cx="18" cy="19" r="3"/>
+  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/>
+  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
+</svg>        Share</button>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="dlg" class="contents">
+    <template x-teleport="body">
+            <div data-slot="dialog-portal">
+                <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+                <div data-slot="share-dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+                    class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg grid-cols-[minmax(0,1fr)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                    <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground">Share: Calm interfaces</h2>
+                        <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Invite people or send a link.</p></div>
+                    <div class="flex flex-col gap-5">
+                                                    <section class="flex flex-col gap-2" data-slot="share-invite">
+                                <h3 class="text-label text-foreground">Invite people</h3>
+                                <div class="flex flex-col gap-2 sm:flex-row sm:items-start">
+                                    <div data-slot="tag-input" x-data="nqTagInput([], Object.assign(JSON.parse('{\u0022separators\u0022:[\u0022,\u0022,\u0022;\u0022,\u0022 \u0022]}'), { validate: (tag, tags) => (validate(tag, tags)) }))" x-modelable="tags" x-bind="root"
+         x-model="emails" class="relative w-full min-w-0 flex-1">
+    <div data-slot="tag-input-box" x-bind="box"
+        class="flex w-full min-w-0 flex-wrap items-center gap-1.5 rounded-control border border-input bg-card px-2 py-1 text-body text-foreground min-h-[max(var(--nq-control),var(--nq-touch-min,0px))] transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger">
+        <template x-for="(tag, i) in tags" :key="tag">
+            <span data-slot="tag-input-tag" data-variant="neutral" class="inline-flex w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-control border border-transparent bg-muted px-2 py-0.5 font-medium text-foreground h-6 gap-0.5 ps-2 pe-0.5 text-body-sm">
+                <bdi x-text="tag"></bdi>
+                <button type="button"  :aria-label="'Remove' + ' ' + tag" @click.stop="removeAt(i)"
+                    class="inline-flex size-5 items-center justify-center rounded-[3px] text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                    <span aria-hidden="true" class="flex [&_svg]:size-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></span>
+                </button>
+            </span>
+        </template>
+        <input data-slot="tag-input-field" x-ref="field" x-bind="field" autocomplete="off"             :placeholder="tags.length ? undefined : 'Add email addresses'"
+                        type="email" dir="ltr" aria-label="Invite people" class="h-7 min-w-24 flex-1 border-0 bg-transparent px-1 text-body outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+    </div>
+        <p x-show="error" x-cloak style="display: none" role="alert" data-slot="tag-input-error" x-text="error" class="mt-1.5 text-caption text-nq-danger-text"></p>
+    <span role="status" aria-live="polite" class="sr-only" x-text="message"></span>
+    </div>
+                                    <div data-slot="select" x-data="nqSelect('viewer', false)" x-modelable="value" x-id="['nq-select']" x-model="inviteRole" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Role" class="flex h-control items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] w-auto min-w-32">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                                        <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('viewer', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('viewer')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Can view</span>
+</div>
+                                                                                            <div data-slot="select-item" x-bind="item('commenter', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('commenter')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Can comment</span>
+</div>
+                                                                                            <div data-slot="select-item" x-bind="item('editor', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('editor')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Can edit</span>
+</div>
+    </div>
+</template>
+    </div>
+                                    <button data-slot="share-send"
+     type="button"                     x-bind:disabled="emails.length &amp;&amp; ! pending ? null : true" x-on:click="sendInvite()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <line x1="19" x2="19" y1="8" y2="14"/>
+  <line x1="22" x2="16" y1="11" y2="11"/>
+</svg>                                        Send invite</button>
+                                </div>
+                                <p class="text-caption text-muted-foreground">Press Enter or comma after each address.</p>
+                                <div x-show="message" style="display: none">
+                                    <div data-slot="alert" data-tone="info" role="status"
+        x-bind:tone="message ? message.tone : &#039;success&#039;" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-info/30 bg-nq-info-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-info-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="message ? message.text : ''"></span></div>
+            </div>
+    </div>
+                                </div>
+                            </section>
+                        <section x-show="people.length"  style="display: none"  class="flex flex-col gap-2" data-slot="share-people">
+                            <h3 class="text-label text-foreground">People with access</h3>
+                            <ul class="flex max-h-48 flex-col divide-y divide-border overflow-y-auto rounded-control border border-border">
+                                <template x-for="p in people" :key="p.id">
+                                    <li class="flex items-center gap-3 px-3 py-2" data-slot="share-person">
+                                        <span aria-hidden="true" class="inline-flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-[10px] font-medium text-muted-foreground" x-text="p.name.trim().charAt(0).toUpperCase()"></span>
+                                        <span class="flex min-w-0 flex-1 flex-col">
+                                            <span class="truncate text-body-sm text-foreground" x-text="p.name"></span>
+                                            <bdi dir="ltr" class="truncate text-start text-caption text-muted-foreground" x-show="p.email" x-text="p.email"></bdi>
+                                        </span>
+                                        <span class="text-body-sm text-muted-foreground" x-show="p.owner" style="display: none">Owner</span>
+                                        <select class="h-8 min-w-28 rounded-control border border-input bg-card px-2 text-body-sm text-foreground outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus" x-show="! p.owner" x-model="p.role" x-bind:aria-label="roleFor(p.name)" x-on:change="fire('rolechange', { person: p, role: p.role })">
+                                                                                            <option value="viewer">Can view</option>
+                                                                                            <option value="commenter">Can comment</option>
+                                                                                            <option value="editor">Can edit</option>
+                                                                                    </select>
+                                        <button data-slot="button"
+     type="button"                     x-show="! p.owner" x-bind:aria-label="removeFor(p.name)" x-on:click="removePerson(p)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </section>
+                        <section class="flex flex-col gap-2" data-slot="share-link">
+                            <h3 class="text-label text-foreground">Link</h3>
+                            <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><input data-slot="input-group-input"  dir="ltr"     readonly="readonly" aria-label="Link" x-bind:value="shareLink()" x-on:focus="$el.select()" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start" />
+                                <div data-slot="input-group-addon" data-align="end"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-3"><button data-slot="share-copy"
+     type="button"                     x-on:click="copyLink()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" x-show="! copied" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>                                        <svg aria-hidden="true" x-show="copied" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                        <span x-text="copied ? 'Copied' : 'Copy link'">Copy link</span></button></div></div>
+                            <p class="text-caption text-muted-foreground" x-show="access === 'anyone'" style="display: none">Anyone with the link: <span x-text="roleLabel(linkRole)"></span></p>
+                            <div class="flex flex-wrap gap-2">
+                                <button data-slot="button"
+     type="button"                     x-show="canShare" style="display: none" x-on:click="nativeShare()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="18" cy="5" r="3"/>
+  <circle cx="6" cy="12" r="3"/>
+  <circle cx="18" cy="19" r="3"/>
+  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/>
+  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
+</svg>                                    Share via…</button>
+                                                                    <a data-slot="share-mailto"
+     href="#"                     x-bind:href="mailHref()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  <rect x="2" y="4" width="20" height="16" rx="2"/>
+</svg>                                        Email</a>
+                                                            </div>
+                        </section>
+                    </div>
+                    <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-on:click="dlg = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Done</button></div>
+                    <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                        class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                </div>
+            </div>
+        </template>
+</div>
+</div>
+            </div>
+        </div>
+    </header>
+    <div data-slot="post-cover" class="relative w-full overflow-hidden rounded-card border border-border bg-secondary mx-auto max-w-5xl">
+            <div aria-hidden="true" style="--cover-a: var(--nq-tag-green); --cover-a-soft: var(--nq-tag-green-soft); --cover-b-soft: var(--nq-tag-violet-soft); --cover-x: 67%; --cover-y: 49%"
+            class="size-full bg-[radial-gradient(circle_at_var(--cover-x)_var(--cover-y),var(--cover-a-soft),transparent_55%),linear-gradient(135deg,var(--cover-a-soft),var(--cover-b-soft))]">
+            <div class="absolute -bottom-1/4 -end-[8%] size-2/5 rounded-full border-2 border-[var(--cover-a)] opacity-40"></div>
+            <div class="absolute start-[10%] top-[16%] size-6 rounded-full bg-[var(--cover-a)] opacity-30"></div>
+        </div>
+    </div>
+    <div class="mx-auto grid w-full max-w-5xl grid-cols-1 gap-x-12 gap-y-6 @4xl:grid-cols-[minmax(0,1fr)_14rem]">
+        <div class="flex min-w-0 flex-col gap-8">
+                            <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     x-model="tocOpen" class="@4xl:hidden">
+    <button data-slot="collapsible-trigger"
+     type="button"                     x-bind:aria-controls="$id(&#039;nq-collapsible&#039;, &#039;panel&#039;)" x-bind:data-panel-open="open ? &#039;&#039; : undefined" x-on:click="toggle()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)] w-full justify-between">
+        On this page
+                        <svg x-bind:class="tocOpen && 'rotate-180'" aria-hidden="true" class="transition-transform duration-200 ease-nq" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></button>
+                    <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><nav data-slot="table-of-contents" aria-label="On this page" class="flex flex-col gap-2 pt-3">
+        <p class="eyebrow">On this page</p>
+        <ol class="flex flex-col border-s border-border">
+                            <li>
+                    <a href="#why-calm" data-id="why-calm" dir="auto" x-on:click="go($event)" x-bind:aria-current="isActive($el) ? 'location' : null"
+                        x-bind:class="isActive($el) ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'"
+                        class="-ms-px block border-s-2 py-1 text-body-sm outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-nq-focus ps-3">Why calm</a>
+                </li>
+                            <li>
+                    <a href="#how-to-start" data-id="how-to-start" dir="auto" x-on:click="go($event)" x-bind:aria-current="isActive($el) ? 'location' : null"
+                        x-bind:class="isActive($el) ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'"
+                        class="-ms-px block border-s-2 py-1 text-body-sm outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-nq-focus ps-3">How to start</a>
+                </li>
+                            <li>
+                    <a href="#check-the-result" data-id="check-the-result" dir="auto" x-on:click="go($event)" x-bind:aria-current="isActive($el) ? 'location' : null"
+                        x-bind:class="isActive($el) ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'"
+                        class="-ms-px block border-s-2 py-1 text-body-sm outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-nq-focus ps-6">Check the result</a>
+                </li>
+                    </ol>
+    </nav></div>
+</div>
+            <article x-ref="article" class="flex min-w-0 max-w-[44rem] flex-col gap-10">
+                <div data-slot="post-body" class="flex min-w-0 flex-col text-nq-fg-body gap-5 text-[1.0625rem] leading-relaxed"><p data-slot="text" dir="auto" class="text-body text-nq-fg-body text-start">Calm interfaces start with fewer decisions per screen.</p>
+<h2 id="why-calm" data-slot="text" dir="auto" style="scroll-margin-top: 96px" class="text-h2 text-foreground group/heading mt-4 text-start first:mt-0">Why calm<a href="#why-calm" aria-label="Link to this section" class="ms-2 inline-flex align-middle text-muted-foreground opacity-0 outline-none transition-opacity duration-150 group-hover/heading:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-nq-focus"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg></a></h2>
+<p data-slot="text" dir="auto" class="text-body text-nq-fg-body text-start">Every extra control asks the reader to decide something.</p>
+<aside data-slot="callout" data-kind="tip" class="flex gap-3 rounded-card border p-4 text-start">
+    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+  <path d="M9 18h6"/>
+  <path d="M10 22h4"/>
+</svg>    <div class="flex min-w-0 flex-col gap-1">
+        <p class="text-label text-foreground">Tip</p>
+        <div dir="auto" class="flex flex-col gap-2 text-body-sm text-nq-fg-body [&_p]:m-0"><p data-slot="text" dir="auto" class="text-body text-nq-fg-body text-start">Remove one thing before you add one.</p></div>
+    </div>
+</aside>
+<h2 id="how-to-start" data-slot="text" dir="auto" style="scroll-margin-top: 96px" class="text-h2 text-foreground group/heading mt-4 text-start first:mt-0">How to start<a href="#how-to-start" aria-label="Link to this section" class="ms-2 inline-flex align-middle text-muted-foreground opacity-0 outline-none transition-opacity duration-150 group-hover/heading:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-nq-focus"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg></a></h2>
+<ul dir="auto" class="list-disc space-y-1 ps-6 text-body text-nq-fg-body marker:text-muted-foreground">
+<li dir="auto" class="text-start [&amp;.task-list-item]:list-none [&amp;.task-list-item]:-ms-6">Pick one primary action.</li>
+<li dir="auto" class="text-start [&amp;.task-list-item]:list-none [&amp;.task-list-item]:-ms-6">Move the rest behind a menu.</li>
+</ul>
+<h3 id="check-the-result" data-slot="text" dir="auto" style="scroll-margin-top: 96px" class="text-h3 text-foreground group/heading mt-4 text-start first:mt-0">Check the result<a href="#check-the-result" aria-label="Link to this section" class="ms-2 inline-flex align-middle text-muted-foreground opacity-0 outline-none transition-opacity duration-150 group-hover/heading:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-nq-focus"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg></a></h3>
+<p data-slot="text" dir="auto" class="text-body text-nq-fg-body text-start">Read it aloud. If you stumble, simplify.</p>
+</div>
+                <div class="flex flex-col gap-4 border-t border-border pt-6">
+                                            <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-label text-muted-foreground">Tags</span>
+                                                                                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground"><bdi>#ux</bdi></span>
+                                                                                                                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground"><bdi>#design</bdi></span>
+                                                                                    </div>
+                                                                <div data-slot="card" class="flex rounded-card border border-border bg-card text-card-foreground flex-row items-start gap-3 p-4"><span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-10 text-label rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Sara Ali" >SA</span>
+    </span>
+                            <div class="flex min-w-0 flex-col gap-1">
+                                <p class="eyebrow">About the author</p>
+                                <p class="text-label text-foreground"><bdi>Sara Ali</bdi></p>
+                                <p dir="auto" class="text-body-sm text-muted-foreground">Sara writes about interfaces that stay out of the way.</p>
+                            </div></div>
+                                    </div>
+            </article>
+        </div>
+                    <aside class="hidden @4xl:block">
+                <div class="sticky flex max-h-[calc(100dvh-8rem)] flex-col overflow-y-auto" style="top: 96px">
+                    <nav data-slot="table-of-contents" aria-label="On this page" class="flex flex-col gap-2">
+        <p class="eyebrow">On this page</p>
+        <ol class="flex flex-col border-s border-border">
+                            <li>
+                    <a href="#why-calm" data-id="why-calm" dir="auto" x-on:click="go($event)" x-bind:aria-current="isActive($el) ? 'location' : null"
+                        x-bind:class="isActive($el) ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'"
+                        class="-ms-px block border-s-2 py-1 text-body-sm outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-nq-focus ps-3">Why calm</a>
+                </li>
+                            <li>
+                    <a href="#how-to-start" data-id="how-to-start" dir="auto" x-on:click="go($event)" x-bind:aria-current="isActive($el) ? 'location' : null"
+                        x-bind:class="isActive($el) ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'"
+                        class="-ms-px block border-s-2 py-1 text-body-sm outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-nq-focus ps-3">How to start</a>
+                </li>
+                            <li>
+                    <a href="#check-the-result" data-id="check-the-result" dir="auto" x-on:click="go($event)" x-bind:aria-current="isActive($el) ? 'location' : null"
+                        x-bind:class="isActive($el) ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'"
+                        class="-ms-px block border-s-2 py-1 text-body-sm outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-nq-focus ps-6">Check the result</a>
+                </li>
+                    </ol>
+    </nav>
+                </div>
+            </aside>
+            </div>
+            <nav aria-label="Older article / Newer article" class="mx-auto grid w-full max-w-5xl grid-cols-1 gap-4 @2xl:grid-cols-2">
+                            <a href="/blog/rtl" data-slot="post-adjacent"
+                    class="group/adj flex min-w-0 flex-col gap-1 rounded-card border border-border bg-card p-4 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                    <span class="inline-flex items-center gap-1 text-caption text-muted-foreground">
+                        <svg aria-hidden="true" class="size-3 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg>                        Older article
+                    </span>
+                    <span dir="auto" class="text-balance text-label text-foreground">Right to left, properly</span>
+                </a>
+                                        <span></span>
+                    </nav>
+            <section class="mx-auto flex w-full max-w-5xl flex-col gap-4" aria-labelledby="calm-interfaces-related">
+            <div data-slot="section-header" class="flex items-end justify-between gap-4">
+    <div class="flex min-w-0 flex-col gap-1">
+        <h2  id="calm-interfaces-related"  class="text-h2 text-foreground">Keep reading</h2>
+                    <p class="text-pretty text-body-sm text-muted-foreground">More on the same topics.</p>
+            </div>
+    </div>
+            <div class="grid grid-cols-1 gap-x-6 gap-y-8 @2xl:grid-cols-2 @4xl:grid-cols-3">
+                                    <article data-slot="post-card" data-variant="default"
+    class="group/post relative flex min-w-0 gap-4 flex-col">
+            <div data-slot="post-cover" class="relative w-full overflow-hidden rounded-card border border-border bg-secondary transition-[border-color] duration-150 ease-nq group-hover/post:border-nq-line-strong">
+            <div aria-hidden="true" style="--cover-a: var(--nq-tag-pink); --cover-a-soft: var(--nq-tag-pink-soft); --cover-b-soft: var(--nq-tag-violet-soft); --cover-x: 49%; --cover-y: 53%"
+            class="size-full bg-[radial-gradient(circle_at_var(--cover-x)_var(--cover-y),var(--cover-a-soft),transparent_55%),linear-gradient(135deg,var(--cover-a-soft),var(--cover-b-soft))]">
+            <div class="absolute -bottom-1/4 -end-[8%] size-2/5 rounded-full border-2 border-[var(--cover-a)] opacity-40"></div>
+            <div class="absolute start-[10%] top-[16%] size-6 rounded-full bg-[var(--cover-a)] opacity-30"></div>
+        </div>
+    </div>
+        <div class="flex min-w-0 flex-col items-start gap-2 ">
+        <div class="flex flex-wrap items-center gap-2">
+                        <span data-slot="badge"  style="--tag-solid: var(--nq-tag-pink); --tag-soft: var(--nq-tag-pink-soft)"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-transparent bg-[var(--tag-soft)] text-[var(--tag-solid)]">Design</span>
+        </div>
+        <h3 class="text-balance text-foreground text-h3">
+            <a href="/blog/rtl" dir="auto"
+                class="rounded-[2px] outline-none after:absolute after:inset-0 after:content-[''] focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-nq-focus">Right to left, properly</a>
+        </h3>
+        <p dir="auto" class="text-pretty text-muted-foreground line-clamp-3 text-body-sm">Logical properties instead of mirrored copies.</p>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                        <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+    <time data-slot="date-time" datetime="2026-03-12T00:00:00+00:00" dir="auto"     class="tabular-nums [unicode-bidi:isolate]">Mar 12, 2026</time>
+            <span class="inline-flex items-center gap-1">
+            <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>            7 min read
+        </span>
+    </p>
+        </div>
+            </div>
+</article>
+                            </div>
+        </section>
+            <section class="mx-auto flex w-full max-w-3xl flex-col gap-4" aria-labelledby="calm-interfaces-comments">
+            <div data-slot="section-header" class="flex items-end justify-between gap-4">
+    <div class="flex min-w-0 flex-col gap-1">
+        <h2  id="calm-interfaces-comments"  class="text-h2 text-foreground">Comments</h2>
+            </div>
+    </div>
+            <p class="text-body-sm text-muted-foreground">No comments yet.</p>
+        </section>
+    </div>

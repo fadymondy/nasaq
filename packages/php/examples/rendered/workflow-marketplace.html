@@ -1,0 +1,426 @@
+<div class="contents" data-slot="workflow-marketplace" x-data="nqWorkflowMarketplace(JSON.parse('{\u0022send-email\u0022:\u0022step\u0022,\u0022new-order\u0022:\u0022step\u0022,\u0022welcome\u0022:\u0022preset\u0022}'))">
+    <div data-slot="catalog-store" x-data="nqCatalogStore(JSON.parse('{\u0022items\u0022:[{\u0022id\u0022:\u0022send-email\u0022,\u0022name\u0022:\u0022Send email\u0022,\u0022summary\u0022:\u0022Send a templated email.\u0022,\u0022description\u0022:\u0022\u0022,\u0022category\u0022:\u0022comms\u0022,\u0022publisher\u0022:\u0022\u0022,\u0022tags\u0022:[],\u0022installs\u0022:1800,\u0022updatedAt\u0022:0,\u0022installed\u0022:false},{\u0022id\u0022:\u0022new-order\u0022,\u0022name\u0022:\u0022New order\u0022,\u0022summary\u0022:\u0022Starts when an order is placed.\u0022,\u0022description\u0022:\u0022\u0022,\u0022category\u0022:\u0022flow\u0022,\u0022publisher\u0022:\u0022\u0022,\u0022tags\u0022:[],\u0022installs\u0022:900,\u0022updatedAt\u0022:0,\u0022installed\u0022:false},{\u0022id\u0022:\u0022welcome\u0022,\u0022name\u0022:\u0022Welcome series\u0022,\u0022summary\u0022:\u0022Greet every new customer.\u0022,\u0022description\u0022:\u0022\u0022,\u0022category\u0022:\u0022comms\u0022,\u0022publisher\u0022:\u0022\u0022,\u0022tags\u0022:[],\u0022installs\u0022:2400,\u0022updatedAt\u0022:0,\u0022installed\u0022:false}],\u0022sort\u0022:\u0022popular\u0022,\u0022select\u0022:false,\u0022results\u0022:\u0022:n results\u0022}'))" class="flex min-w-0 flex-col gap-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative min-w-48 flex-1 sm:max-w-sm">
+            <svg aria-hidden="true" class="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>            <input data-slot="input" type="search"
+                    x-model="query" placeholder="Search the store" aria-label="Search the store" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control ps-8">
+        </div>
+        <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022all\u0022]'), false)" x-modelable="value" x-bind="root"
+            x-model="kindSel" aria-label="Kind" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('all')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">All</button>
+                <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('step')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Steps</button>
+                <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('preset')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Presets</button>
+</div>        <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022popular\u0022]'), false)" x-modelable="value" x-bind="root"
+            x-model="sortSel" aria-label="Sort by" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5 ms-auto">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('popular')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Popular</button>
+            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('newest')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Newest</button>
+            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('name')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">A to Z</button>
+</div>
+    </div>
+    <div role="group" data-slot="chip-group" x-data="nqChipGroup('all')" x-modelable="value"
+    x-model="category" aria-label="Categories" class="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <button data-slot="chip"
+     type="button"                     data-value="all" data-selected="" aria-pressed="true" x-on:click="select($el.dataset.value)" x-bind:aria-pressed="String(value === $el.dataset.value)" x-bind:data-selected="value === $el.dataset.value ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm shrink-0 rounded-full px-3 text-muted-foreground">
+        All <bdi class="text-caption tabular-nums opacity-70" x-text="count('all')">3</bdi></button>
+                    <button data-slot="chip"
+     type="button"                     data-value="comms" aria-pressed="false" x-on:click="select($el.dataset.value)" x-bind:aria-pressed="String(value === $el.dataset.value)" x-bind:data-selected="value === $el.dataset.value ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm shrink-0 rounded-full px-3 text-muted-foreground">
+        Messaging <bdi class="text-caption tabular-nums opacity-70" x-text="count('comms')">2</bdi></button>
+                    <button data-slot="chip"
+     type="button"                     data-value="flow" aria-pressed="false" x-on:click="select($el.dataset.value)" x-bind:aria-pressed="String(value === $el.dataset.value)" x-bind:data-selected="value === $el.dataset.value ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm shrink-0 rounded-full px-3 text-muted-foreground">
+        Flow <bdi class="text-caption tabular-nums opacity-70" x-text="count('flow')">1</bdi></button>
+                <button data-slot="chip"
+     type="button"                     data-value="installed" aria-pressed="false" x-on:click="select($el.dataset.value)" x-bind:aria-pressed="String(value === $el.dataset.value)" x-bind:data-selected="value === $el.dataset.value ? &#039;&#039; : null" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover h-control-sm shrink-0 rounded-full px-3 text-muted-foreground">
+        Installed <bdi class="text-caption tabular-nums opacity-70" x-text="installedCount">0</bdi></button>
+</div>
+    <p class="sr-only" role="status" x-text="resultsText">3 results</p>
+    <div data-slot="empty-state" x-show="listed.length === 0" style="display: none" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">Nothing found</p>
+                    <p class="text-body-sm text-muted-foreground">Try another word or pick a different category.</p>
+            </div>
+            <div class="mt-1 flex flex-wrap items-center justify-center gap-2"><button data-slot="button"
+     type="button"                     x-show="query || category !== &#039;all&#039;" x-on:click="clear()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Clear filters</button></div>
+    </div>
+    <ul x-ref="grid" class="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-3">
+                    <li class="min-w-0" data-id="welcome" x-show="visible('welcome')">
+                <article data-slot="catalog-card" data-item="welcome" data-state="available"
+    x-bind:data-state="stateOf('welcome')"
+    class="relative flex h-full flex-col gap-3 rounded-card border border-border bg-card p-4 shadow-xs transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nq-focus hover:bg-nq-hover">
+    <div class="flex items-start gap-3">
+        <span aria-hidden="true" data-slot="catalog-icon" class="flex size-10 shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>
+  <path d="M12 22V12"/>
+  <polyline points="3.29 7 12 12 20.71 7"/>
+  <path d="m7.5 4.27 9 5.15"/>
+</svg></span>
+        <div class="min-w-0 flex-1">
+            <h3 class="text-label text-foreground">
+                <button type="button" class="text-start outline-none after:absolute after:inset-0 after:content-['']" x-on:click="openDetail('welcome')">Welcome series</button>
+            </h3>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Preset</span>
+    </div>
+    <p class="line-clamp-2 text-body-sm text-muted-foreground">Greet every new customer.</p>
+    <div class="mt-auto flex items-center justify-between gap-2">
+        <div class="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                        <span><bdi>2.4K</bdi> installs</span>                    </div>
+        <span class="contents relative z-10 shrink-0">
+    <button data-slot="install-button"
+     type="button"                     data-state="available" aria-label="Get Welcome series" x-show="!installed(&#039;welcome&#039;)" x-bind:data-state="stateOf(&#039;welcome&#039;)" x-bind:disabled="busyOf(&#039;welcome&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;welcome&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;welcome&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Get</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open Welcome series" style="display: none" x-show="installed(&#039;welcome&#039;)" x-on:click="openApp(&#039;welcome&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+    </div>
+</article>
+            </li>
+                    <li class="min-w-0" data-id="send-email" x-show="visible('send-email')">
+                <article data-slot="catalog-card" data-item="send-email" data-state="available"
+    x-bind:data-state="stateOf('send-email')"
+    class="relative flex h-full flex-col gap-3 rounded-card border border-border bg-card p-4 shadow-xs transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nq-focus hover:bg-nq-hover">
+    <div class="flex items-start gap-3">
+        <span aria-hidden="true" data-slot="catalog-icon" class="flex size-10 shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  <rect x="2" y="4" width="20" height="16" rx="2"/>
+</svg></span>
+        <div class="min-w-0 flex-1">
+            <h3 class="text-label text-foreground">
+                <button type="button" class="text-start outline-none after:absolute after:inset-0 after:content-['']" x-on:click="openDetail('send-email')">Send email</button>
+            </h3>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Action</span>
+    </div>
+    <p class="line-clamp-2 text-body-sm text-muted-foreground">Send a templated email.</p>
+    <div class="mt-auto flex items-center justify-between gap-2">
+        <div class="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                        <span><bdi>1.8K</bdi> installs</span>                    </div>
+        <span class="contents relative z-10 shrink-0">
+    <button data-slot="install-button"
+     type="button"                     data-state="available" aria-label="Get Send email" x-show="!installed(&#039;send-email&#039;)" x-bind:data-state="stateOf(&#039;send-email&#039;)" x-bind:disabled="busyOf(&#039;send-email&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;send-email&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;send-email&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Get</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open Send email" style="display: none" x-show="installed(&#039;send-email&#039;)" x-on:click="openApp(&#039;send-email&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+    </div>
+</article>
+            </li>
+                    <li class="min-w-0" data-id="new-order" x-show="visible('new-order')">
+                <article data-slot="catalog-card" data-item="new-order" data-state="available"
+    x-bind:data-state="stateOf('new-order')"
+    class="relative flex h-full flex-col gap-3 rounded-card border border-border bg-card p-4 shadow-xs transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nq-focus hover:bg-nq-hover">
+    <div class="flex items-start gap-3">
+        <span aria-hidden="true" data-slot="catalog-icon" class="flex size-10 shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/>
+</svg></span>
+        <div class="min-w-0 flex-1">
+            <h3 class="text-label text-foreground">
+                <button type="button" class="text-start outline-none after:absolute after:inset-0 after:content-['']" x-on:click="openDetail('new-order')">New order</button>
+            </h3>
+                    </div>
+        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Trigger</span>
+    </div>
+    <p class="line-clamp-2 text-body-sm text-muted-foreground">Starts when an order is placed.</p>
+    <div class="mt-auto flex items-center justify-between gap-2">
+        <div class="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                        <span><bdi>900</bdi> installs</span>                    </div>
+        <span class="contents relative z-10 shrink-0">
+    <button data-slot="install-button"
+     type="button"                     data-state="available" aria-label="Get New order" x-show="!installed(&#039;new-order&#039;)" x-bind:data-state="stateOf(&#039;new-order&#039;)" x-bind:disabled="busyOf(&#039;new-order&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;new-order&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;new-order&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Get</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open New order" style="display: none" x-show="installed(&#039;new-order&#039;)" x-on:click="openApp(&#039;new-order&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+    </div>
+</article>
+            </li>
+            </ul>
+    <div data-slot="sheet" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="detailOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="sheet-portal">
+        <div data-slot="sheet-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 dark:bg-nq-bg/60"></div>
+        <div data-slot="sheet-content" data-side="end" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed z-50 flex flex-col bg-popover text-popover-foreground outline-none shadow-floating transition-[translate,opacity] duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 inset-y-0 end-0 h-dvh border-s border-border data-starting-style:translate-x-8 data-ending-style:translate-x-8 rtl:data-starting-style:-translate-x-8 rtl:data-ending-style:-translate-x-8 w-full sm:max-w-md">
+            <template x-if="detailId === 'send-email'">
+                    <div class="contents" data-slot="catalog-detail" data-item="send-email">
+                        <div data-slot="sheet-header" class="flex flex-col gap-1 border-b border-border px-4 py-3.5 pe-12"><div class="flex items-start gap-3">
+                                <span aria-hidden="true" data-slot="catalog-icon" class="flex shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5 size-12">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  <rect x="2" y="4" width="20" height="16" rx="2"/>
+</svg></span>
+                                <div class="min-w-0">
+                                    <h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-foreground text-h3">Send email</h2>
+                                    <p data-slot="sheet-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground">Send a templated email.</p>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Action</span>
+                                                                <span class="text-caption text-muted-foreground"><bdi>1.8K</bdi> installs</span>                                                                    <span class="text-caption text-muted-foreground">Free</span>
+                                                            </div></div>
+                        <div data-slot="sheet-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain flex flex-col gap-5 p-4"><section class="flex flex-col gap-1.5">
+                                <h4 class="eyebrow">About</h4>
+                                <p class="text-body-sm text-foreground">Send a templated email.</p>
+                            </section>
+                            <section class="grid grid-cols-2 gap-3">
+                    <div class="flex flex-col gap-1.5">
+                <h4 class="eyebrow">Takes</h4>
+                <div class="flex flex-wrap gap-1.5">
+                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Contact</span>
+                                    </div>
+            </div>
+                    <div class="flex flex-col gap-1.5">
+                <h4 class="eyebrow">Gives</h4>
+                <div class="flex flex-wrap gap-1.5">
+                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Message id</span>
+                                    </div>
+            </div>
+            </section>
+            <section class="flex flex-col gap-1.5">
+            <h4 class="eyebrow">Settings</h4>
+            <ul class="divide-y divide-border rounded-card border border-border">
+                                    <li class="flex items-center justify-between gap-3 px-3 py-2 text-body-sm">
+                        <span class="text-foreground">
+                            To
+                            <span class="ms-1 text-caption text-muted-foreground">(required)</span>                        </span>
+                        <code dir="ltr" class="text-caption text-muted-foreground">text</code>
+                    </li>
+                                    <li class="flex items-center justify-between gap-3 px-3 py-2 text-body-sm">
+                        <span class="text-foreground">
+                            Subject
+                                                    </span>
+                        <code dir="ltr" class="text-caption text-muted-foreground">text</code>
+                    </li>
+                            </ul>
+        </section></div>
+                        <div data-slot="sheet-footer" class="flex items-center gap-2 border-t border-border px-4 py-3 flex-wrap"><p role="alert" class="w-full text-body-sm text-nq-danger-text" x-show="error && error.id === 'send-email'" style="display: none" x-text="error ? error.message : ''"></p>
+                            <span class="contents">
+    <button data-slot="install-button"
+     type="button"                     data-state="available" aria-label="Get Send email" x-show="!installed(&#039;send-email&#039;)" x-bind:data-state="stateOf(&#039;send-email&#039;)" x-bind:disabled="busyOf(&#039;send-email&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;send-email&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;send-email&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Get</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open Send email" style="display: none" x-show="installed(&#039;send-email&#039;)" x-on:click="openApp(&#039;send-email&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+                                                            <button data-slot="button"
+     type="button"                     x-show="installed(&#039;send-email&#039;)" style="display: none" x-bind:disabled="busyOf(&#039;send-email&#039;) === &#039;uninstall&#039;" x-bind:aria-busy="busyOf(&#039;send-email&#039;) === &#039;uninstall&#039; ? &#039;true&#039; : null" x-on:click="uninstall(&#039;send-email&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="busyOf('send-email') === 'uninstall' ? 'Removing' : 'Uninstall'">Uninstall</span></button></div>
+                    </div>
+                </template>
+                                            <template x-if="detailId === 'new-order'">
+                    <div class="contents" data-slot="catalog-detail" data-item="new-order">
+                        <div data-slot="sheet-header" class="flex flex-col gap-1 border-b border-border px-4 py-3.5 pe-12"><div class="flex items-start gap-3">
+                                <span aria-hidden="true" data-slot="catalog-icon" class="flex shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5 size-12">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/>
+</svg></span>
+                                <div class="min-w-0">
+                                    <h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-foreground text-h3">New order</h2>
+                                    <p data-slot="sheet-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground">Starts when an order is placed.</p>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Trigger</span>
+                                                                <span class="text-caption text-muted-foreground"><bdi>900</bdi> installs</span>                                                                    <span class="text-caption text-muted-foreground">Free</span>
+                                                            </div></div>
+                        <div data-slot="sheet-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain flex flex-col gap-5 p-4"><section class="flex flex-col gap-1.5">
+                                <h4 class="eyebrow">About</h4>
+                                <p class="text-body-sm text-foreground">Starts when an order is placed.</p>
+                            </section>
+                            <section class="grid grid-cols-2 gap-3">
+                    <div class="flex flex-col gap-1.5">
+                <h4 class="eyebrow">Takes</h4>
+                <div class="flex flex-wrap gap-1.5">
+                                            <span class="text-caption text-muted-foreground">Nothing</span>
+                                    </div>
+            </div>
+                    <div class="flex flex-col gap-1.5">
+                <h4 class="eyebrow">Gives</h4>
+                <div class="flex flex-wrap gap-1.5">
+                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Order</span>
+                                    </div>
+            </div>
+            </section></div>
+                        <div data-slot="sheet-footer" class="flex items-center gap-2 border-t border-border px-4 py-3 flex-wrap"><p role="alert" class="w-full text-body-sm text-nq-danger-text" x-show="error && error.id === 'new-order'" style="display: none" x-text="error ? error.message : ''"></p>
+                            <span class="contents">
+    <button data-slot="install-button"
+     type="button"                     data-state="available" aria-label="Get New order" x-show="!installed(&#039;new-order&#039;)" x-bind:data-state="stateOf(&#039;new-order&#039;)" x-bind:disabled="busyOf(&#039;new-order&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;new-order&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;new-order&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Get</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open New order" style="display: none" x-show="installed(&#039;new-order&#039;)" x-on:click="openApp(&#039;new-order&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+                                                            <button data-slot="button"
+     type="button"                     x-show="installed(&#039;new-order&#039;)" style="display: none" x-bind:disabled="busyOf(&#039;new-order&#039;) === &#039;uninstall&#039;" x-bind:aria-busy="busyOf(&#039;new-order&#039;) === &#039;uninstall&#039; ? &#039;true&#039; : null" x-on:click="uninstall(&#039;new-order&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="busyOf('new-order') === 'uninstall' ? 'Removing' : 'Uninstall'">Uninstall</span></button></div>
+                    </div>
+                </template>
+                                            <template x-if="detailId === 'welcome'">
+                    <div class="contents" data-slot="catalog-detail" data-item="welcome">
+                        <div data-slot="sheet-header" class="flex flex-col gap-1 border-b border-border px-4 py-3.5 pe-12"><div class="flex items-start gap-3">
+                                <span aria-hidden="true" data-slot="catalog-icon" class="flex shrink-0 items-center justify-center rounded-card border border-border bg-secondary text-foreground [&_svg]:size-5 size-12">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>
+  <path d="M12 22V12"/>
+  <polyline points="3.29 7 12 12 20.71 7"/>
+  <path d="m7.5 4.27 9 5.15"/>
+</svg></span>
+                                <div class="min-w-0">
+                                    <h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-foreground text-h3">Welcome series</h2>
+                                    <p data-slot="sheet-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground">Greet every new customer.</p>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Preset</span>
+                                                                <span class="text-caption text-muted-foreground"><bdi>2.4K</bdi> installs</span>                                                                    <span class="text-caption text-muted-foreground">Free</span>
+                                                            </div></div>
+                        <div data-slot="sheet-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain flex flex-col gap-5 p-4"><section class="flex flex-col gap-1.5">
+                                <h4 class="eyebrow">About</h4>
+                                <p class="text-body-sm text-foreground">Greet every new customer.</p>
+                            </section>
+                            <section class="flex flex-col gap-1.5">
+        <h4 class="eyebrow">
+            What it does <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">3 steps</span>
+        </h4>
+        <figure data-slot="workflow-network" data-layout="vertical" x-data="nqWorkflowNetwork(JSON.parse('{\u0022ids\u0022:[\u0022a\u0022,\u0022b\u0022,\u0022c\u0022],\u0022links\u0022:null,\u0022layout\u0022:\u0022vertical\u0022,\u0022highlight\u0022:null,\u0022animate\u0022:false,\u0022uid\u0022:\u0022nq-net-0c3e3e6a\u0022}'))" class="m-0 w-full">
+        <p class="sr-only">3 steps</p>
+    <div data-net="flow" class="relative">
+        <svg data-net="edges" aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-visible text-muted-foreground" width="0" height="0" viewBox="0 0 1 1">
+            <defs>
+                <marker id="nq-net-0c3e3e6a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" class="fill-muted-foreground" />
+                </marker>
+                <marker id="nq-net-0c3e3e6a-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" class="fill-nq-brand" />
+                </marker>
+            </defs>
+        </svg>
+        <div data-net="rows" class="relative flex flex-col p-2 gap-9">
+                            <div data-net="row" class="flex items-stretch justify-center mx-auto w-full max-w-[26rem]">
+                                                                    <div data-net="cell" class="flex min-w-0 w-full">
+                            <div  data-step="a" data-kind="step" class="relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border border-border bg-card p-3 text-start shadow-xs">
+                                <span class="flex items-center gap-2">
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-foreground [&amp;_svg]:size-4">
+                                        <span class="flex">
+                                            <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg>                                        </span>
+                                    </span>
+                                    <span class="min-w-0 flex-1 text-label leading-tight text-foreground">Customer signs up</span>
+                                </span>
+                                                                                            </div>
+                        </div>
+                                    </div>
+                            <div data-net="row" class="flex items-stretch justify-center mx-auto w-full max-w-[26rem]">
+                                                                    <div data-net="cell" class="flex min-w-0 w-full">
+                            <div  data-step="b" data-kind="system" class="relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border border-border p-3 text-start shadow-xs bg-secondary">
+                                <span class="flex items-center gap-2">
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-foreground [&amp;_svg]:size-4">
+                                        <span class="flex">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 20v2"/>
+  <path d="M12 2v2"/>
+  <path d="M17 20v2"/>
+  <path d="M17 2v2"/>
+  <path d="M2 12h2"/>
+  <path d="M2 17h2"/>
+  <path d="M2 7h2"/>
+  <path d="M20 12h2"/>
+  <path d="M20 17h2"/>
+  <path d="M20 7h2"/>
+  <path d="M7 20v2"/>
+  <path d="M7 2v2"/>
+  <rect x="4" y="4" width="16" height="16" rx="2"/>
+  <rect x="8" y="8" width="8" height="8" rx="1"/>
+</svg>                                        </span>
+                                    </span>
+                                    <span class="min-w-0 flex-1 text-label leading-tight text-foreground">Send email</span>
+                                </span>
+                                                                                                    <span class="flex flex-wrap items-center gap-1.5">
+                                                                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Automated</span>
+                                                                            </span>
+                                                            </div>
+                        </div>
+                                    </div>
+                            <div data-net="row" class="flex items-stretch justify-center mx-auto w-full max-w-[26rem]">
+                                                                    <div data-net="cell" class="flex min-w-0 w-full">
+                            <div  data-step="c" data-kind="output" class="relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border bg-card p-3 text-start shadow-xs border-nq-brand/50">
+                                <span class="flex items-center gap-2">
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control border [&amp;_svg]:size-4 border-nq-brand/40 bg-nq-brand text-white">
+                                        <span class="flex">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg>                                        </span>
+                                    </span>
+                                    <span class="min-w-0 flex-1 text-label leading-tight text-foreground">Done</span>
+                                </span>
+                                                                                                    <span class="flex flex-wrap items-center gap-1.5">
+                                                                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Result</span>
+                                                                            </span>
+                                                            </div>
+                        </div>
+                                    </div>
+                    </div>
+    </div>
+    </figure>
+    </section></div>
+                        <div data-slot="sheet-footer" class="flex items-center gap-2 border-t border-border px-4 py-3 flex-wrap"><p role="alert" class="w-full text-body-sm text-nq-danger-text" x-show="error && error.id === 'welcome'" style="display: none" x-text="error ? error.message : ''"></p>
+                            <span class="contents">
+    <button data-slot="install-button"
+     type="button"                     data-state="available" aria-label="Get Welcome series" x-show="!installed(&#039;welcome&#039;)" x-bind:data-state="stateOf(&#039;welcome&#039;)" x-bind:disabled="busyOf(&#039;welcome&#039;) === &#039;install&#039;" x-bind:aria-busy="busyOf(&#039;welcome&#039;) === &#039;install&#039; ? &#039;true&#039; : null" x-on:click="install(&#039;welcome&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Get</button>
+    <button data-slot="install-button"
+     type="button"                     data-state="installed" aria-label="Open Welcome series" style="display: none" x-show="installed(&#039;welcome&#039;)" x-on:click="openApp(&#039;welcome&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>Open</button>
+</span>
+                                                            <button data-slot="button"
+     type="button"                     x-show="installed(&#039;welcome&#039;)" style="display: none" x-bind:disabled="busyOf(&#039;welcome&#039;) === &#039;uninstall&#039;" x-bind:aria-busy="busyOf(&#039;welcome&#039;) === &#039;uninstall&#039; ? &#039;true&#039; : null" x-on:click="uninstall(&#039;welcome&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="busyOf('welcome') === 'uninstall' ? 'Removing' : 'Uninstall'">Uninstall</span></button></div>
+                    </div>
+                </template>
+                            <button type="button" data-slot="sheet-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+</div>
+</div>

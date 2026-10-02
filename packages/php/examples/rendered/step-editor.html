@@ -1,0 +1,604 @@
+<div data-slot="step-editor" x-data="nqStepEditor(JSON.parse('{\u0022types\u0022:[{\u0022id\u0022:\u0022http\u0022,\u0022label\u0022:\u0022HTTP request\u0022,\u0022category\u0022:\u0022data\u0022,\u0022fields\u0022:[{\u0022name\u0022:\u0022url\u0022,\u0022label\u0022:\u0022URL\u0022,\u0022kind\u0022:\u0022url\u0022,\u0022required\u0022:true},{\u0022name\u0022:\u0022method\u0022,\u0022label\u0022:\u0022Method\u0022,\u0022kind\u0022:\u0022select\u0022,\u0022options\u0022:[{\u0022value\u0022:\u0022GET\u0022,\u0022label\u0022:\u0022GET\u0022},{\u0022value\u0022:\u0022POST\u0022,\u0022label\u0022:\u0022POST\u0022}]}],\u0022defaults\u0022:{\u0022method\u0022:\u0022GET\u0022}},{\u0022id\u0022:\u0022loop\u0022,\u0022label\u0022:\u0022Loop\u0022,\u0022category\u0022:\u0022flow\u0022,\u0022fields\u0022:[]}],\u0022categories\u0022:[{\u0022id\u0022:\u0022data\u0022,\u0022label\u0022:\u0022Data\u0022},{\u0022id\u0022:\u0022flow\u0022,\u0022label\u0022:\u0022Flow\u0022}],\u0022steps\u0022:[{\u0022id\u0022:\u0022s1\u0022,\u0022type\u0022:\u0022http\u0022,\u0022config\u0022:{\u0022url\u0022:\u0022https:\\\/\\\/{{host}}\\\/orders\u0022,\u0022method\u0022:\u0022GET\u0022}}],\u0022params\u0022:[{\u0022id\u0022:\u0022p1\u0022,\u0022name\u0022:\u0022host\u0022,\u0022value\u0022:\u0022api.example.com\u0022}],\u0022nestable\u0022:[\u0022loop\u0022],\u0022known\u0022:[\u0022trigger.body\u0022],\u0022testable\u0022:true,\u0022disabled\u0022:false}'))" x-on:input="changed()"     class="flex min-w-0 flex-col gap-4 w-full max-w-2xl">
+    <div x-show="issues().length !== 0" x-cloak style="display: none" data-slot="alert" role="alert" class="rounded-card border border-nq-warning/30 bg-nq-warning-soft px-4 py-3 text-body-sm text-foreground">
+        <p class="text-label" x-text="problemsTitle()"></p>
+        <ul class="mt-1 list-disc ps-5 text-body-sm">
+            <template x-for="(line, n) in problemLines()" :key="n"><li x-text="line"></li></template>
+            <li x-show="issues().length - 6 > 0">…</li>
+        </ul>
+    </div>
+    <div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('steps')" x-modelable="value" x-id="['nq-tabs']" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="underline" aria-orientation="horizontal" x-bind="list"
+    class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-4 border-b border-border">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('steps')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Steps <span class="ms-1 text-caption text-muted-foreground tabular-nums" x-text="total()">0</span></button>
+            <button type="button" data-slot="tabs-tab" x-bind="tab('params')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Parameters <span class="ms-1 text-caption text-muted-foreground tabular-nums" x-text="params.length">0</span></button>
+                            <button type="button" data-slot="tabs-tab" x-bind="tab('test')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Test run</button>
+                        <span data-slot="tabs-indicator" aria-hidden="true"
+    class="absolute -z-10 transition-[left,width] duration-200 ease-nq left-[var(--active-tab-left)] w-[var(--active-tab-width)] bottom-0 h-0.5 rounded-full bg-primary"></span>
+</div>
+        <div data-slot="tabs-panel" x-bind="panel('steps')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div class="flex flex-col gap-3">
+    <p x-show="countAt([]) === 0" x-cloak style="display: none" data-slot="step-editor-empty"
+        class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">No steps yet.</p>
+    <ol x-show="countAt([]) !== 0" x-cloak style="display: none" aria-label="Steps" class="flex flex-col gap-2">
+        <template x-for="(step0, index0) in listAt([])" :key="step0.id">
+            <li data-slot="step-editor-row" :data-step-id="step0.id" :data-collapsed="isOpen(step0) ? undefined : 'true'" class="relative rounded-card border border-border bg-card">
+                <div data-slot="step-editor-row-header" class="flex min-h-control items-center gap-1 p-1.5">
+                    <button type="button" x-show="countAt([]) !== 1" :data-handle="[].join('-') + ':' + index0"
+                        :aria-label="$nq.t('Reorder ' + nameOf(step0), 'إعادة ترتيب ' + nameOf(step0))" :title="$nq.t('Reorder ' + nameOf(step0), 'إعادة ترتيب ' + nameOf(step0))"
+                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, [], index0)"
+                        class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="1"/>
+  <circle cx="9" cy="5" r="1"/>
+  <circle cx="9" cy="19" r="1"/>
+  <circle cx="15" cy="12" r="1"/>
+  <circle cx="15" cy="5" r="1"/>
+  <circle cx="15" cy="19" r="1"/>
+</svg>                    </button>
+                    <button type="button" :aria-expanded="isOpen(step0) ? 'true' : 'false'" :aria-label="isOpen(step0) ? $nq.t('Collapse ' + nameOf(step0), 'طيّ ' + nameOf(step0)) : $nq.t('Expand ' + nameOf(step0), 'توسيع ' + nameOf(step0))"
+                        x-on:click="toggle(step0)"
+                        class="flex min-h-control-sm min-w-0 flex-1 items-center gap-2 rounded-control px-1.5 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                        <span aria-hidden="true" :class="isOpen(step0) ? 'rotate-90 rtl:-rotate-90' : ''" class="flex size-4 shrink-0 text-muted-foreground transition-[rotate] duration-200 ease-nq rtl:-scale-x-100 [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></span>
+                        <span class="min-w-0 truncate text-label text-foreground" x-text="nameOf(step0)"></span>
+                        <span x-show="isOpen(step0) ? false : summaryOf(step0) !== ''" class="min-w-0 flex-1 truncate text-body-sm text-muted-foreground" x-text="summaryOf(step0)"></span>
+                    </button>
+                    <span data-slot="badge"  style="display: none"     x-show="step0.continueOnFailure === true" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Continue if this step fails</span>
+                    <span data-slot="badge"  style="display: none"     x-show="stepIssueCount(step0) !== 0" x-cloak="x-cloak" x-text="stepIssueCount(step0)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"></span>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Move up &#039; + nameOf(step0), &#039;نقل لأعلى &#039; + nameOf(step0))" :disabled="disabled || index0 === 0" x-on:click="move([], index0, -1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m18 15-6-6-6 6"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Move down &#039; + nameOf(step0), &#039;نقل لأسفل &#039; + nameOf(step0))" :disabled="disabled || index0 === countAt([]) - 1" x-on:click="move([], index0, 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Duplicate &#039; + nameOf(step0), &#039;تكرار &#039; + nameOf(step0))" :disabled="disabled" x-on:click="duplicate([], index0)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Remove &#039; + nameOf(step0), &#039;حذف &#039; + nameOf(step0))" :disabled="disabled" x-on:click="remove([], index0)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground hover:text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                </div>
+                <div x-show="isOpen(step0)" data-slot="step-editor-body" class="border-t border-border p-3 sm:p-4">
+                    <template x-if="!step0.type">
+                        <div data-slot="workflow-node-picker" class="max-h-96 overflow-auto rounded-control border border-border">
+                            <div class="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
+                                <span class="text-label text-foreground">Choose a step type</span>
+                                <button type="button" x-on:click="cancelPick([], index0)" class="rounded-control px-2 py-1 text-body-sm text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">Cancel</button>
+                            </div>
+                            <template x-for="g in groups()" :key="g.id">
+                                <div class="flex flex-col p-1">
+                                    <p x-show="g.label" class="px-2 py-1 text-caption text-muted-foreground" x-text="g.label"></p>
+                                    <template x-for="t in g.items" :key="t.id">
+                                        <button type="button" :data-pick-type="t.id" x-on:click="pick([], index0, t.id)"
+                                            class="flex flex-col items-start gap-0.5 rounded-control px-2 py-1.5 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                                            <span class="text-label text-foreground" x-text="t.label"></span>
+                                            <span x-show="t.description" class="text-body-sm text-muted-foreground" x-text="t.description"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template x-if="step0.type">
+                        <div class="flex flex-col gap-4" :data-step-id="step0.id">
+                            <template x-if="typeOf(step0.type)">
+                                <div class="flex flex-col gap-4">
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-label text-foreground">Name
+                                            <input data-slot="input" type="text"
+                    x-model="step0.label" :placeholder="typeOf(step0.type).label" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control mt-1.5 font-normal">
+                                        </label>
+                                        <p class="text-caption text-muted-foreground">Shown in the list. Leave empty to use the step&#039;s own name.</p>
+                                    </div>
+                                    <p x-show="fieldsOf(step0).length === 0" class="text-body-sm text-muted-foreground">This step has no settings.</p>
+                                    <template x-for="f in fieldsOf(step0)" :key="f.name">
+                                        <div class="flex flex-col gap-1.5" :data-field="f.name">
+                                            <span class="text-label text-foreground">
+                                                <span x-text="f.label"></span>
+                                                <span x-show="f.required" class="text-caption text-muted-foreground">(Required)</span>
+                                            </span>
+                                            <template x-if="f.kind === 'textarea' || f.kind === 'code'">
+                                                <textarea data-slot="textarea"
+                rows="3" :aria-label="f.label" :placeholder="f.placeholder" :dir="f.kind === &#039;code&#039; ? &#039;ltr&#039; : undefined" :aria-invalid="isMissing(step0, f.name) ? &#039;true&#039; : undefined" x-model="step0.config[f.name]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                                            </template>
+                                            <template x-if="f.kind === 'select'">
+                                                <select :aria-label="f.label" x-model="step0.config[f.name]" class="h-control w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground outline-none focus-visible:border-nq-focus">
+                                                    <template x-for="o in (f.options || [])" :key="o.value"><option :value="o.value" x-text="o.label"></option></template>
+                                                </select>
+                                            </template>
+                                            <template x-if="f.kind === 'boolean'">
+                                                <div><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 :aria-label="f.label" x-model="step0.config[f.name]" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+</div>
+                                            </template>
+                                            <template x-if="f.kind === 'number'">
+                                                <input data-slot="input" type="number"
+                    :aria-label="f.label" :placeholder="f.placeholder" :aria-invalid="isMissing(step0, f.name) ? &#039;true&#039; : undefined" x-model.number="step0.config[f.name]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                                            </template>
+                                            <template x-if="f.kind === 'text' || f.kind === 'url'">
+                                                <input data-slot="input" type="text"
+                    :type="f.kind === &#039;url&#039; ? &#039;url&#039; : &#039;text&#039;" :dir="f.kind === &#039;url&#039; ? &#039;ltr&#039; : undefined" :aria-label="f.label" :placeholder="f.placeholder" :aria-invalid="isMissing(step0, f.name) ? &#039;true&#039; : undefined" x-model="step0.config[f.name]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <p x-show="!typeOf(step0.type)" class="text-body-sm text-nq-danger-text">Unknown step</p>
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <p class="text-label text-foreground">Continue if this step fails</p>
+                                    <p class="text-caption text-muted-foreground">The next step still runs. The failure is recorded.</p>
+                                </div>
+                                <div x-on:click="$nextTick(() => changed())"><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 aria-label="Continue if this step fails" x-model="step0.continueOnFailure" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+</div>
+                            </div>
+                                                            <template x-if="isNestable(step0)">
+                                    <div class="rounded-control border border-dashed border-border p-3">
+                                        <div class="flex flex-col gap-3">
+    <p x-show="countAt([index0]) === 0" x-cloak style="display: none" data-slot="step-editor-empty"
+        class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">Nothing inside yet.</p>
+    <ol x-show="countAt([index0]) !== 0" x-cloak style="display: none" aria-label="Steps inside" class="flex flex-col gap-2">
+        <template x-for="(step1, index1) in listAt([index0])" :key="step1.id">
+            <li data-slot="step-editor-row" :data-step-id="step1.id" :data-collapsed="isOpen(step1) ? undefined : 'true'" class="relative rounded-card border border-border bg-card">
+                <div data-slot="step-editor-row-header" class="flex min-h-control items-center gap-1 p-1.5">
+                    <button type="button" x-show="countAt([index0]) !== 1" :data-handle="[index0].join('-') + ':' + index1"
+                        :aria-label="$nq.t('Reorder ' + nameOf(step1), 'إعادة ترتيب ' + nameOf(step1))" :title="$nq.t('Reorder ' + nameOf(step1), 'إعادة ترتيب ' + nameOf(step1))"
+                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, [index0], index1)"
+                        class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="1"/>
+  <circle cx="9" cy="5" r="1"/>
+  <circle cx="9" cy="19" r="1"/>
+  <circle cx="15" cy="12" r="1"/>
+  <circle cx="15" cy="5" r="1"/>
+  <circle cx="15" cy="19" r="1"/>
+</svg>                    </button>
+                    <button type="button" :aria-expanded="isOpen(step1) ? 'true' : 'false'" :aria-label="isOpen(step1) ? $nq.t('Collapse ' + nameOf(step1), 'طيّ ' + nameOf(step1)) : $nq.t('Expand ' + nameOf(step1), 'توسيع ' + nameOf(step1))"
+                        x-on:click="toggle(step1)"
+                        class="flex min-h-control-sm min-w-0 flex-1 items-center gap-2 rounded-control px-1.5 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                        <span aria-hidden="true" :class="isOpen(step1) ? 'rotate-90 rtl:-rotate-90' : ''" class="flex size-4 shrink-0 text-muted-foreground transition-[rotate] duration-200 ease-nq rtl:-scale-x-100 [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></span>
+                        <span class="min-w-0 truncate text-label text-foreground" x-text="nameOf(step1)"></span>
+                        <span x-show="isOpen(step1) ? false : summaryOf(step1) !== ''" class="min-w-0 flex-1 truncate text-body-sm text-muted-foreground" x-text="summaryOf(step1)"></span>
+                    </button>
+                    <span data-slot="badge"  style="display: none"     x-show="step1.continueOnFailure === true" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Continue if this step fails</span>
+                    <span data-slot="badge"  style="display: none"     x-show="stepIssueCount(step1) !== 0" x-cloak="x-cloak" x-text="stepIssueCount(step1)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"></span>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Move up &#039; + nameOf(step1), &#039;نقل لأعلى &#039; + nameOf(step1))" :disabled="disabled || index1 === 0" x-on:click="move([index0], index1, -1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m18 15-6-6-6 6"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Move down &#039; + nameOf(step1), &#039;نقل لأسفل &#039; + nameOf(step1))" :disabled="disabled || index1 === countAt([index0]) - 1" x-on:click="move([index0], index1, 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Duplicate &#039; + nameOf(step1), &#039;تكرار &#039; + nameOf(step1))" :disabled="disabled" x-on:click="duplicate([index0], index1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Remove &#039; + nameOf(step1), &#039;حذف &#039; + nameOf(step1))" :disabled="disabled" x-on:click="remove([index0], index1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground hover:text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                </div>
+                <div x-show="isOpen(step1)" data-slot="step-editor-body" class="border-t border-border p-3 sm:p-4">
+                    <template x-if="!step1.type">
+                        <div data-slot="workflow-node-picker" class="max-h-96 overflow-auto rounded-control border border-border">
+                            <div class="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
+                                <span class="text-label text-foreground">Choose a step type</span>
+                                <button type="button" x-on:click="cancelPick([index0], index1)" class="rounded-control px-2 py-1 text-body-sm text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">Cancel</button>
+                            </div>
+                            <template x-for="g in groups()" :key="g.id">
+                                <div class="flex flex-col p-1">
+                                    <p x-show="g.label" class="px-2 py-1 text-caption text-muted-foreground" x-text="g.label"></p>
+                                    <template x-for="t in g.items" :key="t.id">
+                                        <button type="button" :data-pick-type="t.id" x-on:click="pick([index0], index1, t.id)"
+                                            class="flex flex-col items-start gap-0.5 rounded-control px-2 py-1.5 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                                            <span class="text-label text-foreground" x-text="t.label"></span>
+                                            <span x-show="t.description" class="text-body-sm text-muted-foreground" x-text="t.description"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template x-if="step1.type">
+                        <div class="flex flex-col gap-4" :data-step-id="step1.id">
+                            <template x-if="typeOf(step1.type)">
+                                <div class="flex flex-col gap-4">
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-label text-foreground">Name
+                                            <input data-slot="input" type="text"
+                    x-model="step1.label" :placeholder="typeOf(step1.type).label" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control mt-1.5 font-normal">
+                                        </label>
+                                        <p class="text-caption text-muted-foreground">Shown in the list. Leave empty to use the step&#039;s own name.</p>
+                                    </div>
+                                    <p x-show="fieldsOf(step1).length === 0" class="text-body-sm text-muted-foreground">This step has no settings.</p>
+                                    <template x-for="f in fieldsOf(step1)" :key="f.name">
+                                        <div class="flex flex-col gap-1.5" :data-field="f.name">
+                                            <span class="text-label text-foreground">
+                                                <span x-text="f.label"></span>
+                                                <span x-show="f.required" class="text-caption text-muted-foreground">(Required)</span>
+                                            </span>
+                                            <template x-if="f.kind === 'textarea' || f.kind === 'code'">
+                                                <textarea data-slot="textarea"
+                rows="3" :aria-label="f.label" :placeholder="f.placeholder" :dir="f.kind === &#039;code&#039; ? &#039;ltr&#039; : undefined" :aria-invalid="isMissing(step1, f.name) ? &#039;true&#039; : undefined" x-model="step1.config[f.name]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                                            </template>
+                                            <template x-if="f.kind === 'select'">
+                                                <select :aria-label="f.label" x-model="step1.config[f.name]" class="h-control w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground outline-none focus-visible:border-nq-focus">
+                                                    <template x-for="o in (f.options || [])" :key="o.value"><option :value="o.value" x-text="o.label"></option></template>
+                                                </select>
+                                            </template>
+                                            <template x-if="f.kind === 'boolean'">
+                                                <div><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 :aria-label="f.label" x-model="step1.config[f.name]" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+</div>
+                                            </template>
+                                            <template x-if="f.kind === 'number'">
+                                                <input data-slot="input" type="number"
+                    :aria-label="f.label" :placeholder="f.placeholder" :aria-invalid="isMissing(step1, f.name) ? &#039;true&#039; : undefined" x-model.number="step1.config[f.name]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                                            </template>
+                                            <template x-if="f.kind === 'text' || f.kind === 'url'">
+                                                <input data-slot="input" type="text"
+                    :type="f.kind === &#039;url&#039; ? &#039;url&#039; : &#039;text&#039;" :dir="f.kind === &#039;url&#039; ? &#039;ltr&#039; : undefined" :aria-label="f.label" :placeholder="f.placeholder" :aria-invalid="isMissing(step1, f.name) ? &#039;true&#039; : undefined" x-model="step1.config[f.name]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <p x-show="!typeOf(step1.type)" class="text-body-sm text-nq-danger-text">Unknown step</p>
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <p class="text-label text-foreground">Continue if this step fails</p>
+                                    <p class="text-caption text-muted-foreground">The next step still runs. The failure is recorded.</p>
+                                </div>
+                                <div x-on:click="$nextTick(() => changed())"><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 aria-label="Continue if this step fails" x-model="step1.continueOnFailure" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+</div>
+                            </div>
+                                                            <template x-if="isNestable(step1)">
+                                    <div class="rounded-control border border-dashed border-border p-3">
+                                        <div class="flex flex-col gap-3">
+    <p x-show="countAt([index0, index1]) === 0" x-cloak style="display: none" data-slot="step-editor-empty"
+        class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">Nothing inside yet.</p>
+    <ol x-show="countAt([index0, index1]) !== 0" x-cloak style="display: none" aria-label="Steps inside" class="flex flex-col gap-2">
+        <template x-for="(step2, index2) in listAt([index0, index1])" :key="step2.id">
+            <li data-slot="step-editor-row" :data-step-id="step2.id" :data-collapsed="isOpen(step2) ? undefined : 'true'" class="relative rounded-card border border-border bg-card">
+                <div data-slot="step-editor-row-header" class="flex min-h-control items-center gap-1 p-1.5">
+                    <button type="button" x-show="countAt([index0, index1]) !== 1" :data-handle="[index0, index1].join('-') + ':' + index2"
+                        :aria-label="$nq.t('Reorder ' + nameOf(step2), 'إعادة ترتيب ' + nameOf(step2))" :title="$nq.t('Reorder ' + nameOf(step2), 'إعادة ترتيب ' + nameOf(step2))"
+                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, [index0, index1], index2)"
+                        class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="1"/>
+  <circle cx="9" cy="5" r="1"/>
+  <circle cx="9" cy="19" r="1"/>
+  <circle cx="15" cy="12" r="1"/>
+  <circle cx="15" cy="5" r="1"/>
+  <circle cx="15" cy="19" r="1"/>
+</svg>                    </button>
+                    <button type="button" :aria-expanded="isOpen(step2) ? 'true' : 'false'" :aria-label="isOpen(step2) ? $nq.t('Collapse ' + nameOf(step2), 'طيّ ' + nameOf(step2)) : $nq.t('Expand ' + nameOf(step2), 'توسيع ' + nameOf(step2))"
+                        x-on:click="toggle(step2)"
+                        class="flex min-h-control-sm min-w-0 flex-1 items-center gap-2 rounded-control px-1.5 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                        <span aria-hidden="true" :class="isOpen(step2) ? 'rotate-90 rtl:-rotate-90' : ''" class="flex size-4 shrink-0 text-muted-foreground transition-[rotate] duration-200 ease-nq rtl:-scale-x-100 [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></span>
+                        <span class="min-w-0 truncate text-label text-foreground" x-text="nameOf(step2)"></span>
+                        <span x-show="isOpen(step2) ? false : summaryOf(step2) !== ''" class="min-w-0 flex-1 truncate text-body-sm text-muted-foreground" x-text="summaryOf(step2)"></span>
+                    </button>
+                    <span data-slot="badge"  style="display: none"     x-show="step2.continueOnFailure === true" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Continue if this step fails</span>
+                    <span data-slot="badge"  style="display: none"     x-show="stepIssueCount(step2) !== 0" x-cloak="x-cloak" x-text="stepIssueCount(step2)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"></span>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Move up &#039; + nameOf(step2), &#039;نقل لأعلى &#039; + nameOf(step2))" :disabled="disabled || index2 === 0" x-on:click="move([index0, index1], index2, -1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m18 15-6-6-6 6"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Move down &#039; + nameOf(step2), &#039;نقل لأسفل &#039; + nameOf(step2))" :disabled="disabled || index2 === countAt([index0, index1]) - 1" x-on:click="move([index0, index1], index2, 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Duplicate &#039; + nameOf(step2), &#039;تكرار &#039; + nameOf(step2))" :disabled="disabled" x-on:click="duplicate([index0, index1], index2)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Remove &#039; + nameOf(step2), &#039;حذف &#039; + nameOf(step2))" :disabled="disabled" x-on:click="remove([index0, index1], index2)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground hover:text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                </div>
+                <div x-show="isOpen(step2)" data-slot="step-editor-body" class="border-t border-border p-3 sm:p-4">
+                    <template x-if="!step2.type">
+                        <div data-slot="workflow-node-picker" class="max-h-96 overflow-auto rounded-control border border-border">
+                            <div class="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
+                                <span class="text-label text-foreground">Choose a step type</span>
+                                <button type="button" x-on:click="cancelPick([index0, index1], index2)" class="rounded-control px-2 py-1 text-body-sm text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">Cancel</button>
+                            </div>
+                            <template x-for="g in groups()" :key="g.id">
+                                <div class="flex flex-col p-1">
+                                    <p x-show="g.label" class="px-2 py-1 text-caption text-muted-foreground" x-text="g.label"></p>
+                                    <template x-for="t in g.items" :key="t.id">
+                                        <button type="button" :data-pick-type="t.id" x-on:click="pick([index0, index1], index2, t.id)"
+                                            class="flex flex-col items-start gap-0.5 rounded-control px-2 py-1.5 text-start outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                                            <span class="text-label text-foreground" x-text="t.label"></span>
+                                            <span x-show="t.description" class="text-body-sm text-muted-foreground" x-text="t.description"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template x-if="step2.type">
+                        <div class="flex flex-col gap-4" :data-step-id="step2.id">
+                            <template x-if="typeOf(step2.type)">
+                                <div class="flex flex-col gap-4">
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-label text-foreground">Name
+                                            <input data-slot="input" type="text"
+                    x-model="step2.label" :placeholder="typeOf(step2.type).label" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control mt-1.5 font-normal">
+                                        </label>
+                                        <p class="text-caption text-muted-foreground">Shown in the list. Leave empty to use the step&#039;s own name.</p>
+                                    </div>
+                                    <p x-show="fieldsOf(step2).length === 0" class="text-body-sm text-muted-foreground">This step has no settings.</p>
+                                    <template x-for="f in fieldsOf(step2)" :key="f.name">
+                                        <div class="flex flex-col gap-1.5" :data-field="f.name">
+                                            <span class="text-label text-foreground">
+                                                <span x-text="f.label"></span>
+                                                <span x-show="f.required" class="text-caption text-muted-foreground">(Required)</span>
+                                            </span>
+                                            <template x-if="f.kind === 'textarea' || f.kind === 'code'">
+                                                <textarea data-slot="textarea"
+                rows="3" :aria-label="f.label" :placeholder="f.placeholder" :dir="f.kind === &#039;code&#039; ? &#039;ltr&#039; : undefined" :aria-invalid="isMissing(step2, f.name) ? &#039;true&#039; : undefined" x-model="step2.config[f.name]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                                            </template>
+                                            <template x-if="f.kind === 'select'">
+                                                <select :aria-label="f.label" x-model="step2.config[f.name]" class="h-control w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground outline-none focus-visible:border-nq-focus">
+                                                    <template x-for="o in (f.options || [])" :key="o.value"><option :value="o.value" x-text="o.label"></option></template>
+                                                </select>
+                                            </template>
+                                            <template x-if="f.kind === 'boolean'">
+                                                <div><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 :aria-label="f.label" x-model="step2.config[f.name]" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+</div>
+                                            </template>
+                                            <template x-if="f.kind === 'number'">
+                                                <input data-slot="input" type="number"
+                    :aria-label="f.label" :placeholder="f.placeholder" :aria-invalid="isMissing(step2, f.name) ? &#039;true&#039; : undefined" x-model.number="step2.config[f.name]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                                            </template>
+                                            <template x-if="f.kind === 'text' || f.kind === 'url'">
+                                                <input data-slot="input" type="text"
+                    :type="f.kind === &#039;url&#039; ? &#039;url&#039; : &#039;text&#039;" :dir="f.kind === &#039;url&#039; ? &#039;ltr&#039; : undefined" :aria-label="f.label" :placeholder="f.placeholder" :aria-invalid="isMissing(step2, f.name) ? &#039;true&#039; : undefined" x-model="step2.config[f.name]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <p x-show="!typeOf(step2.type)" class="text-body-sm text-nq-danger-text">Unknown step</p>
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <p class="text-label text-foreground">Continue if this step fails</p>
+                                    <p class="text-caption text-muted-foreground">The next step still runs. The failure is recorded.</p>
+                                </div>
+                                <div x-on:click="$nextTick(() => changed())"><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 aria-label="Continue if this step fails" x-model="step2.continueOnFailure" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+</div>
+                            </div>
+                                                    </div>
+                    </template>
+                </div>
+            </li>
+        </template>
+    </ol>
+    <div>
+        <button data-slot="button"
+     type="button"                     :disabled="disabled" x-on:click="add([index0, index1])" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>            Add a step inside</button>
+    </div>
+</div>
+                                    </div>
+                                </template>
+                                                    </div>
+                    </template>
+                </div>
+            </li>
+        </template>
+    </ol>
+    <div>
+        <button data-slot="button"
+     type="button"                     :disabled="disabled" x-on:click="add([index0])" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>            Add a step inside</button>
+    </div>
+</div>
+                                    </div>
+                                </template>
+                                                    </div>
+                    </template>
+                </div>
+            </li>
+        </template>
+    </ol>
+    <div>
+        <button data-slot="button"
+     type="button"                     :disabled="disabled" x-on:click="add([])" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>            Add step</button>
+    </div>
+</div></div>
+        <div data-slot="tabs-panel" x-bind="panel('params')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div class="flex flex-col gap-3">
+                <p class="text-body-sm text-muted-foreground">Use a parameter in any text field as {{name}}. Secret values are masked and hidden from test output.</p>
+                <p x-show="params.length === 0" x-cloak style="display: none" class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">No parameters yet.</p>
+                <ol x-show="params.length !== 0" x-cloak style="display: none" aria-label="Parameters" class="flex flex-col gap-2">
+                    <template x-for="(p, pi) in params" :key="p.id">
+                        <li data-slot="step-editor-param" :data-param-id="p.id" class="rounded-card border border-border bg-card">
+                            <div class="flex min-h-control items-center gap-1 p-1.5">
+                                <span class="min-w-0 flex-1 truncate px-1.5 text-label text-foreground" x-text="paramName(p, pi)"></span>
+                                <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Move up &#039; + paramName(p, pi), &#039;نقل لأعلى &#039; + paramName(p, pi))" :disabled="disabled || pi === 0" x-on:click="moveParam(pi, -1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m18 15-6-6-6 6"/>
+</svg></button>
+                                <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Move down &#039; + paramName(p, pi), &#039;نقل لأسفل &#039; + paramName(p, pi))" :disabled="disabled || pi === params.length - 1" x-on:click="moveParam(pi, 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></button>
+                                <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Remove &#039; + paramName(p, pi), &#039;حذف &#039; + paramName(p, pi))" :disabled="disabled" x-on:click="removeParam(pi)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground hover:text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                            </div>
+                            <div class="grid gap-3 border-t border-border p-3 sm:grid-cols-2 sm:p-4">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-label text-foreground">Name
+                                        <input data-slot="input" type="text"
+                    dir="ltr" placeholder="api_base" spellcheck="false" :aria-invalid="paramIssue(p) !== &#039;&#039; ? &#039;true&#039; : undefined" x-model="p.name" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control mt-1.5 font-normal">
+                                    </label>
+                                    <p x-show="paramIssue(p) !== ''" role="alert" class="text-caption text-nq-danger-text" x-text="paramIssue(p)"></p>
+                                    <p x-show="paramIssue(p) === ''" class="text-caption text-muted-foreground"><bdi dir="ltr" class="font-mono" x-text="token(p)"></bdi> · <span x-text="usageText(p)"></span></p>
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-label text-foreground" x-bind:for="'nq-param-value-' + p.id">Value</label>
+                                    <div class="flex items-center gap-1">
+                                        <input data-slot="input" type="text"
+                    :id="&#039;nq-param-value-&#039; + p.id" :type="inputType(p)" dir="ltr" autocomplete="off" spellcheck="false" x-model="p.value" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control flex-1">
+                                        <button type="button" x-show="p.secret === true" x-cloak style="display: none" :aria-pressed="isShown(p) ? 'true' : 'false'" :aria-label="isShown(p) ? $nq.t('Hide value', 'إخفاء القيمة') : $nq.t('Show value', 'إظهار القيمة')"
+                                            x-on:click="toggleShown(p)"
+                                            class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4">
+                                            <span x-show="isShown(p)" x-cloak style="display: none" aria-hidden="true" class="flex"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/>
+  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/>
+  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/>
+  <path d="m2 2 20 20"/>
+</svg></span>
+                                            <span x-show="!isShown(p)" aria-hidden="true" class="flex"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 sm:col-span-2">
+                                    <div x-on:click="$nextTick(() => changed())"><button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 aria-label="Secret" x-model="p.secret" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+</div>
+                                    <span class="text-label text-foreground">Secret</span>
+                                </div>
+                            </div>
+                        </li>
+                    </template>
+                </ol>
+                <div>
+                    <button data-slot="button"
+     type="button"                     :disabled="disabled" x-on:click="addParam()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>                        Add parameter</button>
+                </div>
+            </div></div>
+                    <div data-slot="tabs-panel" x-bind="panel('test')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div class="flex flex-col gap-3">
+                    <p class="text-body-sm text-muted-foreground">Run the steps in order with these parameters. Nothing here is saved.</p>
+                    <div class="flex items-center gap-3">
+                        <button data-slot="button"
+     type="button"                     data-run-test="data-run-test" :disabled="!canTest()" x-on:click="runTest()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/>
+  <path d="M6.453 15h11.094"/>
+  <path d="M8.5 2h7"/>
+</svg>                            <span x-text="running ? $nq.t('Running', 'جارٍ التشغيل') : $nq.t('Run test', 'شغّل التجربة')"></span></button>
+                        <span x-show="issues().length !== 0" x-cloak style="display: none" class="text-body-sm text-muted-foreground">Fix the problems first</span>
+                    </div>
+                    <p x-show="testError !== ''" x-cloak style="display: none" role="alert" class="rounded-control bg-nq-danger-soft px-3 py-2 text-body-sm text-nq-danger-text"><span>The test could not run</span>: <span x-text="testError"></span></p>
+                    <ol x-show="results !== null" x-cloak style="display: none" aria-label="Test run results" class="divide-y divide-border rounded-control border border-border">
+                        <template x-for="r in (results || [])" :key="r.stepId">
+                            <li :data-result="r.stepId" class="flex flex-col gap-2 p-3">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="text-label text-foreground" x-text="resultLabel(r)"></span>
+                                    <span class="inline-flex items-center rounded-full border px-2 py-0.5 text-caption" :class="r.status === 'error' ? 'border-nq-danger/30 bg-nq-danger-soft text-nq-danger-text' : r.status === 'success' ? 'border-nq-success/30 bg-nq-success-soft text-nq-success-text' : 'border-border bg-secondary text-foreground'" x-text="statusText(r)"></span>
+                                    <span x-show="r.durationMs !== undefined" dir="ltr" class="ms-auto text-caption text-muted-foreground tabular-nums"><span x-text="r.durationMs"></span> ms</span>
+                                </div>
+                                <p x-show="r.error" role="alert" dir="auto" class="text-body-sm text-nq-danger-text" x-text="errorText(r)"></p>
+                                <pre x-show="r.output !== undefined" dir="ltr" class="max-h-48 overflow-auto rounded-control border border-border bg-secondary p-3 text-body-sm"><code x-text="outputText(r)"></code></pre>
+                            </li>
+                        </template>
+                    </ol>
+                    <p x-show="results === null ? (!running ? testError === '' : false) : false" x-cloak style="display: none" class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">No test yet.</p>
+                </div></div>
+</div>
+</div>

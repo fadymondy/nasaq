@@ -54,6 +54,8 @@ interface Column {
   /** avatar and text cells: the row field shown as a second line. */
   secondary?: string;
   secondaryDir?: string;
+  /** A row field holding a number the column sorts by, when the cell shows text (a percentage with its change). */
+  sortKey?: string;
   /** avatar: a row field that, when truthy, adds an outline badge (text: badgeLabel) after the name. */
   badge?: string;
   badgeLabel?: string;
@@ -240,6 +242,11 @@ export const dataTable: Register = (Alpine) => {
       return col.options?.find((o) => o.value === String(value));
     },
     sortValue(this: State, row: Row, col: Column): string | number | Date | null {
+      if (col.sortKey) {
+        const k = row[col.sortKey];
+        const n = k === null || k === undefined || k === "" ? Number.NaN : Number(k);
+        return Number.isNaN(n) ? null : n;
+      }
       const v = this.val(row, col);
       if (v === null || v === undefined || v === "") return null;
       if (col.type === "number" || col.type === "currency") return Number(v);

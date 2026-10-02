@@ -1,0 +1,710 @@
+<div data-slot="analytics-page" data-connected="true" x-data="nqAnalyticsPage(JSON.parse('{\u0022id\u0022:\u0022apm\u0022,\u0022refreshing\u0022:false}'))"
+    class="flex w-full flex-col gap-6">
+    <header class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+        <div class="flex min-w-0 flex-col gap-1">
+            <h1 class="text-h1 text-foreground">Application performance</h1>
+                            <p class="text-pretty text-body-sm text-muted-foreground">Latency, errors and traces for api.nasaq.dev</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                <div role="group" data-slot="period-toggle" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u00226\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Time window" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('1')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">1 hour</button>
+                            <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('6')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">6 hours</button>
+                            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('24')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">24 hours</button>
+</div>                                    <button data-slot="button"
+     type="button"                     x-on:click="refresh()" x-bind:aria-busy="refreshing ? &#039;true&#039; : null" x-bind:disabled="refreshing" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="refreshing" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg aria-hidden="true" x-show="! refreshing" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>                        Refresh</button>
+                                <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" class="contents">
+    <button data-slot="alert-dialog-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Disconnect</button>
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground">Disconnect Nasaq APM?</h2>
+                            <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">This page goes back to the connect screen. Nothing is deleted from your account.</p></div>
+        <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+            <button data-slot="alert-dialog-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="disconnect()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Disconnect</button></div>
+        </div>
+    </div>
+</template>
+</div>
+            </div>
+            </header>
+                        <p class="-mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Connected" >Connected</span>
+</span>
+                                    <span>Connected to <bdi dir="ltr">ops@nasaq.dev</bdi></span>
+                                            </p>
+                            <div data-slot="metric-tiles" role="group" aria-label="Key metrics" x-data="nqMetricTiles(null)" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3">
+                                            <div data-slot="stat-card"  data-trend="up" data-tone="positive"   data-metric="requests" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Requests</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">184.2K</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">+7.2%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 171,900</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-252e048a" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,9.51C10.27,8.6,18.53,6.78,26.8,6.78C35.07,6.78,43.33,8.83,51.6,8.83C59.87,8.83,68.13,5.19,76.4,4.05C84.67,2.91,92.93,2,101.2,2C109.47,2,117.73,2.91,126,3.37L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-252e048a)" stroke="none" />        <path d="M2,9.51C10.27,8.6,18.53,6.78,26.8,6.78C35.07,6.78,43.33,8.83,51.6,8.83C59.87,8.83,68.13,5.19,76.4,4.05C84.67,2.91,92.93,2,101.2,2C109.47,2,117.73,2.91,126,3.37" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                                                        <div data-slot="stat-card"  data-trend="up" data-tone="positive"   data-metric="throughput" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 14 4-4"/>
+  <path d="M3.34 19a10 10 0 1 1 17.32 0"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Throughput (req/min)</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">512</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">+7.1%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 478</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-849e8646" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,6.31C10.27,5.77,18.53,4.69,26.8,4.69C35.07,4.69,43.33,5.5,51.6,5.5C59.87,5.5,68.13,3.66,76.4,3.08C84.67,2.49,92.93,2,101.2,2C109.47,2,117.73,2.29,126,2.43L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-849e8646)" stroke="none" />        <path d="M2,6.31C10.27,5.77,18.53,4.69,26.8,4.69C35.07,4.69,43.33,5.5,51.6,5.5C59.87,5.5,68.13,3.66,76.4,3.08C84.67,2.49,92.93,2,101.2,2C109.47,2,117.73,2.29,126,2.43" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                                                        <div data-slot="stat-card"  data-trend="down" data-tone="positive"   data-metric="p95" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="10" x2="14" y1="2" y2="2"/>
+  <line x1="12" x2="15" y1="14" y2="11"/>
+  <circle cx="12" cy="14" r="8"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">p95 latency</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            486 ms
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 17h6v-6"/>
+  <path d="m22 17-8.5-8.5-5 5L2 7"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">-10%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 540 ms</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-c5a6fe1a" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,2C10.27,2.33,18.53,2.67,26.8,3C35.07,3.33,43.33,3.67,51.6,4C59.87,4.33,68.13,4.75,76.4,5C84.67,5.25,92.93,5.38,101.2,5.5C109.47,5.62,117.73,5.63,126,5.7L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-c5a6fe1a)" stroke="none" />        <path d="M2,2C10.27,2.33,18.53,2.67,26.8,3C35.07,3.33,43.33,3.67,51.6,4C59.87,4.33,68.13,4.75,76.4,5C84.67,5.25,92.93,5.38,101.2,5.5C109.47,5.62,117.73,5.63,126,5.7" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                                                        <div data-slot="stat-card"  data-trend="down" data-tone="positive"   data-metric="errorRate" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
+            <div class="flex items-center gap-2">
+                            <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg></span>
+                        <div data-slot="stat-card-label" class="min-w-0 truncate text-body-sm text-muted-foreground">Error rate</div>
+        </div>
+        <div class="flex items-end justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <div data-slot="stat-card-value" class="text-h2 leading-tight text-foreground tabular-nums">
+                                            <bdi data-slot="num" data-numeric="" class="tabular-nums">0.42%</bdi>
+                                    </div>
+                                    <div data-slot="stat-card-delta" class="flex flex-wrap items-center gap-x-1.5 text-caption">
+                        <span class="inline-flex items-center gap-1 text-label text-nq-success-text">
+                            <svg aria-hidden="true" class="size-3.5 shrink-0 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 17h6v-6"/>
+  <path d="m22 17-8.5-8.5-5 5L2 7"/>
+</svg>                            <bdi data-slot="num" data-numeric="" class="tabular-nums">-31.1%</bdi>
+                        </span>
+                        <span class="text-muted-foreground">vs previous period · was 0.61%</span>                    </div>
+                            </div>
+                            <div data-slot="sparkline"  aria-hidden="true"  class="h-8 shrink-0 w-24">
+    <svg viewBox="0 0 128 32" preserveAspectRatio="none" class="size-full overflow-visible rtl:-scale-x-100" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="nq-spark-5ffffe36" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--nq-success)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="var(--nq-success)" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        <path d="M2,2C10.27,3.33,18.53,4.67,26.8,6C35.07,7.33,43.33,9,51.6,10C59.87,11,68.13,11.53,76.4,12C84.67,12.47,92.93,12.6,101.2,12.8C109.47,13,117.73,13.07,126,13.2L126.00,30.00L2.00,30.00Z" fill="url(#nq-spark-5ffffe36)" stroke="none" />        <path d="M2,2C10.27,3.33,18.53,4.67,26.8,6C35.07,7.33,43.33,9,51.6,10C59.87,11,68.13,11.53,76.4,12C84.67,12.47,92.93,12.6,101.2,12.8C109.47,13,117.73,13.07,126,13.2" fill="none" stroke="var(--nq-success)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+    </svg>
+</div>
+                    </div>
+    </div>
+                        </div>
+    <div class="grid gap-4 xl:grid-cols-2">
+        <div data-slot="latency-percentiles" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Latency</h3>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Response time percentiles</div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-4"><dl class="grid grid-cols-3 gap-3">
+                                            <div data-percentile="p50" class="flex min-w-0 flex-col gap-0.5 rounded-control border border-border px-3 py-2">
+                    <dt class="flex items-center gap-1.5 text-caption text-muted-foreground">
+                        <span aria-hidden="true" class="size-2 rounded-full" style="background: var(--nq-tag-teal)"></span>
+                        <bdi dir="ltr" class="text-label text-foreground">p50</bdi>
+                        <span class="hidden truncate sm:inline">Median</span>
+                    </dt>
+                    <dd class="text-h3 text-foreground tabular-nums" dir="ltr">121 ms</dd>
+                                            <dd class="text-caption text-nq-success-text">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">-6.9%</bdi> <span class="text-muted-foreground">vs previous period</span>
+                        </dd>
+                                    </div>
+                                            <div data-percentile="p95" class="flex min-w-0 flex-col gap-0.5 rounded-control border border-border px-3 py-2">
+                    <dt class="flex items-center gap-1.5 text-caption text-muted-foreground">
+                        <span aria-hidden="true" class="size-2 rounded-full" style="background: var(--nq-tag-amber)"></span>
+                        <bdi dir="ltr" class="text-label text-foreground">p95</bdi>
+                        <span class="hidden truncate sm:inline">Slowest 5%</span>
+                    </dt>
+                    <dd class="text-h3 text-foreground tabular-nums" dir="ltr">486 ms</dd>
+                                            <dd class="text-caption text-nq-success-text">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">-10%</bdi> <span class="text-muted-foreground">vs previous period</span>
+                        </dd>
+                                    </div>
+                                            <div data-percentile="p99" class="flex min-w-0 flex-col gap-0.5 rounded-control border border-border px-3 py-2">
+                    <dt class="flex items-center gap-1.5 text-caption text-muted-foreground">
+                        <span aria-hidden="true" class="size-2 rounded-full" style="background: var(--nq-tag-pink)"></span>
+                        <bdi dir="ltr" class="text-label text-foreground">p99</bdi>
+                        <span class="hidden truncate sm:inline">Slowest 1%</span>
+                    </dt>
+                    <dd class="text-h3 text-foreground tabular-nums" dir="ltr">1.14 s</dd>
+                                            <dd class="text-caption text-nq-success-text">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">-12.3%</bdi> <span class="text-muted-foreground">vs previous period</span>
+                        </dd>
+                                    </div>
+                    </dl>
+        <div data-slot="chart"  role="img" aria-label="Latency percentiles over time"   style="--color-p50: var(--nq-tag-teal); --color-p95: var(--nq-tag-amber); --color-p99: var(--nq-tag-pink)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+        <div aria-hidden="true" class="flex w-12 shrink-0 flex-col justify-between text-end text-muted-foreground tabular-nums">
+            <span>2K</span><span>1.5K</span><span>1K</span><span>500</span><span>0</span>        </div>
+        <div class="relative min-w-0 flex-1 border-b border-border">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <line x1="0" x2="100" y1="0.00" y2="0.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                    <line x1="0" x2="100" y1="25.00" y2="25.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                    <line x1="0" x2="100" y1="50.00" y2="50.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                    <line x1="0" x2="100" y1="75.00" y2="75.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                                    <line x1="0" x2="100" y1="75.00" y2="75.00" stroke="var(--nq-warning)" stroke-width="1.5" stroke-dasharray="2 4" vector-effect="non-scaling-stroke" />
+                                                                        <polyline points="0.00,94.10 50.00,93.80 100.00,93.95" fill="none" stroke="var(--color-p50)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                        <polyline points="0.00,76.50 50.00,75.40 100.00,75.70" fill="none" stroke="var(--color-p95)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                        <polyline points="0.00,47.50 50.00,39.50 100.00,43.00" fill="none" stroke="var(--color-p99)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                            </svg>
+            <span class="absolute end-1 text-caption text-nq-warning-text" style="top: 75.00%">Target p95 500</span>                                                <span data-slot="chart-dot" title="7:00 AM: p50 118" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 0.00%; top: 94.10%; --color-key: var(--color-p50)"></span>
+                                    <span data-slot="chart-dot" title="8:00 AM: p50 124" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 50.00%; top: 93.80%; --color-key: var(--color-p50)"></span>
+                                    <span data-slot="chart-dot" title="9:00 AM: p50 121" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 100.00%; top: 93.95%; --color-key: var(--color-p50)"></span>
+                                                                <span data-slot="chart-dot" title="7:00 AM: p95 470" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 0.00%; top: 76.50%; --color-key: var(--color-p95)"></span>
+                                    <span data-slot="chart-dot" title="8:00 AM: p95 492" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 50.00%; top: 75.40%; --color-key: var(--color-p95)"></span>
+                                    <span data-slot="chart-dot" title="9:00 AM: p95 486" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 100.00%; top: 75.70%; --color-key: var(--color-p95)"></span>
+                                                                <span data-slot="chart-dot" title="7:00 AM: p99 1,050" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 0.00%; top: 47.50%; --color-key: var(--color-p99)"></span>
+                                    <span data-slot="chart-dot" title="8:00 AM: p99 1,210" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 50.00%; top: 39.50%; --color-key: var(--color-p99)"></span>
+                                    <span data-slot="chart-dot" title="9:00 AM: p99 1,140" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 100.00%; top: 43.00%; --color-key: var(--color-p99)"></span>
+                                    </div>
+    </div>
+    <div aria-hidden="true" class="flex justify-between ps-14 text-muted-foreground">
+        <span>7:00 AM</span><span>8:00 AM</span><span>9:00 AM</span>    </div>
+</div></div></div>
+        <div data-slot="error-rate-panel" data-over-slo="false" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Error rate</h3>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Failed requests as a share of all requests</div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+                <div class="flex flex-wrap items-baseline gap-x-3">
+                    <span class="text-h1 text-foreground tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">0.42%</bdi>
+</span>
+                                            <span class="text-label text-nq-success-text">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">-31%</bdi> <span class="font-normal text-muted-foreground">vs previous period</span>
+                        </span>
+                                        <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-nq-success-text">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Within target" >Within target</span>
+</span>
+                </div>
+                <dl class="flex gap-5 text-caption text-muted-foreground">
+                    <div>
+                        <dt>Errors</dt>
+                        <dd class="text-body-sm text-foreground tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">775</bdi>
+</dd>
+                    </div>
+                    <div>
+                        <dt>Requests</dt>
+                        <dd class="text-body-sm text-foreground tabular-nums"><bdi data-slot="num" data-numeric="" class="tabular-nums">184,200</bdi>
+</dd>
+                    </div>
+                </dl>
+            </div>
+                <div data-slot="chart"  role="img" aria-label="Error rate over time"   style="--color-rate: var(--nq-danger)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-52">
+    <div class="flex min-h-0 flex-1 gap-2">
+        <div aria-hidden="true" class="flex w-12 shrink-0 flex-col justify-between text-end text-muted-foreground tabular-nums">
+            <span>1%</span><span>0.8%</span><span>0.5%</span><span>0.2%</span><span>0%</span>        </div>
+        <div class="relative min-w-0 flex-1 border-b border-border">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <line x1="0" x2="100" y1="0.00" y2="0.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                    <line x1="0" x2="100" y1="25.00" y2="25.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                    <line x1="0" x2="100" y1="50.00" y2="50.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                    <line x1="0" x2="100" y1="75.00" y2="75.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                                    <line x1="0" x2="100" y1="0.00" y2="0.00" stroke="var(--nq-warning)" stroke-width="1.5" stroke-dasharray="2 4" vector-effect="non-scaling-stroke" />
+                                                    <polygon points="0.00,100 0.00,55.74 50.00,59.94 100.00,58.06 100.00,100" fill="var(--color-rate)" fill-opacity="0.14" />                    <polyline points="0.00,55.74 50.00,59.94 100.00,58.06" fill="none" stroke="var(--color-rate)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                            </svg>
+            <span class="absolute end-1 text-caption text-nq-warning-text" style="top: 0.00%">Error budget</span>                                                <span data-slot="chart-dot" title="7:00 AM: Error rate 0.44%" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 0.00%; top: 55.74%; --color-key: var(--color-rate)"></span>
+                                    <span data-slot="chart-dot" title="8:00 AM: Error rate 0.4%" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 50.00%; top: 59.94%; --color-key: var(--color-rate)"></span>
+                                    <span data-slot="chart-dot" title="9:00 AM: Error rate 0.42%" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 100.00%; top: 58.06%; --color-key: var(--color-rate)"></span>
+                                    </div>
+    </div>
+    <div aria-hidden="true" class="flex justify-between ps-14 text-muted-foreground">
+        <span>7:00 AM</span><span>8:00 AM</span><span>9:00 AM</span>    </div>
+</div>
+                    <section aria-label="Top errors" class="flex flex-col gap-2">
+                <h4 class="text-label text-muted-foreground">Top errors</h4>
+                                    <ul class="flex flex-col divide-y divide-border rounded-control border border-border">
+                                                    <li>
+                                <div class="flex items-start gap-2.5 px-3 py-2">                                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg>                                    <span class="flex min-w-0 flex-1 flex-col gap-0.5 text-start">
+                                        <bdi dir="ltr" class="truncate font-mono text-code text-foreground">TimeoutError</bdi>
+                                        <span class="flex flex-wrap gap-x-3 text-caption text-muted-foreground">
+                                            <bdi dir="ltr">POST /api/checkout</bdi>                                            <span>Last seen <time data-slot="date-time" datetime="2026-09-29T08:40:00+00:00" dir="auto"  title="Sep 29, 2026"     class="tabular-nums [unicode-bidi:isolate]">20 minutes ago</time>
+</span>                                        </span>
+                                    </span>
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text">14 times</span>
+                                </div>                            </li>
+                                            </ul>
+                            </section></div></div>
+    </div>
+    <div data-slot="time-series-panel"  x-data="nqTimeSeriesPanel('rpm', true)"
+    class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+    <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Throughput</h3>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Requests per minute</div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div class="flex flex-wrap items-center justify-between gap-3">
+                                        <label class="flex items-center gap-2 text-body-sm text-muted-foreground">
+                    <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="compare" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                    Compare with previous period
+                </label>
+                    </div>
+                                                    <div class="contents" data-metric="rpm" x-show="metric === 'rpm'" >
+                    <div data-slot="time-series-total" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-caption text-muted-foreground">Average</span>
+                        <span class="text-h2 text-foreground tabular-nums">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">512</bdi>
+                        </span>
+                                                    <span class="text-label text-nq-success-text" x-show="compare" >
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums">+7%</bdi>
+                            </span>
+                                            </div>
+                    <div data-slot="chart"  role="img" aria-label="Throughput (req/min), Sep 29 to Sep 29"   style="--color-current: var(--primary); --color-previous: var(--muted-foreground)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+                            <div aria-hidden="true" class="relative w-11 shrink-0 text-end text-muted-foreground">
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 100%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">0</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 66.67%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">200</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 33.33%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">400</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 0%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">600</bdi>
+                                                                            </span>
+                                                            </div>
+                            <div data-slot="time-series-plot" class="relative min-w-0 flex-1" x-data="nqTimeSeriesChart(JSON.parse('[{\u0022x\u0022:0,\u0022y\u0022:17,\u0022date\u0022:\u0022Sep 29, 7\\u202fAM\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Throughput (req\\\/min)\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022498\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022470\u0022}]},{\u0022x\u0022:50,\u0022y\u0022:13.33,\u0022date\u0022:\u0022Sep 29, 8\\u202fAM\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Throughput (req\\\/min)\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022520\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022486\u0022}]},{\u0022x\u0022:100,\u0022y\u0022:13.67,\u0022date\u0022:\u0022Sep 29, 9\\u202fAM\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Throughput (req\\\/min)\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u0022518\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u0022479\u0022}]}]'))" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 100%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 66.67%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 33.33%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 0%"></span>
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <defs>
+                                        <linearGradient id="nq-ts-6f7379e7" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" style="stop-color: var(--color-current); stop-opacity: 0.28" />
+                                            <stop offset="100%" style="stop-color: var(--color-current); stop-opacity: 0.02" />
+                                        </linearGradient>
+                                    </defs>
+                                                                                                                <path data-slot="time-series-previous" x-show="compare"  d="M0,21.67C16.67,20.78,33.33,19,50,19C66.67,19,83.33,19.78,100,20.17" fill="none" stroke="var(--color-previous)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                                        <path d="M0,17C16.67,15.78,33.33,13.33,50,13.33C66.67,13.33,83.33,13.56,100,13.67L100,100L0,100Z" fill="url(#nq-ts-6f7379e7)" stroke="none" />
+                                    <path data-slot="time-series-current" d="M0,17C16.67,15.78,33.33,13.33,50,13.33C66.67,13.33,83.33,13.56,100,13.67" fill="none" stroke="var(--color-current)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+                                </svg>
+                                                                <div class="contents" x-show="hover !== null" style="display: none">
+                                    <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 w-px bg-border" x-bind:style="lineStyle"></span>
+                                    <span aria-hidden="true" data-slot="chart-dot" class="pointer-events-none absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-current)] ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="dotStyle"></span>
+                                    <div class="pointer-events-none absolute top-0 z-10 ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="tipStyle">
+                                        <div data-slot="chart-tooltip" dir="ltr" class="grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md">
+                                            <div class="text-label" x-text="tip.date"></div>
+                                            <div class="grid gap-1">
+                                                <template x-for="row in tip.rows" x-bind:key="row.k">
+                                                    <div class="flex items-center gap-2" x-show="row.k === 'current' || compare">
+                                                        <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]" x-bind:style="{ backgroundColor: row.color }"></span>
+                                                        <span class="text-muted-foreground" x-text="row.label"></span>
+                                                        <span class="ms-auto ps-3 text-label tabular-nums" x-text="row.text"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-hidden="true" class="relative h-4 ms-[3.25rem]">
+                                                                                            <span class="absolute top-0 whitespace-nowrap start-0"
+                                    >Sep 29, 7 AM</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap ltr:-translate-x-1/2 rtl:translate-x-1/2"
+                                     style="inset-inline-start: 50%" >Sep 29, 8 AM</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap end-0"
+                                    >Sep 29, 9 AM</span>
+                                                    </div>
+</div>
+                </div></div>
+</div>
+    <div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('endpoints')" x-modelable="value" x-id="['nq-tabs']" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="underline" aria-orientation="horizontal" x-bind="list"
+    class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-4 border-b border-border">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('endpoints')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Slow endpoints</button>
+            <button type="button" data-slot="tabs-tab" x-bind="tab('traces')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-9 px-0.5">Traces</button>
+            <span data-slot="tabs-indicator" aria-hidden="true"
+    class="absolute -z-10 transition-[left,width] duration-200 ease-nq left-[var(--active-tab-left)] w-[var(--active-tab-width)] bottom-0 h-0.5 rounded-full bg-primary"></span>
+</div>
+        <div data-slot="tabs-panel" x-bind="panel('endpoints')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div data-slot="endpoint-table" x-data="nqApmEndpoints(JSON.parse(&#039;{\u0022pageSize\u0022:8,\u0022sort\u0022:{\u0022id\u0022:\u0022p95\u0022,\u0022dir\u0022:\u0022desc\u0022},\u0022rows\u0022:[{\u0022id\u0022:\u0022ep2\u0022,\u0022search\u0022:\u0022POST \\\/api\\\/checkout\u0022,\u0022values\u0022:{\u0022route\u0022:\u0022\\\/api\\\/checkout\u0022,\u0022requests\u0022:9120,\u0022p50\u0022:380,\u0022p95\u0022:1640,\u0022errorRate\u0022:0.021}},{\u0022id\u0022:\u0022ep1\u0022,\u0022search\u0022:\u0022GET \\\/api\\\/orders\\\/:id\u0022,\u0022values\u0022:{\u0022route\u0022:\u0022\\\/api\\\/orders\\\/:id\u0022,\u0022requests\u0022:48210,\u0022p50\u0022:84,\u0022p95\u0022:410,\u0022errorRate\u0022:0.004}}],\u0022of\u0022:\u0022of\u0022}&#039;))" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Endpoints</h3>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Sorted by p95. Slow ones are marked.</div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div data-slot="data-table-toolbar" class="flex flex-wrap items-center gap-2">
+            <div data-slot="data-table-search" class="relative w-full sm:w-64">
+                <svg aria-hidden="true" class="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                <input data-slot="input" type="search"
+                    x-model="query" x-on:keydown.escape="if (query) { $event.preventDefault(); query = &#039;&#039; }" placeholder="Filter endpoints…" aria-label="Filter endpoints…" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm ps-8 pe-8 text-body-sm [&::-webkit-search-cancel-button]:hidden">
+                <button type="button" x-show="query" aria-label="Clear search" x-on:click="query = ''" style="display: none"
+                    class="absolute end-1.5 top-1/2 inline-flex size-5 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                    <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                </button>
+            </div>
+        </div>
+                    <div data-slot="table-container" role="region" tabindex="0" aria-label="Slowest endpoints"
+                class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                <div data-slot="table" role="table" aria-label="Slowest endpoints" class="grid w-full min-w-max grid-cols-[repeat(5,auto)] text-body-sm">
+                    <div data-slot="table-header" role="rowgroup" class="contents">
+                        <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid border-b border-border">
+                                                            <div role="columnheader" data-slot="table-head" data-col="route" x-bind:aria-sort="ariaSort('route')"
+                                    class="flex h-row items-center px-4 py-3 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="sortBy('route')" x-bind:class="sort.id === 'route' ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus ">
+                                        <span>Endpoint</span>
+                                        <svg aria-hidden="true" x-show="sort.id !== 'route'" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <svg aria-hidden="true" x-show="sort.id === 'route' ? sort.dir === 'asc' : false" style="display: none" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 12 7-7 7 7"/>
+  <path d="M12 19V5"/>
+</svg>                                        <svg aria-hidden="true" x-show="sort.id === 'route' ? sort.dir === 'desc' : false" style="display: none" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 5v14"/>
+  <path d="m19 12-7 7-7-7"/>
+</svg>                                    </button>
+                                </div>
+                                                            <div role="columnheader" data-slot="table-head" data-col="requests" x-bind:aria-sort="ariaSort('requests')"
+                                    class="flex h-row items-center px-4 py-3 justify-end text-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="sortBy('requests')" x-bind:class="sort.id === 'requests' ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Requests</span>
+                                        <svg aria-hidden="true" x-show="sort.id !== 'requests'" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <svg aria-hidden="true" x-show="sort.id === 'requests' ? sort.dir === 'asc' : false" style="display: none" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 12 7-7 7 7"/>
+  <path d="M12 19V5"/>
+</svg>                                        <svg aria-hidden="true" x-show="sort.id === 'requests' ? sort.dir === 'desc' : false" style="display: none" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 5v14"/>
+  <path d="m19 12-7 7-7-7"/>
+</svg>                                    </button>
+                                </div>
+                                                            <div role="columnheader" data-slot="table-head" data-col="p50" x-bind:aria-sort="ariaSort('p50')"
+                                    class="flex h-row items-center px-4 py-3 justify-end text-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="sortBy('p50')" x-bind:class="sort.id === 'p50' ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>p50</span>
+                                        <svg aria-hidden="true" x-show="sort.id !== 'p50'" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <svg aria-hidden="true" x-show="sort.id === 'p50' ? sort.dir === 'asc' : false" style="display: none" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 12 7-7 7 7"/>
+  <path d="M12 19V5"/>
+</svg>                                        <svg aria-hidden="true" x-show="sort.id === 'p50' ? sort.dir === 'desc' : false" style="display: none" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 5v14"/>
+  <path d="m19 12-7 7-7-7"/>
+</svg>                                    </button>
+                                </div>
+                                                            <div role="columnheader" data-slot="table-head" data-col="p95" x-bind:aria-sort="ariaSort('p95')"
+                                    class="flex h-row items-center px-4 py-3 justify-end text-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="sortBy('p95')" x-bind:class="sort.id === 'p95' ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>p95</span>
+                                        <svg aria-hidden="true" x-show="sort.id !== 'p95'" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <svg aria-hidden="true" x-show="sort.id === 'p95' ? sort.dir === 'asc' : false" style="display: none" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 12 7-7 7 7"/>
+  <path d="M12 19V5"/>
+</svg>                                        <svg aria-hidden="true" x-show="sort.id === 'p95' ? sort.dir === 'desc' : false" style="display: none" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 5v14"/>
+  <path d="m19 12-7 7-7-7"/>
+</svg>                                    </button>
+                                </div>
+                                                            <div role="columnheader" data-slot="table-head" data-col="errorRate" x-bind:aria-sort="ariaSort('errorRate')"
+                                    class="flex h-row items-center px-4 py-3 justify-end text-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="sortBy('errorRate')" x-bind:class="sort.id === 'errorRate' ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Error rate</span>
+                                        <svg aria-hidden="true" x-show="sort.id !== 'errorRate'" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <svg aria-hidden="true" x-show="sort.id === 'errorRate' ? sort.dir === 'asc' : false" style="display: none" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 12 7-7 7 7"/>
+  <path d="M12 19V5"/>
+</svg>                                        <svg aria-hidden="true" x-show="sort.id === 'errorRate' ? sort.dir === 'desc' : false" style="display: none" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 5v14"/>
+  <path d="m19 12-7 7-7-7"/>
+</svg>                                    </button>
+                                </div>
+                                                    </div>
+                    </div>
+                    <div role="rowgroup" class="contents" data-slot="table-body">
+                                                    <div role="row" data-slot="table-row" data-row data-row-id="ep2" x-bind:style="rowStyle('ep2')"                                                                 class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus ">
+                                <div role="cell" data-slot="table-cell" class="flex h-row items-center px-4 py-3 align-middle whitespace-nowrap">
+                                    <bdi dir="ltr" class="flex max-w-[30ch] items-center gap-2 sm:max-w-[44ch]">
+                                        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground font-mono">POST</span>
+                                        <span class="truncate font-mono text-code">/api/checkout</span>
+                                    </bdi>
+                                </div>
+                                <div role="cell" data-slot="table-cell" class="flex h-row items-center justify-end px-4 py-3 text-end align-middle whitespace-nowrap">
+                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">9.1K</bdi>
+                                </div>
+                                <div role="cell" data-slot="table-cell" class="flex h-row items-center justify-end px-4 py-3 text-end align-middle whitespace-nowrap">
+                                    <bdi dir="ltr">380 ms</bdi>
+                                </div>
+                                <div role="cell" data-slot="table-cell" class="flex h-row items-center justify-end px-4 py-3 text-end align-middle whitespace-nowrap">
+                                    <span class="inline-flex items-center justify-end gap-2">
+                                        <span data-slot="status" data-tone="warning" class="inline-flex min-w-0 items-center gap-1.5 text-nq-warning-text text-caption">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>        <span class="truncate"  title="Slow" >Slow</span>
+</span>
+                                        <bdi dir="ltr">1.64 s</bdi>
+                                    </span>
+                                </div>
+                                <div role="cell" data-slot="table-cell" class="flex h-row items-center justify-end px-4 py-3 text-end align-middle whitespace-nowrap">
+                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">2.1%</bdi>
+                                </div>
+                            </div>
+                                                    <div role="row" data-slot="table-row" data-row data-row-id="ep1" x-bind:style="rowStyle('ep1')"                                                                 class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus ">
+                                <div role="cell" data-slot="table-cell" class="flex h-row items-center px-4 py-3 align-middle whitespace-nowrap">
+                                    <bdi dir="ltr" class="flex max-w-[30ch] items-center gap-2 sm:max-w-[44ch]">
+                                        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground font-mono">GET</span>
+                                        <span class="truncate font-mono text-code">/api/orders/:id</span>
+                                    </bdi>
+                                </div>
+                                <div role="cell" data-slot="table-cell" class="flex h-row items-center justify-end px-4 py-3 text-end align-middle whitespace-nowrap">
+                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">48.2K</bdi>
+                                </div>
+                                <div role="cell" data-slot="table-cell" class="flex h-row items-center justify-end px-4 py-3 text-end align-middle whitespace-nowrap">
+                                    <bdi dir="ltr">84 ms</bdi>
+                                </div>
+                                <div role="cell" data-slot="table-cell" class="flex h-row items-center justify-end px-4 py-3 text-end align-middle whitespace-nowrap">
+                                    <span class="inline-flex items-center justify-end gap-2">
+                                                                                <bdi dir="ltr">410 ms</bdi>
+                                    </span>
+                                </div>
+                                <div role="cell" data-slot="table-cell" class="flex h-row items-center justify-end px-4 py-3 text-end align-middle whitespace-nowrap">
+                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">0.4%</bdi>
+                                </div>
+                            </div>
+                                                <div role="row" data-slot="table-row" x-show="shownCount === 0"  style="display: none"  class="col-span-full grid grid-cols-subgrid border-0">
+                            <div role="cell" data-slot="table-cell" class="col-span-full h-auto p-0 whitespace-normal">
+                                <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 py-12 text-center rounded-card border-0">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No data for this period</p>
+            </div>
+    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                            <nav data-slot="data-table-pagination" aria-label="Pagination" x-show="pageCount > 1"  style="display: none"  class="flex flex-wrap items-center justify-end gap-2">
+                    <span class="text-caption tabular-nums text-muted-foreground" aria-live="polite" x-text="rangeText()"></span>
+                    <button type="button" aria-label="Previous page" x-bind:disabled="page === 0 ? '' : null" x-on:click="setPage(page - 1)"
+                        class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-foreground outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4"><svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg></button>
+                    <button type="button" aria-label="Next page" x-bind:disabled="page >= pageCount - 1 ? '' : null" x-on:click="setPage(page + 1)"
+                        class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-foreground outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4"><svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></button>
+                </nav></div></div></div>
+        <div data-slot="tabs-panel" x-bind="panel('traces')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus"><div data-slot="trace-list" x-data="nqApmTraces(null)" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Recent traces</h3>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Recent requests, slowest first</div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-3"><ul class="flex flex-col divide-y divide-border rounded-control border border-border">
+                                                        <li>
+                        <button type="button" x-bind:aria-pressed="String(selected === 't1')" aria-label="Show spans for POST /api/checkout" x-on:click="toggle('t1')"
+                            x-bind:class="selected === 't1' ? 'bg-muted' : ''"
+                            class="grid w-full grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 px-3 py-2 text-start outline-none hover:bg-muted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus sm:grid-cols-[minmax(0,1fr)_10rem_auto]">
+                            <span class="flex min-w-0 flex-col gap-1">
+                                <bdi dir="ltr" class="flex min-w-0 items-center gap-2">
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground font-mono">POST</span>
+                                    <span class="truncate font-mono text-code text-foreground">/api/checkout</span>
+                                </bdi>
+                                <span class="flex flex-wrap items-center gap-x-3 text-caption text-muted-foreground">
+                                    <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-foreground text-caption">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="200" ><bdi dir="ltr">200</bdi></span>
+</span>
+                                    <time data-slot="date-time" datetime="2026-09-29T08:55:00+00:00" dir="auto"  title="Sep 29, 2026"     class="tabular-nums [unicode-bidi:isolate]">5 minutes ago</time>
+                                    <span>2 spans</span>                                                                    </span>
+                            </span>
+                            <span class="hidden sm:block" aria-hidden="true">
+                                <span class="block h-2 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-nq-warning" style="width: 100%"></span>
+                                </span>
+                            </span>
+                            <span class="text-label tabular-nums text-nq-warning-text" dir="ltr">1.82 s</span>
+                        </button>
+                    </li>
+                                                        <li>
+                        <button type="button" x-bind:aria-pressed="String(selected === 't2')" aria-label="Show spans for GET /api/orders/:id" x-on:click="toggle('t2')"
+                            x-bind:class="selected === 't2' ? 'bg-muted' : ''"
+                            class="grid w-full grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 px-3 py-2 text-start outline-none hover:bg-muted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus sm:grid-cols-[minmax(0,1fr)_10rem_auto]">
+                            <span class="flex min-w-0 flex-col gap-1">
+                                <bdi dir="ltr" class="flex min-w-0 items-center gap-2">
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground font-mono">GET</span>
+                                    <span class="truncate font-mono text-code text-foreground">/api/orders/:id</span>
+                                </bdi>
+                                <span class="flex flex-wrap items-center gap-x-3 text-caption text-muted-foreground">
+                                    <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-foreground text-caption">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="200" ><bdi dir="ltr">200</bdi></span>
+</span>
+                                    <time data-slot="date-time" datetime="2026-09-29T08:58:00+00:00" dir="auto"  title="Sep 29, 2026"     class="tabular-nums [unicode-bidi:isolate]">2 minutes ago</time>
+                                                                                                        </span>
+                            </span>
+                            <span class="hidden sm:block" aria-hidden="true">
+                                <span class="block h-2 rounded-full bg-nq-surface-soft">
+                                    <span class="block h-full rounded-full bg-primary" style="width: 5.27%"></span>
+                                </span>
+                            </span>
+                            <span class="text-label tabular-nums text-foreground" dir="ltr">96 ms</span>
+                        </button>
+                    </li>
+                            </ul>
+                                                    <section data-slot="trace-waterfall" data-trace-id="t1" aria-label="Spans of /api/checkout" x-show="selected === 't1'" style="display: none"
+                    class="flex flex-col gap-2 rounded-control border border-border p-3">
+                    <h4 class="text-label text-foreground">Span waterfall</h4>
+                    <ul class="flex flex-col gap-1.5">
+                                                                                <li class="grid grid-cols-[minmax(0,10rem)_1fr] items-center gap-3 sm:grid-cols-[minmax(0,14rem)_1fr]" style="--depth: 0">
+                                <div class="min-w-0 ps-[calc(var(--depth)*0.75rem)]">
+                                    <bdi dir="ltr" class="block truncate font-mono text-code text-foreground">POST /api/checkout</bdi>
+                                    <span class="block truncate text-caption text-muted-foreground" dir="ltr">api</span>
+                                </div>
+                                <div class="relative h-5 rounded-control bg-nq-surface-soft" role="img" aria-label="POST /api/checkout, 1.82 s">
+                                    <span class="absolute inset-y-0.5 flex items-center rounded-[3px] px-1 text-caption bg-primary text-primary-foreground"
+                                        style="inset-inline-start: 0%; width: 100%"></span>
+                                    <span class="absolute inset-y-0 flex items-center text-caption text-foreground tabular-nums" style="inset-inline-start: 82%" dir="ltr">1.82 s</span>
+                                </div>
+                            </li>
+                                                                                <li class="grid grid-cols-[minmax(0,10rem)_1fr] items-center gap-3 sm:grid-cols-[minmax(0,14rem)_1fr]" style="--depth: 1">
+                                <div class="min-w-0 ps-[calc(var(--depth)*0.75rem)]">
+                                    <bdi dir="ltr" class="block truncate font-mono text-code text-foreground">SELECT orders</bdi>
+                                    <span class="block truncate text-caption text-muted-foreground" dir="ltr">postgres</span>
+                                </div>
+                                <div class="relative h-5 rounded-control bg-nq-surface-soft" role="img" aria-label="SELECT orders, 310 ms">
+                                    <span class="absolute inset-y-0.5 flex items-center rounded-[3px] px-1 text-caption bg-primary text-primary-foreground"
+                                        style="inset-inline-start: 2.2%; width: 17.03%"></span>
+                                    <span class="absolute inset-y-0 flex items-center text-caption text-foreground tabular-nums" style="inset-inline-start: 20.23%" dir="ltr">310 ms</span>
+                                </div>
+                            </li>
+                                            </ul>
+                </section></div></div></div>
+</div>
+            </div>

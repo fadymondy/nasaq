@@ -1,7 +1,7 @@
 {{-- <x-nq::data-table label="Issues" :columns="[['id' => 'title', 'header' => 'Title', 'sortable' => true, 'searchable' => true]]" :rows="[['id' => 'MH-1', 'title' => 'Fix login']]" selectable :page-size="20" />
      A sortable, searchable, filterable, paginated table with selection, expandable rows, in-cell editing and row actions.
      label: the accessible name of the table (localise it). rows: arrays keyed by column; x-modelable. row-key: the row field that identifies a row (default "id"). name-key: the field that names a row for "Select …" (default row-key).
-     columns: each ['id', 'header', 'key' (row field, default id), 'type' => text | mono | number | date | datetime | currency | status | tag | boolean | meter | avatar | link, 'sortable', 'searchable', 'hideable' (default true), 'hidden', 'align' => start | center | end,
+     columns: each ['id', 'header', 'key' (row field, default id), 'type' => text | mono | number | date | datetime | currency | status | tag | boolean | meter | avatar | link, 'sortable', 'sortKey' (a row field with the number to sort by, when the cell shows text), 'searchable', 'hideable' (default true), 'hidden', 'align' => start | center | end,
        'filter' => true (a facet filter on the column's options), 'range' => true | ['kind' => 'date'], 'options' => [['value', 'label', 'tone' => neutral | info | success | warning | danger, 'hue' => blue …]],
        'currency' => 'USD' (default USD, SAR in Arabic), 'edit' => text | number | date | switch | select].
      Cell types: mono (code font); datetime (date + time, 'format' => 'relative' shows "2 hours ago" with the absolute time as its title); meter (0..'max' 100 bar, turns warning at 'warnAt' 0.8 and danger at 'dangerAt' 0.95);

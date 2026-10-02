@@ -53,6 +53,19 @@ describe("cert-monitor (Blade example)", () => {
     expect(rows[3]!.textContent).toContain("app.example.com");
   });
 
+  it("offers Renew now only for certificates that are not auto-renewing", async () => {
+    const host = await mount();
+    const table = host.querySelector<HTMLElement>('[data-slot="data-table"]')!;
+    const dt = Alpine.$data(table) as { actions: { id: string }[]; actionOn(row: Record<string, unknown>, i: number): boolean };
+    const i = dt.actions.findIndex((a) => a.id === "renew");
+    expect(i).toBeGreaterThanOrEqual(0);
+    expect(dt.actionOn({ id: "a", renew: "Auto renew" }, i)).toBe(false);
+    expect(dt.actionOn({ id: "b", renew: "Manual" }, i)).toBe(true);
+    // The other actions stay for every row.
+    const j = dt.actions.findIndex((a) => a.id === "recheck");
+    expect(dt.actionOn({ id: "a", renew: "Auto renew" }, j)).toBe(true);
+  });
+
   it("renders the standalone days-left badges with their status", async () => {
     const host = await mount();
     const badges = [...host.querySelectorAll<HTMLElement>('[data-slot="days-left-badge"]')];

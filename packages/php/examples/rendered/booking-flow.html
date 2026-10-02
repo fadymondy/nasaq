@@ -1,0 +1,713 @@
+<div data-slot="booking-flow" lang="en" x-data="nqBookingFlow(JSON.parse('{\u0022locations\u0022:[{\u0022id\u0022:\u0022l1\u0022,\u0022name\u0022:\u0022Riyadh clinic\u0022,\u0022address\u0022:\u0022King Fahd Rd\u0022,\u0022city\u0022:\u0022Riyadh\u0022},{\u0022id\u0022:\u0022l2\u0022,\u0022name\u0022:\u0022Jeddah clinic\u0022,\u0022address\u0022:\u0022Tahlia St\u0022,\u0022city\u0022:\u0022Jeddah\u0022}],\u0022services\u0022:[{\u0022id\u0022:\u0022s1\u0022,\u0022name\u0022:\u0022Dental check-up\u0022,\u0022durationMinutes\u0022:30,\u0022price\u0022:60,\u0022category\u0022:\u0022Dental\u0022},{\u0022id\u0022:\u0022s2\u0022,\u0022name\u0022:\u0022Skin consultation\u0022,\u0022durationMinutes\u0022:45,\u0022price\u0022:90,\u0022category\u0022:\u0022Skin\u0022}],\u0022providers\u0022:[{\u0022id\u0022:\u0022p1\u0022,\u0022name\u0022:\u0022Dr. Omar Nasser\u0022,\u0022specialty\u0022:\u0022Dentist\u0022},{\u0022id\u0022:\u0022p2\u0022,\u0022name\u0022:\u0022Dr. Huda Salem\u0022,\u0022specialty\u0022:\u0022Dermatologist\u0022,\u0022serviceIds\u0022:[\u0022s2\u0022]}],\u0022slots\u0022:[{\u0022start\u0022:\u00222026-09-30T09:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-09-30T10:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-09-30T11:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-09-30T12:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-09-30T13:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-10-01T09:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-10-01T10:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-10-01T11:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-10-01T12:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-10-01T13:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-10-02T09:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-10-02T10:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-10-02T11:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-10-02T12:00\u0022,\u0022state\u0022:\u0022available\u0022},{\u0022start\u0022:\u00222026-10-02T13:00\u0022,\u0022state\u0022:\u0022available\u0022}]}'))"
+    x-bind:data-step="isOpen() ? step : undefined" x-bind:data-state="isConfirmed() ? 'confirmed' : undefined" data-step="location"
+    class="w-full">
+    <div x-show="isConfirmed()" style="display: none" class="mx-auto flex w-full max-w-2xl flex-col gap-4">
+        <div class="flex items-start gap-3" role="status">
+            <svg aria-hidden="true" class="mt-1 size-6 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>            <div>
+                <h2 x-ref="confirm" tabindex="-1" class="text-h2 outline-none">Your booking is confirmed</h2>
+                <p class="text-body-sm text-muted-foreground">Keep this ticket. Scan the code at the kiosk, or give reception the code.</p>
+            </div>
+        </div>
+        <div data-slot="booking-ticket" x-bind:data-status="record ? record.status : undefined" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground"><span x-text="record ? record.service : ''"></span></h3>
+                <div data-slot="card-description" class="text-body-sm text-muted-foreground"><span data-slot="booking-status-badge" data-status="requested" x-show="record ? record.status === &#039;requested&#039; : false" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>    Requested
+</span>
+                    <span data-slot="booking-status-badge" data-status="confirmed" x-show="record ? record.status === &#039;confirmed&#039; : false" style="display: none" class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground gap-1">
+    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 2v3"/>
+  <path d="M16 2v3"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+  <path d="M3 9h18"/>
+  <path d="m9 15 2 2 4-4"/>
+</svg>    Confirmed
+</span></div></div>
+            <div data-slot="card-content" class="px-4 grid gap-5 sm:grid-cols-[1fr_auto]"><dl class="m-0 grid gap-3">
+                    <div class="flex items-start gap-3">
+                        <span aria-hidden="true" class="mt-0.5 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 14v2.2l1.6 1"/>
+  <path d="M16 2v3"/>
+  <path d="M21 7.338V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h2.338"/>
+  <path d="M3 9h5.859"/>
+  <path d="M8 2v3"/>
+  <circle cx="16" cy="16" r="6"/>
+</svg></span>
+                        <div class="flex min-w-0 flex-col">
+                            <dt class="text-caption text-muted-foreground">When</dt>
+                            <dd class="m-0 text-body-sm text-foreground"><bdi x-text="recordWhen()"></bdi></dd>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span aria-hidden="true" class="mt-0.5 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 2v2"/>
+  <path d="M5 2v2"/>
+  <path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/>
+  <path d="M8 15a6 6 0 0 0 12 0v-3"/>
+  <circle cx="20" cy="10" r="2"/>
+</svg></span>
+                        <div class="flex min-w-0 flex-col">
+                            <dt class="text-caption text-muted-foreground">With</dt>
+                            <dd class="m-0 text-body-sm text-foreground" x-text="record ? record.provider : ''"></dd>
+                        </div>
+                    </div>
+                                            <div class="flex items-start gap-3">
+                            <span aria-hidden="true" class="mt-0.5 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+  <circle cx="12" cy="10" r="3"/>
+</svg></span>
+                            <div class="flex min-w-0 flex-col">
+                                <dt class="text-caption text-muted-foreground">Where</dt>
+                                <dd class="m-0 text-body-sm text-foreground"><span x-text="record ? record.location : ''"></span><span class="block text-muted-foreground" x-text="record ? record.address : ''"></span></dd>
+                            </div>
+                        </div>
+                                        <div class="flex items-start gap-3">
+                        <span aria-hidden="true" class="mt-0.5 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+  <circle cx="12" cy="7" r="4"/>
+</svg></span>
+                        <div class="flex min-w-0 flex-col">
+                            <dt class="text-caption text-muted-foreground">Patient</dt>
+                            <dd class="m-0 text-body-sm text-foreground" x-text="record ? record.patient : ''"></dd>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span aria-hidden="true" class="mt-0.5 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+</svg></span>
+                        <div class="flex min-w-0 flex-col">
+                            <dt class="text-caption text-muted-foreground">Phone</dt>
+                            <dd class="m-0 text-body-sm text-foreground"><bdi dir="ltr" x-text="record ? record.phone : ''"></bdi></dd>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span aria-hidden="true" class="mt-0.5 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/>
+  <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>
+</svg></span>
+                        <div class="flex min-w-0 flex-col">
+                            <dt class="text-caption text-muted-foreground">Payment</dt>
+                            <dd class="m-0 text-body-sm text-foreground"><bdi x-text="payLine()"></bdi></dd>
+                        </div>
+                    </div>
+                </dl>
+                <div class="flex flex-col items-center gap-2 rounded-card border border-nq-line p-3">
+                    <div data-slot="qr-code" data-module-style="square" data-eye-style="square" dir="ltr"
+    x-data="nqQrCode(JSON.parse('{\u0022value\u0022:\u0022\u0022,\u0022moduleStyle\u0022:\u0022square\u0022,\u0022eyeStyle\u0022:\u0022square\u0022,\u0022ecc\u0022:\u0022M\u0022,\u0022margin\u0022:4,\u0022fg\u0022:\u0022black\u0022,\u0022bg\u0022:\u0022white\u0022,\u0022eyeFg\u0022:null,\u0022logo\u0022:null,\u0022size\u0022:132,\u0022pngSize\u0022:1024,\u0022downloadName\u0022:\u0022qr-code\u0022,\u0022label\u0022:\u0022Booking QR code\u0022,\u0022labelFor\u0022:\u0022QR code for {value}\u0022}'))"
+    x-modelable="value"
+    x-model="ticketValue" class="inline-flex flex-col items-center gap-3">
+    <svg data-slot="qr-code-svg" role="img"
+     width="132" height="132"     x-bind:aria-label="name" x-bind:viewBox="viewBox" x-bind:shape-rendering="shape" x-bind:style="{ background: bg }"
+    style="background: white"
+    class="aspect-square rounded-control border border-border">
+    <path x-bind:d="layout.modules" x-bind:fill="fg" />
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[0].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[0].pupil" />
+    </g>
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[1].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[1].pupil" />
+    </g>
+    <g x-bind:fill="eyeFg ?? fg">
+        <path x-bind:d="layout.eyes[2].ring" fill-rule="evenodd" />
+        <path x-bind:d="layout.eyes[2].pupil" />
+    </g>
+    <image x-show="layout.logo" style="display: none" x-bind:href="layout.logo?.src" x-bind:x="layout.logo?.x" x-bind:y="layout.logo?.y"
+        x-bind:width="layout.logo?.size" x-bind:height="layout.logo?.size" preserveAspectRatio="xMidYMid meet" />
+</svg>
+<p x-show="error" style="display: none" role="alert" class="text-caption text-nq-danger-text">Could not create the file. Try again.</p>
+</div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-caption text-muted-foreground">Booking code</span>
+                        <bdi dir="ltr" class="font-mono text-label tracking-wider" x-text="record ? record.code : ''"></bdi>
+                    </div>
+                    <p class="max-w-40 text-center text-caption text-muted-foreground">Show this code at reception.</p>
+                </div></div>
+            <div data-slot="card-footer" class="flex items-center gap-2 px-4 flex-wrap"><button data-slot="button"
+     type="button"                     x-on:click="reset()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Book another visit</button></div></div>
+    </div>
+    <div x-show="isOpen()" class="flex w-full flex-col gap-5">
+        <div>
+            <div class="hidden md:block">
+                <ol data-slot="stepper" data-orientation="horizontal" aria-label="Booking steps" class="m-0 flex list-none flex-row items-start p-0">
+                    <template x-for="(s, i) in stepIds" :key="s">
+                        <li data-slot="stepper-item" x-bind:data-status="stepStatus(i)" x-bind:class="i === stepIds.length - 1 ? 'flex-none' : 'flex-1'" class="group/step flex items-start">
+                            <span data-slot="stepper-step" x-bind:aria-current="i === index ? 'step' : undefined" class="flex shrink-0 items-start gap-3 rounded-control text-start outline-none">
+                                <span data-slot="stepper-marker" x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': i < index, 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': i === index, 'border-border bg-background text-muted-foreground': i > index }" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5">
+                                    <svg aria-hidden="true" x-show="i < index" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span x-show="i >= index" class="tabular-nums" x-text="i + 1"></span>
+                                </span>
+                                <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                                    <span class="text-label" x-bind:class="i > index ? 'text-muted-foreground' : 'text-foreground'" x-text="stepName(s)"></span>
+                                </span>
+                            </span>
+                            <span aria-hidden="true" data-slot="stepper-connector" x-show="i < stepIds.length - 1" x-bind:class="i < index ? 'bg-primary' : 'bg-border'" class="mx-3 mt-3.5 h-px min-w-6 flex-1 rounded-full transition-colors duration-150 ease-nq"></span>
+                        </li>
+                    </template>
+                </ol>
+            </div>
+            <div class="flex flex-col gap-2 md:hidden">
+                <p class="text-label" x-text="stepOf()">Step 1 of 8: Branch</p>
+                <div data-slot="progress" data-tone="default" role="progressbar"     aria-valuemin="0" aria-valuemax="100"  aria-valuenow="12.5"     aria-valuetext="12%" data-progressing x-data="nqProgress(JSON.parse('{\u0022value\u0022:12.5,\u0022min\u0022:0,\u0022max\u0022:100,\u0022locale\u0022:\u0022en\u0022,\u0022fixedText\u0022:false}'))" x-modelable="value" x-effect="sync(pct)"
+    aria-label="Booking steps" class="flex w-full flex-col gap-1.5">
+        <div data-slot="progress-track" data-progressing class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-2">
+        <div data-slot="progress-indicator" data-progressing style="inset-inline-start:0;width:12.5%"
+            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-primary"></div>
+    </div>
+</div>
+            </div>
+        </div>
+        <div class="grid gap-5 lg:grid-cols-[1fr_17rem] lg:items-start">
+            <div data-slot="card" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h2 data-slot="card-title" class="text-foreground text-h3"><span x-ref="heading" tabindex="-1" class="outline-none" x-text="heading()">Where would you like to be seen?</span></h2></div>
+                <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div x-show="isStep('location')" >
+                            <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup(null)" x-modelable="value" x-bind="root"
+                x-model="locationId" aria-label="Where would you like to be seen?" class="flex flex-col gap-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('l1')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('l1')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground">Riyadh clinic</span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">King Fahd Rd, Riyadh</span>    </span>
+    </button>
+                                                                    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('l2')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('l2')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground">Jeddah clinic</span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Tahlia St, Jeddah</span>    </span>
+    </button>
+    </div>
+                        </div>
+                    <div x-show="isStep('service')"  style="display: none" >
+                        <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup(null)" x-modelable="value" x-bind="root"
+                x-model="serviceId" aria-label="What do you need?" class="flex flex-col gap-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('s1')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('s1')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground">Dental check-up</span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Dental</span>    </span>
+    <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground"><span class="flex flex-col items-end text-caption">
+                                            <bdi class="text-label">$60.00</bdi>
+                                            <bdi class="text-muted-foreground">30 min</bdi>
+                                        </span></span></button>
+                                                            <button type="button" role="radio" data-slot="radio-card" x-bind="radio('s2')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('s2')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground">Skin consultation</span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Skin</span>    </span>
+    <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground"><span class="flex flex-col items-end text-caption">
+                                            <bdi class="text-label">$90.00</bdi>
+                                            <bdi class="text-muted-foreground">45 min</bdi>
+                                        </span></span></button>
+    </div>
+                    </div>
+                    <div x-show="isStep('provider')"  style="display: none" >
+                        <div data-slot="alert" data-tone="warning" role="alert"
+        x-show="noProviders()" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground">No doctor offers this service here. Go back and change the service or branch.</div>
+            </div>
+    </div>
+                        <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup(null)" x-modelable="value" x-bind="root"
+                x-model="providerId" aria-label="Who would you like to see?" class="flex flex-col gap-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('any')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         x-show="hasChoice()" style="display: none" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('any')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground">First available doctor</span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">We match you with whoever has the earliest time.</span>    </span>
+    </button>
+                                                            <button type="button" role="radio" data-slot="radio-card" x-bind="radio('p1')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         x-show="eligibleAt(0)" x-bind:disabled="! eligibleAt(0)" style="display: none" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('p1')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex items-center gap-2">
+                                        <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Dr. Omar Nasser" >DN</span>
+    </span>
+                                        <span>Dr. Omar Nasser</span>
+                                    </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Dentist</span>    </span>
+    <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground"><span data-slot="rating" class="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+    <span class="sr-only">Rated 4.9 out of 5, 212 reviews</span>
+    <svg aria-hidden="true" class="size-3.5 shrink-0 fill-nq-accent text-nq-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>    <bdi aria-hidden="true" class="tabular-nums text-foreground">4.9</bdi>
+            <span aria-hidden="true" class="truncate">
+            <span class="me-1.5">·</span>
+            <bdi class="tabular-nums">212</bdi> reviews
+        </span>
+    </span></span></button>
+                                                            <button type="button" role="radio" data-slot="radio-card" x-bind="radio('p2')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         x-show="eligibleAt(1)" x-bind:disabled="! eligibleAt(1)" style="display: none" class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('p2')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex items-center gap-2">
+                                        <span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-6 text-[10px] rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Dr. Huda Salem" >DS</span>
+    </span>
+                                        <span>Dr. Huda Salem</span>
+                                    </span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Dermatologist</span>    </span>
+    <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground"><span data-slot="rating" class="inline-flex items-center gap-1.5 text-caption text-muted-foreground">
+    <span class="sr-only">Rated 4.7 out of 5, 96 reviews</span>
+    <svg aria-hidden="true" class="size-3.5 shrink-0 fill-nq-accent text-nq-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+</svg>    <bdi aria-hidden="true" class="tabular-nums text-foreground">4.7</bdi>
+            <span aria-hidden="true" class="truncate">
+            <span class="me-1.5">·</span>
+            <bdi class="tabular-nums">96</bdi> reviews
+        </span>
+    </span></span></button>
+    </div>
+                    </div>
+                    <div x-show="isStep('time')" style="display: none" class="flex flex-col gap-4">
+                        <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="isSlotError()" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground">We could not load the times.</div>
+            </div>
+            <div data-slot="alert-actions" class="ms-3 flex items-center gap-1">
+            <button data-slot="button"
+     type="button"                     x-on:click="loadSlots()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Try again</button>
+                    </div>
+    </div>
+                        <div x-show="isLoading()" style="display: none" role="status" aria-busy="true" aria-label="…" class="grid grid-cols-3 gap-2">
+                                                            <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-control"></div>
+                                                            <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-control"></div>
+                                                            <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-control"></div>
+                                                            <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-control"></div>
+                                                            <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-control"></div>
+                                                            <div data-slot="skeleton" aria-hidden="true" class="rounded-[4px] bg-secondary motion-safe:animate-pulse h-control"></div>
+                                                    </div>
+                        <div x-show="isSlotReady()" style="display: none" class="flex flex-col gap-4">
+                            <p x-show="noDays()" style="display: none" class="text-body-sm text-muted-foreground">Nothing is free in the coming weeks.</p>
+                            <div x-show="hasDays()" style="display: none" class="flex flex-col gap-4">
+                                <div role="group" aria-label="Days" class="flex flex-wrap gap-2">
+                                    <template x-for="d in days()" :key="d">
+                                        <button type="button" data-slot="booking-day" x-bind:data-day="d" x-bind:aria-pressed="String(d === day)" x-bind:data-state="d === day ? 'checked' : 'unchecked'" x-on:click="pickDay(d)"
+                                            x-bind:class="d === day ? 'border-primary bg-nq-selected' : ''" class="inline-flex min-h-control flex-col items-center justify-center gap-0.5 rounded-control border border-border bg-card px-2 py-1.5 text-label tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:hover:bg-card"><bdi x-text="dayLabel(d)"></bdi></button>
+                                    </template>
+                                </div>
+                                <div role="radiogroup" data-slot="radio-group" x-bind:aria-label="$nq.t('Times on ', 'المواعيد يوم ') + (day ? dayLabel(day) : '')" class="grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-2">
+                                    <template x-for="s in daySlots()" :key="s.start">
+                                        <button type="button" role="radio" data-slot="booking-slot" x-bind:data-start="s.start" x-bind:data-state="s.start === startKey ? 'checked' : s.state" x-bind:data-status="s.state"
+                                            x-bind:aria-checked="String(s.start === startKey)" x-bind:aria-label="slotLabel(s)" x-bind:disabled="s.state !== 'available'" x-on:click="pickSlot(s)"
+                                            x-bind:class="{ 'border-primary bg-nq-selected': s.start === startKey, 'bg-secondary text-muted-foreground': s.state === 'full', 'border-dashed text-muted-foreground': s.state === 'held' }" class="inline-flex min-h-control flex-col items-center justify-center gap-0.5 rounded-control border border-border bg-card px-2 py-1.5 text-label tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:hover:bg-card">
+                                            <bdi x-bind:class="s.state === 'full' ? 'line-through' : ''" x-text="timeLabel(s.start)"></bdi>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div x-show="isStep('details')" style="display: none" class="flex flex-col gap-4">
+                                                    <p class="text-body-sm text-muted-foreground">No account needed. You get a code and a QR ticket.</p>
+                                                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="showErr.name" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Full name</label>
+                            <input data-slot="input" type="text"
+                    x-model="details.name" autocomplete="name" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errText('name')"></span></div>
+</div>
+                        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="showErr.phone" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Mobile number</label>
+                            <input data-slot="input" type="tel"
+     dir="ltr"                 x-model="details.phone" inputmode="tel" autocomplete="tel" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                            <p class="text-caption text-muted-foreground">We send the confirmation and reminders here.</p>
+                            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errText('phone')"></span></div>
+</div>
+                        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="showErr.email" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Email (optional)</label>
+                            <input data-slot="input" type="email"
+     dir="ltr"                 x-model="details.email" autocomplete="email" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errText('email')"></span></div>
+</div>
+                        <label class="flex items-center gap-2 text-body-sm">
+                            <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="details.forOther" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            I am booking for someone else
+                        </label>
+                        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="showErr.otherName" x-show="details.forOther" style="display: none" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Patient&#039;s full name</label>
+                            <input data-slot="input" type="text"
+                    x-model="details.otherName" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  class="text-caption text-nq-danger-text"><span x-text="errText('otherName')"></span></div>
+</div>
+                    </div>
+                    <div x-show="isStep('notes')" style="display: none" class="flex flex-col gap-4">
+                        <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Notes for the clinic (optional)</label>
+                            <textarea data-slot="textarea"
+                x-model="notes" rows="4" maxlength="600" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+                            <p class="text-caption text-muted-foreground">Symptoms, questions, or anything that helps prepare.</p>
+</div>
+                        <div class="flex flex-col gap-1.5">
+                            <span class="text-label">Attachments (optional)</span>
+                            <div data-slot="file-upload" x-data="nqFileUpload(JSON.parse(&#039;{\u0022accept\u0022:\u0022image\\\/*,.pdf\u0022,\u0022maxSize\u0022:5242880,\u0022maxFiles\u0022:4}&#039;))" x-modelable="items" x-id="['nq-upload']"
+    x-model="files" x-on:files="onFiles($event)" class="flex flex-col gap-3">
+    <div data-slot="dropzone" x-bind="zone" :aria-describedby="limitsText() ? $id('nq-upload', 'hint') : undefined"
+    class="flex min-h-32 cursor-pointer flex-col items-center justify-center gap-2 rounded-floating border border-dashed border-input bg-card p-6 text-center transition-colors duration-150 ease-nq outline-none hover:bg-nq-hover focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-dragging:border-nq-focus data-dragging:bg-nq-selected data-invalid:border-nq-danger data-disabled:cursor-not-allowed data-disabled:opacity-50 data-disabled:hover:bg-card">
+    <span aria-hidden="true" class="flex [&_svg]:size-6 text-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v12"/>
+  <path d="m17 8-5-5-5 5"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+</svg></span>
+    <span class="text-label text-foreground">
+                    <span x-text="dragging ? $nq.t('Drop to add', 'أفلت لإضافة الملفات') : $nq.t('Drag files here or click to browse', 'اسحب الملفات إلى هنا أو انقر للاستعراض')">Drag files here or click to browse</span>
+            </span>
+    <span x-show="limitsText()" x-cloak style="display: none" :id="$id('nq-upload', 'hint')" dir="auto" class="text-caption text-muted-foreground" x-text="limitsText()"></span>
+    <input type="file" class="sr-only" tabindex="-1" x-ref="input" x-bind="picker" :accept="accept" :multiple="multiple" :disabled="disabled" >
+</div>
+    <ul x-show="rejections.length" x-cloak style="display: none" data-slot="file-upload-errors" role="alert" class="flex flex-col gap-1 text-caption text-nq-danger-text">
+        <template x-for="(r, i) in rejections" :key="r.file.name + '-' + i"><li x-text="r.message"></li></template>
+    </ul>
+    <ul x-show="items.length" x-cloak style="display: none" data-slot="file-list" aria-label="Files" class="flex flex-col gap-2">
+        <template x-for="item in items" :key="item.id">
+            <li data-slot="file-list-item" :data-status="item.status" class="flex flex-col gap-2 rounded-control border border-border bg-card p-3 data-[status=error]:border-nq-danger">
+                <div class="flex items-center gap-3">
+                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control bg-nq-surface-soft text-muted-foreground">
+                        <span x-show="item.status === 'error'" aria-hidden="true" class="flex text-nq-danger-text [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg></span>
+                        <span x-show="item.status !== 'error' && item.file.type.startsWith('image/')" aria-hidden="true" class="flex [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+  <circle cx="9" cy="9" r="2"/>
+  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+</svg></span>
+                        <span x-show="item.status !== 'error' && !item.file.type.startsWith('image/')" aria-hidden="true" class="flex [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+</svg></span>
+                    </span>
+                    <div class="flex min-w-0 flex-1 flex-col">
+                        <bdi data-slot="file-list-name" class="truncate text-label text-foreground" :title="item.file.name" x-text="item.file.name"></bdi>
+                        <span class="text-caption text-muted-foreground tabular-nums" x-text="fileSize(item.file.size) + ' · ' + statusText(item)"></span>
+                    </div>
+                    <button data-slot="button"
+     type="button"                     x-show="item.status === &#039;error&#039;" :aria-label="$nq.t(&#039;Retry &#039; + item.file.name, &#039;إعادة محاولة &#039; + item.file.name)" x-on:click="retry(item)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     :aria-label="$nq.t(&#039;Remove &#039; + item.file.name, &#039;إزالة &#039; + item.file.name)" x-on:click="removeItem(item)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                </div>
+                <div x-show="item.status === 'uploading' || item.status === 'pending'" data-slot="progress" data-tone="default" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                    :aria-valuenow="item.status === 'pending' ? 0 : (item.progress ?? undefined)" :aria-valuetext="item.progress === null && item.status !== 'pending' ? 'indeterminate progress' : percent(item) + '%'"
+                    :aria-label="item.file.name + ' · ' + statusText(item)" :data-indeterminate="item.progress === null && item.status !== 'pending' ? '' : undefined"
+                    class="flex w-full flex-col gap-1.5">
+                    <div data-slot="progress-track" class="relative block h-1 w-full overflow-hidden rounded-full bg-nq-surface-soft">
+                        <div data-slot="progress-indicator" :style="item.progress === null && item.status !== 'pending' ? 'inset-inline-start:0' : 'inset-inline-start:0;width:' + percent(item) + '%'"
+                            :class="item.progress === null && item.status !== 'pending' ? 'w-full motion-safe:animate-pulse' : ''"
+                            class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none"></div>
+                    </div>
+                </div>
+                <p x-show="item.status === 'error' && item.error" x-text="item.error" class="text-caption text-nq-danger-text"></p>
+            </li>
+        </template>
+    </ul>
+</div>
+                            <p class="text-caption text-muted-foreground">Earlier results or referrals. Images or PDF, up to 5 MB each.</p>
+                        </div>
+                    </div>
+                    <div x-show="isStep('payment')" style="display: none" class="flex flex-col gap-4">
+                        <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('visit')" x-modelable="value" x-bind="root"
+                x-model="payment" aria-label="How would you like to pay?" class="flex flex-col gap-2">
+    <button type="button" role="radio" data-slot="radio-card" x-bind="radio('online')"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('online')"  style="display: none" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex items-center gap-2"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="14" x="2" y="5" rx="2"/>
+  <line x1="2" x2="22" y1="10" y2="10"/>
+</svg>Pay online now</span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Secure card payment. Nothing more to pay at the clinic.</span>    </span>
+    </button>
+                                                        <button type="button" role="radio" data-slot="radio-card" x-bind="radio('visit')"
+    aria-checked="true" tabindex="0"
+     data-checked         class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-4 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="radio-card-mark" aria-hidden="true"
+        class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+        <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('visit')" ></span>
+    </span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span data-slot="radio-card-title" class="text-label text-foreground"><span class="flex items-center gap-2"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 18v-7"/>
+  <path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/>
+  <path d="M14 18v-7"/>
+  <path d="M18 18v-7"/>
+  <path d="M3 22h18"/>
+  <path d="M6 18v-7"/>
+</svg>Pay at the visit</span></span>
+        <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Cash or card at reception. Your time is held.</span>    </span>
+    </button>
+    </div>
+                        <dl x-show="hasTotal()" style="display: none" class="m-0 grid gap-1 rounded-control bg-secondary p-3 text-body-sm">
+    <div class="flex justify-between">
+        <dt class="text-muted-foreground">Service</dt>
+        <dd class="m-0"><bdi x-text="subtotalText()"></bdi></dd>
+    </div>
+        <div class="flex justify-between text-label">
+        <dt>Total</dt>
+        <dd class="m-0"><bdi x-text="totalLine()"></bdi></dd>
+    </div>
+</dl>
+                    </div>
+                    <div x-show="isStep('review')" style="display: none" class="flex flex-col gap-4">
+                        <dl class="m-0 grid gap-3">
+                                                                                            <div class="flex items-start justify-between gap-3 border-b border-nq-line pb-3 last:border-0 last:pb-0">
+                                    <div class="min-w-0">
+                                        <dt class="text-caption text-muted-foreground">Branch</dt>
+                                        <dd class="m-0 text-body-sm"><span x-text="locationText()"></span></dd>
+                                    </div>
+                                    <button data-slot="button"
+     type="button"                     x-on:click="go(idx(&#039;location&#039;))" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+  <path d="m15 5 4 4"/>
+</svg>Edit</button>
+                                </div>
+                                                                                            <div class="flex items-start justify-between gap-3 border-b border-nq-line pb-3 last:border-0 last:pb-0">
+                                    <div class="min-w-0">
+                                        <dt class="text-caption text-muted-foreground">Service</dt>
+                                        <dd class="m-0 text-body-sm"><span x-text="serviceText()"></span></dd>
+                                    </div>
+                                    <button data-slot="button"
+     type="button"                     x-on:click="go(idx(&#039;service&#039;))" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+  <path d="m15 5 4 4"/>
+</svg>Edit</button>
+                                </div>
+                                                                                            <div class="flex items-start justify-between gap-3 border-b border-nq-line pb-3 last:border-0 last:pb-0">
+                                    <div class="min-w-0">
+                                        <dt class="text-caption text-muted-foreground">Doctor</dt>
+                                        <dd class="m-0 text-body-sm"><span x-text="providerText()"></span></dd>
+                                    </div>
+                                    <button data-slot="button"
+     type="button"                     x-on:click="go(idx(&#039;provider&#039;))" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+  <path d="m15 5 4 4"/>
+</svg>Edit</button>
+                                </div>
+                                                                                            <div class="flex items-start justify-between gap-3 border-b border-nq-line pb-3 last:border-0 last:pb-0">
+                                    <div class="min-w-0">
+                                        <dt class="text-caption text-muted-foreground">When</dt>
+                                        <dd class="m-0 text-body-sm"><bdi x-text="dateLine()"></bdi></dd>
+                                    </div>
+                                    <button data-slot="button"
+     type="button"                     x-on:click="go(idx(&#039;time&#039;))" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+  <path d="m15 5 4 4"/>
+</svg>Edit</button>
+                                </div>
+                                                        <div class="flex items-start justify-between gap-3 border-b border-nq-line pb-3 last:border-0 last:pb-0">
+                                <div class="min-w-0">
+                                    <dt class="text-caption text-muted-foreground">Patient</dt>
+                                    <dd class="m-0 text-body-sm"><span x-text="patientName()"></span><span class="block text-muted-foreground"><bdi dir="ltr" x-text="details.phone"></bdi></span></dd>
+                                </div>
+                                <button data-slot="button"
+     type="button"                     x-on:click="go(idx(&#039;details&#039;))" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+  <path d="m15 5 4 4"/>
+</svg>Edit</button>
+                            </div>
+                            <div x-show="hasNotesOrFiles()" style="display: none" class="flex items-start justify-between gap-3 border-b border-nq-line pb-3 last:border-0 last:pb-0">
+                                <div class="min-w-0">
+                                    <dt class="text-caption text-muted-foreground">Notes</dt>
+                                    <dd class="m-0 text-body-sm"><span x-show="hasNotes()" style="display: none" class="block whitespace-pre-line" x-text="notes"></span><span x-show="hasFiles()" style="display: none" class="block text-muted-foreground" x-text="attachedText()"></span></dd>
+                                </div>
+                                <button data-slot="button"
+     type="button"                     x-on:click="go(idx(&#039;notes&#039;))" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+  <path d="m15 5 4 4"/>
+</svg>Edit</button>
+                            </div>
+                            <div class="flex items-start justify-between gap-3 border-b border-nq-line pb-3 last:border-0 last:pb-0">
+                                <div class="min-w-0">
+                                    <dt class="text-caption text-muted-foreground">Payment</dt>
+                                    <dd class="m-0 text-body-sm" x-text="paymentText()"></dd>
+                                </div>
+                                <button data-slot="button"
+     type="button"                     x-on:click="go(idx(&#039;payment&#039;))" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+  <path d="m15 5 4 4"/>
+</svg>Edit</button>
+                            </div>
+                        </dl>
+                        <dl x-show="hasTotal()" style="display: none" class="m-0 grid gap-1 rounded-control bg-secondary p-3 text-body-sm">
+    <div class="flex justify-between">
+        <dt class="text-muted-foreground">Service</dt>
+        <dd class="m-0"><bdi x-text="subtotalText()"></bdi></dd>
+    </div>
+        <div class="flex justify-between text-label">
+        <dt>Total</dt>
+        <dd class="m-0"><bdi x-text="totalLine()"></bdi></dd>
+    </div>
+</dl>
+                        <p class="text-caption text-muted-foreground">Free cancellation up to 24 hours before.</p>
+                        <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="hasError()" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="submitError"></span></div>
+            </div>
+    </div>
+                    </div></div>
+                <div data-slot="card-footer" class="flex items-center gap-2 px-4 justify-between"><button data-slot="button"
+     type="button"                     x-bind:disabled="isFirst() || submitting" x-bind:data-disabled="isFirst() || submitting ? &#039;&#039; : undefined" x-on:click="back()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg>                        Back</button>
+                    <button data-slot="button"
+     type="button"                     x-show="isStep(&#039;review&#039;)" style="display: none" x-bind:disabled="submitting" x-bind:data-disabled="submitting ? &#039;&#039; : undefined" x-on:click="submit()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" x-show="submitting" style="display: none" class="animate-spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg aria-hidden="true" x-show="! submitting" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                        <span x-text="submitting ? $nq.t('Confirming', 'جارٍ التأكيد') : $nq.t('Confirm booking', 'تأكيد الحجز')">Confirm booking</span></button>
+                    <button data-slot="button"
+     type="button"                     x-show="! isStep(&#039;review&#039;)" x-bind:disabled="cannotNext()" x-bind:data-disabled="cannotNext() ? &#039;&#039; : undefined" x-on:click="next()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Continue
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg></button></div></div>
+            <aside aria-label="Your booking" class="order-last rounded-card border border-border bg-card p-4 lg:sticky lg:top-4">
+                <h3 class="mb-3 text-label font-semibold">Your booking</h3>
+                <dl x-show="hasService()" style="display: none" class="m-0 grid gap-3 text-body-sm">
+                                                                    <div class="flex items-start gap-2.5">
+                            <span aria-hidden="true" class="mt-0.5 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+  <circle cx="12" cy="10" r="3"/>
+</svg></span>
+                            <div class="min-w-0">
+                                <dt class="text-caption text-muted-foreground">Branch</dt>
+                                <dd class="m-0"><span x-text="dashText(locationText())"></span></dd>
+                            </div>
+                        </div>
+                                                                    <div class="flex items-start gap-2.5">
+                            <span aria-hidden="true" class="mt-0.5 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 2v2"/>
+  <path d="M5 2v2"/>
+  <path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/>
+  <path d="M8 15a6 6 0 0 0 12 0v-3"/>
+  <circle cx="20" cy="10" r="2"/>
+</svg></span>
+                            <div class="min-w-0">
+                                <dt class="text-caption text-muted-foreground">Service</dt>
+                                <dd class="m-0"><span x-text="dashText(serviceText())"></span></dd>
+                            </div>
+                        </div>
+                                                                    <div class="flex items-start gap-2.5">
+                            <span aria-hidden="true" class="mt-0.5 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="8" r="5"/>
+  <path d="M20 21a8 8 0 0 0-16 0"/>
+</svg></span>
+                            <div class="min-w-0">
+                                <dt class="text-caption text-muted-foreground">Doctor</dt>
+                                <dd class="m-0"><span x-text="dashText(providerText())"></span></dd>
+                            </div>
+                        </div>
+                                                                    <div class="flex items-start gap-2.5">
+                            <span aria-hidden="true" class="mt-0.5 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 14v2.2l1.6 1"/>
+  <path d="M16 2v3"/>
+  <path d="M21 7.338V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h2.338"/>
+  <path d="M3 9h5.859"/>
+  <path d="M8 2v3"/>
+  <circle cx="16" cy="16" r="6"/>
+</svg></span>
+                            <div class="min-w-0">
+                                <dt class="text-caption text-muted-foreground">When</dt>
+                                <dd class="m-0"><bdi x-text="dashText(dateLine())"></bdi></dd>
+                            </div>
+                        </div>
+                                        <div class="mt-1 flex items-baseline justify-between border-t border-nq-line pt-3">
+                        <dt class="text-label">Total</dt>
+                        <dd class="m-0 text-label"><bdi x-text="totalText()"></bdi></dd>
+                    </div>
+                </dl>
+                <p x-show="hasNoService()" class="text-body-sm text-muted-foreground">Nothing chosen yet.</p>
+            </aside>
+        </div>
+    </div>
+</div>

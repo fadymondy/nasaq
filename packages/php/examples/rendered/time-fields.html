@@ -1,0 +1,135 @@
+<div class="flex max-w-sm flex-col gap-3">
+    <div data-slot="time-field" x-data="nqTimeField(JSON.parse('{\u0022value\u0022:\u002209:00\u0022,\u0022step\u0022:5,\u0022locale\u0022:\u0022en\u0022}'))" x-modelable="value" x-id="['nq-time']"
+    class="flex min-w-0 flex-col gap-1">
+    <div class="relative">
+        <svg aria-hidden="true" class="pointer-events-none absolute inset-y-0 start-3 my-auto size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>        <input data-slot="input" type="text"
+     dir="ltr"                 x-bind="input" inputmode="numeric" autocomplete="off" spellcheck="false" value="09:00" aria-label="Remind me at" placeholder="HH:mm" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start ps-9 tabular-nums">
+            </div>
+    <p x-bind="messageEl" class="min-h-4 text-caption empty:hidden"  hidden >
+        <span x-bind="textEl"  style="display: none" ></span>
+        <span x-bind="previewEl" style="display: none">Will be <bdi dir="ltr" class="font-mono text-foreground" x-text="preview"></bdi></span>
+    </p>
+</div>
+    <div data-slot="time-zone-field" x-data="nqTimeZoneField(JSON.parse('{\u0022value\u0022:\u0022Asia\\\/Riyadh\u0022,\u0022locale\u0022:\u0022en\u0022}'))" x-modelable="value" x-id="['nq-tz']"
+    class="flex min-w-0 flex-col gap-2">
+    <div class="flex min-w-0 items-start gap-2">
+        <div class="min-w-0 flex-1">
+            <div data-slot="combobox-input-group" x-ref="anchor"
+                class="flex min-h-control min-w-0 w-full h-control items-center gap-1 rounded-control border border-input bg-card ps-3 pe-1.5 text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50">
+                <input data-slot="combobox-input" x-ref="input" x-bind="input"                      value="Riyadh, Asia" placeholder="Search a city or an offset" aria-label="Time zone"
+                    class="h-full min-w-0 flex-1 border-0 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+                <button data-slot="combobox-trigger" x-bind="trigger" aria-label="Show time zones"                     class="flex size-6 shrink-0 cursor-default items-center justify-center rounded-control text-muted-foreground outline-none hover:text-foreground focus-visible:outline-1 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></button>
+            </div>
+            <template x-teleport="body">
+                <div data-slot="combobox-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.anchor"
+                    class="z-50 w-[var(--anchor-width)] max-h-[min(var(--available-height),20rem)] min-w-[min(24rem,90vw)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                    <div data-slot="combobox-empty" x-show="noMatches" x-cloak style="display: none" class="px-2.5 py-2 text-body-sm text-muted-foreground empty:hidden">No time zone matches. Try a city or an offset such as UTC+3.</div>
+                    <div data-slot="combobox-list" class="outline-none">
+                        <template x-for="(zone, i) in shown" :key="zone">
+                            <div data-slot="combobox-item" role="option" :id="optionId(i)" :aria-selected="String(zone === value)" :data-selected="zone === value ? '' : null" :data-highlighted="i === highlighted ? '' : null"
+                                x-on:pointermove="highlighted = i" x-on:click="pick(zone)"
+                                class="relative flex h-auto min-h-9 cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 py-1.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+                                <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+                                    <span x-show="zone === value" x-cloak style="display: none" class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+                                </span>
+                                <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate">
+                                    <span class="flex min-w-0 flex-1 items-center justify-between gap-3">
+                                        <span class="flex min-w-0 flex-col">
+                                            <span class="truncate text-body-sm text-foreground" x-text="city(zone)"></span>
+                                            <span class="truncate text-caption text-muted-foreground" x-text="sub(zone)"></span>
+                                        </span>
+                                        <span class="flex shrink-0 flex-col items-end">
+                                            <bdi dir="ltr" class="text-body-sm font-medium tabular-nums text-foreground" x-text="clockOf(zone)"></bdi>
+                                            <bdi dir="ltr" class="font-mono text-caption text-muted-foreground" x-text="gap(zone)"></bdi>
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+                    <p x-show="truncated" x-cloak style="display: none" class="border-t border-border px-2.5 pt-2 pb-1 text-caption text-muted-foreground" x-text="truncatedText"></p>
+                </div>
+            </template>
+        </div>
+                    <button data-slot="button"
+     type="button"                     x-on:click="pickMine()" x-bind:disabled="mineDisabled()" class="inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)] shrink-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/>
+    <path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2v0a2 2 0 0 0 2-2v0c0-1.1.9-2 2-2h3.17"/>
+    <path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"/>
+    <circle cx="12" cy="12" r="10"/>
+</svg>                <span class="max-sm:sr-only">Use my time zone</span></button>
+            </div>
+                <div data-slot="time-zone-clock" x-data="nqTimeZoneClock(JSON.parse('{\u0022timeZone\u0022:\u0022Asia\\\/Riyadh\u0022,\u0022locale\u0022:\u0022en\u0022}'))"
+        x-show="value" x-effect="value ? (timeZone = value) : null" class="flex min-w-0 flex-col gap-0.5 rounded-control bg-nq-surface-soft px-3 py-2">
+        <div class="flex items-baseline justify-between gap-3">
+            <span class="min-w-0 truncate text-label text-foreground" x-text="city">Riyadh</span>
+            <bdi dir="ltr" class="shrink-0 font-mono text-caption text-muted-foreground" x-text="offsetLabel">UTC+03:00</bdi>        </div>
+        <time x-bind:datetime="iso" datetime="2026-09-29T09:00:00.000Z" dir="ltr" x-text="clock" class="font-semibold tabular-nums text-foreground text-h3 ">12:00 PM</time>
+        <div x-show="showRow"  class="flex flex-wrap items-center gap-x-2 text-caption text-muted-foreground">
+            <span x-text="dateText">Tue, Sep 29</span>            <span data-slot="badge"  style="display: none"     x-show="dayShiftText" x-text="dayShiftText" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground"></span>
+            <span x-show="diffVisible"  style="display: none" ><bdi dir="ltr" x-text="diffText"></bdi> from </span>
+        </div>
+        <div x-show="! known" style="display: none" class="text-body-sm text-muted-foreground">Unknown time zone: <bdi dir="ltr" x-text="timeZone"></bdi></div>
+    </div>
+        <p x-show="yourZoneVisible" style="display: none" class="text-caption text-muted-foreground">Your time zone</p>
+</div>
+    <div data-slot="time-span-field" role="group" aria-label="Time span" x-data="nqTimeSpanField(JSON.parse('{\u0022value\u0022:{\u0022start\u0022:\u002222:00\u0022,\u0022end\u0022:\u002206:00\u0022},\u0022allowOvernight\u0022:true,\u0022showDuration\u0022:true,\u0022locale\u0022:\u0022en\u0022}'))" x-modelable="span"
+    class="flex min-w-0 flex-col gap-1.5">
+    <div class="flex flex-wrap items-start gap-x-2 gap-y-1">
+        <div data-slot="time-field" x-data="nqTimeField(JSON.parse('{\u0022value\u0022:\u002222:00\u0022,\u0022step\u0022:5,\u0022locale\u0022:\u0022en\u0022}'))" x-modelable="value" x-id="['nq-time']"
+    x-model="span.start" x-on:change.stop="null" class="flex min-w-0 flex-col gap-1 w-32">
+    <div class="relative">
+        <svg aria-hidden="true" class="pointer-events-none absolute inset-y-0 start-3 my-auto size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>        <input data-slot="input" type="text"
+     dir="ltr"                 x-bind="input" inputmode="numeric" autocomplete="off" spellcheck="false" value="22:00" aria-label="Start" placeholder="HH:mm" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start ps-9 tabular-nums">
+            </div>
+    <p x-bind="messageEl" class="min-h-4 text-caption empty:hidden"  hidden >
+        <span x-bind="textEl"  style="display: none" ></span>
+        <span x-bind="previewEl" style="display: none">Will be <bdi dir="ltr" class="font-mono text-foreground" x-text="preview"></bdi></span>
+    </p>
+</div>
+        <svg aria-hidden="true" class="mt-2.5 size-4 shrink-0 text-muted-foreground rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 8L22 12L18 16"/>
+  <path d="M2 12H22"/>
+</svg>        <div data-slot="time-field" x-data="nqTimeField(JSON.parse('{\u0022value\u0022:\u002206:00\u0022,\u0022step\u0022:5,\u0022locale\u0022:\u0022en\u0022}'))" x-modelable="value" x-id="['nq-time']"
+    x-model="span.end" x-effect="extError = endError" x-on:change.stop="null" class="flex min-w-0 flex-col gap-1 w-32">
+    <div class="relative">
+        <svg aria-hidden="true" class="pointer-events-none absolute inset-y-0 start-3 my-auto size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg>        <input data-slot="input" type="text"
+     dir="ltr"                 x-bind="input" inputmode="numeric" autocomplete="off" spellcheck="false" value="06:00" aria-label="End" placeholder="HH:mm" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start ps-9 tabular-nums">
+            </div>
+    <p x-bind="messageEl" class="min-h-4 text-caption empty:hidden"  hidden >
+        <span x-bind="textEl"  style="display: none" ></span>
+        <span x-bind="previewEl" style="display: none">Will be <bdi dir="ltr" class="font-mono text-foreground" x-text="preview"></bdi></span>
+    </p>
+</div>
+        <span data-slot="badge"     x-show="overnight" x-text="spanLabels.overnight" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text mt-1.5">Next day</span>
+    </div>
+            <p x-show="minutes !== null"  class="text-caption text-muted-foreground">Duration: <bdi dir="ltr" class="font-medium text-foreground tabular-nums" x-text="durationText">8h</bdi></p>
+    </div>
+    <div data-slot="time-zone-clock" x-data="nqTimeZoneClock(JSON.parse('{\u0022timeZone\u0022:\u0022Europe\\\/London\u0022,\u0022reference\u0022:\u0022Asia\\\/Riyadh\u0022,\u0022locale\u0022:\u0022en\u0022}'))"
+        class="flex min-w-0 flex-col gap-0.5">
+        <div class="flex items-baseline justify-between gap-3">
+            <span class="min-w-0 truncate text-label text-foreground" x-text="city">London</span>
+            <bdi dir="ltr" class="shrink-0 font-mono text-caption text-muted-foreground" x-text="offsetLabel">UTC+01:00</bdi>        </div>
+        <time x-bind:datetime="iso" datetime="2026-09-29T09:00:00.000Z" dir="ltr" x-text="clock" class="font-semibold tabular-nums text-foreground text-h2 ">10:00 AM</time>
+        <div x-show="showRow"  class="flex flex-wrap items-center gap-x-2 text-caption text-muted-foreground">
+            <span x-text="dateText">Tue, Sep 29</span>            <span data-slot="badge"  style="display: none"     x-show="dayShiftText" x-text="dayShiftText" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground"></span>
+            <span x-show="diffVisible" ><bdi dir="ltr" x-text="diffText">-2h</bdi> from Riyadh</span>
+        </div>
+        <div x-show="! known" style="display: none" class="text-body-sm text-muted-foreground">Unknown time zone: <bdi dir="ltr" x-text="timeZone"></bdi></div>
+    </div>
+</div>

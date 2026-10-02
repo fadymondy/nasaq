@@ -1,0 +1,1022 @@
+<div x-data="{ filters: { range: { kind: 'relative', preset: '30d' }, comparison: 'none', fields: { status: ['open'], owner: [], stage: [] } } }" class="flex max-w-3xl flex-col gap-4">
+    <article data-slot="report-sheet" class="flex w-full min-w-0 flex-col gap-6 rounded-card border border-border bg-card p-4 sm:p-6">
+    <style>@media print {
+  body * { visibility: hidden !important; }
+  [data-slot="report-sheet"], [data-slot="report-sheet"] * { visibility: visible !important; }
+  [data-slot="report-sheet"] { position: absolute; inset-inline-start: 0; inset-block-start: 0; width: 100%; box-shadow: none; border: 0; padding: 0; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  [data-slot="report-sheet"] [data-print-hide] { display: none !important; }
+  [data-slot="report-sheet"] section, [data-slot="report-sheet"] tr, [data-slot="report-sheet"] figure { break-inside: avoid; }
+}
+@page { margin: 14mm; }</style>
+    <header class="flex flex-col gap-2 border-b border-border pb-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+                <h1 class="text-title text-foreground">Deals report</h1>
+                                    <p class="text-body text-muted-foreground">All pipelines</p>
+                            </div>
+                            <div data-print-hide class="flex items-center gap-2 print:hidden"><span x-data="nqReportExportMenu(JSON.parse('{\u0022document\u0022:{\u0022title\u0022:\u0022Deals report\u0022,\u0022sections\u0022:[{\u0022heading\u0022:\u0022Totals\u0022,\u0022table\u0022:{\u0022columns\u0022:[\u0022Owner\u0022,\u0022Won\u0022],\u0022rows\u0022:[[\u0022Sara\u0022,12],[\u0022Omar\u0022,9]]}}]},\u0022filename\u0022:\u0022deals\u0022,\u0022t\u0022:{\u0022export\u0022:\u0022Export\u0022,\u0022print\u0022:\u0022Print or save as PDF\u0022,\u0022markdown\u0022:\u0022Download Markdown\u0022,\u0022copyMarkdown\u0022:\u0022Copy as Markdown\u0022,\u0022copied\u0022:\u0022Copied\u0022,\u0022failed\u0022:\u0022That did not save. Try again.\u0022}}'))" class="contents">
+    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="report-export-menu"
+     type="button"                     x-bind="trigger" x-ref="trigger" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
+</svg>            Export</button>
+        <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="run(&#039;pdf&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/>
+  <rect x="6" y="14" width="12" height="8" rx="1"/>
+</svg>Print or save as PDF</div>
+                                        <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="run(&#039;markdown&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+  <path d="M10 9H8"/>
+  <path d="M16 13H8"/>
+  <path d="M16 17H8"/>
+</svg>Download Markdown</div>
+                                        <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="run(&#039;copy&#039;)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>Copy as Markdown</div></div>
+</template></div>
+    <span aria-live="polite" class="sr-only" x-text="note"></span>
+</span></div>
+                    </div>
+                    <dl aria-label="Filters" class="flex flex-wrap gap-x-5 gap-y-1 text-body-sm">
+                                    <div class="flex gap-1.5">
+                        <dt class="text-muted-foreground">Owner:</dt>
+                        <dd class="text-foreground">Everyone</dd>
+                    </div>
+                            </dl>
+                <p class="text-caption text-muted-foreground">Generated Sep 29, 2026, 12:00 PM</p>
+    </header>
+    <div data-slot="report-filter-bar" role="group" aria-label="Report filters" x-data="nqReportFilterBar(JSON.parse('{\u0022fields\u0022:[{\u0022id\u0022:\u0022status\u0022,\u0022kind\u0022:\u0022multi\u0022,\u0022label\u0022:\u0022Status\u0022,\u0022allLabel\u0022:null,\u0022options\u0022:[{\u0022value\u0022:\u0022open\u0022,\u0022label\u0022:\u0022Open\u0022},{\u0022value\u0022:\u0022won\u0022,\u0022label\u0022:\u0022Won\u0022},{\u0022value\u0022:\u0022lost\u0022,\u0022label\u0022:\u0022Lost\u0022}]},{\u0022id\u0022:\u0022owner\u0022,\u0022kind\u0022:\u0022select\u0022,\u0022label\u0022:\u0022Owner\u0022,\u0022allLabel\u0022:null,\u0022options\u0022:[{\u0022value\u0022:\u0022sara\u0022,\u0022label\u0022:\u0022Sara\u0022},{\u0022value\u0022:\u0022omar\u0022,\u0022label\u0022:\u0022Omar\u0022}]},{\u0022id\u0022:\u0022stage\u0022,\u0022kind\u0022:\u0022toggle\u0022,\u0022label\u0022:\u0022Stage\u0022,\u0022allLabel\u0022:null,\u0022options\u0022:[{\u0022value\u0022:\u0022new\u0022,\u0022label\u0022:\u0022New\u0022},{\u0022value\u0022:\u0022late\u0022,\u0022label\u0022:\u0022Late\u0022}]}],\u0022state\u0022:{\u0022range\u0022:{\u0022kind\u0022:\u0022relative\u0022,\u0022preset\u0022:\u002230d\u0022},\u0022comparison\u0022:\u0022none\u0022,\u0022fields\u0022:{\u0022status\u0022:[\u0022open\u0022],\u0022owner\u0022:[],\u0022stage\u0022:[]}},\u0022defaults\u0022:null,\u0022comparison\u0022:true,\u0022t\u0022:{\u0022filters\u0022:\u0022Report filters\u0022,\u0022reset\u0022:\u0022Reset filters\u0022,\u0022all\u0022:\u0022All\u0022,\u0022selected\u0022:\u0022{0} selected\u0022,\u0022clear\u0022:\u0022Clear\u0022,\u0022activeOne\u0022:\u00221 filter applied\u0022,\u0022activeTwo\u0022:\u0022{0} filters applied\u0022,\u0022activeMany\u0022:\u0022{0} filters applied\u0022,\u0022removeFilter\u0022:\u0022Remove filter {0}\u0022}}'))" x-modelable="state"
+    x-on:comparison-change="onCompare($event)" x-model="filters" class="flex w-full min-w-0 flex-col gap-3">
+    <div class="flex flex-wrap items-end gap-x-4 gap-y-3">
+                    <div data-slot="time-range-picker" x-data="nqTimeRangePicker(JSON.parse('{\u0022value\u0022:{\u0022kind\u0022:\u0022relative\u0022,\u0022preset\u0022:\u002230d\u0022},\u0022presets\u0022:[\u00221h\u0022,\u00226h\u0022,\u002224h\u0022,\u00227d\u0022,\u002230d\u0022],\u0022allowWeek\u0022:true,\u0022allowCustom\u0022:true,\u0022allowFuture\u0022:false,\u0022timeZone\u0022:\u0022Asia\\\/Riyadh\u0022,\u0022weekStartsOn\u0022:null,\u0022comparison\u0022:\u0022none\u0022,\u0022now\u0022:\u00222026-09-29T09:00:00+00:00\u0022,\u0022locale\u0022:\u0022en\u0022}'))" x-modelable="value"
+    x-model="rangeValue" class="flex min-w-0 flex-col gap-2">
+    <div class="flex min-w-0 flex-wrap items-center gap-2">
+        <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal" aria-label="Time range"
+            class="flex w-fit max-w-full gap-0.5 overflow-x-auto rounded-control bg-secondary p-0.5">
+            <template x-for="p in presets" :key="p">
+                <button type="button" data-slot="toggle" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus" x-bind:aria-pressed="String(pressed === p)" x-bind:data-pressed="pressed === p ? '' : undefined"
+                    x-bind:aria-label="presetLong(p)" x-bind:title="presetLong(p)" x-on:click="choose(p)"><span dir="auto" x-text="presetShort(p)"></span></button>
+            </template>
+                            <button type="button" data-slot="toggle" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus" x-bind:aria-pressed="String(pressed === 'week')" x-bind:data-pressed="pressed === 'week' ? '' : undefined"
+                    x-on:click="choose('week')">Week</button>
+                    </div>
+                    <div data-slot="popover" x-data="nqPopover(false)" x-modelable="open" x-id="['nq-popover']" class="contents">
+    <button data-slot="popover-trigger"
+     type="button"                     x-bind:data-popup-open="open ? &#039;&#039; : undefined" x-ref="trigger" aria-haspopup="dialog" x-on:click="seedDraft(); toggle()" :aria-expanded="open" x-bind:data-active="isCustom ? &#039;&#039; : undefined" x-bind:class="isCustom ? &#039;border-primary bg-nq-selected&#039; : &#039;&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 tabular-nums">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 2v3"/>
+  <path d="M16 2v3"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+  <path d="M3 9h18"/>
+  <path d="M8 13h.01"/>
+  <path d="M12 13h.01"/>
+  <path d="M16 13h.01"/>
+  <path d="M8 17h.01"/>
+  <path d="M12 17h.01"/>
+  <path d="M16 17h.01"/>
+</svg>                    <span x-text="customLabel">Custom</span></button>
+                <template x-teleport="body">
+    <div data-slot="popover-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+        dir="ltr" lang="en" aria-label="Custom range" class="z-50 rounded-floating border border-border bg-popover text-body-sm text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 w-auto max-w-[var(--available-width)] p-3"><div data-slot="calendar" data-mode="range" dir="ltr" lang="en" x-data="nqCalendar(JSON.parse('{\u0022mode\u0022:\u0022range\u0022,\u0022value\u0022:{\u0022from\u0022:null,\u0022to\u0022:null},\u0022month\u0022:\u00222026-09-01\u0022,\u0022numberOfMonths\u0022:1,\u0022min\u0022:null,\u0022max\u0022:\u00222026-09-29\u0022,\u0022disabled\u0022:[],\u0022disabledWeekdays\u0022:[],\u0022showOutsideDays\u0022:true,\u0022fixedWeeks\u0022:false,\u0022weekStartsOn\u0022:null,\u0022locale\u0022:\u0022en\u0022,\u0022dir\u0022:\u0022ltr\u0022,\u0022calendar\u0022:null,\u0022today\u0022:\u00222026-09-29\u0022,\u0022previousMonthLabel\u0022:null,\u0022nextMonthLabel\u0022:null}'))" x-modelable="value" x-bind="root"
+    x-model="draft" class="inline-flex w-fit flex-col gap-2 text-body-sm text-foreground">
+    <div class="flex flex-wrap gap-x-6 gap-y-4">
+                                <div data-ssr data-slot="calendar-month" class="flex flex-col gap-2">
+                <div class="flex items-center justify-between gap-2">
+                                            <button data-slot="button"
+     type="button"                     aria-label="Previous month" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg></button>
+                                        <div aria-live="polite" data-slot="calendar-title" class="text-label font-semibold">September 2026</div>
+                                            <button data-slot="button"
+     type="button"              disabled      data-disabled     aria-label="Next month" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></button>
+                                    </div>
+                <table role="grid" aria-label="September 2026" data-slot="calendar-grid" class="border-separate border-spacing-0">
+                    <thead>
+                        <tr>
+                                                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true">S</span><span class="sr-only">Sunday</span></th>
+                                                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true">M</span><span class="sr-only">Monday</span></th>
+                                                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true">T</span><span class="sr-only">Tuesday</span></th>
+                                                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true">W</span><span class="sr-only">Wednesday</span></th>
+                                                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true">T</span><span class="sr-only">Thursday</span></th>
+                                                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true">F</span><span class="sr-only">Friday</span></th>
+                                                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true">S</span><span class="sr-only">Saturday</span></th>
+                                                    </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                                                                                                                                <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-08-30"                                                   data-outside   aria-label="Sunday, August 30, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">30</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-08-31"                                                   data-outside   aria-label="Monday, August 31, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">31</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-01"                                                    aria-label="Tuesday, September 1, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">1</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-02"                                                    aria-label="Wednesday, September 2, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">2</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-03"                                                    aria-label="Thursday, September 3, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">3</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-04"                                                    aria-label="Friday, September 4, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">4</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-05"                                                    aria-label="Saturday, September 5, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">5</button>
+                                        </td>
+                                                                                                </tr>
+                                                    <tr>
+                                                                                                                                                <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-06"                                                    aria-label="Sunday, September 6, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">6</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-07"                                                    aria-label="Monday, September 7, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">7</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-08"                                                    aria-label="Tuesday, September 8, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">8</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-09"                                                    aria-label="Wednesday, September 9, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">9</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-10"                                                    aria-label="Thursday, September 10, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">10</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-11"                                                    aria-label="Friday, September 11, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">11</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-12"                                                    aria-label="Saturday, September 12, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">12</button>
+                                        </td>
+                                                                                                </tr>
+                                                    <tr>
+                                                                                                                                                <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-13"                                                    aria-label="Sunday, September 13, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">13</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-14"                                                    aria-label="Monday, September 14, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">14</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-15"                                                    aria-label="Tuesday, September 15, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">15</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-16"                                                    aria-label="Wednesday, September 16, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">16</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-17"                                                    aria-label="Thursday, September 17, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">17</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-18"                                                    aria-label="Friday, September 18, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">18</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-19"                                                    aria-label="Saturday, September 19, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">19</button>
+                                        </td>
+                                                                                                </tr>
+                                                    <tr>
+                                                                                                                                                <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-20"                                                    aria-label="Sunday, September 20, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">20</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-21"                                                    aria-label="Monday, September 21, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">21</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-22"                                                    aria-label="Tuesday, September 22, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">22</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-23"                                                    aria-label="Wednesday, September 23, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">23</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-24"                                                    aria-label="Thursday, September 24, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">24</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-25"                                                    aria-label="Friday, September 25, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">25</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-26"                                                    aria-label="Saturday, September 26, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">26</button>
+                                        </td>
+                                                                                                </tr>
+                                                    <tr>
+                                                                                                                                                <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-27"                                                    aria-label="Sunday, September 27, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">27</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-28"                                                    aria-label="Monday, September 28, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">28</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="0" data-date="2026-09-29"   data-today aria-current="date"                                                   aria-label="Tuesday, September 29, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">29</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-09-30"                                                    data-disabled aria-disabled="true"  aria-label="Wednesday, September 30, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">30</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-10-01"                                                   data-outside   data-disabled aria-disabled="true"  aria-label="Thursday, October 1, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">1</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-10-02"                                                   data-outside   data-disabled aria-disabled="true"  aria-label="Friday, October 2, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">2</button>
+                                        </td>
+                                                                                                                                                                                    <td role="gridcell"   class="p-0 text-center   ">
+                                            <button type="button" tabindex="-1" data-date="2026-10-03"                                                   data-outside   data-disabled aria-disabled="true"  aria-label="Saturday, October 3, 2026" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary">3</button>
+                                        </td>
+                                                                                                </tr>
+                                            </tbody>
+                </table>
+            </div>
+                <template x-for="m in monthViews" :key="m.key">
+            <div data-slot="calendar-month" class="flex flex-col gap-2">
+                <div class="flex items-center justify-between gap-2">
+                    <button data-slot="button"
+     type="button"                     x-show="m.first" x-bind:aria-label="prevLabel" x-bind:disabled="prevBlocked" x-on:click="step(-1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg x-show="rtl" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>                        <svg x-show="!rtl" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg></button>
+                    <span x-show="!m.first" class="size-control-sm"></span>
+                    <div aria-live="polite" data-slot="calendar-title" class="text-label font-semibold" x-text="m.title"></div>
+                    <button data-slot="button"
+     type="button"                     x-show="m.last" x-bind:aria-label="nextLabel" x-bind:disabled="nextBlocked" x-on:click="step(1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg x-show="rtl" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg>                        <svg x-show="!rtl" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></button>
+                    <span x-show="!m.last" class="size-control-sm"></span>
+                </div>
+                <table role="grid" :aria-label="m.title" data-slot="calendar-grid" class="border-separate border-spacing-0">
+                    <thead>
+                        <tr>
+                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true" x-text="m.heads[0].narrow"></span><span class="sr-only" x-text="m.heads[0].long"></span></th>
+                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true" x-text="m.heads[1].narrow"></span><span class="sr-only" x-text="m.heads[1].long"></span></th>
+                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true" x-text="m.heads[2].narrow"></span><span class="sr-only" x-text="m.heads[2].long"></span></th>
+                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true" x-text="m.heads[3].narrow"></span><span class="sr-only" x-text="m.heads[3].long"></span></th>
+                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true" x-text="m.heads[4].narrow"></span><span class="sr-only" x-text="m.heads[4].long"></span></th>
+                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true" x-text="m.heads[5].narrow"></span><span class="sr-only" x-text="m.heads[5].long"></span></th>
+                                                            <th scope="col" class="size-9 p-0 text-caption font-medium text-muted-foreground"><span aria-hidden="true" x-text="m.heads[6].narrow"></span><span class="sr-only" x-text="m.heads[6].long"></span></th>
+                                                    </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr x-show="m.weeks.length > 0">
+                                                                    <td role="gridcell" :aria-selected="cell(m, 0, 0).selected ? 'true' : null" :data-in-range="cell(m, 0, 0).band ? '' : null" :class="cell(m, 0, 0).tdClass">
+                                        <button type="button" x-show="!cell(m, 0, 0).blank" :tabindex="cell(m, 0, 0).tab ? 0 : -1" :data-date="cell(m, 0, 0).key"
+                                            :data-selected="cell(m, 0, 0).selected ? '' : null" :data-today="cell(m, 0, 0).today ? '' : null"
+                                            :data-outside="cell(m, 0, 0).outside ? '' : null" :data-disabled="cell(m, 0, 0).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 0, 0).disabled ? 'true' : null" :aria-current="cell(m, 0, 0).today ? 'date' : null"
+                                            :aria-label="cell(m, 0, 0).label" x-text="cell(m, 0, 0).day" x-on:click="pick(cell(m, 0, 0).key)"
+                                            x-on:focus="!cell(m, 0, 0).disabled && hoverIfOpen(cell(m, 0, 0).key)" x-on:mouseenter="hoverIfOpen(cell(m, 0, 0).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 0, 1).selected ? 'true' : null" :data-in-range="cell(m, 0, 1).band ? '' : null" :class="cell(m, 0, 1).tdClass">
+                                        <button type="button" x-show="!cell(m, 0, 1).blank" :tabindex="cell(m, 0, 1).tab ? 0 : -1" :data-date="cell(m, 0, 1).key"
+                                            :data-selected="cell(m, 0, 1).selected ? '' : null" :data-today="cell(m, 0, 1).today ? '' : null"
+                                            :data-outside="cell(m, 0, 1).outside ? '' : null" :data-disabled="cell(m, 0, 1).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 0, 1).disabled ? 'true' : null" :aria-current="cell(m, 0, 1).today ? 'date' : null"
+                                            :aria-label="cell(m, 0, 1).label" x-text="cell(m, 0, 1).day" x-on:click="pick(cell(m, 0, 1).key)"
+                                            x-on:focus="!cell(m, 0, 1).disabled && hoverIfOpen(cell(m, 0, 1).key)" x-on:mouseenter="hoverIfOpen(cell(m, 0, 1).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 0, 2).selected ? 'true' : null" :data-in-range="cell(m, 0, 2).band ? '' : null" :class="cell(m, 0, 2).tdClass">
+                                        <button type="button" x-show="!cell(m, 0, 2).blank" :tabindex="cell(m, 0, 2).tab ? 0 : -1" :data-date="cell(m, 0, 2).key"
+                                            :data-selected="cell(m, 0, 2).selected ? '' : null" :data-today="cell(m, 0, 2).today ? '' : null"
+                                            :data-outside="cell(m, 0, 2).outside ? '' : null" :data-disabled="cell(m, 0, 2).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 0, 2).disabled ? 'true' : null" :aria-current="cell(m, 0, 2).today ? 'date' : null"
+                                            :aria-label="cell(m, 0, 2).label" x-text="cell(m, 0, 2).day" x-on:click="pick(cell(m, 0, 2).key)"
+                                            x-on:focus="!cell(m, 0, 2).disabled && hoverIfOpen(cell(m, 0, 2).key)" x-on:mouseenter="hoverIfOpen(cell(m, 0, 2).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 0, 3).selected ? 'true' : null" :data-in-range="cell(m, 0, 3).band ? '' : null" :class="cell(m, 0, 3).tdClass">
+                                        <button type="button" x-show="!cell(m, 0, 3).blank" :tabindex="cell(m, 0, 3).tab ? 0 : -1" :data-date="cell(m, 0, 3).key"
+                                            :data-selected="cell(m, 0, 3).selected ? '' : null" :data-today="cell(m, 0, 3).today ? '' : null"
+                                            :data-outside="cell(m, 0, 3).outside ? '' : null" :data-disabled="cell(m, 0, 3).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 0, 3).disabled ? 'true' : null" :aria-current="cell(m, 0, 3).today ? 'date' : null"
+                                            :aria-label="cell(m, 0, 3).label" x-text="cell(m, 0, 3).day" x-on:click="pick(cell(m, 0, 3).key)"
+                                            x-on:focus="!cell(m, 0, 3).disabled && hoverIfOpen(cell(m, 0, 3).key)" x-on:mouseenter="hoverIfOpen(cell(m, 0, 3).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 0, 4).selected ? 'true' : null" :data-in-range="cell(m, 0, 4).band ? '' : null" :class="cell(m, 0, 4).tdClass">
+                                        <button type="button" x-show="!cell(m, 0, 4).blank" :tabindex="cell(m, 0, 4).tab ? 0 : -1" :data-date="cell(m, 0, 4).key"
+                                            :data-selected="cell(m, 0, 4).selected ? '' : null" :data-today="cell(m, 0, 4).today ? '' : null"
+                                            :data-outside="cell(m, 0, 4).outside ? '' : null" :data-disabled="cell(m, 0, 4).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 0, 4).disabled ? 'true' : null" :aria-current="cell(m, 0, 4).today ? 'date' : null"
+                                            :aria-label="cell(m, 0, 4).label" x-text="cell(m, 0, 4).day" x-on:click="pick(cell(m, 0, 4).key)"
+                                            x-on:focus="!cell(m, 0, 4).disabled && hoverIfOpen(cell(m, 0, 4).key)" x-on:mouseenter="hoverIfOpen(cell(m, 0, 4).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 0, 5).selected ? 'true' : null" :data-in-range="cell(m, 0, 5).band ? '' : null" :class="cell(m, 0, 5).tdClass">
+                                        <button type="button" x-show="!cell(m, 0, 5).blank" :tabindex="cell(m, 0, 5).tab ? 0 : -1" :data-date="cell(m, 0, 5).key"
+                                            :data-selected="cell(m, 0, 5).selected ? '' : null" :data-today="cell(m, 0, 5).today ? '' : null"
+                                            :data-outside="cell(m, 0, 5).outside ? '' : null" :data-disabled="cell(m, 0, 5).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 0, 5).disabled ? 'true' : null" :aria-current="cell(m, 0, 5).today ? 'date' : null"
+                                            :aria-label="cell(m, 0, 5).label" x-text="cell(m, 0, 5).day" x-on:click="pick(cell(m, 0, 5).key)"
+                                            x-on:focus="!cell(m, 0, 5).disabled && hoverIfOpen(cell(m, 0, 5).key)" x-on:mouseenter="hoverIfOpen(cell(m, 0, 5).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 0, 6).selected ? 'true' : null" :data-in-range="cell(m, 0, 6).band ? '' : null" :class="cell(m, 0, 6).tdClass">
+                                        <button type="button" x-show="!cell(m, 0, 6).blank" :tabindex="cell(m, 0, 6).tab ? 0 : -1" :data-date="cell(m, 0, 6).key"
+                                            :data-selected="cell(m, 0, 6).selected ? '' : null" :data-today="cell(m, 0, 6).today ? '' : null"
+                                            :data-outside="cell(m, 0, 6).outside ? '' : null" :data-disabled="cell(m, 0, 6).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 0, 6).disabled ? 'true' : null" :aria-current="cell(m, 0, 6).today ? 'date' : null"
+                                            :aria-label="cell(m, 0, 6).label" x-text="cell(m, 0, 6).day" x-on:click="pick(cell(m, 0, 6).key)"
+                                            x-on:focus="!cell(m, 0, 6).disabled && hoverIfOpen(cell(m, 0, 6).key)" x-on:mouseenter="hoverIfOpen(cell(m, 0, 6).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                            </tr>
+                                                    <tr x-show="m.weeks.length > 1">
+                                                                    <td role="gridcell" :aria-selected="cell(m, 1, 0).selected ? 'true' : null" :data-in-range="cell(m, 1, 0).band ? '' : null" :class="cell(m, 1, 0).tdClass">
+                                        <button type="button" x-show="!cell(m, 1, 0).blank" :tabindex="cell(m, 1, 0).tab ? 0 : -1" :data-date="cell(m, 1, 0).key"
+                                            :data-selected="cell(m, 1, 0).selected ? '' : null" :data-today="cell(m, 1, 0).today ? '' : null"
+                                            :data-outside="cell(m, 1, 0).outside ? '' : null" :data-disabled="cell(m, 1, 0).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 1, 0).disabled ? 'true' : null" :aria-current="cell(m, 1, 0).today ? 'date' : null"
+                                            :aria-label="cell(m, 1, 0).label" x-text="cell(m, 1, 0).day" x-on:click="pick(cell(m, 1, 0).key)"
+                                            x-on:focus="!cell(m, 1, 0).disabled && hoverIfOpen(cell(m, 1, 0).key)" x-on:mouseenter="hoverIfOpen(cell(m, 1, 0).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 1, 1).selected ? 'true' : null" :data-in-range="cell(m, 1, 1).band ? '' : null" :class="cell(m, 1, 1).tdClass">
+                                        <button type="button" x-show="!cell(m, 1, 1).blank" :tabindex="cell(m, 1, 1).tab ? 0 : -1" :data-date="cell(m, 1, 1).key"
+                                            :data-selected="cell(m, 1, 1).selected ? '' : null" :data-today="cell(m, 1, 1).today ? '' : null"
+                                            :data-outside="cell(m, 1, 1).outside ? '' : null" :data-disabled="cell(m, 1, 1).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 1, 1).disabled ? 'true' : null" :aria-current="cell(m, 1, 1).today ? 'date' : null"
+                                            :aria-label="cell(m, 1, 1).label" x-text="cell(m, 1, 1).day" x-on:click="pick(cell(m, 1, 1).key)"
+                                            x-on:focus="!cell(m, 1, 1).disabled && hoverIfOpen(cell(m, 1, 1).key)" x-on:mouseenter="hoverIfOpen(cell(m, 1, 1).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 1, 2).selected ? 'true' : null" :data-in-range="cell(m, 1, 2).band ? '' : null" :class="cell(m, 1, 2).tdClass">
+                                        <button type="button" x-show="!cell(m, 1, 2).blank" :tabindex="cell(m, 1, 2).tab ? 0 : -1" :data-date="cell(m, 1, 2).key"
+                                            :data-selected="cell(m, 1, 2).selected ? '' : null" :data-today="cell(m, 1, 2).today ? '' : null"
+                                            :data-outside="cell(m, 1, 2).outside ? '' : null" :data-disabled="cell(m, 1, 2).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 1, 2).disabled ? 'true' : null" :aria-current="cell(m, 1, 2).today ? 'date' : null"
+                                            :aria-label="cell(m, 1, 2).label" x-text="cell(m, 1, 2).day" x-on:click="pick(cell(m, 1, 2).key)"
+                                            x-on:focus="!cell(m, 1, 2).disabled && hoverIfOpen(cell(m, 1, 2).key)" x-on:mouseenter="hoverIfOpen(cell(m, 1, 2).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 1, 3).selected ? 'true' : null" :data-in-range="cell(m, 1, 3).band ? '' : null" :class="cell(m, 1, 3).tdClass">
+                                        <button type="button" x-show="!cell(m, 1, 3).blank" :tabindex="cell(m, 1, 3).tab ? 0 : -1" :data-date="cell(m, 1, 3).key"
+                                            :data-selected="cell(m, 1, 3).selected ? '' : null" :data-today="cell(m, 1, 3).today ? '' : null"
+                                            :data-outside="cell(m, 1, 3).outside ? '' : null" :data-disabled="cell(m, 1, 3).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 1, 3).disabled ? 'true' : null" :aria-current="cell(m, 1, 3).today ? 'date' : null"
+                                            :aria-label="cell(m, 1, 3).label" x-text="cell(m, 1, 3).day" x-on:click="pick(cell(m, 1, 3).key)"
+                                            x-on:focus="!cell(m, 1, 3).disabled && hoverIfOpen(cell(m, 1, 3).key)" x-on:mouseenter="hoverIfOpen(cell(m, 1, 3).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 1, 4).selected ? 'true' : null" :data-in-range="cell(m, 1, 4).band ? '' : null" :class="cell(m, 1, 4).tdClass">
+                                        <button type="button" x-show="!cell(m, 1, 4).blank" :tabindex="cell(m, 1, 4).tab ? 0 : -1" :data-date="cell(m, 1, 4).key"
+                                            :data-selected="cell(m, 1, 4).selected ? '' : null" :data-today="cell(m, 1, 4).today ? '' : null"
+                                            :data-outside="cell(m, 1, 4).outside ? '' : null" :data-disabled="cell(m, 1, 4).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 1, 4).disabled ? 'true' : null" :aria-current="cell(m, 1, 4).today ? 'date' : null"
+                                            :aria-label="cell(m, 1, 4).label" x-text="cell(m, 1, 4).day" x-on:click="pick(cell(m, 1, 4).key)"
+                                            x-on:focus="!cell(m, 1, 4).disabled && hoverIfOpen(cell(m, 1, 4).key)" x-on:mouseenter="hoverIfOpen(cell(m, 1, 4).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 1, 5).selected ? 'true' : null" :data-in-range="cell(m, 1, 5).band ? '' : null" :class="cell(m, 1, 5).tdClass">
+                                        <button type="button" x-show="!cell(m, 1, 5).blank" :tabindex="cell(m, 1, 5).tab ? 0 : -1" :data-date="cell(m, 1, 5).key"
+                                            :data-selected="cell(m, 1, 5).selected ? '' : null" :data-today="cell(m, 1, 5).today ? '' : null"
+                                            :data-outside="cell(m, 1, 5).outside ? '' : null" :data-disabled="cell(m, 1, 5).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 1, 5).disabled ? 'true' : null" :aria-current="cell(m, 1, 5).today ? 'date' : null"
+                                            :aria-label="cell(m, 1, 5).label" x-text="cell(m, 1, 5).day" x-on:click="pick(cell(m, 1, 5).key)"
+                                            x-on:focus="!cell(m, 1, 5).disabled && hoverIfOpen(cell(m, 1, 5).key)" x-on:mouseenter="hoverIfOpen(cell(m, 1, 5).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 1, 6).selected ? 'true' : null" :data-in-range="cell(m, 1, 6).band ? '' : null" :class="cell(m, 1, 6).tdClass">
+                                        <button type="button" x-show="!cell(m, 1, 6).blank" :tabindex="cell(m, 1, 6).tab ? 0 : -1" :data-date="cell(m, 1, 6).key"
+                                            :data-selected="cell(m, 1, 6).selected ? '' : null" :data-today="cell(m, 1, 6).today ? '' : null"
+                                            :data-outside="cell(m, 1, 6).outside ? '' : null" :data-disabled="cell(m, 1, 6).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 1, 6).disabled ? 'true' : null" :aria-current="cell(m, 1, 6).today ? 'date' : null"
+                                            :aria-label="cell(m, 1, 6).label" x-text="cell(m, 1, 6).day" x-on:click="pick(cell(m, 1, 6).key)"
+                                            x-on:focus="!cell(m, 1, 6).disabled && hoverIfOpen(cell(m, 1, 6).key)" x-on:mouseenter="hoverIfOpen(cell(m, 1, 6).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                            </tr>
+                                                    <tr x-show="m.weeks.length > 2">
+                                                                    <td role="gridcell" :aria-selected="cell(m, 2, 0).selected ? 'true' : null" :data-in-range="cell(m, 2, 0).band ? '' : null" :class="cell(m, 2, 0).tdClass">
+                                        <button type="button" x-show="!cell(m, 2, 0).blank" :tabindex="cell(m, 2, 0).tab ? 0 : -1" :data-date="cell(m, 2, 0).key"
+                                            :data-selected="cell(m, 2, 0).selected ? '' : null" :data-today="cell(m, 2, 0).today ? '' : null"
+                                            :data-outside="cell(m, 2, 0).outside ? '' : null" :data-disabled="cell(m, 2, 0).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 2, 0).disabled ? 'true' : null" :aria-current="cell(m, 2, 0).today ? 'date' : null"
+                                            :aria-label="cell(m, 2, 0).label" x-text="cell(m, 2, 0).day" x-on:click="pick(cell(m, 2, 0).key)"
+                                            x-on:focus="!cell(m, 2, 0).disabled && hoverIfOpen(cell(m, 2, 0).key)" x-on:mouseenter="hoverIfOpen(cell(m, 2, 0).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 2, 1).selected ? 'true' : null" :data-in-range="cell(m, 2, 1).band ? '' : null" :class="cell(m, 2, 1).tdClass">
+                                        <button type="button" x-show="!cell(m, 2, 1).blank" :tabindex="cell(m, 2, 1).tab ? 0 : -1" :data-date="cell(m, 2, 1).key"
+                                            :data-selected="cell(m, 2, 1).selected ? '' : null" :data-today="cell(m, 2, 1).today ? '' : null"
+                                            :data-outside="cell(m, 2, 1).outside ? '' : null" :data-disabled="cell(m, 2, 1).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 2, 1).disabled ? 'true' : null" :aria-current="cell(m, 2, 1).today ? 'date' : null"
+                                            :aria-label="cell(m, 2, 1).label" x-text="cell(m, 2, 1).day" x-on:click="pick(cell(m, 2, 1).key)"
+                                            x-on:focus="!cell(m, 2, 1).disabled && hoverIfOpen(cell(m, 2, 1).key)" x-on:mouseenter="hoverIfOpen(cell(m, 2, 1).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 2, 2).selected ? 'true' : null" :data-in-range="cell(m, 2, 2).band ? '' : null" :class="cell(m, 2, 2).tdClass">
+                                        <button type="button" x-show="!cell(m, 2, 2).blank" :tabindex="cell(m, 2, 2).tab ? 0 : -1" :data-date="cell(m, 2, 2).key"
+                                            :data-selected="cell(m, 2, 2).selected ? '' : null" :data-today="cell(m, 2, 2).today ? '' : null"
+                                            :data-outside="cell(m, 2, 2).outside ? '' : null" :data-disabled="cell(m, 2, 2).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 2, 2).disabled ? 'true' : null" :aria-current="cell(m, 2, 2).today ? 'date' : null"
+                                            :aria-label="cell(m, 2, 2).label" x-text="cell(m, 2, 2).day" x-on:click="pick(cell(m, 2, 2).key)"
+                                            x-on:focus="!cell(m, 2, 2).disabled && hoverIfOpen(cell(m, 2, 2).key)" x-on:mouseenter="hoverIfOpen(cell(m, 2, 2).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 2, 3).selected ? 'true' : null" :data-in-range="cell(m, 2, 3).band ? '' : null" :class="cell(m, 2, 3).tdClass">
+                                        <button type="button" x-show="!cell(m, 2, 3).blank" :tabindex="cell(m, 2, 3).tab ? 0 : -1" :data-date="cell(m, 2, 3).key"
+                                            :data-selected="cell(m, 2, 3).selected ? '' : null" :data-today="cell(m, 2, 3).today ? '' : null"
+                                            :data-outside="cell(m, 2, 3).outside ? '' : null" :data-disabled="cell(m, 2, 3).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 2, 3).disabled ? 'true' : null" :aria-current="cell(m, 2, 3).today ? 'date' : null"
+                                            :aria-label="cell(m, 2, 3).label" x-text="cell(m, 2, 3).day" x-on:click="pick(cell(m, 2, 3).key)"
+                                            x-on:focus="!cell(m, 2, 3).disabled && hoverIfOpen(cell(m, 2, 3).key)" x-on:mouseenter="hoverIfOpen(cell(m, 2, 3).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 2, 4).selected ? 'true' : null" :data-in-range="cell(m, 2, 4).band ? '' : null" :class="cell(m, 2, 4).tdClass">
+                                        <button type="button" x-show="!cell(m, 2, 4).blank" :tabindex="cell(m, 2, 4).tab ? 0 : -1" :data-date="cell(m, 2, 4).key"
+                                            :data-selected="cell(m, 2, 4).selected ? '' : null" :data-today="cell(m, 2, 4).today ? '' : null"
+                                            :data-outside="cell(m, 2, 4).outside ? '' : null" :data-disabled="cell(m, 2, 4).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 2, 4).disabled ? 'true' : null" :aria-current="cell(m, 2, 4).today ? 'date' : null"
+                                            :aria-label="cell(m, 2, 4).label" x-text="cell(m, 2, 4).day" x-on:click="pick(cell(m, 2, 4).key)"
+                                            x-on:focus="!cell(m, 2, 4).disabled && hoverIfOpen(cell(m, 2, 4).key)" x-on:mouseenter="hoverIfOpen(cell(m, 2, 4).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 2, 5).selected ? 'true' : null" :data-in-range="cell(m, 2, 5).band ? '' : null" :class="cell(m, 2, 5).tdClass">
+                                        <button type="button" x-show="!cell(m, 2, 5).blank" :tabindex="cell(m, 2, 5).tab ? 0 : -1" :data-date="cell(m, 2, 5).key"
+                                            :data-selected="cell(m, 2, 5).selected ? '' : null" :data-today="cell(m, 2, 5).today ? '' : null"
+                                            :data-outside="cell(m, 2, 5).outside ? '' : null" :data-disabled="cell(m, 2, 5).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 2, 5).disabled ? 'true' : null" :aria-current="cell(m, 2, 5).today ? 'date' : null"
+                                            :aria-label="cell(m, 2, 5).label" x-text="cell(m, 2, 5).day" x-on:click="pick(cell(m, 2, 5).key)"
+                                            x-on:focus="!cell(m, 2, 5).disabled && hoverIfOpen(cell(m, 2, 5).key)" x-on:mouseenter="hoverIfOpen(cell(m, 2, 5).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 2, 6).selected ? 'true' : null" :data-in-range="cell(m, 2, 6).band ? '' : null" :class="cell(m, 2, 6).tdClass">
+                                        <button type="button" x-show="!cell(m, 2, 6).blank" :tabindex="cell(m, 2, 6).tab ? 0 : -1" :data-date="cell(m, 2, 6).key"
+                                            :data-selected="cell(m, 2, 6).selected ? '' : null" :data-today="cell(m, 2, 6).today ? '' : null"
+                                            :data-outside="cell(m, 2, 6).outside ? '' : null" :data-disabled="cell(m, 2, 6).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 2, 6).disabled ? 'true' : null" :aria-current="cell(m, 2, 6).today ? 'date' : null"
+                                            :aria-label="cell(m, 2, 6).label" x-text="cell(m, 2, 6).day" x-on:click="pick(cell(m, 2, 6).key)"
+                                            x-on:focus="!cell(m, 2, 6).disabled && hoverIfOpen(cell(m, 2, 6).key)" x-on:mouseenter="hoverIfOpen(cell(m, 2, 6).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                            </tr>
+                                                    <tr x-show="m.weeks.length > 3">
+                                                                    <td role="gridcell" :aria-selected="cell(m, 3, 0).selected ? 'true' : null" :data-in-range="cell(m, 3, 0).band ? '' : null" :class="cell(m, 3, 0).tdClass">
+                                        <button type="button" x-show="!cell(m, 3, 0).blank" :tabindex="cell(m, 3, 0).tab ? 0 : -1" :data-date="cell(m, 3, 0).key"
+                                            :data-selected="cell(m, 3, 0).selected ? '' : null" :data-today="cell(m, 3, 0).today ? '' : null"
+                                            :data-outside="cell(m, 3, 0).outside ? '' : null" :data-disabled="cell(m, 3, 0).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 3, 0).disabled ? 'true' : null" :aria-current="cell(m, 3, 0).today ? 'date' : null"
+                                            :aria-label="cell(m, 3, 0).label" x-text="cell(m, 3, 0).day" x-on:click="pick(cell(m, 3, 0).key)"
+                                            x-on:focus="!cell(m, 3, 0).disabled && hoverIfOpen(cell(m, 3, 0).key)" x-on:mouseenter="hoverIfOpen(cell(m, 3, 0).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 3, 1).selected ? 'true' : null" :data-in-range="cell(m, 3, 1).band ? '' : null" :class="cell(m, 3, 1).tdClass">
+                                        <button type="button" x-show="!cell(m, 3, 1).blank" :tabindex="cell(m, 3, 1).tab ? 0 : -1" :data-date="cell(m, 3, 1).key"
+                                            :data-selected="cell(m, 3, 1).selected ? '' : null" :data-today="cell(m, 3, 1).today ? '' : null"
+                                            :data-outside="cell(m, 3, 1).outside ? '' : null" :data-disabled="cell(m, 3, 1).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 3, 1).disabled ? 'true' : null" :aria-current="cell(m, 3, 1).today ? 'date' : null"
+                                            :aria-label="cell(m, 3, 1).label" x-text="cell(m, 3, 1).day" x-on:click="pick(cell(m, 3, 1).key)"
+                                            x-on:focus="!cell(m, 3, 1).disabled && hoverIfOpen(cell(m, 3, 1).key)" x-on:mouseenter="hoverIfOpen(cell(m, 3, 1).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 3, 2).selected ? 'true' : null" :data-in-range="cell(m, 3, 2).band ? '' : null" :class="cell(m, 3, 2).tdClass">
+                                        <button type="button" x-show="!cell(m, 3, 2).blank" :tabindex="cell(m, 3, 2).tab ? 0 : -1" :data-date="cell(m, 3, 2).key"
+                                            :data-selected="cell(m, 3, 2).selected ? '' : null" :data-today="cell(m, 3, 2).today ? '' : null"
+                                            :data-outside="cell(m, 3, 2).outside ? '' : null" :data-disabled="cell(m, 3, 2).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 3, 2).disabled ? 'true' : null" :aria-current="cell(m, 3, 2).today ? 'date' : null"
+                                            :aria-label="cell(m, 3, 2).label" x-text="cell(m, 3, 2).day" x-on:click="pick(cell(m, 3, 2).key)"
+                                            x-on:focus="!cell(m, 3, 2).disabled && hoverIfOpen(cell(m, 3, 2).key)" x-on:mouseenter="hoverIfOpen(cell(m, 3, 2).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 3, 3).selected ? 'true' : null" :data-in-range="cell(m, 3, 3).band ? '' : null" :class="cell(m, 3, 3).tdClass">
+                                        <button type="button" x-show="!cell(m, 3, 3).blank" :tabindex="cell(m, 3, 3).tab ? 0 : -1" :data-date="cell(m, 3, 3).key"
+                                            :data-selected="cell(m, 3, 3).selected ? '' : null" :data-today="cell(m, 3, 3).today ? '' : null"
+                                            :data-outside="cell(m, 3, 3).outside ? '' : null" :data-disabled="cell(m, 3, 3).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 3, 3).disabled ? 'true' : null" :aria-current="cell(m, 3, 3).today ? 'date' : null"
+                                            :aria-label="cell(m, 3, 3).label" x-text="cell(m, 3, 3).day" x-on:click="pick(cell(m, 3, 3).key)"
+                                            x-on:focus="!cell(m, 3, 3).disabled && hoverIfOpen(cell(m, 3, 3).key)" x-on:mouseenter="hoverIfOpen(cell(m, 3, 3).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 3, 4).selected ? 'true' : null" :data-in-range="cell(m, 3, 4).band ? '' : null" :class="cell(m, 3, 4).tdClass">
+                                        <button type="button" x-show="!cell(m, 3, 4).blank" :tabindex="cell(m, 3, 4).tab ? 0 : -1" :data-date="cell(m, 3, 4).key"
+                                            :data-selected="cell(m, 3, 4).selected ? '' : null" :data-today="cell(m, 3, 4).today ? '' : null"
+                                            :data-outside="cell(m, 3, 4).outside ? '' : null" :data-disabled="cell(m, 3, 4).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 3, 4).disabled ? 'true' : null" :aria-current="cell(m, 3, 4).today ? 'date' : null"
+                                            :aria-label="cell(m, 3, 4).label" x-text="cell(m, 3, 4).day" x-on:click="pick(cell(m, 3, 4).key)"
+                                            x-on:focus="!cell(m, 3, 4).disabled && hoverIfOpen(cell(m, 3, 4).key)" x-on:mouseenter="hoverIfOpen(cell(m, 3, 4).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 3, 5).selected ? 'true' : null" :data-in-range="cell(m, 3, 5).band ? '' : null" :class="cell(m, 3, 5).tdClass">
+                                        <button type="button" x-show="!cell(m, 3, 5).blank" :tabindex="cell(m, 3, 5).tab ? 0 : -1" :data-date="cell(m, 3, 5).key"
+                                            :data-selected="cell(m, 3, 5).selected ? '' : null" :data-today="cell(m, 3, 5).today ? '' : null"
+                                            :data-outside="cell(m, 3, 5).outside ? '' : null" :data-disabled="cell(m, 3, 5).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 3, 5).disabled ? 'true' : null" :aria-current="cell(m, 3, 5).today ? 'date' : null"
+                                            :aria-label="cell(m, 3, 5).label" x-text="cell(m, 3, 5).day" x-on:click="pick(cell(m, 3, 5).key)"
+                                            x-on:focus="!cell(m, 3, 5).disabled && hoverIfOpen(cell(m, 3, 5).key)" x-on:mouseenter="hoverIfOpen(cell(m, 3, 5).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 3, 6).selected ? 'true' : null" :data-in-range="cell(m, 3, 6).band ? '' : null" :class="cell(m, 3, 6).tdClass">
+                                        <button type="button" x-show="!cell(m, 3, 6).blank" :tabindex="cell(m, 3, 6).tab ? 0 : -1" :data-date="cell(m, 3, 6).key"
+                                            :data-selected="cell(m, 3, 6).selected ? '' : null" :data-today="cell(m, 3, 6).today ? '' : null"
+                                            :data-outside="cell(m, 3, 6).outside ? '' : null" :data-disabled="cell(m, 3, 6).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 3, 6).disabled ? 'true' : null" :aria-current="cell(m, 3, 6).today ? 'date' : null"
+                                            :aria-label="cell(m, 3, 6).label" x-text="cell(m, 3, 6).day" x-on:click="pick(cell(m, 3, 6).key)"
+                                            x-on:focus="!cell(m, 3, 6).disabled && hoverIfOpen(cell(m, 3, 6).key)" x-on:mouseenter="hoverIfOpen(cell(m, 3, 6).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                            </tr>
+                                                    <tr x-show="m.weeks.length > 4">
+                                                                    <td role="gridcell" :aria-selected="cell(m, 4, 0).selected ? 'true' : null" :data-in-range="cell(m, 4, 0).band ? '' : null" :class="cell(m, 4, 0).tdClass">
+                                        <button type="button" x-show="!cell(m, 4, 0).blank" :tabindex="cell(m, 4, 0).tab ? 0 : -1" :data-date="cell(m, 4, 0).key"
+                                            :data-selected="cell(m, 4, 0).selected ? '' : null" :data-today="cell(m, 4, 0).today ? '' : null"
+                                            :data-outside="cell(m, 4, 0).outside ? '' : null" :data-disabled="cell(m, 4, 0).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 4, 0).disabled ? 'true' : null" :aria-current="cell(m, 4, 0).today ? 'date' : null"
+                                            :aria-label="cell(m, 4, 0).label" x-text="cell(m, 4, 0).day" x-on:click="pick(cell(m, 4, 0).key)"
+                                            x-on:focus="!cell(m, 4, 0).disabled && hoverIfOpen(cell(m, 4, 0).key)" x-on:mouseenter="hoverIfOpen(cell(m, 4, 0).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 4, 1).selected ? 'true' : null" :data-in-range="cell(m, 4, 1).band ? '' : null" :class="cell(m, 4, 1).tdClass">
+                                        <button type="button" x-show="!cell(m, 4, 1).blank" :tabindex="cell(m, 4, 1).tab ? 0 : -1" :data-date="cell(m, 4, 1).key"
+                                            :data-selected="cell(m, 4, 1).selected ? '' : null" :data-today="cell(m, 4, 1).today ? '' : null"
+                                            :data-outside="cell(m, 4, 1).outside ? '' : null" :data-disabled="cell(m, 4, 1).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 4, 1).disabled ? 'true' : null" :aria-current="cell(m, 4, 1).today ? 'date' : null"
+                                            :aria-label="cell(m, 4, 1).label" x-text="cell(m, 4, 1).day" x-on:click="pick(cell(m, 4, 1).key)"
+                                            x-on:focus="!cell(m, 4, 1).disabled && hoverIfOpen(cell(m, 4, 1).key)" x-on:mouseenter="hoverIfOpen(cell(m, 4, 1).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 4, 2).selected ? 'true' : null" :data-in-range="cell(m, 4, 2).band ? '' : null" :class="cell(m, 4, 2).tdClass">
+                                        <button type="button" x-show="!cell(m, 4, 2).blank" :tabindex="cell(m, 4, 2).tab ? 0 : -1" :data-date="cell(m, 4, 2).key"
+                                            :data-selected="cell(m, 4, 2).selected ? '' : null" :data-today="cell(m, 4, 2).today ? '' : null"
+                                            :data-outside="cell(m, 4, 2).outside ? '' : null" :data-disabled="cell(m, 4, 2).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 4, 2).disabled ? 'true' : null" :aria-current="cell(m, 4, 2).today ? 'date' : null"
+                                            :aria-label="cell(m, 4, 2).label" x-text="cell(m, 4, 2).day" x-on:click="pick(cell(m, 4, 2).key)"
+                                            x-on:focus="!cell(m, 4, 2).disabled && hoverIfOpen(cell(m, 4, 2).key)" x-on:mouseenter="hoverIfOpen(cell(m, 4, 2).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 4, 3).selected ? 'true' : null" :data-in-range="cell(m, 4, 3).band ? '' : null" :class="cell(m, 4, 3).tdClass">
+                                        <button type="button" x-show="!cell(m, 4, 3).blank" :tabindex="cell(m, 4, 3).tab ? 0 : -1" :data-date="cell(m, 4, 3).key"
+                                            :data-selected="cell(m, 4, 3).selected ? '' : null" :data-today="cell(m, 4, 3).today ? '' : null"
+                                            :data-outside="cell(m, 4, 3).outside ? '' : null" :data-disabled="cell(m, 4, 3).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 4, 3).disabled ? 'true' : null" :aria-current="cell(m, 4, 3).today ? 'date' : null"
+                                            :aria-label="cell(m, 4, 3).label" x-text="cell(m, 4, 3).day" x-on:click="pick(cell(m, 4, 3).key)"
+                                            x-on:focus="!cell(m, 4, 3).disabled && hoverIfOpen(cell(m, 4, 3).key)" x-on:mouseenter="hoverIfOpen(cell(m, 4, 3).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 4, 4).selected ? 'true' : null" :data-in-range="cell(m, 4, 4).band ? '' : null" :class="cell(m, 4, 4).tdClass">
+                                        <button type="button" x-show="!cell(m, 4, 4).blank" :tabindex="cell(m, 4, 4).tab ? 0 : -1" :data-date="cell(m, 4, 4).key"
+                                            :data-selected="cell(m, 4, 4).selected ? '' : null" :data-today="cell(m, 4, 4).today ? '' : null"
+                                            :data-outside="cell(m, 4, 4).outside ? '' : null" :data-disabled="cell(m, 4, 4).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 4, 4).disabled ? 'true' : null" :aria-current="cell(m, 4, 4).today ? 'date' : null"
+                                            :aria-label="cell(m, 4, 4).label" x-text="cell(m, 4, 4).day" x-on:click="pick(cell(m, 4, 4).key)"
+                                            x-on:focus="!cell(m, 4, 4).disabled && hoverIfOpen(cell(m, 4, 4).key)" x-on:mouseenter="hoverIfOpen(cell(m, 4, 4).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 4, 5).selected ? 'true' : null" :data-in-range="cell(m, 4, 5).band ? '' : null" :class="cell(m, 4, 5).tdClass">
+                                        <button type="button" x-show="!cell(m, 4, 5).blank" :tabindex="cell(m, 4, 5).tab ? 0 : -1" :data-date="cell(m, 4, 5).key"
+                                            :data-selected="cell(m, 4, 5).selected ? '' : null" :data-today="cell(m, 4, 5).today ? '' : null"
+                                            :data-outside="cell(m, 4, 5).outside ? '' : null" :data-disabled="cell(m, 4, 5).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 4, 5).disabled ? 'true' : null" :aria-current="cell(m, 4, 5).today ? 'date' : null"
+                                            :aria-label="cell(m, 4, 5).label" x-text="cell(m, 4, 5).day" x-on:click="pick(cell(m, 4, 5).key)"
+                                            x-on:focus="!cell(m, 4, 5).disabled && hoverIfOpen(cell(m, 4, 5).key)" x-on:mouseenter="hoverIfOpen(cell(m, 4, 5).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 4, 6).selected ? 'true' : null" :data-in-range="cell(m, 4, 6).band ? '' : null" :class="cell(m, 4, 6).tdClass">
+                                        <button type="button" x-show="!cell(m, 4, 6).blank" :tabindex="cell(m, 4, 6).tab ? 0 : -1" :data-date="cell(m, 4, 6).key"
+                                            :data-selected="cell(m, 4, 6).selected ? '' : null" :data-today="cell(m, 4, 6).today ? '' : null"
+                                            :data-outside="cell(m, 4, 6).outside ? '' : null" :data-disabled="cell(m, 4, 6).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 4, 6).disabled ? 'true' : null" :aria-current="cell(m, 4, 6).today ? 'date' : null"
+                                            :aria-label="cell(m, 4, 6).label" x-text="cell(m, 4, 6).day" x-on:click="pick(cell(m, 4, 6).key)"
+                                            x-on:focus="!cell(m, 4, 6).disabled && hoverIfOpen(cell(m, 4, 6).key)" x-on:mouseenter="hoverIfOpen(cell(m, 4, 6).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                            </tr>
+                                                    <tr x-show="m.weeks.length > 5">
+                                                                    <td role="gridcell" :aria-selected="cell(m, 5, 0).selected ? 'true' : null" :data-in-range="cell(m, 5, 0).band ? '' : null" :class="cell(m, 5, 0).tdClass">
+                                        <button type="button" x-show="!cell(m, 5, 0).blank" :tabindex="cell(m, 5, 0).tab ? 0 : -1" :data-date="cell(m, 5, 0).key"
+                                            :data-selected="cell(m, 5, 0).selected ? '' : null" :data-today="cell(m, 5, 0).today ? '' : null"
+                                            :data-outside="cell(m, 5, 0).outside ? '' : null" :data-disabled="cell(m, 5, 0).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 5, 0).disabled ? 'true' : null" :aria-current="cell(m, 5, 0).today ? 'date' : null"
+                                            :aria-label="cell(m, 5, 0).label" x-text="cell(m, 5, 0).day" x-on:click="pick(cell(m, 5, 0).key)"
+                                            x-on:focus="!cell(m, 5, 0).disabled && hoverIfOpen(cell(m, 5, 0).key)" x-on:mouseenter="hoverIfOpen(cell(m, 5, 0).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 5, 1).selected ? 'true' : null" :data-in-range="cell(m, 5, 1).band ? '' : null" :class="cell(m, 5, 1).tdClass">
+                                        <button type="button" x-show="!cell(m, 5, 1).blank" :tabindex="cell(m, 5, 1).tab ? 0 : -1" :data-date="cell(m, 5, 1).key"
+                                            :data-selected="cell(m, 5, 1).selected ? '' : null" :data-today="cell(m, 5, 1).today ? '' : null"
+                                            :data-outside="cell(m, 5, 1).outside ? '' : null" :data-disabled="cell(m, 5, 1).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 5, 1).disabled ? 'true' : null" :aria-current="cell(m, 5, 1).today ? 'date' : null"
+                                            :aria-label="cell(m, 5, 1).label" x-text="cell(m, 5, 1).day" x-on:click="pick(cell(m, 5, 1).key)"
+                                            x-on:focus="!cell(m, 5, 1).disabled && hoverIfOpen(cell(m, 5, 1).key)" x-on:mouseenter="hoverIfOpen(cell(m, 5, 1).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 5, 2).selected ? 'true' : null" :data-in-range="cell(m, 5, 2).band ? '' : null" :class="cell(m, 5, 2).tdClass">
+                                        <button type="button" x-show="!cell(m, 5, 2).blank" :tabindex="cell(m, 5, 2).tab ? 0 : -1" :data-date="cell(m, 5, 2).key"
+                                            :data-selected="cell(m, 5, 2).selected ? '' : null" :data-today="cell(m, 5, 2).today ? '' : null"
+                                            :data-outside="cell(m, 5, 2).outside ? '' : null" :data-disabled="cell(m, 5, 2).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 5, 2).disabled ? 'true' : null" :aria-current="cell(m, 5, 2).today ? 'date' : null"
+                                            :aria-label="cell(m, 5, 2).label" x-text="cell(m, 5, 2).day" x-on:click="pick(cell(m, 5, 2).key)"
+                                            x-on:focus="!cell(m, 5, 2).disabled && hoverIfOpen(cell(m, 5, 2).key)" x-on:mouseenter="hoverIfOpen(cell(m, 5, 2).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 5, 3).selected ? 'true' : null" :data-in-range="cell(m, 5, 3).band ? '' : null" :class="cell(m, 5, 3).tdClass">
+                                        <button type="button" x-show="!cell(m, 5, 3).blank" :tabindex="cell(m, 5, 3).tab ? 0 : -1" :data-date="cell(m, 5, 3).key"
+                                            :data-selected="cell(m, 5, 3).selected ? '' : null" :data-today="cell(m, 5, 3).today ? '' : null"
+                                            :data-outside="cell(m, 5, 3).outside ? '' : null" :data-disabled="cell(m, 5, 3).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 5, 3).disabled ? 'true' : null" :aria-current="cell(m, 5, 3).today ? 'date' : null"
+                                            :aria-label="cell(m, 5, 3).label" x-text="cell(m, 5, 3).day" x-on:click="pick(cell(m, 5, 3).key)"
+                                            x-on:focus="!cell(m, 5, 3).disabled && hoverIfOpen(cell(m, 5, 3).key)" x-on:mouseenter="hoverIfOpen(cell(m, 5, 3).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 5, 4).selected ? 'true' : null" :data-in-range="cell(m, 5, 4).band ? '' : null" :class="cell(m, 5, 4).tdClass">
+                                        <button type="button" x-show="!cell(m, 5, 4).blank" :tabindex="cell(m, 5, 4).tab ? 0 : -1" :data-date="cell(m, 5, 4).key"
+                                            :data-selected="cell(m, 5, 4).selected ? '' : null" :data-today="cell(m, 5, 4).today ? '' : null"
+                                            :data-outside="cell(m, 5, 4).outside ? '' : null" :data-disabled="cell(m, 5, 4).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 5, 4).disabled ? 'true' : null" :aria-current="cell(m, 5, 4).today ? 'date' : null"
+                                            :aria-label="cell(m, 5, 4).label" x-text="cell(m, 5, 4).day" x-on:click="pick(cell(m, 5, 4).key)"
+                                            x-on:focus="!cell(m, 5, 4).disabled && hoverIfOpen(cell(m, 5, 4).key)" x-on:mouseenter="hoverIfOpen(cell(m, 5, 4).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 5, 5).selected ? 'true' : null" :data-in-range="cell(m, 5, 5).band ? '' : null" :class="cell(m, 5, 5).tdClass">
+                                        <button type="button" x-show="!cell(m, 5, 5).blank" :tabindex="cell(m, 5, 5).tab ? 0 : -1" :data-date="cell(m, 5, 5).key"
+                                            :data-selected="cell(m, 5, 5).selected ? '' : null" :data-today="cell(m, 5, 5).today ? '' : null"
+                                            :data-outside="cell(m, 5, 5).outside ? '' : null" :data-disabled="cell(m, 5, 5).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 5, 5).disabled ? 'true' : null" :aria-current="cell(m, 5, 5).today ? 'date' : null"
+                                            :aria-label="cell(m, 5, 5).label" x-text="cell(m, 5, 5).day" x-on:click="pick(cell(m, 5, 5).key)"
+                                            x-on:focus="!cell(m, 5, 5).disabled && hoverIfOpen(cell(m, 5, 5).key)" x-on:mouseenter="hoverIfOpen(cell(m, 5, 5).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                                    <td role="gridcell" :aria-selected="cell(m, 5, 6).selected ? 'true' : null" :data-in-range="cell(m, 5, 6).band ? '' : null" :class="cell(m, 5, 6).tdClass">
+                                        <button type="button" x-show="!cell(m, 5, 6).blank" :tabindex="cell(m, 5, 6).tab ? 0 : -1" :data-date="cell(m, 5, 6).key"
+                                            :data-selected="cell(m, 5, 6).selected ? '' : null" :data-today="cell(m, 5, 6).today ? '' : null"
+                                            :data-outside="cell(m, 5, 6).outside ? '' : null" :data-disabled="cell(m, 5, 6).disabled ? '' : null"
+                                            :aria-disabled="cell(m, 5, 6).disabled ? 'true' : null" :aria-current="cell(m, 5, 6).today ? 'date' : null"
+                                            :aria-label="cell(m, 5, 6).label" x-text="cell(m, 5, 6).day" x-on:click="pick(cell(m, 5, 6).key)"
+                                            x-on:focus="!cell(m, 5, 6).disabled && hoverIfOpen(cell(m, 5, 6).key)" x-on:mouseenter="hoverIfOpen(cell(m, 5, 6).key)" class="inline-flex size-9 min-h-[var(--nq-touch-min,0px)] min-w-[var(--nq-touch-min,0px)] items-center justify-center rounded-control border border-transparent text-body-sm tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-today:border-nq-focus data-outside:text-muted-foreground data-disabled:cursor-not-allowed data-disabled:text-muted-foreground data-disabled:opacity-40 data-disabled:hover:bg-transparent data-selected:border-transparent data-selected:bg-primary data-selected:text-primary-foreground data-selected:hover:bg-primary"></button>
+                                    </td>
+                                                            </tr>
+                                            </tbody>
+                </table>
+            </div>
+        </template>
+    </div>
+</div>
+                    <div class="mt-3 flex items-center justify-between gap-2 border-t border-border pt-3">
+                        <p class="min-w-0 text-caption text-muted-foreground" aria-live="polite" x-text="draftLabel">Pick the first and last day</p>
+                        <div class="flex shrink-0 items-center gap-2">
+                            <button data-slot="popover-close"
+     type="button"                     x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Cancel</button>
+                            <button data-slot="button"
+     type="button"                     x-bind:disabled="!draftReady" x-on:click="if (apply()) close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        Apply</button>
+                        </div>
+                    </div></div>
+</template>
+</div>
+                    <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="compare" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Compare with" class="flex items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm w-auto min-w-40 max-w-full">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('none', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('none')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">No comparison</span>
+</div>
+                    <div data-slot="select-item" x-bind="item('previous', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('previous')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Previous period</span>
+</div>
+                    <div data-slot="select-item" x-bind="item('year', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('year')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Same period last year</span>
+</div>
+    </div>
+</template>
+    </div>
+            </div>
+    <div x-show="isWeek" x-cloak data-slot="time-range-week" class="flex flex-wrap items-center gap-1.5">
+        <button data-slot="button"
+     type="button"                     aria-label="Previous week" x-on:click="shift(-1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg></button>
+        <span class="min-w-40 text-center text-label tabular-nums" aria-live="polite" x-text="weekLabel"></span>
+        <button data-slot="button"
+     type="button"                     aria-label="Next week" x-bind:disabled="!canNextWeek" x-on:click="shift(1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></button>
+        <button data-slot="button"
+     type="button"                     x-bind:disabled="isThisWeek" x-on:click="thisWeek()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        This week</button>
+    </div>
+            <p data-slot="time-range-summary" class="flex flex-wrap items-center gap-x-2 text-caption text-muted-foreground">
+            <bdi class="tabular-nums text-foreground" x-text="summary"></bdi>
+            <bdi dir="ltr" x-bind:title="tz" x-text="offset"></bdi>
+            <span x-show="comparedText" x-cloak>Compared with <bdi class="tabular-nums" x-text="comparedText"></bdi></span>
+        </p>
+    </div>
+                            <div data-slot="report-filter-field" class="flex min-w-0 flex-col gap-1">
+    <span id="nq-report-filter-000001" class="text-caption text-muted-foreground">Status</span>
+            <div data-slot="popover" x-data="nqPopover(false)" x-modelable="open" x-id="['nq-popover']" class="contents">
+    <button data-slot="popover-trigger"
+     type="button"                     x-bind:data-popup-open="open ? &#039;&#039; : undefined" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" :aria-expanded="open" aria-labelledby="nq-report-filter-000001" class="inline-flex shrink-0 select-none items-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 min-w-36 justify-between">
+        <span x-text="summary(`status`)">All</span></button>
+            <template x-teleport="body">
+    <div data-slot="popover-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+        class="z-50 max-w-[var(--available-width)] rounded-floating border border-border bg-popover text-body-sm text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 w-64 p-1"><ul class="flex max-h-64 flex-col overflow-y-auto">
+                                            <li>
+                            <label class="flex cursor-pointer items-center gap-2 rounded-control px-2 py-1.5 text-body-sm hover:bg-nq-hover">
+                                <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="chk[`status:open`]" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+                                <span class="min-w-0 flex-1 truncate">Open</span>
+                            </label>
+                        </li>
+                                            <li>
+                            <label class="flex cursor-pointer items-center gap-2 rounded-control px-2 py-1.5 text-body-sm hover:bg-nq-hover">
+                                <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="chk[`status:won`]" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+                                <span class="min-w-0 flex-1 truncate">Won</span>
+                            </label>
+                        </li>
+                                            <li>
+                            <label class="flex cursor-pointer items-center gap-2 rounded-control px-2 py-1.5 text-body-sm hover:bg-nq-hover">
+                                <button type="button" role="checkbox" data-slot="checkbox" x-data="nqCheckbox(false, false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="chk[`status:lost`]" class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-nq-line-strong bg-card text-primary-foreground outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1">
+    <span data-slot="checkbox-indicator" class="flex items-center justify-center [&_svg]:size-3 [&_svg]:stroke-3" x-show="checked || indeterminate"  style="display: none" >
+        <svg aria-hidden="true" x-show="indeterminate" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+</svg>        <svg aria-hidden="true" x-show="! indeterminate" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>    </span>
+    </button>
+                                <span class="min-w-0 flex-1 truncate">Lost</span>
+                            </label>
+                        </li>
+                                    </ul>
+                <div class="border-t border-border p-1">
+                    <button data-slot="button"
+     type="button"                     x-bind:disabled="!hasValues(`status`)" x-on:click="clearField(`status`)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Clear</button>
+                </div></div>
+</template>
+</div>
+    </div>
+                    <div data-slot="report-filter-field" class="flex min-w-0 flex-col gap-1">
+    <span id="nq-report-filter-000002" class="text-caption text-muted-foreground">Owner</span>
+            <div data-slot="select" x-data="nqSelect('__nq-all__', false)" x-modelable="value" x-id="['nq-select']" x-model="sel[`owner`]" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-labelledby="nq-report-filter-000002" class="flex items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm w-auto min-w-36 max-w-full">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+            <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('__nq-all__', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('__nq-all__')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">All</span>
+</div>
+                                    <div data-slot="select-item" x-bind="item('sara', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('sara')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Sara</span>
+</div>
+                                    <div data-slot="select-item" x-bind="item('omar', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('omar')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Omar</span>
+</div>
+    </div>
+</template>
+    </div>
+    </div>
+                    <div data-slot="report-filter-field" class="flex min-w-0 flex-col gap-1">
+    <span id="nq-report-filter-000003" class="text-caption text-muted-foreground">Stage</span>
+            <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022__nq-all__\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-labelledby="nq-report-filter-000003" x-model="tog[`stage`]" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('__nq-all__')"      data-pressed         aria-label="All" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">All</button>
+                            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('new')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">New</button>
+                            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('late')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Late</button>
+</div>
+    </div>
+                <div class="ms-auto flex flex-wrap items-center gap-2">
+            <span aria-live="polite" class="text-caption text-muted-foreground" x-text="activeText"></span>
+            <button data-slot="button"
+     type="button"                     x-bind:disabled="count === 0" x-on:click="reset()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+</svg>                Reset filters</button>
+        </div>
+    </div>
+    <ul data-slot="report-filter-chips" class="flex flex-wrap gap-1.5" aria-label="Report filters" x-show="chips.length !== 0" >
+                    <li data-nq-ssr="">
+                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground gap-1 pe-1"><span class="text-muted-foreground"><span>Status</span>:</span> <span>Open</span>
+                    <button type="button" aria-label="Remove filter Status: Open"
+                        class="inline-flex size-4 items-center justify-center rounded-full outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                        <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                    </button></span>
+            </li>
+                <template x-for="chip in chips" :key="chip.key">
+            <li>
+                <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground gap-1 pe-1"><span class="text-muted-foreground"><span x-text="chip.fieldLabel"></span>:</span> <span x-text="chip.label"></span>
+                    <button type="button" x-bind:aria-label="removeLabel(chip)" x-on:click="removeChip(chip)"
+                        class="inline-flex size-4 items-center justify-center rounded-full outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">
+                        <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                    </button></span>
+            </li>
+        </template>
+    </ul>
+</div>
+        <section data-slot="saved-report-views" aria-label="Saved views" x-data="nqSavedReportViews(JSON.parse('{\u0022views\u0022:[{\u0022id\u0022:\u0022weekly\u0022,\u0022name\u0022:\u0022Weekly review\u0022,\u0022query\u0022:\u0022range=7d\\u0026status=open\u0022},{\u0022id\u0022:\u0022mine\u0022,\u0022name\u0022:\u0022Sara won\u0022,\u0022query\u0022:\u0022owner=sara\\u0026status=won\u0022,\u0022shared\u0022:true}],\u0022fields\u0022:[{\u0022id\u0022:\u0022status\u0022,\u0022kind\u0022:\u0022multi\u0022,\u0022label\u0022:\u0022Status\u0022,\u0022options\u0022:[{\u0022value\u0022:\u0022open\u0022,\u0022label\u0022:\u0022Open\u0022},{\u0022value\u0022:\u0022won\u0022,\u0022label\u0022:\u0022Won\u0022},{\u0022value\u0022:\u0022lost\u0022,\u0022label\u0022:\u0022Lost\u0022}]},{\u0022id\u0022:\u0022owner\u0022,\u0022kind\u0022:\u0022select\u0022,\u0022label\u0022:\u0022Owner\u0022,\u0022options\u0022:[{\u0022value\u0022:\u0022sara\u0022,\u0022label\u0022:\u0022Sara\u0022},{\u0022value\u0022:\u0022omar\u0022,\u0022label\u0022:\u0022Omar\u0022}]},{\u0022id\u0022:\u0022stage\u0022,\u0022kind\u0022:\u0022toggle\u0022,\u0022label\u0022:\u0022Stage\u0022,\u0022options\u0022:[{\u0022value\u0022:\u0022new\u0022,\u0022label\u0022:\u0022New\u0022},{\u0022value\u0022:\u0022late\u0022,\u0022label\u0022:\u0022Late\u0022}]}],\u0022state\u0022:null,\u0022defaults\u0022:null,\u0022activeId\u0022:null,\u0022canRename\u0022:true,\u0022canUpdate\u0022:true,\u0022canShare\u0022:true,\u0022canDelete\u0022:true,\u0022t\u0022:{\u0022views\u0022:\u0022Saved views\u0022,\u0022noViews\u0022:\u0022No saved views yet. Set the filters you use often and save them.\u0022,\u0022saveView\u0022:\u0022Save view\u0022,\u0022saveAsNew\u0022:\u0022Save as new view\u0022,\u0022saveTitle\u0022:\u0022Save this view\u0022,\u0022saveHelp\u0022:\u0022Stores the period and filters as they are now.\u0022,\u0022renameTitle\u0022:\u0022Rename view\u0022,\u0022nameLabel\u0022:\u0022Name\u0022,\u0022namePlaceholder\u0022:\u0022Weekly review\u0022,\u0022nameInvalid\u0022:\u0022Enter a name of up to 60 characters.\u0022,\u0022save\u0022:\u0022Save\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022saving\u0022:\u0022Saving\u0022,\u0022failed\u0022:\u0022That did not save. Try again.\u0022,\u0022apply\u0022:\u0022Open view\u0022,\u0022rename\u0022:\u0022Rename\u0022,\u0022update\u0022:\u0022Update with current filters\u0022,\u0022modified\u0022:\u0022Changed\u0022,\u0022share\u0022:\u0022Share\u0022,\u0022unshare\u0022:\u0022Stop sharing\u0022,\u0022copyLink\u0022:\u0022Copy link\u0022,\u0022linkCopied\u0022:\u0022Link copied\u0022,\u0022shared\u0022:\u0022Shared\u0022,\u0022remove\u0022:\u0022Delete\u0022,\u0022deleteTitle\u0022:\u0022Delete \\u0022{0}\\u0022?\u0022,\u0022deleteBody\u0022:\u0022The view is removed for everyone it is shared with. The report itself is not changed.\u0022,\u0022more\u0022:\u0022Actions for {0}\u0022}}'))" x-modelable="state"
+    x-model="filters" class="flex w-full min-w-0 flex-col gap-2">
+    <div class="flex flex-wrap items-center gap-2">
+        <h3 class="text-label text-muted-foreground">Saved views</h3>
+        <p x-show="views.length === 0"  style="display: none"  class="text-body-sm text-muted-foreground">No saved views yet. Set the filters you use often and save them.</p>
+        <ul class="flex min-w-0 flex-wrap items-center gap-1.5">
+            <template x-for="view in views" :key="view.id">
+                <li x-data="nqContextMenu()" x-bind="trigger" class="flex items-center rounded-full">
+                    <template x-if="isCurrent(view)">
+                        <button data-slot="button"
+     type="button"                     aria-pressed="true" x-on:click="apply(view)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5 rounded-full border-primary">
+        <span x-text="view.name"></span>
+                            <span data-slot="badge"  style="display: none"     x-show="view.shared" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Shared</span>
+                            <span data-slot="badge"  style="display: none"     x-show="dirty" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text">Changed</span></button>
+                    </template>
+                    <template x-if="!isCurrent(view)">
+                        <button data-slot="button"
+     type="button"                     aria-pressed="false" x-on:click="apply(view)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5 rounded-full">
+        <span x-text="view.name"></span>
+                            <span data-slot="badge"  style="display: none"     x-show="view.shared" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Shared</span></button>
+                    </template>
+                                            <button data-slot="button"
+     type="button"                     x-bind:aria-label="moreLabel(view)" x-on:click="openAt(anchorX($event), anchorY($event), true)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="1"/>
+  <circle cx="19" cy="12" r="1"/>
+  <circle cx="5" cy="12" r="1"/>
+</svg></button>
+                                        <template x-teleport="body">
+                        <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                            <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="apply(view)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
+</svg>Open view</div>
+                                                            <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="openRename(view)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+  <path d="m15 5 4 4"/>
+</svg>Rename</div>
+                                                                                        <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-bind:data-disabled="matches(view) ? &#039;&#039; : undefined" x-bind:aria-disabled="matches(view) ? &#039;true&#039; : undefined" x-on:click="updateView(view)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+  <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/>
+  <path d="M7 3v4a1 1 0 0 0 1 1h7"/>
+</svg>Update with current filters</div>
+                                                                                        <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                <template x-if="view.shared">
+                                    <div class="contents">
+                                        <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="copyLink(view)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg>Copy link</div>
+                                        <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="shareView(view, false)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="18" cy="5" r="3"/>
+  <circle cx="6" cy="12" r="3"/>
+  <circle cx="18" cy="19" r="3"/>
+  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/>
+  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
+</svg>Stop sharing</div>
+                                    </div>
+                                </template>
+                                <template x-if="!view.shared">
+                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="shareView(view, true)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="18" cy="5" r="3"/>
+  <circle cx="6" cy="12" r="3"/>
+  <circle cx="18" cy="19" r="3"/>
+  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/>
+  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
+</svg>Share</div>
+                                </template>
+                                                                                        <div data-slot="context-menu-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                <div data-slot="context-menu-item" role="menuitem" data-variant="danger" x-bind="item"
+        x-on:click="openDelete(view)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>Delete</div>
+                                                    </div>
+                    </template>
+                </li>
+            </template>
+        </ul>
+        <div class="ms-auto flex items-center gap-2">
+                            <button data-slot="button"
+     type="button"                     x-show="showUpdate" style="display: none" x-on:click="updateCurrent()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+  <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/>
+  <path d="M7 3v4a1 1 0 0 0 1 1h7"/>
+</svg>                    Update with current filters</button>
+                        <button data-slot="button"
+     type="button"                     x-show="dirty || !current" x-on:click="openSave()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
+</svg>                <span x-text="saveLabel">Save view</span></button>
+            <button data-slot="button"
+     type="button"                     x-show="!(dirty || !current)" style="display: none" x-on:click="openSave()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
+</svg>                <span x-text="saveLabel">Save view</span></button>
+        </div>
+    </div>
+    <p aria-live="polite" class="min-h-4 text-caption text-muted-foreground" x-text="note"></p>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="nameOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="report-name-dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-lg gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <form class="grid gap-4" novalidate x-on:submit.prevent="submitName()">
+                <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground"><span x-text="nameTitle">Save this view</span></h2>
+                    <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground"><span x-text="kind === 'rename' ? '' : t.saveHelp">Stores the period and filters as they are now.</span></p></div>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-label text-foreground" for="nq-report-view-name">Name</label>
+                    <input data-slot="input" type="text"
+                    id="nq-report-view-name" x-model="name" maxlength="80" placeholder="Weekly review" x-bind:aria-invalid="nameInvalid ? &#039;true&#039; : null" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                    <p role="alert" x-show="nameInvalid" style="display: none" class="text-caption text-nq-danger-text">Enter a name of up to 60 characters.</p>
+                </div>
+                <p x-show="error" style="display: none" role="alert" class="text-body-sm text-destructive" x-text="error"></p>
+                <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                     x-bind:disabled="busy" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="submit"                     x-bind:disabled="!nameValid" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <span x-text="busyLabel">Save</span></button></div>
+            </form>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+            <div data-slot="alert-dialog" x-data="nqAlertDialog(false)" x-modelable="open" x-id="['nq-alert-dialog']" x-model="deleteOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="alert-dialog-portal">
+        <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="alert-dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+            <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-alert-dialog', 'title')" class="text-h3 text-foreground"><span x-text="deleteTitle"></span></h2>
+                    <p data-slot="alert-dialog-description" :id="$id('nq-alert-dialog', 'description')" class="text-body-sm text-muted-foreground">The view is removed for everyone it is shared with. The report itself is not changed.</p></div>
+                <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                     autofocus="autofocus" x-on:click="close()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="alert-dialog-action"
+     type="button"                     x-on:click.capture="close()" x-on:click="confirmDelete()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Delete</button></div>
+        </div>
+    </div>
+</template>
+</div>
+    </section>
+    </article>
+</div>

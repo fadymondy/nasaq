@@ -1,0 +1,942 @@
+<div data-slot="onboarding-flow" x-data="nqOnboardingFlow(JSON.parse('{\u0022steps\u0022:[\u0022welcome\u0022,\u0022profile\u0022,\u0022workspace\u0022,\u0022invite\u0022,\u0022preferences\u0022,\u0022integration\u0022,\u0022finish\u0022],\u0022optional\u0022:[\u0022invite\u0022,\u0022preferences\u0022,\u0022integration\u0022],\u0022review\u0022:[\u0022profile\u0022,\u0022workspace\u0022,\u0022invite\u0022,\u0022preferences\u0022,\u0022integration\u0022],\u0022storageKey\u0022:\u0022onboarding:u1\u0022,\u0022userName\u0022:\u0022Sara\u0022,\u0022defaults\u0022:{\u0022preferences\u0022:{\u0022locale\u0022:\u0022en\u0022}},\u0022labels\u0022:{\u0022welcomeHeading\u0022:\u0022Welcome, {name}\u0022,\u0022welcomeHeadingAnon\u0022:\u0022Welcome aboard\u0022,\u0022nameRequired\u0022:\u0022Enter your name.\u0022,\u0022workspaceNameRequired\u0022:\u0022Enter a workspace name.\u0022,\u0022inviteCodeRequired\u0022:\u0022Enter the invite code.\u0022,\u0022invalidEmail\u0022:\u0022{email} is not an email address.\u0022,\u0022duplicateEmail\u0022:\u0022{email} is already added.\u0022,\u0022invitesCount\u0022:\u0022{count} to invite\u0022,\u0022connectFailed\u0022:\u0022Could not connect. Try again.\u0022}}'))"
+    x-on:nq-step-complete="$event.detail.waitUntil(obComplete($event.detail.stepId))"
+    x-on:nq-step-change="obStep($event.detail)"
+    x-on:nq-finish="$event.detail.waitUntil(obFinish())"
+    x-on:nq-onboarding-save="$event.detail.waitUntil(new Promise((done) => setTimeout(done, 50)))" x-on:nq-onboarding-connect="$event.detail.waitUntil(new Promise((done) => setTimeout(done, 50)))" x-on:nq-onboarding-finish="$event.detail.waitUntil(new Promise((done) => setTimeout(done, 50)))">
+    <div data-slot="setup-wizard" x-data="nqSetupWizard(JSON.parse('{\u0022steps\u0022:[{\u0022id\u0022:\u0022welcome\u0022,\u0022title\u0022:\u0022Welcome\u0022,\u0022description\u0022:\u0022Here is what we will do together.\u0022,\u0022optional\u0022:false,\u0022ready\u0022:true},{\u0022id\u0022:\u0022profile\u0022,\u0022title\u0022:\u0022Your profile\u0022,\u0022description\u0022:\u0022This is how teammates see you.\u0022,\u0022optional\u0022:false,\u0022ready\u0022:true},{\u0022id\u0022:\u0022workspace\u0022,\u0022title\u0022:\u0022Your workspace\u0022,\u0022description\u0022:\u0022Create a new one or join your team\\u0027s.\u0022,\u0022optional\u0022:false,\u0022ready\u0022:true},{\u0022id\u0022:\u0022invite\u0022,\u0022title\u0022:\u0022Invite teammates\u0022,\u0022description\u0022:\u0022They get an email with a link to join.\u0022,\u0022optional\u0022:true,\u0022ready\u0022:true},{\u0022id\u0022:\u0022preferences\u0022,\u0022title\u0022:\u0022Preferences\u0022,\u0022description\u0022:\u0022Change these any time in settings.\u0022,\u0022optional\u0022:true,\u0022ready\u0022:true},{\u0022id\u0022:\u0022integration\u0022,\u0022title\u0022:\u0022Connect a tool\u0022,\u0022description\u0022:\u0022Pick the first place your work comes from.\u0022,\u0022optional\u0022:true,\u0022ready\u0022:true},{\u0022id\u0022:\u0022finish\u0022,\u0022title\u0022:\u0022All set\u0022,\u0022description\u0022:\u0022Review what you did.\u0022,\u0022optional\u0022:false,\u0022ready\u0022:true}],\u0022current\u0022:0,\u0022completed\u0022:[],\u0022canFinish\u0022:true,\u0022gateMessage\u0022:null,\u0022labels\u0022:{\u0022stepOf\u0022:\u0022Step {current} of {total}\u0022,\u0022gate\u0022:\u0022Finish these steps first\u0022,\u0022failed\u0022:\u0022Something went wrong. Try again.\u0022,\u0022complete\u0022:\u0022Completed\u0022,\u0022current\u0022:\u0022Current step\u0022,\u0022upcoming\u0022:\u0022Upcoming\u0022}}'))"
+    x-bind:data-state="done ? 'done' : null" x-bind:data-step="done ? null : stepId()"
+    x-bind:class="done ? 'max-w-xl items-center gap-4 p-8 text-center' : 'max-w-4xl gap-0 p-0 md:grid md:grid-cols-[15rem_1fr]'"
+    class="mx-auto flex w-full flex-col rounded-card border border-border bg-card text-card-foreground">
+    <div class="contents" x-show="! done">
+        <aside class="hidden flex-col gap-5 border-e border-border bg-muted/50 p-6 md:flex">
+                            <div class="flex flex-col gap-1">
+                    <p class="text-label text-foreground">Set up your account</p>                    <p class="text-caption text-muted-foreground">A few quick steps and you are ready. You can skip the optional ones and finish them later.</p>                </div>
+                        <nav aria-label="Setup steps">
+                <ol data-slot="stepper" data-orientation="vertical" class="m-0 flex list-none flex-col p-0">
+                                                                    <li data-slot="stepper-item" x-bind:data-status="status(0)" class="grid grid-cols-[1.75rem_1fr] gap-x-3">
+                            <button type="button" data-slot="stepper-step" x-bind:aria-current="status(0) === 'current' ? 'step' : null" x-bind:disabled="! canGo(0)" x-on:click="railGo(0)"
+                                class="col-span-2 grid grid-cols-subgrid items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                                    x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': status(0) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': status(0) === 'current', 'border-border bg-background text-muted-foreground': status(0) === 'upcoming' }">
+                                    <svg aria-hidden="true" x-show="status(0) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span x-show="status(0) !== 'complete'" style=""><bdi data-slot="num" data-numeric="" class="tabular-nums">1</bdi>
+</span>
+                                </span>
+                                <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                                    <span class="text-label" x-bind:class="status(0) === 'upcoming' ? 'text-muted-foreground' : 'text-foreground'">
+                                        Welcome
+                                        <span class="sr-only" x-text="'(' + statusLabel(0) + ')'">(Current step)</span>
+                                    </span>
+                                                                    </span>
+                            </button>
+                                                            <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="status(0) === 'complete' ? '' : null"
+                                    x-bind:class="status(0) === 'complete' ? 'bg-primary' : 'bg-border'"
+                                    class="col-start-1 row-start-2 my-1 min-h-6 w-px justify-self-center rounded-full transition-colors duration-150 ease-nq"></span>
+                                                    </li>
+                                                                    <li data-slot="stepper-item" x-bind:data-status="status(1)" class="grid grid-cols-[1.75rem_1fr] gap-x-3">
+                            <button type="button" data-slot="stepper-step" x-bind:aria-current="status(1) === 'current' ? 'step' : null" x-bind:disabled="! canGo(1)" x-on:click="railGo(1)"
+                                class="col-span-2 grid grid-cols-subgrid items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                                    x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': status(1) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': status(1) === 'current', 'border-border bg-background text-muted-foreground': status(1) === 'upcoming' }">
+                                    <svg aria-hidden="true" x-show="status(1) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span x-show="status(1) !== 'complete'" style=""><bdi data-slot="num" data-numeric="" class="tabular-nums">2</bdi>
+</span>
+                                </span>
+                                <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                                    <span class="text-label" x-bind:class="status(1) === 'upcoming' ? 'text-muted-foreground' : 'text-foreground'">
+                                        Your profile
+                                        <span class="sr-only" x-text="'(' + statusLabel(1) + ')'">(Upcoming)</span>
+                                    </span>
+                                                                    </span>
+                            </button>
+                                                            <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="status(1) === 'complete' ? '' : null"
+                                    x-bind:class="status(1) === 'complete' ? 'bg-primary' : 'bg-border'"
+                                    class="col-start-1 row-start-2 my-1 min-h-6 w-px justify-self-center rounded-full transition-colors duration-150 ease-nq"></span>
+                                                    </li>
+                                                                    <li data-slot="stepper-item" x-bind:data-status="status(2)" class="grid grid-cols-[1.75rem_1fr] gap-x-3">
+                            <button type="button" data-slot="stepper-step" x-bind:aria-current="status(2) === 'current' ? 'step' : null" x-bind:disabled="! canGo(2)" x-on:click="railGo(2)"
+                                class="col-span-2 grid grid-cols-subgrid items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                                    x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': status(2) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': status(2) === 'current', 'border-border bg-background text-muted-foreground': status(2) === 'upcoming' }">
+                                    <svg aria-hidden="true" x-show="status(2) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span x-show="status(2) !== 'complete'" style=""><bdi data-slot="num" data-numeric="" class="tabular-nums">3</bdi>
+</span>
+                                </span>
+                                <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                                    <span class="text-label" x-bind:class="status(2) === 'upcoming' ? 'text-muted-foreground' : 'text-foreground'">
+                                        Your workspace
+                                        <span class="sr-only" x-text="'(' + statusLabel(2) + ')'">(Upcoming)</span>
+                                    </span>
+                                                                    </span>
+                            </button>
+                                                            <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="status(2) === 'complete' ? '' : null"
+                                    x-bind:class="status(2) === 'complete' ? 'bg-primary' : 'bg-border'"
+                                    class="col-start-1 row-start-2 my-1 min-h-6 w-px justify-self-center rounded-full transition-colors duration-150 ease-nq"></span>
+                                                    </li>
+                                                                    <li data-slot="stepper-item" x-bind:data-status="status(3)" class="grid grid-cols-[1.75rem_1fr] gap-x-3">
+                            <button type="button" data-slot="stepper-step" x-bind:aria-current="status(3) === 'current' ? 'step' : null" x-bind:disabled="! canGo(3)" x-on:click="railGo(3)"
+                                class="col-span-2 grid grid-cols-subgrid items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                                    x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': status(3) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': status(3) === 'current', 'border-border bg-background text-muted-foreground': status(3) === 'upcoming' }">
+                                    <svg aria-hidden="true" x-show="status(3) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span x-show="status(3) !== 'complete'" style=""><bdi data-slot="num" data-numeric="" class="tabular-nums">4</bdi>
+</span>
+                                </span>
+                                <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                                    <span class="text-label" x-bind:class="status(3) === 'upcoming' ? 'text-muted-foreground' : 'text-foreground'">
+                                        Invite teammates
+                                        <span class="sr-only" x-text="'(' + statusLabel(3) + ')'">(Upcoming)</span>
+                                    </span>
+                                    <span class="text-caption text-muted-foreground">Optional</span>                                </span>
+                            </button>
+                                                            <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="status(3) === 'complete' ? '' : null"
+                                    x-bind:class="status(3) === 'complete' ? 'bg-primary' : 'bg-border'"
+                                    class="col-start-1 row-start-2 my-1 min-h-6 w-px justify-self-center rounded-full transition-colors duration-150 ease-nq"></span>
+                                                    </li>
+                                                                    <li data-slot="stepper-item" x-bind:data-status="status(4)" class="grid grid-cols-[1.75rem_1fr] gap-x-3">
+                            <button type="button" data-slot="stepper-step" x-bind:aria-current="status(4) === 'current' ? 'step' : null" x-bind:disabled="! canGo(4)" x-on:click="railGo(4)"
+                                class="col-span-2 grid grid-cols-subgrid items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                                    x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': status(4) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': status(4) === 'current', 'border-border bg-background text-muted-foreground': status(4) === 'upcoming' }">
+                                    <svg aria-hidden="true" x-show="status(4) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span x-show="status(4) !== 'complete'" style=""><bdi data-slot="num" data-numeric="" class="tabular-nums">5</bdi>
+</span>
+                                </span>
+                                <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                                    <span class="text-label" x-bind:class="status(4) === 'upcoming' ? 'text-muted-foreground' : 'text-foreground'">
+                                        Preferences
+                                        <span class="sr-only" x-text="'(' + statusLabel(4) + ')'">(Upcoming)</span>
+                                    </span>
+                                    <span class="text-caption text-muted-foreground">Optional</span>                                </span>
+                            </button>
+                                                            <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="status(4) === 'complete' ? '' : null"
+                                    x-bind:class="status(4) === 'complete' ? 'bg-primary' : 'bg-border'"
+                                    class="col-start-1 row-start-2 my-1 min-h-6 w-px justify-self-center rounded-full transition-colors duration-150 ease-nq"></span>
+                                                    </li>
+                                                                    <li data-slot="stepper-item" x-bind:data-status="status(5)" class="grid grid-cols-[1.75rem_1fr] gap-x-3">
+                            <button type="button" data-slot="stepper-step" x-bind:aria-current="status(5) === 'current' ? 'step' : null" x-bind:disabled="! canGo(5)" x-on:click="railGo(5)"
+                                class="col-span-2 grid grid-cols-subgrid items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                                    x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': status(5) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': status(5) === 'current', 'border-border bg-background text-muted-foreground': status(5) === 'upcoming' }">
+                                    <svg aria-hidden="true" x-show="status(5) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span x-show="status(5) !== 'complete'" style=""><bdi data-slot="num" data-numeric="" class="tabular-nums">6</bdi>
+</span>
+                                </span>
+                                <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                                    <span class="text-label" x-bind:class="status(5) === 'upcoming' ? 'text-muted-foreground' : 'text-foreground'">
+                                        Connect a tool
+                                        <span class="sr-only" x-text="'(' + statusLabel(5) + ')'">(Upcoming)</span>
+                                    </span>
+                                    <span class="text-caption text-muted-foreground">Optional</span>                                </span>
+                            </button>
+                                                            <span aria-hidden="true" data-slot="stepper-connector" x-bind:data-complete="status(5) === 'complete' ? '' : null"
+                                    x-bind:class="status(5) === 'complete' ? 'bg-primary' : 'bg-border'"
+                                    class="col-start-1 row-start-2 my-1 min-h-6 w-px justify-self-center rounded-full transition-colors duration-150 ease-nq"></span>
+                                                    </li>
+                                                                    <li data-slot="stepper-item" x-bind:data-status="status(6)" class="grid grid-cols-[1.75rem_1fr] gap-x-3">
+                            <button type="button" data-slot="stepper-step" x-bind:aria-current="status(6) === 'current' ? 'step' : null" x-bind:disabled="! canGo(6)" x-on:click="railGo(6)"
+                                class="col-span-2 grid grid-cols-subgrid items-start gap-3 rounded-control text-start outline-none enabled:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span data-slot="stepper-marker" class="relative z-10 inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-caption font-medium transition-colors duration-150 ease-nq [&amp;_svg]:size-3.5"
+                                    x-bind:class="{ 'border-transparent bg-primary text-primary-foreground': status(6) === 'complete', 'border-nq-focus bg-background text-foreground ring-2 ring-nq-focus/30': status(6) === 'current', 'border-border bg-background text-muted-foreground': status(6) === 'upcoming' }">
+                                    <svg aria-hidden="true" x-show="status(6) === 'complete'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                    <span x-show="status(6) !== 'complete'" style=""><bdi data-slot="num" data-numeric="" class="tabular-nums">7</bdi>
+</span>
+                                </span>
+                                <span data-slot="stepper-text" class="flex min-w-0 flex-col text-start">
+                                    <span class="text-label" x-bind:class="status(6) === 'upcoming' ? 'text-muted-foreground' : 'text-foreground'">
+                                        All set
+                                        <span class="sr-only" x-text="'(' + statusLabel(6) + ')'">(Upcoming)</span>
+                                    </span>
+                                                                    </span>
+                            </button>
+                                                    </li>
+                                    </ol>
+            </nav>
+        </aside>
+        <div class="flex min-w-0 flex-col gap-5 p-5 sm:p-8">
+            <div class="flex flex-col gap-2 md:hidden">
+                <p class="text-label text-foreground">Set up your account</p>                <div data-slot="progress" role="progressbar" aria-label="Setup steps" aria-valuemin="0" aria-valuemax="100" x-bind:aria-valuenow="pct()" x-bind:aria-valuetext="pct() + '%'" class="flex w-full flex-col gap-1.5">
+                    <div data-slot="progress-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+                        <span class="text-label text-foreground" x-text="stepCount()">Step 1 of 7</span><span></span>
+                    </div>
+                    <div data-slot="progress-track" class="relative block h-2 w-full overflow-hidden rounded-full bg-nq-surface-soft">
+                        <div data-slot="progress-indicator" x-bind:style="'inset-inline-start:0;width:' + pct() + '%'" class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none"></div>
+                    </div>
+                </div>
+            </div>
+            <header class="flex flex-col gap-1">
+                <p class="hidden text-caption text-muted-foreground md:block" x-text="stepCount()">Step 1 of 7</p>
+                <h2 x-ref="heading" tabindex="-1" class="text-h2 text-foreground outline-none" x-text="step().title">Welcome</h2>
+                <p class="text-body-sm text-muted-foreground" x-show="step().description" x-text="step().description" style="">Here is what we will do together.</p>
+            </header>
+            <div data-slot="setup-wizard-body" x-bind:aria-busy="busy() ? 'true' : null" class="min-w-0">
+                <div data-slot="setup-wizard-step" data-step-id="welcome" x-show="stepId() === 'welcome'" style="" class="flex flex-col gap-4">
+    <div data-slot="onboarding-welcome" class="flex flex-col gap-4">
+                    <div data-slot="alert" data-tone="info" role="status"
+        x-show="resumed" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-info/30 bg-nq-info-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-info-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground">Welcome back. We saved your place.
+                        <button data-slot="button"
+     type="button"                     x-on:click="startOver()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0">
+        Start over</button></div>
+            </div>
+    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-nq-selected text-primary">
+                            <svg aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>                        </span>
+                        <div class="flex flex-col gap-1">
+                            <p class="text-h3 text-foreground" x-text="obHeading()">Welcome, Sara</p>
+                            <p class="text-body text-muted-foreground">Setting up takes about three minutes. Your progress is saved, so you can leave and come back.</p>
+                        </div>
+                    </div>
+                    <ul class="flex flex-col gap-2">
+                                                                                    <li class="flex items-center gap-3 rounded-control border border-border bg-card px-3 py-2 text-body text-foreground [&_svg]:size-4 [&_svg]:text-muted-foreground">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="8" r="5"/>
+  <path d="M20 21a8 8 0 0 0-16 0"/>
+</svg>                                    Tell us who you are
+                                </li>
+                                                                                                                <li class="flex items-center gap-3 rounded-control border border-border bg-card px-3 py-2 text-body text-foreground [&_svg]:size-4 [&_svg]:text-muted-foreground">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg>                                    Create or join a workspace
+                                </li>
+                                                                                                                <li class="flex items-center gap-3 rounded-control border border-border bg-card px-3 py-2 text-body text-foreground [&_svg]:size-4 [&_svg]:text-muted-foreground">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  <rect x="2" y="4" width="20" height="16" rx="2"/>
+</svg>                                    Bring your team
+                                </li>
+                                                                                                                <li class="flex items-center gap-3 rounded-control border border-border bg-card px-3 py-2 text-body text-foreground [&_svg]:size-4 [&_svg]:text-muted-foreground">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/>
+  <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+  <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+  <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+  <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+</svg>                                    Choose how it looks and feels
+                                </li>
+                                                                                                                <li class="flex items-center gap-3 rounded-control border border-border bg-card px-3 py-2 text-body text-foreground [&_svg]:size-4 [&_svg]:text-muted-foreground">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22v-5"/>
+  <path d="M15 8V2"/>
+  <path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/>
+  <path d="M9 8V2"/>
+</svg>                                    Connect your first tool
+                                </li>
+                                                                        </ul>
+                </div>
+</div>
+                    <div data-slot="setup-wizard-step" data-step-id="profile" x-show="stepId() === 'profile'" style="display: none;" class="flex flex-col gap-4">
+    <div data-slot="onboarding-profile" class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-1.5">
+                        <span class="text-label text-foreground">Profile photo</span>
+                        <div data-slot="avatar-upload" x-data="nqAvatarUpload(JSON.parse('{\u0022name\u0022:\u0022Sara\u0022,\u0022accept\u0022:\u0022image\\\/png,image\\\/jpeg,image\\\/webp\u0022,\u0022maxSize\u0022:5242880,\u0022outputSize\u0022:256,\u0022outputType\u0022:\u0022image\\\/webp\u0022,\u0022quality\u0022:0.9,\u0022maxZoom\u0022:4,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022upload\u0022:\u0022Upload photo\u0022,\u0022change\u0022:\u0022Change photo\u0022,\u0022remove\u0022:\u0022Remove photo\u0022,\u0022hint\u0022:\u0022{types}, up to {max}. You can also drop or paste an image.\u0022,\u0022dropping\u0022:\u0022Drop to use this photo\u0022,\u0022adjust\u0022:\u0022Adjust your photo\u0022,\u0022viewport\u0022:\u0022Photo position\u0022,\u0022instructions\u0022:\u0022Drag the photo to move it. Arrow keys move it, plus and minus zoom.\u0022,\u0022zoom\u0022:\u0022Zoom\u0022,\u0022zoomIn\u0022:\u0022Zoom in\u0022,\u0022zoomOut\u0022:\u0022Zoom out\u0022,\u0022save\u0022:\u0022Save photo\u0022,\u0022cancel\u0022:\u0022Cancel\u0022,\u0022uploading\u0022:\u0022Uploading\u0022,\u0022images\u0022:\u0022images\u0022,\u0022wrongType\u0022:\u0022That file type is not supported. Use {types}.\u0022,\u0022tooLarge\u0022:\u0022That photo is larger than {max}.\u0022,\u0022unreadable\u0022:\u0022That image could not be read. Try another one.\u0022,\u0022saveFailed\u0022:\u0022The photo could not be saved. Try again.\u0022,\u0022removeFailed\u0022:\u0022The photo could not be removed. Try again.\u0022,\u0022saved\u0022:\u0022Photo updated.\u0022,\u0022removed\u0022:\u0022Photo removed.\u0022,\u0022units\u0022:\u0022B,KB,MB,GB,TB\u0022}}'))"
+    x-bind:data-dragging="dragging ? '' : null" x-bind:data-editing="editing ? '' : null"
+    x-on:dragenter="dragEnter($event)" x-on:dragover="dragOver($event)" x-on:dragleave="dragLeave()" x-on:drop="drop($event)" x-on:paste="paste($event)"
+    x-on:nq-avatar-change="$event.detail.promise = obAvatar($event.detail)" x-on:nq-avatar-remove="$event.detail.promise = obRemoveAvatar()" class="flex flex-col gap-3">
+    <div role="group" aria-label="Adjust your photo" data-slot="avatar-upload-editor" x-show="editing" style="display: none"
+        class="flex flex-col gap-4 rounded-floating border border-border bg-card p-4 sm:flex-row">
+        <div class="flex flex-col items-center gap-2">
+            <div dir="ltr" role="group" tabindex="0" aria-label="Photo position" aria-describedby="nq-avatar-help" data-slot="avatar-upload-viewport"
+                x-on:pointerdown="pointerDown($event)" x-on:pointermove="pointerMove($event)" x-on:pointerup="endDrag()" x-on:pointercancel="endDrag()" x-on:keydown="cropKey($event)"
+                class="relative size-56 max-w-full shrink-0 cursor-grab touch-none select-none overflow-hidden rounded-control bg-nq-surface-soft outline-none active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <img x-ref="image" alt="" draggable="false" class="pointer-events-none absolute max-w-none" style="visibility: hidden"
+                    x-bind:src="sourceUrl" x-bind:style="imageStyle" x-on:load="onImageLoad()" x-on:error="onImageError()">
+                <span aria-hidden="true" class="pointer-events-none absolute inset-0 border border-nq-fg/30 rounded-full" style="box-shadow: 0 0 0 100vmax color-mix(in oklab, var(--nq-fg) 45%, transparent)"></span>
+            </div>
+            <p id="nq-avatar-help" class="max-w-56 text-center text-caption text-muted-foreground">Drag the photo to move it. Arrow keys move it, plus and minus zoom.</p>
+        </div>
+        <div class="flex min-w-0 flex-1 flex-col justify-between gap-4">
+            <div class="flex items-center gap-2" x-bind:inert="busy !== '' || ! natural ? '' : null" x-bind:class="busy !== '' || ! natural ? 'opacity-50' : ''">
+                <button data-slot="button"
+     type="button"                     aria-label="Zoom out" x-on:click="setZoom(zoom - 0.25)" x-bind:disabled="zoom &lt;= 1 ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="11" cy="11" r="8"/>
+  <line x1="21" x2="16.65" y1="21" y2="16.65"/>
+  <line x1="8" x2="14" y1="11" y2="11"/>
+</svg></button>
+                <div data-slot="slider" x-data="nqSlider(JSON.parse('{\u0022value\u0022:1,\u0022min\u0022:1,\u0022max\u0022:4,\u0022step\u0022:0.01,\u0022disabled\u0022:false,\u0022minStepsBetweenThumbs\u0022:0,\u0022format\u0022:{\u0022style\u0022:\u0022percent\u0022,\u0022maximumFractionDigits\u0022:0}}'))" x-modelable="model"     x-model="zoom" aria-label="Zoom" class="flex w-full flex-col gap-2 data-disabled:opacity-50">
+        <div data-slot="slider-control"  x-on:pointerdown="down($event)" class="flex h-5 w-full touch-none select-none items-center">
+        <div data-slot="slider-track" x-ref="track" class="relative h-1.5 w-full rounded-full bg-nq-surface-soft">
+            <div data-slot="slider-range" :style="rangeStyle()" style="position: absolute; top: 0; bottom: 0; inset-inline-start: 0px; inset-inline-end: calc(100% - calc(0% + 8.00px))" class="rounded-full bg-primary"></div>
+                            <div data-slot="slider-thumb" role="slider" tabindex="0"
+                                        aria-valuemin="1" aria-valuemax="4" aria-orientation="horizontal"
+                    :aria-valuenow="values[0]" :aria-valuetext="fmt(values[0])" :data-dragging="dragging && active === 0 ? '' : undefined"
+                                        x-on:keydown="key($event, 0)" :style="thumbStyle(0)"
+                    style="inset-inline-start: calc(0% + 8.00px); top: 50%; translate: -50% -50%; position: absolute"
+                    class="size-4 rounded-full border border-primary bg-card shadow-xs outline-none transition-[box-shadow] duration-150 ease-nq motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-dragging:shadow-md data-disabled:pointer-events-none"></div>
+                                    </div>
+    </div>
+    </div>
+                <button data-slot="button"
+     type="button"                     aria-label="Zoom in" x-on:click="setZoom(zoom + 0.25)" x-bind:disabled="zoom &gt;= maxZoom ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="11" cy="11" r="8"/>
+  <line x1="21" x2="16.65" y1="21" y2="16.65"/>
+  <line x1="11" x2="11" y1="8" y2="14"/>
+  <line x1="8" x2="14" y1="11" y2="11"/>
+</svg></button>
+            </div>
+            <div class="flex flex-col gap-3">
+                <div x-show="uploading" role="progressbar" aria-label="Uploading" aria-valuemin="0" aria-valuemax="100" x-bind:aria-valuenow="progress" style="display: none"
+                    data-slot="progress" class="flex w-full flex-col gap-1.5">
+                    <span class="block h-1 w-full overflow-hidden rounded-full bg-nq-surface-soft"><span class="block h-full rounded-full bg-primary transition-[width] duration-300 ease-nq motion-reduce:transition-none" x-bind:style="'width: ' + progress + '%'"></span></span>
+                </div>
+                <div class="flex flex-wrap justify-end gap-2">
+                    <button data-slot="button"
+     type="button"                     x-on:click="reset()" x-bind:disabled="busy !== &#039;&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="button"                     x-on:click="save()" x-bind:aria-busy="uploading ? &#039;true&#039; : null" x-bind:disabled="! natural || busy !== &#039;&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <span x-show="uploading" style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                        Save photo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-slot="avatar-upload-idle" x-show="! editing" class="flex gap-4 items-center">
+        <button type="button" data-slot="avatar-upload-trigger" aria-describedby="nq-avatar-hint" x-on:click="openPicker()"
+            x-bind:aria-label="current ? 'Change photo' : 'Upload photo'" x-bind:disabled="locked ? '' : null"             class="group relative shrink-0 outline-none rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50">
+            <span data-slot="avatar" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground rounded-full size-20 text-h3">
+                <img data-slot="avatar-image" alt="Sara" class="size-full object-cover" x-show="current" x-bind:src="current"  style="display: none" >
+                <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-show="! current"                      role="img" aria-label="Sara" >S</span>
+            </span>
+            <span aria-hidden="true" x-bind:class="dragging ? 'border-2 border-dashed border-nq-focus opacity-100' : ''"
+                class="absolute inset-0 flex items-center justify-center bg-nq-fg/50 text-nq-bg opacity-0 transition-opacity duration-150 ease-nq group-hover:opacity-100 group-focus-visible:opacity-100 group-disabled:hidden rounded-full">
+                <svg data-slot="icon" aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/>
+  <circle cx="12" cy="13" r="3"/>
+</svg>            </span>
+        </button>
+        <div class="flex min-w-0 flex-col gap-2">
+            <div class="flex flex-wrap gap-2">
+                <button data-slot="button"
+     type="button"                     x-on:click="openPicker()" x-bind:disabled="locked ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3v12"/>
+  <path d="m17 8-5-5-5 5"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+</svg>                    <span x-text="current ? 'Change photo' : 'Upload photo'">Upload photo</span></button>
+                                    <button data-slot="button"
+     type="button"                     x-show="current" x-on:click="removePhoto()" x-bind:aria-busy="busy === &#039;removing&#039; ? &#039;true&#039; : null" x-bind:disabled="disabled || busy === &#039;saving&#039; || busy === &#039;removing&#039; ? &#039;&#039; : null" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <span x-show="busy === 'removing'" style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                        <svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg>                        Remove photo</button>
+                            </div>
+            <p id="nq-avatar-hint" class="text-caption text-muted-foreground" x-text="hintText"></p>
+        </div>
+    </div>
+    <p role="alert" data-slot="avatar-upload-error" x-show="error" x-text="error" class="text-caption text-nq-danger-text" style="display: none"></p>
+    <span role="status" class="sr-only" x-text="status"></span>
+    <input x-ref="input" type="file" class="sr-only" tabindex="-1" aria-hidden="true" accept="image/png,image/jpeg,image/webp" x-bind:disabled="locked ? '' : null"
+        x-on:click.stop x-on:change="onInput($event)" >
+</div>
+                    </div>
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="inv.name" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Full name</label>
+                        <input data-slot="input" type="text"
+         name="name"             autocomplete="name" x-model="vals.profile.name" value="Sara" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                        <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="errs.name" class="text-caption text-nq-danger-text"></div>
+</div>
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Your role</label>
+                        <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="vals.profile.role" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? 'Choose a role'" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                            <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('design', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('design')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Design</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('engineering', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('engineering')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Engineering</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('product', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('product')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Product</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('marketing', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('marketing')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Marketing</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('operations', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('operations')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Operations</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('other', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('other')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Other</span>
+</div>
+    </div>
+</template>
+    </div>
+</div>
+                </div>
+</div>
+                    <div data-slot="setup-wizard-step" data-step-id="workspace" x-show="stepId() === 'workspace'" style="display: none;" class="flex flex-col gap-4">
+    <div data-slot="onboarding-workspace" data-orientation="horizontal" x-data="nqTabs('create')" x-modelable="value" x-id="['nq-tabs']" x-model="vals.workspace.mode" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="segmented" aria-orientation="horizontal" x-bind="list"
+    class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-fit gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('create')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3">Create a workspace</button>
+                        <button type="button" data-slot="tabs-tab" x-bind="tab('join')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3">Join with a code</button>
+</div>
+                    <div data-slot="tabs-panel" x-bind="panel('create')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus pt-4"><div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="inv.workspaceName" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Workspace name</label>
+                            <input data-slot="input" type="text"
+         name="workspaceName"             autocomplete="organization" x-model="vals.workspace.name" value="" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                            <p data-slot="field-description" class="text-caption text-muted-foreground">Your company or team. You can rename it later.</p>
+                            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="errs.workspaceName" class="text-caption text-nq-danger-text"></div>
+</div></div>
+                    <div data-slot="tabs-panel" x-bind="panel('join')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus pt-4"><div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     x-model="inv.code" class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Invite code</label>
+                            <input data-slot="input" type="text"
+     dir="ltr"      name="code"             autocapitalize="characters" autocomplete="off" x-model="vals.workspace.code" x-on:input="vals.workspace.code = vals.workspace.code.toUpperCase()" value="" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                            <p data-slot="field-description" class="text-caption text-muted-foreground">Ask a workspace admin. It looks like ABCD-1234.</p>
+                            <div data-slot="field-error" role="alert" x-show="invalid"  style="display: none"  x-text="errs.code" class="text-caption text-nq-danger-text"></div>
+</div></div>
+</div>
+</div>
+                    <div data-slot="setup-wizard-step" data-step-id="invite" x-show="stepId() === 'invite'" style="display: none;" class="flex flex-col gap-4">
+    <div data-slot="onboarding-invite" class="flex flex-col gap-4">
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  for="onb-emails" class="text-label text-foreground data-disabled:opacity-50">Email addresses</label>
+                        <div data-slot="tag-input" x-data="nqTagInput([], Object.assign({}, { validate: (tag, tags) => (obEmail(tag, tags)) }))" x-modelable="tags" x-bind="root"
+         x-model="vals.invite.emails" class="relative w-full">
+    <div data-slot="tag-input-box" x-bind="box"
+        class="flex w-full min-w-0 flex-wrap items-center gap-1.5 rounded-control border border-input bg-card px-2 py-1 text-body text-foreground min-h-[max(var(--nq-control),var(--nq-touch-min,0px))] transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger">
+        <template x-for="(tag, i) in tags" :key="tag">
+            <span data-slot="tag-input-tag" data-variant="neutral" class="inline-flex w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-control border border-transparent bg-muted px-2 py-0.5 font-medium text-foreground h-6 gap-0.5 ps-2 pe-0.5 text-body-sm">
+                <bdi x-text="tag"></bdi>
+                <button type="button"  :aria-label="'Remove' + ' ' + tag" @click.stop="removeAt(i)"
+                    class="inline-flex size-5 items-center justify-center rounded-[3px] text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                    <span aria-hidden="true" class="flex [&_svg]:size-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></span>
+                </button>
+            </span>
+        </template>
+        <input data-slot="tag-input-field" x-ref="field" x-bind="field" autocomplete="off"             :placeholder="tags.length ? undefined : 'name@company.com'"
+                        id="onb-emails" type="email" dir="ltr" aria-label="Email addresses" class="h-7 min-w-24 flex-1 border-0 bg-transparent px-1 text-body outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+    </div>
+        <p x-show="error" x-cloak style="display: none" role="alert" data-slot="tag-input-error" x-text="error" class="mt-1.5 text-caption text-nq-danger-text"></p>
+    <span role="status" aria-live="polite" class="sr-only" x-text="message"></span>
+    </div>
+                        <p data-slot="field-description" class="text-caption text-muted-foreground">Press Enter or comma after each one. Pasting a list works too.</p>
+</div>
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Invite them as</label>
+                        <div data-slot="select" x-data="nqSelect('member', false)" x-modelable="value" x-id="['nq-select']" x-model="vals.invite.role" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                            <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('member', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('member')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Member</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('admin', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('admin')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Admin</span>
+</div>
+                                                                    <div data-slot="select-item" x-bind="item('viewer', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('viewer')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">Viewer</span>
+</div>
+    </div>
+</template>
+    </div>
+</div>
+                    <p class="text-caption text-muted-foreground" x-show="vals.invite.emails.length > 0" x-text="obInvites()" style="display: none"></p>
+                </div>
+</div>
+                    <div data-slot="setup-wizard-step" data-step-id="preferences" x-show="stepId() === 'preferences'" style="display: none;" class="flex flex-col gap-4">
+    <div data-slot="onboarding-preferences" class="flex flex-col gap-5">
+                    <div class="flex flex-col gap-1.5">
+                        <span id="onb-lang" class="text-label text-foreground">Language</span>
+                        <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022en\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-labelledby="onb-lang" x-model="obLoc" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('en')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">English</button>
+                            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('ar')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">العربية</button>
+</div>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <span id="onb-theme" class="text-label text-foreground">Theme</span>
+                        <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022system\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-labelledby="onb-theme" x-model="obTheme" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('light')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="4"/>
+  <path d="M12 2v2"/>
+  <path d="M12 20v2"/>
+  <path d="m4.93 4.93 1.41 1.41"/>
+  <path d="m17.66 17.66 1.41 1.41"/>
+  <path d="M2 12h2"/>
+  <path d="M20 12h2"/>
+  <path d="m6.34 17.66-1.41 1.41"/>
+  <path d="m19.07 4.93-1.41 1.41"/>
+</svg>Light</button>
+                            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('dark')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>
+</svg>Dark</button>
+                            <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('system')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2v2"/>
+  <path d="M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715"/>
+  <path d="M16 12a4 4 0 0 0-4-4"/>
+  <path d="m19 5-1.256 1.256"/>
+  <path d="M20 12h2"/>
+</svg>System</button>
+</div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <span class="flex items-center gap-1.5 text-label text-foreground">
+                            <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
+</svg>                            Notifications
+                        </span>
+                                                    <label class="flex items-center justify-between gap-3 rounded-control border border-border bg-card px-3 py-2 text-body text-foreground">
+                                Email me about activity
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="vals.preferences.notifications.email" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </label>
+                                                    <label class="flex items-center justify-between gap-3 rounded-control border border-border bg-card px-3 py-2 text-body text-foreground">
+                                Push notifications on this device
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="vals.preferences.notifications.push" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </label>
+                                                    <label class="flex items-center justify-between gap-3 rounded-control border border-border bg-card px-3 py-2 text-body text-foreground">
+                                Send a weekly summary
+                                <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="vals.preferences.notifications.digest" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                            </label>
+                                            </div>
+                </div>
+</div>
+                    <div data-slot="setup-wizard-step" data-step-id="integration" x-show="stepId() === 'integration'" style="display: none;" class="flex flex-col gap-4">
+    <div data-slot="onboarding-integration" class="flex flex-col gap-2">
+                    <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="connectError" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="connectError"></span></div>
+            </div>
+    </div>
+                    <ul class="flex flex-col gap-2">
+                                                                                <li class="flex items-center gap-3 rounded-card border border-border bg-card p-3">
+                                <span aria-hidden="true" class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-background">
+                                                                            <svg viewBox="0 0 98 96" width="20" height="20" aria-hidden="true" focusable="false" >
+    <path d="M41.4395 69.3848C28.8066 67.8535 19.9062 58.7617 19.9062 46.9902C19.9062 42.2051 21.6289 37.0371 24.5 33.5918C23.2559 30.4336 23.4473 23.7344 24.8828 20.959C28.7109 20.4805 33.8789 22.4902 36.9414 25.2656C40.5781 24.1172 44.4062 23.543 49.0957 23.543C53.7852 23.543 57.6133 24.1172 61.0586 25.1699C64.0254 22.4902 69.2891 20.4805 73.1172 20.959C74.457 23.543 74.6484 30.2422 73.4043 33.4961C76.4668 37.1328 78.0937 42.0137 78.0937 46.9902C78.0937 58.7617 69.1934 67.6621 56.3691 69.2891C59.623 71.3945 61.8242 75.9883 61.8242 81.252L61.8242 91.2051C61.8242 94.0762 64.2168 95.7031 67.0879 94.5547C84.4102 87.9512 98 70.6289 98 49.1914C98 22.1074 75.9883 6.69539e-07 48.9043 4.309e-07C21.8203 1.92261e-07 -1.9479e-07 22.1074 -4.3343e-07 49.1914C-6.20631e-07 70.4375 13.4941 88.0469 31.6777 94.6504C34.2617 95.6074 36.75 93.8848 36.75 91.3008L36.75 83.6445C35.4102 84.2188 33.6875 84.6016 32.1562 84.6016C25.8398 84.6016 22.1074 81.1563 19.4277 74.7441C18.375 72.1602 17.2266 70.6289 15.0254 70.3418C13.877 70.2461 13.4941 69.7676 13.4941 69.1934C13.4941 68.0449 15.4082 67.1836 17.3223 67.1836C20.0977 67.1836 22.4902 68.9063 24.9785 72.4473C26.8926 75.2227 28.9023 76.4668 31.2949 76.4668C33.6875 76.4668 35.2187 75.6055 37.4199 73.4043C39.0469 71.7773 40.291 70.3418 41.4395 69.3848Z"  class="fill-black dark:fill-white"  />
+</svg>
+                                                                    </span>
+                                <span class="flex min-w-0 flex-1 flex-col text-start">
+                                    <span class="truncate text-label text-foreground">GitHub</span>
+                                    <span class="truncate text-caption text-muted-foreground">Repositories and pull requests</span>                                </span>
+                                <span class="contents" x-show="obConnected('github')" style="display: none;">
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Connected</span>
+                                </span>
+                                <span class="contents" x-show="! obConnected('github')" style="">
+                                    <button data-slot="button"
+     type="button"                     aria-label="Connect GitHub" x-on:click="obConnect(&#039;github&#039;)" x-bind:disabled="connecting !== null" x-bind:data-disabled="connecting !== null ? &#039;&#039; : null" x-bind:aria-busy="connecting === &#039;github&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <template x-if="connecting === 'github'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                                        Connect</button>
+                                </span>
+                            </li>
+                                                                                <li class="flex items-center gap-3 rounded-card border border-border bg-card p-3">
+                                <span aria-hidden="true" class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-background">
+                                                                            <svg viewBox="10 10 20 20" width="20" height="20" aria-hidden="true" focusable="false" >
+    <path d="M29.6 20.2273C29.6 19.5182 29.5364 18.8364 29.4182 18.1818H20V22.05H25.3818C25.15 23.3 24.4455 24.3591 23.3864 25.0682V27.5773H26.6182C28.5091 25.8364 29.6 23.2727 29.6 20.2273Z" fill="#4285F4" />
+    <path d="M20 30C22.7 30 24.9636 29.1045 26.6181 27.5773L23.3863 25.0682C22.4909 25.6682 21.3454 26.0227 20 26.0227C17.3954 26.0227 15.1909 24.2636 14.4045 21.9H11.0636V24.4909C12.7091 27.7591 16.0909 30 20 30Z" fill="#34A853" />
+    <path d="M14.4045 21.9C14.2045 21.3 14.0909 20.6591 14.0909 20C14.0909 19.3409 14.2045 18.7 14.4045 18.1V15.5091H11.0636C10.3864 16.8591 10 18.3864 10 20C10 21.6136 10.3864 23.1409 11.0636 24.4909L14.4045 21.9Z" fill="#FBBC04" />
+    <path d="M20 13.9773C21.4681 13.9773 22.7863 14.4818 23.8227 15.4727L26.6909 12.6045C24.9591 10.9909 22.6954 10 20 10C16.0909 10 12.7091 12.2409 11.0636 15.5091L14.4045 18.1C15.1909 15.7364 17.3954 13.9773 20 13.9773Z" fill="#E94235" />
+</svg>
+                                                                    </span>
+                                <span class="flex min-w-0 flex-1 flex-col text-start">
+                                    <span class="truncate text-label text-foreground">Google</span>
+                                    <span class="truncate text-caption text-muted-foreground">Calendar and contacts</span>                                </span>
+                                <span class="contents" x-show="obConnected('google')" style="display: none;">
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Connected</span>
+                                </span>
+                                <span class="contents" x-show="! obConnected('google')" style="">
+                                    <button data-slot="button"
+     type="button"                     aria-label="Connect Google" x-on:click="obConnect(&#039;google&#039;)" x-bind:disabled="connecting !== null" x-bind:data-disabled="connecting !== null ? &#039;&#039; : null" x-bind:aria-busy="connecting === &#039;google&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <template x-if="connecting === 'google'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                                        Connect</button>
+                                </span>
+                            </li>
+                                                                                <li class="flex items-center gap-3 rounded-card border border-border bg-card p-3">
+                                <span aria-hidden="true" class="inline-flex size-9 shrink-0 items-center justify-center rounded-control border border-border bg-background">
+                                                                            <svg viewBox="0 0 21 21" width="20" height="20" aria-hidden="true" focusable="false" >
+    <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+    <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+    <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+    <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
+</svg>
+                                                                    </span>
+                                <span class="flex min-w-0 flex-1 flex-col text-start">
+                                    <span class="truncate text-label text-foreground">Microsoft</span>
+                                    <span class="truncate text-caption text-muted-foreground">Outlook and Teams</span>                                </span>
+                                <span class="contents" x-show="obConnected('microsoft')" style="display: none;">
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-success/40 bg-nq-success-soft text-nq-success-text"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>Connected</span>
+                                </span>
+                                <span class="contents" x-show="! obConnected('microsoft')" style="">
+                                    <button data-slot="button"
+     type="button"                     aria-label="Connect Microsoft" x-on:click="obConnect(&#039;microsoft&#039;)" x-bind:disabled="connecting !== null" x-bind:data-disabled="connecting !== null ? &#039;&#039; : null" x-bind:aria-busy="connecting === &#039;microsoft&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <template x-if="connecting === 'microsoft'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                                        Connect</button>
+                                </span>
+                            </li>
+                                            </ul>
+                </div>
+</div>
+                    <div data-slot="setup-wizard-step" data-step-id="finish" x-show="stepId() === 'finish'" style="display: none;" class="flex flex-col gap-4">
+    <div data-slot="onboarding-finish" class="flex flex-col gap-3">
+                    <div class="flex items-center gap-2 text-label text-foreground">
+                        <svg aria-hidden="true" class="size-4 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5.8 11.3 2 22l10.7-3.79"/>
+  <path d="M4 3h.01"/>
+  <path d="M22 8h.01"/>
+  <path d="M15 2h.01"/>
+  <path d="M22 20h.01"/>
+  <path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/>
+  <path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/>
+  <path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/>
+  <path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/>
+</svg>                        Your setup
+                    </div>
+                    <ul class="flex flex-col gap-2">
+                                                    <li class="flex items-center gap-3 rounded-control border border-border bg-card px-3 py-2">
+                                <span class="contents" x-show="obStatus('profile') === 'done'" style="display: none"><svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg></span>
+                                <span class="contents" x-show="obStatus('profile') === 'skipped'" style="display: none"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M8 12h8"/>
+</svg></span>
+                                <span class="contents" x-show="obStatus('profile') === 'open'"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+  <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+  <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+  <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+  <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+  <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+  <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+  <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+</svg></span>
+                                <span class="flex-1 text-body text-foreground">Your profile</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('profile') === 'done'" style="display: none">Done</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('profile') === 'skipped'" style="display: none">Skipped</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('profile') === 'open'">Not done</span>
+                            </li>
+                                                    <li class="flex items-center gap-3 rounded-control border border-border bg-card px-3 py-2">
+                                <span class="contents" x-show="obStatus('workspace') === 'done'" style="display: none"><svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg></span>
+                                <span class="contents" x-show="obStatus('workspace') === 'skipped'" style="display: none"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M8 12h8"/>
+</svg></span>
+                                <span class="contents" x-show="obStatus('workspace') === 'open'"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+  <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+  <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+  <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+  <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+  <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+  <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+  <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+</svg></span>
+                                <span class="flex-1 text-body text-foreground">Your workspace</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('workspace') === 'done'" style="display: none">Done</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('workspace') === 'skipped'" style="display: none">Skipped</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('workspace') === 'open'">Not done</span>
+                            </li>
+                                                    <li class="flex items-center gap-3 rounded-control border border-border bg-card px-3 py-2">
+                                <span class="contents" x-show="obStatus('invite') === 'done'" style="display: none"><svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg></span>
+                                <span class="contents" x-show="obStatus('invite') === 'skipped'" style="display: none"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M8 12h8"/>
+</svg></span>
+                                <span class="contents" x-show="obStatus('invite') === 'open'"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+  <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+  <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+  <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+  <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+  <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+  <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+  <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+</svg></span>
+                                <span class="flex-1 text-body text-foreground">Invite teammates</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('invite') === 'done'" style="display: none">Done</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('invite') === 'skipped'" style="display: none">Skipped</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('invite') === 'open'">Not done</span>
+                            </li>
+                                                    <li class="flex items-center gap-3 rounded-control border border-border bg-card px-3 py-2">
+                                <span class="contents" x-show="obStatus('preferences') === 'done'" style="display: none"><svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg></span>
+                                <span class="contents" x-show="obStatus('preferences') === 'skipped'" style="display: none"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M8 12h8"/>
+</svg></span>
+                                <span class="contents" x-show="obStatus('preferences') === 'open'"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+  <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+  <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+  <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+  <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+  <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+  <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+  <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+</svg></span>
+                                <span class="flex-1 text-body text-foreground">Preferences</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('preferences') === 'done'" style="display: none">Done</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('preferences') === 'skipped'" style="display: none">Skipped</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('preferences') === 'open'">Not done</span>
+                            </li>
+                                                    <li class="flex items-center gap-3 rounded-control border border-border bg-card px-3 py-2">
+                                <span class="contents" x-show="obStatus('integration') === 'done'" style="display: none"><svg aria-hidden="true" class="size-4 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg></span>
+                                <span class="contents" x-show="obStatus('integration') === 'skipped'" style="display: none"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M8 12h8"/>
+</svg></span>
+                                <span class="contents" x-show="obStatus('integration') === 'open'"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+  <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+  <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+  <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+  <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+  <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+  <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+  <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+</svg></span>
+                                <span class="flex-1 text-body text-foreground">Connect a tool</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('integration') === 'done'" style="display: none">Done</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('integration') === 'skipped'" style="display: none">Skipped</span>
+                                <span class="text-caption text-muted-foreground" x-show="obStatus('integration') === 'open'">Not done</span>
+                            </li>
+                                            </ul>
+                    <p class="text-caption text-muted-foreground" x-show="obSkippedAny()">You can finish skipped steps from the Get started checklist.</p>
+                </div>
+</div>
+            </div>
+            <div data-slot="alert" data-tone="warning" role="alert"
+        x-show="gated()" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-warning/30 bg-nq-warning-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span class="block text-label text-foreground" x-text="gateTitle()">Finish these steps first</span>
+                <ul class="m-0 flex list-disc flex-col gap-0.5 ps-4">
+                    <template x-for="s in missing()" x-bind:key="s.id">
+                        <li><button type="button" class="text-start underline underline-offset-2" x-on:click="goId(s.id)" x-text="s.title"></button></li>
+                    </template>
+                </ul></div>
+            </div>
+    </div>
+            <div data-slot="alert" data-tone="danger" role="alert"
+        x-show="error" style="display: none" class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border p-3 text-start border-nq-danger/30 bg-nq-danger-soft">
+    <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>    <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                            <div data-slot="alert-description" class="text-body-sm text-foreground"><span x-text="error"></span></div>
+            </div>
+    </div>
+            <footer class="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <button data-slot="button"
+     type="button"                     x-on:click="back()" x-bind:disabled="backOff()" x-bind:data-disabled="backOff() ? &#039;&#039; : null" x-bind:class="first() ? &#039;invisible&#039; : &#039;&#039;" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7"/>
+  <path d="M19 12H5"/>
+</svg>                    Back</button>
+                <div class="flex flex-col-reverse gap-2 sm:flex-row">
+                    <button data-slot="button"
+     type="button"                     x-show="canSkip()" x-on:click="skip()" x-bind:disabled="busy()" x-bind:data-disabled="busy() ? &#039;&#039; : null" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Skip for now</button>
+                    <button data-slot="button"
+     type="button"                     x-show="! last()" x-on:click="next()" x-bind:disabled="nextBlocked()" x-bind:data-disabled="nextBlocked() ? &#039;&#039; : null" x-bind:aria-busy="pending === &#039;next&#039; ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="pending === 'next'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                        Continue
+                        <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     x-show="last()" x-on:click="finish()" x-bind:disabled="finishBlocked()" x-bind:data-disabled="finishBlocked() ? &#039;&#039; : null" x-bind:aria-busy="pending === &#039;finish&#039; ? &#039;true&#039; : null" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        <template x-if="pending === 'finish'"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></template>
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>                        Finish setup</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <div class="contents" x-show="done" style="display: none">
+        <span class="inline-flex size-12 items-center justify-center rounded-full bg-nq-success-soft text-nq-success-text">
+            <svg aria-hidden="true" class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        </span>
+        <h2 x-ref="doneHeading" tabindex="-1" class="text-h2 text-foreground outline-none">You are ready</h2>
+        <p class="text-body text-muted-foreground">Your workspace is set up. Head in and look around.</p>
+        <a data-slot="button"
+     href="/"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Open the dashboard</a>
+    </div>
+</div>
+</div>

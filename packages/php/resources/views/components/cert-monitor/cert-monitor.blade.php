@@ -2,7 +2,7 @@
      Watch TLS certificates so none lapses unnoticed: a table of hosts with issuer, expiry date, auto renew and a days-left figure, soonest expiry first, with check again, renew now and stop monitoring (with a confirm).
      certificates: [['id', 'host', 'issuer', 'validTo' => DateTime | ISO string | unix seconds, 'autoRenew' => false, 'error' => 'set when the last check failed']].
      now: override the clock (DateTime | ISO string | unix seconds; default now). warn-days (30) and critical-days (7): the thresholds for amber and red.
-     add, recheck, renew, remove (all true): which controls to show. Renew now is in every row menu but does nothing for an auto-renewing certificate.
+     add, recheck, renew, remove (all true): which controls to show. Renew now is in the menu of manual (not auto-renewing) certificates only, as in React.
      It is presentational: it fires events on the root with detail { …, wait(promise) } and your handler talks to the server.
        add      detail.host (lower-cased); resolve, or resolve { error } shown above the table; a new certificate may resolve { id, issuer, validTo, autoRenew }
        recheck  detail.id; resolve, or resolve { error }; resolve { validTo, issuer, autoRenew } to update the row
@@ -55,7 +55,7 @@
     ];
     $actions = array_values(array_filter([
         $recheck ? ['id' => 'recheck', 'label' => $t::t('Check again', 'افحص مجددًا'), 'icon' => 'refresh-cw', 'group' => 'run'] : null,
-        $renew ? ['id' => 'renew', 'label' => $t::t('Renew now', 'جدّد الآن'), 'icon' => 'shield-check', 'group' => 'run'] : null,
+        $renew ? ['id' => 'renew', 'label' => $t::t('Renew now', 'جدّد الآن'), 'icon' => 'shield-check', 'group' => 'run', 'visibleWhen' => ['field' => 'renew', 'eq' => $config['labels']['manual']]] : null,
         $remove ? ['id' => 'remove', 'label' => $t::t('Stop monitoring', 'إيقاف المراقبة'), 'icon' => 'trash-2', 'danger' => true, 'group' => 'danger'] : null,
     ]));
     $th = ['warn' => (int) $warnDays, 'critical' => (int) $criticalDays];
