@@ -1,0 +1,148 @@
+<section data-slot="research-run" aria-label="Research run" x-data="nqResearchRun(JSON.parse('{\u0022runId\u0022:\u0022r1\u0022,\u0022question\u0022:\u0022Why did churn fall in Q3?\u0022,\u0022live\u0022:false,\u0022failed\u0022:\u0022The research stopped before it had an answer.\u0022,\u0022defaultQuestion\u0022:\u0022\u0022}'))"
+    class="flex min-w-0 flex-col gap-5">
+    <form class="flex flex-col gap-2" x-on:submit.prevent="ask()">
+        <textarea data-slot="textarea"
+                dir="auto" rows="2" placeholder="What do you want researched?" aria-label="What do you want researched?" x-model="question" x-bind:disabled="busy() ? true : null" x-on:keydown.ctrl.enter.prevent="ask()" x-on:keydown.meta.enter.prevent="ask()" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] py-2 min-h-16 resize-none"></textarea>
+        <div class="flex flex-wrap items-center gap-2">
+                        <button data-slot="button"
+     type="submit"                     x-bind:disabled="blocked() ? true : null" x-bind:aria-busy="busy() ? `true` : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)] ms-auto">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 18h8"/>
+  <path d="M3 22h18"/>
+  <path d="M14 22a7 7 0 1 0 0-14h-1"/>
+  <path d="M9 14h2"/>
+  <path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/>
+  <path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/>
+</svg>                <span x-text="busy() ? 'Researching' : 'Ask'">Ask</span></button>
+        </div>
+        <p role="alert" class="min-h-4 text-caption text-nq-danger-text" x-text="problem"></p>
+    </form>
+            <div data-status="done" class="flex min-w-0 flex-col gap-4">
+                            <article data-slot="research-answer" aria-label="Answer" class="flex flex-col gap-3 p-5 rounded-card border border-border bg-card">
+                    <header class="flex flex-wrap items-center gap-x-3 gap-y-2">
+                        <h3 class="text-label text-foreground">Answer</h3>
+                        <span data-slot="ai-generated-label"     class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text gap-1"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>    AI generated
+    <bdi dir="ltr" class="font-normal opacity-80">claude-sonnet</bdi></span>
+                        <div data-slot="ai-confidence" data-level="high" class="flex items-center gap-2 text-caption text-muted-foreground ms-auto">
+    <span>Confidence</span>
+    <div data-slot="progress" data-tone="success" role="progressbar"     aria-valuemin="0" aria-valuemax="100"  aria-valuenow="82"     aria-valuetext="82%" data-progressing
+    aria-label="Confidence" class="flex flex-col gap-1.5 w-16">
+        <div data-slot="progress-track" data-progressing class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-1">
+        <div data-slot="progress-indicator" data-progressing style="inset-inline-start:0;width:82%"
+            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-nq-success"></div>
+    </div>
+</div>
+    <span class="text-foreground">High <bdi data-slot="num" data-numeric="" class="tabular-nums">82%</bdi>
+</span>
+</div>
+                    </header>
+                                                                <p dir="auto" class="text-body text-nq-fg-body">Churn fell to 2.1% after the onboarding change.<button type="button" data-evidence="e1" aria-label="Show evidence 1"
+                            x-bind:aria-pressed="active === 'e1'" x-on:click="focusEvidence($el.dataset.evidence)"
+                            class="ms-1 inline-grid size-5 -translate-y-0.5 place-items-center rounded-full border border-border bg-secondary align-baseline text-[11px] tabular-nums text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus aria-pressed:border-primary aria-pressed:bg-nq-selected aria-pressed:text-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">1</bdi>
+</button></p>
+                                            <p dir="auto" class="text-body text-nq-fg-body">Renewals also grew, which lifted revenue by 12%.<button type="button" data-evidence="e2" aria-label="Show evidence 2"
+                            x-bind:aria-pressed="active === 'e2'" x-on:click="focusEvidence($el.dataset.evidence)"
+                            class="ms-1 inline-grid size-5 -translate-y-0.5 place-items-center rounded-full border border-border bg-secondary align-baseline text-[11px] tabular-nums text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus aria-pressed:border-primary aria-pressed:bg-nq-selected aria-pressed:text-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">2</bdi>
+</button></p>
+                                                                <p class="text-caption text-muted-foreground">Finished <time data-slot="date-time" datetime="2026-09-29T08:55:00+00:00" dir="auto"  title="Sep 29, 2026"     class="tabular-nums [unicode-bidi:isolate]">5 minutes ago</time>
+</p>
+                                    </article>
+                                    <div class="flex flex-col gap-2">
+                        <div>
+                            <h3 class="text-label text-foreground">Evidence</h3>
+                            <p class="text-caption text-muted-foreground">The passages the answer rests on.</p>
+                        </div>
+                                                                                <ol aria-label="Evidence" class="flex flex-col divide-y divide-border overflow-hidden rounded-card border border-border bg-card">
+                                                                                                        <li data-evidence-id="e1" x-bind:data-active="active === 'e1' ? '' : null" class="flex gap-3 px-4 py-3 transition-colors duration-150 ease-nq data-active:bg-nq-selected">
+                                        <span class="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-secondary text-[11px] tabular-nums text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">1</bdi>
+</span>
+                                        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+                                            <blockquote dir="auto" class="flex gap-2 text-body-sm text-foreground">
+                                                <svg aria-hidden="true" class="mt-0.5 size-3.5 shrink-0 text-muted-foreground rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>
+  <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>
+</svg>                                                <span>Churn fell to 2.1% after the onboarding change.</span>
+                                            </blockquote>
+                                            <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                                                                                                                                                            <span dir="auto" class="truncate text-foreground">Board notes</span>
+                                                                                                                                                                                                        <span>Relevance <bdi data-slot="num" data-numeric="" class="tabular-nums">91%</bdi>
+</span>
+                                                                                            </p>
+                                        </div>
+                                    </li>
+                                                                                                        <li data-evidence-id="e2" x-bind:data-active="active === 'e2' ? '' : null" class="flex gap-3 px-4 py-3 transition-colors duration-150 ease-nq data-active:bg-nq-selected">
+                                        <span class="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-secondary text-[11px] tabular-nums text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">2</bdi>
+</span>
+                                        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+                                            <blockquote dir="auto" class="flex gap-2 text-body-sm text-foreground">
+                                                <svg aria-hidden="true" class="mt-0.5 size-3.5 shrink-0 text-muted-foreground rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>
+  <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>
+</svg>                                                <span>Revenue grew 12% year over year, driven by renewals.</span>
+                                            </blockquote>
+                                            <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                                                                                                                                                            <a href="https://example.com/q3" target="_blank" rel="noopener noreferrer" class="inline-flex min-w-0 items-center gap-1.5 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current">
+                                                            <span dir="auto" class="truncate">Q3 report</span>
+                                                            <bdi dir="ltr" class="shrink-0 text-muted-foreground">example.com</bdi>
+                                                            <span class="sr-only">Open source</span>
+                                                        </a>
+                                                                                                                                                                                                        <span>Relevance <bdi data-slot="num" data-numeric="" class="tabular-nums">78%</bdi>
+</span>
+                                                                                            </p>
+                                        </div>
+                                    </li>
+                                                            </ol>
+                                                    <p class="text-caption text-muted-foreground">Also found</p>                            <ol aria-label="Also found" class="flex flex-col divide-y divide-border overflow-hidden rounded-card border border-border bg-card">
+                                                                                                        <li data-evidence-id="e3" x-bind:data-active="active === 'e3' ? '' : null" class="flex gap-3 px-4 py-3 transition-colors duration-150 ease-nq data-active:bg-nq-selected">
+                                        <span class="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-secondary text-[11px] tabular-nums text-muted-foreground"><bdi data-slot="num" data-numeric="" class="tabular-nums">3</bdi>
+</span>
+                                        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+                                            <blockquote dir="auto" class="flex gap-2 text-body-sm text-foreground">
+                                                <svg aria-hidden="true" class="mt-0.5 size-3.5 shrink-0 text-muted-foreground rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>
+  <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>
+</svg>                                                <span>Support tickets stayed flat.</span>
+                                            </blockquote>
+                                            <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                                                                                                                                                            <a href="https://example.com/q3" target="_blank" rel="noopener noreferrer" class="inline-flex min-w-0 items-center gap-1.5 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current">
+                                                            <span dir="auto" class="truncate">Q3 report</span>
+                                                            <bdi dir="ltr" class="shrink-0 text-muted-foreground">example.com</bdi>
+                                                            <span class="sr-only">Open source</span>
+                                                        </a>
+                                                                                                                                                                                                        <span>Relevance <bdi data-slot="num" data-numeric="" class="tabular-nums">40%</bdi>
+</span>
+                                                                                            </p>
+                                        </div>
+                                    </li>
+                                                            </ol>
+                                            </div>
+                                    <div data-slot="copilot-sources" class="flex flex-col gap-1.5">
+    <span class="text-caption text-muted-foreground">Sources</span>
+    <ol class="flex flex-wrap gap-2">
+                                <li class="min-w-0">
+                <span  title="Churn fell to 2.1%."  class="flex max-w-56 items-center gap-2 rounded-control border border-border bg-card px-2 py-1.5">                    <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+  <path d="M10 9H8"/>
+  <path d="M16 13H8"/>
+  <path d="M16 17H8"/>
+</svg>                    <span class="grid size-4 shrink-0 place-items-center rounded-full bg-secondary text-[10px] tabular-nums text-muted-foreground">1</span>
+                    <span class="flex min-w-0 flex-col">
+                        <span dir="auto" class="truncate text-caption text-foreground">Board notes</span>
+                                            </span>
+                </span>            </li>
+                                <li class="min-w-0">
+                <a href="https://example.com/q3" target="_blank" rel="noopener noreferrer"  class="flex max-w-56 items-center gap-2 rounded-control border border-border bg-card px-2 py-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">                                        <span class="grid size-4 shrink-0 place-items-center rounded-full bg-secondary text-[10px] tabular-nums text-muted-foreground">2</span>
+                    <span class="flex min-w-0 flex-col">
+                        <span dir="auto" class="truncate text-caption text-foreground">Q3 report</span>
+                        <span dir="ltr" class="truncate text-[11px] text-muted-foreground">example.com</span>                    </span>
+                </a>            </li>
+            </ol>
+</div>
+                                    </div>
+    </section>

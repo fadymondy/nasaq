@@ -1,0 +1,529 @@
+<div>
+    <header data-slot="store-header" x-data class="sticky top-0 z-40 border-b border-border bg-background">
+    <div data-slot="store-announcement-bar" role="region" aria-roledescription="carousel" aria-label="Announcements"
+        x-data="nqStoreAnnouncements(JSON.parse('{\u0022items\u0022:[{\u0022id\u0022:\u0022ship\u0022,\u0022content\u0022:\u0022Free shipping on orders over $50\u0022},{\u0022id\u0022:\u0022returns\u0022,\u0022content\u0022:\u002230-day returns on everything\u0022,\u0022href\u0022:\u0022\\\/returns\u0022}],\u0022interval\u0022:5000,\u0022dismissible\u0022:true,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022announcementOf\u0022:\u0022{n} of {total}\u0022}}'))" x-show="visible" x-on:mouseenter="hold = true" x-on:mouseleave="hold = false" x-on:focusin="hold = true" x-on:focusout="hold = false"
+        class="flex min-h-9 items-center gap-2 bg-primary px-3 text-body-sm text-primary-foreground">
+        <button data-slot="button"
+     type="button"                     aria-label="Previous announcement" x-show="many" x-on:click="step(-1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 size-control-sm p-0 text-current hover:bg-white/15">
+        <svg class="size-4 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 18-6-6 6-6"/>
+</svg></button>
+        <span class="size-control-sm shrink-0" aria-hidden="true" x-show="!many"  style="display: none" ></span>
+        <p x-bind:aria-live="manual ? 'polite' : 'off'" aria-atomic="true" class="min-w-0 flex-1 truncate text-center">
+            <a x-show="current.href" x-bind:href="current.href" x-text="current.content" class="rounded-sm underline-offset-4 outline-none hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+                 style="display: none" >Free shipping on orders over $50</a>
+            <span x-show="!current.href" x-text="current.href ? '' : current.content" >Free shipping on orders over $50</span>
+            <span class="sr-only" x-show="many" x-text="many ? ' (' + position + ')' : ''" ></span>
+        </p>
+        <button data-slot="button"
+     type="button"                     aria-label="Next announcement" x-show="many" x-on:click="step(1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 size-control-sm p-0 text-current hover:bg-white/15">
+        <svg class="size-4 rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg></button>
+                    <button data-slot="button"
+     type="button"                     aria-label="Dismiss announcement" x-on:click="dismiss()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 size-control-sm p-0 text-current hover:bg-white/15">
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+            </div>
+    <div class="mx-auto flex h-16 w-full max-w-7xl items-center gap-2 px-3 sm:gap-4 sm:px-6">
+                    <div data-slot="sheet" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" class="contents lg:hidden">
+    <button data-slot="sheet-trigger"
+     type="button"                     aria-haspopup="dialog" x-on:click="show()" :aria-expanded="open" aria-label="Menu" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0 lg:hidden">
+        <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 5h16"/>
+  <path d="M4 12h16"/>
+  <path d="M4 19h16"/>
+</svg></button>
+                <template x-teleport="body">
+    <div data-slot="sheet-portal">
+        <div data-slot="sheet-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 transition-opacity duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 dark:bg-nq-bg/60"></div>
+        <div data-slot="sheet-content" data-side="start" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed z-50 flex flex-col bg-popover text-popover-foreground outline-none shadow-floating transition-[translate,opacity] duration-200 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 inset-y-0 start-0 h-dvh border-e border-border data-starting-style:-translate-x-8 data-ending-style:-translate-x-8 rtl:data-starting-style:translate-x-8 rtl:data-ending-style:translate-x-8 w-[min(22rem,100vw)]">
+            <div data-slot="sheet-header" class="flex flex-col gap-1 border-b border-border px-4 py-3.5 pe-12"><h2 data-slot="sheet-title" :id="$id('nq-dialog', 'title')" class="text-label text-foreground">Menu</h2>
+                        <p data-slot="sheet-description" :id="$id('nq-dialog', 'description')" class="text-caption text-muted-foreground sr-only">Mobile navigation</p></div>
+                    <div data-slot="sheet-body" class="min-h-0 flex-1 overflow-y-auto overscroll-contain"><nav aria-label="Mobile navigation">
+                            <div data-slot="accordion" x-data="nqAccordion([], false)" x-modelable="value" x-id="['nq-accordion']"
+    x-on:keydown="onKeydown($event)"
+        class="flex w-full flex-col border-border rounded-none border-0 bg-transparent">
+    <div data-slot="accordion-item" x-data="{ v: 'women' }"
+    :data-open="isOpen(v) ? '' : undefined" :data-closed="isOpen(v) ? undefined : ''"
+     data-closed         class="border-b border-border first:rounded-t-card last:rounded-b-card last:border-b-0">
+    <h3 data-slot="accordion-header" class="m-0 flex">
+    <button type="button" data-slot="accordion-trigger" x-on:click="toggle(v)"
+        :id="$id('nq-accordion', 'trigger-' + v)" :aria-controls="$id('nq-accordion', 'panel-' + v)"
+        :aria-expanded="isOpen(v)" :data-panel-open="isOpen(v) ? '' : undefined"
+        aria-expanded="false"                 class="group flex w-full items-center justify-between gap-3 px-4 py-3 text-start text-label text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50">
+        Women
+        <svg data-slot="icon" aria-hidden="true" class="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-nq motion-reduce:transition-none group-data-panel-open:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg>    </button>
+</h3>
+                                            <div data-slot="accordion-panel" role="region" x-nq-presence="isOpen(v)"
+    :id="$id('nq-accordion', 'panel-' + v)" :aria-labelledby="$id('nq-accordion', 'trigger-' + v)"
+     data-closed style="display:none"     class="h-(--accordion-panel-height) overflow-hidden text-body-sm text-muted-foreground transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0">
+    <div class="px-4 pb-4"><div class="flex flex-col gap-3 pb-2">
+                                                    <a href="/women" class="text-body-sm font-medium text-foreground underline underline-offset-4">Shop all</a>                                                                                                            <div class="flex flex-col gap-1">
+                                                            <p class="text-caption font-medium text-muted-foreground">Clothing</p>
+                                                            <ul class="m-0 flex list-none flex-col p-0">
+                                                                                                                                    <li>
+                                                                        <a href="/women/tops" class="flex items-center gap-2 rounded-control py-1.5 text-body-sm text-foreground no-underline hover:underline">
+                                                                            Tops
+                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text">New</span>
+                                                                        </a>
+                                                                    </li>
+                                                                                                                                    <li>
+                                                                        <a href="/women/dresses" class="flex items-center gap-2 rounded-control py-1.5 text-body-sm text-foreground no-underline hover:underline">
+                                                                            Dresses
+                                                                                                                                                    </a>
+                                                                    </li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                            <div class="flex flex-col gap-1">
+                                                            <p class="text-caption font-medium text-muted-foreground">Accessories</p>
+                                                            <ul class="m-0 flex list-none flex-col p-0">
+                                                                                                                                    <li>
+                                                                        <a href="/women/belts" class="flex items-center gap-2 rounded-control py-1.5 text-body-sm text-foreground no-underline hover:underline">
+                                                                            Belts
+                                                                                                                                                    </a>
+                                                                    </li>
+                                                                                                                                    <li>
+                                                                        <a href="/women/scarves" class="flex items-center gap-2 rounded-control py-1.5 text-body-sm text-foreground no-underline hover:underline">
+                                                                            Scarves
+                                                                                                                                                    </a>
+                                                                    </li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </div></div>
+</div>
+</div>
+                                                                                                                                                <a href="/men" class="flex h-nav-row items-center border-b border-border px-4 text-label no-underline text-foreground">Men</a>
+                                                                                                                                                <a href="/sale" class="flex h-nav-row items-center border-b border-border px-4 text-label no-underline text-nq-danger-text">Sale</a>
+</div>
+                        </nav></div>
+                            <button type="button" data-slot="sheet-close" x-on:click="close()" aria-label="Close menu"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+                <a href="/" class="shrink-0 rounded-sm text-h3 font-semibold text-foreground no-underline outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">Nasaq Goods</a>
+        <div class="hidden min-w-0 lg:block">
+            <nav aria-label="Main navigation" data-slot="store-mega-menu" class="">
+    <nav data-slot="navigation-menu" x-data="nqNavigationMenu(null)" x-bind="root" data-align="start"
+    class="relative flex w-max max-w-full">
+    <ul data-slot="navigation-menu-list" x-bind="list" class="relative m-0 flex list-none items-center gap-0.5 p-0"><li data-slot="navigation-menu-item" class="relative"><button data-slot="navigation-menu-trigger" x-bind="trigger('women')" aria-expanded="false"
+    class="min-h-[var(--nq-touch-min,0px)] select-none justify-center gap-1.5 no-underline outline-none transition-colors duration-150 ease-nq data-pressed:bg-nq-selected focus-visible:outline-2 focus-visible:outline-nq-focus inline-flex h-control items-center rounded-control px-3 text-label text-foreground no-underline outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-popup-open:bg-nq-hover">
+    Women
+    <span x-bind:data-popup-open="value === 'women' ? '' : undefined"
+        class="inline-flex transition-transform duration-200 ease-nq data-popup-open:rotate-180 motion-reduce:transition-none"><svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></span>
+</button>
+                        <div data-slot="navigation-menu-content" x-bind="content('women')" style="display: none"
+    class="h-full w-max min-w-64 max-w-[min(100vw-2rem,52rem)] p-3 transition-[opacity,translate] duration-300 ease-nq motion-reduce:transition-none data-starting-style:opacity-0 data-ending-style:opacity-0 data-starting-style:data-[activation-direction=left]:-translate-x-1/2 data-starting-style:data-[activation-direction=right]:translate-x-1/2 data-ending-style:data-[activation-direction=left]:translate-x-1/2 data-ending-style:data-[activation-direction=right]:-translate-x-1/2"><div class="flex min-w-[34rem] max-w-[56rem] gap-6 p-5">
+                                <div class="grid flex-1 gap-x-8 gap-y-4" style="grid-template-columns: repeat(2, minmax(9rem, 1fr))">
+                                                                            <div class="flex min-w-0 flex-col gap-1">
+                                            <p data-slot="navigation-menu-label" class="m-0 pb-1 text-caption font-medium text-muted-foreground px-0">Clothing</p>
+                                            <ul class="m-0 flex list-none flex-col p-0">
+                                                                                                    <li>
+                                                        <a data-slot="navigation-menu-link" href="/women/tops"     class="h-control min-h-[var(--nq-touch-min,0px)] select-none justify-center no-underline outline-none transition-colors duration-150 ease-nq data-popup-open:bg-nq-selected data-pressed:bg-nq-selected focus-visible:outline-2 focus-visible:outline-nq-focus data-active:bg-nq-selected flex items-center gap-2 rounded-control px-2 py-1.5 text-body-sm text-foreground no-underline outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Tops
+                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text">New</span></a>
+                                                    </li>
+                                                                                                    <li>
+                                                        <a data-slot="navigation-menu-link" href="/women/dresses"     class="h-control min-h-[var(--nq-touch-min,0px)] select-none justify-center no-underline outline-none transition-colors duration-150 ease-nq data-popup-open:bg-nq-selected data-pressed:bg-nq-selected focus-visible:outline-2 focus-visible:outline-nq-focus data-active:bg-nq-selected flex items-center gap-2 rounded-control px-2 py-1.5 text-body-sm text-foreground no-underline outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Dresses</a>
+                                                    </li>
+                                                                                                                                                    <li><a data-slot="navigation-menu-link" href="/women/clothing"     class="h-control min-h-[var(--nq-touch-min,0px)] select-none items-center justify-center gap-1.5 no-underline outline-none transition-colors duration-150 ease-nq data-popup-open:bg-nq-selected data-pressed:bg-nq-selected focus-visible:outline-2 focus-visible:outline-nq-focus data-active:bg-nq-selected mt-1 inline-flex rounded-control px-2 py-1.5 text-body-sm font-medium text-foreground underline underline-offset-4 outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">View all clothing</a>
+</li>
+                                                                                            </ul>
+                                        </div>
+                                                                            <div class="flex min-w-0 flex-col gap-1">
+                                            <p data-slot="navigation-menu-label" class="m-0 pb-1 text-caption font-medium text-muted-foreground px-0">Accessories</p>
+                                            <ul class="m-0 flex list-none flex-col p-0">
+                                                                                                    <li>
+                                                        <a data-slot="navigation-menu-link" href="/women/belts"     class="h-control min-h-[var(--nq-touch-min,0px)] select-none justify-center no-underline outline-none transition-colors duration-150 ease-nq data-popup-open:bg-nq-selected data-pressed:bg-nq-selected focus-visible:outline-2 focus-visible:outline-nq-focus data-active:bg-nq-selected flex items-center gap-2 rounded-control px-2 py-1.5 text-body-sm text-foreground no-underline outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Belts</a>
+                                                    </li>
+                                                                                                    <li>
+                                                        <a data-slot="navigation-menu-link" href="/women/scarves"     class="h-control min-h-[var(--nq-touch-min,0px)] select-none justify-center no-underline outline-none transition-colors duration-150 ease-nq data-popup-open:bg-nq-selected data-pressed:bg-nq-selected focus-visible:outline-2 focus-visible:outline-nq-focus data-active:bg-nq-selected flex items-center gap-2 rounded-control px-2 py-1.5 text-body-sm text-foreground no-underline outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">Scarves</a>
+                                                    </li>
+                                                                                                                                            </ul>
+                                        </div>
+                                                                    </div>
+                                                                    <a data-slot="navigation-menu-featured" href="/spring"
+    class="flex min-w-56 flex-col items-start gap-1.5 rounded-card border border-border bg-nq-surface-soft text-start no-underline outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus w-56 shrink-0 justify-start p-0"><span class="aspect-[4/3] w-full overflow-hidden rounded-t-card bg-secondary"><div class="contents" x-data="{ failed: false }" >
+    <div role="img"  aria-label=""  data-slot="store-image-placeholder"
+                class="flex size-full items-center justify-center bg-secondary text-muted-foreground">
+        <svg aria-hidden="true" class="size-6 opacity-60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="2" x2="22" y1="2" y2="22"/>
+  <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/>
+  <line x1="13.5" x2="6" y1="13.5" y2="21"/>
+  <line x1="18" x2="21" y1="12" y2="15"/>
+  <path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"/>
+  <path d="M21 15V5a2 2 0 0 0-2-2H9"/>
+</svg>    </div>
+    </div>
+</span>
+                                        <span class="flex flex-col gap-0.5 p-3">
+                                            <span class="text-label text-foreground">Spring edit</span>
+                                            <span class="text-body-sm text-muted-foreground">Light layers for warmer days.</span>                                        </span></a>
+                                                            </div></div></li>
+                                                                                <li data-slot="navigation-menu-item" class="relative"><a data-slot="navigation-menu-link" href="/men"     class="min-h-[var(--nq-touch-min,0px)] select-none justify-center gap-1.5 no-underline outline-none transition-colors duration-150 ease-nq data-pressed:bg-nq-selected focus-visible:outline-2 focus-visible:outline-nq-focus data-active:bg-nq-selected inline-flex h-control items-center rounded-control px-3 text-label text-foreground no-underline outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-popup-open:bg-nq-hover">Men</a></li>
+                                                                                <li data-slot="navigation-menu-item" class="relative"><a data-slot="navigation-menu-link" href="/sale"     class="min-h-[var(--nq-touch-min,0px)] select-none justify-center gap-1.5 no-underline outline-none transition-colors duration-150 ease-nq data-pressed:bg-nq-selected focus-visible:outline-2 focus-visible:outline-nq-focus data-active:bg-nq-selected inline-flex h-control items-center rounded-control px-3 text-label no-underline outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-popup-open:bg-nq-hover text-nq-danger-text">Sale</a></li></ul>
+    <div data-slot="navigation-menu-positioner" data-side="bottom" data-align="start" style="display: none; margin-top: 6px; --available-width: calc(100vw - 2rem)"
+        class="absolute left-0 top-full z-50 h-[var(--positioner-height)] w-[var(--positioner-width)] max-w-[var(--available-width)] transition-[inset] duration-300 ease-nq motion-reduce:transition-none data-instant:transition-none before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-['']">
+        <div data-slot="navigation-menu-popup" style="--transform-origin: top"
+            class="relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden rounded-floating border border-border bg-popover text-popover-foreground shadow-floating outline-none transition-[opacity,scale,width,height] duration-300 ease-nq motion-reduce:transition-none data-starting-style:scale-95 data-starting-style:opacity-0 data-ending-style:scale-95 data-ending-style:opacity-0 data-ending-style:duration-150">
+            <div data-slot="navigation-menu-viewport" class="relative h-full w-full overflow-hidden"></div>
+        </div>
+    </div>
+</nav>
+</nav>
+        </div>
+                    <div data-slot="store-search" x-data="nqStoreSearch(JSON.parse('{\u0022products\u0022:[{\u0022id\u0022:\u0022tee\u0022,\u0022name\u0022:\u0022Everyday tee\u0022,\u0022brand\u0022:\u0022Nasaq Goods\u0022,\u0022category\u0022:\u0022tops\u0022,\u0022images\u0022:[],\u0022options\u0022:[],\u0022variants\u0022:[{\u0022id\u0022:\u0022tee-1\u0022,\u0022options\u0022:{},\u0022price\u0022:2900,\u0022stock\u0022:8}]},{\u0022id\u0022:\u0022hoodie\u0022,\u0022name\u0022:\u0022Zip hoodie\u0022,\u0022brand\u0022:\u0022Nasaq Goods\u0022,\u0022category\u0022:\u0022tops\u0022,\u0022images\u0022:[],\u0022options\u0022:[],\u0022variants\u0022:[{\u0022id\u0022:\u0022hoodie-1\u0022,\u0022options\u0022:{},\u0022price\u0022:6900,\u0022stock\u0022:3}]},{\u0022id\u0022:\u0022belt\u0022,\u0022name\u0022:\u0022Leather belt\u0022,\u0022brand\u0022:\u0022Atlas\u0022,\u0022category\u0022:\u0022accessories\u0022,\u0022images\u0022:[],\u0022options\u0022:[],\u0022variants\u0022:[{\u0022id\u0022:\u0022belt-1\u0022,\u0022options\u0022:{},\u0022price\u0022:3400,\u0022stock\u0022:9}]}],\u0022tree\u0022:[{\u0022id\u0022:\u0022tops\u0022,\u0022label\u0022:\u0022Tops\u0022},{\u0022id\u0022:\u0022accessories\u0022,\u0022label\u0022:\u0022Accessories\u0022}],\u0022currency\u0022:\u0022USD\u0022,\u0022exponent\u0022:2,\u0022recent\u0022:[],\u0022popular\u0022:[\u0022tee\u0022,\u0022hoodie\u0022],\u0022query\u0022:\u0022\u0022,\u0022loading\u0022:false,\u0022hrefs\u0022:{},\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022announcements\u0022:\u0022Announcements\u0022,\u0022dismiss\u0022:\u0022Dismiss announcement\u0022,\u0022previousAnnouncement\u0022:\u0022Previous announcement\u0022,\u0022nextAnnouncement\u0022:\u0022Next announcement\u0022,\u0022announcementOf\u0022:\u0022{n} of {total}\u0022,\u0022skipToContent\u0022:\u0022Skip to content\u0022,\u0022menu\u0022:\u0022Menu\u0022,\u0022closeMenu\u0022:\u0022Close menu\u0022,\u0022mainNavigation\u0022:\u0022Main navigation\u0022,\u0022mobileNavigation\u0022:\u0022Mobile navigation\u0022,\u0022cart\u0022:\u0022Cart\u0022,\u0022cartWithCount\u0022:\u0022Cart, {n}\u0022,\u0022wishlist\u0022:\u0022Wishlist\u0022,\u0022wishlistWithCount\u0022:\u0022Wishlist, {n}\u0022,\u0022account\u0022:\u0022Account\u0022,\u0022viewAll\u0022:\u0022View all {name}\u0022,\u0022shopAll\u0022:\u0022Shop all\u0022,\u0022search\u0022:\u0022Search\u0022,\u0022searchPlaceholder\u0022:\u0022Search products, brands and categories\u0022,\u0022searchLabel\u0022:\u0022Search the store\u0022,\u0022clearSearch\u0022:\u0022Clear search\u0022,\u0022suggestions\u0022:\u0022Search suggestions\u0022,\u0022productsGroup\u0022:\u0022Products\u0022,\u0022categoriesGroup\u0022:\u0022Categories\u0022,\u0022recentGroup\u0022:\u0022Recent searches\u0022,\u0022popularGroup\u0022:\u0022Popular searches\u0022,\u0022clearRecent\u0022:\u0022Clear\u0022,\u0022searchFor\u0022:\u0022Search for \\u201c{query}\\u201d\u0022,\u0022noSuggestions\u0022:\u0022No suggestions for \\u201c{query}\\u201d. Press Enter to search anyway.\u0022,\u0022suggestionsCount\u0022:\u0022{n} suggestions available\u0022,\u0022inCategory\u0022:\u0022in {category}\u0022,\u0022footer\u0022:\u0022Site footer\u0022,\u0022newsletterTitle\u0022:\u0022Get offers before anyone else\u0022,\u0022newsletterHint\u0022:\u0022One email a week. Unsubscribe any time.\u0022,\u0022email\u0022:\u0022Email address\u0022,\u0022emailPlaceholder\u0022:\u0022you@example.com\u0022,\u0022subscribe\u0022:\u0022Subscribe\u0022,\u0022subscribed\u0022:\u0022You are subscribed. Check your inbox to confirm.\u0022,\u0022invalidEmail\u0022:\u0022Enter a valid email address.\u0022,\u0022subscribeFailed\u0022:\u0022We could not subscribe you. Try again.\u0022,\u0022followUs\u0022:\u0022Follow us\u0022,\u0022paymentMethods\u0022:\u0022We accept\u0022,\u0022language\u0022:\u0022Language\u0022,\u0022currency\u0022:\u0022Currency\u0022,\u0022rights\u0022:\u0022All rights reserved.\u0022}}'))" x-on:focusout="onFocusout($event)"
+    class="relative w-full mx-auto hidden max-w-xl flex-1 md:block">
+    <form role="search" aria-label="Search the store" x-on:submit.prevent="submit()">
+        <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><div data-slot="input-group-addon" data-align="start"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-first ps-3 pe-1"><span x-show="loading" class="contents"  style="display: none" ><svg aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                <span x-show="!loading" class="contents" ><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg></span></div>
+            <input data-slot="input-group-input"     x-ref="input" type="search" role="combobox" autocomplete="off" enterkeyhint="search" aria-autocomplete="list" aria-haspopup="listbox" aria-label="Search the store" placeholder="Search products, brands and categories" x-model="query" x-bind:aria-expanded="showList" x-bind:aria-controls="listId" x-bind:aria-activedescendant="activeId" x-on:input="onInput()" x-on:focus="open = true" x-on:click="open = true" x-on:keydown="onKeydown($event)" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] [&::-webkit-search-cancel-button]:hidden" />
+            <div data-slot="input-group-addon" data-align="end"
+    x-show="query" style="display: none" class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-3"><button type="button" aria-label="Clear search" x-on:click="clear()"
+                    class="inline-flex size-6 items-center justify-center rounded-full outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button></div></div>
+    </form>
+    <p role="status" aria-live="polite" class="sr-only" x-text="liveText"></p>
+    <div data-slot="store-search-popup" x-show="showList" style="display: none" x-on:mousedown.prevent
+        class="absolute inset-x-0 top-full z-40 mt-1.5 max-h-[min(28rem,70dvh)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating">
+        <ul role="listbox" aria-label="Search suggestions" x-bind:id="listId" class="m-0 flex list-none flex-col p-0">
+            <template x-for="g in groups" x-bind:key="g.kind">
+                <li role="presentation" class="contents">
+                    <ul role="presentation" class="m-0 flex list-none flex-col p-0">
+                        <li role="presentation" class="flex items-center justify-between px-2.5 pt-2 pb-1 text-caption font-medium text-muted-foreground">
+                            <span x-text="g.title"></span>
+                            <button type="button" x-show="g.kind === 'recent' ? !q : false" style="display: none" x-on:click="clearRecent()"
+                                class="rounded-sm text-caption outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">Clear</button>
+                        </li>
+                        <template x-for="r in g.rows" x-bind:key="r.key">
+                            <li role="option" x-bind:id="uid + '-opt-' + r.i" x-bind:aria-selected="String(r.i === active)" x-bind:data-active="r.i === active ? '' : null"
+                                x-on:mousemove="active = r.i" x-on:click.prevent="choose(r.i)"
+                                x-bind:class="r.i === active ? 'bg-nq-selected' : ''"
+                                class="flex cursor-pointer items-center gap-3 rounded-control px-2.5 py-1.5 text-body-sm">
+                                <template x-if="r.hasProduct">
+                                    <span class="contents">
+                                        <span class="size-10 shrink-0 overflow-hidden rounded-control bg-secondary"><div class="contents" x-data="{ failed: false }"  x-effect="r.image; failed = false" >
+    <div role="img"  x-bind:aria-label="&#039;&#039;"  data-slot="store-image-placeholder"
+         x-show="!(r.image) || failed" style="display: none"         class="flex size-full items-center justify-center bg-secondary text-muted-foreground">
+        <svg aria-hidden="true" class="size-6 opacity-60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="2" x2="22" y1="2" y2="22"/>
+  <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/>
+  <line x1="13.5" x2="6" y1="13.5" y2="21"/>
+  <line x1="18" x2="21" y1="12" y2="15"/>
+  <path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"/>
+  <path d="M21 15V5a2 2 0 0 0-2-2H9"/>
+</svg>    </div>
+            <img  x-bind:src="r.image" x-bind:alt="&#039;&#039;" x-show="(r.image) && !failed"                          loading="lazy" decoding="async" data-slot="store-image" x-on:error="failed = true"
+            class="size-full object-cover">
+    </div>
+</span>
+                                        <span class="flex min-w-0 flex-1 flex-col">
+                                            <span class="truncate text-foreground"><template x-for="s in r.segments"><span x-text="s.text" x-bind:class="s.match ? 'font-semibold text-foreground' : ''"></span></template></span>
+                                            <span x-show="r.brand" x-text="r.brand" class="truncate text-caption text-muted-foreground"></span>
+                                        </span>
+                                        <bdi x-show="r.priceText" x-text="r.priceText" class="shrink-0 text-body-sm font-medium text-foreground tabular-nums"></bdi>
+                                    </span>
+                                </template>
+                                <template x-if="!r.hasProduct">
+                                    <span class="contents">
+                                        <span aria-hidden="true" class="inline-flex size-6 shrink-0 items-center justify-center text-muted-foreground">
+                                            <span x-show="r.kind === 'recent'" class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg></span>
+                                            <span x-show="r.kind === 'popular'" class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg></span>
+                                            <span x-show="r.kind === 'category'" class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg></span>
+                                        </span>
+                                        <span class="min-w-0 flex-1 truncate"><template x-for="s in r.segments"><span x-text="s.text" x-bind:class="s.match ? 'font-semibold text-foreground' : ''"></span></template></span>
+                                        <span x-show="r.note" x-text="r.note" class="truncate text-caption text-muted-foreground"></span>
+                                    </span>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                </li>
+            </template>
+            <template x-if="submitRow">
+                <li role="option" x-bind:id="uid + '-opt-' + submitRow.i" x-bind:aria-selected="String(submitRow.i === active)" x-on:mousemove="active = submitRow.i" x-on:click="run(query)"
+                    x-bind:class="submitRow.i === active ? 'bg-nq-selected' : ''"
+                    class="mt-1 flex cursor-pointer items-center gap-2 rounded-control border-t border-border px-2.5 py-2 text-body-sm">
+                    <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                    <bdi x-text="submitRow.label"></bdi>
+                </li>
+            </template>
+            <li x-show="noSuggestions" style="display: none" role="presentation" class="px-2.5 py-2 text-body-sm text-muted-foreground" x-text="noSuggestionsText"></li>
+        </ul>
+    </div>
+</div>
+                <div class="ms-auto flex shrink-0 items-center gap-0.5 md:ms-0">
+                            <button data-slot="button"
+     type="button"                     aria-label="Wishlist, 1" x-on:click="$dispatch(&#039;nq-store-wishlist-click&#039;)" class="shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0 relative hidden sm:inline-flex">
+        <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+</svg>                    <span aria-hidden="true" class="absolute -end-1 -top-1 inline-flex min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] leading-4 font-semibold text-primary-foreground tabular-nums">1</span></button>
+                                        <button data-slot="button"
+     type="button"                     aria-label="Account" x-on:click="$dispatch(&#039;nq-store-account-click&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0">
+        <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+  <circle cx="12" cy="7" r="4"/>
+</svg></button>
+                                        <button data-slot="button"
+     type="button"                     aria-label="Cart, 2" x-on:click="$dispatch(&#039;nq-store-cart-click&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0 relative">
+        <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 10a4 4 0 0 1-8 0"/>
+  <path d="M3.103 6.034h17.794"/>
+  <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
+</svg>                    <span aria-hidden="true" class="absolute -end-1 -top-1 inline-flex min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] leading-4 font-semibold text-primary-foreground tabular-nums">2</span></button>
+                    </div>
+    </div>
+            <div class="px-3 pb-3 md:hidden">
+            <div data-slot="store-search" x-data="nqStoreSearch(JSON.parse('{\u0022products\u0022:[{\u0022id\u0022:\u0022tee\u0022,\u0022name\u0022:\u0022Everyday tee\u0022,\u0022brand\u0022:\u0022Nasaq Goods\u0022,\u0022category\u0022:\u0022tops\u0022,\u0022images\u0022:[],\u0022options\u0022:[],\u0022variants\u0022:[{\u0022id\u0022:\u0022tee-1\u0022,\u0022options\u0022:{},\u0022price\u0022:2900,\u0022stock\u0022:8}]},{\u0022id\u0022:\u0022hoodie\u0022,\u0022name\u0022:\u0022Zip hoodie\u0022,\u0022brand\u0022:\u0022Nasaq Goods\u0022,\u0022category\u0022:\u0022tops\u0022,\u0022images\u0022:[],\u0022options\u0022:[],\u0022variants\u0022:[{\u0022id\u0022:\u0022hoodie-1\u0022,\u0022options\u0022:{},\u0022price\u0022:6900,\u0022stock\u0022:3}]},{\u0022id\u0022:\u0022belt\u0022,\u0022name\u0022:\u0022Leather belt\u0022,\u0022brand\u0022:\u0022Atlas\u0022,\u0022category\u0022:\u0022accessories\u0022,\u0022images\u0022:[],\u0022options\u0022:[],\u0022variants\u0022:[{\u0022id\u0022:\u0022belt-1\u0022,\u0022options\u0022:{},\u0022price\u0022:3400,\u0022stock\u0022:9}]}],\u0022tree\u0022:[{\u0022id\u0022:\u0022tops\u0022,\u0022label\u0022:\u0022Tops\u0022},{\u0022id\u0022:\u0022accessories\u0022,\u0022label\u0022:\u0022Accessories\u0022}],\u0022currency\u0022:\u0022USD\u0022,\u0022exponent\u0022:2,\u0022recent\u0022:[],\u0022popular\u0022:[\u0022tee\u0022,\u0022hoodie\u0022],\u0022query\u0022:\u0022\u0022,\u0022loading\u0022:false,\u0022hrefs\u0022:{},\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022announcements\u0022:\u0022Announcements\u0022,\u0022dismiss\u0022:\u0022Dismiss announcement\u0022,\u0022previousAnnouncement\u0022:\u0022Previous announcement\u0022,\u0022nextAnnouncement\u0022:\u0022Next announcement\u0022,\u0022announcementOf\u0022:\u0022{n} of {total}\u0022,\u0022skipToContent\u0022:\u0022Skip to content\u0022,\u0022menu\u0022:\u0022Menu\u0022,\u0022closeMenu\u0022:\u0022Close menu\u0022,\u0022mainNavigation\u0022:\u0022Main navigation\u0022,\u0022mobileNavigation\u0022:\u0022Mobile navigation\u0022,\u0022cart\u0022:\u0022Cart\u0022,\u0022cartWithCount\u0022:\u0022Cart, {n}\u0022,\u0022wishlist\u0022:\u0022Wishlist\u0022,\u0022wishlistWithCount\u0022:\u0022Wishlist, {n}\u0022,\u0022account\u0022:\u0022Account\u0022,\u0022viewAll\u0022:\u0022View all {name}\u0022,\u0022shopAll\u0022:\u0022Shop all\u0022,\u0022search\u0022:\u0022Search\u0022,\u0022searchPlaceholder\u0022:\u0022Search products, brands and categories\u0022,\u0022searchLabel\u0022:\u0022Search the store\u0022,\u0022clearSearch\u0022:\u0022Clear search\u0022,\u0022suggestions\u0022:\u0022Search suggestions\u0022,\u0022productsGroup\u0022:\u0022Products\u0022,\u0022categoriesGroup\u0022:\u0022Categories\u0022,\u0022recentGroup\u0022:\u0022Recent searches\u0022,\u0022popularGroup\u0022:\u0022Popular searches\u0022,\u0022clearRecent\u0022:\u0022Clear\u0022,\u0022searchFor\u0022:\u0022Search for \\u201c{query}\\u201d\u0022,\u0022noSuggestions\u0022:\u0022No suggestions for \\u201c{query}\\u201d. Press Enter to search anyway.\u0022,\u0022suggestionsCount\u0022:\u0022{n} suggestions available\u0022,\u0022inCategory\u0022:\u0022in {category}\u0022,\u0022footer\u0022:\u0022Site footer\u0022,\u0022newsletterTitle\u0022:\u0022Get offers before anyone else\u0022,\u0022newsletterHint\u0022:\u0022One email a week. Unsubscribe any time.\u0022,\u0022email\u0022:\u0022Email address\u0022,\u0022emailPlaceholder\u0022:\u0022you@example.com\u0022,\u0022subscribe\u0022:\u0022Subscribe\u0022,\u0022subscribed\u0022:\u0022You are subscribed. Check your inbox to confirm.\u0022,\u0022invalidEmail\u0022:\u0022Enter a valid email address.\u0022,\u0022subscribeFailed\u0022:\u0022We could not subscribe you. Try again.\u0022,\u0022followUs\u0022:\u0022Follow us\u0022,\u0022paymentMethods\u0022:\u0022We accept\u0022,\u0022language\u0022:\u0022Language\u0022,\u0022currency\u0022:\u0022Currency\u0022,\u0022rights\u0022:\u0022All rights reserved.\u0022}}'))" x-on:focusout="onFocusout($event)"
+    class="relative w-full">
+    <form role="search" aria-label="Search the store" x-on:submit.prevent="submit()">
+        <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50"><div data-slot="input-group-addon" data-align="start"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-first ps-3 pe-1"><span x-show="loading" class="contents"  style="display: none" ><svg aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                <span x-show="!loading" class="contents" ><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg></span></div>
+            <input data-slot="input-group-input"     x-ref="input" type="search" role="combobox" autocomplete="off" enterkeyhint="search" aria-autocomplete="list" aria-haspopup="listbox" aria-label="Search the store" placeholder="Search products, brands and categories" x-model="query" x-bind:aria-expanded="showList" x-bind:aria-controls="listId" x-bind:aria-activedescendant="activeId" x-on:input="onInput()" x-on:focus="open = true" x-on:click="open = true" x-on:keydown="onKeydown($event)" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] [&::-webkit-search-cancel-button]:hidden" />
+            <div data-slot="input-group-addon" data-align="end"
+    x-show="query" style="display: none" class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-last ps-1 pe-3"><button type="button" aria-label="Clear search" x-on:click="clear()"
+                    class="inline-flex size-6 items-center justify-center rounded-full outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus"><svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button></div></div>
+    </form>
+    <p role="status" aria-live="polite" class="sr-only" x-text="liveText"></p>
+    <div data-slot="store-search-popup" x-show="showList" style="display: none" x-on:mousedown.prevent
+        class="absolute inset-x-0 top-full z-40 mt-1.5 max-h-[min(28rem,70dvh)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating">
+        <ul role="listbox" aria-label="Search suggestions" x-bind:id="listId" class="m-0 flex list-none flex-col p-0">
+            <template x-for="g in groups" x-bind:key="g.kind">
+                <li role="presentation" class="contents">
+                    <ul role="presentation" class="m-0 flex list-none flex-col p-0">
+                        <li role="presentation" class="flex items-center justify-between px-2.5 pt-2 pb-1 text-caption font-medium text-muted-foreground">
+                            <span x-text="g.title"></span>
+                            <button type="button" x-show="g.kind === 'recent' ? !q : false" style="display: none" x-on:click="clearRecent()"
+                                class="rounded-sm text-caption outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">Clear</button>
+                        </li>
+                        <template x-for="r in g.rows" x-bind:key="r.key">
+                            <li role="option" x-bind:id="uid + '-opt-' + r.i" x-bind:aria-selected="String(r.i === active)" x-bind:data-active="r.i === active ? '' : null"
+                                x-on:mousemove="active = r.i" x-on:click.prevent="choose(r.i)"
+                                x-bind:class="r.i === active ? 'bg-nq-selected' : ''"
+                                class="flex cursor-pointer items-center gap-3 rounded-control px-2.5 py-1.5 text-body-sm">
+                                <template x-if="r.hasProduct">
+                                    <span class="contents">
+                                        <span class="size-10 shrink-0 overflow-hidden rounded-control bg-secondary"><div class="contents" x-data="{ failed: false }"  x-effect="r.image; failed = false" >
+    <div role="img"  x-bind:aria-label="&#039;&#039;"  data-slot="store-image-placeholder"
+         x-show="!(r.image) || failed" style="display: none"         class="flex size-full items-center justify-center bg-secondary text-muted-foreground">
+        <svg aria-hidden="true" class="size-6 opacity-60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="2" x2="22" y1="2" y2="22"/>
+  <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/>
+  <line x1="13.5" x2="6" y1="13.5" y2="21"/>
+  <line x1="18" x2="21" y1="12" y2="15"/>
+  <path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"/>
+  <path d="M21 15V5a2 2 0 0 0-2-2H9"/>
+</svg>    </div>
+            <img  x-bind:src="r.image" x-bind:alt="&#039;&#039;" x-show="(r.image) && !failed"                          loading="lazy" decoding="async" data-slot="store-image" x-on:error="failed = true"
+            class="size-full object-cover">
+    </div>
+</span>
+                                        <span class="flex min-w-0 flex-1 flex-col">
+                                            <span class="truncate text-foreground"><template x-for="s in r.segments"><span x-text="s.text" x-bind:class="s.match ? 'font-semibold text-foreground' : ''"></span></template></span>
+                                            <span x-show="r.brand" x-text="r.brand" class="truncate text-caption text-muted-foreground"></span>
+                                        </span>
+                                        <bdi x-show="r.priceText" x-text="r.priceText" class="shrink-0 text-body-sm font-medium text-foreground tabular-nums"></bdi>
+                                    </span>
+                                </template>
+                                <template x-if="!r.hasProduct">
+                                    <span class="contents">
+                                        <span aria-hidden="true" class="inline-flex size-6 shrink-0 items-center justify-center text-muted-foreground">
+                                            <span x-show="r.kind === 'recent'" class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="M12 6v6l4 2"/>
+</svg></span>
+                                            <span x-show="r.kind === 'popular'" class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg></span>
+                                            <span x-show="r.kind === 'category'" class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg></span>
+                                        </span>
+                                        <span class="min-w-0 flex-1 truncate"><template x-for="s in r.segments"><span x-text="s.text" x-bind:class="s.match ? 'font-semibold text-foreground' : ''"></span></template></span>
+                                        <span x-show="r.note" x-text="r.note" class="truncate text-caption text-muted-foreground"></span>
+                                    </span>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                </li>
+            </template>
+            <template x-if="submitRow">
+                <li role="option" x-bind:id="uid + '-opt-' + submitRow.i" x-bind:aria-selected="String(submitRow.i === active)" x-on:mousemove="active = submitRow.i" x-on:click="run(query)"
+                    x-bind:class="submitRow.i === active ? 'bg-nq-selected' : ''"
+                    class="mt-1 flex cursor-pointer items-center gap-2 rounded-control border-t border-border px-2.5 py-2 text-body-sm">
+                    <svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                    <bdi x-text="submitRow.label"></bdi>
+                </li>
+            </template>
+            <li x-show="noSuggestions" style="display: none" role="presentation" class="px-2.5 py-2 text-body-sm text-muted-foreground" x-text="noSuggestionsText"></li>
+        </ul>
+    </div>
+</div>
+        </div>
+    </header>
+    <footer data-slot="store-footer" aria-label="Site footer" class="border-t border-border bg-nq-surface-soft">
+    <div class="mx-auto grid w-full max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+        <div class="flex flex-col gap-5">
+            <div class="text-h3 font-semibold text-foreground">Nasaq Goods</div>            <p class="max-w-sm text-body-sm text-muted-foreground">Everyday basics, made to last.</p>                            <form data-slot="store-newsletter" novalidate x-data="nqStoreNewsletter(JSON.parse('{\u0022labels\u0022:{\u0022announcements\u0022:\u0022Announcements\u0022,\u0022dismiss\u0022:\u0022Dismiss announcement\u0022,\u0022previousAnnouncement\u0022:\u0022Previous announcement\u0022,\u0022nextAnnouncement\u0022:\u0022Next announcement\u0022,\u0022announcementOf\u0022:\u0022{n} of {total}\u0022,\u0022skipToContent\u0022:\u0022Skip to content\u0022,\u0022menu\u0022:\u0022Menu\u0022,\u0022closeMenu\u0022:\u0022Close menu\u0022,\u0022mainNavigation\u0022:\u0022Main navigation\u0022,\u0022mobileNavigation\u0022:\u0022Mobile navigation\u0022,\u0022cart\u0022:\u0022Cart\u0022,\u0022cartWithCount\u0022:\u0022Cart, {n}\u0022,\u0022wishlist\u0022:\u0022Wishlist\u0022,\u0022wishlistWithCount\u0022:\u0022Wishlist, {n}\u0022,\u0022account\u0022:\u0022Account\u0022,\u0022viewAll\u0022:\u0022View all {name}\u0022,\u0022shopAll\u0022:\u0022Shop all\u0022,\u0022search\u0022:\u0022Search\u0022,\u0022searchPlaceholder\u0022:\u0022Search products, brands and categories\u0022,\u0022searchLabel\u0022:\u0022Search the store\u0022,\u0022clearSearch\u0022:\u0022Clear search\u0022,\u0022suggestions\u0022:\u0022Search suggestions\u0022,\u0022productsGroup\u0022:\u0022Products\u0022,\u0022categoriesGroup\u0022:\u0022Categories\u0022,\u0022recentGroup\u0022:\u0022Recent searches\u0022,\u0022popularGroup\u0022:\u0022Popular searches\u0022,\u0022clearRecent\u0022:\u0022Clear\u0022,\u0022searchFor\u0022:\u0022Search for \\u201c{query}\\u201d\u0022,\u0022noSuggestions\u0022:\u0022No suggestions for \\u201c{query}\\u201d. Press Enter to search anyway.\u0022,\u0022suggestionsCount\u0022:\u0022{n} suggestions available\u0022,\u0022inCategory\u0022:\u0022in {category}\u0022,\u0022footer\u0022:\u0022Site footer\u0022,\u0022newsletterTitle\u0022:\u0022Get offers before anyone else\u0022,\u0022newsletterHint\u0022:\u0022One email a week. Unsubscribe any time.\u0022,\u0022email\u0022:\u0022Email address\u0022,\u0022emailPlaceholder\u0022:\u0022you@example.com\u0022,\u0022subscribe\u0022:\u0022Subscribe\u0022,\u0022subscribed\u0022:\u0022You are subscribed. Check your inbox to confirm.\u0022,\u0022invalidEmail\u0022:\u0022Enter a valid email address.\u0022,\u0022subscribeFailed\u0022:\u0022We could not subscribe you. Try again.\u0022,\u0022followUs\u0022:\u0022Follow us\u0022,\u0022paymentMethods\u0022:\u0022We accept\u0022,\u0022language\u0022:\u0022Language\u0022,\u0022currency\u0022:\u0022Currency\u0022,\u0022rights\u0022:\u0022All rights reserved.\u0022}}'))" x-on:submit.prevent="submit()" class="flex max-w-md flex-col gap-2">
+                    <div>
+                        <p class="text-label text-foreground">Get offers before anyone else</p>
+                        <p class="text-body-sm text-muted-foreground">One email a week. Unsubscribe any time.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <div role="group" data-slot="input-group"
+    x-bind:aria-invalid="invalid ? &#039;true&#039; : null" class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full min-w-0 items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 flex-1"><input data-slot="input-group-input"  dir="ltr"     id="nq-sf-a269ad-email" name="email" type="email" autocomplete="email" aria-label="Email address" aria-describedby="nq-sf-a269ad-msg" placeholder="you@example.com" x-model="email" x-on:input="onInput()" x-bind:aria-invalid="invalid ? &#039;true&#039; : null" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px] text-start" /></div>
+                        <button data-slot="button"
+     type="submit"                     x-bind:disabled="busy" x-bind:aria-busy="busy ? &#039;true&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Subscribe</button>
+                    </div>
+                    <p id="nq-sf-a269ad-msg" role="status" aria-live="polite" x-text="message" x-bind:class="done ? 'text-nq-success-text' : 'text-nq-danger-text'" class="min-h-5 text-body-sm text-nq-danger-text"></p>
+                </form>
+                    </div>
+        <nav aria-label="Site footer" class="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
+                            <div class="flex min-w-0 flex-col gap-2.5">
+                    <h3 class="text-label text-foreground">Help</h3>
+                    <ul class="m-0 flex list-none flex-col gap-1.5 p-0">
+                                                    <li><a href="/shipping" class="rounded-sm text-body-sm text-muted-foreground no-underline outline-none hover:text-foreground hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">Shipping</a></li>
+                                                    <li><a href="/returns" class="rounded-sm text-body-sm text-muted-foreground no-underline outline-none hover:text-foreground hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">Returns</a></li>
+                                            </ul>
+                </div>
+                    </nav>
+    </div>
+    <div class="border-t border-border">
+        <div class="mx-auto flex w-full max-w-7xl flex-wrap items-end justify-between gap-x-8 gap-y-5 px-4 py-6 sm:px-6">
+            <div class="flex flex-wrap items-end gap-4">
+                                    <label class="flex flex-col gap-1 text-caption text-muted-foreground" x-data="{ pick: 'en' }" x-init="$watch('pick', v => $dispatch('nq-store-language-change', { value: v }))">
+                        Language
+                        <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="pick" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Language" class="flex w-full items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-9 min-w-36">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                            <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('en', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('en')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">English</span>
+</div>
+<div data-slot="select-item" x-bind="item('ar', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('ar')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">العربية</span>
+</div>
+    </div>
+</template>
+    </div>
+                    </label>
+                                                    <label class="flex flex-col gap-1 text-caption text-muted-foreground" x-data="{ pick: 'USD' }" x-init="$watch('pick', v => $dispatch('nq-store-currency-change', { value: v }))">
+                        Currency
+                        <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="pick" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        aria-label="Currency" class="flex w-full items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-9 min-w-36">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                            <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="select-item" x-bind="item('USD', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('USD')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">USD</span>
+</div>
+<div data-slot="select-item" x-bind="item('SAR', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('SAR')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate">SAR</span>
+</div>
+    </div>
+</template>
+    </div>
+                    </label>
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                    <p class="text-caption text-muted-foreground">We accept</p>
+                    <div data-slot="store-footer-payments" class="flex flex-wrap items-center gap-2"><span class="text-caption">Visa</span><span class="text-caption">Mada</span></div>
+                </div>
+                                        <nav aria-label="Follow us" class="flex flex-col gap-1.5">
+                    <p class="text-caption text-muted-foreground">Follow us</p>
+                    <ul class="m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0">
+                                                    <li><a href="https://instagram.com/nasaq" rel="noopener noreferrer" target="_blank" class="rounded-sm text-body-sm text-foreground underline-offset-4 outline-none hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">Instagram</a></li>
+                                            </ul>
+                </nav>
+                    </div>
+        <div class="mx-auto w-full max-w-7xl px-4 pb-6 text-caption text-muted-foreground sm:px-6">© 2026 Nasaq Goods. All rights reserved.</div>    </div>
+</footer>
+</div>

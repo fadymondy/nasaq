@@ -1,0 +1,208 @@
+<div class="flex max-w-2xl flex-col gap-6">
+    <div id="vc-live" class="relative h-[32rem] w-full overflow-hidden rounded-lg border"
+        x-data="{ callState: 'listening', callLevel: 0.4, callElapsed: 65, callMuted: false, callCaptions: [{ id: '1', role: 'user', text: 'Where is my order?' }, { id: '2', role: 'agent', text: 'It is out for delivery.' }], ended: 0 }"
+        x-on:nq-voice-end="ended++; callState = `connecting`">
+        <div data-slot="voice-call-overlay" role="dialog"  aria-label="Voice call: Nasaq assistant" tabindex="-1"
+    x-data="nqVoiceCall(JSON.parse('{\u0022state\u0022:\u0022listening\u0022,\u0022level\u0022:0.4,\u0022muted\u0022:false,\u0022elapsed\u0022:65,\u0022captions\u0022:[{\u0022id\u0022:\u00221\u0022,\u0022role\u0022:\u0022user\u0022,\u0022text\u0022:\u0022Where is my order?\u0022},{\u0022id\u0022:\u00222\u0022,\u0022role\u0022:\u0022agent\u0022,\u0022text\u0022:\u0022It is out for delivery.\u0022}],\u0022captionLines\u0022:3,\u0022showCaptions\u0022:true,\u0022error\u0022:null,\u0022contained\u0022:true,\u0022words\u0022:{\u0022label\u0022:\u0022Voice call\u0022,\u0022states\u0022:{\u0022connecting\u0022:\u0022Connecting\u0022,\u0022listening\u0022:\u0022Listening\u0022,\u0022thinking\u0022:\u0022Thinking\u0022,\u0022speaking\u0022:\u0022Speaking\u0022,\u0022error\u0022:\u0022Connection lost\u0022},\u0022muted\u0022:\u0022Muted. The agent cannot hear you.\u0022,\u0022mute\u0022:\u0022Mute microphone\u0022,\u0022unmute\u0022:\u0022Unmute microphone\u0022,\u0022captionsOn\u0022:\u0022Show captions\u0022,\u0022captionsOff\u0022:\u0022Hide captions\u0022,\u0022end\u0022:\u0022End call\u0022,\u0022ending\u0022:\u0022Ending call\u0022,\u0022retry\u0022:\u0022Reconnect\u0022,\u0022you\u0022:\u0022You\u0022,\u0022duration\u0022:\u0022Call length\u0022,\u0022level\u0022:\u0022Voice level\u0022,\u0022captions\u0022:\u0022Captions\u0022,\u0022noCaptions\u0022:\u0022Captions appear here as you talk.\u0022,\u0022interrupt\u0022:\u0022Interrupt\u0022}}'))" x-modelable="muted" x-bind:data-state="state" x-effect="sync({ state: callState, level: callLevel, elapsed: callElapsed, captions: callCaptions })"    id="vc-call" x-model="callMuted" class="z-50 flex flex-col bg-background text-foreground outline-none absolute inset-0">
+    <header class="flex items-center gap-3 px-5 py-4">
+        <span aria-hidden="true" x-bind:class="state === `speaking` ? `border-nq-accent` : `border-border`"
+            class="inline-flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-secondary text-body">
+            N        </span>
+        <div class="min-w-0 flex-1">
+            <p dir="auto" class="truncate text-label text-foreground">Nasaq assistant</p>
+                            <p dir="auto" class="truncate text-caption text-muted-foreground">Support</p>
+                    </div>
+        <span class="tabular-nums text-body-sm text-muted-foreground" aria-label="Call length" x-show="elapsed !== null" >
+            <bdi dir="ltr" x-text="time()">1:05</bdi>
+        </span>
+    </header>
+    <div class="flex min-h-0 flex-1 flex-col items-center justify-center gap-6 px-6">
+        <div data-slot="voice-visualizer" role="meter" aria-label="Voice level" aria-valuemin="0" aria-valuemax="100" x-data="nqVoiceVisualizer(JSON.parse('{\u0022state\u0022:\u0022listening\u0022,\u0022level\u0022:0.4,\u0022bars\u0022:31,\u0022muted\u0022:false}'))" x-modelable="vizLevel"
+    x-bind:data-state="vizState" x-bind:aria-valuenow="meter()" x-effect="sync({ state: state, level: level, muted: muted })"    class="flex h-28 items-center justify-center gap-1 w-full max-w-md">
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 40%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+    </div>
+        <div role="status" aria-live="polite" class="flex min-h-14 flex-col items-center gap-2 text-center">
+            <div data-slot="ai-thinking" role="status" aria-live="polite"
+    x-show="state === `thinking`" style="display: none" class="flex flex-col gap-2 text-body-sm text-muted-foreground">
+    <span class="inline-flex items-center gap-2">
+        <svg aria-hidden="true" class="size-4 text-nq-accent-text motion-safe:animate-pulse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>        <span>Thinking</span>        <span aria-hidden="true" class="inline-flex items-center gap-1">
+            <span class="size-1.5 rounded-full bg-nq-accent motion-safe:animate-pulse" style="animation-delay: 0ms"></span><span class="size-1.5 rounded-full bg-nq-accent motion-safe:animate-pulse" style="animation-delay: 180ms"></span><span class="size-1.5 rounded-full bg-nq-accent motion-safe:animate-pulse" style="animation-delay: 360ms"></span>        </span>
+    </span>
+    </div>
+            <span x-show="state === `connecting`"  style="display: none"  class="inline-flex items-center gap-2 text-body text-muted-foreground"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg> Connecting</span>
+            <span x-show="state === `error`"  style="display: none"  class="inline-flex items-center gap-2 text-body text-nq-danger-text">
+                <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+  <path d="M12 9v4"/>
+  <path d="M12 17h.01"/>
+</svg> <span x-text="error ?? words.states.error">Connection lost</span>
+            </span>
+            <span x-show="plain()"  class="inline-flex items-center gap-2 text-body text-foreground">
+                <span x-show="state === `listening` ? muted : false"  style="display: none"  class="inline-flex"><svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 19v3"/>
+  <path d="M15 9.34V5a3 3 0 0 0-5.68-1.33"/>
+  <path d="M16.95 16.95A7 7 0 0 1 5 12v-2"/>
+  <path d="M18.89 13.23A7 7 0 0 0 19 12v-2"/>
+  <path d="m2 2 20 20"/>
+  <path d="M9 9v3a3 3 0 0 0 5.12 2.12"/>
+</svg></span>
+                <span x-text="statusText()">Listening</span>
+            </span>
+                            <button data-slot="button"
+     type="button"                     x-show="state === `error`" x-on:click="retry()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Reconnect</button>
+                                        <button data-slot="button"
+     type="button"                     x-show="state === `speaking`" x-on:click="interrupt()" style="display: none" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Interrupt</button>
+                    </div>
+        <div data-captions role="log" aria-label="Captions" aria-live="off" x-show="showCaptions" x-effect="paintCaptions()"             class="flex min-h-24 w-full max-w-xl flex-col justify-end gap-1.5 text-center">
+                                                <p dir="auto" class="text-body text-muted-foreground opacity-70">
+                        <span class="me-1.5 text-caption text-muted-foreground">You</span>                        Where is my order?
+                    </p>
+                                    <p dir="auto" class="text-body text-foreground">
+                                                It is out for delivery.
+                    </p>
+                                    </div>
+    </div>
+    <footer class="flex items-center justify-center gap-3 px-5 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+        <button type="button" data-slot="button" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 p-0 size-12 rounded-full" x-bind:class="muted ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'border-border bg-card text-foreground hover:bg-nq-hover'" x-bind:aria-pressed="muted ? `true` : `false`"
+            x-bind:aria-label="muteLabel()" x-bind:disabled="state === `connecting` ? true : null" x-on:click="toggleMute()">
+            <span x-show="muted"  style="display: none"  class="inline-flex"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 19v3"/>
+  <path d="M15 9.34V5a3 3 0 0 0-5.68-1.33"/>
+  <path d="M16.95 16.95A7 7 0 0 1 5 12v-2"/>
+  <path d="M18.89 13.23A7 7 0 0 0 19 12v-2"/>
+  <path d="m2 2 20 20"/>
+  <path d="M9 9v3a3 3 0 0 0 5.12 2.12"/>
+</svg></span>
+            <span x-show="! muted"  class="inline-flex"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 19v3"/>
+  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+  <rect x="9" y="2" width="6" height="13" rx="3"/>
+</svg></span>
+        </button>
+        <button type="button" data-slot="button" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 p-0 size-12 rounded-full" x-bind:class="showCaptions ? 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]' : 'border-border bg-card text-foreground hover:bg-nq-hover'"
+            x-bind:aria-pressed="showCaptions ? `true` : `false`" x-bind:aria-label="captionsLabel()" x-on:click="toggleCaptions()">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="14" x="3" y="5" rx="2" ry="2"/>
+  <path d="M7 15h4M15 15h2M7 11h2M13 11h4"/>
+</svg>        </button>
+        <button data-slot="button"
+     type="button"                     x-bind:aria-label="endLabel()" x-bind:aria-busy="ending ? `true` : null" x-bind:disabled="ending ? true : null" x-on:click="end()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] p-0 size-14 rounded-full">
+        <span x-show="! ending" class="inline-flex"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.1 13.9a14 14 0 0 0 3.732 2.668 1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2 18 18 0 0 1-12.728-5.272"/>
+  <path d="M22 2 2 22"/>
+  <path d="M4.76 13.582A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 .244.473"/>
+</svg></span>
+            <span x-show="ending" style="display: none" class="inline-flex"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span></button>
+    </footer>
+</div>
+    </div>
+    <div data-slot="voice-visualizer" role="meter" aria-label="Voice level" aria-valuemin="0" aria-valuemax="100" x-data="nqVoiceVisualizer(JSON.parse('{\u0022state\u0022:\u0022speaking\u0022,\u0022level\u0022:0.7,\u0022bars\u0022:31,\u0022muted\u0022:false}'))" x-modelable="vizLevel"
+    x-bind:data-state="vizState" x-bind:aria-valuenow="meter()"    id="vc-viz" class="flex h-28 items-center justify-center gap-1">
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 70%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-nq-accent transition-[height] duration-100 ease-out" style="height: 6%"></span>
+    </div>
+    <div data-slot="voice-visualizer" role="meter" aria-label="Voice level" aria-valuemin="0" aria-valuemax="100" x-data="nqVoiceVisualizer(JSON.parse('{\u0022state\u0022:\u0022listening\u0022,\u0022level\u0022:0.2,\u0022bars\u0022:31,\u0022muted\u0022:false}'))" x-modelable="vizLevel"
+    x-bind:data-state="vizState" x-bind:aria-valuenow="meter()" x-effect="sync({ state: `speaking`, level: 0.9 })"    id="vc-viz-live" class="flex h-28 items-center justify-center gap-1">
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 20%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+            <span aria-hidden="true" class="w-1.5 rounded-full bg-foreground transition-[height] duration-100 ease-out" style="height: 6%"></span>
+    </div>
+</div>

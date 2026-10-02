@@ -10,6 +10,7 @@ import { adminTenants } from "./admin-tenants";
 import { adminUsers } from "./admin-users";
 import { agentPersonaEditor } from "./agent-persona-editor";
 import { agentSteps } from "./agent-steps";
+import { aiCitations } from "./ai-citations";
 import { aiModelPicker } from "./ai-model-picker";
 import { aiStates } from "./ai-states";
 import { alert } from "./alert";
@@ -24,6 +25,7 @@ import { appUpdate } from "./app-update";
 import { appearancePickers } from "./appearance-pickers";
 import { approvalQueue } from "./approval-queue";
 import { artifactRenderer } from "./artifact-renderer";
+import { askAi } from "./ask-ai";
 import { attention } from "./attention";
 import { auditLog } from "./audit-log";
 import { authLayout } from "./auth-layout";
@@ -78,6 +80,7 @@ import { contextMenu } from "./context-menu";
 import { cookieConsent } from "./cookie-consent";
 import { copilotChat } from "./copilot-chat";
 import { copilotDock } from "./copilot-dock";
+import { copilotProvider } from "./copilot-provider";
 import { copyButton } from "./copy-button";
 import { countdown } from "./countdown";
 import { countryFlag } from "./country-flag";
@@ -156,6 +159,7 @@ import { keywordTracker } from "./keyword-tracker";
 import { killSwitch } from "./kill-switch";
 import { knowledgeGaps } from "./knowledge-gaps";
 import { landingPageEditor } from "./landing-page-editor";
+import { leadsInbox } from "./leads-inbox";
 import { legalPage } from "./legal-page";
 import { limitsEditor } from "./limits-editor";
 import { lineItemEditor } from "./line-item-editor";
@@ -169,6 +173,7 @@ import { mailSettings } from "./mail-settings";
 import { mapView } from "./map-view";
 import { markdownEditor } from "./markdown-editor";
 import { markdownExtras } from "./markdown-extras";
+import { marketingSections } from "./marketing-sections";
 import { marketplace } from "./marketplace";
 import { mcpConnect } from "./mcp-connect";
 import { membersManager } from "./members-manager";
@@ -205,6 +210,7 @@ import { profileCard } from "./profile-card";
 import { profileForm } from "./profile-form";
 import { profilePage } from "./profile-page";
 import { progress } from "./progress";
+import { projectView } from "./project-view";
 import { providerSwitcher } from "./provider-switcher";
 import { proxyHosts } from "./proxy-hosts";
 import { publicForm } from "./public-form";
@@ -218,6 +224,7 @@ import { repeater } from "./repeater";
 import { reportEditor } from "./report-editor";
 import { reportFilterBar } from "./report-filter-bar";
 import { repositoryPicker } from "./repository-picker";
+import { researchRun } from "./research-run";
 import { resetPasswordForm } from "./reset-password-form";
 import { resizable } from "./resizable";
 import { richTextEditor } from "./rich-text-editor";
@@ -242,6 +249,7 @@ import { shareAction } from "./share-action";
 import { sidebarLayout } from "./sidebar-layout";
 import { signInFlow } from "./sign-in-flow";
 import { slider } from "./slider";
+import { socialComposer } from "./social-composer";
 import { statusLabelManager } from "./status-label-manager";
 import { statusPageManager } from "./status-page-manager";
 import { stepEditor } from "./step-editor";
@@ -249,6 +257,7 @@ import { stockLedger } from "./stock-ledger";
 import { storeAccount } from "./store-account";
 import { storeCart } from "./store-cart";
 import { storeCheckout } from "./store-checkout";
+import { storeChrome } from "./store-chrome";
 import { storeListing } from "./store-listing";
 import { storeMerch } from "./store-merch";
 import { storeOrderTimeline } from "./store-order-timeline";
@@ -262,6 +271,7 @@ import { tabs } from "./tabs";
 import { tagInput } from "./tag-input";
 import { terminal } from "./terminal";
 import { testimonials } from "./testimonials";
+import { textEffects } from "./text-effects";
 import { textUtilities } from "./text-utilities";
 import { timeFields } from "./time-fields";
 import { timeRangePicker } from "./time-range-picker";
@@ -284,6 +294,7 @@ import { vault } from "./vault";
 import { verifyOtpForm } from "./verify-otp-form";
 import { versionHistory } from "./version-history";
 import { viewToggle } from "./view-toggle";
+import { voiceCallOverlay } from "./voice-call-overlay";
 import { waitingScreen } from "./waiting-screen";
 import { wallet } from "./wallet";
 import { webVitalsPage } from "./web-vitals-page";
@@ -310,6 +321,7 @@ export const components: Record<string, Register> = {
   "admin-users": adminUsers,
   "agent-persona-editor": agentPersonaEditor,
   "agent-steps": agentSteps,
+  "ai-citations": aiCitations,
   "ai-model-picker": aiModelPicker,
   "ai-states": aiStates,
   "alert": alert,
@@ -324,6 +336,7 @@ export const components: Record<string, Register> = {
   "appearance-pickers": appearancePickers,
   "approval-queue": approvalQueue,
   "artifact-renderer": artifactRenderer,
+  "ask-ai": askAi,
   "attention": attention,
   "audit-log": auditLog,
   "auth-layout": authLayout,
@@ -378,6 +391,7 @@ export const components: Record<string, Register> = {
   "cookie-consent": cookieConsent,
   "copilot-chat": copilotChat,
   "copilot-dock": copilotDock,
+  "copilot-provider": copilotProvider,
   "copy-button": copyButton,
   "countdown": countdown,
   "country-flag": countryFlag,
@@ -456,6 +470,7 @@ export const components: Record<string, Register> = {
   "kill-switch": killSwitch,
   "knowledge-gaps": knowledgeGaps,
   "landing-page-editor": landingPageEditor,
+  "leads-inbox": leadsInbox,
   "legal-page": legalPage,
   "limits-editor": limitsEditor,
   "line-item-editor": lineItemEditor,
@@ -469,6 +484,7 @@ export const components: Record<string, Register> = {
   "map-view": mapView,
   "markdown-editor": markdownEditor,
   "markdown-extras": markdownExtras,
+  "marketing-sections": marketingSections,
   "marketplace": marketplace,
   "mcp-connect": mcpConnect,
   "members-manager": membersManager,
@@ -505,6 +521,7 @@ export const components: Record<string, Register> = {
   "profile-form": profileForm,
   "profile-page": profilePage,
   "progress": progress,
+  "project-view": projectView,
   "provider-switcher": providerSwitcher,
   "proxy-hosts": proxyHosts,
   "public-form": publicForm,
@@ -518,6 +535,7 @@ export const components: Record<string, Register> = {
   "report-editor": reportEditor,
   "report-filter-bar": reportFilterBar,
   "repository-picker": repositoryPicker,
+  "research-run": researchRun,
   "reset-password-form": resetPasswordForm,
   "resizable": resizable,
   "rich-text-editor": richTextEditor,
@@ -542,6 +560,7 @@ export const components: Record<string, Register> = {
   "sidebar-layout": sidebarLayout,
   "sign-in-flow": signInFlow,
   "slider": slider,
+  "social-composer": socialComposer,
   "status-label-manager": statusLabelManager,
   "status-page-manager": statusPageManager,
   "step-editor": stepEditor,
@@ -549,6 +568,7 @@ export const components: Record<string, Register> = {
   "store-account": storeAccount,
   "store-cart": storeCart,
   "store-checkout": storeCheckout,
+  "store-chrome": storeChrome,
   "store-listing": storeListing,
   "store-merch": storeMerch,
   "store-order-timeline": storeOrderTimeline,
@@ -562,6 +582,7 @@ export const components: Record<string, Register> = {
   "tag-input": tagInput,
   "terminal": terminal,
   "testimonials": testimonials,
+  "text-effects": textEffects,
   "text-utilities": textUtilities,
   "time-fields": timeFields,
   "time-range-picker": timeRangePicker,
@@ -584,6 +605,7 @@ export const components: Record<string, Register> = {
   "verify-otp-form": verifyOtpForm,
   "version-history": versionHistory,
   "view-toggle": viewToggle,
+  "voice-call-overlay": voiceCallOverlay,
   "waiting-screen": waitingScreen,
   "wallet": wallet,
   "web-vitals-page": webVitalsPage,

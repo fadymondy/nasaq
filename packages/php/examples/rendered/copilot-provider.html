@@ -1,0 +1,32 @@
+<div class="relative flex h-96 w-full flex-col gap-3">
+    <div data-slot="copilot-provider" x-data="nqCopilotProvider(JSON.parse('{\u0022open\u0022:false,\u0022greeting\u0022:\u0022Hi! Ask me anything.\u0022,\u0022messages\u0022:null,\u0022words\u0022:{\u0022open\u0022:\u0022Open assistant\u0022,\u0022close\u0022:\u0022Close assistant\u0022}}'))" x-modelable="isOpen" x-bind:data-open="isOpen ? `` : null"
+    x-on:nq-copilot-open.window="open($event.detail)" x-on:nq-copilot-close.window="close()" x-on:nq-copilot-toggle.window="toggle()"
+    id="cp-root" class="contents"><div class="flex items-start gap-2">
+            <button data-slot="copilot-launcher"
+     type="button"                     aria-expanded="false" x-bind:aria-expanded="isOpen ? `true` : `false`" x-bind:title="(isOpen ? `Close assistant` : `Open assistant`) + ` (Ctrl+J)`" x-bind:aria-label="undefined" x-on:click="launch({})" id="cp-launcher" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>            <span>Ask AI</span>
+        <kbd dir="ltr" class="hidden rounded-sm border border-border px-1 font-mono text-[11px] text-muted-foreground sm:inline">Ctrl+J</kbd></button>
+            <button data-slot="copilot-launcher"
+     type="button"                     aria-expanded="false" x-bind:aria-expanded="isOpen ? `true` : `false`" x-bind:title="(isOpen ? `Close assistant` : `Open assistant`) + ` (Ctrl+J)`" x-bind:aria-label="isOpen ? `Close assistant` : `Open assistant`" x-on:click="launch({})" id="cp-icon" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg></button>
+            <button data-slot="button"
+     type="button"                     id="cp-ask" x-on:click="open({ message: `Summarise this order`, autoSend: true })" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        Ask about this order</button>
+        </div>
+        <ul id="cp-log" class="flex flex-col gap-1 text-body-sm">
+            <template x-for="m in messages.filter(m => ! m.hidden)" x-bind:key="m.id">
+                <li x-bind:data-role="m.role" x-text="m.text"></li>
+            </template>
+        </ul>
+        <p id="cp-status" class="text-caption text-muted-foreground" x-text="isOpen ? (streaming ? `Answering` : `Open`) : `Closed`"></p></div>
+</div>
