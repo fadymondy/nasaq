@@ -97,6 +97,8 @@ export * from "./components/kanban-board";
 export * from "./components/menubar";
 export * from "./components/markdown";
 export * from "./components/phone-input";
+export * from "./components/country-select";
+export * from "./components/address-input";
 export * from "./components/country-flag";
 export * from "./components/scheduler";
 export * from "./components/mention-textarea";
