@@ -1,11 +1,16 @@
 {
     "name": "fadymondy/nasaq-php",
-    "description": "Nasaq design system for Laravel: Blade components (<x-nq::button>), Alpine behaviours and a FilamentPHP plugin. Same markup and Tailwind classes as the React components.",
+    "description": "Nasaq design system for Laravel: Blade components (<x-nq::button>), Alpine behaviours, Livewire wire:model support and a FilamentPHP plugin. Same markup and Tailwind classes as the React components.",
     "type": "library",
     "license": "MIT",
-    "keywords": ["laravel", "blade", "filament", "livewire", "alpinejs", "tailwindcss", "design-system", "rtl", "arabic", "shadcn"],
+    "keywords": ["laravel", "blade", "livewire", "filament", "alpinejs", "tailwindcss", "design-system", "rtl", "arabic", "shadcn"],
     "homepage": "https://nasaq-ui.fadymondy.com",
     "authors": [{ "name": "Fady Mondy", "homepage": "https://fadymondy.com" }],
+    "support": {
+        "issues": "https://github.com/fadymondy/nasaq-php/issues",
+        "source": "https://github.com/fadymondy/nasaq-php",
+        "docs": "https://nasaq-ui.fadymondy.com"
+    },
     "require": {
         "php": "^8.2",
         "illuminate/support": "^11.0|^12.0|^13.0",
@@ -13,10 +18,12 @@
         "mallardduck/blade-lucide-icons": "^1.23"
     },
     "require-dev": {
-        "orchestra/testbench": "^10.0",
+        "livewire/livewire": "^3.6",
+        "orchestra/testbench": "^9.0|^10.0",
         "phpunit/phpunit": "^11.0"
     },
     "suggest": {
+        "livewire/livewire": "^3.0: bind controls with wire:model and wire:model.live",
         "filament/filament": "Register NasaqPlugin on a panel to load the styles and Alpine behaviours"
     },
     "autoload": {
@@ -26,7 +33,11 @@
         "psr-4": { "Nasaq\\Tests\\": "tests/" }
     },
     "extra": {
+        "branch-alias": { "dev-main": "1.x-dev" },
         "laravel": { "providers": ["Nasaq\\NasaqServiceProvider"] }
+    },
+    "scripts": {
+        "test": "phpunit"
     },
     "config": { "sort-packages": true },
     "minimum-stability": "stable",

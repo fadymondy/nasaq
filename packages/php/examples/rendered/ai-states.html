@@ -1,0 +1,489 @@
+<div class="flex max-w-2xl flex-col gap-6">
+    <div id="ai-buttons" class="flex flex-wrap items-center gap-3">
+        <button data-slot="ai-sparkle-button"
+     type="button"                     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        <svg aria-hidden="true" class="text-nq-accent-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>    Summarize
+            <span aria-hidden="true" x-data="nqAiKeys" class="ms-1 hidden gap-0.5 sm:inline-flex">
+            <kbd data-slot="kbd"  dir="ltr"
+    data-key="mod" class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Ctrl</kbd>
+<kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">J</kbd>
+        </span></button>
+        <button data-slot="ai-sparkle-button"
+     type="button"      aria-busy="true"          disabled      data-disabled     class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+    <svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>    Generating</button>
+        <div data-slot="ai-split-button" role="group" x-data="nqAiSplit" class="inline-flex items-stretch">
+    <button data-slot="ai-sparkle-button"
+     type="button"                     x-on:click="run()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)] rounded-e-none border-e-0">
+        <svg aria-hidden="true" class="text-nq-accent-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>    Summarize</button>
+    <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" class="contents"><button data-slot="dropdown-menu-trigger"
+     type="button"                     x-bind="trigger" x-ref="trigger" aria-label="More AI actions" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover size-control p-0 rounded-s-none">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></button>
+        <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-end.offset.4="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-56"><div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        data-id="translate" x-on:click="pick($el.dataset.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 8 6 6"/>
+  <path d="m4 14 6-6 2-3"/>
+  <path d="M2 5h12"/>
+  <path d="M7 2h1"/>
+  <path d="m22 22-5-10-5 10"/>
+  <path d="M14 18h6"/>
+</svg>                    Translate</div>
+                            <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        data-id="fix" x-on:click="pick($el.dataset.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>                    Fix grammar
+                                            <span data-slot="dropdown-menu-shortcut" dir="ltr" class="ms-auto font-mono text-[11px] text-muted-foreground"><span dir="ltr" x-data="nqAiKeys" class="inline-flex gap-0.5"><kbd data-slot="kbd"  dir="ltr"
+    data-key="mod" class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Ctrl</kbd>
+<kbd data-slot="kbd"  dir="ltr"
+    data-key="shift" class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Shift</kbd>
+<kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">G</kbd>
+</span></span></div></div>
+</template></div>
+</div>
+    </div>
+    <div role="group" aria-label="AI suggestions" data-slot="ai-suggestion-chips" x-data="{ gone: [] }" id="ai-chips" class="flex flex-wrap gap-1.5">
+                    <span x-show="! gone.includes('shorter')" class="inline-flex max-w-full items-center rounded-full border border-border bg-card text-caption text-foreground transition-colors duration-150 ease-nq focus-within:outline-2 focus-within:outline-nq-focus hover:bg-nq-hover">
+            <button type="button" x-on:click="$dispatch('nq-ai-pick', { id: 'shorter' })" class="inline-flex min-h-7 min-w-0 items-center gap-1.5 rounded-full ps-2.5 outline-none pe-1.5">
+                <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-accent-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>                <span dir="auto" class="truncate">Make it shorter</span>
+            </button>
+                            <button type="button" aria-label="Dismiss Make it shorter" x-on:click="gone.push('shorter'); $dispatch('nq-ai-dismiss', { id: 'shorter' })"
+                    class="me-1 grid size-5 shrink-0 place-items-center rounded-full text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                </button>
+                    </span>
+                    <span x-show="! gone.includes('tr')" class="inline-flex max-w-full items-center rounded-full border border-border bg-card text-caption text-foreground transition-colors duration-150 ease-nq focus-within:outline-2 focus-within:outline-nq-focus hover:bg-nq-hover">
+            <button type="button" x-on:click="$dispatch('nq-ai-pick', { id: 'tr' })" class="inline-flex min-h-7 min-w-0 items-center gap-1.5 rounded-full ps-2.5 outline-none pe-1.5">
+                <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-accent-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m5 8 6 6"/>
+  <path d="m4 14 6-6 2-3"/>
+  <path d="M2 5h12"/>
+  <path d="M7 2h1"/>
+  <path d="m22 22-5-10-5 10"/>
+  <path d="M14 18h6"/>
+</svg>                <span dir="auto" class="truncate">Translate</span>
+            </button>
+                            <button type="button" aria-label="Dismiss Translate" x-on:click="gone.push('tr'); $dispatch('nq-ai-dismiss', { id: 'tr' })"
+                    class="me-1 grid size-5 shrink-0 place-items-center rounded-full text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                    <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                </button>
+                    </span>
+    </div>
+    <div data-slot="ai-action-menu-root" x-data="nqAiActionMenu(JSON.parse('[{\u0022id\u0022:\u0022summarize\u0022,\u0022label\u0022:\u0022Summarize\u0022,\u0022recommended\u0022:true,\u0022shortcut\u0022:\u0022Mod Shift S\u0022,\u0022iconHtml\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n    \\u003Cpath d=\\u0022M15 18H3\\u0022\\\/\\u003E\\n    \\u003Cpath d=\\u0022M17 6H3\\u0022\\\/\\u003E\\n    \\u003Cpath d=\\u0022M21 12H3\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022},{\u0022id\u0022:\u0022translate\u0022,\u0022label\u0022:\u0022Translate\u0022,\u0022description\u0022:\u0022Into Arabic\u0022},{\u0022id\u0022:\u0022fix\u0022,\u0022label\u0022:\u0022Fix grammar\u0022,\u0022keywords\u0022:[\u0022spelling\u0022]}]'), JSON.parse('{\u0022words\u0022:{\u0022recommended\u0022:\u0022Recommended\u0022,\u0022allActions\u0022:\u0022All actions\u0022,\u0022actionsTitle\u0022:\u0022AI actions\u0022}}'))" x-modelable="open"
+    x-on:keydown.window="onHotkey($event)" x-on:nq-ai-menu-open.window="show()" x-on:nq-ai-menu-toggle.window="toggle()" class="contents">
+    <template x-teleport="body">
+        <div data-slot="ai-action-menu-portal">
+            <div data-slot="ai-action-menu-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+            <div class="pointer-events-none fixed inset-0 z-50 flex items-start justify-center px-3 pt-[12dvh]">
+                <div data-slot="ai-action-menu" role="dialog" aria-modal="true" aria-label="AI actions" tabindex="-1" x-nq-presence="open" x-trap.noscroll="open" x-on:keydown.escape.stop="close()"
+                    class="pointer-events-auto flex max-h-[min(30rem,76dvh)] w-full max-w-lg flex-col overflow-hidden rounded-floating border border-border bg-popover text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                    <div class="flex items-center gap-2 border-b border-border px-4">
+                        <svg aria-hidden="true" class="size-4 shrink-0 text-nq-accent-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>                        <input type="text" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-controls="nq-ai-list" aria-describedby="nq-ai-hint" autocomplete="off" spellcheck="false"
+                            x-model="query" x-on:keydown="onKey($event)" x-bind:aria-activedescendant="view().flat.length ? optionId(highlighted) : null"
+                            placeholder="What should AI do?"
+                            class="h-12 w-full bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+                        <button type="button" x-on:click="close()" class="shrink-0 rounded-[3px] outline-none focus-visible:outline-2 focus-visible:outline-nq-focus">
+                            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Esc</kbd>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1.5">
+                        <div x-show="view().flat.length === 0" style="display: none" data-slot="ai-action-menu-empty" class="flex min-h-20 items-center justify-center text-body-sm text-muted-foreground">No matching actions</div>
+                        <div id="nq-ai-list" role="listbox" aria-label="AI actions">
+                            <template x-for="section in view().sections" x-bind:key="section.id">
+                                <div role="group" x-bind:aria-label="section.label" class="not-last:mb-1.5">
+                                    <div x-text="section.label" class="px-2.5 pt-2 pb-1 text-caption font-medium text-muted-foreground"></div>
+                                    <template x-for="row in section.items" x-bind:key="row.a.id">
+                                        <div role="option" data-slot="ai-action-item" x-bind:id="optionId(row.i)" x-bind:data-id="row.a.id" x-bind:aria-selected="row.i === highlighted ? 'true' : 'false'"
+                                            x-bind:aria-disabled="row.a.disabled ? 'true' : null" x-bind:data-highlighted="row.i === highlighted ? '' : null" x-bind:data-disabled="row.a.disabled ? '' : null"
+                                            x-on:mousemove="highlighted = row.i" x-on:click="run(row.a)"
+                                            class="flex min-h-10 cursor-default select-none items-center gap-3 rounded-control px-2.5 py-1.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">
+                                            <span x-show="row.a.iconHtml" x-html="row.a.iconHtml" class="contents"></span>
+                                            <svg x-show="! row.a.iconHtml" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>                                            <span class="flex min-w-0 flex-1 flex-col">
+                                                <span x-text="row.a.label" dir="auto" class="truncate"></span>
+                                                <span x-show="row.a.description" x-text="row.a.description" dir="auto" class="truncate text-caption text-muted-foreground"></span>
+                                            </span>
+                                            <span x-show="row.a.shortcut" dir="ltr" class="inline-flex gap-0.5">
+                                                <template x-for="k in (row.a.shortcut ? keys(row.a.shortcut) : [])"><kbd data-slot="kbd" dir="ltr" x-text="k" class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground"></kbd></template>
+                                            </span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div id="nq-ai-hint" class="flex items-center gap-4 border-t border-border bg-nq-surface-soft px-4 py-2 text-caption text-muted-foreground">
+                        <span class="flex items-center gap-1.5">
+                            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">↑</kbd>
+                            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">↓</kbd>
+                            Navigate
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground"><svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 4v7a4 4 0 0 1-4 4H4"/>
+  <path d="m9 10-5 5 5 5"/>
+</svg></kbd>
+                            Run
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</div>
+    <div data-slot="ai-thinking" role="status" aria-live="polite"
+    id="ai-thinking-static" class="flex flex-col gap-2 text-body-sm text-muted-foreground">
+    <span class="inline-flex items-center gap-2">
+        <svg aria-hidden="true" class="size-4 text-nq-accent-text motion-safe:animate-pulse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>        <span>Thinking</span>        <span aria-hidden="true" class="inline-flex items-center gap-1">
+            <span class="size-1.5 rounded-full bg-nq-accent motion-safe:animate-pulse" style="animation-delay: 0ms"></span><span class="size-1.5 rounded-full bg-nq-accent motion-safe:animate-pulse" style="animation-delay: 180ms"></span><span class="size-1.5 rounded-full bg-nq-accent motion-safe:animate-pulse" style="animation-delay: 360ms"></span>        </span>
+    </span>
+            <ol class="flex flex-col gap-1.5 ps-1">
+                                                                <li data-state="done" class="flex items-center gap-2 text-caption">
+                        <span aria-hidden="true" class="grid size-4 shrink-0 place-items-center">
+                            <svg class="size-3.5 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                        </span>
+                        <span dir="auto">Reading the document</span>
+                        <span class="sr-only">Done</span>
+                    </li>
+                                                                                <li data-state="active" class="flex items-center gap-2 text-caption text-foreground">
+                        <span aria-hidden="true" class="grid size-4 shrink-0 place-items-center">
+                            <svg data-slot="spinner" aria-hidden="true" class="animate-spin motion-reduce:animate-none size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        </span>
+                        <span dir="auto">Finding key points</span>
+                        <span class="sr-only">In progress</span>
+                    </li>
+                                                                                <li data-state="pending" class="flex items-center gap-2 text-caption opacity-60">
+                        <span aria-hidden="true" class="grid size-4 shrink-0 place-items-center">
+                            <span class="size-1.5 rounded-full bg-nq-line-strong"></span>                        </span>
+                        <span dir="auto">Writing</span>
+                        <span class="sr-only">Waiting</span>
+                    </li>
+                                    </ol>
+    </div>
+    <div data-slot="ai-thinking" role="status" aria-live="polite" x-data="nqAiThinking(JSON.parse('{\u0022count\u0022:3,\u0022interval\u0022:100,\u0022current\u0022:null,\u0022steps\u0022:[\u0022Reading the document\u0022,\u0022Finding key points\u0022,\u0022Writing\u0022],\u0022label\u0022:\u0022Thinking\u0022,\u0022words\u0022:{\u0022done\u0022:\u0022Done\u0022,\u0022active\u0022:\u0022In progress\u0022,\u0022pending\u0022:\u0022Waiting\u0022}}'))"
+    id="ai-thinking-live" class="flex flex-col gap-2 text-body-sm text-muted-foreground">
+    <span class="inline-flex items-center gap-2">
+        <svg aria-hidden="true" class="size-4 text-nq-accent-text motion-safe:animate-pulse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>        <span>Thinking</span>        <span aria-hidden="true" class="inline-flex items-center gap-1">
+            <span class="size-1.5 rounded-full bg-nq-accent motion-safe:animate-pulse" style="animation-delay: 0ms"></span><span class="size-1.5 rounded-full bg-nq-accent motion-safe:animate-pulse" style="animation-delay: 180ms"></span><span class="size-1.5 rounded-full bg-nq-accent motion-safe:animate-pulse" style="animation-delay: 360ms"></span>        </span>
+    </span>
+            <ol class="flex flex-col gap-1.5 ps-1">
+                                                                <li x-bind:data-state="state(0)" x-bind:class="state(0) === `pending` ? `opacity-60` : (state(0) === `active` ? `text-foreground` : ``)" class="flex items-center gap-2 text-caption">
+                        <span aria-hidden="true" class="grid size-4 shrink-0 place-items-center">
+                            <svg x-show="state(0) === `done`" style="display: none" class="size-3.5 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="state(0) === `active`" class="animate-spin motion-reduce:animate-none size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                            <span x-show="state(0) === `pending`" class="size-1.5 rounded-full bg-nq-line-strong"></span>
+                        </span>
+                        <span dir="auto">Reading the document</span>
+                        <span class="sr-only" x-text="words[state(0)]">In progress</span>
+                    </li>
+                                                                                <li x-bind:data-state="state(1)" x-bind:class="state(1) === `pending` ? `opacity-60` : (state(1) === `active` ? `text-foreground` : ``)" class="flex items-center gap-2 text-caption">
+                        <span aria-hidden="true" class="grid size-4 shrink-0 place-items-center">
+                            <svg x-show="state(1) === `done`" style="display: none" class="size-3.5 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="state(1) === `active`" class="animate-spin motion-reduce:animate-none size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                            <span x-show="state(1) === `pending`" class="size-1.5 rounded-full bg-nq-line-strong"></span>
+                        </span>
+                        <span dir="auto">Finding key points</span>
+                        <span class="sr-only" x-text="words[state(1)]">Waiting</span>
+                    </li>
+                                                                                <li x-bind:data-state="state(2)" x-bind:class="state(2) === `pending` ? `opacity-60` : (state(2) === `active` ? `text-foreground` : ``)" class="flex items-center gap-2 text-caption">
+                        <span aria-hidden="true" class="grid size-4 shrink-0 place-items-center">
+                            <svg x-show="state(2) === `done`" style="display: none" class="size-3.5 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                            <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="state(2) === `active`" class="animate-spin motion-reduce:animate-none size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                            <span x-show="state(2) === `pending`" class="size-1.5 rounded-full bg-nq-line-strong"></span>
+                        </span>
+                        <span dir="auto">Writing</span>
+                        <span class="sr-only" x-text="words[state(2)]">Waiting</span>
+                    </li>
+                                    </ol>
+    </div>
+    <div data-slot="ai-shimmer" role="status" aria-busy="true" x-data="nqAiShimmer" class="relative flex flex-col gap-2.5 overflow-hidden rounded-control">
+    <span class="sr-only">Thinking</span>
+            <span aria-hidden="true" class="block h-3 rounded-[4px] bg-secondary" style="inline-size: 96%"></span>
+            <span aria-hidden="true" class="block h-3 rounded-[4px] bg-secondary" style="inline-size: 88%"></span>
+            <span aria-hidden="true" class="block h-3 rounded-[4px] bg-secondary" style="inline-size: 92%"></span>
+            <span aria-hidden="true" class="block h-3 rounded-[4px] bg-secondary" style="inline-size: 64%"></span>
+        <span data-sweep aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,transparent,color-mix(in_oklab,var(--nq-bg)_65%,transparent),transparent)]"></span>
+</div>
+    <div data-slot="ai-streaming-text" aria-busy="false"
+    id="ai-text-static" class="min-w-0">
+    <div aria-live="off" class="">
+                    <div data-slot="markdown" class="flex min-w-0 flex-col gap-3 text-body text-nq-fg-body"><p data-slot="text" dir="auto" class="text-body text-nq-fg-body text-start">Two tasks are <strong class="font-semibold text-foreground">overdue</strong>: the invoice and the contract.</p>
+</div>
+            </div>
+            <span role="status" class="sr-only">Response ready</span>
+    </div>
+    <div data-slot="ai-streaming-text" aria-busy="true" data-streaming
+    id="ai-text-streaming" class="min-w-0">
+    <div aria-live="off" class="[&amp;_[data-slot=markdown]&gt;:last-child]:after:ms-0.5 [&amp;_[data-slot=markdown]&gt;:last-child]:after:inline-block [&amp;_[data-slot=markdown]&gt;:last-child]:after:h-[1.05em] [&amp;_[data-slot=markdown]&gt;:last-child]:after:w-[2px] [&amp;_[data-slot=markdown]&gt;:last-child]:after:translate-y-[0.2em] [&amp;_[data-slot=markdown]&gt;:last-child]:after:rounded-[1px] [&amp;_[data-slot=markdown]&gt;:last-child]:after:bg-nq-accent [&amp;_[data-slot=markdown]&gt;:last-child]:after:content-[&#039;&#039;] motion-safe:[&amp;_[data-slot=markdown]&gt;:last-child]:after:animate-pulse">
+                    <div data-slot="markdown" class="flex min-w-0 flex-col gap-3 text-body text-nq-fg-body"><p data-slot="text" dir="auto" class="text-body text-nq-fg-body text-start">Two tasks are <strong class="font-semibold text-foreground">overdue</strong></p>
+</div>
+            </div>
+            <span role="status" class="sr-only"></span>
+    </div>
+    <div x-data="{ answer: 'Hello', busy: true }" id="ai-live">
+        <div data-slot="ai-streaming-text" x-data="nqAiStreamingText(JSON.parse('{\u0022text\u0022:\u0022Hello\u0022,\u0022streaming\u0022:false,\u0022reveal\u0022:true,\u0022cps\u0022:2000,\u0022caret\u0022:true,\u0022ready\u0022:\u0022Response ready\u0022,\u0022caretClass\u0022:\u0022after:ms-0.5 after:inline-block after:h-[1.05em] after:w-[2px] after:translate-y-[0.2em] after:rounded-[1px] after:bg-nq-accent after:content-[\\u0027\\u0027] motion-safe:after:animate-pulse\u0022}'))" x-effect="sync(answer, busy)" x-bind:aria-busy="! finished" x-bind:data-streaming="finished ? null : ''"
+    id="ai-text-live" class="min-w-0">
+    <div aria-live="off" class="">
+                    <p dir="auto" data-slot="ai-plain" x-text="visible" x-bind:class="showCaret ? caretClass : ``" class="whitespace-pre-wrap text-start text-body text-nq-fg-body">Hello</p>
+            </div>
+            <span role="status" class="sr-only" x-text="status">Response ready</span>
+    </div>
+        <div data-slot="ai-stream-controls" x-data="nqAiStream(JSON.parse('{\u0022state\u0022:\u0022streaming\u0022,\u0022regenerate\u0022:true,\u0022words\u0022:{\u0022streaming\u0022:\u0022Writing\u0022,\u0022stopped\u0022:\u0022Stopped\u0022,\u0022error\u0022:\u0022Something went wrong\u0022}}'))" x-modelable="state" x-effect="sync(busy ? `streaming` : `done`)"
+        x-bind:data-state="state" id="ai-controls-live" class="flex flex-wrap items-center gap-2">
+        <button data-slot="button"
+     type="button"                     x-show="isStreaming()" style="display: none" x-on:click="stop()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" class="fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+</svg>Stop</button>
+        <button data-slot="button"
+     type="button"                     x-show="canRegenerate()" style="display: none" x-on:click="again()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>Regenerate</button>
+        <span role="status" class="text-caption text-muted-foreground" x-text="status()">Writing</span>
+    </div>
+    </div>
+    <div data-slot="ai-stream-controls" data-state="done" id="ai-controls-static" class="flex flex-wrap items-center gap-2">
+                    <button data-slot="button"
+     type="button"                     x-on:click="$dispatch(`nq-ai-regenerate`)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg>Regenerate</button>
+                <span role="status" class="text-caption text-muted-foreground"></span>
+    </div>
+    <span data-slot="ai-generated-label"     class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text gap-1"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>    AI generated
+    <bdi dir="ltr" class="font-normal opacity-80">Claude</bdi></span>
+    <div data-slot="ai-confidence" data-level="high" class="flex items-center gap-2 text-caption text-muted-foreground">
+    <span>Confidence</span>
+    <div data-slot="progress" data-tone="success" role="progressbar"     aria-valuemin="0" aria-valuemax="100"  aria-valuenow="86"     aria-valuetext="86%" data-progressing
+    aria-label="Confidence" class="flex flex-col gap-1.5 w-16">
+        <div data-slot="progress-track" data-progressing class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-1">
+        <div data-slot="progress-indicator" data-progressing style="inset-inline-start:0;width:86%"
+            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-nq-success"></div>
+    </div>
+</div>
+    <span class="text-foreground">High <bdi data-slot="num" data-numeric="" class="tabular-nums">86%</bdi>
+</span>
+</div>
+    <div data-slot="ai-feedback" role="group" x-data="nqAiFeedback(null)" x-modelable="value" id="ai-feedback" class="inline-flex items-center">
+    <button data-slot="button"
+     type="button"                     data-value="up" aria-label="Good summary" x-bind:aria-pressed="pressed($el.dataset.value)" x-on:click="rate($el.dataset.value)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 aria-pressed:text-nq-success-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>
+  <path d="M7 10v12"/>
+</svg></button>
+    <button data-slot="button"
+     type="button"                     data-value="down" aria-label="Not helpful" x-bind:aria-pressed="pressed($el.dataset.value)" x-on:click="rate($el.dataset.value)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 aria-pressed:text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/>
+  <path d="M17 14V2"/>
+</svg></button>
+    <span role="status" class="sr-only" x-text="value ? 'Thanks for the feedback' : ``"></span>
+</div>
+    <div data-slot="ai-summary" role="region" aria-labelledby="nq-ai-summary-000001" x-data="nqAiSummary(JSON.parse(&#039;{\u0022tldr\u0022:\u0022Two tasks are overdue.\u0022,\u0022points\u0022:[\u0022Send the invoice\u0022,\u0022Review the contract\u0022],\u0022full\u0022:\u0022## Details\\u0026#10;\\u0026#10;The invoice is 3 days late.\u0022,\u0022expanded\u0022:false,\u0022show\u0022:\u0022Show full summary\u0022,\u0022hide\u0022:\u0022Hide full summary\u0022}&#039;))" id="ai-summary" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto] grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground flex items-center gap-2"><svg aria-hidden="true" class="size-4 text-nq-accent-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>            <span id="nq-ai-summary-000001">Summary</span></h3>
+        <span data-slot="ai-generated-label"     class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text gap-1"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>    AI generated
+    <bdi dir="ltr" class="font-normal opacity-80">Claude</bdi></span></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div class="flex flex-col gap-1">
+                <span class="text-eyebrow text-muted-foreground">TL;DR</span>
+                <div data-slot="ai-streaming-text" aria-busy="false"
+    class="min-w-0 [&_p]:text-body [&_p]:text-foreground">
+    <div aria-live="off" class="">
+                    <p dir="auto" data-slot="ai-plain" class="whitespace-pre-wrap text-start text-body text-nq-fg-body">Two tasks are overdue.</p>
+            </div>
+            <span role="status" class="sr-only">Response ready</span>
+    </div>
+            </div>
+                            <div class="flex flex-col gap-1.5">
+                    <span class="text-eyebrow text-muted-foreground">Key points</span>
+                    <ul class="flex flex-col gap-1.5">
+                                                    <li class="flex items-start gap-2 text-body-sm text-nq-fg-body">
+                                <span aria-hidden="true" class="mt-2 size-1 shrink-0 rounded-full bg-nq-accent"></span>
+                                <span dir="auto" class="min-w-0 text-start">Send the invoice</span>
+                            </li>
+                                                    <li class="flex items-start gap-2 text-body-sm text-nq-fg-body">
+                                <span aria-hidden="true" class="mt-2 size-1 shrink-0 rounded-full bg-nq-accent"></span>
+                                <span dir="auto" class="min-w-0 text-start">Review the contract</span>
+                            </li>
+                                            </ul>
+                </div>
+                                        <div data-slot="collapsible" x-data="nqCollapsible(false)" x-modelable="open" x-id="['nq-collapsible']"
+    :data-open="open ? '' : undefined" :data-closed="open ? undefined : ''"
+     data-closed     x-model="expanded">
+    <button data-slot="collapsible-trigger"
+     type="button"                     x-bind:aria-controls="$id(&#039;nq-collapsible&#039;, &#039;panel&#039;)" x-bind:data-panel-open="open ? &#039;&#039; : undefined" x-on:click="toggle()" :aria-expanded="open" class="inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap border border-transparent font-sans transition-colors duration-150 ease-nq outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground underline decoration-nq-line underline-offset-4 hover:decoration-current h-auto px-0 min-h-control-sm gap-1.5 rounded-control text-label no-underline">
+        <span x-text="expanded ? hide : show">Show full summary</span>
+                        <svg aria-hidden="true" class="size-4 transition-transform duration-150 ease-nq motion-reduce:transition-none [[data-panel-open]_&]:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></button>
+                    <div data-slot="collapsible-panel" x-ref="panel" x-nq-presence="open" :id="$id('nq-collapsible', 'panel')"
+     data-closed style="display:none"     class="h-(--collapsible-panel-height) overflow-hidden transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0"><div class="border-t border-border pt-3"><div data-slot="markdown" class="flex min-w-0 flex-col gap-3 text-body text-nq-fg-body"><h2 data-slot="text" dir="auto" class="text-h2 text-foreground mt-2 text-start first:mt-0">Details
+The invoice is 3 days late.</h2>
+</div>
+</div></div>
+</div>
+                                        <div data-slot="copilot-sources" class="flex flex-col gap-1.5">
+    <span class="text-caption text-muted-foreground">Sources</span>
+    <ol class="flex flex-wrap gap-2">
+                                <li class="min-w-0">
+                <a href="https://example.com/board" target="_blank" rel="noopener noreferrer"  class="flex max-w-56 items-center gap-2 rounded-control border border-border bg-card px-2 py-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus">                                        <span class="grid size-4 shrink-0 place-items-center rounded-full bg-secondary text-[10px] tabular-nums text-muted-foreground">1</span>
+                    <span class="flex min-w-0 flex-col">
+                        <span dir="auto" class="truncate text-caption text-foreground">Task board</span>
+                        <span dir="ltr" class="truncate text-[11px] text-muted-foreground">example.com</span>                    </span>
+                </a>            </li>
+            </ol>
+</div></div>
+            <div data-slot="card-footer" class="flex px-4 flex-col items-stretch gap-3 border-t border-border pt-3"><div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <div data-slot="ai-confidence" data-level="medium" class="flex items-center gap-2 text-caption text-muted-foreground">
+    <span>Confidence</span>
+    <div data-slot="progress" data-tone="warning" role="progressbar"     aria-valuemin="0" aria-valuemax="100"  aria-valuenow="64"     aria-valuetext="64%" data-progressing
+    aria-label="Confidence" class="flex flex-col gap-1.5 w-16">
+        <div data-slot="progress-track" data-progressing class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-1">
+        <div data-slot="progress-indicator" data-progressing style="inset-inline-start:0;width:64%"
+            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-nq-warning"></div>
+    </div>
+</div>
+    <span class="text-foreground">Medium <bdi data-slot="num" data-numeric="" class="tabular-nums">64%</bdi>
+</span>
+</div>
+                <span class="ms-auto inline-flex items-center gap-0.5">
+                    <span class="contents" x-data="nqCopyButton(() => (text()), 1500)">
+    <button data-slot="copy-button"
+     type="button"                     aria-label="Copy summary" x-on:click="copy()" x-bind:data-copied="state === &#039;copied&#039; ? &#039;&#039; : null" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 data-copied:text-nq-success-text">
+        <svg aria-hidden="true" x-show="state !== 'copied'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+</svg>        <svg aria-hidden="true" x-show="state === 'copied'" style="display: none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></button>
+    <span data-slot="copy-button-status" role="status" aria-live="polite" class="sr-only"
+        data-copied-label="Copied to clipboard" data-failed-label="Could not copy"
+        x-text="state === 'copied' ? $el.dataset.copiedLabel : state === 'failed' ? $el.dataset.failedLabel : ''"></span>
+</span>
+                                            <button data-slot="button"
+     type="button"                     aria-label="Regenerate" x-on:click="$dispatch(`nq-ai-regenerate`)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</svg></button>
+                                        <div data-slot="ai-feedback" role="group" x-data="nqAiFeedback(null)" x-modelable="value" class="inline-flex items-center">
+    <button data-slot="button"
+     type="button"                     data-value="up" aria-label="Good summary" x-bind:aria-pressed="pressed($el.dataset.value)" x-on:click="rate($el.dataset.value)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 aria-pressed:text-nq-success-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>
+  <path d="M7 10v12"/>
+</svg></button>
+    <button data-slot="button"
+     type="button"                     data-value="down" aria-label="Not helpful" x-bind:aria-pressed="pressed($el.dataset.value)" x-on:click="rate($el.dataset.value)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0 aria-pressed:text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/>
+  <path d="M17 14V2"/>
+</svg></button>
+    <span role="status" class="sr-only" x-text="value ? 'Thanks for the feedback' : ``"></span>
+</div>
+                </span>
+            </div>
+            <p class="text-caption text-muted-foreground">AI can make mistakes. Check important details.</p></div></div>
+    <div data-slot="ai-summary" role="region" aria-labelledby="nq-ai-summary-000002" aria-busy="true" x-data="nqAiSummary(JSON.parse(&#039;{\u0022tldr\u0022:\u0022\u0022,\u0022points\u0022:[],\u0022full\u0022:\u0022\u0022,\u0022expanded\u0022:false,\u0022show\u0022:\u0022Show full summary\u0022,\u0022hide\u0022:\u0022Hide full summary\u0022}&#039;))" id="ai-summary-loading" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground min-w-0"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto] grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground flex items-center gap-2"><svg aria-hidden="true" class="size-4 text-nq-accent-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>            <span id="nq-ai-summary-000002">Summary</span></h3>
+        <span data-slot="ai-generated-label"     class="inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-accent/40 bg-nq-accent/15 text-nq-accent-text gap-1"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>    AI generated</span></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div data-slot="ai-shimmer" role="status" aria-busy="true" x-data="nqAiShimmer" class="relative flex flex-col gap-2.5 overflow-hidden rounded-control">
+    <span class="sr-only">Summarizing</span>
+            <span aria-hidden="true" class="block h-3 rounded-[4px] bg-secondary" style="inline-size: 96%"></span>
+            <span aria-hidden="true" class="block h-3 rounded-[4px] bg-secondary" style="inline-size: 88%"></span>
+            <span aria-hidden="true" class="block h-3 rounded-[4px] bg-secondary" style="inline-size: 92%"></span>
+            <span aria-hidden="true" class="block h-3 rounded-[4px] bg-secondary" style="inline-size: 64%"></span>
+        <span data-sweep aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,transparent,color-mix(in_oklab,var(--nq-bg)_65%,transparent),transparent)]"></span>
+</div></div></div>
+</div>

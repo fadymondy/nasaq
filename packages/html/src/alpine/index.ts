@@ -11,6 +11,7 @@ import { adminUsers } from "./admin-users";
 import { agentPersonaEditor } from "./agent-persona-editor";
 import { agentSteps } from "./agent-steps";
 import { aiModelPicker } from "./ai-model-picker";
+import { aiStates } from "./ai-states";
 import { alert } from "./alert";
 import { alertDialog } from "./alert-dialog";
 import { alerts } from "./alerts";
@@ -41,6 +42,7 @@ import { bookingSlots } from "./booking-slots";
 import { brandLoaders } from "./brand-loaders";
 import { brandingProvider } from "./branding-provider";
 import { breakdownTable } from "./breakdown-table";
+import { businessReports } from "./business-reports";
 import { calendar } from "./calendar";
 import { campaignComposer } from "./campaign-composer";
 import { cannedReplies } from "./canned-replies";
@@ -75,6 +77,7 @@ import { contentTableEditor } from "./content-table-editor";
 import { contextMenu } from "./context-menu";
 import { cookieConsent } from "./cookie-consent";
 import { copilotChat } from "./copilot-chat";
+import { copilotDock } from "./copilot-dock";
 import { copyButton } from "./copy-button";
 import { countdown } from "./countdown";
 import { countryFlag } from "./country-flag";
@@ -112,6 +115,7 @@ import { errorPages } from "./error-pages";
 import { errorTracking } from "./error-tracking";
 import { exportAction } from "./export-action";
 import { extensionPopup } from "./extension-popup";
+import { featureFlagDetail } from "./feature-flag-detail";
 import { featureFlags } from "./feature-flags";
 import { feedbackReporter } from "./feedback-reporter";
 import { field } from "./field";
@@ -120,6 +124,7 @@ import { fileUpload } from "./file-upload";
 import { finopsCost } from "./finops-cost";
 import { forgotPasswordForm } from "./forgot-password-form";
 import { form } from "./form";
+import { formBuilder } from "./form-builder";
 import { funnelBuilder } from "./funnel-builder";
 import { funnelChart } from "./funnel-chart";
 import { gamification } from "./gamification";
@@ -143,6 +148,7 @@ import { integrationConnector } from "./integration-connector";
 import { inviteAccept } from "./invite-accept";
 import { invoiceList } from "./invoice-list";
 import { invoiceView } from "./invoice-view";
+import { issueView } from "./issue-view";
 import { kanbanBoard } from "./kanban-board";
 import { keyboardShortcuts } from "./keyboard-shortcuts";
 import { keywordPlanner } from "./keyword-planner";
@@ -219,6 +225,7 @@ import { routeProgress } from "./route-progress";
 import { ruleBuilder } from "./rule-builder";
 import { runHistory } from "./run-history";
 import { scheduler } from "./scheduler";
+import { schemaForm } from "./schema-form";
 import { schemaRepeater } from "./schema-repeater";
 import { scrollArea } from "./scroll-area";
 import { searchConsolePage } from "./search-console-page";
@@ -254,6 +261,7 @@ import { switchers } from "./switchers";
 import { tabs } from "./tabs";
 import { tagInput } from "./tag-input";
 import { terminal } from "./terminal";
+import { testimonials } from "./testimonials";
 import { textUtilities } from "./text-utilities";
 import { timeFields } from "./time-fields";
 import { timeRangePicker } from "./time-range-picker";
@@ -303,6 +311,7 @@ export const components: Record<string, Register> = {
   "agent-persona-editor": agentPersonaEditor,
   "agent-steps": agentSteps,
   "ai-model-picker": aiModelPicker,
+  "ai-states": aiStates,
   "alert": alert,
   "alert-dialog": alertDialog,
   "alerts": alerts,
@@ -333,6 +342,7 @@ export const components: Record<string, Register> = {
   "brand-loaders": brandLoaders,
   "branding-provider": brandingProvider,
   "breakdown-table": breakdownTable,
+  "business-reports": businessReports,
   "calendar": calendar,
   "campaign-composer": campaignComposer,
   "canned-replies": cannedReplies,
@@ -367,6 +377,7 @@ export const components: Record<string, Register> = {
   "context-menu": contextMenu,
   "cookie-consent": cookieConsent,
   "copilot-chat": copilotChat,
+  "copilot-dock": copilotDock,
   "copy-button": copyButton,
   "countdown": countdown,
   "country-flag": countryFlag,
@@ -404,6 +415,7 @@ export const components: Record<string, Register> = {
   "error-tracking": errorTracking,
   "export-action": exportAction,
   "extension-popup": extensionPopup,
+  "feature-flag-detail": featureFlagDetail,
   "feature-flags": featureFlags,
   "feedback-reporter": feedbackReporter,
   "field": field,
@@ -412,6 +424,7 @@ export const components: Record<string, Register> = {
   "finops-cost": finopsCost,
   "forgot-password-form": forgotPasswordForm,
   "form": form,
+  "form-builder": formBuilder,
   "funnel-builder": funnelBuilder,
   "funnel-chart": funnelChart,
   "gamification": gamification,
@@ -435,6 +448,7 @@ export const components: Record<string, Register> = {
   "invite-accept": inviteAccept,
   "invoice-list": invoiceList,
   "invoice-view": invoiceView,
+  "issue-view": issueView,
   "kanban-board": kanbanBoard,
   "keyboard-shortcuts": keyboardShortcuts,
   "keyword-planner": keywordPlanner,
@@ -511,6 +525,7 @@ export const components: Record<string, Register> = {
   "rule-builder": ruleBuilder,
   "run-history": runHistory,
   "scheduler": scheduler,
+  "schema-form": schemaForm,
   "schema-repeater": schemaRepeater,
   "scroll-area": scrollArea,
   "search-console-page": searchConsolePage,
@@ -546,6 +561,7 @@ export const components: Record<string, Register> = {
   "tabs": tabs,
   "tag-input": tagInput,
   "terminal": terminal,
+  "testimonials": testimonials,
   "text-utilities": textUtilities,
   "time-fields": timeFields,
   "time-range-picker": timeRangePicker,
