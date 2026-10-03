@@ -1,11 +1,11 @@
 {{-- <x-nq::project-view.board :issues="$issues" :statuses="$statuses" :labels="$labels" :people="$people" />
-     The Board tab of x-nq::project-view: a kanban board of the issues, a column per status, with a custom card (type, key, priority, title, labels, due date, assignee).
+     The Board tab of x-nq::project-view: a kanban board of the issues, a column per status, with an issue card (type, key, priority, title, labels, due date coloured by how close it is, assignee) like x-nq::issue-view.card.
      Drag cards as in x-nq::kanban-board; a drop fires "move" { cardId, toColumn, toIndex } (the enclosing project-view turns it into nq-project-move-issue).
      Clicking a card calls openIssue(id) on the enclosing x-nq::project-view; right-click (or long-press, Shift+F10) opens Open and Copy key.
      issues: as for x-nq::issue-view (id, key, title, type, priority, statusId, assigneeId, labelIds, dueDate). statuses, labels, people as for x-nq::issue-view.
-     text: array overriding the words (see x-nq::project-view). locale: default the app locale. Needs the Alpine runtime (@nasaqScripts). --}}
+     text: array overriding the words (see x-nq::project-view). now: the clock for the due colour. locale: default the app locale. Needs the Alpine runtime (@nasaqScripts). --}}
 @include('nasaq::components.project-view._logic')
-@props(['issues' => [], 'statuses' => [], 'labels' => [], 'people' => [], 'text' => [], 'locale' => null])
+@props(['issues' => [], 'statuses' => [], 'labels' => [], 'people' => [], 'text' => [], 'locale' => null, 'now' => null])
 @php
     $locale ??= app()->getLocale();
     $ar = str_starts_with($locale, 'ar');
@@ -13,13 +13,16 @@
     $iv = nq_iv_words($locale);
     $personOf = collect($people)->keyBy('id');
     $labelOf = collect($labels)->keyBy('id');
-    $columns = collect($statuses)->map(fn ($s) => ['id' => (string) $s['id'], 'title' => $s['name']])->values()->all();
-    $cards = collect($issues)->map(function ($i) use ($personOf, $labelOf, $iv, $ar) {
+    $columns = collect($statuses)->map(fn ($s) => ['id' => (string) $s['id'], 'title' => $s['name'], 'stage' => $s['stage'] ?? 'todo'])->values()->all();
+    $now = $now ? \Carbon\Carbon::parse($now) : \Carbon\Carbon::now();
+    $cards = collect($issues)->map(function ($i) use ($personOf, $labelOf, $iv, $ar, $statuses, $now) {
         $p = ! empty($i['assigneeId']) ? $personOf->get($i['assigneeId']) : null;
 
         return [
             'id' => (string) $i['id'], 'columnId' => (string) $i['statusId'], 'title' => $i['key'].' '.$i['title'], 'key' => $i['key'], 'issueTitle' => $i['title'],
             'type' => $i['type'] ?? 'task', 'priority' => $i['priority'] ?? 'none', 'priorityLabel' => $iv[$i['priority'] ?? 'none'] ?? '',
+            'typeLabel' => $iv[$i['type'] ?? 'task'] ?? '', 'dueState' => nq_iv_due_state($i['dueDate'] ?? null, $now, nq_iv_is_open($i, $statuses)),
+            'dueWord' => $ar ? 'الاستحقاق' : 'Due', 'overdueWord' => $iv['overdue'], 'assigneeLabel' => $p ? ($ar ? 'مسندة إلى ' : 'Assigned to ').$p['name'] : '',
             'due' => ! empty($i['dueDate']) ? nq_pv_date($i['dueDate'], $ar, false) : '',
             'labels' => collect($i['labelIds'] ?? [])->filter(fn ($id) => $labelOf->has($id))->map(fn ($id) => ['label' => $labelOf[$id]['name'], 'hue' => $labelOf[$id]['hue'] ?? 'gray'])->values()->all(),
             'assignee' => $p ? ['name' => $p['name']] : null,

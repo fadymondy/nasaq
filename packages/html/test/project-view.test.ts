@@ -283,4 +283,14 @@ describe("project-view (Blade example)", { timeout: 120000 }, () => {
     await data().submitNew();
     expect(data().newError).not.toBe("");
   });
+
+  it("draws board cards as issue cards with a due state, and none as the old kanban card", async () => {
+    shared ??= await build();
+    const host = shared.host;
+    expect(host.querySelector('[data-slot="kanban-card"]')).toBeNull();
+    const cards = host.querySelectorAll<HTMLElement>('[data-slot="issue-card"]');
+    expect(cards.length).toBeGreaterThan(0);
+    expect(cards[0]!.className).toContain("cursor-pointer");
+    expect(host.querySelector('[data-slot="issue-card"] [data-due]')).not.toBeNull();
+  });
 });

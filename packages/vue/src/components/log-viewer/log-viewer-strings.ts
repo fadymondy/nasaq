@@ -31,6 +31,13 @@ export const LOG_VIEWER_STRINGS = {
     source: "Source",
     message: "Message",
     fields: "Fields",
+    range: "Time range",
+    loadOlder: "Load older entries",
+    loadingOlder: "Loading older entries…",
+    pause: "Pause live tail",
+    resume: "Resume live tail",
+    paused: "Paused",
+    newWhilePaused: (n: number) => (n === 1 ? "1 new entry" : `${n} new entries`),
   },
   ar: {
     title: "السجلات",
@@ -62,6 +69,13 @@ export const LOG_VIEWER_STRINGS = {
     source: "المصدر",
     message: "الرسالة",
     fields: "الحقول",
+    range: "النطاق الزمني",
+    loadOlder: "تحميل مدخلات أقدم",
+    loadingOlder: "جارٍ تحميل مدخلات أقدم…",
+    pause: "إيقاف التتبّع المباشر مؤقتًا",
+    resume: "استئناف التتبّع المباشر",
+    paused: "متوقف مؤقتًا",
+    newWhilePaused: (n: number) => (n === 1 ? "مدخل جديد واحد" : `${n} مدخلات جديدة`),
   },
 };
 

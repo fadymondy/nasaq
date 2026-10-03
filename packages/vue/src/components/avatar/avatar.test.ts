@@ -43,3 +43,11 @@ describe("NqAvatar", () => {
     expect(fb.classes()).toContain("size-full");
   });
 });
+
+describe("initials with punctuation", () => {
+  it("skips leading punctuation and ignores punctuation-only words", () => {
+    expect(initials("(Test) Driver")).toBe("TD");
+    expect(initials("- Fady")).toBe("F");
+    expect(initials("«نور» عادل")).toBe("نع");
+  });
+});

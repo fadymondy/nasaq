@@ -100,6 +100,7 @@ import { desktopLocations } from "./desktop-locations";
 import { desktopLoginScreen } from "./desktop-login-screen";
 import { desktopNotification } from "./desktop-notification";
 import { desktopOsShell } from "./desktop-os-shell";
+import { detailLayout } from "./detail-layout";
 import { devicePairing } from "./device-pairing";
 import { dialog } from "./dialog";
 import { dispatchOffer } from "./dispatch-offer";
@@ -152,6 +153,7 @@ import { integrationConnector } from "./integration-connector";
 import { inviteAccept } from "./invite-accept";
 import { invoiceList } from "./invoice-list";
 import { invoiceView } from "./invoice-view";
+import { issueBoard } from "./issue-board";
 import { issueView } from "./issue-view";
 import { kanbanBoard } from "./kanban-board";
 import { keyboardShortcuts } from "./keyboard-shortcuts";
@@ -171,6 +173,7 @@ import { logViewer } from "./log-viewer";
 import { loginForm } from "./login-form";
 import { loyaltyPromo } from "./loyalty-promo";
 import { mailSettings } from "./mail-settings";
+import { mapMonitor } from "./map-monitor";
 import { mapView } from "./map-view";
 import { markdownEditor } from "./markdown-editor";
 import { markdownExtras } from "./markdown-extras";
@@ -199,7 +202,9 @@ import { passkeyList } from "./passkey-list";
 import { passwordInput } from "./password-input";
 import { personalWidgets } from "./personal-widgets";
 import { phoneInput } from "./phone-input";
+import { placementSettings } from "./placement-settings";
 import { planCatalogEditor } from "./plan-catalog-editor";
+import { pluginCard } from "./plugin-card";
 import { pomodoro } from "./pomodoro";
 import { popover } from "./popover";
 import { posRegister } from "./pos-register";
@@ -238,6 +243,7 @@ import { schemaForm } from "./schema-form";
 import { schemaRepeater } from "./schema-repeater";
 import { scrollArea } from "./scroll-area";
 import { searchConsolePage } from "./search-console-page";
+import { sectionBoard } from "./section-board";
 import { select } from "./select";
 import { semanticSearch } from "./semantic-search";
 import { seoPages } from "./seo-pages";
@@ -272,9 +278,11 @@ import { switchers } from "./switchers";
 import { tabs } from "./tabs";
 import { tagInput } from "./tag-input";
 import { terminal } from "./terminal";
+import { testRunStream } from "./test-run-stream";
 import { testimonials } from "./testimonials";
 import { textEffects } from "./text-effects";
 import { textUtilities } from "./text-utilities";
+import { themePresets } from "./theme-presets";
 import { timeFields } from "./time-fields";
 import { timeRangePicker } from "./time-range-picker";
 import { timeSeriesPanel } from "./time-series-panel";
@@ -283,6 +291,7 @@ import { timeline } from "./timeline";
 import { toast } from "./toast";
 import { toggleGroup } from "./toggle-group";
 import { tooltip } from "./tooltip";
+import { translations } from "./translations";
 import { trashBin } from "./trash-bin";
 import { treeView } from "./tree-view";
 import { trendsFeed } from "./trends-feed";
@@ -307,6 +316,7 @@ import { widgetGallery } from "./widget-gallery";
 import { workflowCanvas } from "./workflow-canvas";
 import { workflowMarketplace } from "./workflow-marketplace";
 import { workflowNetwork } from "./workflow-network";
+import { workflowViews } from "./workflow-views";
 import { workspaceSettings } from "./workspace-settings";
 import { wsStatus } from "./ws-status";
 import { youtubeChannelPage } from "./youtube-channel-page";
@@ -413,6 +423,7 @@ export const components: Record<string, Register> = {
   "desktop-login-screen": desktopLoginScreen,
   "desktop-notification": desktopNotification,
   "desktop-os-shell": desktopOsShell,
+  "detail-layout": detailLayout,
   "device-pairing": devicePairing,
   "dialog": dialog,
   "dispatch-offer": dispatchOffer,
@@ -465,6 +476,7 @@ export const components: Record<string, Register> = {
   "invite-accept": inviteAccept,
   "invoice-list": invoiceList,
   "invoice-view": invoiceView,
+  "issue-board": issueBoard,
   "issue-view": issueView,
   "kanban-board": kanbanBoard,
   "keyboard-shortcuts": keyboardShortcuts,
@@ -484,6 +496,7 @@ export const components: Record<string, Register> = {
   "login-form": loginForm,
   "loyalty-promo": loyaltyPromo,
   "mail-settings": mailSettings,
+  "map-monitor": mapMonitor,
   "map-view": mapView,
   "markdown-editor": markdownEditor,
   "markdown-extras": markdownExtras,
@@ -512,7 +525,9 @@ export const components: Record<string, Register> = {
   "password-input": passwordInput,
   "personal-widgets": personalWidgets,
   "phone-input": phoneInput,
+  "placement-settings": placementSettings,
   "plan-catalog-editor": planCatalogEditor,
+  "plugin-card": pluginCard,
   "pomodoro": pomodoro,
   "popover": popover,
   "pos-register": posRegister,
@@ -551,6 +566,7 @@ export const components: Record<string, Register> = {
   "schema-repeater": schemaRepeater,
   "scroll-area": scrollArea,
   "search-console-page": searchConsolePage,
+  "section-board": sectionBoard,
   "select": select,
   "semantic-search": semanticSearch,
   "seo-pages": seoPages,
@@ -585,9 +601,11 @@ export const components: Record<string, Register> = {
   "tabs": tabs,
   "tag-input": tagInput,
   "terminal": terminal,
+  "test-run-stream": testRunStream,
   "testimonials": testimonials,
   "text-effects": textEffects,
   "text-utilities": textUtilities,
+  "theme-presets": themePresets,
   "time-fields": timeFields,
   "time-range-picker": timeRangePicker,
   "time-series-panel": timeSeriesPanel,
@@ -596,6 +614,7 @@ export const components: Record<string, Register> = {
   "toast": toast,
   "toggle-group": toggleGroup,
   "tooltip": tooltip,
+  "translations": translations,
   "trash-bin": trashBin,
   "tree-view": treeView,
   "trends-feed": trendsFeed,
@@ -620,6 +639,7 @@ export const components: Record<string, Register> = {
   "workflow-canvas": workflowCanvas,
   "workflow-marketplace": workflowMarketplace,
   "workflow-network": workflowNetwork,
+  "workflow-views": workflowViews,
   "workspace-settings": workspaceSettings,
   "ws-status": wsStatus,
   "youtube-channel-page": youtubeChannelPage,

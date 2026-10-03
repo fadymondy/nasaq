@@ -75,3 +75,23 @@ describe("NqIconPicker", () => {
     w.unmount();
   });
 });
+
+describe("Boxicons names", () => {
+  it("boxiconClass accepts prefixed and legacy forms", async () => {
+    const { boxiconClass } = await import(".");
+    expect(boxiconClass("bx:home")).toBe("bx-home");
+    expect(boxiconClass("bxs:Star")).toBe("bxs-star");
+    expect(boxiconClass("bxl-github")).toBe("bxl-github");
+    expect(boxiconClass("users")).toBeUndefined();
+    expect(boxiconClass(null)).toBeUndefined();
+  });
+
+  it("NqIconByName draws an <i> with the boxicon classes at 1em, or at size", () => {
+    const i = mount(NqIconByName, { props: { name: "bx:home" }, attrs: { class: "text-xl" } }).find("i");
+    expect(i.attributes("data-slot")).toBe("icon-boxicon");
+    expect(i.attributes("aria-hidden")).toBe("true");
+    expect(i.classes()).toEqual(expect.arrayContaining(["bx", "bx-home", "text-xl"]));
+    expect(i.attributes("style")).toContain("font-size: 1em");
+    expect(mount(NqIconByName, { props: { name: "bxl-github", size: 20 } }).find("i").attributes("style")).toContain("font-size: 20px");
+  });
+});

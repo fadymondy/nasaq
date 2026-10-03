@@ -9,6 +9,7 @@
 // tree), size { w, h }, single, pinned, keywords. Events from the root (bubbling): "nq-windows-change" { windows },
 // "nq-launchpad-change" { open }, "nq-desktop-menu" { id } (a menu item, from the Blade menu bar). Icons that sit on the desktop
 // ask to open an app with a bubbling "nq-desktop-icon-open" { id } (desktop-icons); the shell opens it.
+// A menu item with confirm (from DesktopPowerMenu::make) asks first through the confirm-provider.
 // Not ported: menus as a function of the focused app (give static menus), and the context menu's closeAll for a custom handler.
 
 import {
@@ -152,9 +153,21 @@ export const desktopOsShell: Register = (Alpine) => {
       setLaunchpad(this: ShellState, open: boolean) {
         this.launchpad = open;
       },
-      /** A menu bar item: "menuId.itemId" goes out as a bubbling event. (The menu is teleported, so it can't bubble itself.) */
-      menuPick(this: ShellState, id: string) {
-        this.root.dispatchEvent(new CustomEvent("nq-desktop-menu", { bubbles: true, detail: { id } }));
+      /**
+       * A menu bar item: "menuId.itemId" goes out as a bubbling event. (The menu is teleported, so it can't bubble itself.)
+       * An item with a confirm prompt (URL-encoded JSON: title, description, confirmLabel, danger; the system menu's Restart, Shut Down
+       * and Log Out) asks through the confirm-provider first and fires only on Confirm. Without a provider it just fires.
+       */
+      async menuPick(this: ShellState, id: string, confirm?: string) {
+        const root = this.root;
+        if (confirm && document.querySelector('[data-slot="confirm-provider"]')) {
+          const options = JSON.parse(decodeURIComponent(confirm)) as Record<string, unknown>;
+          const ok = await new Promise<boolean>((resolve) => {
+            window.dispatchEvent(new CustomEvent("nq:confirm", { detail: { options, resolve } }));
+          });
+          if (!ok) return;
+        }
+        root.dispatchEvent(new CustomEvent("nq-desktop-menu", { bubbles: true, detail: { id } }));
       },
 
       // Apps and the dock.

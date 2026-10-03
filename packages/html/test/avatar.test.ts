@@ -75,3 +75,12 @@ describe("avatar (Blade example)", () => {
     expect(fb.getAttribute("role")).toBe("img");
   });
 });
+
+describe("avatar initials (Blade example)", () => {
+  it("skips leading punctuation: (Test) Driver is TD, not (D", async () => {
+    const host = await mount(rendered("avatar"));
+    const fbs = [...host.querySelectorAll<HTMLElement>('[data-slot="avatar-fallback"]')];
+    const driver = fbs.find((f) => f.getAttribute("aria-label") === "(Test) Driver")!;
+    expect(driver.textContent?.trim()).toBe("TD");
+  });
+});

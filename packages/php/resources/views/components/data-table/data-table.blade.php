@@ -16,15 +16,20 @@
      row-actions: [['id' => 'edit', 'label' => 'Edit', 'icon' => 'pencil', 'danger' => false, 'group' => null]] opens the ⋯ menu, and the same list opens as a context menu on right-click, long-press, Shift+F10 or the Menu key on a row
        (context-menu="false" keeps the browser's menu; inputs, links and Shift + right-click always do). Per row: 'visibleWhen' / 'disabledWhen' => ['field' => 'status', 'in' => ['open', 'blocked']] (also 'notIn', 'eq', 'ne', 'empty' => true; 'any' => [cond, …] / 'all' => [cond, …] combine conditions),
        and actions-key="actions" names a row field that lists the action ids the row allows (rows without it show every action). A row left with no action loses its ⋯ button. row-click: make rows activatable (click, or Enter on the focused row).
-     expand: the row field whose text is shown under the row by its chevron. loading, error (a message), labels: ['view' => …, 'columns' => …, …] to override any string.
-     Slots: toolbar (more controls after the filters), bulk (actions in the selection bar), empty (when there are no rows at all).
+     expand: the row field whose text is shown under the row by its chevron. For richer details use the `expanded` slot instead (it renders in the row's Alpine scope, so `row` is in reach):
+       <x-slot name="expanded"> <p x-text="row.title"></p> </x-slot>, and expand-when="['field' => 'status', 'ne' => 'draft']" (a row condition like an action's visibleWhen) limits which rows open; omitted, every row does.
+     pin / size / resizable: a column's 'pin' => start | end sticks it to that edge (the select, expand and actions columns follow the side they sit on); the `pinning` flag adds a Pin submenu per column to the View menu.
+       `resizable` adds a drag handle to every header (a focusable separator: ← → resize by 16px, Shift 64px, double-click resets); a column takes 'size' (px), 'minSize' (48), 'maxSize' (960) and 'resizable' => false to stay fixed.
+     loading, error (a message), labels: ['view' => …, 'columns' => …, …] to override any string.
+     Slots: toolbar (more controls after the filters), bulk (actions in the selection bar), empty (when there are no rows at all), expanded (the row's details).
      Events (bubbling): nq-data-table-row-click { row }, nq-data-table-action { action, row }, nq-data-table-selection { ids }, nq-data-table-edit { row, column, value, promise }:
      set event.detail.promise to a Promise (or one resolving to { error }); until it settles the cell shows the value as pending and an error rolls it back.
-     Not ported here: column pinning and resizing. Needs the Alpine runtime (@nasaqScripts). --}}
+     Needs the Alpine runtime (@nasaqScripts). --}}
 @props([
     'label', 'columns' => [], 'rows' => [], 'rowKey' => 'id', 'nameKey' => null, 'selectable' => false, 'multiSort' => false, 'pageSize' => 0, 'pageSizeOptions' => [],
     'search' => true, 'viewOptions' => true, 'densityMenu' => false, 'density' => 'default', 'frame' => false, 'bordered' => false, 'striped' => false, 'hover' => true,
     'rowActions' => [], 'actionsKey' => null, 'contextMenu' => true, 'rowClick' => false, 'expand' => null, 'loading' => false, 'error' => null, 'labels' => [], 'locale' => null,
+    'pinning' => false, 'resizable' => false, 'expandWhen' => null,
 ])
 @php
     $ar = \Nasaq\Nasaq::rtl();
@@ -39,6 +44,7 @@
             'ascending' => 'ascending', 'descending' => 'descending', 'multiSortHint' => 'Shift-click to sort by more columns', 'density' => 'Density',
             'compact' => 'Compact', 'default' => 'Default', 'comfortable' => 'Comfortable', 'rowsPerPage' => 'Rows per page', 'rangeFrom' => 'From', 'rangeTo' => 'To',
             'rangeAtLeast' => '≥ {v}', 'rangeAtMost' => '≤ {v}', 'yes' => 'Yes', 'no' => 'No',
+            'sortPriority' => 'sort {n}, {dir}', 'resize' => 'Resize {name}', 'pin' => 'Pin', 'pinStart' => 'Pin to start', 'pinEnd' => 'Pin to end', 'unpin' => 'Unpin',
         ],
         'ar' => [
             'search' => 'ابحث…', 'clearSearch' => 'مسح البحث', 'view' => 'العرض', 'columns' => 'الأعمدة', 'selectAll' => 'تحديد كل صفوف هذه الصفحة', 'selectRow' => 'تحديد {name}',
@@ -50,6 +56,7 @@
             'ascending' => 'تصاعدي', 'descending' => 'تنازلي', 'multiSortHint' => 'اضغط مع Shift للترتيب حسب أعمدة أخرى', 'density' => 'الكثافة',
             'compact' => 'مضغوطة', 'default' => 'عادية', 'comfortable' => 'مريحة', 'rowsPerPage' => 'صفوف في الصفحة', 'rangeFrom' => 'من', 'rangeTo' => 'إلى',
             'rangeAtLeast' => '≥ {v}', 'rangeAtMost' => '≤ {v}', 'yes' => 'نعم', 'no' => 'لا',
+            'sortPriority' => 'ترتيب {n}، {dir}', 'resize' => 'تغيير عرض {name}', 'pin' => 'التثبيت', 'pinStart' => 'تثبيت في البداية', 'pinEnd' => 'تثبيت في النهاية', 'unpin' => 'إلغاء التثبيت',
         ],
     ];
     $t = array_merge($strings[$ar ? 'ar' : 'en'], (array) $labels);
@@ -69,16 +76,33 @@
         'density' => $density !== 'default' ? $density : null,
         'locale' => $locale ?? ($ar ? 'ar' : 'en'),
         'expand' => $expand,
+        'expandSlot' => isset($expanded) ? true : null,
+        'expandWhen' => isset($expanded) ? $expandWhen : null,
+        'pinning' => $pinning ? true : null,
+        'resizable' => $resizable ? true : null,
         'actions' => array_map(fn ($a) => array_filter(array_intersect_key((array) $a, array_flip(['id', 'group', 'visibleWhen', 'disabledWhen'])), fn ($v) => $v !== null), array_values((array) $rowActions)),
         'actionsKey' => $actionsKey,
         'contextMenu' => $contextMenu ? null : false,
-        'labels' => array_intersect_key($t, array_flip(['selectRow', 'rowActions', 'expandRow', 'details', 'selected', 'range', 'saving', 'saved', 'saveFailed', 'saveFailedFor', 'invalidNumber', 'invalidDate', 'rangeAtLeast', 'rangeAtMost', 'editCell'])),
+        'labels' => array_intersect_key($t, array_flip(['selectRow', 'rowActions', 'expandRow', 'details', 'selected', 'range', 'saving', 'saved', 'saveFailed', 'saveFailedFor', 'invalidNumber', 'invalidDate', 'rangeAtLeast', 'rangeAtMost', 'editCell', 'sortPriority', 'ascending', 'descending'])),
     ], fn ($v) => $v !== null);
     $actions = array_values(array_map(fn ($a) => (array) $a, (array) $rowActions));
     $hide = 'style="display: none"';
     $q = fn ($s) => "'" . str_replace(['\\', "'"], ['\\\\', "\\'"], $s) . "'";
     $clickable = (bool) $rowClick;
-    $expandable = (bool) $expand;
+    $expandable = (bool) $expand || isset($expanded);
+    $pins = $pinning || (bool) array_filter($cols, fn ($c) => ! empty($c['pin']));
+    // Pinned cells: sticky with an opaque background (row hover, selection and stripes tint it as an overlay) and a 1px divider on the edge column.
+    $edgeCls = 'data-[edge]:after:pointer-events-none data-[edge]:after:absolute data-[edge]:after:inset-y-0 data-[edge]:after:w-px data-[edge]:after:bg-border data-[edge=start]:after:end-0 data-[edge=end]:after:start-0';
+    $pinCell = $pins ? 'data-[pin]:sticky data-[pin]:z-[1] data-[pin]:bg-[var(--nq-data-table-pin-bg)] '
+        . ($striped ? 'group-[.is-stripe]/row:data-[pin]:bg-[image:linear-gradient(var(--nq-data-table-stripe),var(--nq-data-table-stripe))] ' : '')
+        . ($hover ? 'group-hover/row:data-[pin]:bg-[image:linear-gradient(var(--nq-hover),var(--nq-hover))] ' : '')
+        . 'group-data-[state=selected]/row:data-[pin]:bg-[image:linear-gradient(var(--nq-selected),var(--nq-selected))] ' . $edgeCls . ' ' : '';
+    $pinHead = $pins ? 'data-[pin]:sticky data-[pin]:z-[1] data-[pin]:bg-[var(--nq-data-table-pin-bg)] '
+        . ($frame ? 'data-[pin]:bg-[image:linear-gradient(var(--nq-data-table-head-tint),var(--nq-data-table-head-tint))] ' : '') . $edgeCls . ' ' : '';
+    // The attributes a cell of column $id carries when the table pins: its side, the edge marker, and order + sticky offset.
+    $pa = fn (string $id, bool $utility = false) => $pins
+        ? ($utility ? 'data-col="'.$id.'" ' : '').'x-bind:data-pin="pinFor(\''.$id.'\')" x-bind:data-edge="edgeOf(\''.$id.'\')" x-bind:style="cellStyle(\''.$id.'\')"'
+        : '';
     $fixed = ($selectable ? 1 : 0) + ($expandable ? 1 : 0) + (count($actions) ? 1 : 0);
     $span = count($cols) + ($selectable ? 1 : 0) + ($expandable ? 1 : 0) + (count($actions) ? 1 : 0);
     $searchText = is_string($search) ? $search : $t['search'];
@@ -163,7 +187,7 @@
 
             @isset($toolbar){{ $toolbar }}@endisset
 
-            @if ($viewOptions && (count($hideable) || $densityMenu))
+            @if ($viewOptions && (count($hideable) || $densityMenu || $pinning))
                 <x-nq::dropdown-menu>
                     <x-nq::dropdown-menu.trigger size="sm" class="ms-auto">
                         <x-lucide-settings-2 aria-hidden="true" />
@@ -178,8 +202,31 @@
                                 @endforeach
                             </x-nq::dropdown-menu.group>
                         @endif
-                        @if ($densityMenu)
+                        @if ($pinning)
                             @if (count($hideable))<x-nq::dropdown-menu.separator />@endif
+                            <x-nq::dropdown-menu.group>
+                                <x-nq::dropdown-menu.label>{{ $t['pin'] }}</x-nq::dropdown-menu.label>
+                                @foreach ($cols as $c)
+                                    <div x-show="shown['{{ $c['id'] }}']" role="none" class="contents" data-pin-column="{{ $c['id'] }}">
+                                        <x-nq::dropdown-menu.sub>
+                                            <x-nq::dropdown-menu.sub-trigger>
+                                                <span class="min-w-0 flex-1 truncate">{{ $c['header'] }}</span>
+                                                <span class="text-caption text-muted-foreground" x-show="pinOf('{{ $c['id'] }}')" x-text="pinOf('{{ $c['id'] }}') === 'start' ? {{ $q($t['pinStart']) }} : {{ $q($t['pinEnd']) }}" {!! $hide !!}></span>
+                                            </x-nq::dropdown-menu.sub-trigger>
+                                            <x-nq::dropdown-menu.sub-content class="min-w-40">
+                                                <x-nq::dropdown-menu.radio-group :value="$c['pin'] ?? 'none'" x-model="pinSel['{{ $c['id'] }}']">
+                                                    <x-nq::dropdown-menu.radio-item value="start">{{ $t['pinStart'] }}</x-nq::dropdown-menu.radio-item>
+                                                    <x-nq::dropdown-menu.radio-item value="end">{{ $t['pinEnd'] }}</x-nq::dropdown-menu.radio-item>
+                                                    <x-nq::dropdown-menu.radio-item value="none">{{ $t['unpin'] }}</x-nq::dropdown-menu.radio-item>
+                                                </x-nq::dropdown-menu.radio-group>
+                                            </x-nq::dropdown-menu.sub-content>
+                                        </x-nq::dropdown-menu.sub>
+                                    </div>
+                                @endforeach
+                            </x-nq::dropdown-menu.group>
+                        @endif
+                        @if ($densityMenu)
+                            @if (count($hideable) || $pinning)<x-nq::dropdown-menu.separator />@endif
                             <x-nq::dropdown-menu.group>
                                 <x-nq::dropdown-menu.label>{{ $t['density'] }}</x-nq::dropdown-menu.label>
                                 <x-nq::dropdown-menu.radio-group :value="$density" x-model="density">
@@ -206,13 +253,14 @@
     @endif
 
     <div data-slot="table-container" role="region" tabindex="0" aria-label="{{ $label }}" @if ($loading) aria-busy="true" @endif
+        @if ($pins) style="--nq-data-table-pin-bg: {{ $frame ? 'var(--card)' : 'var(--background)' }}; --nq-data-table-head-tint: color-mix(in oklab, var(--secondary) 50%, transparent); --nq-data-table-stripe: color-mix(in oklab, var(--secondary) 40%, transparent)" @endif
         class="{{ \Nasaq\Cn::merge('relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus', $frame ? 'rounded-card border border-border bg-card' : '') }}">
-        <div data-slot="table" role="table" aria-label="{{ $label }}" x-bind:style="'grid-template-columns: repeat(' + (shownCount() + {{ $fixed }}) + ', auto)'" x-bind:data-density="density" @if ($frame) data-frame @endif @if ($bordered) data-bordered @endif @if ($striped) data-striped @endif
-            class="{{ \Nasaq\Cn::merge('grid w-full min-w-max text-body-sm', $frame ? '[&_[data-slot=table-header]]:bg-secondary/50' : '', $bordered ? '[&_[role=cell]:not(:last-child)]:border-e [&_[role=cell]]:border-border [&_[role=columnheader]:not(:last-child)]:border-e [&_[role=columnheader]]:border-border' : '') }}">
+        <div data-slot="table" role="table" aria-label="{{ $label }}" @if ($pins || $resizable) x-bind:style="gridCols()" @else x-bind:style="'grid-template-columns: repeat(' + (shownCount() + {{ $fixed }}) + ', auto)'" @endif x-bind:data-density="density" @if ($frame) data-frame @endif @if ($bordered) data-bordered @endif @if ($striped) data-striped @endif
+            class="{{ \Nasaq\Cn::merge('grid w-full min-w-max text-body-sm', $resizable ? '[&_[role=cell]]:overflow-hidden' : '', $frame ? '[&_[data-slot=table-header]]:bg-secondary/50' : '', $bordered ? '[&_[role=cell]:not(:last-child)]:border-e [&_[role=cell]]:border-border [&_[role=columnheader]:not(:last-child)]:border-e [&_[role=columnheader]]:border-border' : '') }}">
             <div data-slot="table-header" role="rowgroup" class="contents">
                 <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid border-b border-border">
                     @if ($selectable)
-                        <div role="columnheader" data-slot="table-head" x-bind:class="pad" class="flex items-center h-row w-10 pe-0 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                        <div role="columnheader" data-slot="table-head" {!! $pa('__nq-select', true) !!} x-bind:class="pad" class="{{ $pinHead }}flex items-center h-row w-10 pe-0 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
                             <button type="button" role="checkbox" data-slot="checkbox" aria-label="{{ $t['selectAll'] }}" x-on:click="togglePage()"
                                 x-bind:aria-checked="pageSelection() === 'all' ? 'true' : (pageSelection() === 'some' ? 'mixed' : 'false')"
                                 x-bind:data-checked="pageSelection() === 'all' ? '' : null" x-bind:data-indeterminate="pageSelection() === 'some' ? '' : null"
@@ -225,32 +273,46 @@
                         </div>
                     @endif
                     @if ($expandable)
-                        <div role="columnheader" data-slot="table-head" x-bind:class="pad" class="flex items-center h-row w-10 pe-0 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground"><span class="sr-only">{{ str_replace('{name}', '', $t['details']) }}</span></div>
+                        <div role="columnheader" data-slot="table-head" {!! $pa('__nq-expand', true) !!} x-bind:class="pad" class="{{ $pinHead }}flex items-center h-row w-10 pe-0 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground"><span class="sr-only">{{ str_replace('{name}', '', $t['details']) }}</span></div>
                     @endif
                     @foreach ($cols as $c)
-                        @php $align = ($c['align'] ?? 'start') === 'end' ? 'text-end justify-end' : (($c['align'] ?? 'start') === 'center' ? 'text-center justify-center' : 'text-start'); @endphp
-                        <div role="columnheader" data-slot="table-head" data-col="{{ $c['id'] }}" x-show="shown['{{ $c['id'] }}']" x-bind:class="pad" @if (! empty($c['sortable'])) x-bind:aria-sort="ariaSort('{{ $c['id'] }}')" @endif
-                            class="flex items-center h-row {{ $align }} align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                        @php
+                            $align = ($c['align'] ?? 'start') === 'end' ? 'text-end justify-end' : (($c['align'] ?? 'start') === 'center' ? 'text-center justify-center' : 'text-start');
+                            $canResize = $resizable && ($c['resizable'] ?? true) !== false;
+                            $handle = 'absolute inset-y-0 end-0 z-[2] w-2 cursor-col-resize touch-none outline-none after:absolute after:inset-y-2 after:end-0 after:w-px after:bg-border after:transition-colors after:duration-150 hover:after:bg-primary focus-visible:after:w-0.5 focus-visible:after:bg-nq-focus';
+                        @endphp
+                        <div role="columnheader" data-slot="table-head" data-col="{{ $c['id'] }}" x-show="shown['{{ $c['id'] }}']" {!! $pa($c['id']) !!} x-bind:class="pad" @if (! empty($c['sortable'])) x-bind:aria-sort="ariaSort('{{ $c['id'] }}')" @endif
+                            class="{{ $pinHead }}{{ $canResize ? 'relative ' : '' }}flex items-center h-row {{ $align }} align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
                             @if (! empty($c['sortable']))
                                 <button type="button" @if ($multiSort) title="{{ $t['multiSortHint'] }}" @endif x-on:click="toggleSort('{{ $c['id'] }}', $event.shiftKey)"
                                     x-bind:class="sortOf('{{ $c['id'] }}') ? 'text-foreground' : ''"
                                     class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus {{ ($c['align'] ?? '') === 'end' ? 'flex-row-reverse' : '' }}">
-                                    <span>{{ $c['header'] }}</span>
+                                    <span @if ($resizable) class="truncate" @endif>{{ $c['header'] }}</span>
                                     <x-lucide-chevrons-up-down aria-hidden="true" class="size-3.5 shrink-0 opacity-40" x-show="! sortOf('{{ $c['id'] }}')" />
                                     <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('{{ $c['id'] }}') === 'asc'" {!! $hide !!} />
                                     <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('{{ $c['id'] }}') === 'desc'" {!! $hide !!} />
                                     @if ($multiSort)
                                         <span aria-hidden="true" data-slot="data-table-sort-index" x-show="sorting.length > 1 && sortIndex('{{ $c['id'] }}') >= 0" x-text="sortIndex('{{ $c['id'] }}') + 1" {!! $hide !!}
                                             class="text-[10px] leading-none tabular-nums text-muted-foreground"></span>
+                                        <span class="sr-only" x-text="sortPriorityText('{{ $c['id'] }}')"></span>
                                     @endif
                                 </button>
+                            @elseif ($resizable)
+                                <span class="min-w-0 truncate">{{ $c['header'] }}</span>
                             @else
                                 {{ $c['header'] }}
+                            @endif
+                            @if ($canResize)
+                                <div role="separator" aria-orientation="vertical" aria-label="{{ str_replace('{name}', strip_tags($c['header']), $t['resize']) }}" tabindex="0" data-slot="data-table-resize-handle"
+                                    aria-valuemin="{{ $c['minSize'] ?? 48 }}" aria-valuemax="{{ $c['maxSize'] ?? 960 }}" x-bind:aria-valuenow="sizes['{{ $c['id'] }}'] ? Math.round(sizes['{{ $c['id'] }}']) : null"
+                                    x-on:pointerdown="resizeStart($event, '{{ $c['id'] }}')" x-on:pointermove="resizeMove($event, '{{ $c['id'] }}')" x-on:pointerup="resizeEnd()" x-on:pointercancel="resizeEnd()"
+                                    x-on:click.stop x-on:dblclick="setColumnSize('{{ $c['id'] }}', null)" x-on:keydown="resizeKey($event, '{{ $c['id'] }}')"
+                                    class="{{ $handle }}"></div>
                             @endif
                         </div>
                     @endforeach
                     @if (count($actions))
-                        <div role="columnheader" data-slot="table-head" x-bind:class="pad" class="flex items-center h-row w-12 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground"><span class="sr-only">{{ $t['actions'] }}</span></div>
+                        <div role="columnheader" data-slot="table-head" {!! $pa('__nq-actions', true) !!} x-bind:class="pad" class="{{ $pinHead }}flex items-center h-row w-12 text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground"><span class="sr-only">{{ $t['actions'] }}</span></div>
                     @endif
                 </div>
             </div>
@@ -296,10 +358,10 @@
                             x-on:keydown="rowKey($event, row, index, {{ $clickable ? 'true' : 'false' }})"
                             @if (count($actions) && $contextMenu) x-on:contextmenu="rowContext(row, $event)" x-on:touchstart.passive="rowTouch(row, $event)" x-on:touchmove.passive="rowTouchEnd()" x-on:touchend="rowTouchEnd()" x-on:touchcancel="rowTouchEnd()" @endif
                             @if ($clickable) x-on:click="rowClick(row, $event)" @endif
-                            x-bind:class="{{ $striped ? "(index % 2 === 1 ? 'bg-secondary/40 ' : '') + " : '' }}(isOpen(row) ? 'border-b-0 ' : '') + (ctxOpen && ctxRow === row ? 'bg-nq-hover' : '')"
+                            x-bind:class="{{ $striped ? "(index % 2 === 1 ? 'bg-secondary/40" . ($pins ? ' is-stripe' : '') . " ' : '') + " : '' }}(isOpen(row) ? 'border-b-0 ' : '') + (ctxOpen && ctxRow === row ? 'bg-nq-hover' : '')"
                             class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-[state=selected]:bg-nq-selected {{ $hover ? 'hover:bg-nq-hover' : '' }} {{ $clickable ? 'cursor-pointer' : '' }}">
                             @if ($selectable)
-                                <div role="cell" data-slot="table-cell" x-bind:class="pad" class="flex items-center h-row w-10 pe-0 align-middle whitespace-nowrap">
+                                <div role="cell" data-slot="table-cell" {!! $pa('__nq-select') !!} x-bind:class="pad" class="{{ $pinCell }}flex items-center h-row w-10 pe-0 align-middle whitespace-nowrap">
                                     <button type="button" role="checkbox" data-slot="checkbox" x-bind:aria-label="say('selectRow', row)" x-on:click="toggleRow(row)"
                                         aria-checked="false" x-bind:aria-checked="isSelected(row) ? 'true' : 'false'" x-bind:data-checked="isSelected(row) ? '' : null" x-bind:data-unchecked="isSelected(row) ? null : ''"
                                         x-bind:tabindex="index === Math.min(active, pageRows.length - 1) ? 0 : -1" class="{{ $box }}">
@@ -308,7 +370,7 @@
                                 </div>
                             @endif
                             @if ($expandable)
-                                <div role="cell" data-slot="table-cell" x-bind:class="pad" class="flex items-center h-row w-10 pe-0 align-middle whitespace-nowrap">
+                                <div role="cell" data-slot="table-cell" {!! $pa('__nq-expand') !!} x-bind:class="pad" class="{{ $pinCell }}flex items-center h-row w-10 pe-0 align-middle whitespace-nowrap">
                                     <button type="button" data-slot="data-table-expand" x-show="canExpand(row)" x-on:click="toggleExpanded(row)" x-bind:aria-expanded="String(isOpen(row))"
                                         x-bind:aria-label="say('expandRow', row)" x-bind:tabindex="index === Math.min(active, pageRows.length - 1) ? 0 : -1"
                                         class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus [&_svg]:size-4">
@@ -325,14 +387,14 @@
                                     $edit = $c['edit'] ?? null;
                                     $number = in_array($c['type'], ['number', 'currency'], true) ? 'tabular-nums' : '';
                                 @endphp
-                                <div role="cell" data-slot="table-cell" data-cell-col="{{ $id }}" x-show="shown['{{ $id }}']" x-bind:class="pad"
+                                <div role="cell" data-slot="table-cell" data-cell-col="{{ $id }}" x-show="shown['{{ $id }}']" {!! $pa($id) !!} x-bind:class="pad"
                                     @if ($edit)
                                         x-bind:data-cell-row="rid(row)" tabindex="-1" x-bind:data-editable="editable(row, {{ $cx }}) ? '' : null" x-bind:data-editing="isEditing(row, {{ $cx }}) ? '' : null"
                                         x-bind:aria-busy="isPending(row, {{ $cx }}) ? 'true' : null" x-bind:aria-invalid="failure(row, {{ $cx }}) ? 'true' : null"
                                         x-on:dblclick="beginEdit(row, {{ $cx }}, $event)" x-on:keydown.enter.self.prevent="beginEdit(row, {{ $cx }}, $event)" x-on:keydown.f2.self.prevent="beginEdit(row, {{ $cx }}, $event)"
                                         x-bind:class="failure(row, {{ $cx }}) ? 'bg-nq-danger-soft' : ''"
                                     @endif
-                                    class="flex items-center relative h-row align-middle whitespace-nowrap {{ $align }} {{ $edit ? 'outline-none focus:outline-2 focus:-outline-offset-2 focus:outline-nq-focus' : '' }}">
+                                    class="{{ $pinCell }}flex items-center relative h-row align-middle whitespace-nowrap {{ $align }} {{ $edit ? 'outline-none focus:outline-2 focus:-outline-offset-2 focus:outline-nq-focus' : '' }}">
                                     @if ($edit === 'switch')
                                         <button type="button" role="switch" data-slot="switch" x-bind:aria-label="editName(row, {{ $cx }})" x-on:click="toggleSwitch(row, {{ $cx }})"
                                             x-bind:aria-checked="shownValue(row, {{ $cx }}) === true ? 'true' : 'false'" aria-checked="false"
@@ -412,7 +474,7 @@
                                             @elseif ($c['type'] === 'boolean')
                                                 <span x-text="shownValue(row, {{ $cx }}) === true ? {{ $q($t['yes']) }} : (shownValue(row, {{ $cx }}) === false ? {{ $q($t['no']) }} : '')"></span>
                                             @else
-                                                <span class="min-w-0 flex-1 {{ $number }}" x-text="shownText(row, {{ $cx }})"></span>
+                                                <span class="min-w-0 flex-1 {{ $resizable ? 'truncate' : '' }} {{ $number }}" x-text="shownText(row, {{ $cx }})"></span>
                                             @endif
                                             @if ($edit)
                                                 <x-lucide-loader-circle aria-hidden="true" x-show="isPending(row, {{ $cx }})" {!! $hide !!} class="size-3.5 shrink-0 animate-spin text-muted-foreground motion-reduce:animate-none" />
@@ -427,7 +489,7 @@
                             @endforeach
 
                             @if (count($actions))
-                                <div role="cell" data-slot="table-cell" x-bind:class="pad" class="flex items-center h-row w-12 pe-2 text-end align-middle whitespace-nowrap">
+                                <div role="cell" data-slot="table-cell" {!! $pa('__nq-actions') !!} x-bind:class="pad" class="{{ $pinCell }}flex items-center h-row w-12 pe-2 text-end align-middle whitespace-nowrap">
                                     <x-nq::dropdown-menu>
                                         <x-nq::dropdown-menu.trigger variant="ghost" size="icon-sm" data-slot="data-table-row-actions" x-bind:aria-label="say('rowActions', row)" x-show="hasActions(row)"
                                             x-bind:tabindex="index === Math.min(active, pageRows.length - 1) ? 0 : -1"
@@ -458,7 +520,7 @@
                             <template x-if="isOpen(row)">
                                 <div role="row" data-slot="data-table-expanded" class="col-span-full grid grid-cols-subgrid border-b border-border">
                                     <div role="cell" data-slot="table-cell" class="col-span-full h-auto p-0 whitespace-normal">
-                                        <section x-bind:aria-label="say('details', row)" class="border-s-2 border-nq-action/50 bg-secondary/40 px-4 py-3 ps-14" x-text="row[expandKey]"></section>
+                                        <section x-bind:aria-label="say('details', row)" class="border-s-2 border-nq-action/50 bg-secondary/40 px-4 py-3 ps-14" @unless (isset($expanded)) x-text="row[expandKey]" @endunless>@isset($expanded){{ $expanded }}@endisset</section>
                                     </div>
                                 </div>
                             </template>

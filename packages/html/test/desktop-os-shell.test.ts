@@ -75,13 +75,53 @@ describe("desktop-os-shell (Blade example)", () => {
 
   it("renders the menu bar menus and fires nq-desktop-menu", async () => {
     await mount("desktop-os-shell");
-    expect(document.querySelector('[data-slot="menubar-trigger"]')!.textContent).toBe("File");
+    const triggers = [...document.querySelectorAll<HTMLElement>('[data-slot="menubar-trigger"]')];
+    expect(triggers.map((t) => t.textContent)).toEqual(["System", "File"]);
     let id = "";
     document.addEventListener("nq-desktop-menu", (e) => (id = (e as CustomEvent).detail.id));
-    document.querySelector<HTMLElement>('[data-slot="menubar-trigger"]')!.click();
+    triggers[1]!.click();
     await tick();
     document.querySelector<HTMLElement>('[data-id="file.new"]')!.click();
     await tick();
     expect(id).toBe("file.new");
+  });
+
+  it("the system power menu lists its actions and asks before Shut Down, firing only on Confirm", async () => {
+    await mount("desktop-os-shell");
+    const events: string[] = [];
+    const listener = (e: Event) => events.push((e as CustomEvent).detail.id);
+    document.addEventListener("nq-desktop-menu", listener);
+    document.querySelector<HTMLElement>('[data-slot="menubar-trigger"]')!.click();
+    await tick();
+    const ids = [...document.querySelectorAll<HTMLElement>('[data-id^="system."]')].map((i) => i.dataset.id);
+    expect(ids).toEqual(["system.about", "system.settings", "system.sleep", "system.restart", "system.shutDown", "system.logOut"]);
+    expect(document.querySelector('[data-id="system.about"]')!.textContent).toContain("About Nasaq");
+    expect(document.querySelector('[data-id="system.sleep"]')!.hasAttribute("data-confirm")).toBe(false);
+    // Sleep never asks.
+    document.querySelector<HTMLElement>('[data-id="system.sleep"]')!.click();
+    await tick();
+    expect(events).toEqual(["system.sleep"]);
+    // Shut Down asks first; Cancel stops it.
+    const dialog = () => document.querySelector<HTMLElement>('[data-slot="confirm-dialog"]')!;
+    const choose = (label: string) =>
+      [...dialog().querySelectorAll<HTMLElement>("button")].find((b) => b.textContent!.trim() === label && b.style.display !== "none")!.click();
+    document.querySelector<HTMLElement>('[data-slot="menubar-trigger"]')!.click();
+    await tick();
+    document.querySelector<HTMLElement>('[data-id="system.shutDown"]')!.click();
+    await tick();
+    expect(dialog().hasAttribute("data-open")).toBe(true);
+    expect(dialog().querySelector('[data-slot="alert-dialog-title"]')!.textContent).toBe("Shut down now?");
+    choose("Cancel");
+    await tick();
+    expect(events).toEqual(["system.sleep"]);
+    // Confirm lets it through.
+    document.querySelector<HTMLElement>('[data-slot="menubar-trigger"]')!.click();
+    await tick();
+    document.querySelector<HTMLElement>('[data-id="system.shutDown"]')!.click();
+    await tick();
+    choose("Shut Down");
+    await tick();
+    expect(events).toEqual(["system.sleep", "system.shutDown"]);
+    document.removeEventListener("nq-desktop-menu", listener);
   });
 });

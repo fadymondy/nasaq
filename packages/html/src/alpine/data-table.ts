@@ -22,9 +22,30 @@
 // Row actions. `actions` ([{ id, group?, visibleWhen?, disabledWhen? }]) mirror the Blade `row-actions`. A condition is { field, in | notIn | eq | ne | empty } or { any | all: [condition, …] };
 // `actionsKey` names a row field listing the action ids that row allows. The same list opens as a context menu (right-click, long-press, Shift+F10 or
 // the Menu key on a row) unless `contextMenu: false`; inputs, links and Shift + right-click keep the browser's menu.
-// Not ported here: column pinning and resizing of the other stacks.
+//
+// Pinning and resizing. A column takes `pin: 'start' | 'end'` (sticky to that edge; the select, expand and actions columns follow the side they sit on),
+// and the `pinning` option adds a Pin submenu per column to the View menu. `resizable: true` adds a drag handle (a focusable separator: arrows
+// resize by 16px, Shift 64px, double-click resets) to every header whose column does not set `resizable: false`; a column takes `size`, `minSize` (48)
+// and `maxSize` (960) in px. Expansion is the row field named by `expand`, or a slot rendered in the row's scope (`expandSlot: true`) shown for the rows
+// matching `expandWhen` (a condition like an action's `visibleWhen`; every row when omitted).
 
-import { cellKey, coerceEditValue, inRange, isActiveRange, nextSorting, sameCellValue, sortTableRows, type CellValue, type DataTableRange, type DataTableSort } from "./data-table-logic";
+import {
+  cellKey,
+  clampColumnSize,
+  coerceEditValue,
+  inRange,
+  isActiveRange,
+  nextSorting,
+  orderByPinning,
+  pinColumnIn,
+  pinOffsets,
+  sameCellValue,
+  sortTableRows,
+  type CellValue,
+  type DataTablePinning,
+  type DataTableRange,
+  type DataTableSort,
+} from "./data-table-logic";
 import type { Magics, Register } from "./types";
 
 type Condition = { field?: string; in?: unknown[]; notIn?: unknown[]; eq?: unknown; ne?: unknown; empty?: boolean; any?: Condition[]; all?: Condition[] };
@@ -84,6 +105,14 @@ interface Column {
   /** A row condition (as an action's `disabledWhen`): matching rows are not editable, like React's `edit.disabled`. */
   editDisabledWhen?: Condition;
   hidden?: boolean;
+  /** Pin the column to the start or end edge. */
+  pin?: "start" | "end";
+  /** Starting width in px when the table is `resizable`; with `minSize` (48) and `maxSize` (960) as the limits. */
+  size?: number;
+  minSize?: number;
+  maxSize?: number;
+  /** false keeps this column a fixed width in a `resizable` table. */
+  resizable?: boolean;
 }
 interface Options {
   key?: string;
@@ -93,6 +122,13 @@ interface Options {
   density?: "compact" | "default" | "comfortable";
   locale?: string;
   expand?: string;
+  /** Rows expand to the `expanded` slot, shown for rows matching `expandWhen` (all rows when omitted). */
+  expandSlot?: boolean;
+  expandWhen?: Condition;
+  /** Adds a Pin submenu per column to the View menu. */
+  pinning?: boolean;
+  /** Adds a drag handle to every resizable header. */
+  resizable?: boolean;
   /** Row field that names a row for "Select …" and "Actions for …". Default: the key. */
   nameKey?: string;
   /** Row actions, for per-row visibility and the context menu. */
@@ -115,6 +151,9 @@ interface Labels {
   rangeAtLeast: string;
   rangeAtMost: string;
   editCell: string;
+  sortPriority: string;
+  ascending: string;
+  descending: string;
 }
 
 const LABELS: Labels = {
@@ -129,7 +168,15 @@ const LABELS: Labels = {
   rangeAtLeast: "≥ {v}",
   rangeAtMost: "≤ {v}",
   editCell: "{column}, {row}",
+  sortPriority: "sort {n}, {dir}",
+  ascending: "ascending",
+  descending: "descending",
 };
+
+// Ids of the utility columns, for pin offsets and order.
+const SELECT_COL = "__nq-select";
+const EXPAND_COL = "__nq-expand";
+const ACTIONS_COL = "__nq-actions";
 
 interface State extends Magics {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -150,6 +197,15 @@ interface State extends Magics {
   selection: Record<string, boolean>;
   expanded: Record<string, boolean>;
   expandKey: string;
+  expandSlot: boolean;
+  expandWhen: Condition | undefined;
+  pinning: DataTablePinning & { start: string[]; end: string[] };
+  pinSel: Record<string, string>;
+  pinMenu: boolean;
+  resizable: boolean;
+  sizes: Record<string, number>;
+  offsets: Record<string, number>;
+  drag: { id: string; x: number; w: number; dir: number } | null;
   nameKey: string;
   editing: { rowId: string; colId: string } | null;
   draft: string;
@@ -190,6 +246,18 @@ export const dataTable: Register = (Alpine) => {
     selection: {} as Record<string, boolean>,
     expanded: {} as Record<string, boolean>,
     expandKey: options.expand ?? "",
+    expandSlot: !!options.expandSlot,
+    expandWhen: options.expandWhen,
+    pinning: {
+      start: (initialColumns ?? []).filter((c) => c.pin === "start").map((c) => c.id),
+      end: (initialColumns ?? []).filter((c) => c.pin === "end").map((c) => c.id),
+    },
+    pinSel: Object.fromEntries((initialColumns ?? []).map((c) => [c.id, c.pin ?? "none"])) as Record<string, string>,
+    pinMenu: !!options.pinning,
+    resizable: !!options.resizable,
+    sizes: Object.fromEntries((initialColumns ?? []).filter((c) => c.size).map((c) => [c.id, c.size!])) as Record<string, number>,
+    offsets: {} as Record<string, number>,
+    drag: null as { id: string; x: number; w: number; dir: number } | null,
     nameKey: options.nameKey ?? options.key ?? "id",
     editing: null as { rowId: string; colId: string } | null,
     draft: "",
@@ -216,6 +284,18 @@ export const dataTable: Register = (Alpine) => {
       this.$watch("facet", () => (this.page = 0));
       this.$watch("ranges", () => (this.page = 0));
       this.$watch("selection", () => this.root?.dispatchEvent(new CustomEvent("nq-data-table-selection", { bubbles: true, detail: { ids: this.selectedIds() } })));
+      // The View menu's Pin choices (radio groups bound to `pinSel`) move columns between the sides.
+      this.$watch("pinSel", () => this.syncPins());
+      if (this.pinMenu || this.columns.some((c) => c.pin)) {
+        // Sticky offsets come from the measured header widths, so they follow resizing, column toggles and density.
+        const again = () => this.$nextTick(() => this.measure());
+        for (const k of ["pinning", "shown", "sizes", "density", "rows"]) this.$watch(k, again);
+        again();
+        if (typeof ResizeObserver !== "undefined") {
+          const ro = new ResizeObserver(() => this.measure());
+          for (const th of Array.from(this.root.querySelectorAll('[data-slot="table-head"]'))) ro.observe(th);
+        }
+      }
     },
 
     /* ---- values ---- */
@@ -498,6 +578,13 @@ export const dataTable: Register = (Alpine) => {
     sortOf(this: State, colId: string): "asc" | "desc" | null {
       return this.sorting.find((s) => s.id === colId)?.direction ?? null;
     },
+    /** Screen-reader text for a later sort key ("sort 2, ascending"); empty for the first or an unsorted column. */
+    sortPriorityText(this: State, colId: string): string {
+      const i = this.sortIndex(colId);
+      if (this.sorting.length < 2 || i < 1) return "";
+      const dir = this.sorting[i]!.direction === "asc" ? this.labels.ascending : this.labels.descending;
+      return fill(this.labels.sortPriority, { n: String(i + 1), dir });
+    },
     sortIndex(this: State, colId: string): number {
       return this.sorting.findIndex((s) => s.id === colId);
     },
@@ -509,6 +596,116 @@ export const dataTable: Register = (Alpine) => {
     toggleSort(this: State, colId: string, additive = false) {
       this.sorting = nextSorting(this.sorting, colId, additive && this.multiSort);
       this.page = 0;
+    },
+
+    /* ---- pinning ---- */
+    pinOf(this: State, id: string): "start" | "end" | null {
+      return this.pinning.start.includes(id) ? "start" : this.pinning.end.includes(id) ? "end" : null;
+    },
+    get hasStart(): boolean {
+      const s = this as unknown as State;
+      return s.columns.some((c) => s.shown[c.id] && s.pinOf(c.id) === "start");
+    },
+    get hasEnd(): boolean {
+      const s = this as unknown as State;
+      return s.columns.some((c) => s.shown[c.id] && s.pinOf(c.id) === "end");
+    },
+    /** The side a cell sticks to; the select and expand columns follow the start, the actions column the end. */
+    pinFor(this: State & { hasStart: boolean; hasEnd: boolean }, id: string): "start" | "end" | null {
+      if (id === SELECT_COL || id === EXPAND_COL) return this.hasStart ? "start" : null;
+      if (id === ACTIONS_COL) return this.hasEnd ? "end" : null;
+      return this.pinOf(id);
+    },
+    /** The side whose edge column draws the 1px divider: the last start-pinned or first end-pinned shown column. */
+    edgeOf(this: State, id: string): "start" | "end" | null {
+      const side = this.pinOf(id);
+      if (!side || !this.shown[id]) return null;
+      const ids = orderByPinning(this.columns.map((c) => c.id), this.pinning).filter((c) => this.shown[c] && this.pinOf(c) === side);
+      return (side === "start" ? ids[ids.length - 1] : ids[0]) === id ? side : null;
+    },
+    /** Display order: select, expand, columns (start-pinned first, end-pinned last), actions. */
+    orderOf(this: State, id: string): number {
+      if (id === SELECT_COL) return 0;
+      if (id === EXPAND_COL) return 1;
+      if (id === ACTIONS_COL) return 99999;
+      return 2 + orderByPinning(this.columns.map((c) => c.id), this.pinning).indexOf(id);
+    },
+    /** Inline style for a cell of column `id`: its display order and, when pinned, the sticky offset. */
+    cellStyle(this: State, id: string): Record<string, string> {
+      const st: Record<string, string> = { order: String(this.orderOf(id)) };
+      const side = this.pinFor(id);
+      if (side) st[side === "start" ? "inset-inline-start" : "inset-inline-end"] = `${this.offsets[id] ?? 0}px`;
+      return st;
+    },
+    pinColumn(this: State, id: string, side: "start" | "end" | null) {
+      this.pinning = pinColumnIn(this.pinning, id, side) as State["pinning"];
+      if (this.pinSel[id] !== (side ?? "none")) this.pinSel = { ...this.pinSel, [id]: side ?? "none" };
+    },
+    syncPins(this: State) {
+      for (const [id, v] of Object.entries(this.pinSel)) {
+        const want = v === "start" || v === "end" ? v : null;
+        if (want !== this.pinOf(id)) this.pinColumn(id, want);
+      }
+    },
+    /** Measures the header cells and recomputes the sticky offsets. */
+    measure(this: State) {
+      const root = this.root;
+      if (!root) return;
+      const heads = Array.from(root.querySelectorAll<HTMLElement>('[data-slot="table-head"][data-col]'));
+      const list = heads
+        .map((th) => ({ id: th.dataset.col!, pin: this.pinFor(th.dataset.col!), width: th.getBoundingClientRect().width }))
+        .sort((a, b) => this.orderOf(a.id) - this.orderOf(b.id));
+      const next = pinOffsets(list);
+      if (JSON.stringify(next) !== JSON.stringify(this.offsets)) this.offsets = next;
+    },
+
+    /* ---- resizing ---- */
+    canResize(this: State, id: string): boolean {
+      return this.resizable && this.col(id)?.resizable !== false;
+    },
+    setColumnSize(this: State, id: string, width: number | null) {
+      const next = { ...this.sizes };
+      const c = this.col(id);
+      if (width === null) delete next[id];
+      else next[id] = clampColumnSize(width, c?.minSize, c?.maxSize);
+      this.sizes = next;
+    },
+    /** grid-template-columns: one track per shown column in display order, sized ones in px. */
+    gridCols(this: State): string {
+      const tracks: string[] = [];
+      if (this.selectable) tracks.push("auto");
+      if (this.expandKey || this.expandSlot) tracks.push("auto");
+      for (const id of orderByPinning(this.columns.map((c) => c.id), this.pinning)) {
+        if (this.shown[id]) tracks.push(this.sizes[id] ? `${this.sizes[id]}px` : "auto");
+      }
+      if (this.actions.length) tracks.push("auto");
+      return `grid-template-columns: ${tracks.join(" ")}`;
+    },
+    headWidth(el: HTMLElement): { w: number; dir: number } {
+      const th = el.closest<HTMLElement>('[data-slot="table-head"]')!;
+      return { w: th.getBoundingClientRect().width, dir: getComputedStyle(th).direction === "rtl" ? -1 : 1 };
+    },
+    resizeStart(this: State, e: PointerEvent, id: string) {
+      e.preventDefault();
+      e.stopPropagation();
+      const el = e.currentTarget as HTMLElement;
+      el.setPointerCapture?.(e.pointerId);
+      const { w, dir } = this.headWidth(el);
+      this.drag = { id, x: e.clientX, w, dir };
+    },
+    resizeMove(this: State, e: PointerEvent, id: string) {
+      const d = this.drag;
+      if (d && d.id === id) this.setColumnSize(id, d.w + (e.clientX - d.x) * d.dir);
+    },
+    resizeEnd(this: State) {
+      this.drag = null;
+    },
+    resizeKey(this: State, e: KeyboardEvent, id: string) {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      e.preventDefault();
+      const { w, dir } = this.headWidth(e.currentTarget as HTMLElement);
+      const grow = (e.key === "ArrowRight" ? 1 : -1) * dir;
+      this.setColumnSize(id, (this.sizes[id] ?? w) + grow * (e.shiftKey ? 64 : 16));
     },
 
     /* ---- selection ---- */
@@ -547,6 +744,7 @@ export const dataTable: Register = (Alpine) => {
 
     /* ---- expansion ---- */
     canExpand(this: State, row: Row): boolean {
+      if (this.expandSlot) return this.matches(row, this.expandWhen);
       return !!this.expandKey && row[this.expandKey] !== undefined && row[this.expandKey] !== null && row[this.expandKey] !== "";
     },
     isOpen(this: State, row: Row): boolean {

@@ -97,3 +97,79 @@ describe("useShakeToReport", () => {
     expect(onShake).not.toHaveBeenCalled();
   });
 });
+
+describe("movable launcher and My reports", () => {
+  it("snaps, steps and parses launcher spots", async () => {
+    const m = await import(".");
+    expect(m.snapLauncherSpot({ x: 10, y: 300 }, { width: 400, height: 600 })).toEqual({ side: "start", y: 0.5 });
+    expect(m.snapLauncherSpot({ x: 10, y: 300 }, { width: 400, height: 600 }, true).side).toBe("end");
+    expect(m.snapLauncherSpot({ x: 390, y: 0 }, { width: 400, height: 600 }, false, 40).y).toBeCloseTo(36 / 600, 3);
+    expect(m.spotFromPosition("bottom-start")).toEqual({ side: "start", y: 0.9 });
+    expect(m.moveLauncherSpot({ side: "end", y: 0.93 }, "down").y).toBe(0.95);
+    expect(m.moveLauncherSpot({ side: "end", y: 0.5 }, "start").side).toBe("start");
+    expect(m.parseLauncherSpot('{"side":"end","y":0.4}')).toEqual({ side: "end", y: 0.4 });
+    expect(m.parseLauncherSpot("nope")).toBeNull();
+    expect(m.filterHubIssues([{ id: "1", title: "a", status: "open", mine: true }, { id: "2", title: "b", status: "open" }], "mine")).toHaveLength(1);
+  });
+
+  it("moves with Alt + arrows, saves the spot and swallows the click after a drag", async () => {
+    localStorage.clear();
+    const onClick = vi.fn();
+    const onSpotChange = vi.fn();
+    const w = mount(NqFeedbackFloatingLauncher, { props: { movable: true, shape: "tab", onClick, onSpotChange }, attachTo: document.body });
+    expect(w.attributes("data-movable")).toBe("true");
+    expect(w.attributes("aria-keyshortcuts")).toContain("Alt+ArrowUp");
+    expect(w.attributes("title")).toContain("Drag to move");
+    await w.trigger("keydown", { key: "ArrowUp", altKey: true });
+    expect(w.attributes("data-side")).toBe("end");
+    expect(w.attributes("data-position")).toBeUndefined();
+    expect(w.classes()).toContain("-translate-y-1/2");
+    expect(w.classes()).toContain("touch-none");
+    expect(w.attributes("style")).toContain("top: 45%");
+    await w.trigger("keydown", { key: "ArrowLeft", altKey: true });
+    expect(w.attributes("data-side")).toBe("start");
+    expect(w.classes()).toContain("rounded-e-card");
+    expect(JSON.parse(localStorage.getItem("nasaq-feedback-launcher")!)).toEqual({ side: "start", y: 0.45 });
+    expect(onSpotChange).toHaveBeenCalledTimes(2);
+    await w.trigger("click");
+    expect(onClick).toHaveBeenCalledTimes(1);
+    w.unmount();
+  });
+
+  it("reads a saved spot after mount and ignores everything when not movable", async () => {
+    localStorage.setItem("k", '{"side":"start","y":0.3}');
+    const w = mount(NqFeedbackFloatingLauncher, { props: { movable: true, storageKey: "k" } });
+    await flushPromises();
+    expect(w.attributes("data-side")).toBe("start");
+    const fixed = mount(NqFeedbackFloatingLauncher);
+    await fixed.trigger("keydown", { key: "ArrowUp", altKey: true });
+    expect(fixed.attributes("data-side")).toBeUndefined();
+    expect(fixed.attributes("data-position")).toBe("bottom-end");
+  });
+
+  it("shows Mine, Yours, its empty state and Load more", async () => {
+    const list = [
+      { id: "a", title: "Mine one", status: "open" as const, mine: true, author: "Me" },
+      { id: "b", title: "Theirs", status: "open" as const, author: "Sara" },
+    ];
+    const onLoadMore = vi.fn();
+    const onFilterChange = vi.fn();
+    const w = mount(NqFeedbackHub, { props: { issues: list, counts: { all: 12 }, hasMore: true, onLoadMore, onFilterChange }, attachTo: document.body });
+    expect(w.text()).toContain("Mine");
+    expect(w.text()).toContain("Yours");
+    expect(w.text()).not.toContain("by Me");
+    expect(w.text()).toContain("Showing 2 of 12");
+    await w.findAll("button").find((b) => b.text() === "Load more")!.trigger("click");
+    expect(onLoadMore).toHaveBeenCalled();
+    const mine = w.findAll("button").find((b) => b.text().startsWith("Mine"))!;
+    await mine.trigger("click");
+    expect(onFilterChange).toHaveBeenCalledWith("mine");
+    expect(w.findAll("li")).toHaveLength(1);
+    const none = mount(NqFeedbackHub, { props: { issues: [{ id: "x", title: "T", status: "open" as const }], mineTab: true }, attachTo: document.body });
+    expect(none.text()).toContain("Mine");
+    await none.findAll("button").find((b) => b.text().startsWith("Mine"))!.trigger("click");
+    expect(none.text()).toContain("You have not reported anything");
+    w.unmount();
+    none.unmount();
+  });
+});

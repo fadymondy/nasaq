@@ -1,18 +1,25 @@
 // The behaviour of the Blade feedback-reporter parts. Three Alpine data objects:
 //
-//   nqFeedbackHub()                 the status filter and the "Me too" vote of feedback-reporter.hub
+//   nqFeedbackLauncher(config)      the drag, keyboard move and saved spot of a movable feedback-reporter launcher
+//   nqFeedbackHub(config)           the status / Mine filter, "Load more" and the "Me too" vote of feedback-reporter.hub
 //   nqFeedbackConfigurator(config)  the live launcher preview and install code of feedback-reporter.configurator
 //   nqShakeReport(config)           the shake detector and the sheet of feedback-reporter.shake-sheet
 //
 // Events, all bubbling from the part's root (Alpine's $dispatch from teleported content would not reach it, so the root is stored in init):
+//   nq-feedback-spot (detail { side, y }, from a movable launcher), nq-feedback-filter (detail.filter), nq-load-more (detail.waitUntil(promise)),
 //   nq-report-new, nq-open-issue (detail.id), nq-feedback-vote (detail.id, detail.waitUntil(promise); resolve { error } to fail),
 //   nq-feedback-config (detail { shape, position, label }), nq-report, nq-shake-enabled (detail.enabled).
 
 import {
   feedbackInstallSnippet,
   isShake,
+  moveLauncherSpot,
   motionDelta,
   normalizePosition,
+  parseLauncherSpot,
+  snapLauncherSpot,
+  spotFromPosition,
+  type FeedbackLauncherSpot,
   type FeedbackLauncherConfig,
   type FeedbackLauncherPosition,
   type FeedbackLauncherShape,
@@ -30,7 +37,31 @@ interface HubState extends Magics {
   root: HTMLElement | undefined;
   filter: string[];
   busy: number | null;
+  counts: Record<string, number>;
+  template: string;
+  loadingMore: boolean;
+  last: string;
 }
+interface LauncherConfig {
+  storageKey?: string | null;
+  spot?: FeedbackLauncherSpot | null;
+  position?: FeedbackLauncherPosition;
+  placement?: "fixed" | "absolute";
+  shape?: FeedbackLauncherShape;
+  /** The class of the fixed position (for example "bottom-4 end-4"), dropped once the launcher has a spot. */
+  positionClass?: string;
+}
+interface LauncherState extends Magics {
+  spot: FeedbackLauncherSpot | null;
+  dragAt: { left: number; top: number } | null;
+  drag: { id: number; startX: number; startY: number; offX: number; offY: number; moved: boolean } | null;
+  swallow: boolean;
+  where: FeedbackLauncherPosition;
+  area(): { left: number; top: number; width: number; height: number };
+  isRtl(): boolean;
+  commit(next: FeedbackLauncherSpot): void;
+}
+const DRAG_THRESHOLD = 4;
 interface ConfigState extends Magics {
   root: HTMLElement | undefined;
   shape: FeedbackLauncherShape;
@@ -67,26 +98,151 @@ interface MotionPermissionEvent {
 }
 
 export const feedbackReporter: Register = (Alpine) => {
-  Alpine.data("nqFeedbackHub", () => ({
+  Alpine.data("nqFeedbackLauncher", (config: LauncherConfig = {}) => ({
+    spot: (config.spot ?? null) as FeedbackLauncherSpot | null,
+    dragAt: null as { left: number; top: number } | null,
+    drag: null as LauncherState["drag"],
+    swallow: false,
+    where: (config.position ?? "bottom-end") as FeedbackLauncherPosition,
+    init(this: LauncherState) {
+      // Read the saved spot after the first paint, so the server and client markup agree.
+      if (config.spot || !config.storageKey || typeof localStorage === "undefined") return;
+      const saved = parseLauncherSpot(localStorage.getItem(config.storageKey));
+      if (saved) this.spot = saved;
+    },
+    /** The classes the spot decides: the fixed position, or the middle-anchored translate and the dragging cursor. */
+    get classes(): Record<string, boolean> {
+      const self = this as unknown as LauncherState;
+      const out: Record<string, boolean> = {
+        "cursor-grabbing select-none": !!self.dragAt,
+        "-translate-y-1/2": !self.dragAt && !!self.spot,
+      };
+      if (config.positionClass) out[config.positionClass] = !self.dragAt && !self.spot;
+      if (config.shape === "tab") {
+        const end = self.spot ? self.spot.side === "end" : self.where.endsWith("end");
+        out["rounded-s-card"] = end;
+        out["rounded-e-card"] = !end;
+      }
+      return out;
+    },
+    get placed(): Record<string, string> {
+      const self = this as unknown as LauncherState;
+      if (self.dragAt) return { left: `${self.dragAt.left}px`, top: `${self.dragAt.top}px`, transition: "none" };
+      if (!self.spot) return {};
+      return { top: `${self.spot.y * 100}%`, [self.spot.side === "end" ? "inset-inline-end" : "inset-inline-start"]: config.shape === "tab" ? "0px" : "1rem" };
+    },
+    area(this: LauncherState) {
+      const el = this.$el as HTMLElement;
+      const parent = config.placement === "absolute" ? el.offsetParent : null;
+      return parent ? parent.getBoundingClientRect() : { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+    },
+    isRtl(this: LauncherState) {
+      const el = this.$el as HTMLElement;
+      return getComputedStyle(el).direction === "rtl" || el.closest("[dir]")?.getAttribute("dir") === "rtl";
+    },
+    commit(this: LauncherState, next: FeedbackLauncherSpot) {
+      this.spot = next;
+      if (config.storageKey && typeof localStorage !== "undefined") localStorage.setItem(config.storageKey, JSON.stringify(next));
+      emit(undefined, this.$el as HTMLElement, "nq-feedback-spot", { ...next });
+    },
+    down(this: LauncherState, e: PointerEvent) {
+      if (e.defaultPrevented || e.button !== 0) return;
+      const box = (this.$el as HTMLElement).getBoundingClientRect();
+      this.drag = { id: e.pointerId, startX: e.clientX, startY: e.clientY, offX: e.clientX - box.left, offY: e.clientY - box.top, moved: false };
+    },
+    move(this: LauncherState, e: PointerEvent) {
+      const d = this.drag;
+      if (!d || d.id !== e.pointerId) return;
+      const el = this.$el as HTMLElement;
+      if (!d.moved) {
+        if (Math.hypot(e.clientX - d.startX, e.clientY - d.startY) < DRAG_THRESHOLD) return;
+        d.moved = true;
+        el.setPointerCapture?.(e.pointerId);
+      }
+      const box = this.area();
+      this.dragAt = {
+        left: Math.min(Math.max(e.clientX - d.offX - box.left, 0), box.width - el.offsetWidth),
+        top: Math.min(Math.max(e.clientY - d.offY - box.top, 0), box.height - el.offsetHeight),
+      };
+    },
+    up(this: LauncherState, e: PointerEvent) {
+      const d = this.drag;
+      this.drag = null;
+      if (!d?.moved || d.id !== e.pointerId) return;
+      this.swallow = true;
+      const el = this.$el as HTMLElement;
+      const box = this.area();
+      const center = { x: e.clientX - d.offX - box.left + el.offsetWidth / 2, y: e.clientY - d.offY - box.top + el.offsetHeight / 2 };
+      this.dragAt = null;
+      this.commit(snapLauncherSpot(center, box, this.isRtl(), el.offsetHeight));
+    },
+    cancel(this: LauncherState) {
+      this.drag = null;
+      this.dragAt = null;
+    },
+    key(this: LauncherState, e: KeyboardEvent) {
+      if (e.defaultPrevented || !e.altKey) return;
+      const rtl = this.isRtl();
+      const move = e.key === "ArrowUp" ? "up" : e.key === "ArrowDown" ? "down" : e.key === "ArrowLeft" ? (rtl ? "end" : "start") : e.key === "ArrowRight" ? (rtl ? "start" : "end") : null;
+      if (!move) return;
+      e.preventDefault();
+      this.commit(moveLauncherSpot(this.spot ?? spotFromPosition(this.where), move));
+    },
+    /** Runs first on click (capture): a drag ends with a click that must not open the report. */
+    click(this: LauncherState, e: MouseEvent) {
+      if (!this.swallow) return;
+      this.swallow = false;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    },
+  }));
+
+  Alpine.data("nqFeedbackHub", (config: { counts?: Record<string, number>; showing?: string } = {}) => ({
     root: undefined as HTMLElement | undefined,
     filter: ["all"] as string[],
     busy: null as number | null,
+    counts: config.counts ?? {},
+    template: config.showing ?? "Showing {shown} of {total}",
+    loadingMore: false,
+    last: "all",
     init(this: HubState) {
       this.root = this.$el;
+      this.$watch("filter", () => {
+        const now = (this as unknown as { current(): string }).current();
+        if (now === this.last) return;
+        this.last = now;
+        emit(this.root, this.$el, "nq-feedback-filter", { filter: now });
+      });
     },
     /** The active status; deselecting everything means all. */
     current(): string {
       return (this as unknown as HubState).filter[0] ?? "all";
     },
-    shows(status: string): boolean {
+    shows(status: string, mine = false): boolean {
       const now = (this as unknown as { current(): string }).current();
-      return now === "all" || now === status;
+      return now === "all" || now === status || (now === "mine" && mine);
     },
     visible(): number {
       const self = this as unknown as HubState & { current(): string };
       const now = self.current();
       const rows = [...(self.root ?? self.$el).querySelectorAll<HTMLElement>("li[data-status]")];
-      return rows.filter((li) => now === "all" || li.dataset.status === now).length;
+      return rows.filter((li) => now === "all" || li.dataset.status === now || (now === "mine" && li.dataset.mine !== undefined)).length;
+    },
+    /** "Showing {shown} of {total}": the rows on this tab against its server count. */
+    showingText(): string {
+      const self = this as unknown as HubState & { current(): string; visible(): number };
+      const shown = self.visible();
+      return self.template.replace("{shown}", String(shown)).replace("{total}", String(self.counts[self.current()] ?? shown));
+    },
+    async loadMore(this: HubState) {
+      this.loadingMore = true;
+      try {
+        await Promise.all(emit(this.root, this.$el, "nq-load-more"));
+      } catch {
+        // The host shows its own error; the button just becomes usable again.
+      } finally {
+        this.loadingMore = false;
+      }
     },
     blocked(index: number, fixed: boolean): boolean {
       return fixed || (this as unknown as HubState).busy === index;

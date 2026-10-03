@@ -46,3 +46,7 @@
         :time="['entries' => $entries]"
         :ai="['days' => [['date' => '2026-09-28', 'billed' => 1.2, 'unbilled' => 0.4], ['date' => '2026-09-29', 'billed' => 0, 'unbilled' => 2.1]], 'byModel' => [['id' => 'sonnet', 'label' => 'Sonnet 5.5', 'tokensIn' => 420000, 'tokensOut' => 38000, 'cost' => 3.7]], 'run' => ['tokensIn' => 182000, 'tokensOut' => 24000, 'cached' => 120000, 'cost' => 1.42, 'budget' => 5]]" />
 </div>
+<div class="mt-6 grid w-full max-w-5xl gap-3 sm:grid-cols-2">
+    <x-nq::issue-view.card :issue="$issue" :labels="$labels" :people="$people" :votes="4" :voted="true" voteable :comments="3" :attachments="1" now="2026-10-01" class="cursor-pointer" />
+    <x-nq::issue-view.card :issue="['key' => 'NSQ-50', 'title' => 'Tidy the footer', 'type' => 'chore', 'priority' => 'low', 'labelIds' => [], 'dueDate' => '2026-09-20']" :open="false" now="2026-10-01" />
+</div>

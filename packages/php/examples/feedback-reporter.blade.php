@@ -3,12 +3,18 @@
     <div class="relative h-40">
         <x-nq::feedback-reporter shape="pill" position="bottom-end" placement="absolute" x-on:click="$dispatch('nq-report-open')" />
     </div>
+    <div class="relative h-40 rounded-card border border-border">
+        <x-nq::feedback-reporter shape="circle" placement="absolute" movable storage-key="" x-on:click="$dispatch('nq-report-open')" />
+    </div>
 
     <x-nq::feedback-reporter.hub
         page="/checkout"
         :can-open="true"
+        :has-more="true"
+        :counts="['all' => 9]"
         :issues="[
             ['id' => 'a', 'title' => 'Cannot pay by card', 'status' => 'open', 'votes' => 4, 'author' => 'Sara', 'createdAt' => '2025-01-01T10:00:00Z'],
+            ['id' => 'd', 'title' => 'Coupon is not applied', 'status' => 'open', 'votes' => 2, 'author' => 'Me', 'mine' => true],
             ['id' => 'b', 'title' => 'Page is slow', 'status' => 'in-progress', 'votes' => 1, 'voted' => true],
             ['id' => 'c', 'title' => 'Typo in the footer', 'status' => 'resolved', 'votes' => 0],
         ]"

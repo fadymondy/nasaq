@@ -7,7 +7,11 @@
     $shapes = ['circle' => 'rounded-full', 'square' => 'rounded-control'];
     // First user-perceived character, so emoji and surrogate pairs are never split.
     $first = fn (string $w): string => $w === '' ? '' : (function_exists('grapheme_substr') ? (string) grapheme_substr($w, 0, 1) : mb_substr($w, 0, 1));
-    $words = preg_split('/\s+/u', trim($name), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+    // Leading punctuation is skipped and punctuation-only words are ignored: "(Test) Driver" is "TD", not "(D".
+    $words = array_values(array_filter(array_map(
+        fn (string $w): string => (string) preg_replace('/^\p{P}+/u', '', $w),
+        preg_split('/\s+/u', trim($name), -1, PREG_SPLIT_NO_EMPTY) ?: [],
+    ), fn (string $w): bool => $w !== ''));
     $initials = mb_strtoupper(($words ? $first($words[0]) : '').(count($words) > 1 ? $first($words[count($words) - 1]) : ''));
     $composed = $slot->isNotEmpty();
 @endphp

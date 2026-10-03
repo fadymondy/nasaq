@@ -2,8 +2,9 @@
      A desktop in the browser: a wallpaper, a menu bar, a dock, a launchpad and draggable, resizable windows (snap to the left, right or top edge, maximise, minimise).
      apps: id, title, icon (a lucide name, wrapped in the app-icon tile) or icon-html (trusted HTML for the tile), content (trusted HTML for the window body, started as its own Alpine tree),
      size ['w' => , 'h' => ] (the starting window size), single (one window only), pinned (false keeps it off the dock until it runs), keywords (launchpad search).
-     menus: the menu bar. id, label, items [id, label, shortcut, disabled, danger, separated]. Choosing an item fires a bubbling "nq-desktop-menu" { id: "menuId.itemId" }. The menus are fixed:
-     the React shell's function of the focused app is not ported.
+     menus: the menu bar. id, label, items [id, label, shortcut, disabled, danger, separated, confirm]. Choosing an item fires a bubbling "nq-desktop-menu" { id: "menuId.itemId" }. The menus are fixed:
+     the React shell's function of the focused app is not ported. An item with confirm [title, description, confirmLabel, danger] asks through <x-nq::confirm-provider> first and fires only on Confirm.
+     \Nasaq\DesktopPowerMenu::make(['actions' => ['about', 'settings', 'sleep', 'restart', 'shutDown', 'logOut'], 'appName' => 'ToGO', 'confirm' => true]) builds the system menu (id "system"; React's desktopPowerMenu).
      launchpad: start with the launchpad open (x-modelable: x-model="$wire.launchpad"). compact-below: below this width (default 640) windows fill the area, one at a time.
      Slots: the default slot is the desktop itself (put <x-nq::desktop-icons> there; "nq-desktop-icon-open" opens its app), wallpaper, menuBarStart, menuBarEnd.
      Events (bubbling, from the root): "nq-windows-change" { windows }, "nq-launchpad-change" { open }, "nq-desktop-menu" { id }.
@@ -27,7 +28,7 @@
         ], fn ($v) => $v !== null);
     })->values()->all();
     $options = array_filter(['compactBelow' => (int) $compactBelow !== 640 ? (int) $compactBelow : null, 'launchpad' => $launchpad ?: null], fn ($v) => $v !== null);
-    $menuClick = 'menuPick($el.dataset.id)';
+    $menuClick = 'menuPick($el.dataset.id, $el.dataset.confirm)';
     $handles = [
         'n' => 'inset-x-2 top-0 h-1.5 cursor-ns-resize',
         's' => 'inset-x-2 bottom-0 h-1.5 cursor-ns-resize',
@@ -70,7 +71,7 @@
                                 <div role="none">
                                     @if (! empty($item['separated']))<x-nq::menubar.separator />@endif
                                     <x-nq::menubar.item :variant="! empty($item['danger']) ? 'danger' : 'default'" :shortcut="$item['shortcut'] ?? null" :disabled="! empty($item['disabled'])"
-                                        data-id="{{ $menu['id'].'.'.$item['id'] }}" :x-on:click="$menuClick">{{ $item['label'] }}</x-nq::menubar.item>
+                                        data-id="{{ $menu['id'].'.'.$item['id'] }}" :data-confirm="! empty($item['confirm']) ? rawurlencode(json_encode($item['confirm'], JSON_UNESCAPED_UNICODE)) : null" :x-on:click="$menuClick">{{ $item['label'] }}</x-nq::menubar.item>
                                 </div>
                             @endforeach
                         </x-nq::menubar.content>

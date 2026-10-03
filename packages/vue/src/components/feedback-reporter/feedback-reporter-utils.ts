@@ -84,6 +84,8 @@ export interface FeedbackHubIssue {
   /** Whether the current person already voted. */
   voted?: boolean;
   author?: string;
+  /** The current visitor sent this report: it shows under "Mine". */
+  mine?: boolean;
 }
 
 /** Counts by status, for the filter tabs. Pure. */
@@ -92,3 +94,63 @@ export function countByStatus(issues: readonly FeedbackHubIssue[]): Record<Feedb
   for (const issue of issues) counts[issue.status]++;
   return counts;
 }
+
+/** The reports on one hub tab: a status, all of them, or the visitor's own. Pure. */
+export function filterHubIssues<T extends FeedbackHubIssue>(issues: readonly T[], filter: FeedbackIssueStatus | "all" | "mine"): readonly T[] {
+  if (filter === "all") return issues;
+  if (filter === "mine") return issues.filter((i) => i.mine);
+  return issues.filter((i) => i.status === filter);
+}
+
+/* ------------------------------------------------------------------ movable launcher */
+
+/** Where a visitor left a movable launcher: the side it hugs (logical) and its middle as a fraction of the height. */
+export interface FeedbackLauncherSpot {
+  side: "start" | "end";
+  y: number;
+}
+
+const round = (n: number) => Math.round(n * 1000) / 1000;
+const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+
+/** Snaps a dropped launcher to the nearer side, keeping its middle at least `margin` + half its height from the top and bottom. Pure. */
+export function snapLauncherSpot(
+  center: { x: number; y: number },
+  size: { width: number; height: number },
+  rtl = false,
+  launcherHeight = 0,
+  margin = 16,
+): FeedbackLauncherSpot {
+  const left = center.x < size.width / 2;
+  const side = left === rtl ? "end" : "start";
+  if (size.height <= 0) return { side, y: 0.5 };
+  const edge = Math.min(0.5, (margin + launcherHeight / 2) / size.height);
+  return { side, y: round(clamp(center.y / size.height, edge, 1 - edge)) };
+}
+
+/** The spot a launcher at a fixed `position` starts from, so the keyboard can move it from where it is. Pure. */
+export function spotFromPosition(position: FeedbackLauncherPosition): FeedbackLauncherSpot {
+  const side = position.endsWith("start") ? "start" : "end";
+  return { side, y: position.startsWith("top") ? 0.1 : position.startsWith("bottom") ? 0.9 : 0.5 };
+}
+
+/** One keyboard step: up and down by `step` of the height (kept within 5%..95%), or across to a side. Pure. */
+export function moveLauncherSpot(spot: FeedbackLauncherSpot, move: "up" | "down" | "start" | "end", step = 0.05): FeedbackLauncherSpot {
+  if (move === "start" || move === "end") return { ...spot, side: move };
+  return { ...spot, y: round(clamp(spot.y + (move === "up" ? -step : step), 0.05, 0.95)) };
+}
+
+/** Reads a stored spot back; anything malformed gives `null`. Pure. */
+export function parseLauncherSpot(raw: string | null | undefined): FeedbackLauncherSpot | null {
+  if (!raw) return null;
+  try {
+    const value = JSON.parse(raw) as Partial<FeedbackLauncherSpot>;
+    if ((value.side !== "start" && value.side !== "end") || typeof value.y !== "number" || !Number.isFinite(value.y)) return null;
+    return { side: value.side, y: clamp(value.y, 0, 1) };
+  } catch {
+    return null;
+  }
+}
+
+/** The hub's tabs: a status, all, or the visitor's own reports. */
+export type FeedbackHubFilter = FeedbackIssueStatus | "all" | "mine";

@@ -1,6 +1,6 @@
 import { flushPromises, mount } from "@vue/test-utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { compileMatcher, countByLevel, filterLogs, formatLogTime, normalizeLevel, NqLogViewer, virtualWindow, type LogEntry } from ".";
+import { compileMatcher, countByLevel, entriesUntil, filterLogs, formatLogTime, LOG_RANGES, normalizeLevel, NqLogViewer, rangeSince, virtualWindow, type LogEntry } from ".";
 
 const base = Date.UTC(2026, 8, 29, 14, 3, 7, 128);
 const entries: LogEntry[] = [
@@ -141,5 +141,74 @@ describe("NqLogViewer", () => {
     expect(w.text()).toContain("Jump to latest");
     await w.findAll("button").find((b) => b.text().includes("Jump to latest"))!.trigger("click");
     expect(w.text()).not.toContain("Jump to latest");
+  });
+
+  it("filters by time range, with a select that can be switched and reset", async () => {
+    const now = Date.now();
+    const timed: LogEntry[] = [
+      { id: 1, time: now - 3 * 3600_000, level: "info", message: "old one" },
+      { id: 2, time: now - 60_000, level: "info", message: "fresh one" },
+    ];
+    const w = mount(NqLogViewer, { props: { entries: timed, ranges: LOG_RANGES, defaultRange: "1h" } });
+    const select = w.find('[data-slot="log-viewer-range"]');
+    expect(select.attributes("aria-label")).toBe("Time range");
+    expect(w.findAll('[role="listitem"]')).toHaveLength(1);
+    expect(w.text()).toContain("1 of 2 entries");
+    await select.setValue("all");
+    expect(w.findAll('[role="listitem"]')).toHaveLength(2);
+    expect(rangeSince(LOG_RANGES[4])).toBeNull();
+  });
+
+  it("with manual, shows entries as given and reports filter changes (not on mount)", async () => {
+    const onFilterChange = vi.fn();
+    const w = mount(NqLogViewer, { props: { entries, manual: true, onFilterChange, counts: { error: 40 }, total: 900, ranges: LOG_RANGES } });
+    expect(onFilterChange).not.toHaveBeenCalled();
+    expect(w.text()).toContain("3 of 900 entries");
+    expect(w.find('button[data-level="error"]').text()).toContain("40");
+    await w.find('button[data-level="error"]').trigger("click");
+    expect(w.findAll('[role="listitem"]')).toHaveLength(3);
+    expect(onFilterChange).toHaveBeenCalledTimes(1);
+    expect(onFilterChange.mock.calls[0]![0]).toMatchObject({ query: "", regex: false });
+    expect(onFilterChange.mock.calls[0]![0].levels).not.toContain("error");
+  });
+
+  it("loads older entries from the bar at the top of the list", async () => {
+    let done!: () => void;
+    const onLoadOlder = vi.fn(() => new Promise<void>((r) => (done = r)));
+    const w = mount(NqLogViewer, { props: { entries, hasOlder: true, onLoadOlder } });
+    const bar = w.find('[data-slot="log-viewer-older"]');
+    expect(bar.text()).toContain("Load older entries");
+    await bar.find("button").trigger("click");
+    expect(onLoadOlder).toHaveBeenCalledTimes(1);
+    expect(w.find('[data-slot="log-viewer-older"]').text()).toContain("Loading older entries");
+    done();
+    await flushPromises();
+    expect(w.find('[data-slot="log-viewer-older"]').text()).toContain("Load older entries");
+  });
+
+  it("pauses the live tail, counts waiting entries and catches up on resume", async () => {
+    const onLiveChange = vi.fn();
+    const w = mount(NqLogViewer, { props: { entries, liveTail: true, onLiveChange } });
+    const live = () => w.find('[data-slot="log-viewer-live"]');
+    expect(live().attributes("aria-label")).toBe("Pause live tail");
+    await live().trigger("click");
+    expect(onLiveChange).toHaveBeenLastCalledWith(false);
+    expect(w.attributes("data-paused")).toBeDefined();
+    expect(live().attributes("aria-label")).toBe("Resume live tail");
+    expect(live().attributes("aria-pressed")).toBe("true");
+    await w.setProps({ entries: [...entries, { id: 4, time: base + 3000, level: "info", message: "later" }] });
+    expect(w.findAll('[role="listitem"]')).toHaveLength(3);
+    expect(w.text()).toContain("Paused");
+    expect(w.text()).toContain("1 new entry");
+    await w.findAll("button").find((b) => b.text().includes("1 new entry"))!.trigger("click");
+    expect(onLiveChange).toHaveBeenLastCalledWith(true);
+    expect(w.attributes("data-paused")).toBeUndefined();
+    expect(w.findAll('[role="listitem"]')).toHaveLength(4);
+  });
+
+  it("entriesUntil keeps what a paused list had", () => {
+    expect(entriesUntil(entries, 2).map((e) => e.id)).toEqual([1, 2]);
+    expect(entriesUntil(entries, null)).toEqual([]);
+    expect(entriesUntil(entries, 99)).toBe(entries);
   });
 });

@@ -52,4 +52,13 @@ export function findIcon(name: string | null | undefined, icons: readonly IconEn
   return icons.find((i) => i.name === key);
 }
 
+/**
+ * The Boxicons class for a stored name, or `undefined` when it is not a Boxicons name. Accepts the prefixed
+ * forms `bx:home`, `bxs:home`, `bxl:github` and the legacy class forms `bx-home`, `bxs-home`, `bxl-github`.
+ */
+export function boxiconClass(name: string | null | undefined): string | undefined {
+  const m = name?.trim().match(/^(bx|bxs|bxl)[:-]([a-z0-9-]+)$/i);
+  return m ? `${m[1]!.toLowerCase()}-${m[2]!.toLowerCase()}` : undefined;
+}
+
 export const isIconUrl = (name: string) => /^(https?:\/\/|\/|data:image\/)/.test(name);

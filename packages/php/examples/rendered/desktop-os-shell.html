@@ -10,12 +10,43 @@
         <span x-show="focusedTitle()" x-text="focusedTitle()" class="px-2 text-label font-semibold text-foreground"></span>
                     <div data-slot="menubar" x-data="nqMenubar()" x-bind="bar"
     class="flex w-fit items-center gap-0.5 rounded-control border-border text-foreground h-6 min-h-0 border-0 bg-transparent p-0"><div data-slot="menubar-menu" x-data="nqMenubarMenu(false)" x-modelable="open" class="contents"><button type="button" data-slot="menubar-trigger" x-ref="trigger" x-bind="trigger"
+        class="inline-flex h-full cursor-default select-none items-center rounded-control text-foreground outline-none hover:bg-nq-hover data-popup-open:bg-nq-selected focus-visible:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 min-h-0 px-2 text-caption">System</button>
+                        <template x-teleport="body">
+    <div data-slot="menubar-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
+        class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-56"><div role="none">
+                                                                        <div data-slot="menubar-item" role="menuitem" data-variant="default" x-bind="item"
+        data-id="system.about" x-on:click="menuPick($el.dataset.id, $el.dataset.confirm)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">About Nasaq</div>
+                                </div>
+                                                            <div role="none">
+                                                                        <div data-slot="menubar-item" role="menuitem" data-variant="default" x-bind="item"
+        data-id="system.settings" x-on:click="menuPick($el.dataset.id, $el.dataset.confirm)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">System Settings…</div>
+                                </div>
+                                                            <div role="none">
+                                    <div data-slot="menubar-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                    <div data-slot="menubar-item" role="menuitem" data-variant="default" x-bind="item"
+        data-id="system.sleep" x-on:click="menuPick($el.dataset.id, $el.dataset.confirm)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Sleep</div>
+                                </div>
+                                                            <div role="none">
+                                                                        <div data-slot="menubar-item" role="menuitem" data-variant="default" x-bind="item"
+        data-id="system.restart" data-confirm="%7B%22action%22%3A%22restart%22%2C%22title%22%3A%22Restart%20now%3F%22%2C%22description%22%3A%22Open%20apps%20close.%20Unsaved%20work%20may%20be%20lost.%22%2C%22confirmLabel%22%3A%22Restart%22%2C%22danger%22%3Afalse%7D" x-on:click="menuPick($el.dataset.id, $el.dataset.confirm)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Restart…</div>
+                                </div>
+                                                            <div role="none">
+                                                                        <div data-slot="menubar-item" role="menuitem" data-variant="default" x-bind="item"
+        data-id="system.shutDown" data-confirm="%7B%22action%22%3A%22shutDown%22%2C%22title%22%3A%22Shut%20down%20now%3F%22%2C%22description%22%3A%22Open%20apps%20close.%20Unsaved%20work%20may%20be%20lost.%22%2C%22confirmLabel%22%3A%22Shut%20Down%22%2C%22danger%22%3Atrue%7D" x-on:click="menuPick($el.dataset.id, $el.dataset.confirm)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">Shut Down…</div>
+                                </div>
+                                                            <div role="none">
+                                    <div data-slot="menubar-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
+                                    <div data-slot="menubar-item" role="menuitem" data-variant="danger" x-bind="item"
+        data-id="system.logOut" data-confirm="%7B%22action%22%3A%22logOut%22%2C%22title%22%3A%22Log%20out%20now%3F%22%2C%22description%22%3A%22You%20will%20need%20to%20sign%20in%20again.%22%2C%22confirmLabel%22%3A%22Log%20Out%22%2C%22danger%22%3Atrue%7D" x-on:click="menuPick($el.dataset.id, $el.dataset.confirm)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current">Log Out</div>
+                                </div></div>
+</template></div>
+                                    <div data-slot="menubar-menu" x-data="nqMenubarMenu(false)" x-modelable="open" class="contents"><button type="button" data-slot="menubar-trigger" x-ref="trigger" x-bind="trigger"
         class="inline-flex h-full cursor-default select-none items-center rounded-control text-foreground outline-none hover:bg-nq-hover data-popup-open:bg-nq-selected focus-visible:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 min-h-0 px-2 text-caption">File</button>
                         <template x-teleport="body">
     <div data-slot="menubar-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.6="$refs.trigger"
         class="z-50 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 min-w-56"><div role="none">
                                                                         <div data-slot="menubar-item" role="menuitem" data-variant="default" x-bind="item"
-        data-id="file.new" x-on:click="menuPick($el.dataset.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">New window<span data-slot="menubar-shortcut" dir="ltr" class="ms-auto inline-flex items-center gap-1 ps-6">
+        data-id="file.new" x-on:click="menuPick($el.dataset.id, $el.dataset.confirm)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">New window<span data-slot="menubar-shortcut" dir="ltr" class="ms-auto inline-flex items-center gap-1 ps-6">
             <kbd data-slot="kbd"  dir="ltr"
     class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">N</kbd>
     </span>
@@ -24,7 +55,7 @@
                                                             <div role="none">
                                     <div data-slot="menubar-separator" role="separator" aria-orientation="horizontal" class="-mx-1.5 my-1.5 h-px bg-border"></div>
                                     <div data-slot="menubar-item" role="menuitem" data-variant="danger" x-bind="item"
-        data-id="file.close" x-on:click="menuPick($el.dataset.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current">Close</div>
+        data-id="file.close" x-on:click="menuPick($el.dataset.id, $el.dataset.confirm)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 text-nq-danger-text [&_svg]:text-current">Close</div>
                                 </div></div>
 </template></div></div>
                 <div class="ms-auto flex items-center gap-3 px-2 text-muted-foreground"></div>
@@ -132,4 +163,25 @@
         </div>
     </div>
 </div>
+</div>
+<div data-slot="confirm-provider" x-data="nqConfirmProvider()" x-id="['nq-confirm']" x-on:nq:confirm.window="ask($event.detail)" class="contents">
+    <template x-teleport="body">
+        <div data-slot="alert-dialog-portal">
+            <div data-slot="alert-dialog-backdrop" x-nq-presence="open" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+            <div data-slot="confirm-dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+                class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] max-w-md gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                <div data-slot="alert-dialog-header" class="flex flex-col gap-1.5 text-start"><h2 data-slot="alert-dialog-title" :id="$id('nq-confirm', 'title')" class="text-h3 text-foreground" x-text="options.title"></h2>
+                    <p data-slot="alert-dialog-description" x-show="options.description" :id="$id('nq-confirm', 'description')" class="text-body-sm text-muted-foreground" x-text="options.description"></p></div>
+                <div data-slot="alert-dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="alert-dialog-cancel"
+     type="button"                         autofocus="autofocus" x-on:click="settle(false)" x-text="options.cancelLabel ?? $nq.t(&#039;Cancel&#039;, &#039;إلغاء&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                    <button data-slot="button"
+     type="button"                         x-show="options.danger !== false" x-on:click="settle(true)" x-text="options.confirmLabel ?? $nq.t(&#039;Confirm&#039;, &#039;تأكيد&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-[color-mix(in_oklab,var(--nq-danger-solid)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Confirm</button>
+                    <button data-slot="button"
+     type="button"                         x-show="options.danger === false" x-on:click="settle(true)" x-text="options.confirmLabel ?? $nq.t(&#039;Confirm&#039;, &#039;تأكيد&#039;)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Confirm</button></div>
+            </div>
+        </div>
+    </template>
 </div>

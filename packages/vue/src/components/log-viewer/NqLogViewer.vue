@@ -1,33 +1,50 @@
 <script setup lang="ts">
-import { ArrowDownToLine, Check, Clock, Copy, Download, Regex, Search, X } from "lucide-vue-next";
+import { ArrowDownToLine, Check, Clock, Copy, Download, History, Pause, Play, Regex, Search, X } from "lucide-vue-next";
 import { computed, onBeforeUnmount, onMounted, ref, useId, watch, type HTMLAttributes } from "vue";
 import { cn } from "../../lib/cn";
 import { useNasaq } from "../../provider";
 import { NqButton } from "../button";
 import { copyText } from "../copy-button";
 import { NqInputGroup, NqInputGroupAddon, NqInputGroupInput } from "../input-group";
+import { NqNativeSelect } from "../native-select";
 import { NqSpinner } from "../spinner";
 import { NqEmptyState } from "../states";
 import { useFollowScroll } from "../terminal";
 import {
   compileMatcher,
   countByLevel,
+  entriesUntil,
   entryText,
   fieldsToText,
   filterLogs,
   formatLogTime,
   LOG_LEVELS,
   logsToText,
+  rangeSince,
   splitByRanges,
   virtualWindow,
   type LogEntry,
   type LogLevel,
+  type LogRange,
 } from "./log-viewer-format";
 import { LOG_VIEWER_STRINGS, type LogViewerLabels } from "./log-viewer-strings";
 
 // A log stream that behaves like a dev tool: level filters with counts, search with highlights (optionally
-// a regular expression), follow-the-tail with a jump button, timestamps, keyboard navigation and a detail
-// panel. The list is windowed with fixed-height rows, so long streams stay smooth. Always left-to-right.
+// a regular expression), a time range, follow-the-tail with a jump button, pause and resume, loading older
+// entries, server-side filtering (`manual`), timestamps, keyboard navigation and a detail panel. The list is
+// windowed with fixed-height rows, so long streams stay smooth. Always left-to-right.
+
+/** What the reader is asking for, for a server that does the filtering (`manual`). */
+export interface LogViewerFilter {
+  levels: LogLevel[];
+  query: string;
+  regex: boolean;
+  /** The chosen time range, if the viewer has `ranges`. */
+  range: LogRange | null;
+  /** Keep entries at or after this time (epoch milliseconds), from the range. `null`: no limit. */
+  since: number | null;
+}
+
 interface Props {
   /** Entries, oldest first. Append to stream; the list is virtualised so tens of thousands are fine. */
   entries: readonly LogEntry[];
@@ -53,6 +70,33 @@ interface Props {
   onDownload?: (entries: readonly LogEntry[]) => void;
   /** File name for the default download. Default "logs.log". */
   downloadFilename?: string;
+  /**
+   * The server filters. `entries` are shown as given (search matches are still highlighted) and every change of
+   * level, search, regex or range is reported through `onFilterChange`.
+   */
+  manual?: boolean;
+  /** Called after the reader changes a filter. Not called on mount. */
+  onFilterChange?: (filter: LogViewerFilter) => void;
+  /** Per-level totals for the chips, e.g. from the server. Default: counted from `entries`. */
+  counts?: Partial<Record<LogLevel, number>>;
+  /** How many entries match on the server, for the footer. Default: `entries.length`. */
+  total?: number;
+  /** Time windows to choose from, e.g. `LOG_RANGES`. Adds a range select. */
+  ranges?: readonly LogRange[];
+  /** Id of the range chosen at the start. Default: the last range. */
+  defaultRange?: string;
+  /** Older entries exist: shows "Load older entries" at the top of the list. */
+  hasOlder?: boolean;
+  /** Fetch older entries and prepend them; the list keeps its place. */
+  onLoadOlder?: () => void | Promise<void>;
+  /** Older entries are loading. Defaults to tracking the promise from `onLoadOlder`. */
+  loadingOlder?: boolean;
+  /**
+   * Adds a pause button. Paused, the list holds still while new entries keep arriving, and the footer counts them;
+   * resume to catch up. Reported with `onLiveChange`, e.g. to close a socket.
+   */
+  liveTail?: boolean;
+  onLiveChange?: (live: boolean) => void;
   labels?: Partial<LogViewerLabels>;
   class?: HTMLAttributes["class"];
 }
@@ -68,11 +112,23 @@ const props = withDefaults(defineProps<Props>(), {
   height: "24rem",
   onDownload: undefined,
   downloadFilename: "logs.log",
+  manual: false,
+  onFilterChange: undefined,
+  counts: undefined,
+  total: undefined,
+  ranges: undefined,
+  defaultRange: undefined,
+  hasOlder: false,
+  onLoadOlder: undefined,
+  loadingOlder: undefined,
+  liveTail: false,
+  onLiveChange: undefined,
   labels: undefined,
 });
 
 const nq = useNasaq();
-const t = computed<LogViewerLabels>(() => ({ ...LOG_VIEWER_STRINGS[nq.locale.value.startsWith("ar") ? "ar" : "en"], ...props.labels }));
+const isAr = computed(() => nq.locale.value.startsWith("ar"));
+const t = computed<LogViewerLabels>(() => ({ ...LOG_VIEWER_STRINGS[isAr.value ? "ar" : "en"], ...props.labels }));
 const uid = useId();
 
 /** Level text uses a token colour and always a written label, so it never relies on colour alone. */
@@ -102,15 +158,40 @@ const selected = ref<LogEntry["id"] | null>(null);
 const copied = ref("");
 let flashTimer: ReturnType<typeof setTimeout> | null = null;
 
-const counts = computed(() => countByLevel(props.entries));
-const filtered = computed(() => filterLogs(props.entries, { levels: levels.value, query: query.value, regex: regex.value }));
+const rangeId = ref(props.defaultRange ?? props.ranges?.[props.ranges.length - 1]?.id ?? "");
+const range = computed(() => props.ranges?.find((r) => r.id === rangeId.value) ?? null);
+const pausedAt = ref<{ id: LogEntry["id"] | null } | null>(null);
+const ownLoading = ref(false);
+const loadingOlder = computed(() => props.loadingOlder ?? ownLoading.value);
+
+// Paused, the list stops at the last entry it had; later entries wait and are counted.
+const shown = computed(() => (pausedAt.value ? entriesUntil(props.entries, pausedAt.value.id) : props.entries));
+const waiting = computed(() => (pausedAt.value ? props.entries.length - shown.value.length : 0));
+
+const counts = computed(() => ({ ...countByLevel(shown.value), ...props.counts }));
+const filtered = computed(() => {
+  if (props.manual) return { entries: shown.value as LogEntry[], invalid: compileMatcher(query.value, regex.value) === "invalid" };
+  return filterLogs(shown.value, { levels: levels.value, query: query.value, regex: regex.value, since: rangeSince(range.value ?? undefined) });
+});
 const rows = computed(() => filtered.value.entries);
 const invalid = computed(() => filtered.value.invalid);
 const matcher = computed(() => {
   const m = compileMatcher(query.value, regex.value);
   return m === "invalid" ? null : m;
 });
-const filtering = computed(() => levels.value.size < LOG_LEVELS.length || query.value !== "");
+const filtering = computed(() => levels.value.size < LOG_LEVELS.length || query.value !== "" || (!!range.value && range.value.ms !== null));
+
+// Report filter changes to a server, but not the initial state.
+const levelKey = computed(() => LOG_LEVELS.filter((l) => levels.value.has(l)).join(","));
+watch([levelKey, query, regex, rangeId], () => {
+  props.onFilterChange?.({
+    levels: LOG_LEVELS.filter((l) => levels.value.has(l)),
+    query: query.value,
+    regex: regex.value,
+    range: range.value,
+    since: rangeSince(range.value ?? undefined),
+  });
+});
 
 const { el: listEl, following, setFollowing, onScroll: onFollowScroll } = useFollowScroll<HTMLDivElement>(() => rows.value.length, props.follow);
 const scroll = ref({ top: 0, height: 0 });
@@ -137,7 +218,40 @@ function onScroll() {
   if (el) scroll.value = { top: el.scrollTop, height: el.clientHeight };
 }
 
-const windowed = computed(() => virtualWindow({ scrollTop: scroll.value.top, viewport: scroll.value.height, rowHeight: props.rowHeight, count: rows.value.length }));
+// Keep the reader's place when older entries are prepended.
+const OLDER_BAR = 36;
+const head = computed(() => (props.hasOlder || loadingOlder.value ? OLDER_BAR : 0));
+let anchor: { height: number; top: number } | null = null;
+watch(
+  [() => rows.value.length, head],
+  () => {
+    const el = listEl.value;
+    if (!el || !anchor || el.scrollHeight === anchor.height) return;
+    el.scrollTop = anchor.top + (el.scrollHeight - anchor.height);
+    anchor = null;
+    onScroll();
+  },
+  { flush: "post" },
+);
+async function loadOlder() {
+  if (!props.onLoadOlder || loadingOlder.value) return;
+  const el = listEl.value;
+  if (el) anchor = { height: el.scrollHeight, top: el.scrollTop };
+  setFollowing(false);
+  ownLoading.value = true;
+  try {
+    await props.onLoadOlder();
+  } finally {
+    ownLoading.value = false;
+  }
+}
+function setLive(live: boolean) {
+  pausedAt.value = live ? null : { id: props.entries.length ? props.entries[props.entries.length - 1]!.id : null };
+  if (live) setFollowing(true);
+  props.onLiveChange?.(live);
+}
+
+const windowed = computed(() => virtualWindow({ scrollTop: Math.max(0, scroll.value.top - head.value), viewport: scroll.value.height, rowHeight: props.rowHeight, count: rows.value.length }));
 const visible = computed(() => rows.value.slice(windowed.value.start, windowed.value.end).map((entry, i) => ({ entry, index: windowed.value.start + i })));
 const selectedIndex = computed(() => (selected.value === null ? -1 : rows.value.findIndex((r) => r.id === selected.value)));
 const selectedEntry = computed(() => (selectedIndex.value >= 0 ? rows.value[selectedIndex.value] : undefined));
@@ -146,8 +260,8 @@ const timeOptions = computed(() => ({ utc: props.utc }));
 function reveal(index: number) {
   const el = listEl.value;
   if (!el) return;
-  const top = index * props.rowHeight;
-  if (top < el.scrollTop) el.scrollTop = top;
+  const top = head.value + index * props.rowHeight;
+  if (top < el.scrollTop) el.scrollTop = index === 0 ? 0 : top;
   else if (top + props.rowHeight > el.scrollTop + el.clientHeight) el.scrollTop = top + props.rowHeight - el.clientHeight;
 }
 function onKeyDown(e: KeyboardEvent) {
@@ -198,6 +312,7 @@ function reset() {
   levels.value = new Set(LOG_LEVELS);
   query.value = "";
   regex.value = false;
+  if (props.ranges?.length) rangeId.value = props.ranges.find((r) => r.ms === null)?.id ?? props.ranges[props.ranges.length - 1]!.id;
 }
 async function copyVisible() {
   if (await copyText(logsToText(rows.value, timeOptions.value))) flash(t.value.copied);
@@ -225,6 +340,7 @@ watch(
   <div
     data-slot="log-viewer"
     :data-streaming="props.streaming || undefined"
+    :data-paused="pausedAt ? '' : undefined"
     dir="ltr"
     :class="cn('relative flex min-w-0 flex-col overflow-hidden rounded-surface border border-border bg-nq-surface-soft text-start', props.class)"
   >
@@ -258,6 +374,15 @@ watch(
           </NqButton>
         </NqInputGroupAddon>
       </NqInputGroup>
+      <NqNativeSelect
+        v-if="props.ranges?.length"
+        v-model="rangeId"
+        size="sm"
+        :aria-label="t.range"
+        data-slot="log-viewer-range"
+        :options="props.ranges.map((r) => ({ value: r.id, label: (isAr && r.labelAr) || r.label }))"
+        class="w-auto"
+      />
       <div role="group" :aria-label="t.levels" class="flex flex-wrap items-center gap-1">
         <button
           v-for="level in LOG_LEVELS"
@@ -275,11 +400,26 @@ watch(
           @click="toggleLevel(level)"
         >
           <span :class="cn('font-mono', levels.has(level) && LEVEL_TEXT[level])">{{ t.level[level] }}</span>
-          <span class="tabular-nums text-muted-foreground">{{ counts[level] }}</span>
+          <span class="tabular-nums text-muted-foreground">{{ counts[level] ?? 0 }}</span>
         </button>
       </div>
       <div class="ms-auto flex items-center gap-0.5">
         <slot name="toolbar" />
+        <NqButton
+          v-if="props.liveTail"
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          :aria-label="pausedAt ? t.resume : t.pause"
+          :aria-pressed="!!pausedAt"
+          data-slot="log-viewer-live"
+          :data-active="pausedAt ? true : undefined"
+          class="data-active:bg-nq-selected"
+          @click="setLive(!!pausedAt)"
+        >
+          <Play v-if="pausedAt" aria-hidden="true" />
+          <Pause v-else aria-hidden="true" />
+        </NqButton>
         <NqButton
           type="button"
           variant="ghost"
@@ -337,20 +477,43 @@ watch(
         @scroll="onScroll"
         @keydown="onKeyDown"
       >
-        <NqEmptyState
-          v-if="rows.length === 0"
-          class="m-3 border-0"
-          :title="props.entries.length === 0 ? t.emptyTitle : t.noMatchTitle"
-          :description="props.entries.length === 0 ? t.emptyBody : t.noMatchBody"
-        >
-          <template v-if="props.entries.length > 0 && filtering" #actions>
-            <NqButton type="button" size="sm" @click="reset">
-              <X aria-hidden="true" />
-              {{ t.resetFilters }}
+        <template v-if="rows.length === 0">
+          <div v-if="props.hasOlder || loadingOlder" data-slot="log-viewer-older" class="flex items-center justify-center border-b border-border/60" :style="{ height: `${OLDER_BAR}px` }">
+            <span v-if="loadingOlder" role="status" class="inline-flex items-center gap-2 font-sans text-caption text-muted-foreground">
+              <NqSpinner class="size-3" />
+              {{ t.loadingOlder }}
+            </span>
+            <NqButton v-else-if="props.onLoadOlder" type="button" size="sm" variant="ghost" @click="loadOlder">
+              <History aria-hidden="true" />
+              {{ t.loadOlder }}
             </NqButton>
-          </template>
-        </NqEmptyState>
-        <div v-else :style="{ height: `${rows.length * props.rowHeight}px` }" class="relative min-w-full w-max">
+          </div>
+          <NqEmptyState
+            class="m-3 border-0"
+            :title="props.entries.length === 0 ? t.emptyTitle : t.noMatchTitle"
+            :description="props.entries.length === 0 ? t.emptyBody : t.noMatchBody"
+          >
+            <template v-if="props.entries.length > 0 && filtering" #actions>
+              <NqButton type="button" size="sm" @click="reset">
+                <X aria-hidden="true" />
+                {{ t.resetFilters }}
+              </NqButton>
+            </template>
+          </NqEmptyState>
+        </template>
+        <div v-else :style="{ height: `${head + rows.length * props.rowHeight}px` }" class="relative min-w-full w-max">
+          <div v-if="props.hasOlder || loadingOlder" class="absolute inset-x-0 top-0">
+            <div v-if="props.hasOlder || loadingOlder" data-slot="log-viewer-older" class="flex items-center justify-center border-b border-border/60" :style="{ height: `${OLDER_BAR}px` }">
+              <span v-if="loadingOlder" role="status" class="inline-flex items-center gap-2 font-sans text-caption text-muted-foreground">
+                <NqSpinner class="size-3" />
+                {{ t.loadingOlder }}
+              </span>
+              <NqButton v-else-if="props.onLoadOlder" type="button" size="sm" variant="ghost" @click="loadOlder">
+                <History aria-hidden="true" />
+                {{ t.loadOlder }}
+              </NqButton>
+            </div>
+          </div>
           <div
             v-for="{ entry, index } in visible"
             :id="`${uid}-${entry.id}`"
@@ -362,7 +525,7 @@ watch(
             :data-level="entry.level"
             :data-selected="entry.id === selected || undefined"
             :title="entryText(entry).length > 200 ? undefined : entryText(entry)"
-            :style="{ position: 'absolute', insetInlineStart: 0, insetInlineEnd: 0, top: `${index * props.rowHeight}px`, height: `${props.rowHeight}px` }"
+            :style="{ position: 'absolute', insetInlineStart: 0, insetInlineEnd: 0, top: `${head + index * props.rowHeight}px`, height: `${props.rowHeight}px` }"
             :class="cn('flex cursor-default items-center gap-3 whitespace-pre px-3 hover:bg-nq-hover', LEVEL_ROW[entry.level], entry.id === selected && 'bg-nq-selected hover:bg-nq-selected')"
             @click="selected = entry.id === selected ? null : entry.id"
           >
@@ -378,7 +541,11 @@ watch(
           </div>
         </div>
       </div>
-      <NqButton v-if="!following && rows.length > 0" type="button" size="sm" variant="secondary" class="absolute end-3 bottom-3 shadow-sm" @click="setFollowing(true)">
+      <NqButton v-if="pausedAt && waiting > 0" type="button" size="sm" variant="primary" class="absolute end-3 bottom-3 shadow-sm" @click="setLive(true)">
+        <Play aria-hidden="true" />
+        {{ t.newWhilePaused(waiting) }}
+      </NqButton>
+      <NqButton v-else-if="!following && rows.length > 0 && !pausedAt" type="button" size="sm" variant="secondary" class="absolute end-3 bottom-3 shadow-sm" @click="setFollowing(true)">
         <ArrowDownToLine aria-hidden="true" />
         {{ t.jump }}
       </NqButton>
@@ -415,8 +582,13 @@ watch(
     </section>
 
     <div data-slot="log-viewer-footer" class="flex h-8 items-center justify-between gap-2 border-t border-border px-3 text-caption text-muted-foreground">
-      <span class="tabular-nums">{{ t.count(rows.length, props.entries.length) }}</span>
-      <span v-if="props.streaming" class="inline-flex items-center gap-1 text-nq-success-text">
+      <span class="tabular-nums">{{ t.count(rows.length, props.total ?? shown.length) }}</span>
+      <span v-if="pausedAt" role="status" class="inline-flex items-center gap-1 text-nq-warning-text">
+        <Pause aria-hidden="true" class="size-3" />
+        {{ t.paused }}
+        <span v-if="waiting > 0" class="tabular-nums text-muted-foreground"> · {{ t.newWhilePaused(waiting) }}</span>
+      </span>
+      <span v-else-if="props.streaming" class="inline-flex items-center gap-1 text-nq-success-text">
         <NqSpinner class="size-3" />
         {{ t.streaming }}
       </span>

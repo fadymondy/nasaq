@@ -2,7 +2,7 @@
     <div data-slot="icon-picker-root" x-data="{ picked: null }" x-modelable="picked" class="contents" x-model="icon">
     <div data-slot="popover" x-data="nqPopover(false)" x-modelable="open" x-id="['nq-popover']" class="contents">
     <button data-slot="popover-trigger"
-     type="button"                     x-bind:data-popup-open="open ? &#039;&#039; : undefined" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" :aria-expanded="open" x-bind:aria-label="picked ? `Icon: :name`.replace(`:name`, picked) : `Choose icon`" x-bind:title="picked || `Choose icon`" aria-label="Choose icon" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover size-control p-0">
+     type="button"                         x-bind:data-popup-open="open ? &#039;&#039; : undefined" x-ref="trigger" aria-haspopup="dialog" x-on:click="toggle()" :aria-expanded="open" x-bind:aria-label="picked ? `Icon: :name`.replace(`:name`, picked) : `Choose icon`" x-bind:title="picked || `Choose icon`" aria-label="Choose icon" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover size-control p-0">
         <span x-show="! (picked &amp;&amp; popupEl?.querySelector(`[data-name='${picked}']`))" class="inline-flex text-muted-foreground"><svg data-slot="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z"/>
   <rect x="3" y="14" width="7" height="7" rx="1"/>
@@ -2407,7 +2407,7 @@
         <p x-show="total === 0" style="display:none" class="px-2 py-8 text-center text-body-sm text-muted-foreground" x-text="`No icons match “:q”.`.replace(`:q`, query)"></p>
         <div x-show="remaining > 0" class="mt-2 flex justify-center">
             <button data-slot="button"
-     type="button"                     x-on:click="showMore()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+     type="button"                         x-on:click="showMore()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
         <span x-text="`Show :n more`.replace(`:n`, new Intl.NumberFormat($nq.locale).format(remaining))">Show 123 more</span></button>
         </div>
     </div>
@@ -2417,4 +2417,15 @@
 </div>
 </div>
     <span class="text-body-sm text-muted-foreground" x-text="icon ?? 'No icon chosen'">No icon chosen</span>
+</div>
+<div class="flex items-center gap-3">
+    <svg data-slot="icon" aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg>    <i aria-hidden="true" data-slot="icon-boxicon" style="font-size: 1em; line-height: 1" class="bx inline-block shrink-0 not-italic bx-home text-xl"></i>
+    <i aria-hidden="true" data-slot="icon-boxicon" style="font-size: 20px; line-height: 1" class="bx inline-block shrink-0 not-italic bxl-github"></i>
+    <img src="/img/logo.svg" alt="" aria-hidden="true" data-slot="icon-image"  class="inline-block shrink-0 object-contain size-5">
+    no icon
 </div>

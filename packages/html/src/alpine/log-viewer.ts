@@ -1,19 +1,23 @@
-// nqLogViewer: a log stream with level filters and counts, search with highlights (optionally a regular expression), follow-the-tail with a
-// jump button, timestamps, keyboard navigation, a detail panel and a windowed list of fixed-height rows. The markup is the React LogViewer's,
+// nqLogViewer: a log stream with level filters and counts, search with highlights (optionally a regular expression), a time range, follow-the-tail
+// with a jump button, pause and resume (live tail), loading older entries, server-side filtering (manual), timestamps, keyboard navigation, a detail
+// panel and a windowed list of fixed-height rows. The markup is the React LogViewer's,
 // rendered by <x-nq::log-viewer>. Always left-to-right; only the chrome is translated.
 //
 //   <div data-slot="log-viewer" dir="ltr" x-data="nqLogViewer({ entries: [...], streaming: true, strings: {...} })"> ... </div>
 //
 // Entries: { id, time (ms, ISO or Date), level, message, source?, fields? }, oldest first. Append from anywhere with an event on the element:
-//   el.dispatchEvent(new CustomEvent('nq-log-write', { detail: { entries: [...] } }))     // append (replace: true swaps everything)
-//   el.dispatchEvent(new CustomEvent('nq-log-state', { detail: { streaming: false } }))   // the stream ended
-// Events out (bubbling): nq-log-download { entries } (cancelable: preventDefault to handle the download yourself), nq-log-copy { text }.
+//   el.dispatchEvent(new CustomEvent('nq-log-write', { detail: { entries: [...] } }))     // append (replace: true swaps everything; prepend: true adds older entries and keeps the reader's place)
+//   el.dispatchEvent(new CustomEvent('nq-log-state', { detail: { streaming: false } }))   // the stream ended; also hasOlder, loadingOlder, total, counts
+// Events out (bubbling): nq-log-download { entries } (cancelable: preventDefault to handle the download yourself), nq-log-copy { text },
+// nq-log-filter { levels, query, regex, range, since } (the reader changed a filter; for a server that filters, see `manual`),
+// nq-log-older (the reader asked for older entries: fetch, then nq-log-write { entries, prepend: true }), nq-log-live { live } (pause / resume).
 // The helpers are a copy of packages/web/src/components/log-viewer/log-viewer-format.ts (./log-viewer-logic.ts).
 
 import { copyText } from "./copy-button";
 import {
   compileMatcher,
   countByLevel,
+  entriesUntil,
   entryText,
   fieldsToText,
   filterLogs,
@@ -21,7 +25,9 @@ import {
   LOG_LEVELS,
   type LogEntry,
   type LogLevel,
+  type LogRange,
   logsToText,
+  rangeSince,
   splitByRanges,
   virtualWindow,
 } from "./log-viewer-logic";
@@ -37,6 +43,14 @@ interface Config {
   utc?: boolean;
   rowHeight?: number;
   downloadFilename?: string;
+  /** The server filters: entries are shown as given and filter changes are reported with nq-log-filter. */
+  manual?: boolean;
+  counts?: Partial<Record<LogLevel, number>>;
+  total?: number | null;
+  ranges?: LogRange[];
+  defaultRange?: string;
+  hasOlder?: boolean;
+  liveTail?: boolean;
   strings?: Record<string, string>;
 }
 
@@ -57,6 +71,20 @@ interface LogViewerState extends Magics {
   utc: boolean;
   rowHeight: number;
   downloadFilename: string;
+  manual: boolean;
+  extraCounts: Partial<Record<LogLevel, number>>;
+  serverTotal: number | null;
+  ranges: LogRange[];
+  rangeId: string;
+  hasOlder: boolean;
+  loadingOlder: boolean;
+  liveTail: boolean;
+  paused: boolean;
+  pausedId: LogEntry["id"] | null;
+  waiting: number;
+  shownCount: number;
+  anchor: { height: number; top: number } | null;
+  reportQueued: boolean;
   strings: Record<string, string>;
   rows: LogEntry[];
   counts: Record<LogLevel, number>;
@@ -73,6 +101,11 @@ interface LogViewerState extends Magics {
   readonly filtering: boolean;
   readonly canReset: boolean;
   readonly showJump: boolean;
+  readonly showResume: boolean;
+  readonly head: number;
+  readonly olderOpen: boolean;
+  readonly waitingText: string;
+  readonly liveLabel: string;
   readonly visible: Item[];
   readonly count: string;
   readonly currentFields: [string, string][];
@@ -89,7 +122,10 @@ interface LogViewerState extends Magics {
   toggleRow(id: LogEntry["id"]): void;
   reveal(index: number): void;
   onKey(e: KeyboardEvent): void;
-  write(entries: LogEntry | LogEntry[], replace?: boolean): void;
+  write(entries: LogEntry | LogEntry[], replace?: boolean, prepend?: boolean): void;
+  report(): void;
+  loadOlder(): void;
+  setLive(live: boolean): void;
   time(entry: LogEntry): string;
   currentTime(): string;
   pieces(entry: LogEntry): { text: string; match: boolean }[];
@@ -122,6 +158,8 @@ const LEVEL_ROW: Record<LogLevel, string> = {
   error: "bg-nq-danger-soft/60",
   fatal: "bg-nq-danger-soft",
 };
+/** Height of the "Load older" bar at the top of the list, in pixels. */
+const OLDER_BAR = 36;
 const LEVEL_TAG: Record<LogLevel, string> = { trace: "TRACE", debug: "DEBUG", info: "INFO", warn: "WARN", error: "ERROR", fatal: "FATAL" };
 
 export const logViewer: Register = (Alpine) => {
@@ -136,6 +174,20 @@ export const logViewer: Register = (Alpine) => {
     utc: !!cfg.utc,
     rowHeight: cfg.rowHeight ?? 24,
     downloadFilename: cfg.downloadFilename ?? "logs.log",
+    manual: !!cfg.manual,
+    extraCounts: cfg.counts ?? ({} as Partial<Record<LogLevel, number>>),
+    serverTotal: cfg.total ?? null,
+    ranges: cfg.ranges ?? ([] as LogRange[]),
+    rangeId: cfg.defaultRange ?? cfg.ranges?.[cfg.ranges.length - 1]?.id ?? "",
+    hasOlder: !!cfg.hasOlder,
+    loadingOlder: false,
+    liveTail: !!cfg.liveTail,
+    paused: false,
+    pausedId: null as LogEntry["id"] | null,
+    waiting: 0,
+    shownCount: 0,
+    anchor: null as { height: number; top: number } | null,
+    reportQueued: false,
     strings: cfg.strings ?? {},
     rows: [] as LogEntry[],
     counts: { trace: 0, debug: 0, info: 0, warn: 0, error: 0, fatal: 0 } as Record<LogLevel, number>,
@@ -153,7 +205,8 @@ export const logViewer: Register = (Alpine) => {
     },
     get filtering() {
       const self = this as unknown as LogViewerState;
-      return self.levels.length < LOG_LEVELS.length || self.query !== "";
+      const range = self.ranges.find((r) => r.id === self.rangeId);
+      return self.levels.length < LOG_LEVELS.length || self.query !== "" || (!!range && range.ms !== null);
     },
     get canReset() {
       const self = this as unknown as LogViewerState;
@@ -161,17 +214,38 @@ export const logViewer: Register = (Alpine) => {
     },
     get showJump() {
       const self = this as unknown as LogViewerState;
-      return !self.following && self.rows.length > 0;
+      return !self.following && self.rows.length > 0 && !self.paused;
+    },
+    get showResume() {
+      const self = this as unknown as LogViewerState;
+      return self.paused && self.waiting > 0;
+    },
+    get head() {
+      const self = this as unknown as LogViewerState;
+      return self.hasOlder || self.loadingOlder ? OLDER_BAR : 0;
+    },
+    get olderOpen() {
+      const self = this as unknown as LogViewerState;
+      return self.hasOlder || self.loadingOlder;
+    },
+    get waitingText() {
+      const self = this as unknown as LogViewerState;
+      return (self.waiting === 1 ? self.strings.newOne : self.strings.newMany)?.replace("{n}", String(self.waiting)) ?? "";
+    },
+    get liveLabel() {
+      const self = this as unknown as LogViewerState;
+      return (self.paused ? self.strings.resume : self.strings.pause) ?? "";
     },
     get visible() {
       const self = this as unknown as LogViewerState;
-      const w = virtualWindow({ scrollTop: self.scrollTop, viewport: self.viewport, rowHeight: self.rowHeight, count: self.rows.length });
-      return self.rows.slice(w.start, w.end).map((entry, i) => ({ entry, index: w.start + i, top: (w.start + i) * self.rowHeight }));
+      const head = self.head;
+      const w = virtualWindow({ scrollTop: Math.max(0, self.scrollTop - head), viewport: self.viewport, rowHeight: self.rowHeight, count: self.rows.length });
+      return self.rows.slice(w.start, w.end).map((entry, i) => ({ entry, index: w.start + i, top: head + (w.start + i) * self.rowHeight }));
     },
     get count() {
       const self = this as unknown as LogViewerState;
       const shown = self.rows.length;
-      const total = self.entries.length;
+      const total = self.serverTotal ?? self.shownCount;
       return (shown === total ? self.strings.countAll : self.strings.countSome)?.replace("{shown}", String(shown)).replace("{total}", String(total)) ?? "";
     },
     get currentFields() {
@@ -181,9 +255,13 @@ export const logViewer: Register = (Alpine) => {
     init(this: LogViewerState) {
       this.uid = this.$id("log-viewer");
       this.refilter();
-      this.$watch("query", () => this.refilter());
-      this.$watch("regex", () => this.refilter());
-      this.$watch("levels", () => this.refilter());
+      // Filter changes are also reported, for a server that filters; the initial state is not.
+      for (const key of ["query", "regex", "levels", "rangeId"]) {
+        this.$watch(key, () => {
+          this.refilter();
+          this.report();
+        });
+      }
       this.measure();
       const list = this.$refs.list;
       if (list && typeof ResizeObserver !== "undefined") {
@@ -193,12 +271,17 @@ export const logViewer: Register = (Alpine) => {
       this.$nextTick(() => this.pin());
       const el = this.$root;
       el.addEventListener("nq-log-write", (e: Event) => {
-        const d = (e as CustomEvent<{ entries?: LogEntry | LogEntry[]; replace?: boolean }>).detail;
-        if (d?.entries !== undefined) this.write(d.entries, d.replace);
+        const d = (e as CustomEvent<{ entries?: LogEntry | LogEntry[]; replace?: boolean; prepend?: boolean }>).detail;
+        if (d?.entries !== undefined) this.write(d.entries, d.replace, d.prepend);
       });
       el.addEventListener("nq-log-state", (e: Event) => {
-        const d = (e as CustomEvent<{ streaming?: boolean }>).detail;
+        const d = (e as CustomEvent<{ streaming?: boolean; hasOlder?: boolean; loadingOlder?: boolean; total?: number | null; counts?: Partial<Record<LogLevel, number>> }>).detail;
         if (typeof d?.streaming === "boolean") this.streaming = d.streaming;
+        if (typeof d?.hasOlder === "boolean") this.hasOlder = d.hasOlder;
+        if (typeof d?.loadingOlder === "boolean") this.loadingOlder = d.loadingOlder;
+        if (d && "total" in d) this.serverTotal = d.total ?? null;
+        if (d?.counts) this.extraCounts = d.counts;
+        if (d) this.refilter();
       });
     },
     destroy(this: LogViewerState) {
@@ -206,18 +289,74 @@ export const logViewer: Register = (Alpine) => {
       if (this.flashTimer) clearTimeout(this.flashTimer);
     },
     refilter(this: LogViewerState) {
-      const result = filterLogs(this.entries, { levels: new Set(this.levels), query: this.query, regex: this.regex });
-      this.rows = result.entries;
-      this.invalid = result.invalid;
-      this.counts = countByLevel(this.entries);
+      // Paused, the list stops at the last entry it had; later entries wait and are counted.
+      const shown = this.paused ? entriesUntil(this.entries, this.pausedId) : this.entries;
+      this.shownCount = shown.length;
+      this.waiting = this.paused ? this.entries.length - shown.length : 0;
+      const range = this.ranges.find((r) => r.id === this.rangeId);
+      if (this.manual) {
+        this.rows = [...shown];
+        this.invalid = compileMatcher(this.query, this.regex) === "invalid";
+      } else {
+        const result = filterLogs(shown, { levels: new Set(this.levels), query: this.query, regex: this.regex, since: rangeSince(range) });
+        this.rows = result.entries;
+        this.invalid = result.invalid;
+      }
+      this.counts = { ...countByLevel(shown), ...this.extraCounts };
       this.current = this.selected === null ? null : (this.rows.find((r) => r.id === this.selected) ?? null);
       if (this.selected !== null && !this.entries.some((e) => e.id === this.selected)) this.selected = null;
-      this.$nextTick(() => this.pin());
+      this.$nextTick(() => {
+        const list = this.$refs.list;
+        const a = this.anchor;
+        // Keep the reader's place when older entries are prepended.
+        if (list && a && list.scrollHeight !== a.height) {
+          list.scrollTop = a.top + (list.scrollHeight - a.height);
+          this.anchor = null;
+          this.scrollTop = list.scrollTop;
+        }
+        this.pin();
+      });
     },
-    write(this: LogViewerState, incoming: LogEntry | LogEntry[], replace = false) {
+    report(this: LogViewerState) {
+      // Several filters can change at once (reset); one event per change set.
+      if (this.reportQueued) return;
+      this.reportQueued = true;
+      queueMicrotask(() => {
+        this.reportQueued = false;
+        const range = this.ranges.find((r) => r.id === this.rangeId) ?? null;
+        this.$root.dispatchEvent(
+          new CustomEvent("nq-log-filter", {
+            detail: { levels: LOG_LEVELS.filter((l) => this.levels.includes(l)), query: this.query, regex: this.regex, range, since: rangeSince(range ?? undefined) },
+            bubbles: true,
+          }),
+        );
+      });
+    },
+    write(this: LogViewerState, incoming: LogEntry | LogEntry[], replace = false, prepend = false) {
       const next = Array.isArray(incoming) ? incoming : [incoming];
-      this.entries = replace ? [...next] : [...this.entries, ...next];
+      if (prepend) {
+        const list = this.$refs.list;
+        if (list && !this.anchor) this.anchor = { height: list.scrollHeight, top: list.scrollTop };
+        this.following = false;
+        this.loadingOlder = false;
+      }
+      this.entries = replace ? [...next] : prepend ? [...next, ...this.entries] : [...this.entries, ...next];
       this.refilter();
+    },
+    loadOlder(this: LogViewerState) {
+      if (this.loadingOlder) return;
+      const list = this.$refs.list;
+      if (list) this.anchor = { height: list.scrollHeight, top: list.scrollTop };
+      this.following = false;
+      this.loadingOlder = true;
+      this.$root.dispatchEvent(new CustomEvent("nq-log-older", { bubbles: true }));
+    },
+    setLive(this: LogViewerState, live: boolean) {
+      this.paused = !live;
+      this.pausedId = live ? null : this.entries.length ? (this.entries[this.entries.length - 1] as LogEntry).id : null;
+      this.refilter();
+      if (live) this.setFollowing(true);
+      this.$root.dispatchEvent(new CustomEvent("nq-log-live", { detail: { live }, bubbles: true }));
     },
     pin(this: LogViewerState) {
       const list = this.$refs.list;
@@ -257,6 +396,7 @@ export const logViewer: Register = (Alpine) => {
       this.levels = [...LOG_LEVELS];
       this.query = "";
       this.regex = false;
+      if (this.ranges.length) this.rangeId = (this.ranges.find((r) => r.ms === null) ?? (this.ranges[this.ranges.length - 1] as LogRange)).id;
     },
     select(this: LogViewerState, id: LogEntry["id"] | null) {
       this.selected = id;
@@ -268,8 +408,8 @@ export const logViewer: Register = (Alpine) => {
     reveal(this: LogViewerState, index: number) {
       const list = this.$refs.list;
       if (!list) return;
-      const top = index * this.rowHeight;
-      if (top < list.scrollTop) list.scrollTop = top;
+      const top = this.head + index * this.rowHeight;
+      if (top < list.scrollTop) list.scrollTop = index === 0 ? 0 : top;
       else if (top + this.rowHeight > list.scrollTop + list.clientHeight) list.scrollTop = top + this.rowHeight - list.clientHeight;
       this.scrollTop = list.scrollTop;
     },

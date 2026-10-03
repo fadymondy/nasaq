@@ -124,3 +124,85 @@ describe("NqDataTable", () => {
     expect(w.text()).toContain("Couldn't load this list");
   });
 });
+
+describe("NqDataTable: multi-sort, pinning, resizing, ranges, expansion", () => {
+  function adv(opts: Record<string, unknown>, tableProps: Record<string, unknown> = {}) {
+    const cols: DataTableColumn<Row>[] = [
+      { id: "name", header: "Name", cell: (r) => r.name, sortValue: (r) => r.name, pin: "start", size: 200 },
+      { id: "qty", header: "Qty", cell: (r) => String(r.qty), sortValue: (r) => r.qty, rangeValue: (r) => r.qty },
+    ];
+    let table!: ReturnType<typeof useDataTable<Row>>;
+    const C = defineComponent({
+      setup() {
+        table = useDataTable({ data, columns: cols, getRowId: (r) => r.id, ...opts });
+        return () => h(NqDataTable, { table: table as never, label: "Items", ...tableProps });
+      },
+    });
+    return { w: mount(C, { attachTo: document.body }), get table() { return table; } };
+  }
+  const head = (w: ReturnType<typeof mount>, id: string) => w.find(`th[data-col=${id}]`);
+
+  it("sorts by several columns with Shift and gives later keys a screen-reader priority", async () => {
+    const { w } = adv({ multiSort: true });
+    await head(w, "name").find("button").trigger("click");
+    await head(w, "qty").find("button").trigger("click", { shiftKey: true });
+    expect(head(w, "name").attributes("aria-sort")).toBe("ascending");
+    expect(head(w, "qty").attributes("aria-sort")).toBeUndefined();
+    expect(head(w, "qty").find(".sr-only").text()).toBe("sort 2, ascending");
+    expect(head(w, "name").find(".sr-only").exists()).toBe(false);
+    expect(head(w, "name").find("[data-slot=data-table-sort-index]").text()).toBe("1");
+  });
+
+  it("pins a column and moves it with pinColumn", async () => {
+    const { w, table } = adv({});
+    expect(head(w, "name").attributes("data-pin")).toBe("start");
+    expect(head(w, "qty").attributes("data-pin")).toBeUndefined();
+    table.pinColumn("qty", "end");
+    await nextTick();
+    expect(head(w, "qty").attributes("data-pin")).toBe("end");
+    table.pinColumn("name", null);
+    await nextTick();
+    expect(head(w, "name").attributes("data-pin")).toBeUndefined();
+  });
+
+  it("resizes from the handle with the keyboard, within limits, and resets on double-click", async () => {
+    const { w, table } = adv({ resizable: true });
+    const handle = () => head(w, "name").find("[data-slot=data-table-resize-handle]");
+    expect(handle().attributes("role")).toBe("separator");
+    expect(handle().attributes("aria-valuenow")).toBe("200");
+    await handle().trigger("keydown", { key: "ArrowRight" });
+    expect(handle().attributes("aria-valuenow")).toBe("216");
+    await handle().trigger("keydown", { key: "ArrowRight", shiftKey: true });
+    expect(handle().attributes("aria-valuenow")).toBe("280");
+    table.setColumnSize("name", 5000);
+    await nextTick();
+    expect(handle().attributes("aria-valuenow")).toBe("960");
+    await handle().trigger("dblclick");
+    expect(handle().attributes("aria-valuenow")).toBeUndefined();
+  });
+
+  it("filters by a numeric range", async () => {
+    const { w, table } = adv({});
+    table.setRange("qty", { min: 3 });
+    await nextTick();
+    expect(names(w)).toEqual(["Bravo", "Alpha"]);
+    table.setRange("qty", { min: 3, max: 3 });
+    await nextTick();
+    expect(names(w)).toEqual(["Bravo"]);
+    table.setRange("qty", null);
+    await nextTick();
+    expect(names(w)).toHaveLength(3);
+  });
+
+  it("expands a row to the details, only for rows that can expand", async () => {
+    const { w } = adv({}, { renderExpanded: (r: Row) => h("p", `More on ${r.name}`), canExpand: (r: Row) => r.id !== "c" });
+    const rows = w.findAll("tbody tr[data-row]");
+    expect(rows[2]!.attributes("aria-expanded")).toBeUndefined();
+    await rows[0]!.find("button[aria-expanded]").trigger("click");
+    expect(w.find("[data-slot=data-table-expanded]").text()).toContain("More on Bravo");
+    expect(w.find("[data-slot=data-table-expanded] section").attributes("aria-label")).toBe("Details for a");
+    await w.findAll("tbody tr[data-row]")[0]!.find("button[aria-expanded]").trigger("click");
+    expect(w.find("[data-slot=data-table-expanded]").exists()).toBe(false);
+  });
+});
+

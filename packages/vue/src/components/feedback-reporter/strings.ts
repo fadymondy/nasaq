@@ -44,6 +44,13 @@ export const STRINGS = {
     shakeDismiss: "Not now",
     shakeSetting: "Shake to report",
     shakeSettingHint: "Shaking your phone opens this sheet.",
+    moveHint: "Drag to move it out of the way. Alt + arrow keys move it too.",
+    mine: "Mine",
+    yours: "Yours",
+    emptyMineTitle: "You have not reported anything",
+    emptyMine: "Reports you send from this page show up here, with their status.",
+    loadMore: "Load more",
+    showing: "Showing {shown} of {total}",
   },
   ar: {
     launcher: "ملاحظات",
@@ -90,6 +97,13 @@ export const STRINGS = {
     shakeDismiss: "ليس الآن",
     shakeSetting: "الهز للإبلاغ",
     shakeSettingHint: "هز هاتفك يفتح هذه الورقة.",
+    moveHint: "اسحبه لإبعاده عن طريقك. Alt مع الأسهم يحركه أيضًا.",
+    mine: "بلاغاتي",
+    yours: "بلاغك",
+    emptyMineTitle: "لم تبلغ عن شيء بعد",
+    emptyMine: "البلاغات التي ترسلها من هذه الصفحة تظهر هنا مع حالتها.",
+    loadMore: "عرض المزيد",
+    showing: "يعرض {shown} من {total}",
   },
 };
 

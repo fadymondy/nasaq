@@ -5,4 +5,4 @@
         ['id' => 2, 'time' => $now + 1200, 'level' => 'error', 'source' => 'db', 'message' => 'connection refused', 'fields' => ['host' => 'db-1']],
     ];
 @endphp
-<x-nq::log-viewer streaming :entries="$entries" />
+<x-nq::log-viewer streaming :entries="$entries" :ranges="true" has-older live-tail />

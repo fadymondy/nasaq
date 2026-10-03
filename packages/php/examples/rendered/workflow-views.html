@@ -1,0 +1,291 @@
+<section data-slot="workflow-views" x-data="nqWorkflowViews(JSON.parse('{\u0022view\u0022:\u0022steps\u0022,\u0022views\u0022:[\u0022steps\u0022,\u0022pipeline\u0022],\u0022storageKey\u0022:\u0022workflow:view\u0022}'))" x-modelable="view" x-bind:data-view="view"
+     aria-labelledby="nq-wv-000001-title"     class="flex flex-col rounded-card border border-border bg-card">
+    <header class="flex flex-wrap items-center gap-3 border-b border-border px-4 py-3">
+                    <div class="flex min-w-0 flex-1 items-center gap-2">
+                <h3 id="nq-wv-000001-title" class="text-h4 text-foreground">Workflow</h3>
+                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">7 steps</span>
+                            </div>
+                <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022steps\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="View" x-effect="value = reconcile(value)" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('steps')"      data-pressed         aria-controls="nq-wv-000001-panel" data-view="steps" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 5h13"/>
+  <path d="M13 12h8"/>
+  <path d="M13 19h8"/>
+  <path d="M3 10a2 2 0 0 0 2 2h3"/>
+  <path d="M3 5v12a2 2 0 0 0 2 2h3"/>
+</svg>                    Steps</button>
+                            <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('pipeline')"             aria-controls="nq-wv-000001-panel" data-view="pipeline" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 6a9 9 0 0 0-9 9V3"/>
+  <circle cx="18" cy="6" r="3"/>
+  <circle cx="6" cy="18" r="3"/>
+</svg>                    Pipeline</button>
+</div>
+            </header>
+    <div id="nq-wv-000001-panel" data-slot="workflow-views-panel" class="min-w-0 p-4">
+                    <div data-view-panel="steps" x-show="view === 'steps'" >
+                <ol class="flex flex-col gap-2">
+                    <li data-slot="workflow-step" data-step="ask" data-kind="step" class="flex flex-col gap-2">
+            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'ask' })"   class="flex w-full items-start gap-3 rounded-control border bg-card px-3 py-2.5 text-start border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <bdi dir="ltr" class="min-w-8 pt-px font-mono text-caption text-muted-foreground tabular-nums">1</bdi>
+                <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span class="flex flex-wrap items-center gap-2">
+                        <span dir="auto" class="text-label text-foreground">Customer asks for a refund</span>
+                                            </span>
+                                    </span>
+                                    <span dir="auto" class="shrink-0 text-caption text-muted-foreground">Customer</span>
+                            </button>
+                                </li>
+                    <li data-slot="workflow-step" data-step="check" data-kind="decision" class="flex flex-col gap-2">
+            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'check' })"   aria-current="step"  class="flex w-full items-start gap-3 rounded-control border px-3 py-2.5 text-start border-primary bg-nq-selected outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <bdi dir="ltr" class="min-w-8 pt-px font-mono text-caption text-muted-foreground tabular-nums">2</bdi>
+                <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span class="flex flex-wrap items-center gap-2">
+                        <span dir="auto" class="text-label text-foreground">Within 14 days?</span>
+                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-info/40 bg-nq-info-soft text-nq-info-text">Decision</span>
+                                            </span>
+                                    </span>
+                            </button>
+                                        <div data-slot="workflow-branch" class="ms-5 flex flex-col gap-2 border-s border-dashed border-nq-line-strong ps-4">
+                    <span class="flex items-center gap-2 text-caption text-muted-foreground">
+                        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 6a9 9 0 0 0-9 9V3"/>
+  <circle cx="18" cy="6" r="3"/>
+  <circle cx="6" cy="18" r="3"/>
+</svg>                        <span dir="auto">Yes</span>
+                    </span>
+                                            <ol class="flex flex-col gap-2">
+                    <li data-slot="workflow-step" data-step="approve" data-kind="step" class="flex flex-col gap-2">
+            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'approve' })"   class="flex w-full items-start gap-3 rounded-control border bg-card px-3 py-2.5 text-start border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <bdi dir="ltr" class="min-w-8 pt-px font-mono text-caption text-muted-foreground tabular-nums">2.a.1</bdi>
+                <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span class="flex flex-wrap items-center gap-2">
+                        <span dir="auto" class="text-label text-foreground">Approve the refund</span>
+                                            </span>
+                                    </span>
+                                    <span dir="auto" class="shrink-0 text-caption text-muted-foreground">Support</span>
+                            </button>
+                                </li>
+    </ol>
+                                    </div>
+                            <div data-slot="workflow-branch" class="ms-5 flex flex-col gap-2 border-s border-dashed border-nq-line-strong ps-4">
+                    <span class="flex items-center gap-2 text-caption text-muted-foreground">
+                        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 6a9 9 0 0 0-9 9V3"/>
+  <circle cx="18" cy="6" r="3"/>
+  <circle cx="6" cy="18" r="3"/>
+</svg>                        <span dir="auto">No</span>
+                    </span>
+                                            <ol class="flex flex-col gap-2">
+                    <li data-slot="workflow-step" data-step="review" data-kind="human" class="flex flex-col gap-2">
+            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'review' })"   class="flex w-full items-start gap-3 rounded-control border bg-card px-3 py-2.5 text-start border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <bdi dir="ltr" class="min-w-8 pt-px font-mono text-caption text-muted-foreground tabular-nums">2.b.1</bdi>
+                <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span class="flex flex-wrap items-center gap-2">
+                        <span dir="auto" class="text-label text-foreground">Manager reviews</span>
+                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Person</span>
+                                            </span>
+                                            <span dir="auto" class="text-caption text-muted-foreground">Late requests need a second look.</span>
+                                    </span>
+                            </button>
+                                </li>
+    </ol>
+                                    </div>
+                    </li>
+                    <li data-slot="workflow-step" data-step="pay" data-kind="output" class="flex flex-col gap-2">
+            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'pay' })"   class="flex w-full items-start gap-3 rounded-control border bg-card px-3 py-2.5 text-start border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <bdi dir="ltr" class="min-w-8 pt-px font-mono text-caption text-muted-foreground tabular-nums">3</bdi>
+                <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span class="flex flex-wrap items-center gap-2">
+                        <span dir="auto" class="text-label text-foreground">Issue the refund</span>
+                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Result</span>
+                                            </span>
+                                    </span>
+                            </button>
+                            <div class="ms-5 border-s border-border ps-4">
+                    <ol class="flex flex-col gap-2">
+                    <li data-slot="workflow-step" data-step="ledger" data-kind="system" class="flex flex-col gap-2">
+            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'ledger' })"   class="flex w-full items-start gap-3 rounded-control border bg-card px-3 py-2.5 text-start border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <bdi dir="ltr" class="min-w-8 pt-px font-mono text-caption text-muted-foreground tabular-nums">3.1</bdi>
+                <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span class="flex flex-wrap items-center gap-2">
+                        <span dir="auto" class="text-label text-foreground">Post to the ledger</span>
+                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">System</span>
+                                            </span>
+                                    </span>
+                                    <span dir="auto" class="shrink-0 text-caption text-muted-foreground">Billing API</span>
+                            </button>
+                                </li>
+                    <li data-slot="workflow-step" data-step="email" data-kind="step" class="flex flex-col gap-2">
+            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'email' })"   class="flex w-full items-start gap-3 rounded-control border bg-card px-3 py-2.5 text-start border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <bdi dir="ltr" class="min-w-8 pt-px font-mono text-caption text-muted-foreground tabular-nums">3.2</bdi>
+                <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span class="flex flex-wrap items-center gap-2">
+                        <span dir="auto" class="text-label text-foreground">Email the customer</span>
+                                            </span>
+                                    </span>
+                            </button>
+                                </li>
+    </ol>
+                </div>
+                                </li>
+    </ol>
+            </div>
+            <div data-view-panel="pipeline" x-show="view === 'pipeline'"  style="display: none;" >
+                <figure data-slot="workflow-network" data-layout="horizontal" x-data="nqWorkflowNetwork(JSON.parse('{\u0022ids\u0022:[\u0022ask\u0022,\u0022check\u0022,\u0022approve\u0022,\u0022review\u0022,\u0022pay\u0022,\u0022ledger\u0022,\u0022email\u0022],\u0022links\u0022:[{\u0022from\u0022:\u0022ask\u0022,\u0022to\u0022:\u0022check\u0022},{\u0022from\u0022:\u0022check\u0022,\u0022to\u0022:\u0022approve\u0022,\u0022label\u0022:\u0022Yes\u0022},{\u0022from\u0022:\u0022check\u0022,\u0022to\u0022:\u0022review\u0022,\u0022label\u0022:\u0022No\u0022},{\u0022from\u0022:\u0022approve\u0022,\u0022to\u0022:\u0022pay\u0022},{\u0022from\u0022:\u0022review\u0022,\u0022to\u0022:\u0022pay\u0022},{\u0022from\u0022:\u0022ledger\u0022,\u0022to\u0022:\u0022email\u0022},{\u0022from\u0022:\u0022pay\u0022,\u0022to\u0022:\u0022ledger\u0022}],\u0022layout\u0022:\u0022auto\u0022,\u0022highlight\u0022:\u0022check\u0022,\u0022animate\u0022:false,\u0022uid\u0022:\u0022nq-net-8e05ccc5\u0022}'))" class="m-0 w-full">
+        <p class="sr-only">7 steps</p>
+    <div data-net="flow" class="relative">
+        <svg data-net="edges" aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-visible text-muted-foreground" width="0" height="0" viewBox="0 0 1 1">
+            <defs>
+                <marker id="nq-net-8e05ccc5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" class="fill-muted-foreground" />
+                </marker>
+                <marker id="nq-net-8e05ccc5-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" class="fill-nq-brand" />
+                </marker>
+            </defs>
+        </svg>
+        <div data-net="rows" class="relative flex flex-col p-2 gap-10">
+                            <div data-net="row" class="flex items-stretch justify-center gap-10">
+                                                                    <div data-net="cell" class="flex min-w-0 max-w-64 flex-1 basis-0">
+                            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'ask' })"  data-step="ask" data-kind="step" class="relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border border-border bg-card p-3 text-start shadow-xs cursor-pointer outline-none transition-colors hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span class="flex items-center gap-2">
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-foreground [&amp;_svg]:size-4">
+                                        <span class="flex">
+                                            <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg>                                        </span>
+                                    </span>
+                                    <span class="min-w-0 flex-1 text-label leading-tight text-foreground">Customer asks for a refund</span>
+                                </span>
+                                                                                                    <span class="flex flex-wrap items-center gap-1.5">
+                                                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Customer</span>
+                                                                                                                    </span>
+                                                            </button>
+                        </div>
+                                                                    <div data-net="cell" class="flex min-w-0 max-w-64 flex-1 basis-0">
+                            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'check' })"  data-step="check" data-kind="decision" class="relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border bg-card p-3 text-start shadow-xs border-nq-accent/60 ring-2 ring-nq-brand ring-offset-2 ring-offset-background cursor-pointer outline-none transition-colors hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span class="flex items-center gap-2">
+                                    <span class="flex size-8 shrink-0 items-center justify-center border border-border bg-secondary text-foreground [&amp;_svg]:size-4 rotate-45 rounded-[8px]">
+                                        <span class="flex -rotate-45">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 6a9 9 0 0 0-9 9V3"/>
+  <circle cx="18" cy="6" r="3"/>
+  <circle cx="6" cy="18" r="3"/>
+</svg>                                        </span>
+                                    </span>
+                                    <span class="min-w-0 flex-1 text-label leading-tight text-foreground">Within 14 days?</span>
+                                </span>
+                                                                                                    <span class="flex flex-wrap items-center gap-1.5">
+                                                                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Decision</span>
+                                                                            </span>
+                                                            </button>
+                        </div>
+                                                                    <div data-net="cell" class="flex min-w-0 max-w-64 flex-1 basis-0">
+                            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'approve' })"  data-step="approve" data-kind="step" class="relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border border-border bg-card p-3 text-start shadow-xs cursor-pointer outline-none transition-colors hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span class="flex items-center gap-2">
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-foreground [&amp;_svg]:size-4">
+                                        <span class="flex">
+                                            <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg>                                        </span>
+                                    </span>
+                                    <span class="min-w-0 flex-1 text-label leading-tight text-foreground">Approve the refund</span>
+                                </span>
+                                                                                                    <span class="flex flex-wrap items-center gap-1.5">
+                                                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Support</span>
+                                                                                                                    </span>
+                                                            </button>
+                        </div>
+                                                                    <div data-net="cell" class="flex min-w-0 max-w-64 flex-1 basis-0">
+                            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'review' })"  data-step="review" data-kind="human" class="relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border border-border bg-card p-3 text-start shadow-xs border-dashed cursor-pointer outline-none transition-colors hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span class="flex items-center gap-2">
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-foreground [&amp;_svg]:size-4">
+                                        <span class="flex">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 11 2 2 4-4"/>
+  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg>                                        </span>
+                                    </span>
+                                    <span class="min-w-0 flex-1 text-label leading-tight text-foreground">Manager reviews</span>
+                                </span>
+                                                                    <span class="text-caption text-muted-foreground">Late requests need a second look.</span>
+                                                                                                    <span class="flex flex-wrap items-center gap-1.5">
+                                                                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Human review</span>
+                                                                            </span>
+                                                            </button>
+                        </div>
+                                    </div>
+                            <div data-net="row" class="flex items-stretch justify-center gap-10">
+                                                                    <div data-net="cell" class="flex min-w-0 max-w-64 flex-1 basis-0">
+                            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'pay' })"  data-step="pay" data-kind="output" class="relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border bg-card p-3 text-start shadow-xs border-nq-brand/50 cursor-pointer outline-none transition-colors hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span class="flex items-center gap-2">
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control border [&amp;_svg]:size-4 border-nq-brand/40 bg-nq-brand text-white">
+                                        <span class="flex">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg>                                        </span>
+                                    </span>
+                                    <span class="min-w-0 flex-1 text-label leading-tight text-foreground">Issue the refund</span>
+                                </span>
+                                                                                                    <span class="flex flex-wrap items-center gap-1.5">
+                                                                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Result</span>
+                                                                            </span>
+                                                            </button>
+                        </div>
+                                                                    <div data-net="cell" class="flex min-w-0 max-w-64 flex-1 basis-0">
+                            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'ledger' })"  data-step="ledger" data-kind="system" class="relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border border-border p-3 text-start shadow-xs bg-secondary cursor-pointer outline-none transition-colors hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span class="flex items-center gap-2">
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-foreground [&amp;_svg]:size-4">
+                                        <span class="flex">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 20v2"/>
+  <path d="M12 2v2"/>
+  <path d="M17 20v2"/>
+  <path d="M17 2v2"/>
+  <path d="M2 12h2"/>
+  <path d="M2 17h2"/>
+  <path d="M2 7h2"/>
+  <path d="M20 12h2"/>
+  <path d="M20 17h2"/>
+  <path d="M20 7h2"/>
+  <path d="M7 20v2"/>
+  <path d="M7 2v2"/>
+  <rect x="4" y="4" width="16" height="16" rx="2"/>
+  <rect x="8" y="8" width="8" height="8" rx="1"/>
+</svg>                                        </span>
+                                    </span>
+                                    <span class="min-w-0 flex-1 text-label leading-tight text-foreground">Post to the ledger</span>
+                                </span>
+                                                                                                    <span class="flex flex-wrap items-center gap-1.5">
+                                                                                    <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground">Billing API</span>
+                                                                                                                            <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Automated</span>
+                                                                            </span>
+                                                            </button>
+                        </div>
+                                                                    <div data-net="cell" class="flex min-w-0 max-w-64 flex-1 basis-0">
+                            <button  type="button" x-on:click="$dispatch('nq-step-click', { id: 'email' })"  data-step="email" data-kind="step" class="relative flex w-full min-w-0 flex-col items-stretch gap-1.5 rounded-card border border-border bg-card p-3 text-start shadow-xs cursor-pointer outline-none transition-colors hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                <span class="flex items-center gap-2">
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-control border border-border bg-secondary text-foreground [&amp;_svg]:size-4">
+                                        <span class="flex">
+                                            <svg aria-hidden="true" class="rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg>                                        </span>
+                                    </span>
+                                    <span class="min-w-0 flex-1 text-label leading-tight text-foreground">Email the customer</span>
+                                </span>
+                                                                                            </button>
+                        </div>
+                                    </div>
+                    </div>
+    </div>
+    </figure>
+            </div>
+                    </div>
+</section>

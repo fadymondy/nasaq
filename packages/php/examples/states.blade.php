@@ -3,3 +3,7 @@
         <x-nq::button variant="primary">مهمة جديدة</x-nq::button>
     </x-slot:actions>
 </x-nq::states>
+
+<x-nq::states.loading shape="grid" :rows="4" :columns="2" caption="Fetching the last 30 days…" />
+
+<x-nq::states.loading shape="timeline" :rows="3" />

@@ -27,3 +27,25 @@ describe("NqButton", () => {
     expect(w.attributes("type")).toBeUndefined();
   });
 });
+
+describe("NqButton shape", () => {
+  it("pill is fully rounded with extra padding and a data-shape hook", () => {
+    const w = mount(NqButton, { props: { shape: "pill", variant: "primary" }, slots: { default: "Go" } });
+    expect(w.attributes("data-shape")).toBe("pill");
+    expect(w.classes()).toContain("rounded-full");
+    expect(w.classes()).toContain("px-5");
+    expect(w.classes()).not.toContain("rounded-control");
+  });
+
+  it("the default shape keeps the control radius and no hook", () => {
+    const w = mount(NqButton, { slots: { default: "Go" } });
+    expect(w.attributes("data-shape")).toBeUndefined();
+    expect(w.classes()).toContain("rounded-control");
+  });
+
+  it("a pill link keeps the control radius and no padding", () => {
+    const w = mount(NqButton, { props: { shape: "pill", variant: "link" }, slots: { default: "Go" } });
+    expect(w.classes()).toContain("rounded-control");
+    expect(w.classes()).not.toContain("rounded-full");
+  });
+});

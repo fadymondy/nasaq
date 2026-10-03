@@ -90,3 +90,20 @@ describe("icon-picker (Blade example)", () => {
     expect((document.activeElement as HTMLElement).dataset.index).toBe("1");
   });
 });
+
+describe("icon-picker.by-name (Blade example)", () => {
+  it("draws lucide, Boxicons and image names like IconByName, and the slot for an unknown name", async () => {
+    await mount("icon-picker");
+    expect(document.querySelectorAll('[data-slot="icon-boxicon"]')).toHaveLength(2);
+    const [home, github] = [...document.querySelectorAll<HTMLElement>('[data-slot="icon-boxicon"]')];
+    expect(home!.className).toContain("bx-home");
+    expect(home!.className).toContain("bx ");
+    expect(home!.style.fontSize).toBe("1em");
+    expect(github!.className).toContain("bxl-github");
+    expect(github!.style.fontSize).toBe("20px");
+    expect(home!.getAttribute("aria-hidden")).toBe("true");
+    const img = document.querySelector<HTMLImageElement>('[data-slot="icon-image"]')!;
+    expect(img.getAttribute("src")).toBe("/img/logo.svg");
+    expect(document.body.textContent).toContain("no icon");
+  });
+});

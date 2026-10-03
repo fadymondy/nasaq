@@ -53,3 +53,29 @@ describe("states", () => {
     expect(w.classes()).toEqual(expect.arrayContaining(["bg-secondary", "h-3"]));
   });
 });
+
+describe("NqLoadingState shapes", () => {
+  it("grid previews cards in the chosen columns", () => {
+    const w = mount(NqLoadingState, { props: { shape: "grid", rows: 4, columns: 2 } });
+    expect(w.find('[data-slot="loading-state"]').attributes("data-shape")).toBe("grid");
+    expect(w.findAll('[data-slot="loading-card"]')).toHaveLength(4);
+    expect(w.find(".grid").classes()).toContain("sm:grid-cols-2");
+    expect(w.findAll('[data-slot="skeleton"]')).toHaveLength(16);
+  });
+
+  it("timeline previews events joined by a rail, none after the last", () => {
+    const w = mount(NqLoadingState, { props: { shape: "timeline", rows: 3 } });
+    const events = w.findAll('[data-slot="loading-event"]');
+    expect(events).toHaveLength(3);
+    expect(events[0]!.find("span[aria-hidden=true]").exists()).toBe(true);
+    expect(events[2]!.find("span[aria-hidden=true]").exists()).toBe(false);
+  });
+
+  it("a caption is shown and replaces the sr-only label", () => {
+    const w = mount(NqLoadingState, { props: { rows: 2, caption: "Fetching…" } });
+    expect(w.find(".sr-only").exists()).toBe(false);
+    expect(w.find("p").text()).toBe("Fetching…");
+    const spin = mount(NqLoadingState, { props: { rows: 0, caption: "Saving…" } });
+    expect(spin.find(".sr-only").text()).toBe("Saving…");
+  });
+});

@@ -124,7 +124,7 @@
             <x-nq::tabs.panel value="board" class="flex flex-col gap-2 pt-4">
                 <p role="alert" class="m-0 text-body-sm text-nq-danger-text" x-show="moveError" x-cloak style="display: none" x-text="moveError"></p>
                 <div class="min-w-0 overflow-x-auto" data-pv-board x-on:move="onMove($event)">
-                    <x-nq::project-view.board :issues="$issues" :statuses="$statuses" :labels="$labels" :people="$people" :text="$labelsText" :locale="$locale" />
+                    <x-nq::project-view.board :issues="$issues" :statuses="$statuses" :labels="$labels" :people="$people" :now="$clock" :text="$labelsText" :locale="$locale" />
                 </div>
             </x-nq::tabs.panel>
         @endif

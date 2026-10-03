@@ -8,7 +8,7 @@ import { NqButton } from "../button";
 import { NqDateTime } from "../numeric";
 import { NqEmptyState } from "../states";
 import { NqToggle, NqToggleGroup } from "../toggle-group";
-import { countByStatus, type FeedbackHubIssue, type FeedbackIssueStatus } from "./feedback-reporter-utils";
+import { countByStatus, filterHubIssues, type FeedbackHubFilter, type FeedbackHubIssue, type FeedbackIssueStatus } from "./feedback-reporter-utils";
 import { feedbackStrings, fill, type FeedbackReporterLabels } from "./strings";
 
 // What people already reported on this page, with a status filter and a "Me too" vote, so a visitor adds a vote instead of a duplicate.
@@ -23,28 +23,44 @@ interface Props {
   onReportNew?: () => void;
   onOpenIssue?: (id: string) => void;
   labels?: FeedbackReporterLabels;
+  /** Adds a "Mine" tab for the visitor's own reports. Default: shown when any issue has `mine`. */
+  mineTab?: boolean;
+  /** Counts from the server, when `issues` is only the first page. Missing ones are counted from `issues`. */
+  counts?: Partial<Record<FeedbackHubFilter, number>>;
+  /** Called when the tab changes, to fetch that tab from the server. */
+  onFilterChange?: (filter: FeedbackHubFilter) => void;
+  /** More reports exist than `issues` holds: shows **Load more**. */
+  hasMore?: boolean;
+  onLoadMore?: () => void;
+  loadingMore?: boolean;
   class?: HTMLAttributes["class"];
 }
-const props = withDefaults(defineProps<Props>(), { page: undefined, onVote: undefined, onReportNew: undefined, onOpenIssue: undefined, labels: undefined });
+const props = withDefaults(defineProps<Props>(), { page: undefined, onVote: undefined, onReportNew: undefined, onOpenIssue: undefined, labels: undefined, mineTab: undefined, counts: undefined, onFilterChange: undefined, hasMore: false, onLoadMore: undefined, loadingMore: false });
 
 const nq = useNasaq();
 const t = computed(() => feedbackStrings(nq.locale.value, props.labels));
 const titleId = useId();
-const filter = ref<FeedbackIssueStatus | "all">("all");
+const filter = ref<FeedbackHubFilter>("all");
 const voting = ref<string | null>(null);
-const counts = computed(() => countByStatus(props.issues));
-const shown = computed(() => (filter.value === "all" ? props.issues : props.issues.filter((i) => i.status === filter.value)));
-const tabs = computed<[FeedbackIssueStatus | "all", string][]>(() => [
-  ["all", t.value.all],
-  ["open", t.value.open],
-  ["in-progress", t.value.inProgress],
-  ["resolved", t.value.resolved],
-]);
+const counts = computed(() => ({ ...countByStatus(props.issues), mine: props.issues.filter((i) => i.mine).length, ...props.counts }));
+const shown = computed(() => filterHubIssues(props.issues, filter.value));
+const tabs = computed(() => {
+  const list: [FeedbackHubFilter, string][] = [
+    ["all", t.value.all],
+    ["open", t.value.open],
+    ["in-progress", t.value.inProgress],
+    ["resolved", t.value.resolved],
+  ];
+  if (props.mineTab ?? props.issues.some((i) => i.mine)) list.push(["mine", t.value.mine]);
+  return list;
+});
 const badge = (s: FeedbackIssueStatus) =>
   s === "resolved" ? { variant: "success" as const, text: t.value.resolved } : s === "in-progress" ? { variant: "info" as const, text: t.value.inProgress } : { variant: "neutral" as const, text: t.value.open };
 
 function setFilter(v: string[]) {
-  filter.value = (v[0] as FeedbackIssueStatus | "all" | undefined) ?? "all";
+  const next = (v[0] as FeedbackHubFilter | undefined) ?? "all";
+  filter.value = next;
+  props.onFilterChange?.(next);
 }
 async function vote(id: string) {
   if (!props.onVote) return;
@@ -72,13 +88,13 @@ async function vote(id: string) {
         {{ t.reportNew }}
       </NqButton>
     </header>
-    <NqToggleGroup :aria-label="t.filterLabel" :model-value="[filter]" @update:model-value="setFilter">
+    <NqToggleGroup class="flex-wrap" :aria-label="t.filterLabel" :model-value="[filter]" @update:model-value="setFilter">
       <NqToggle v-for="[value, text] in tabs" :key="value" :value="value">
         {{ text }}
         <span class="text-caption tabular-nums opacity-70">{{ counts[value] }}</span>
       </NqToggle>
     </NqToggleGroup>
-    <NqEmptyState v-if="shown.length === 0" :icon="Bug" :title="t.emptyTitle" :description="filter === 'all' ? t.emptyBody : t.emptyFiltered" class="py-8" />
+    <NqEmptyState v-if="shown.length === 0" :icon="Bug" :title="filter === 'mine' ? t.emptyMineTitle : t.emptyTitle" :description="filter === 'all' ? t.emptyBody : filter === 'mine' ? t.emptyMine : t.emptyFiltered" class="py-8" />
     <ul v-else :aria-label="t.listLabel" class="flex flex-col divide-y divide-border rounded-control border border-border">
       <li v-for="issue in shown" :key="issue.id" class="flex items-start gap-3 p-3">
         <div class="flex min-w-0 flex-1 flex-col gap-1">
@@ -94,7 +110,8 @@ async function vote(id: string) {
           <span v-else dir="auto" class="truncate text-label">{{ issue.title }}</span>
           <span class="flex flex-wrap items-center gap-x-2 gap-y-1 text-caption text-muted-foreground">
             <NqBadge :variant="badge(issue.status).variant">{{ badge(issue.status).text }}</NqBadge>
-            <span v-if="issue.author" dir="auto">{{ fill(t.by, { name: issue.author }) }}</span>
+            <NqBadge v-if="issue.mine" variant="neutral">{{ t.yours }}</NqBadge>
+            <span v-else-if="issue.author" dir="auto">{{ fill(t.by, { name: issue.author }) }}</span>
             <NqDateTime v-if="issue.createdAt !== undefined" :value="issue.createdAt" relative />
           </span>
         </div>
@@ -115,5 +132,9 @@ async function vote(id: string) {
         </NqButton>
       </li>
     </ul>
+    <div v-if="props.hasMore && props.onLoadMore" class="flex items-center justify-between gap-3">
+      <span class="text-caption text-muted-foreground tabular-nums">{{ fill(t.showing, { shown: shown.length, total: counts[filter] }) }}</span>
+      <NqButton variant="secondary" size="sm" :loading="props.loadingMore" @click="props.onLoadMore()">{{ t.loadMore }}</NqButton>
+    </div>
   </section>
 </template>

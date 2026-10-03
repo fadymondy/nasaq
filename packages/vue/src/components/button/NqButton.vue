@@ -12,6 +12,8 @@ interface Props {
   asChild?: boolean;
   variant?: "primary" | "secondary" | "ghost" | "danger" | "link" | null;
   size?: "sm" | "md" | "lg" | "icon" | "icon-sm" | null;
+  /** `pill` is fully rounded (icon sizes become circles). Default `default`: the system's control radius. */
+  shape?: "default" | "pill" | null;
   /** Shows a spinner, sets aria-busy and blocks interaction while keeping focus. */
   loading?: boolean;
   disabled?: boolean;
@@ -30,7 +32,8 @@ const isButton = computed(() => props.as === "button" && !props.asChild);
     :as="props.as"
     :as-child="props.asChild"
     :type="isButton ? props.type : undefined"
-    :class="cn(buttonVariants({ variant: props.variant, size: props.size }), props.class)"
+    :data-shape="props.shape === 'pill' ? 'pill' : undefined"
+    :class="cn(buttonVariants({ variant: props.variant, size: props.size, shape: props.shape }), props.class)"
     :aria-busy="props.loading || undefined"
     :disabled="isButton ? props.disabled && !props.loading : undefined"
     :aria-disabled="props.loading || (!isButton && props.disabled) || undefined"

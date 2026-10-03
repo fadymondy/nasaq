@@ -72,4 +72,11 @@ describe("parts", () => {
     const w = mount(NqProjectSchedule, { props: { issues: [], statuses, today: "2026-09-29", t: { label: "Schedule", empty: "Nothing scheduled", emptyHint: "", unscheduled: "No dates", open: "Open", copyKey: "Copy key", actions: "Actions", today: "Today" } } });
     expect(w.text()).toContain("Nothing scheduled");
   });
+  it("draws board cards with the shared issue card and its due state", () => {
+    const w = mount(NqProjectView, { props: { ...base(), defaultTab: "board" } as never, attachTo: document.body });
+    const cards = w.findAll("[data-slot=issue-card]");
+    expect(cards.length).toBeGreaterThanOrEqual(3);
+    expect(w.find("[data-slot=kanban-card]").exists()).toBe(false);
+    w.unmount();
+  });
 });

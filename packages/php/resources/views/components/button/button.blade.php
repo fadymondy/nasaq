@@ -1,7 +1,7 @@
 {{-- <x-nq::button variant="primary" size="sm">Save</x-nq::button>
-     variant: primary | secondary | ghost | danger | link   size: sm | md | lg | icon | icon-sm
+     variant: primary | secondary | ghost | danger | link   size: sm | md | lg | icon | icon-sm   shape: default | pill (fully rounded)
      href renders an <a>. loading shows a spinner, sets aria-busy and blocks clicks. --}}
-@props(['variant' => 'secondary', 'size' => 'md', 'href' => null, 'type' => 'button', 'loading' => false, 'disabled' => false])
+@props(['variant' => 'secondary', 'size' => 'md', 'href' => null, 'type' => 'button', 'loading' => false, 'disabled' => false, 'shape' => 'default'])
 @php
     $variants = [
         'primary' => 'bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))]',
@@ -17,6 +17,8 @@
         'icon' => 'size-control p-0',
         'icon-sm' => 'size-control-sm p-0',
     ];
+    $pill = $shape === 'pill';
+    $pillPad = ['sm' => 'px-3.5', 'md' => 'px-5', 'lg' => 'px-7'];
     $iconOnly = in_array($size, ['icon', 'icon-sm'], true);
     $classes = [
         'inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent',
@@ -27,11 +29,16 @@
         $variants[$variant] ?? $variants['secondary'],
         $sizes[$size] ?? $sizes['md'],
         'h-auto px-0' => $variant === 'link' && ! $iconOnly,
+        'rounded-full' => $pill,
+        // Round ends eat into the label's room, so pills get a little more padding.
+        ($pillPad[$size] ?? 'px-0') => $pill && isset($pillPad[$size]),
+        'rounded-control px-0' => $pill && $variant === 'link',
     ];
     $tag = $href ? 'a' : 'button';
 @endphp
 <{{ $tag }} data-slot="{{ $attributes->get('data-slot', 'button') }}"
     @if ($href) href="{{ $href }}" @else type="{{ $type }}" @endif
+    @if ($pill) data-shape="pill" @endif
     @if ($loading) aria-busy="true" @endif
     @if ($href && ($disabled || $loading)) aria-disabled="true" tabindex="-1" @endif
     @if (! $href && ($disabled || $loading)) disabled @endif

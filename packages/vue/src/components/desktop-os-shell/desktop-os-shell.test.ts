@@ -1,7 +1,7 @@
 import { flushPromises, mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
 import { h } from "vue";
-import { NqDesktopAppIcon, NqDesktopShell } from ".";
+import { NqDesktopAppIcon, NqDesktopShell, desktopPowerMenu } from ".";
 import { cascadeRect, openWindow, snapZone, toggleMaximise } from "./desktop-math";
 
 const apps = [
@@ -71,6 +71,50 @@ describe("NqDesktopShell", () => {
     expect(w.find('[data-slot="desktop-launchpad"]').exists()).toBe(true);
     await w.find('[data-slot="desktop-launchpad"] input').setValue("zzz");
     expect(w.find('[data-slot="desktop-launchpad"]').text()).toContain("No apps match");
+    w.unmount();
+  });
+});
+
+describe("desktopPowerMenu", () => {
+  it("only the actions with a handler appear, grouped with separators, Log Out danger", () => {
+    const m = desktopPowerMenu({ onAbout() {}, onSettings() {}, onSleep() {}, onShutDown() {}, onLogOut() {}, appName: "ToGO" });
+    expect(m.id).toBe("system");
+    expect(m.label).toBe("System");
+    expect(m.items.map((i) => i.id)).toEqual(["about", "settings", "sleep", "shutDown", "logOut"]);
+    expect(m.items[0]!.label).toBe("About ToGO");
+    expect(m.items.map((i) => !!i.separated)).toEqual([false, false, true, false, true]);
+    expect(m.items.at(-1)!.danger).toBe(true);
+  });
+
+  it("is Arabic for an Arabic locale", () => {
+    const m = desktopPowerMenu({ onRestart() {}, locale: "ar-SA" });
+    expect(m.label).toBe("النظام");
+    expect(m.items[0]!.label).toBe("إعادة التشغيل…");
+  });
+
+  it("asks first for restart, shut down and log out; sleep never asks; cancel stops the action", async () => {
+    const calls: string[] = [];
+    const answers = [true, false];
+    const asked: string[] = [];
+    const m = desktopPowerMenu({
+      onSleep: () => calls.push("sleep"),
+      onShutDown: () => calls.push("shutDown"),
+      confirm: (p) => (asked.push(p.action), answers.shift() ?? false),
+    });
+    m.items[0]!.onSelect!();
+    expect(calls).toEqual(["sleep"]);
+    m.items[1]!.onSelect!();
+    await flushPromises();
+    expect(calls).toEqual(["sleep", "shutDown"]);
+    m.items[1]!.onSelect!();
+    await flushPromises();
+    expect(calls).toEqual(["sleep", "shutDown"]);
+    expect(asked).toEqual(["shutDown", "shutDown"]);
+  });
+
+  it("builds a menu the shell renders in its menu bar", () => {
+    const w = mount(NqDesktopShell, { props: { apps, menus: [desktopPowerMenu({ onSleep() {} })] }, attachTo: document.body });
+    expect(w.text()).toContain("System");
     w.unmount();
   });
 });
