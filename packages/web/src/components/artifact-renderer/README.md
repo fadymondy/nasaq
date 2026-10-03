@@ -4,7 +4,7 @@ title: Artifact Renderer
 category: ai
 status: beta
 summary: Generative UI from a schema. Turns an agent's JSON into a card, table, chart, Markdown, code, stats, action buttons or picker, validated and safe. HTML is off by default and only shown in a sandboxed frame.
-exports: [ArtifactRendererLabels, ActionsArtifact, ArtifactCell, ArtifactTone, ArtifactVariant, CardArtifact, ChartArtifact, CodeArtifact, ExtractedArtifacts, HtmlArtifact, MarkdownArtifact, PickerArtifact, StatsArtifact, TableArtifact, ArtifactView, ArtifactRenderer, ArtifactList, ArtifactViewProps, ArtifactRendererProps, ArtifactListProps, Artifact, ArtifactText, ArtifactAction, ArtifactParse, ArtifactKind, ARTIFACT_KINDS, ARTIFACT_LIMITS, parseArtifact, safeColor, localize, frameHeight, frameDocument, extractArtifacts]
+exports: [ArtifactRendererLabels, ActionsArtifact, ArtifactCell, ArtifactTone, ArtifactVariant, CardArtifact, ChartArtifact, CodeArtifact, ExtractedArtifacts, HtmlArtifact, MarkdownArtifact, PickerArtifact, StatsArtifact, TableArtifact, ArtifactView, ArtifactRenderer, ArtifactList, ArtifactViewProps, ArtifactRendererProps, ArtifactListProps, Artifact, ArtifactText, ArtifactAction, ArtifactParse, ArtifactKind, ARTIFACT_KINDS, ARTIFACT_LIMITS, parseArtifact, safeColor, localize, frameHeight, frameDocument, extractArtifacts, pieSlices, PieSlice]
 related: [ai-states, copilot-chat, markdown, code-block, chart-container, table, stat-card]
 story: components-ai-assistant-artifact-renderer
 base-ui: [dialog, checkbox, radio]
@@ -54,12 +54,12 @@ const { text, artifacts } = extractArtifacts(answer);
 
 | `kind` | Fields |
 | --- | --- |
-| `card` | `title`, `description`, `badges`, `fields`, `body` (Markdown, string or `{ en, ar }`), `actions` |
+| `card` | `title`, `description`, `badges`, `fields`, `items` (`label`, `description`, `value`, `tone`), `body` (Markdown, string or `{ en, ar }`), `footer` (a muted note), `actions` |
 | `table` | `columns` (`key`, `label`, `align`), `rows` |
-| `chart` | `chart` (`bar`, `line`, `area`), `xKey`, `series` (`key`, `label`, `color`), `data` |
+| `chart` | `chart` (`bar`, `line`, `area`, `pie`, `donut`), `xKey`, `series` (`key`, `label`, `color`), `data`. Pie and donut use the first series as slice sizes; past 8 slices the smallest fold into "Other" (`pieSlices`). |
 | `markdown` | `text` |
 | `code` | `code`, `language`, `filename` (shown with [`CodeBlock`](../code-block/README.md)) |
-| `stats` | `items` (`label`, `value`, `delta`, `invert`) |
+| `stats` | `items` (`label`, `value`, `delta`, `invert`, `tone`, `sparkline`: up to 60 numbers) |
 | `actions` | `actions` (`id`, `label`, `variant`, `confirm`) |
 | `picker` | `mode` (`single`, `multiple`), `options`, `defaultValue`, `submitLabel` |
 | `html` | `html`, `height`. See Safety. |
@@ -85,6 +85,7 @@ Text fields take a string or `{ en, ar }`. The older `title_en` and `title_ar` k
 - Colours must be `var(--token)`. Hex values, `url()` and expressions are dropped.
 - Series keys are remapped before they become CSS variable names, so a key cannot inject CSS.
 - Markdown and card bodies go through `Markdown`, which drops raw HTML.
+- A `tone` shows as a dot with the tone named for screen readers ("Critical: …"), so it never relies on colour alone.
 - `html` is shown as a code block unless `allowHtml` is set. Then it goes in `<iframe sandbox="" srcDoc>`: no scripts,
   no same-origin access, no forms, and a Content Security Policy that blocks network. Only enable it for output you
   would show in a preview, and never give the frame `allow-same-origin`.

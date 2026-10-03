@@ -3,12 +3,12 @@ name: log-viewer
 title: LogViewer
 category: monitoring
 status: stable
-summary: Virtualised log stream with level filters and counts, timestamps, search with highlights and regex, follow tail, detail panel, copy and download.
-exports: [LogViewerLabels, LogViewerProps, LogViewer, compileMatcher, countByLevel, entryText, filterLogs, formatLogTime, LOG_LEVELS, LogEntry, LogLevel, LogTimeOptions, logsToText, normalizeLevel, virtualWindow]
+summary: Virtualised log stream with level filters and counts, time ranges, timestamps, search with highlights and regex, follow tail, pause and resume, load older, server-side filtering, detail panel, copy and download.
+exports: [LogViewerLabels, LogViewerFilter, LogViewerProps, LogViewer, compileMatcher, countByLevel, entriesUntil, entryText, filterLogs, formatLogTime, LOG_LEVELS, LOG_RANGES, LogEntry, LogFilter, LogLevel, LogRange, LogTimeOptions, logsToText, normalizeLevel, rangeSince, virtualWindow]
 related: [terminal, deploy-view, data-table]
 story: components-monitoring-log-viewer
 base-ui: []
-keywords: [logs, log, viewer, level, filter, search, timestamp, tail, follow, virtualised, stream, debug, error]
+keywords: [logs, log, viewer, level, filter, search, timestamp, tail, follow, virtualised, stream, debug, error, time range, pause, live tail, load older, server-side]
 ---
 
 # LogViewer
@@ -83,10 +83,23 @@ LogViewer       data-slot="log-viewer"          <div dir="ltr">
 | `toolbar?` | `ReactNode` | none | Extra controls, e.g. a source select. |
 | `onDownload?` | `(entries) => void` | saves a `.log` file | Receives the visible entries. |
 | `downloadFilename?` | `string` | `"logs.log"` | Default download name. |
+| `ranges?` | `LogRange[]` | none | Adds a time-range select, e.g. `LOG_RANGES` (15 minutes to all time). |
+| `defaultRange?` | `string` | last range | Range id chosen at the start. |
+| `manual?` | `boolean` | `false` | The server filters: `entries` are shown as given (matches still highlighted). |
+| `onFilterChange?` | `(filter: LogViewerFilter) => void` | none | `{ levels, query, regex, range, since }` after each change. Not called on mount. |
+| `counts?` | `Partial<Record<LogLevel, number>>` | counted | Per-level totals for the chips, e.g. from the server. |
+| `total?` | `number` | `entries.length` | Total matches, for the footer. |
+| `hasOlder?` | `boolean` | `false` | Shows "Load older entries" above the first row. |
+| `onLoadOlder?` | `() => void \| Promise<void>` | none | Prepend older entries; the list keeps its place. |
+| `loadingOlder?` | `boolean` | tracks the promise | Shows a spinner in place of the button. |
+| `liveTail?` | `boolean` | `false` | Adds pause / resume. Paused, new entries wait and are counted. |
+| `onLiveChange?` | `(live: boolean) => void` | none | E.g. close the socket while paused. |
 | `labels?` | `Partial<LogViewerLabels>` | built-in en/ar | Translations. |
 
 Helpers: `filterLogs`, `compileMatcher`, `countByLevel`, `formatLogTime`, `normalizeLevel` (maps `WARNING`, `err`,
-`critical` onto the six levels), `logsToText`, `virtualWindow`. All pure.
+`critical` onto the six levels), `logsToText`, `virtualWindow`, `rangeSince` (a range's lower bound in epoch ms,
+`null` for all time) and `entriesUntil` (what a list paused at an id shows). `filterLogs` also takes `since`. All
+pure.
 
 ## Examples
 
@@ -95,6 +108,31 @@ Helpers: `filterLogs`, `compileMatcher`, `countByLevel`, `formatLogTime`, `norma
 ```tsx
 const entries = raw.map((l, i) => ({ id: i, time: l.ts, level: normalizeLevel(l.severity) ?? "info", message: l.text }));
 ```
+
+### Server-side filtering, time range and older pages
+
+```tsx
+<LogViewer
+  manual
+  entries={page.entries}
+  counts={page.counts}
+  total={page.total}
+  ranges={LOG_RANGES}
+  defaultRange="1h"
+  onFilterChange={(f) => refetch({ levels: f.levels, q: f.query, since: f.since })}
+  hasOlder={page.hasOlder}
+  onLoadOlder={() => fetchOlder(page.entries[0]?.id)}
+/>
+```
+
+### Live tail with pause
+
+```tsx
+<LogViewer entries={entries} streaming liveTail onLiveChange={(live) => (live ? socket.resume() : socket.pause())} />
+```
+
+While paused the list holds still, the footer reads "Paused · 12 new entries" and a button resumes and jumps to
+the newest entry.
 
 ### Extra control
 

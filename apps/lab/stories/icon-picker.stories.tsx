@@ -1,6 +1,6 @@
 import { IconByName, IconPicker, IconPickerPanel } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const meta = { title: "Components/Pickers/Icon Picker", component: IconPicker, parameters: { layout: "padded" } } satisfies Meta<typeof IconPicker>;
 export default meta;
@@ -41,3 +41,39 @@ export const Panel: Story = {
 };
 
 export const Arabic: Story = { globals: { locale: "ar" }, render: () => <Demo ar /> };
+
+const BOXICONS_CSS = "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css";
+
+/** Loads the Boxicons stylesheet for the story only; your app loads it once. */
+function useBoxicons() {
+  useEffect(() => {
+    if (document.querySelector(`link[href="${BOXICONS_CSS}"]`)) return;
+    const link = Object.assign(document.createElement("link"), { rel: "stylesheet", href: BOXICONS_CSS });
+    document.head.append(link);
+  }, []);
+}
+
+const STORED = ["users", "lucide:shield-check", "bx:home", "bxs:star", "bxl:github", "bx-bell", "bxl-whatsapp", "nope:unknown"];
+
+/**
+ * `IconByName` renders what a server stored: lucide names, Boxicons names (`bx:`, `bxs:`, `bxl:` or the legacy
+ * `bx-*` classes, with the Boxicons CSS loaded) and image URLs. Unknown names render the fallback.
+ */
+export const StoredNames: Story = {
+  name: "Stored names (lucide + Boxicons)",
+  render: () => {
+    useBoxicons();
+    return (
+      <ul className="grid w-fit grid-cols-[auto_auto] items-center gap-x-6 gap-y-3 text-body-sm">
+        {STORED.map((name) => (
+          <li key={name} className="contents">
+            <IconByName name={name} size={20} fallback={<span className="text-caption text-muted-foreground">?</span>} />
+            <code dir="ltr" className="text-caption text-muted-foreground">
+              {name}
+            </code>
+          </li>
+        ))}
+      </ul>
+    );
+  },
+};

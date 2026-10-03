@@ -10,6 +10,7 @@ import { ContextMenuActions, type ContextMenuAction } from "../context-menu";
 import { NotificationItem } from "../notification-item";
 import { formatRelativeTime, Num } from "../numeric";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../sheet";
 import { EmptyState } from "../states";
 import { Tabs, TabsIndicator, TabsList, TabsPanel, TabsTab } from "../tabs";
 
@@ -80,7 +81,12 @@ export interface NotificationCenterProps extends Omit<ComponentProps<"div">, "ch
   onOpenChange?: (open: boolean) => void;
   /** Override any built-in string. Defaults come from the Nasaq locale ("en" / "ar"). */
   labels?: Partial<NotificationCenterLabels>;
-  side?: ComponentProps<typeof PopoverContent>["side"];
+  /** `popover` drops down from the bell. `sheet` slides in a full-height side panel, like a desktop notification centre. Default `popover`. */
+  variant?: "popover" | "sheet";
+  /** Content above the tabs: a date, a weather or calendar widget. Best with `variant="sheet"`. */
+  header?: ReactNode;
+  /** Popover side. With `variant="sheet"`, the edge the panel slides from (`end` by default). */
+  side?: ComponentProps<typeof PopoverContent>["side"] | "start" | "end";
   align?: ComponentProps<typeof PopoverContent>["align"];
 }
 
@@ -101,7 +107,9 @@ export function NotificationCenter({
   defaultOpen,
   onOpenChange,
   labels,
-  side = "bottom",
+  variant = "popover",
+  header,
+  side,
   align = "end",
   className,
   ...props
@@ -112,6 +120,7 @@ export function NotificationCenter({
   const unreadItems = items.filter((i) => i.unread);
   const count = unreadCount ?? unreadItems.length;
 
+  const sheet = variant === "sheet";
   const list = (rows: readonly NotificationCenterItem[], empty: boolean) =>
     rows.length === 0 ? (
       <EmptyState
@@ -121,7 +130,7 @@ export function NotificationCenter({
         description={empty ? t.emptyUnreadDescription : t.emptyAllDescription}
       />
     ) : (
-      <ul className="m-0 max-h-96 list-none divide-y divide-border overflow-y-auto overscroll-contain p-0">
+      <ul className={cn("m-0 list-none divide-y divide-border overflow-y-auto overscroll-contain p-0", sheet ? "min-h-0 flex-1" : "max-h-96")}>
         {rows.map((item) => (
           <ContextMenuActions
             key={item.id}
@@ -147,52 +156,81 @@ export function NotificationCenter({
       </ul>
     );
 
-  return (
-    <div data-slot="notification-center" className={cn("inline-flex", className)} {...props}>
-      <Popover open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-        <PopoverTrigger
-          render={<Button variant="ghost" size="icon" aria-label={t.trigger(count)} className="relative" />}
+  const trigger = (
+    <Button variant="ghost" size="icon" aria-label={t.trigger(count)} className="relative">
+      <Bell />
+      {count > 0 ? (
+        <Badge
+          variant="accent"
+          data-slot="notification-center-badge"
+          aria-hidden
+          className="pointer-events-none absolute -end-1 -top-1 h-4 min-w-4 justify-center px-1 text-[10px]"
         >
-          <Bell />
-          {count > 0 ? (
-            <Badge
-              variant="accent"
-              data-slot="notification-center-badge"
-              aria-hidden
-              className="pointer-events-none absolute -end-1 -top-1 h-4 min-w-4 justify-center px-1 text-[10px]"
-            >
-              {count > CAP ? (
-                <>
-                  <Num value={CAP} />+
-                </>
-              ) : (
-                <Num value={count} />
-              )}
-            </Badge>
-          ) : null}
-        </PopoverTrigger>
-        <PopoverContent side={side} align={align} className="w-[min(24rem,calc(100vw-1rem))] p-0">
-          <Tabs value={tab} onValueChange={(v) => setTab(String(v))} className="gap-0">
-            <div className="flex items-center justify-between gap-2 border-b border-border px-4 pt-3">
-              <p className="text-label text-foreground">{t.title}</p>
-              <Button variant="ghost" size="sm" disabled={count === 0} onClick={() => onMarkAllRead?.()} className="-mt-1">
-                <CheckCheck />
-                {t.markAllRead}
-              </Button>
-            </div>
-            <TabsList variant="underline" className="border-border px-4">
-              <TabsTab value="all">{t.all}</TabsTab>
-              <TabsTab value="unread">
-                {t.unread}
-                {count > 0 ? <Num value={count} className="text-caption text-muted-foreground" /> : null}
-              </TabsTab>
-              <TabsIndicator />
-            </TabsList>
-            <TabsPanel value="all">{list(items, false)}</TabsPanel>
-            <TabsPanel value="unread">{list(unreadItems, true)}</TabsPanel>
-          </Tabs>
-        </PopoverContent>
-      </Popover>
+          {count > CAP ? (
+            <>
+              <Num value={CAP} />+
+            </>
+          ) : (
+            <Num value={count} />
+          )}
+        </Badge>
+      ) : null}
+    </Button>
+  );
+
+  const title = <p className="text-label text-foreground">{t.title}</p>;
+  const body = (
+    <Tabs value={tab} onValueChange={(v) => setTab(String(v))} className={cn("gap-0", sheet && "min-h-0 flex-1")}>
+      <div className={cn("flex items-center justify-between gap-2 border-b border-border px-4 pt-3", sheet && "border-0 pe-12")}>
+        {sheet ? <SheetTitle className="text-label text-foreground">{t.title}</SheetTitle> : title}
+        <Button variant="ghost" size="sm" disabled={count === 0} onClick={() => onMarkAllRead?.()} className="-mt-1">
+          <CheckCheck />
+          {t.markAllRead}
+        </Button>
+      </div>
+      {header ? (
+        <div data-slot="notification-center-header" className="border-b border-border px-4 py-3">
+          {header}
+        </div>
+      ) : null}
+      <TabsList variant="underline" className="border-border px-4">
+        <TabsTab value="all">{t.all}</TabsTab>
+        <TabsTab value="unread">
+          {t.unread}
+          {count > 0 ? <Num value={count} className="text-caption text-muted-foreground" /> : null}
+        </TabsTab>
+        <TabsIndicator />
+      </TabsList>
+      <TabsPanel value="all" className={cn(sheet && "flex min-h-0 flex-1 flex-col")}>
+        {list(items, false)}
+      </TabsPanel>
+      <TabsPanel value="unread" className={cn(sheet && "flex min-h-0 flex-1 flex-col")}>
+        {list(unreadItems, true)}
+      </TabsPanel>
+    </Tabs>
+  );
+
+  return (
+    <div data-slot="notification-center" data-variant={variant} className={cn("inline-flex", className)} {...props}>
+      {sheet ? (
+        <Sheet open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
+          <SheetTrigger render={trigger} />
+          <SheetContent side={side === "start" ? "start" : "end"} className="w-[min(26rem,100vw)] pt-1">
+            {body}
+          </SheetContent>
+        </Sheet>
+      ) : (
+        <Popover open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
+          <PopoverTrigger render={trigger} />
+          <PopoverContent
+            side={side === "start" || side === "end" || side === undefined ? "bottom" : side}
+            align={align}
+            className="w-[min(24rem,calc(100vw-1rem))] p-0"
+          >
+            {body}
+          </PopoverContent>
+        </Popover>
+      )}
     </div>
   );
 }

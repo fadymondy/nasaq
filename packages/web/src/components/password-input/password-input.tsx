@@ -1,26 +1,54 @@
 "use client";
 
-import { Eye, EyeOff } from "lucide-react";
+import { Check, Eye, EyeOff, Minus } from "lucide-react";
 import { useState, type ComponentProps } from "react";
 import { cn } from "../../lib/cn";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Button } from "../button";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group";
 import { Meter, type ProgressTone } from "../progress";
-import { estimatePasswordStrength, type PasswordScore } from "./strength";
+import { computePasswordRules, estimatePasswordStrength, type PasswordPolicy, type PasswordRule, type PasswordScore } from "./strength";
 
-export { estimatePasswordStrength, type PasswordScore } from "./strength";
+export {
+  computePasswordRules,
+  computeRuleScore,
+  estimatePasswordStrength,
+  passwordMeetsPolicy,
+  type PasswordPolicy,
+  type PasswordRule,
+  type PasswordScore,
+} from "./strength";
 
 const STRINGS = {
   en: {
     toggle: "Show password",
     strength: "Password strength",
     levels: ["Very weak", "Weak", "Fair", "Good", "Strong"],
+    requirements: "Password requirements",
+    met: "met",
+    notMet: "not met",
+    rules: {
+      length: (n: number) => `At least ${n} characters`,
+      upper: "An uppercase letter",
+      lower: "A lowercase letter",
+      digit: "A number",
+      symbol: "A symbol",
+    } as Record<string, string | ((n: number) => string)>,
   },
   ar: {
     toggle: "إظهار كلمة المرور",
     strength: "قوة كلمة المرور",
     levels: ["ضعيفة جدًا", "ضعيفة", "مقبولة", "جيدة", "قوية"],
+    requirements: "متطلبات كلمة المرور",
+    met: "مستوفى",
+    notMet: "غير مستوفى",
+    rules: {
+      length: (n: number) => `${n} حرفًا على الأقل`,
+      upper: "حرف كبير",
+      lower: "حرف صغير",
+      digit: "رقم",
+      symbol: "رمز",
+    } as Record<string, string | ((n: number) => string)>,
   },
 };
 
@@ -42,6 +70,13 @@ export interface PasswordInputProps extends Omit<ComponentProps<typeof InputGrou
   strengthLabel?: string;
   /** Five words for scores 0 to 4. Default English or Arabic by the Nasaq locale. */
   strengthLevels?: readonly [string, string, string, string, string];
+  /**
+   * Show a checklist of requirements under the input. `true` uses the default policy (12 characters, upper, lower,
+   * digit, symbol); pass a `PasswordPolicy` to change it, or your own `PasswordRule[]` with `ruleLabels`.
+   */
+  rules?: boolean | PasswordPolicy | readonly PasswordRule[];
+  /** Text for each rule id. Overrides the built-in English and Arabic words; add one for every custom rule. */
+  ruleLabels?: Record<string, string>;
   /** Class for the outer wrapper. `className` on the input itself goes through `inputClassName`. */
   inputClassName?: string;
 }
@@ -60,6 +95,8 @@ export function PasswordInput({
   score,
   strengthLabel,
   strengthLevels,
+  rules,
+  ruleLabels,
   className,
   inputClassName,
   value,
@@ -88,6 +125,16 @@ export function PasswordInput({
   const shown = Math.min(4, Math.max(0, Math.round(score ?? estimatePasswordStrength(current)))) as PasswordScore;
   const levels = strengthLevels ?? t.levels;
   const hasValue = current.length > 0;
+  const checklist: readonly PasswordRule[] | null = !rules
+    ? null
+    : Array.isArray(rules)
+      ? (rules as readonly PasswordRule[])
+      : computePasswordRules(current, rules === true ? {} : (rules as PasswordPolicy));
+  const ruleText = (r: PasswordRule) => {
+    if (ruleLabels?.[r.id]) return ruleLabels[r.id];
+    const label = t.rules[r.id];
+    return typeof label === "function" ? label(r.min ?? 12) : (label ?? r.id);
+  };
 
   return (
     <div data-slot="password-input" className={cn("flex w-full flex-col gap-2", className)}>
@@ -137,6 +184,21 @@ export function PasswordInput({
             </span>
           </div>
         </div>
+      ) : null}
+      {checklist ? (
+        <ul data-slot="password-input-rules" aria-label={t.requirements} className="grid gap-1 sm:grid-cols-2">
+          {checklist.map((r) => (
+            <li
+              key={r.id}
+              data-met={r.met || undefined}
+              className={cn("flex items-center gap-1.5 text-caption transition-colors duration-150 ease-nq", r.met ? "text-nq-success-text" : "text-muted-foreground")}
+            >
+              {r.met ? <Check aria-hidden className="size-3.5 shrink-0" /> : <Minus aria-hidden className="size-3.5 shrink-0" />}
+              <span>{ruleText(r)}</span>
+              <span className="sr-only">, {r.met ? t.met : t.notMet}</span>
+            </li>
+          ))}
+        </ul>
       ) : null}
     </div>
   );

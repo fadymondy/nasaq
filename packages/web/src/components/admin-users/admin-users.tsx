@@ -23,11 +23,13 @@ import {
 } from "../data-table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../dialog";
 import { Field, FieldDescription, FieldError, FieldLabel, Input } from "../field";
+import { PasswordInput } from "../password-input";
 import { DateTime, formatNumber } from "../numeric";
 import { EmptyState } from "../states";
 import { Status } from "../status";
 import { StatCard, StatGrid } from "../stat-card";
 import { Switch } from "../switch";
+import { TagInput } from "../tag-input";
 
 const STRINGS = {
   en: {
@@ -100,6 +102,11 @@ const STRINGS = {
     emailRequired: "Enter an email address.",
     emailInvalid: "Enter a valid email address.",
     rolesRequired: "Choose at least one role.",
+    password: "Password (optional)",
+    passwordHint: "Leave it empty to let them set their own.",
+    passwordShort: (min: string) => `Use at least ${min} characters.`,
+    rolesFreePlaceholder: "Type a role and press Enter",
+    rolesFreeHint: "For example admin, editor or billing.",
     // roles dialog
     rolesTitle: (name: string) => `Roles for ${name}`,
     rolesBody: "Choose what this person can do. Changes apply on their next request.",
@@ -172,6 +179,11 @@ const STRINGS = {
     emailRequired: "أدخل البريد الإلكتروني.",
     emailInvalid: "أدخل بريدًا إلكترونيًا صالحًا.",
     rolesRequired: "اختر دورًا واحدًا على الأقل.",
+    password: "كلمة المرور (اختياري)",
+    passwordHint: "اتركها فارغة ليختاروا كلمة مرورهم بأنفسهم.",
+    passwordShort: (min: string) => `استخدم ${min} أحرف على الأقل.`,
+    rolesFreePlaceholder: "اكتب دورًا واضغط Enter",
+    rolesFreeHint: "مثل admin أو editor أو billing.",
     rolesTitle: (name: string) => `أدوار ${name}`,
     rolesBody: "اختر ما يستطيع هذا الشخص فعله. تسري التغييرات عند طلبه التالي.",
     saveRoles: "حفظ الأدوار",
@@ -212,6 +224,8 @@ export interface NewUserValues {
   roles: string[];
   sendInvite: boolean;
   verified: boolean;
+  /** Set only when the dialog has `password` on and the admin typed one. */
+  password?: string;
 }
 
 /** What an async action returns: nothing on success, or an error to show. */
@@ -239,24 +253,51 @@ export interface AddUserDialogProps {
   roles: readonly ManagedRole[];
   /** Create the user. Return `{ error }` or `{ fieldErrors }` to keep the dialog open. */
   onSubmit: (values: NewUserValues) => Promise<AddUserResult> | AddUserResult;
-  /** Roles ticked at first. Default: the first role. */
+  /** Roles ticked at first. Default: the first role (none with free-form roles). */
   defaultRoles?: readonly string[];
+  /** Show an optional password field. With a password typed, "Send an invitation email" is turned off. */
+  password?: boolean;
+  /** Minimum length for a typed password. Default 8. */
+  minPasswordLength?: number;
+  /**
+   * Type role names instead of ticking them from `roles`. Default: on when `roles` is empty. Roles are optional
+   * here; `roles` labels still show as suggestions.
+   */
+  freeRoles?: boolean;
   labels?: AdminUsersLabels;
 }
 
 /** A dialog that collects the details of a new user: name, email, roles, and how they are told. */
-export function AddUserDialog({ open, onOpenChange, roles, onSubmit, defaultRoles, labels }: AddUserDialogProps) {
+export function AddUserDialog({
+  open,
+  onOpenChange,
+  roles,
+  onSubmit,
+  defaultRoles,
+  password: withPassword = false,
+  minPasswordLength = 8,
+  freeRoles = roles.length === 0,
+  labels,
+}: AddUserDialogProps) {
   const locale = useOptionalNasaq()?.locale ?? "en";
   const t = { ...strings(locale), ...labels };
-  const initial = (): NewUserValues => ({ name: "", email: "", roles: [...(defaultRoles ?? roles.slice(0, 1).map((r) => r.id))], sendInvite: true, verified: false });
+  const initial = (): NewUserValues => ({
+    name: "",
+    email: "",
+    roles: [...(defaultRoles ?? (freeRoles ? [] : roles.slice(0, 1).map((r) => r.id)))],
+    sendInvite: true,
+    verified: false,
+  });
   const [values, setValues] = useState<NewUserValues>(initial);
-  const [errors, setErrors] = useState<Partial<Record<"name" | "email" | "roles", string>>>({});
+  const [pw, setPw] = useState("");
+  const [errors, setErrors] = useState<Partial<Record<"name" | "email" | "roles" | "password", string>>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     if (open) {
       setValues(initial());
+      setPw("");
       setErrors({});
       setFormError(null);
     }
@@ -269,13 +310,19 @@ export function AddUserDialog({ open, onOpenChange, roles, onSubmit, defaultRole
     if (!values.name.trim()) next.name = t.nameRequired;
     if (!values.email.trim()) next.email = t.emailRequired;
     else if (!EMAIL.test(values.email.trim())) next.email = t.emailInvalid;
-    if (!values.roles.length) next.roles = t.rolesRequired;
+    if (!freeRoles && !values.roles.length) next.roles = t.rolesRequired;
+    if (withPassword && pw && pw.length < minPasswordLength) next.password = t.passwordShort(String(minPasswordLength));
     setErrors(next);
     setFormError(null);
     if (Object.keys(next).length) return;
     setBusy(true);
     try {
-      const result = await onSubmit({ ...values, name: values.name.trim(), email: values.email.trim() });
+      const result = await onSubmit({
+        ...values,
+        name: values.name.trim(),
+        email: values.email.trim(),
+        ...(withPassword && pw ? { password: pw, sendInvite: false } : {}),
+      });
       if (result && typeof result === "object" && (result.error || result.fieldErrors)) {
         setErrors({ ...result.fieldErrors });
         setFormError(result.error ?? null);
@@ -308,6 +355,36 @@ export function AddUserDialog({ open, onOpenChange, roles, onSubmit, defaultRole
               <Input ltr type="email" value={values.email} autoComplete="off" onChange={(e) => setValues({ ...values, email: e.currentTarget.value })} />
               <FieldError match={!!errors.email}>{errors.email}</FieldError>
             </Field>
+            {withPassword ? (
+              <Field invalid={!!errors.password}>
+                <FieldLabel>{t.password}</FieldLabel>
+                <PasswordInput
+                  name="password"
+                  autoComplete="new-password"
+                  showStrength
+                  value={pw}
+                  aria-invalid={errors.password ? true : undefined}
+                  onChange={(e) => {
+                    setPw(e.currentTarget.value);
+                    setErrors((cur) => ({ ...cur, password: undefined }));
+                  }}
+                />
+                {errors.password ? <FieldError match>{errors.password}</FieldError> : <FieldDescription>{t.passwordHint}</FieldDescription>}
+              </Field>
+            ) : null}
+            {freeRoles ? (
+              <Field>
+                <FieldLabel>{t.rolesField}</FieldLabel>
+                <TagInput
+                  value={values.roles}
+                  onValueChange={(next) => setValues({ ...values, roles: next })}
+                  suggestions={roles.map((r) => r.id)}
+                  placeholder={t.rolesFreePlaceholder}
+                  addOnBlur
+                />
+                <FieldDescription>{t.rolesFreeHint}</FieldDescription>
+              </Field>
+            ) : (
             <fieldset className="flex min-w-0 flex-col gap-2 border-0 p-0">
               <legend className="mb-1 text-label text-foreground">{t.rolesField}</legend>
               {roles.map((role) => (
@@ -325,13 +402,19 @@ export function AddUserDialog({ open, onOpenChange, roles, onSubmit, defaultRole
                 </p>
               ) : null}
             </fieldset>
+            )}
             <div className="flex flex-col divide-y divide-border rounded-control border border-border">
               <Field className="flex-row items-center justify-between gap-4 px-3 py-2.5">
                 <div className="flex min-w-0 flex-col">
                   <FieldLabel>{t.sendInvite}</FieldLabel>
                   <FieldDescription>{t.sendInviteHint}</FieldDescription>
                 </div>
-                <Switch checked={values.sendInvite} onCheckedChange={(on) => setValues({ ...values, sendInvite: on })} aria-label={t.sendInvite} />
+                <Switch
+                  checked={values.sendInvite && !(withPassword && pw)}
+                  disabled={withPassword && !!pw}
+                  onCheckedChange={(on) => setValues({ ...values, sendInvite: on })}
+                  aria-label={t.sendInvite}
+                />
               </Field>
               <Field className="flex-row items-center justify-between gap-4 px-3 py-2.5">
                 <div className="flex min-w-0 flex-col">

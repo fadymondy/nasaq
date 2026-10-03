@@ -1,24 +1,27 @@
 /*
  * Identifier-first sign-in. The fake backend routes by address:
- *   anything@acme.com → SSO, new@… → no account (register), code@… → one-time code, anything else → password.
- * Password `nasaq123`, code `123456`. Google carries the "Last used" badge; Caps Lock shows a warning on the password step.
+ *   anything@acme.com → SSO, new@… → no account (register), code@… → one-time code, link@… → sign-in link,
+ *   blocked@… → can't sign in here, 2fa@… → password then a second factor, pw@… → password with no alternatives,
+ *   anything else → password. Password `nasaq123`, code `123456`. Google carries the "Last used" badge; Caps Lock
+ *   shows a warning on the password step.
  */
-import { AuthLayout, buttonVariants, SignInFlow, type SignInNext, type SignInStep } from "@nasaq/web";
+import { AuthLayout, SignInFlow, type SignInNext, type SignInStep } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { BrandPanel, DEMO_CODE, fakeLogin, ForgotLink, SignUpPrompt, sleep, StoryFooter, useAr } from "./_auth";
+import { BrandPanel, DEMO_CODE, fakeCode, fakeLogin, ForgotLink, SignUpPrompt, sleep, StoryFooter, useAr } from "./_auth";
 
 const meta = { title: "Components/Auth/Sign In Flow", component: SignInFlow, parameters: { layout: "fullscreen", nasaq: { fullBleed: true } } } satisfies Meta<typeof SignInFlow>;
 export default meta;
 type Story = StoryObj;
-
-const link = buttonVariants({ variant: "link", size: "sm" });
 
 async function route(email: string): Promise<SignInNext> {
   await sleep(700);
   if (email.endsWith("@acme.com")) return { step: "sso", connection: "Acme Okta" };
   if (email.startsWith("new@")) return { step: "register" };
   if (email.startsWith("code@")) return { step: "code" };
+  if (email.startsWith("link@")) return { step: "link-sent" };
+  if (email.startsWith("blocked@")) return { step: "blocked" };
+  if (email.startsWith("pw@")) return { step: "password", alternatives: [] };
   return { step: "password" };
 }
 
@@ -29,10 +32,14 @@ function useTitles(ar: boolean): Record<SignInStep, [string, string]> {
     code: [ar ? "تحقق من بريدك" : "Check your email", ""],
     sso: [ar ? "الدخول الموحّد" : "Single sign-on", ""],
     register: [ar ? "مرحبًا بك" : "Welcome", ""],
+    "link-sent": [ar ? "تحقق من بريدك" : "Check your email", ""],
+    blocked: [ar ? "تعذّر تسجيل الدخول" : "Can't sign in", ""],
+    "two-factor": [ar ? "التحقق بخطوتين" : "Two-step verification", ""],
+    forgot: [ar ? "إعادة تعيين كلمة المرور" : "Reset your password", ""],
   };
 }
 
-function Flow({ split = false }: { split?: boolean }) {
+function Flow({ split = false, email }: { split?: boolean; email?: string }) {
   const ar = useAr();
   const titles = useTitles(ar);
   const [step, setStep] = useState<SignInStep>("email");
@@ -46,9 +53,17 @@ function Flow({ split = false }: { split?: boolean }) {
       footer={<StoryFooter />}
     >
       <SignInFlow
+        defaultEmail={email}
         onStepChange={(s) => setStep(s)}
         onIdentify={route}
-        onPassword={(v) => fakeLogin(v.password, ar)}
+        onPassword={async (v) => {
+          const failure = await fakeLogin(v.password, ar);
+          if (!failure && v.email.startsWith("2fa@")) return { twoFactor: true };
+          return failure;
+        }}
+        onTwoFactor={(v) => fakeCode(v.code, v.method, ar)}
+        onMagicLink={() => sleep(700)}
+        onForgotPassword={() => sleep(700)}
         onRequestCode={() => sleep(700)}
         onCode={async ({ code }) => {
           await sleep(700);
@@ -60,11 +75,6 @@ function Flow({ split = false }: { split?: boolean }) {
         lastUsed="google"
         onOAuth={() => sleep(1500)}
         onPasskey={() => sleep(1200)}
-        forgotPassword={
-          <a href="#forgot" className={link}>
-            {ar ? "نسيت كلمة المرور؟" : "Forgot password?"}
-          </a>
-        }
       />
     </AuthLayout>
   );
@@ -77,16 +87,20 @@ export const CardArabic: Story = { name: "Card (Arabic)", globals: { locale: "ar
 
 export const Split: Story = { render: () => <Flow split /> };
 
-function EmailOnly({ passwordless = false }: { passwordless?: boolean }) {
+function EmailOnly({ passwordless = false, magic = false }: { passwordless?: boolean; magic?: boolean }) {
   const ar = useAr();
   const [step, setStep] = useState<SignInStep>("email");
   return (
     <AuthLayout
-      title={step === "email" ? (ar ? "سجّل الدخول" : "Sign in") : step === "code" ? (ar ? "تحقق من بريدك" : "Check your email") : ar ? "أدخل كلمة المرور" : "Enter your password"}
+      title={
+        step === "email" ? (ar ? "سجّل الدخول" : "Sign in") : step === "code" || step === "link-sent" ? (ar ? "تحقق من بريدك" : "Check your email") : ar ? "أدخل كلمة المرور" : "Enter your password"
+      }
       prompt={step === "email" ? <SignUpPrompt /> : undefined}
       footer={<StoryFooter />}
     >
-      {passwordless ? (
+      {magic ? (
+        <SignInFlow onStepChange={(s) => setStep(s)} onMagicLink={() => sleep(700)} resendSeconds={15} />
+      ) : passwordless ? (
         <SignInFlow
           onStepChange={(s) => setStep(s)}
           onRequestCode={() => sleep(700)}
@@ -107,3 +121,12 @@ export const EmailThenPassword: Story = { name: "Email, then password", render: 
 
 /** Email only, no password: without `onIdentify` and `onPassword` the flow emails a code (`onRequestCode`) and asks for it (`onCode`). Code `123456`. */
 export const EmailOnlyPasswordless: Story = { name: "Email only (passwordless)", render: () => <EmailOnly passwordless /> };
+
+/** Magic link only: without `onPassword` and `onRequestCode`, every address gets a sign-in link (`onMagicLink`) and a resend timer. */
+export const EmailOnlyMagicLink: Story = { name: "Email only (magic link)", render: () => <EmailOnly magic /> };
+
+/** `blocked@x.com`: `onIdentify` returns `{ step: "blocked" }` and the flow says the account can't sign in here. */
+export const Blocked: Story = { name: "Blocked account", render: () => <Flow email="blocked@example.com" /> };
+
+/** `2fa@x.com` with password `nasaq123`, then code `123456`: `onPassword` returns `{ twoFactor: true }` and the flow asks for a second factor. */
+export const TwoFactor: Story = { name: "Password, then two-factor", render: () => <Flow email="2fa@example.com" /> };

@@ -112,13 +112,16 @@ export interface LogFilter {
   levels?: ReadonlySet<LogLevel> | undefined;
   query?: string | undefined;
   regex?: boolean | undefined;
+  /** Keep entries at or after this time (epoch milliseconds). */
+  since?: number | null | undefined;
 }
 
-export function filterLogs(entries: readonly LogEntry[], { levels, query = "", regex = false }: LogFilter): { entries: LogEntry[]; invalid: boolean } {
+export function filterLogs(entries: readonly LogEntry[], { levels, query = "", regex = false, since }: LogFilter): { entries: LogEntry[]; invalid: boolean } {
   const matcher = compileMatcher(query, regex);
   const byLevel = levels && levels.size > 0 ? levels : undefined;
-  if (matcher === "invalid") return { entries: byLevel ? entries.filter((e) => byLevel.has(e.level)) : [...entries], invalid: true };
-  const out = entries.filter((e) => (!byLevel || byLevel.has(e.level)) && (!matcher || matcher.test(entryText(e))));
+  const inWindow = (e: LogEntry) => since == null || toMillis(e.time) >= since;
+  if (matcher === "invalid") return { entries: entries.filter((e) => (!byLevel || byLevel.has(e.level)) && inWindow(e)), invalid: true };
+  const out = entries.filter((e) => (!byLevel || byLevel.has(e.level)) && inWindow(e) && (!matcher || matcher.test(entryText(e))));
   return { entries: out, invalid: false };
 }
 
@@ -178,4 +181,37 @@ export function fieldsToText(fields: Record<string, unknown>): string {
   return Object.entries(fields)
     .map(([k, v]) => `${k}: ${typeof v === "string" ? v : JSON.stringify(v)}`)
     .join("\n");
+}
+
+/** A time window for the range control: the last `ms` milliseconds, or everything with `ms: null`. */
+export interface LogRange {
+  id: string;
+  label: string;
+  labelAr?: string;
+  ms: number | null;
+}
+
+const MIN = 60_000;
+/** Last 15 minutes, hour, 24 hours and 7 days, and everything. */
+export const LOG_RANGES: readonly LogRange[] = [
+  { id: "15m", label: "Last 15 minutes", labelAr: "آخر ١٥ دقيقة", ms: 15 * MIN },
+  { id: "1h", label: "Last hour", labelAr: "آخر ساعة", ms: 60 * MIN },
+  { id: "24h", label: "Last 24 hours", labelAr: "آخر ٢٤ ساعة", ms: 24 * 60 * MIN },
+  { id: "7d", label: "Last 7 days", labelAr: "آخر ٧ أيام", ms: 7 * 24 * 60 * MIN },
+  { id: "all", label: "All time", labelAr: "كل الأوقات", ms: null },
+];
+
+/** The earliest time a range keeps, or `null` for no limit. */
+export function rangeSince(range: Pick<LogRange, "ms"> | undefined, now = Date.now()): number | null {
+  return range?.ms == null ? null : now - range.ms;
+}
+
+/**
+ * The entries up to and including `lastId`: what a paused list keeps showing. Older entries prepended meanwhile
+ * still show; newer ones wait. `null` (paused while empty) keeps nothing; an unknown id keeps everything.
+ */
+export function entriesUntil(entries: readonly LogEntry[], lastId: LogEntry["id"] | null): readonly LogEntry[] {
+  if (lastId === null) return [];
+  for (let i = entries.length - 1; i >= 0; i--) if (entries[i]!.id === lastId) return i === entries.length - 1 ? entries : entries.slice(0, i + 1);
+  return entries;
 }

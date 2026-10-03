@@ -3,7 +3,7 @@ name: notification-center
 title: NotificationCenter
 category: alerts
 status: beta
-summary: Bell button with an unread badge that opens a popover of notifications, with All and Unread tabs, mark all read and an empty state. Controlled.
+summary: Bell button with an unread badge that opens notifications in a popover or a full-height side panel, with All and Unread tabs, mark all read, a header slot and an empty state. Controlled.
 exports: [NotificationCenter, NotificationCenterProps, NotificationCenterItem, NotificationCenterLabels]
 related: [notification-item, popover, tabs, states, badge, sheet]
 story: components-alerts-notifications-notification-center
@@ -18,11 +18,12 @@ The header bell. It shows an unread count, and opens a popover with a list of [`
 ## When to use
 
 - The notifications entry in an app header, for a short list of recent items.
+- `variant="sheet"`: a desktop-style notification centre that slides in from the edge, with room for a widget in `header`.
 
 ## When not to use
 
 - A full inbox page or a long, paged history: use a page with [`Timeline`](../timeline/README.md) or a table.
-- A side-over with room for settings: use `Sheet` with `NotificationItem` rows.
+- A side-over with notification settings: use `Sheet` with `NotificationItem` rows and [`NotificationPreferences`](../notification-preferences/README.md).
 - A transient message: use a toast.
 
 ## Import
@@ -61,8 +62,9 @@ export function HeaderBell() {
 NotificationCenter                 data-slot="notification-center"
 ├─ Popover trigger                 ghost icon Button, aria-label "Notifications, N unread"
 │  └─ badge                        data-slot="notification-center-badge"   Num, "99+" above 99
-└─ PopoverContent
+└─ PopoverContent | SheetContent  data-variant="popover|sheet"
    ├─ header                       title + "Mark all read" Button
+   ├─ header slot                  data-slot="notification-center-header", when `header` is set
    ├─ Tabs (underline)             All | Unread (with count)
    └─ panel                        <ul> of NotificationItem, or EmptyState
 ```
@@ -79,9 +81,11 @@ NotificationCenter                 data-slot="notification-center"
 | `onItemClick?` | `(item) => void` | none | A row was pressed. Mark it read here. |
 | `onMarkAllRead?` | `() => void` | none | "Mark all read" was pressed. The button is disabled with no unread. |
 | `unreadCount?` | `number` | count of `items` with `unread` | Use when the server total exceeds the loaded items. |
-| `open?` / `defaultOpen?` / `onOpenChange?` | `boolean` / `boolean` / `(open: boolean) => void` | uncontrolled | Popover state. |
+| `open?` / `defaultOpen?` / `onOpenChange?` | `boolean` / `boolean` / `(open: boolean) => void` | uncontrolled | Popover or sheet state. |
+| `variant?` | `"popover" \| "sheet"` | `"popover"` | `sheet` opens a full-height side panel; the list fills its height. |
+| `header?` | `ReactNode` | none | Shown under the title row, above the tabs: a date, weather or calendar widget. |
 | `labels?` | `Partial<NotificationCenterLabels>` | locale strings | Overrides `title`, `all`, `unread`, `markAllRead`, `emptyAll`, `emptyAllDescription`, `emptyUnread`, `emptyUnreadDescription`, `trigger(unread)`. |
-| `side?` / `align?` | Popover side / align | `"bottom"` / `"end"` | Placement. Prefer logical sides. |
+| `side?` / `align?` | Popover side / align, or `"start"` / `"end"` | `"bottom"` / `"end"` | Popover placement. With `variant="sheet"`, the edge the panel slides from (default `end`). |
 
 ### `NotificationCenterItem`
 

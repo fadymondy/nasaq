@@ -3,9 +3,9 @@ name: copilot-chat
 title: CopilotChat
 category: ai
 status: beta
-summary: AI assistant chat with streamed Markdown answers, collapsible tool-call steps, sources, starter prompts and follow-ups, context chips, a model picker, @mentions and copy-for-AI code blocks, as a side panel or a full page.
-exports: [CopilotChatLabels, CopilotSendMeta, CopilotChatProps, CopilotSteps, CopilotSources, CopilotContextBarProps, CopilotContextBar, CopilotAnswerProps, CopilotAnswer, CopilotChat, availableContext, hostOf, isSafeUrl, stepCounts, transcriptToMarkdown, withoutContext, CopilotContextItem, CopilotMessage, CopilotModel, CopilotSource, CopilotStep, CopilotStepStatus]
-related: [chat, markdown, mention-textarea, code-block-variants, chat-widget]
+summary: "AI assistant chat with streamed Markdown answers, tool-call steps, sources, artifacts, follow-ups, context chips, file attachments, slash commands, toggles, history, a model picker and @mentions, as a side panel or a full page."
+exports: [CopilotChatLabels, CopilotSendMeta, CopilotChatProps, CopilotSteps, CopilotSources, CopilotContextBarProps, CopilotContextBar, CopilotAttachmentChipProps, CopilotAttachmentChip, CopilotAnswerProps, CopilotAnswer, CopilotChat, availableContext, filterCommands, hostOf, isPreviewUrl, isSafeUrl, slashQuery, stepCounts, transcriptToMarkdown, visibleMessages, withoutContext, withoutSlash, CopilotAttachment, CopilotCommand, CopilotContextItem, CopilotMessage, CopilotModel, CopilotSessionSummary, CopilotSource, CopilotStep, CopilotStepStatus, CopilotToggle]
+related: [chat, markdown, mention-textarea, code-block-variants, chat-widget, copilot-provider, copilot-dock, artifact-renderer]
 story: components-ai-assistant-copilot-chat
 base-ui: [collapsible, menu, select]
 keywords: [copilot, ai chat, assistant, llm, streaming, tool calls, sources, citations, model picker, context, side panel]
@@ -71,17 +71,21 @@ export function Assistant() {
 
 ```
 CopilotChat                       data-slot="copilot-chat" (data-mode="panel" | "page")
-├─ header                         title, new chat, copy conversation, close (panel)
+├─ header                         title, history, new chat, copy conversation, headerActions, close
 ├─ empty state                    title and starter prompts
 ├─ ChatThread                     role="log", follows the stream
 │  ├─ ChatMessage (user)
 │  └─ CopilotAnswer               ChatMessage with:
 │     ├─ CopilotSteps             data-slot="copilot-steps", folded tool calls
 │     ├─ Markdown                 code blocks are CodeBlockAI
+│     ├─ ArtifactList             cards, tables, charts, pickers from the answer
 │     ├─ CopilotSources           numbered links
-│     ├─ actions                  copy, good, not helpful, try again
+│     ├─ copilot-stream-error     role="alert" with Retry, when `error` is set
+│     ├─ actions                  copy, share, good, not helpful, try again
 │     └─ follow-ups               suggestion chips under the last answer
-└─ composer                       CopilotContextBar, MentionTextarea, Select (model), send or stop
+├─ copilot-commands               "/" listbox above the box
+└─ composer                       data-slot="copilot-composer": drop zone, command chips, attachment chips,
+                                  CopilotContextBar, MentionTextarea, attach, toggles, model, send or stop
 ```
 
 ## API
@@ -102,10 +106,23 @@ CopilotChat                       data-slot="copilot-chat" (data-mode="panel" | 
 | `models` / `model` / `onModelChange` | `CopilotModel[]` | none | The model picker. |
 | `mentions` | `readonly MentionOption[]` | none | Things the visitor can `@` mention. |
 | `copyTargets` | `AiTarget[]` | Claude, ChatGPT, Cursor | Assistants in the code copy menu. |
+| `draft` / `onDraftChange` | `string` | | Control the box, e.g. to fill it from outside. |
+| `attachments` / `onAttach` / `onAttachmentsChange` / `accept` | `CopilotAttachment[]` | | Attach button, paste and drop. You upload in `onAttach` and report `progress` and `error`; Send waits for uploads. |
+| `commands` | `CopilotCommand[]` | | Typing `/` opens a menu; chosen commands become chips and are sent in `meta.commands`. |
+| `toggles` / `activeToggles` / `onTogglesChange` | `CopilotToggle[]` | | Pressed buttons such as "Web search", sent in `meta.toggles`. |
+| `sessions` / `activeSessionId` / `onSessionSelect` / `onSessionDelete` | `CopilotSessionSummary[]` | | The History menu. |
+| `onArtifactAction` / `onArtifactPick` / `allowHtml` | | | Artifacts in `message.artifacts`; see `artifact-renderer`. |
+| `share` | `boolean` | | A Share button on answers where `navigator.share` exists. |
+| `disclaimer` | `ReactNode` | | Small print under the box. |
+| `headerActions` | `ReactNode` | | Buttons before Close. |
 | `labels` | `Partial<CopilotChatLabels>` | | Override any string. |
 
-**Parts** you can use alone: `CopilotAnswer`, `CopilotSteps`, `CopilotSources`, `CopilotContextBar`.
-**Helpers** (pure, tested): `transcriptToMarkdown`, `stepCounts`, `isSafeUrl`, `hostOf`, `withoutContext`, `availableContext`.
+Messages with `hidden: true` are not shown, so an app can send structured replies (such as a picked option) without cluttering the thread. `onSend` receives `{ context, model, mentions, attachments, commands, toggles }`.
+
+**Parts** you can use alone: `CopilotAnswer`, `CopilotSteps`, `CopilotSources`, `CopilotContextBar`, `CopilotAttachmentChip`.
+**Helpers** (pure, tested): `transcriptToMarkdown`, `stepCounts`, `isSafeUrl`, `hostOf`, `withoutContext`, `availableContext`, `slashQuery`, `filterCommands`, `withoutSlash`, `isPreviewUrl`, `visibleMessages`.
+
+For streaming, retries and sessions without wiring these yourself, wrap the app in [`CopilotProvider`](../copilot-provider/README.md).
 
 ## Examples
 
@@ -132,6 +149,8 @@ export const Answer = () => (
 - The thread is a `role="log"` that follows the stream until the reader scrolls up. A streaming answer sets `aria-busy`.
 - Steps are a real disclosure button with a text summary. Status is an icon plus text, never colour alone.
 - Every icon button has a name. The model picker, context chips and follow-ups are keyboard reachable. Enter sends, Shift+Enter adds a line and Enter is ignored during IME composition.
+- The "/" menu is a labelled `listbox` whose active option is `aria-selected`. Arrow keys move, Enter or Tab choose, Escape closes it, and a live region announces the matches.
+- Toggles are `aria-pressed` buttons. Attachments are named by file and say their upload progress or error. A failed answer is an `alert` with a Retry button.
 - Source links open in a new tab with `rel="noopener noreferrer"`. Only `http` and `https` links are made clickable.
 
 ## RTL & i18n

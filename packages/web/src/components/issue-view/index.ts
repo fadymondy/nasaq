@@ -14,3 +14,4 @@ export {
 } from "./issue-logic";
 export { PriorityIcon, StatusDot, TYPE_ICONS, TypeIcon } from "./issue-marks";
 export { applyPatch as applyIssuePatch } from "./issue-logic";
+export * from "./issue-card";

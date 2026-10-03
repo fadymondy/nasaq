@@ -4,11 +4,11 @@ title: DesktopShell
 category: platforms
 status: beta
 summary: A desktop for the browser with a wallpaper, menu bar, dock, launchpad and a window manager that drags, resizes, snaps, maximises and minimises. Windows are plain data.
-exports: [DesktopShellLabels, DesktopApp, DesktopMenuItem, DesktopMenu, DesktopAppIcon, DesktopMenuBarProps, DesktopMenuBar, DesktopDockProps, DesktopDock, DesktopLaunchpadProps, DesktopLaunchpad, DesktopShellProps, DesktopShell]
-related: [menubar, context-menu, command-palette, dialog]
+exports: [DesktopShellLabels, DesktopApp, DesktopMenuItem, DesktopMenu, DesktopAppIcon, DesktopMenuBarProps, DesktopMenuBar, DesktopDockProps, DesktopDock, DesktopLaunchpadProps, DesktopLaunchpad, DesktopShellProps, DesktopShell, DesktopShellApi]
+related: [menubar, context-menu, command-palette, dialog, desktop-icons]
 story: components-apps-platforms-pages-desktop-os-shell
 base-ui: [menubar, context-menu]
-keywords: [desktop, os, shell, dock, launchpad, window manager, menu bar, wallpaper, windows, snap]
+keywords: [desktop, os, shell, dock, launchpad, window manager, menu bar, wallpaper, windows, snap, power, sleep, restart, shut down, log out, system menu]
 ---
 
 # DesktopShell
@@ -76,10 +76,40 @@ DesktopShell                    data-slot="desktop-shell"
 | `menuBarStart?` / `menuBarEnd?` | `ReactNode` | none | Logo, clock, battery. |
 | `launchpadOpen?` / `onLaunchpadOpenChange?` | `boolean` / `(open) => void` | uncontrolled | Launchpad state. |
 | `compactBelow?` | `number` | `640` | Container width under which windows go full size. |
+| `children?` | `ReactNode \| ({ open }) => ReactNode` | none | Desktop content behind the windows. As a function it gets `open(appId)`, so a [`DesktopIconGrid`](../desktop-icons/README.md) can launch apps. |
 | `labels?` | `DesktopShellLabels` | built-in en/ar | String overrides. |
 
 The pure window functions (`openWindow`, `snapWindow`, `resizeRect` and more) live in `desktop-math.ts` and are
 covered by node tests.
+
+### System menu: `desktopPowerMenu`
+
+A pure helper in `desktop-power-menu.ts` that builds the menu a desktop keeps at its leading corner. Pass it in
+`menus`, usually first.
+
+```tsx
+const confirm = useConfirm(); // inside a <ConfirmProvider>
+const system = desktopPowerMenu({
+  appName: "ToGO",
+  locale,
+  onAbout, onSettings, onSleep, onRestart, onShutDown, onLogOut,
+  confirm,
+});
+
+<DesktopShell apps={apps} menus={(focused) => [system, ...appMenus(focused)]} />;
+```
+
+| Option | Type | Notes |
+| --- | --- | --- |
+| `onAbout`, `onSettings`, `onSleep`, `onRestart`, `onShutDown`, `onLogOut` | `() => void` | Only the actions with a handler appear, in that order. |
+| `appName?` | `string` | About reads "About {appName}". |
+| `confirm?` | `(prompt) => boolean \| Promise<boolean>` | Asked before Restart, Shut Down and Log out; `false` cancels. The prompt has `title`, `description`, `confirmLabel` and `danger`, so `useConfirm()` fits as is. Sleep never asks. |
+| `locale?` | `string` | Built-in English and Arabic strings. Default English. |
+| `id?`, `label?` | `string` | Default `"system"` and "System". |
+| `labels?` | `Partial<DesktopPowerMenuLabels>` | Item names and the confirm texts. |
+
+Sleep, Restart and Shut Down start after a separator, and Log out starts its own group and is marked danger. Also
+exported: `desktopPowerLabels`, `desktopPowerConfirm`, `DESKTOP_POWER_ACTIONS`, `DESKTOP_POWER_CONFIRMED`.
 
 ## Examples
 
@@ -108,8 +138,8 @@ Only `--nq-*` tokens. Override the wallpaper with the `wallpaper` prop.
 
 ## Related
 
-[`Menubar`](../menubar/README.md), [`ContextMenu`](../context-menu/README.md), [`Dialog`](../dialog/README.md).
+[`Menubar`](../menubar/README.md), [`ContextMenu`](../context-menu/README.md), [`Dialog`](../dialog/README.md), [`DesktopIconGrid`](../desktop-icons/README.md).
 
 ## Lab
 
-`Pages / App / Desktop OS Shell` in the lab: Default, Arabic, Mobile.
+`Pages / App / Desktop OS Shell` in the lab: Default, Arabic, Mobile, Power Menu, Power Menu Arabic.

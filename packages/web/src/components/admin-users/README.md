@@ -5,10 +5,10 @@ category: admin
 status: beta
 summary: User management for an admin area. Summary tiles, a filterable users table, an add-user dialog and per-row actions to verify, disable, reset password, impersonate and edit roles.
 exports: [AdminUsers, AddUserDialog, UserRolesDialog, AdminUsersProps, AdminUsersLabels, AddUserDialogProps, UserRolesDialogProps, ManagedUser, ManagedRole, ManagedUserStatus, NewUserValues, AdminActionResult, AddUserResult]
-related: [admin-area, admin-tenants, data-table, stat-card]
+related: [admin-area, admin-tenants, data-table, stat-card, user-actions-menu]
 story: components-admin-admin-users
 base-ui: [dialog, alert-dialog, checkbox]
-keywords: [admin, users, table, verify, disable, reset password, impersonate, roles, invite]
+keywords: [admin, users, table, verify, disable, reset password, impersonate, roles, invite, password, free roles]
 ---
 
 # AdminUsers
@@ -87,10 +87,25 @@ AdminUsers            data-slot="admin-users"
 `AddUserDialog` and `UserRolesDialog` are exported for use on their own (`open`, `onOpenChange`, `roles`,
 `onSubmit`; and `user`, `roles`, `onOpenChange`, `onSave`).
 
+### AddUserDialog
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open`, `onOpenChange` | | required | Controlled open state. |
+| `roles` | `ManagedRole[]` | required | Checkboxes, or suggestions with `freeRoles`. |
+| `onSubmit` | `(values: NewUserValues) => result` | required | Return `{ error, fieldErrors }` to keep it open. |
+| `defaultRoles` | `string[]` | first role | Ticked at first. None with `freeRoles`. |
+| `password` | `boolean` | `false` | An optional password field with a strength meter. Typing one turns off the invitation email and sends `password`. |
+| `minPasswordLength` | `number` | `8` | |
+| `freeRoles` | `boolean` | `roles.length === 0` | Type role names in a tag input instead of ticking them. Roles become optional. |
+| `labels` | `AdminUsersLabels` | en / ar | |
+
 ## Examples
 
 - **Read-only**: omit the callbacks; only the table and filters remain.
 - **Server errors**: `onAddUser={async () => ({ fieldErrors: { email: "Already registered" } })}`.
+- **Set a password up front**: `<AddUserDialog password ... />`; leave it empty to send an invitation instead.
+- **Roles without a catalogue**: `<AddUserDialog roles={[]} ... />` switches to typed roles.
 
 ## Accessibility
 
@@ -115,6 +130,7 @@ Uses StatCard, DataTable and Badge styles. Extend with `className`.
 
 - [AdminArea](../admin-area/README.md)
 - [DataTable](../data-table/README.md)
+- [UserActionsMenu](../user-actions-menu/README.md): the same actions for one user, on a detail page.
 
 ## Lab
 

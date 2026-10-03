@@ -75,6 +75,11 @@ IssueQuickView         a Sheet around IssueView variant="drawer"
 | `labelsText` | `IssueViewLabels` | en / ar | Every string. |
 | `open` / `onOpenChange` / `onOpenFull` | | none | `IssueQuickView` only. |
 
+`IssueCard` (also exported here) shows one issue as a board card: type, key, priority, title, labels, due date,
+votes (a toggle with `onVote`), comments, attachments and the assignee. Props: `issue`, `labels`, `people`,
+`votes`, `voted`, `onVote(voted)`, `comments`, `attachments`, `open`, `now`, `text`. `IssueBoard` and
+`ProjectView`'s board use it.
+
 ## Examples
 
 - **Drawer**: `IssueQuickView` opened from a board card.

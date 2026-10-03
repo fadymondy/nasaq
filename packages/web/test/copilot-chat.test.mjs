@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { availableContext, hostOf, isSafeUrl, stepCounts, transcriptToMarkdown, withoutContext } from "../src/components/copilot-chat/copilot-chat-format.ts";
+import { availableContext, filterCommands, hostOf, isPreviewUrl, isSafeUrl, slashQuery, stepCounts, transcriptToMarkdown, visibleMessages, withoutContext, withoutSlash } from "../src/components/copilot-chat/copilot-chat-format.ts";
 
 test("isSafeUrl only allows http and https", () => {
   assert.equal(isSafeUrl("https://a.com/x"), true);
@@ -42,4 +42,29 @@ test("context helpers", () => {
   const b = { id: "b", label: "B" };
   assert.deepEqual(withoutContext([a, b], "a"), [b]);
   assert.deepEqual(availableContext([a, b], [a]), [b]);
+});
+
+test("slashQuery finds a command being typed at the caret", () => {
+  assert.deepEqual(slashQuery("/sum", 4), { query: "sum", start: 0 });
+  assert.deepEqual(slashQuery("hi /tr", 6), { query: "tr", start: 3 });
+  assert.equal(slashQuery("a/b", 3), null);
+  assert.equal(slashQuery("/sum x", 6), null);
+});
+
+test("filterCommands ranks prefix matches first and skips chosen", () => {
+  const cmds = [{ id: "translate", label: "Translate" }, { id: "summarize", label: "Summarize" }, { id: "rate", label: "Rate" }];
+  assert.deepEqual(filterCommands(cmds, "", []).map((c) => c.id), ["translate", "summarize", "rate"]);
+  assert.deepEqual(filterCommands(cmds, "ra", []).map((c) => c.id), ["rate", "translate"]);
+  assert.deepEqual(filterCommands(cmds, "", ["rate"]).map((c) => c.id), ["translate", "summarize"]);
+});
+
+test("withoutSlash removes the typed command", () => {
+  assert.equal(withoutSlash("hi /tr", 6), "hi ");
+});
+
+test("isPreviewUrl and visibleMessages", () => {
+  assert.equal(isPreviewUrl("blob:x"), true);
+  assert.equal(isPreviewUrl("data:image/svg+xml,<svg/>"), false);
+  assert.equal(isPreviewUrl("javascript:x"), false);
+  assert.equal(visibleMessages([{ id: "1", role: "user", text: "", hidden: true }, { id: "2", role: "user", text: "" }]).length, 1);
 });

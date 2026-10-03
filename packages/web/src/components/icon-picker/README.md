@@ -4,7 +4,7 @@ title: IconPicker
 category: pickers
 status: beta
 summary: A popover or inline panel to choose a lucide icon with search in English and Arabic, categories, recent icons, a capped grid with show more and full keyboard navigation. Returns the icon name.
-exports: [IconPickerLabels, normalizeIconName, findIcon, IconByName, IconByNameProps, IconPickerPanelProps, IconPickerPanel, IconPickerProps, IconPicker]
+exports: [IconPickerLabels, normalizeIconName, findIcon, boxiconClass, IconByName, IconByNameProps, IconPickerPanelProps, IconPickerPanel, IconPickerProps, IconPicker]
 related: [emoji-picker, color-picker, popover]
 story: components-pickers-icon-picker
 keywords: [icon, picker, lucide, symbol, glyph, select icon, search, categories, recent]
@@ -82,12 +82,16 @@ IconPicker                     Popover; trigger is a button showing the chosen i
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `name` | `string | null | undefined` | | `users`, `Users` or `lucide:users`; or an image URL (`https://…`, `/…`, `data:image/…`), drawn as a decorative `<img>`. |
+| `name` | `string | null | undefined` | | `users`, `Users` or `lucide:users`; a Boxicons name (`bx:home`, `bxs:star`, `bxl:github`, or the legacy `bx-home`); or an image URL (`https://…`, `/…`, `data:image/…`), drawn as a decorative `<img>`. |
 | `icons` | `readonly IconEntry[]` | `ICON_CATALOG` | The set to look the name up in. |
 | `fallback` | `ReactNode` | `null` | Rendered for an empty or unknown name. |
 | `size`, `className`, … | lucide props | | Passed to the icon (`size` also sizes an image). |
 
-**Helpers**: `normalizeIconName(name)` (to kebab-case, strips `lucide:`), `findIcon(name)`, `filterIcons(icons, query, category)`, `ICON_CATALOG`, `ICON_CATEGORIES`.
+Boxicons names render `<i class="bx bx-home">` at `size` (default `1em`, so it follows the text). Nasaq does not
+ship the Boxicons font: load its CSS yourself (`boxicons/css/boxicons.min.css`) or the glyph stays empty. Use it
+for plugin manifests and menus stored before the move to lucide; prefer lucide names for new data.
+
+**Helpers**: `normalizeIconName(name)` (to kebab-case, strips `lucide:`), `findIcon(name)`, `boxiconClass(name)` (the Boxicons class or `undefined`), `filterIcons(icons, query, category)`, `ICON_CATALOG`, `ICON_CATEGORIES`.
 
 ## Examples
 

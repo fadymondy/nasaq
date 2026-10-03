@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDownToLine, Check, Clock, Copy, Download, Regex, Search, X } from "lucide-react";
+import { ArrowDownToLine, Check, Clock, Copy, Download, History, Pause, Play, Regex, Search, X } from "lucide-react";
 import {
   type ComponentProps,
   type KeyboardEvent,
@@ -9,6 +9,7 @@ import {
   useDeferredValue,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -18,12 +19,14 @@ import { useOptionalNasaq } from "../../provider/nasaq-provider";
 import { Button } from "../button";
 import { copyText } from "../copy-button";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group";
+import { NativeSelect } from "../native-select";
 import { Spinner } from "../spinner";
 import { EmptyState } from "../states";
 import { useFollowScroll } from "../terminal/follow-scroll";
 import {
   compileMatcher,
   countByLevel,
+  entriesUntil,
   entryText,
   fieldsToText,
   filterLogs,
@@ -31,7 +34,9 @@ import {
   LOG_LEVELS,
   type LogEntry,
   type LogLevel,
+  type LogRange,
   logsToText,
+  rangeSince,
   splitByRanges,
   virtualWindow,
 } from "./log-viewer-format";
@@ -39,15 +44,20 @@ import {
 export {
   compileMatcher,
   countByLevel,
+  entriesUntil,
   entryText,
   filterLogs,
   formatLogTime,
   LOG_LEVELS,
+  LOG_RANGES,
   type LogEntry,
+  type LogFilter,
   type LogLevel,
+  type LogRange,
   type LogTimeOptions,
   logsToText,
   normalizeLevel,
+  rangeSince,
   virtualWindow,
 } from "./log-viewer-format";
 
@@ -82,6 +92,13 @@ const STRINGS = {
     source: "Source",
     message: "Message",
     fields: "Fields",
+    range: "Time range",
+    loadOlder: "Load older entries",
+    loadingOlder: "Loading older entries…",
+    pause: "Pause live tail",
+    resume: "Resume live tail",
+    paused: "Paused",
+    newWhilePaused: (n: number) => (n === 1 ? "1 new entry" : `${n} new entries`),
   },
   ar: {
     title: "السجلات",
@@ -113,14 +130,21 @@ const STRINGS = {
     source: "المصدر",
     message: "الرسالة",
     fields: "الحقول",
+    range: "النطاق الزمني",
+    loadOlder: "تحميل مدخلات أقدم",
+    loadingOlder: "جارٍ تحميل مدخلات أقدم…",
+    pause: "إيقاف التتبّع المباشر مؤقتًا",
+    resume: "استئناف التتبّع المباشر",
+    paused: "متوقف مؤقتًا",
+    newWhilePaused: (n: number) => (n === 1 ? "مدخل جديد واحد" : `${n} مدخلات جديدة`),
   },
 };
 
 export type LogViewerLabels = (typeof STRINGS)["en"];
 
-function useLabels(labels?: Partial<LogViewerLabels>): LogViewerLabels {
+function useLabels(labels?: Partial<LogViewerLabels>): LogViewerLabels & { ar: boolean } {
   const ar = useOptionalNasaq()?.locale.startsWith("ar") ?? false;
-  return { ...STRINGS[ar ? "ar" : "en"], ...labels };
+  return { ...STRINGS[ar ? "ar" : "en"], ...labels, ar };
 }
 
 /** Level text uses a token colour and always a written label, so it never relies on colour alone. */
@@ -142,6 +166,9 @@ const LEVEL_ROW: Record<LogLevel, string> = {
 };
 const LEVEL_TAG: Record<LogLevel, string> = { trace: "TRACE", debug: "DEBUG", info: "INFO", warn: "WARN", error: "ERROR", fatal: "FATAL" };
 
+/** Height of the "Load older" bar at the top of the list, in pixels. */
+const OLDER_BAR = 36;
+
 function Highlight({ text, ranges }: { text: string; ranges: [number, number][] }) {
   if (!ranges.length) return <>{text}</>;
   return (
@@ -159,6 +186,17 @@ function Highlight({ text, ranges }: { text: string; ranges: [number, number][] 
       )}
     </>
   );
+}
+
+/** What the reader is asking for, for a server that does the filtering (`manual`). */
+export interface LogViewerFilter {
+  levels: LogLevel[];
+  query: string;
+  regex: boolean;
+  /** The chosen time range, if the viewer has `ranges`. */
+  range: LogRange | null;
+  /** Keep entries at or after this time (epoch milliseconds), from the range. `null`: no limit. */
+  since: number | null;
 }
 
 export interface LogViewerProps extends Omit<ComponentProps<"div">, "children" | "dir" | "title"> {
@@ -188,13 +226,41 @@ export interface LogViewerProps extends Omit<ComponentProps<"div">, "children" |
   onDownload?: (entries: readonly LogEntry[]) => void;
   /** File name for the default download. Default "logs.log". */
   downloadFilename?: string;
+  /**
+   * The server filters. `entries` are shown as given (search matches are still highlighted) and every change of
+   * level, search, regex or range is reported through `onFilterChange`.
+   */
+  manual?: boolean;
+  /** Called after the reader changes a filter (search is deferred while typing). Not called on mount. */
+  onFilterChange?: (filter: LogViewerFilter) => void;
+  /** Per-level totals for the chips, e.g. from the server. Default: counted from `entries`. */
+  counts?: Partial<Record<LogLevel, number>>;
+  /** How many entries match on the server, for the footer. Default: `entries.length`. */
+  total?: number;
+  /** Time windows to choose from, e.g. `LOG_RANGES`. Adds a range select. */
+  ranges?: readonly LogRange[];
+  /** Id of the range chosen at the start. Default: the last range. */
+  defaultRange?: string;
+  /** Older entries exist: shows "Load older entries" at the top of the list. */
+  hasOlder?: boolean;
+  /** Fetch older entries and prepend them; the list keeps its place. */
+  onLoadOlder?: () => void | Promise<void>;
+  /** Older entries are loading. Defaults to tracking the promise from `onLoadOlder`. */
+  loadingOlder?: boolean;
+  /**
+   * Adds a pause button. Paused, the list holds still while new entries keep arriving, and the footer counts them;
+   * resume to catch up. Reported with `onLiveChange`, e.g. to close a socket.
+   */
+  liveTail?: boolean;
+  onLiveChange?: (live: boolean) => void;
   labels?: Partial<LogViewerLabels>;
 }
 
 /**
  * A log stream that behaves like a dev tool: level filters with counts, search with highlights (optionally
- * a regular expression), follow-the-tail with a jump button, timestamps, keyboard navigation and a detail
- * panel. The list is windowed with fixed-height rows, so long streams stay smooth. Always left-to-right.
+ * a regular expression), a time range, follow-the-tail with a jump button, pause and resume, loading older
+ * entries, timestamps, keyboard navigation and a detail panel. Filtering runs here, or on the server with
+ * `manual`. The list is windowed with fixed-height rows, so long streams stay smooth. Always left-to-right.
  */
 export function LogViewer({
   entries,
@@ -210,6 +276,17 @@ export function LogViewer({
   toolbar,
   onDownload,
   downloadFilename = "logs.log",
+  manual = false,
+  onFilterChange,
+  counts: countsProp,
+  total,
+  ranges,
+  defaultRange,
+  hasOlder = false,
+  onLoadOlder,
+  loadingOlder: loadingOlderProp,
+  liveTail = false,
+  onLiveChange,
   labels,
   className,
   ...props
@@ -219,20 +296,53 @@ export function LogViewer({
   const [levels, setLevels] = useState<ReadonlySet<LogLevel>>(() => new Set(defaultLevels ?? LOG_LEVELS));
   const [query, setQuery] = useState(defaultQuery);
   const [regex, setRegex] = useState(false);
+  const [rangeId, setRangeId] = useState(() => defaultRange ?? ranges?.[ranges.length - 1]?.id ?? "");
   const [showTime, setShowTime] = useState(timestampsProp);
   const [selected, setSelected] = useState<LogEntry["id"] | null>(null);
   const [copied, setCopied] = useState("");
+  const [pausedAt, setPausedAt] = useState<{ id: LogEntry["id"] | null } | null>(null);
+  const [ownLoading, setOwnLoading] = useState(false);
+  const loadingOlder = loadingOlderProp ?? ownLoading;
   const deferred = useDeferredValue(query);
+  const range = ranges?.find((r) => r.id === rangeId) ?? null;
 
-  const counts = useMemo(() => countByLevel(entries), [entries]);
-  const { entries: rows, invalid } = useMemo(() => filterLogs(entries, { levels, query: deferred, regex }), [entries, levels, deferred, regex]);
+  // Paused, the list stops at the last entry it had; later entries wait and are counted.
+  const shown = useMemo(() => (pausedAt ? entriesUntil(entries, pausedAt.id) : entries), [entries, pausedAt]);
+  const waiting = pausedAt ? entries.length - shown.length : 0;
+
+  const counts = useMemo(() => ({ ...countByLevel(shown), ...countsProp }), [shown, countsProp]);
+  const { entries: rows, invalid } = useMemo(() => {
+    if (manual) return { entries: shown as LogEntry[], invalid: compileMatcher(deferred, regex) === "invalid" };
+    return filterLogs(shown, { levels, query: deferred, regex, since: rangeSince(range ?? undefined) });
+  }, [manual, shown, levels, deferred, regex, range]);
   const matcher = useMemo(() => {
     const m = compileMatcher(deferred, regex);
     return m === "invalid" ? null : m;
   }, [deferred, regex]);
-  const filtering = levels.size < LOG_LEVELS.length || query !== "";
+  const filtering = levels.size < LOG_LEVELS.length || query !== "" || (!!range && range.ms !== null);
 
-  const { ref, following, setFollowing, onScroll: onFollowScroll } = useFollowScroll<HTMLDivElement>(rows.length, follow);
+  // Report filter changes to a server, but not the initial state.
+  const report = useRef(onFilterChange);
+  report.current = onFilterChange;
+  const levelKey = LOG_LEVELS.filter((l) => levels.has(l)).join(",");
+  const mounted = useRef(false);
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
+    report.current?.({
+      levels: LOG_LEVELS.filter((l) => levelKey.split(",").includes(l)),
+      query: deferred,
+      regex,
+      range,
+      since: rangeSince(range ?? undefined),
+    });
+    // range is identified by rangeId.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [levelKey, deferred, regex, rangeId]);
+
+  const { ref, following, setFollowing, onScroll: onFollowScroll } = useFollowScroll<HTMLDivElement>(rows.length, follow && !pausedAt);
   const [scroll, setScroll] = useState({ top: 0, height: 0 });
   useEffect(() => {
     const el = ref.current;
@@ -250,15 +360,38 @@ export function LogViewer({
     if (el) setScroll({ top: el.scrollTop, height: el.clientHeight });
   }, [onFollowScroll, ref]);
 
-  const { start, end } = virtualWindow({ scrollTop: scroll.top, viewport: scroll.height, rowHeight, count: rows.length });
+  // Keep the reader's place when older entries are prepended.
+  const head = hasOlder || loadingOlder ? OLDER_BAR : 0;
+  const anchor = useRef<{ height: number; top: number } | null>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    const a = anchor.current;
+    if (!el || !a || el.scrollHeight === a.height) return;
+    el.scrollTop = a.top + (el.scrollHeight - a.height);
+    anchor.current = null;
+  }, [rows.length, head, ref]);
+  const loadOlder = async () => {
+    if (!onLoadOlder || loadingOlder) return;
+    const el = ref.current;
+    if (el) anchor.current = { height: el.scrollHeight, top: el.scrollTop };
+    setFollowing(false);
+    setOwnLoading(true);
+    try {
+      await onLoadOlder();
+    } finally {
+      setOwnLoading(false);
+    }
+  };
+
+  const { start, end } = virtualWindow({ scrollTop: Math.max(0, scroll.top - head), viewport: scroll.height, rowHeight, count: rows.length });
   const selectedIndex = selected === null ? -1 : rows.findIndex((r) => r.id === selected);
   const selectedEntry = selectedIndex >= 0 ? rows[selectedIndex] : undefined;
 
   const reveal = (index: number) => {
     const el = ref.current;
     if (!el) return;
-    const top = index * rowHeight;
-    if (top < el.scrollTop) el.scrollTop = top;
+    const top = head + index * rowHeight;
+    if (top < el.scrollTop) el.scrollTop = index === 0 ? 0 : top;
     else if (top + rowHeight > el.scrollTop + el.clientHeight) el.scrollTop = top + rowHeight - el.clientHeight;
   };
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -309,12 +442,36 @@ export function LogViewer({
     setLevels(new Set(LOG_LEVELS));
     setQuery("");
     setRegex(false);
+    if (ranges?.length) setRangeId(ranges.find((r) => r.ms === null)?.id ?? ranges[ranges.length - 1]!.id);
   };
+  const setLive = (live: boolean) => {
+    setPausedAt(live ? null : { id: entries.length ? entries[entries.length - 1]!.id : null });
+    if (live) setFollowing(true);
+    onLiveChange?.(live);
+  };
+
+  const olderBar =
+    hasOlder || loadingOlder ? (
+      <div data-slot="log-viewer-older" className="flex items-center justify-center border-b border-border/60" style={{ height: OLDER_BAR }}>
+        {loadingOlder ? (
+          <span role="status" className="inline-flex items-center gap-2 font-sans text-caption text-muted-foreground">
+            <Spinner className="size-3" />
+            {t.loadingOlder}
+          </span>
+        ) : onLoadOlder ? (
+          <Button type="button" size="sm" variant="ghost" onClick={loadOlder}>
+            <History aria-hidden />
+            {t.loadOlder}
+          </Button>
+        ) : null}
+      </div>
+    ) : null;
 
   return (
     <div
       data-slot="log-viewer"
       data-streaming={streaming || undefined}
+      data-paused={pausedAt ? "" : undefined}
       dir="ltr"
       className={cn("relative flex min-w-0 flex-col overflow-hidden rounded-surface border border-border bg-nq-surface-soft text-start", className)}
       {...props}
@@ -350,6 +507,17 @@ export function LogViewer({
             </Button>
           </InputGroupAddon>
         </InputGroup>
+        {ranges?.length ? (
+          <NativeSelect
+            size="sm"
+            aria-label={t.range}
+            data-slot="log-viewer-range"
+            value={rangeId}
+            onChange={(e) => setRangeId(e.currentTarget.value)}
+            options={ranges.map((r) => ({ value: r.id, label: (t.ar && r.labelAr) || r.label }))}
+            className="w-auto"
+          />
+        ) : null}
         <div role="group" aria-label={t.levels} className="flex flex-wrap items-center gap-1">
           {LOG_LEVELS.map((level) => {
             const on = levels.has(level);
@@ -367,13 +535,28 @@ export function LogViewer({
                 )}
               >
                 <span className={cn("font-mono", on && LEVEL_TEXT[level])}>{t.level[level]}</span>
-                <span className="tabular-nums text-muted-foreground">{counts[level]}</span>
+                <span className="tabular-nums text-muted-foreground">{counts[level] ?? 0}</span>
               </button>
             );
           })}
         </div>
         <div className="ms-auto flex items-center gap-0.5">
           {toolbar}
+          {liveTail ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              aria-label={pausedAt ? t.resume : t.pause}
+              aria-pressed={!!pausedAt}
+              data-slot="log-viewer-live"
+              data-active={pausedAt ? true : undefined}
+              className="data-active:bg-nq-selected"
+              onClick={() => setLive(!!pausedAt)}
+            >
+              {pausedAt ? <Play aria-hidden /> : <Pause aria-hidden />}
+            </Button>
+          ) : null}
           <Button
             type="button"
             variant="ghost"
@@ -437,21 +620,25 @@ export function LogViewer({
           className="overflow-auto font-mono text-code outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus"
         >
           {rows.length === 0 ? (
-            <EmptyState
-              className="m-3 border-0"
-              title={entries.length === 0 ? t.emptyTitle : t.noMatchTitle}
-              description={entries.length === 0 ? t.emptyBody : t.noMatchBody}
-              actions={
-                entries.length > 0 && filtering ? (
-                  <Button type="button" size="sm" onClick={reset}>
-                    <X aria-hidden />
-                    {t.resetFilters}
-                  </Button>
-                ) : undefined
-              }
-            />
+            <>
+              {olderBar}
+              <EmptyState
+                className="m-3 border-0"
+                title={entries.length === 0 ? t.emptyTitle : t.noMatchTitle}
+                description={entries.length === 0 ? t.emptyBody : t.noMatchBody}
+                actions={
+                  entries.length > 0 && filtering ? (
+                    <Button type="button" size="sm" onClick={reset}>
+                      <X aria-hidden />
+                      {t.resetFilters}
+                    </Button>
+                  ) : undefined
+                }
+              />
+            </>
           ) : (
-            <div style={{ height: rows.length * rowHeight }} className="relative min-w-full w-max">
+            <div style={{ height: head + rows.length * rowHeight }} className="relative min-w-full w-max">
+              {olderBar ? <div className="absolute inset-x-0 top-0">{olderBar}</div> : null}
               {rows.slice(start, end).map((entry, i) => {
                 const index = start + i;
                 const text = entryText(entry);
@@ -469,7 +656,7 @@ export function LogViewer({
                     data-selected={on || undefined}
                     title={text.length > 200 ? undefined : text}
                     onClick={() => setSelected(on ? null : entry.id)}
-                    style={{ position: "absolute", insetInlineStart: 0, insetInlineEnd: 0, top: index * rowHeight, height: rowHeight }}
+                    style={{ position: "absolute", insetInlineStart: 0, insetInlineEnd: 0, top: head + index * rowHeight, height: rowHeight }}
                     className={cn(
                       "flex cursor-default items-center gap-3 whitespace-pre px-3 hover:bg-nq-hover",
                       LEVEL_ROW[entry.level],
@@ -488,7 +675,12 @@ export function LogViewer({
             </div>
           )}
         </div>
-        {!following && rows.length > 0 ? (
+        {pausedAt && waiting > 0 ? (
+          <Button type="button" size="sm" variant="primary" className="absolute end-3 bottom-3 shadow-sm" onClick={() => setLive(true)}>
+            <Play aria-hidden />
+            {t.newWhilePaused(waiting)}
+          </Button>
+        ) : !following && rows.length > 0 && !pausedAt ? (
           <Button type="button" size="sm" variant="secondary" className="absolute end-3 bottom-3 shadow-sm" onClick={() => setFollowing(true)}>
             <ArrowDownToLine aria-hidden />
             {t.jump}
@@ -507,8 +699,14 @@ export function LogViewer({
       ) : null}
 
       <div data-slot="log-viewer-footer" className="flex h-8 items-center justify-between gap-2 border-t border-border px-3 text-caption text-muted-foreground">
-        <span className="tabular-nums">{t.count(rows.length, entries.length)}</span>
-        {streaming ? (
+        <span className="tabular-nums">{t.count(rows.length, total ?? shown.length)}</span>
+        {pausedAt ? (
+          <span role="status" className="inline-flex items-center gap-1 text-nq-warning-text">
+            <Pause aria-hidden className="size-3" />
+            {t.paused}
+            {waiting > 0 ? <span className="tabular-nums text-muted-foreground"> · {t.newWhilePaused(waiting)}</span> : null}
+          </span>
+        ) : streaming ? (
           <span className="inline-flex items-center gap-1 text-nq-success-text">
             <Spinner className="size-3" />
             {t.streaming}

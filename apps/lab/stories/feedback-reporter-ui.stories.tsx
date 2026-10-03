@@ -6,8 +6,12 @@ import { type FeedbackSubmission, ReportDialog } from "@nasaq/feedback";
 import {
   Button,
   FeedbackFloatingLauncher,
+  countByStatus,
   FeedbackHub,
+  type FeedbackHubFilter,
   type FeedbackHubIssue,
+  type FeedbackLauncherSpot,
+  filterHubIssues,
   FeedbackLauncherConfigurator,
   type FeedbackLauncherConfig,
   ShakeReportSheet,
@@ -15,7 +19,7 @@ import {
   useShakeToReport,
 } from "@nasaq/web";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { pageIssues, useAr, wait } from "./_lifecycle-demo";
 
 const meta = { title: "Components/Feedback SDK/Feedback Reporter" } satisfies Meta;
@@ -72,6 +76,74 @@ function HubDemo() {
   );
 }
 
+function MovableDemo() {
+  const ar = useAr();
+  const [open, setOpen] = useState(false);
+  const [spot, setSpot] = useState<FeedbackLauncherSpot | null>(null);
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="text-body-sm text-muted-foreground">
+        {ar
+          ? "اسحب الزر إلى أي مكان؛ يلتصق بأقرب جانب ويبقى هناك بعد إعادة التحميل. Alt مع الأسهم يحركه من لوحة المفاتيح."
+          : "Drag the button anywhere; it snaps to the nearer side and stays there after a reload. Alt + arrow keys move it from the keyboard."}
+      </p>
+      <Frame className="h-96">
+        <FeedbackFloatingLauncher
+          placement="absolute"
+          shape="pill"
+          movable
+          storageKey="nasaq-lab-feedback-launcher"
+          onSpotChange={setSpot}
+          onClick={() => setOpen(true)}
+        />
+      </Frame>
+      <p className="text-caption text-muted-foreground tabular-nums" data-testid="spot">
+        {spot ? `${spot.side} · ${Math.round(spot.y * 100)}%` : ar ? "لم يتحرك بعد" : "Not moved yet"}
+      </p>
+      <ReportDialog open={open} onOpenChange={setOpen} onSubmit={mockSubmit} />
+    </div>
+  );
+}
+
+const PAGE = 5;
+
+function PagedHubDemo() {
+  const ar = useAr();
+  const all = useMemo(() => {
+    const seed = pageIssues(ar);
+    return Array.from({ length: 17 }, (_, n): FeedbackHubIssue => {
+      const base = seed[n % seed.length]!;
+      return { ...base, id: `r${n}`, title: n < seed.length ? base.title : `${base.title} (${n + 1})`, mine: n % 4 === 1 };
+    });
+  }, [ar]);
+  const [filter, setFilter] = useState<FeedbackHubFilter>("all");
+  const [pages, setPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const matching = filterHubIssues(all, filter);
+  const counts = { ...countByStatus(all), mine: all.filter((i) => i.mine).length };
+  return (
+    <FeedbackHub
+      page="/projects/nasaq/board"
+      issues={matching.slice(0, pages * PAGE)}
+      counts={counts}
+      mineTab
+      onFilterChange={(f) => {
+        setFilter(f);
+        setPages(1);
+      }}
+      hasMore={matching.length > pages * PAGE}
+      loadingMore={loading}
+      onLoadMore={async () => {
+        setLoading(true);
+        await wait(500);
+        setPages((p) => p + 1);
+        setLoading(false);
+      }}
+      onReportNew={() => toast(ar ? "الإبلاغ عن مشكلة" : "Report a problem")}
+    />
+  );
+}
+
 function ConfiguratorDemo() {
   const ar = useAr();
   const [config, setConfig] = useState<FeedbackLauncherConfig>({ shape: "pill", position: "bottom-end", label: ar ? "ملاحظات" : "Feedback" });
@@ -114,6 +186,10 @@ export const Launchers: Story = { render: () => <LaunchersDemo /> };
 export const Hub: Story = { render: () => <HubDemo /> };
 export const EmptyHub: Story = { render: () => <FeedbackHub page="/settings/billing" issues={[]} onReportNew={() => {}} /> };
 export const Configurator: Story = { render: () => <ConfiguratorDemo /> };
+/** A launcher the visitor can drag out of the way; it remembers where it was left. */
+export const Movable: Story = { render: () => <MovableDemo /> };
+/** "My reports" and a server-paged list: counts come from the server, **Load more** fetches the next page. */
+export const MyReportsPaged: Story = { render: () => <PagedHubDemo /> };
 export const ShakeToReport: Story = { render: () => <ShakeDemo /> };
 
 export const Arabic: Story = {
@@ -126,4 +202,6 @@ export const Arabic: Story = {
     </div>
   ),
 };
+export const MovableArabic: Story = { globals: { locale: "ar" }, render: () => <MovableDemo /> };
+export const MyReportsPagedArabic: Story = { globals: { locale: "ar" }, render: () => <PagedHubDemo /> };
 export const ArabicShake: Story = { globals: { locale: "ar" }, render: () => <ShakeDemo /> };

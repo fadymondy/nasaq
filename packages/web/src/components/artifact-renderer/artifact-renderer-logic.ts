@@ -29,8 +29,12 @@ export interface CardArtifact extends Base {
   kind: "card";
   badges?: { label: ArtifactText; tone?: ArtifactTone }[];
   fields?: { label: ArtifactText; value: ArtifactCell }[];
+  /** A short list: tasks, findings, line items. Each row may carry a value on the end side and a tone dot. */
+  items?: { label: ArtifactText; description?: ArtifactText; value?: ArtifactCell; tone?: ArtifactTone }[];
   /** Markdown. Raw HTML is dropped. */
   body?: ArtifactText;
+  /** A muted note at the bottom: a source, a timestamp, a caveat. */
+  footer?: ArtifactText;
   actions?: ArtifactAction[];
 }
 export interface TableArtifact extends Base {
@@ -40,7 +44,8 @@ export interface TableArtifact extends Base {
 }
 export interface ChartArtifact extends Base {
   kind: "chart";
-  chart?: "bar" | "line" | "area";
+  /** `pie` and `donut` use the first series as slice sizes and `xKey` as slice names. More than 8 slices fold into "Other". */
+  chart?: "bar" | "line" | "area" | "pie" | "donut";
   xKey: string;
   series: { key: string; label: ArtifactText; color?: string }[];
   data: Record<string, string | number>[];
@@ -68,7 +73,16 @@ export interface PickerArtifact extends Base {
 }
 export interface StatsArtifact extends Base {
   kind: "stats";
-  items: { label: ArtifactText; value: string | number; delta?: number; invert?: boolean }[];
+  items: {
+    label: ArtifactText;
+    value: string | number;
+    delta?: number;
+    invert?: boolean;
+    /** A dot before the label, with the tone named for screen readers. */
+    tone?: ArtifactTone;
+    /** A trend line, oldest first. Up to 60 points. */
+    sparkline?: number[];
+  }[];
 }
 /** HTML from the agent. Rendered only when the renderer is told `allowHtml`, and then only in a sandboxed frame. */
 export interface HtmlArtifact extends Base {
@@ -93,6 +107,8 @@ export const ARTIFACT_LIMITS = {
   actions: 8,
   fields: 30,
   items: 12,
+  slices: 8,
+  sparkline: 60,
   html: 60_000,
 } as const;
 
@@ -101,6 +117,8 @@ export type ArtifactParse = { ok: true; artifact: Artifact } | { ok: false; erro
 const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
 const TONES: readonly ArtifactTone[] = ["neutral", "success", "warning", "danger", "info"];
 const VARIANTS: readonly ArtifactVariant[] = ["primary", "secondary", "ghost", "danger"];
+type ChartType = NonNullable<ChartArtifact["chart"]>;
+const CHARTS: readonly ChartType[] = ["bar", "line", "area", "pie", "donut"];
 
 class Bad extends Error {}
 const fail = (msg: string): never => {
@@ -139,6 +157,10 @@ function list<T>(v: unknown, path: string, max: number, each: (item: unknown, pa
 
 function obj(v: unknown, path: string): Record<string, unknown> {
   return isRecord(v) ? v : fail(`${path} must be an object`);
+}
+
+function tone(v: unknown, path: string): ArtifactTone {
+  return TONES.includes(v as ArtifactTone) ? (v as ArtifactTone) : fail(`${path} is not one of ${TONES.join(", ")}`);
 }
 
 function action(v: unknown, path: string): ArtifactAction {
@@ -184,15 +206,25 @@ function build(input: unknown): Artifact {
       if (o.badges !== undefined)
         a.badges = list(o.badges, "badges", ARTIFACT_LIMITS.items, (b, p) => {
           const bo = obj(b, p);
-          const tone = bo.tone === undefined ? undefined : TONES.includes(bo.tone as ArtifactTone) ? (bo.tone as ArtifactTone) : fail(`${p}.tone is not valid`);
-          return { label: text(bo.label, `${p}.label`, 80), ...(tone ? { tone } : {}) };
+          return { label: text(bo.label, `${p}.label`, 80), ...(bo.tone !== undefined ? { tone: tone(bo.tone, `${p}.tone`) } : {}) };
         });
       if (o.fields !== undefined)
         a.fields = list(o.fields, "fields", ARTIFACT_LIMITS.fields, (f, p) => {
           const fo = obj(f, p);
           return { label: text(fo.label, `${p}.label`, 120), value: cell(fo.value, `${p}.value`) };
         });
+      if (o.items !== undefined)
+        a.items = list(o.items, "items", ARTIFACT_LIMITS.fields, (x, p) => {
+          const xo = obj(x, p);
+          return {
+            label: text(xo.label, `${p}.label`, 200),
+            ...(xo.description !== undefined ? { description: text(xo.description, `${p}.description`, 400) } : {}),
+            ...(xo.value !== undefined ? { value: cell(xo.value, `${p}.value`) } : {}),
+            ...(xo.tone !== undefined ? { tone: tone(xo.tone, `${p}.tone`) } : {}),
+          };
+        });
       if (o.body !== undefined) a.body = text(o.body, "body", ARTIFACT_LIMITS.text);
+      if (o.footer !== undefined) a.footer = text(o.footer, "footer", 500);
       if (o.actions !== undefined) a.actions = list(o.actions, "actions", ARTIFACT_LIMITS.actions, action);
       return a;
     }
@@ -209,7 +241,7 @@ function build(input: unknown): Artifact {
       return { ...base, kind: "table", columns, rows };
     }
     case "chart": {
-      const chart = o.chart === undefined ? undefined : o.chart === "bar" || o.chart === "line" || o.chart === "area" ? o.chart : fail("chart must be bar, line or area");
+      const chart = o.chart === undefined ? undefined : CHARTS.includes(o.chart as ChartType) ? (o.chart as ChartType) : fail(`chart must be ${CHARTS.join(", ")}`);
       const xKey = str(o.xKey, "xKey", 80);
       const series = list(o.series, "series", ARTIFACT_LIMITS.series, (s, p) => {
         const so = obj(s, p);
@@ -274,7 +306,18 @@ function build(input: unknown): Artifact {
         const xo = obj(x, p);
         const value = typeof xo.value === "number" ? (Number.isFinite(xo.value) ? xo.value : fail(`${p}.value must be finite`)) : str(xo.value, `${p}.value`, 80);
         const delta = xo.delta === undefined ? undefined : typeof xo.delta === "number" && Number.isFinite(xo.delta) ? xo.delta : fail(`${p}.delta must be a number`);
-        return { label: text(xo.label, `${p}.label`, 120), value, ...(delta !== undefined ? { delta } : {}), ...(xo.invert === true ? { invert: true } : {}) };
+        const sparkline =
+          xo.sparkline === undefined
+            ? undefined
+            : list(xo.sparkline, `${p}.sparkline`, ARTIFACT_LIMITS.sparkline, (n, q) => (typeof n === "number" && Number.isFinite(n) ? n : fail(`${q} must be a finite number`)));
+        return {
+          label: text(xo.label, `${p}.label`, 120),
+          value,
+          ...(delta !== undefined ? { delta } : {}),
+          ...(xo.invert === true ? { invert: true } : {}),
+          ...(xo.tone !== undefined ? { tone: tone(xo.tone, `${p}.tone`) } : {}),
+          ...(sparkline && sparkline.length > 1 ? { sparkline } : {}),
+        };
       });
       if (items.length === 0) fail("items needs at least one entry");
       return { ...base, kind: "stats", items };
@@ -341,4 +384,27 @@ export function extractArtifacts(source: string): ExtractedArtifacts {
     return "";
   });
   return { text: text.replace(/\n{3,}/g, "\n\n").trim(), artifacts };
+}
+
+export interface PieSlice {
+  name: string;
+  value: number;
+  /** The folded remainder. Its name is empty; the renderer labels it "Other". */
+  other?: true;
+}
+
+/**
+ * The slices of a pie or donut: the first series by `xKey`, zero and negative values dropped. Past `max` slices the
+ * smallest ones fold into one "Other" slice, so the palette never repeats a colour.
+ */
+export function pieSlices(artifact: ChartArtifact, max: number = ARTIFACT_LIMITS.slices): PieSlice[] {
+  const key = artifact.series[0]?.key;
+  if (key === undefined) return [];
+  const all = artifact.data
+    .map((row) => ({ name: String(row[artifact.xKey] ?? ""), value: Number(row[key]) }))
+    .filter((s) => Number.isFinite(s.value) && s.value > 0);
+  if (all.length <= max) return all;
+  const keep = new Set([...all].sort((a, b) => b.value - a.value).slice(0, max - 1));
+  const rest = all.filter((s) => !keep.has(s)).reduce((sum, s) => sum + s.value, 0);
+  return [...all.filter((s) => keep.has(s)), { name: "", value: rest, other: true }];
 }

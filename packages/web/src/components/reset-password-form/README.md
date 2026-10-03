@@ -3,18 +3,19 @@ name: reset-password-form
 title: ResetPasswordForm
 category: auth
 status: beta
-summary: "Choose a new password with a confirmation field and strength meter; en and ar built in, errors linked, focus on the first invalid field."
-exports: [ResetPasswordForm, ResetPasswordValues, ResetPasswordFormLabels, ResetPasswordFormProps]
+summary: "Choose a new password with a confirmation field, strength meter and optional policy checklist, then a Password changed or Link expired screen; en and ar built in."
+exports: [ResetPasswordForm, ResetPasswordValues, ResetPasswordFormLabels, ResetPasswordFormProps, ResetPasswordResult, ResetPasswordState, ResetPasswordTarget]
 related: [auth-layout, forgot-password-form, login-form, password-input]
 story: components-auth-reset-password-form
 base-ui: [field, input, form]
-keywords: [reset password, new password, recovery, strength, auth]
+keywords: [reset password, new password, recovery, strength, policy, expired link, auth]
 ---
 
 # ResetPasswordForm
 
-Two password fields: new and confirm. It checks length and match, then calls `onSubmit({ password })`. An expired or
-used link is best reported as `{ error }`.
+Two password fields: new and confirm. It checks length, match and (with `rules`) a policy, then calls
+`onSubmit({ password })`. On success it swaps to a "Password changed" screen with a Sign in button. Return
+`{ expired: true }` for a used or old link and it shows "This link has expired" with a Send a new link button.
 
 ## When to use
 
@@ -39,9 +40,12 @@ import { ResetPasswordForm } from "@fadymondy/nasaq/web";
 export function Reset({ token }: { token: string }) {
   return (
     <ResetPasswordForm
+      rules
+      signIn="/login"
+      requestLink="/forgot-password"
       onSubmit={async ({ password }) => {
         const res = await api.reset(token, password);
-        if (res.expired) return { error: "This link has expired. Request a new one." };
+        if (res.expired) return { expired: true };
       }}
     />
   );
@@ -53,26 +57,46 @@ declare const api: { reset(token: string, password: string): Promise<{ expired: 
 ## Anatomy
 
 ```
-ResetPasswordForm                data-slot="reset-password-form" (form, noValidate)
-├─ error summary                 role="alert"
-├─ Field: password               autocomplete="new-password", strength meter, hint
-├─ Field: confirm                autocomplete="new-password"
-└─ submit Button
+ResetPasswordForm                data-slot="reset-password-form", data-state="idle" | "success" | "expired"
+├─ idle: form                    noValidate
+│  ├─ error summary              role="alert"
+│  ├─ Field: password            autocomplete="new-password", strength meter, hint or rule checklist
+│  ├─ Field: confirm             autocomplete="new-password"
+│  └─ submit Button
+└─ success / expired
+   ├─ icon                       success or warning soft circle
+   ├─ role="status"              h2 (focused, tabIndex -1) + body
+   └─ Button                     Sign in / Send a new link (a link when given a URL)
 ```
 
 ## API
 
-**ResetPasswordForm**: every `form` prop except `onSubmit` and `children`, plus:
+**ResetPasswordForm**: every `div` prop except `onSubmit` and `children`, plus:
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `onSubmit` | `(values: { password }) => Promise<AuthSubmitResult> \| AuthSubmitResult` | required | Return `{ error }` for an expired link. |
-| `minPasswordLength` | `number` | `8` | Checked before `onSubmit`. |
+| `onSubmit` | `(values: { password }) => Promise<ResetPasswordResult> \| ResetPasswordResult` | required | Resolve nothing on success, `{ error, fieldErrors }` to stay on the form, or `{ expired: true }` for a dead link. |
+| `minPasswordLength` | `number` | `8`, or 12 with `rules` | Checked before `onSubmit`. |
+| `rules` | `boolean \| PasswordPolicy` | | Show the requirement checklist and require every rule. See [`password-input`](../password-input/README.md). |
+| `defaultState` | `"idle" \| "success" \| "expired"` | `"idle"` | Start on a screen, e.g. `"expired"` when the token was checked on load. |
+| `state` / `onStateChange` | `ResetPasswordState` | | Controlled screen. |
+| `signIn` | `string \| () => void` | | The Sign in button on success: a URL renders a link. Hidden when omitted. |
+| `requestLink` | `string \| () => void` | | The Send a new link button on an expired link. Hidden when omitted. |
 | `labels` | `Partial<ResetPasswordFormLabels>` | English or Arabic | `passwordHint` uses `{min}`. |
 
 `fieldErrors` keys: `password`, `confirm`.
 
 ## Examples
+
+**Token checked on load**
+
+```tsx
+import { ResetPasswordForm } from "@fadymondy/nasaq/web";
+
+export function Reset({ valid }: { valid: boolean }) {
+  return <ResetPasswordForm defaultState={valid ? "idle" : "expired"} requestLink="/forgot-password" onSubmit={async () => {}} />;
+}
+```
 
 **Longer minimum**
 
@@ -92,6 +116,8 @@ export function Strict() {
   summary at the top of the form (`role="alert"`) is focused instead, so it is announced.
 - The submit button shows a spinner and is `aria-busy` while `onSubmit` runs; a second submit is ignored.
 - Both fields use `autocomplete="new-password"`; the strength meter is `role="meter"` with a live level word.
+- When the form swaps to the success or expired screen, focus moves to its heading, which sits in a `role="status"`
+  region, so the outcome is announced and the next action is one Tab away.
 
 ## RTL & i18n
 
@@ -102,7 +128,8 @@ export function Strict() {
 
 ## Styling & tokens
 
-- Built from `Field`, `PasswordInput`, `Button` and `Alert`; tokens only.
+- Built from `Field`, `PasswordInput`, `Button` and `Alert`; tokens only. The success icon uses `bg-nq-success-soft`
+  and the expired icon `bg-nq-warning-soft`.
 
 ## Do / Don't
 

@@ -17,6 +17,7 @@ import { ToggleGroup, Toggle } from "../toggle-group";
 import {
   countByStatus,
   FEEDBACK_POSITIONS,
+  filterHubIssues,
   FEEDBACK_SHAPES,
   feedbackInstallSnippet,
   type FeedbackHubIssue,
@@ -24,14 +25,20 @@ import {
   type FeedbackLauncherConfig,
   type FeedbackLauncherPosition,
   type FeedbackLauncherShape,
+  type FeedbackLauncherSpot,
   isShake,
   motionDelta,
+  moveLauncherSpot,
   normalizePosition,
+  parseLauncherSpot,
+  snapLauncherSpot,
+  spotFromPosition,
 } from "./feedback-reporter-utils";
 
 const STRINGS = {
   en: {
     launcher: "Feedback",
+    moveHint: "Drag to move it out of the way. Alt + arrow keys move it too.",
     hubTitle: "Reports on this page",
     hubDescription: "What other people already told us about this page. Add your vote instead of sending a duplicate.",
     page: "Page",
@@ -43,6 +50,12 @@ const STRINGS = {
     emptyTitle: "Nothing reported here",
     emptyBody: "No one has reported a problem on this page yet.",
     emptyFiltered: "No reports with this status.",
+    mine: "Mine",
+    yours: "Yours",
+    emptyMineTitle: "You have not reported anything",
+    emptyMine: "Reports you send from this page show up here, with their status.",
+    loadMore: "Load more",
+    showing: "Showing {shown} of {total}",
     meToo: "Me too",
     voted: "You said this too",
     votes: "{count} people have this",
@@ -78,6 +91,7 @@ const STRINGS = {
   },
   ar: {
     launcher: "ملاحظات",
+    moveHint: "اسحبه لإبعاده عن طريقك. Alt مع الأسهم يحركه أيضًا.",
     hubTitle: "البلاغات على هذه الصفحة",
     hubDescription: "ما أخبرنا به الآخرون عن هذه الصفحة. أضف صوتك بدل إرسال بلاغ مكرر.",
     page: "الصفحة",
@@ -89,6 +103,12 @@ const STRINGS = {
     emptyTitle: "لا بلاغات هنا",
     emptyBody: "لم يبلّغ أحد عن مشكلة في هذه الصفحة بعد.",
     emptyFiltered: "لا توجد بلاغات بهذه الحالة.",
+    mine: "بلاغاتي",
+    yours: "بلاغك",
+    emptyMineTitle: "لم تبلغ عن شيء بعد",
+    emptyMine: "البلاغات التي ترسلها من هذه الصفحة تظهر هنا مع حالتها.",
+    loadMore: "عرض المزيد",
+    showing: "يعرض {shown} من {total}",
     meToo: "وأنا أيضاً",
     voted: "قلت ذلك أيضاً",
     votes: "{count} أشخاص لديهم المشكلة",
@@ -156,12 +176,27 @@ export interface FeedbackFloatingLauncherProps extends Omit<ComponentProps<"butt
   placement?: "fixed" | "absolute";
   /** Replaces the default icon. */
   icon?: ReactNode;
+  /**
+   * Lets the visitor drag the launcher out of the way. On release it snaps to the nearer side and keeps its height;
+   * Alt + arrow keys move it too. The spot is remembered under `storageKey`.
+   */
+  movable?: boolean;
+  /** Where a movable launcher's spot is saved in `localStorage`. Default `"nasaq-feedback-launcher"`; `null` keeps it in memory. */
+  storageKey?: string | null;
+  /** A controlled spot. Without it the launcher keeps its own, starting from `defaultSpot`, the saved one or `position`. */
+  spot?: FeedbackLauncherSpot | null;
+  defaultSpot?: FeedbackLauncherSpot;
+  /** Called when the visitor drops the launcher or moves it with the keyboard. */
+  onSpotChange?: (spot: FeedbackLauncherSpot) => void;
+  labels?: Partial<FeedbackReporterLabels>;
 }
+
+const DRAG_THRESHOLD = 4;
 
 /**
  * The floating feedback button: a pill, a circle or a tab on the screen edge, in a corner or the middle of a side. Sides
  * are logical: `end` is the right in English and the left in Arabic. It only draws the button and calls `onClick`;
- * open `@nasaq/feedback`'s `ReportDialog` from it.
+ * open `@nasaq/feedback`'s `ReportDialog` from it. With `movable` the visitor can drag it aside and it stays there.
  */
 export function FeedbackFloatingLauncher({
   shape = "pill",
@@ -170,30 +205,149 @@ export function FeedbackFloatingLauncher({
   count,
   placement = "fixed",
   icon,
+  movable = false,
+  storageKey = "nasaq-feedback-launcher",
+  spot: spotProp,
+  defaultSpot,
+  onSpotChange,
+  labels,
   className,
+  style,
+  title,
+  onClick,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onPointerCancel,
+  onKeyDown,
   ...props
 }: FeedbackFloatingLauncherProps) {
-  const { t } = useLabels();
+  const { t } = useLabels(labels);
   const text = label ?? t.launcher;
   const where = normalizePosition(shape, position);
   const glyph = icon ?? <MessageSquarePlus aria-hidden className="size-4" />;
+  const ref = useRef<HTMLButtonElement>(null);
+  const [ownSpot, setOwnSpot] = useState<FeedbackLauncherSpot | null>(defaultSpot ?? null);
+  const spot = movable ? (spotProp !== undefined ? spotProp : ownSpot) : null;
+  // The newest spot, so key repeats faster than a render still add up.
+  const latest = useRef(spot);
+  latest.current = spot;
+  const drag = useRef<{ id: number; startX: number; startY: number; offX: number; offY: number; moved: boolean } | null>(null);
+  const swallowClick = useRef(false);
+  const [dragAt, setDragAt] = useState<{ left: number; top: number } | null>(null);
+
+  // Read the saved spot after mount, so the server and first client render agree.
+  useEffect(() => {
+    if (!movable || !storageKey || defaultSpot || typeof localStorage === "undefined") return;
+    const saved = parseLauncherSpot(localStorage.getItem(storageKey));
+    if (saved) setOwnSpot(saved);
+  }, [movable, storageKey, defaultSpot]);
+
+  const commit = (next: FeedbackLauncherSpot) => {
+    latest.current = next;
+    setOwnSpot(next);
+    if (storageKey && typeof localStorage !== "undefined") localStorage.setItem(storageKey, JSON.stringify(next));
+    onSpotChange?.(next);
+  };
+
+  // The area the launcher moves in: the screen, or its positioned parent in a preview.
+  const area = () => {
+    const parent = placement === "absolute" ? ref.current?.offsetParent : null;
+    return parent ? parent.getBoundingClientRect() : new DOMRect(0, 0, window.innerWidth, window.innerHeight);
+  };
+  const isRtl = () => (ref.current ? getComputedStyle(ref.current).direction === "rtl" : false);
+
+  const tabSide = spot ? (spot.side === "end" ? "edge-end" : "edge-start") : where;
+  const inset = shape === "tab" ? "0px" : "1rem";
+  const placed = dragAt
+    ? { left: dragAt.left, top: dragAt.top, transition: "none" }
+    : spot
+      ? { top: `${spot.y * 100}%`, [spot.side === "end" ? "insetInlineEnd" : "insetInlineStart"]: inset }
+      : undefined;
+
   return (
     <button
+      ref={ref}
       type="button"
       data-slot="feedback-launcher"
       data-shape={shape}
-      data-position={where}
+      data-position={spot ? undefined : where}
+      data-side={spot?.side}
+      data-movable={movable || undefined}
+      data-dragging={dragAt ? true : undefined}
       aria-label={shape === "circle" ? text : undefined}
+      aria-keyshortcuts={movable ? "Alt+ArrowUp Alt+ArrowDown Alt+ArrowLeft Alt+ArrowRight" : undefined}
+      title={title ?? (movable ? t.moveHint : undefined)}
       className={cn(
         "z-40 inline-flex items-center justify-center gap-2 bg-primary text-label text-primary-foreground shadow-floating outline-none",
         "transition-[filter,translate] duration-150 ease-nq hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus",
         placement,
-        positionClass[where],
+        dragAt ? "cursor-grabbing select-none" : spot ? "-translate-y-1/2" : positionClass[where],
+        movable && "touch-none",
         shape === "pill" && "h-control rounded-full px-4",
         shape === "circle" && "relative size-12 rounded-full",
-        shape === "tab" && (where === "edge-end" ? "rounded-s-card" : "rounded-e-card") + " flex-col px-2 py-3",
+        shape === "tab" && (tabSide === "edge-end" ? "rounded-s-card" : "rounded-e-card") + " flex-col px-2 py-3",
         className,
       )}
+      style={{ ...placed, ...style }}
+      onPointerDown={(e) => {
+        onPointerDown?.(e);
+        if (!movable || e.defaultPrevented || e.button !== 0) return;
+        const box = e.currentTarget.getBoundingClientRect();
+        drag.current = { id: e.pointerId, startX: e.clientX, startY: e.clientY, offX: e.clientX - box.left, offY: e.clientY - box.top, moved: false };
+      }}
+      onPointerMove={(e) => {
+        onPointerMove?.(e);
+        const d = drag.current;
+        if (!d || d.id !== e.pointerId) return;
+        if (!d.moved) {
+          if (Math.hypot(e.clientX - d.startX, e.clientY - d.startY) < DRAG_THRESHOLD) return;
+          d.moved = true;
+          e.currentTarget.setPointerCapture(e.pointerId);
+        }
+        const box = area();
+        const el = e.currentTarget;
+        setDragAt({
+          left: Math.min(Math.max(e.clientX - d.offX - box.left, 0), box.width - el.offsetWidth),
+          top: Math.min(Math.max(e.clientY - d.offY - box.top, 0), box.height - el.offsetHeight),
+        });
+      }}
+      onPointerUp={(e) => {
+        onPointerUp?.(e);
+        const d = drag.current;
+        drag.current = null;
+        if (!d?.moved || d.id !== e.pointerId) return;
+        swallowClick.current = true;
+        const box = area();
+        const el = e.currentTarget;
+        const center = { x: e.clientX - d.offX - box.left + el.offsetWidth / 2, y: e.clientY - d.offY - box.top + el.offsetHeight / 2 };
+        setDragAt(null);
+        commit(snapLauncherSpot(center, box, isRtl(), el.offsetHeight));
+      }}
+      onPointerCancel={(e) => {
+        onPointerCancel?.(e);
+        drag.current = null;
+        setDragAt(null);
+      }}
+      onKeyDown={(e) => {
+        onKeyDown?.(e);
+        if (!movable || e.defaultPrevented || !e.altKey) return;
+        const rtl = isRtl();
+        const move =
+          e.key === "ArrowUp" ? "up" : e.key === "ArrowDown" ? "down" : e.key === "ArrowLeft" ? (rtl ? "end" : "start") : e.key === "ArrowRight" ? (rtl ? "start" : "end") : null;
+        if (!move) return;
+        e.preventDefault();
+        commit(moveLauncherSpot(latest.current ?? spotFromPosition(where), move));
+      }}
+      onClick={(e) => {
+        // A drag ends with a click on the button; it should not open the report.
+        if (swallowClick.current) {
+          swallowClick.current = false;
+          e.preventDefault();
+          return;
+        }
+        onClick?.(e);
+      }}
       {...props}
     >
       {glyph}
@@ -227,7 +381,20 @@ export interface FeedbackHubProps extends Omit<ComponentProps<"section">, "child
   onReportNew?: () => void;
   onOpenIssue?: (id: string) => void;
   labels?: Partial<FeedbackReporterLabels>;
+  /** Adds a "Mine" tab for the visitor's own reports. Default: shown when any issue has `mine`. */
+  mineTab?: boolean;
+  /** Counts from the server, when `issues` is only the first page. Missing ones are counted from `issues`. */
+  counts?: Partial<Record<FeedbackHubFilter, number>>;
+  /** Called when the tab changes, to fetch that tab from the server. */
+  onFilterChange?: (filter: FeedbackHubFilter) => void;
+  /** More reports exist than `issues` holds: shows **Load more**. */
+  hasMore?: boolean;
+  onLoadMore?: () => void;
+  loadingMore?: boolean;
 }
+
+/** The hub's tabs: a status, all, or the visitor's own reports. */
+export type FeedbackHubFilter = FeedbackIssueStatus | "all" | "mine";
 
 const statusBadge = (s: FeedbackIssueStatus, t: FeedbackReporterLabels) =>
   s === "resolved" ? (
@@ -242,19 +409,35 @@ const statusBadge = (s: FeedbackIssueStatus, t: FeedbackReporterLabels) =>
  * What people already reported on this page, with a status filter and a "Me too" vote, so a visitor adds a vote instead
  * of a duplicate. Report writing and screenshots live in `@nasaq/feedback`'s `ReportDialog`: this is the list around it.
  */
-export function FeedbackHub({ page, issues, onVote, onReportNew, onOpenIssue, labels, className, ...props }: FeedbackHubProps) {
+export function FeedbackHub({
+  page,
+  issues,
+  onVote,
+  onReportNew,
+  onOpenIssue,
+  labels,
+  mineTab,
+  counts: serverCounts,
+  onFilterChange,
+  hasMore,
+  onLoadMore,
+  loadingMore,
+  className,
+  ...props
+}: FeedbackHubProps) {
   const { t } = useLabels(labels);
   const titleId = useId();
-  const [filter, setFilter] = useState<FeedbackIssueStatus | "all">("all");
+  const [filter, setFilter] = useState<FeedbackHubFilter>("all");
   const [voting, setVoting] = useState<string | null>(null);
-  const counts = countByStatus(issues);
-  const shown = filter === "all" ? issues : issues.filter((i) => i.status === filter);
-  const tabs: [FeedbackIssueStatus | "all", string][] = [
+  const counts = { ...countByStatus(issues), mine: issues.filter((i) => i.mine).length, ...serverCounts };
+  const shown = filterHubIssues(issues, filter);
+  const tabs: [FeedbackHubFilter, string][] = [
     ["all", t.all],
     ["open", t.open],
     ["in-progress", t.inProgress],
     ["resolved", t.resolved],
   ];
+  if (mineTab ?? issues.some((i) => i.mine)) tabs.push(["mine", t.mine]);
   const vote = async (id: string) => {
     if (!onVote) return;
     setVoting(id);
@@ -291,7 +474,16 @@ export function FeedbackHub({ page, issues, onVote, onReportNew, onOpenIssue, la
           </Button>
         ) : null}
       </header>
-      <ToggleGroup aria-label={t.filterLabel} value={[filter]} onValueChange={(v) => setFilter((v[0] as FeedbackIssueStatus | "all" | undefined) ?? "all")}>
+      <ToggleGroup
+        aria-label={t.filterLabel}
+        value={[filter]}
+        className="flex-wrap"
+        onValueChange={(v) => {
+          const next = (v[0] as FeedbackHubFilter | undefined) ?? "all";
+          setFilter(next);
+          onFilterChange?.(next);
+        }}
+      >
         {tabs.map(([value, text]) => (
           <Toggle key={value} value={value}>
             {text}
@@ -300,7 +492,12 @@ export function FeedbackHub({ page, issues, onVote, onReportNew, onOpenIssue, la
         ))}
       </ToggleGroup>
       {shown.length === 0 ? (
-        <EmptyState icon={Bug} title={t.emptyTitle} description={filter === "all" ? t.emptyBody : t.emptyFiltered} className="py-8" />
+        <EmptyState
+          icon={Bug}
+          title={filter === "mine" ? t.emptyMineTitle : t.emptyTitle}
+          description={filter === "all" ? t.emptyBody : filter === "mine" ? t.emptyMine : t.emptyFiltered}
+          className="py-8"
+        />
       ) : (
         <ul aria-label={t.listLabel} className="flex flex-col divide-y divide-border rounded-control border border-border">
           {shown.map((issue) => (
@@ -317,7 +514,7 @@ export function FeedbackHub({ page, issues, onVote, onReportNew, onOpenIssue, la
                 )}
                 <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-caption text-muted-foreground">
                   {statusBadge(issue.status, t)}
-                  {issue.author ? <span dir="auto">{fill(t.by, { name: issue.author })}</span> : null}
+                  {issue.mine ? <Badge variant="neutral">{t.yours}</Badge> : issue.author ? <span dir="auto">{fill(t.by, { name: issue.author })}</span> : null}
                   {issue.createdAt !== undefined ? <DateTime value={issue.createdAt} relative /> : null}
                 </span>
               </div>
@@ -340,6 +537,16 @@ export function FeedbackHub({ page, issues, onVote, onReportNew, onOpenIssue, la
           ))}
         </ul>
       )}
+      {hasMore && onLoadMore ? (
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-caption text-muted-foreground tabular-nums">
+            {fill(t.showing, { shown: shown.length, total: counts[filter] })}
+          </span>
+          <Button variant="secondary" size="sm" loading={loadingMore} onClick={onLoadMore}>
+            {t.loadMore}
+          </Button>
+        </div>
+      ) : null}
     </section>
   );
 }

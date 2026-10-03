@@ -9,6 +9,7 @@ const meta = {
   argTypes: {
     variant: { control: "select", options: ["primary", "secondary", "ghost", "danger", "link"] },
     size: { control: "select", options: ["sm", "md", "lg", "icon", "icon-sm"] },
+    shape: { control: "inline-radio", options: ["default", "pill"] },
   },
 } satisfies Meta<typeof Button>;
 export default meta;
@@ -46,6 +47,44 @@ export const Sizes: Story = {
   ),
 };
 
+/** `shape="pill"`: fully rounded with a little more padding; icon sizes become circles. */
+export const Pill: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <Button shape="pill" variant="primary">
+          Get started <Icon icon={ArrowRight} directional />
+        </Button>
+        <Button shape="pill">Secondary</Button>
+        <Button shape="pill" variant="ghost">
+          Ghost
+        </Button>
+        <Button shape="pill" variant="danger">
+          <Trash2 /> Delete
+        </Button>
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button shape="pill" size="sm">
+          Small
+        </Button>
+        <Button shape="pill">Medium</Button>
+        <Button shape="pill" size="lg" variant="primary">
+          Large
+        </Button>
+        <Button shape="pill" size="icon" aria-label="Add">
+          <Plus />
+        </Button>
+        <Button shape="pill" size="icon-sm" variant="primary" aria-label="Add">
+          <Plus />
+        </Button>
+        <Button shape="pill" variant="primary" loading>
+          Saving
+        </Button>
+      </div>
+    </div>
+  ),
+};
+
 export const States: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-3">
@@ -59,3 +98,5 @@ export const States: Story = {
     </div>
   ),
 };
+
+export const PillArabic: Story = { ...Pill, globals: { locale: "ar" } };
