@@ -1,0 +1,61 @@
+// Built-in copy, English and Arabic, copied from the React component. `labels` overrides single strings.
+export const STRINGS = {
+  en: {
+    title: "Quick capture",
+    clipTitle: "Save this page",
+    description: "Jot it down now, sort it later.",
+    clipDescription: "Add a note, then save the page to your inbox.",
+    placeholder: "What is on your mind? Use #tags to file it.",
+    clipPlaceholder: "Add a note (optional)",
+    save: "Save",
+    saving: "Saving",
+    cancel: "Cancel",
+    saved: "Saved to {destination}.",
+    savedPlain: "Saved.",
+    failed: "Could not save. Your text is still here, try again.",
+    empty: "Type something to capture.",
+    destination: "Save to",
+    tags: "Tags",
+    suggested: "Suggested tags",
+    page: "Page",
+    selection: "Selected text",
+    shortcutHint: "Opens from anywhere with",
+    saveHint: "to save",
+    closeHint: "to close",
+    note: "Note",
+    link: "Link",
+    clip: "Page",
+  },
+  ar: {
+    title: "التقاط سريع",
+    clipTitle: "احفظ هذه الصفحة",
+    description: "دوّنها الآن ورتّبها لاحقًا.",
+    clipDescription: "أضف ملاحظة ثم احفظ الصفحة في صندوقك.",
+    placeholder: "ما الذي يدور في ذهنك؟ استخدم #وسوم لتصنيفها.",
+    clipPlaceholder: "أضف ملاحظة (اختياري)",
+    save: "حفظ",
+    saving: "جارٍ الحفظ",
+    cancel: "إلغاء",
+    saved: "تم الحفظ في {destination}.",
+    savedPlain: "تم الحفظ.",
+    failed: "تعذر الحفظ. نصك ما زال هنا، حاول مرة أخرى.",
+    empty: "اكتب شيئًا لالتقاطه.",
+    destination: "الحفظ في",
+    tags: "الوسوم",
+    suggested: "وسوم مقترحة",
+    page: "الصفحة",
+    selection: "النص المحدد",
+    shortcutHint: "يُفتح من أي مكان بـ",
+    saveHint: "للحفظ",
+    closeHint: "للإغلاق",
+    note: "ملاحظة",
+    link: "رابط",
+    clip: "صفحة",
+  },
+};
+
+export type QuickCaptureStrings = (typeof STRINGS)["en"];
+export type QuickCaptureLabels = Partial<QuickCaptureStrings>;
+
+/** "Saved to {destination}." with the values filled in. */
+export const fill = (template: string, values: Record<string, string | number>) => template.replace(/\{(\w+)\}/g, (_, k: string) => String(values[k] ?? ""));

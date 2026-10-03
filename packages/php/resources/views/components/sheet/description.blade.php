@@ -1,0 +1,1 @@
+<p data-slot="{{ $attributes->get('data-slot', 'sheet-description') }}" :id="$id('nq-dialog', 'description')" {{ $attributes->except('data-slot')->cn('text-caption text-muted-foreground') }}>{{ $slot }}</p>

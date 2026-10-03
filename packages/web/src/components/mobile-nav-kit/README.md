@@ -43,7 +43,7 @@ import { SwipeActionRow } from "@fadymondy/nasaq/web";
 
 export function Row() {
   return (
-    <SwipeActionRow endActions={[{ id: "archive", label: "Archive", icon: ArchiveIcon, tone: "info", onSelect: () => {} }]}>
+    <SwipeActionRow endActions={[{ id: "archive", label: "Archive", icon: ArchiveIcon, tone: "primary", onSelect: () => {} }]}>
       <div className="p-4">Design review moved to 3 PM</div>
     </SwipeActionRow>
   );

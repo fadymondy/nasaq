@@ -1,0 +1,33 @@
+export const STRINGS = {
+  en: {
+    title: "What matters most?",
+    low: "Low",
+    medium: "Medium",
+    high: "High",
+    weight: (label: string) => `Weight of ${label}`,
+    include: (label: string) => `Include ${label}`,
+    remove: (label: string) => `Remove ${label}`,
+    addPlaceholder: "Add your own…",
+    add: "Add",
+    count: (on: number, all: number) => `${on} of ${all} included`,
+    accept: "Use these",
+    accepted: "Sent",
+    failed: "That did not work. Try again.",
+  },
+  ar: {
+    title: "ما الأهم بالنسبة لك؟",
+    low: "منخفض",
+    medium: "متوسط",
+    high: "مرتفع",
+    weight: (label: string) => `وزن ${label}`,
+    include: (label: string) => `تضمين ${label}`,
+    remove: (label: string) => `إزالة ${label}`,
+    addPlaceholder: "أضف معيارك…",
+    add: "إضافة",
+    count: (on: number, all: number) => `${on} من ${all} مضمّنة`,
+    accept: "اعتمدها",
+    accepted: "تم الإرسال",
+    failed: "لم تنجح العملية. حاول مرة أخرى.",
+  },
+};
+export type WeightedCriteriaCardLabels = Partial<(typeof STRINGS)["en"]>;

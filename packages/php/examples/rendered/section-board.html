@@ -1,0 +1,204 @@
+<div x-data="{ on: false }" class="flex flex-col gap-3">
+    <button type="button" class="self-start text-body-sm underline" x-on:click="on = !on" x-text="on ? 'Done' : 'Edit sections'"></button>
+    <div data-slot="section-board" x-data="nqSectionBoard(JSON.parse('[{\u0022id\u0022:\u0022news\u0022,\u0022title\u0022:\u0022Morning news\u0022,\u0022badge\u0022:\u0022Daily\u0022,\u0022prompt\u0022:\u0022Summarise the top three headlines for our customers.\u0022,\u0022model\u0022:\u0022fast\u0022,\u0022settings\u0022:{\u0022topic\u0022:\u0022payments\u0022},\u0022content\u0022:\u0022Card payments grew 12% this quarter.\u0022},{\u0022id\u0022:\u0022tips\u0022,\u0022title\u0022:\u0022Tip of the day\u0022,\u0022prompt\u0022:\u0022Write one practical tip for new merchants.\u0022,\u0022content\u0022:\u0022Enable split payments to lift conversion.\u0022},{\u0022id\u0022:\u0022alerts\u0022,\u0022title\u0022:\u0022Alerts\u0022,\u0022badge\u0022:\u0022Beta\u0022}]'), JSON.parse('{\u0022models\u0022:[{\u0022value\u0022:\u0022fast\u0022,\u0022label\u0022:\u0022Fast\u0022},{\u0022value\u0022:\u0022deep\u0022,\u0022label\u0022:\u0022Deep reasoning\u0022}],\u0022editing\u0022:false,\u0022addable\u0022:true}'))" x-modelable="sections" x-id="['nq-section-board']"
+    :data-editing="editing ? 'true' : undefined"
+    x-effect="editing = on" class="flex min-w-0 flex-col gap-3">
+    <p x-show="editing" x-cloak style="display: none" :id="$id('nq-section-board')" class="sr-only">Drag, or press the arrow keys, Home or End, to move a section.</p>
+    <template x-if="sections.length === 0">
+        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="7" height="7" x="3" y="3" rx="1"/>
+  <rect width="7" height="7" x="3" y="14" rx="1"/>
+  <path d="M14 4h7"/>
+  <path d="M14 9h7"/>
+  <path d="M14 15h7"/>
+  <path d="M14 20h7"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No sections</p>
+                    <p class="text-body-sm text-muted-foreground">Add a section to start building this page.</p>
+            </div>
+    </div>
+    </template>
+    <ol x-show="sections.length" x-cloak style="display: none" aria-label="Sections" class="grid gap-3 sm:grid-cols-2">
+        <template x-for="(section, index) in sections" :key="section.id">
+            <li data-slot="section-board-section" :data-section="section.id" :data-dragging="isDragging(index) ? 'true' : undefined" :data-over="isOver(index) ? '' : undefined"
+                :aria-labelledby="$id('nq-section-board', section.id)" :style="sectionStyle(index)"
+                class="relative flex min-w-0 flex-col rounded-card border border-border bg-card data-dragging:z-10 data-dragging:border-nq-focus data-dragging:shadow-floating data-over:border-nq-focus">
+                <div class="flex min-h-control items-center gap-1 px-2 pt-2">
+                    <template x-if="reorderable">
+                        <button type="button" :aria-label="$nq.t('Move ' + section.title, 'نقل ' + section.title)" :title="$nq.t('Move ' + section.title, 'نقل ' + section.title)"
+                            :aria-describedby="$id('nq-section-board')" aria-keyshortcuts="ArrowUp ArrowDown Home End"
+                            x-on:keydown="onHandleKey($event, index)" x-on:pointerdown="startDrag($event, index)"
+                            class="inline-flex size-control-sm shrink-0 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus active:cursor-grabbing [&_svg]:size-4">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="1"/>
+  <circle cx="9" cy="5" r="1"/>
+  <circle cx="9" cy="19" r="1"/>
+  <circle cx="15" cy="12" r="1"/>
+  <circle cx="15" cy="5" r="1"/>
+  <circle cx="15" cy="19" r="1"/>
+</svg>                        </button>
+                    </template>
+                    <h3 :id="$id('nq-section-board', section.id)" dir="auto" :class="reorderable ? '' : 'ps-2'" class="min-w-0 flex-1 truncate text-label text-foreground" x-text="section.title"></h3>
+                    <span x-show="editing" x-cloak style="display: none" class="sr-only" x-text="n(index + 1)"></span>
+                    <template x-if="section.badge">
+                        <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border bg-secondary text-foreground"><span x-text="section.badge"></span></span>
+                    </template>
+                    <template x-if="editing">
+                        <div class="contents">
+                            <button data-slot="button"
+     type="button"                         :aria-label="$nq.t(&#039;Edit &#039; + section.title, &#039;تعديل &#039; + section.title)" :title="$nq.t(&#039;Edit &#039; + section.title, &#039;تعديل &#039; + section.title)" aria-haspopup="dialog" x-on:click="startEdit(section)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 17H5"/>
+  <path d="M19 7h-9"/>
+  <circle cx="17" cy="17" r="3"/>
+  <circle cx="7" cy="7" r="3"/>
+</svg></button>
+                            <button data-slot="button"
+     type="button"                         :aria-label="$nq.t(&#039;Remove &#039; + section.title, &#039;حذف &#039; + section.title)" :title="$nq.t(&#039;Remove &#039; + section.title, &#039;حذف &#039; + section.title)" x-on:click="removeSection(section)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground hover:text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M3 6h18"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg></button>
+                        </div>
+                    </template>
+                </div>
+                <div data-slot="section-board-content" :inert="editing ? '' : undefined" class="min-w-0 flex-1 px-4 pt-2 pb-4 text-body-sm text-muted-foreground">
+                    <span x-show="section.content" x-text="section.content"></span>
+                    <span x-show="!section.content" class="italic">Nothing to show yet.</span>
+                </div>
+                <template x-if="hasFooter(section)">
+                    <div data-slot="section-board-prompt" class="flex min-w-0 items-center gap-2 border-t border-border px-4 py-2 text-caption text-muted-foreground">
+                        <svg aria-hidden="true" class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg>                        <template x-if="modelName(section.model)">
+                            <span data-slot="badge"     class="inline-flex h-5 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground shrink-0"><span x-text="modelName(section.model)"></span></span>
+                        </template>
+                        <span x-show="section.prompt" dir="auto" class="min-w-0 flex-1 truncate font-mono" x-text="section.prompt"></span>
+                    </div>
+                </template>
+            </li>
+        </template>
+    </ol>
+    <template x-if="editing && addable">
+        <button data-slot="button"
+     type="button"                         x-on:click="addSection()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)] w-full border-dashed">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>            Add section</button>
+    </template>
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="editOpen" class="contents">
+    <template x-teleport="body">
+    <div data-slot="dialog-portal">
+        <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+        <div data-slot="dialog-content" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open"
+            class="fixed inset-0 z-50 m-auto grid h-fit w-[calc(100%-2rem)] gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none max-h-[calc(100dvh-2rem)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-w-lg">
+            <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-foreground"><span x-text="editTitle()"></span></h2>
+                <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">The prompt and model that generate this section, and any settings it needs.</p></div>
+            <form class="flex flex-col gap-4" x-on:submit.prevent="submitEdit()">
+                <div class="grid gap-3 sm:grid-cols-[1fr_10rem]">
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Title</label>
+                        <input data-slot="input" type="text"
+                    x-model="dTitle" :aria-invalid="titleInvalid ? &#039;true&#039; : undefined" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                        <p x-show="titleInvalid" x-cloak style="display: none" role="alert" class="text-caption text-nq-danger-text">Give the section a title.</p>
+</div>
+                    <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Tag</label>
+                        <input data-slot="input" type="text"
+                    x-model="dBadge" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+</div>
+                </div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Prompt</label>
+                    <textarea data-slot="textarea"
+                dir="auto" rows="4" x-model="dPrompt" placeholder="What should this section show? Write it as an instruction." class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
+</div>
+                <div data-slot="field" x-data="nqField(false)" x-modelable="invalid" x-id="['nq-field']"
+         data-valid     class="flex flex-col gap-1.5">
+    <label data-slot="field-label"  class="text-label text-foreground data-disabled:opacity-50">Model</label>
+                    <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="dModel" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? ''" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                        <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <template x-for="m in modelItems" :key="m.value">
+                                <div data-slot="select-item" x-bind="item(m.value, false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected(m.value)" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><span x-text="m.label"></span></span>
+</div>
+                            </template>
+    </div>
+</template>
+    </div>
+</div>
+                <fieldset class="flex flex-col gap-2">
+                    <legend class="mb-1.5 text-label text-foreground">Settings</legend>
+                    <template x-for="(row, i) in rows" :key="i">
+                        <div data-slot="section-board-setting" class="flex items-center gap-2">
+                            <input data-slot="input" type="text"
+     dir="ltr"                 x-model="row.key" aria-label="Key" placeholder="Key" :aria-invalid="dupes.includes(row.key.trim()) ? &#039;true&#039; : undefined" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start">
+                            <input data-slot="input" type="text"
+                    x-model="row.value" aria-label="Value" placeholder="Value" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control">
+                            <button data-slot="button"
+     type="button"                         :aria-label="row.key.trim() ? $nq.t(&#039;Remove setting &#039; + row.key.trim(), &#039;حذف الإعداد &#039; + row.key.trim()) : $nq.t(&#039;Remove setting&#039;, &#039;حذف الإعداد&#039;)" x-on:click="dropSetting(i)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground hover:text-nq-danger-text">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                        </div>
+                    </template>
+                    <template x-for="k in dupes" :key="k">
+                        <p role="alert" class="text-caption text-nq-danger-text" x-text="dupText(k)"></p>
+                    </template>
+                    <button data-slot="button"
+     type="button"                         x-on:click="addSetting()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5 w-fit">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>                        Add setting</button>
+                </fieldset>
+            </form>
+            <div data-slot="dialog-footer" class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button data-slot="button"
+     type="button"                         x-on:click="editOpen = false" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control px-[var(--nq-control-pad)]">
+        Cancel</button>
+                <button data-slot="button"
+     type="button"                         :disabled="cannotSave" x-on:click="submitEdit()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control px-[var(--nq-control-pad)]">
+        Save</button></div>
+                            <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                    class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                    </div>
+    </div>
+</template>
+</div>
+    <div aria-live="polite" role="status" class="sr-only" x-text="announcement"></div>
+</div>
+</div>

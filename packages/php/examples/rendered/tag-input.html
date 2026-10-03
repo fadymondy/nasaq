@@ -1,0 +1,33 @@
+<div class="w-80">
+    <div data-slot="tag-input" x-data="nqTagInput(JSON.parse('[\u0022design\u0022,\u0022urgent\u0022]'), JSON.parse('{\u0022maxTags\u0022:5,\u0022suggestions\u0022:[\u0022design\u0022,\u0022urgent\u0022,\u0022research\u0022,\u0022review\u0022]}'))" x-modelable="tags" x-bind="root"
+         class="relative w-full">
+    <div data-slot="tag-input-box" x-bind="box"
+        class="flex w-full min-w-0 flex-wrap items-center gap-1.5 rounded-control border border-input bg-card px-2 py-1 text-body text-foreground min-h-[max(var(--nq-control),var(--nq-touch-min,0px))] transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger">
+        <template x-for="(tag, i) in tags" :key="tag">
+            <span data-slot="tag-input-tag" data-variant="neutral" class="inline-flex w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-control border border-transparent bg-muted px-2 py-0.5 font-medium text-foreground h-6 gap-0.5 ps-2 pe-0.5 text-body-sm">
+                <bdi x-text="tag"></bdi>
+                <button type="button"  :aria-label="'Remove' + ' ' + tag" @click.stop="removeAt(i)"
+                    class="inline-flex size-5 items-center justify-center rounded-[3px] text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                    <span aria-hidden="true" class="flex [&_svg]:size-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></span>
+                </button>
+            </span>
+        </template>
+        <input data-slot="tag-input-field" x-ref="field" x-bind="field" autocomplete="off"             :placeholder="tags.length ? undefined : 'Type and press Enter'"
+             role="combobox" aria-autocomplete="list" :aria-controls="listId()"             aria-label="Labels" class="h-7 min-w-24 flex-1 border-0 bg-transparent px-1 text-body outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+    </div>
+            <ul x-show="showList()" x-cloak style="display: none" :id="listId()" role="listbox" aria-label="Suggestions" data-slot="tag-input-suggestions"
+            class="absolute inset-x-0 top-full z-50 mt-1 max-h-56 overflow-y-auto rounded-floating border border-border bg-popover p-1 text-popover-foreground">
+            <template x-for="(s, i) in filtered()" :key="s">
+                <li role="option" data-slot="tag-input-suggestion" x-bind="option(s, i)" class="cursor-pointer rounded-control px-2 py-1.5 text-body-sm data-active:bg-nq-hover hover:bg-nq-hover">
+                    <bdi x-text="s"></bdi>
+                </li>
+            </template>
+        </ul>
+        <p x-show="error" x-cloak style="display: none" role="alert" data-slot="tag-input-error" x-text="error" class="mt-1.5 text-caption text-nq-danger-text"></p>
+    <span role="status" aria-live="polite" class="sr-only" x-text="message"></span>
+            <template x-for="tag in tags" :key="tag"><input type="hidden" name="labels" :value="tag"></template>
+    </div>
+</div>

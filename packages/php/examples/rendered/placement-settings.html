@@ -1,0 +1,177 @@
+<section data-slot="placement-settings" x-data="nqPlacementSettings(JSON.parse('{\u0022mode\u0022:\u0022sidebar\u0022,\u0022order\u0022:3,\u0022defaultPage\u0022:false}'), JSON.parse('{\u0022allowDefaultPage\u0022:true,\u0022failure\u0022:null,\u0022labels\u0022:{\u0022orderHint\u0022:\u0022Lower numbers come first.\u0022,\u0022orderInvalid\u0022:\u0022Enter a whole number, 0 or more.\u0022,\u0022defaultPageHint\u0022:\u0022People land on this page when they open the app.\u0022,\u0022defaultPageBlocked\u0022:\u0022Only items in the sidebar or header can be the start page.\u0022,\u0022unsaved\u0022:\u0022Unsaved changes\u0022,\u0022saved\u0022:\u0022All changes saved\u0022,\u0022saveFailed\u0022:\u0022Could not save\u0022}}'))" x-modelable="saved" x-id="['nq-placement']"
+    x-bind:data-dirty="dirty() ? 'true' : null"  x-bind:aria-labelledby="$id('nq-placement', 'title')"     class="flex flex-col rounded-card border border-border bg-card max-w-3xl">
+            <header class="flex flex-col gap-1 border-b border-border px-5 py-4">
+                            <h2 x-bind:id="$id('nq-placement', 'title')" class="text-h4 text-foreground">Appearance &amp; placement</h2>
+                                        <p class="text-body-sm text-muted-foreground">Choose where this shows up in the app and in what order.</p>
+                    </header>
+    <div class="flex flex-col gap-6 px-5 py-5">
+        <fieldset class="flex flex-col gap-2">
+            <legend x-bind:id="$id('nq-placement', 'placement')" class="pb-2 text-label text-foreground">Placement</legend>
+            <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup('sidebar')" x-modelable="value" x-bind="root"
+                x-model="mode" x-bind:aria-labelledby="uid(`placement`)" class="flex-col grid gap-2 sm:grid-cols-2">
+    <button type="button" role="radio" data-slot="radio-card" data-mode="sidebar" x-bind="radio('sidebar')"
+                        aria-checked="true" tabindex="0"
+                         data-checked                                                 class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-3 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+                        <span data-slot="radio-card-mark" aria-hidden="true"
+                            class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+                            <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('sidebar')" ></span>
+                        </span>
+                        <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                            <span data-slot="radio-card-title" class="text-label text-foreground">Sidebar</span>
+                            <span data-slot="radio-card-description" class="text-caption text-muted-foreground">A link in the main sidebar.</span>
+                        </span>
+                        <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground">
+                            <span aria-hidden="true" data-slot="placement-diagram"
+                                class="relative block h-11 w-16 shrink-0 overflow-hidden rounded-control border bg-background border-border">
+                                <span class="absolute inset-y-0 start-0 w-3.5 border-e border-border bg-muted"></span>
+                                <span class="absolute inset-x-0 top-0 h-2.5 border-b border-border bg-muted"></span>
+                                <span class="absolute start-1 top-4 h-0.5 w-1.5 rounded-full bg-nq-line-strong"></span>
+                                <span class="absolute start-1 top-6 h-0.5 w-1.5 rounded-full bg-nq-line-strong"></span>
+                                <span class="absolute start-0.5 top-[1.875rem] h-1 w-2.5 rounded-full bg-primary"></span>                                                                                                                            </span>
+                        </span>
+                    </button>
+                                                        <button type="button" role="radio" data-slot="radio-card" data-mode="header" x-bind="radio('header')"
+                        aria-checked="false" tabindex="-1"
+                         data-unchecked                                                 class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-3 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+                        <span data-slot="radio-card-mark" aria-hidden="true"
+                            class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+                            <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('header')"  style="display: none" ></span>
+                        </span>
+                        <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                            <span data-slot="radio-card-title" class="text-label text-foreground">Header</span>
+                            <span data-slot="radio-card-description" class="text-caption text-muted-foreground">A button in the top bar, next to notifications.</span>
+                        </span>
+                        <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground">
+                            <span aria-hidden="true" data-slot="placement-diagram"
+                                class="relative block h-11 w-16 shrink-0 overflow-hidden rounded-control border bg-background border-border">
+                                <span class="absolute inset-y-0 start-0 w-3.5 border-e border-border bg-muted"></span>
+                                <span class="absolute inset-x-0 top-0 h-2.5 border-b border-border bg-muted"></span>
+                                <span class="absolute start-1 top-4 h-0.5 w-1.5 rounded-full bg-nq-line-strong"></span>
+                                <span class="absolute start-1 top-6 h-0.5 w-1.5 rounded-full bg-nq-line-strong"></span>
+                                                                <span class="absolute end-1 top-0.5 h-1.5 w-3 rounded-full bg-primary"></span>                                                                                            </span>
+                        </span>
+                    </button>
+                                                        <button type="button" role="radio" data-slot="radio-card" data-mode="sideover" x-bind="radio('sideover')"
+                        aria-checked="false" tabindex="-1"
+                         data-unchecked                                                 class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-3 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+                        <span data-slot="radio-card-mark" aria-hidden="true"
+                            class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+                            <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('sideover')"  style="display: none" ></span>
+                        </span>
+                        <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                            <span data-slot="radio-card-title" class="text-label text-foreground">Side panel</span>
+                            <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Slides in from the edge, opened from a button in the top bar.</span>
+                        </span>
+                        <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground">
+                            <span aria-hidden="true" data-slot="placement-diagram"
+                                class="relative block h-11 w-16 shrink-0 overflow-hidden rounded-control border bg-background border-border">
+                                <span class="absolute inset-y-0 start-0 w-3.5 border-e border-border bg-muted"></span>
+                                <span class="absolute inset-x-0 top-0 h-2.5 border-b border-border bg-muted"></span>
+                                <span class="absolute start-1 top-4 h-0.5 w-1.5 rounded-full bg-nq-line-strong"></span>
+                                <span class="absolute start-1 top-6 h-0.5 w-1.5 rounded-full bg-nq-line-strong"></span>
+                                                                                                <span class="absolute inset-y-0 end-0 w-5 border-s-2 border-primary bg-nq-selected"></span>                                                            </span>
+                        </span>
+                    </button>
+                                                        <button type="button" role="radio" data-slot="radio-card" data-mode="fixed" x-bind="radio('fixed')"
+                        aria-checked="false" tabindex="-1"
+                         data-unchecked                                                 class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-3 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+                        <span data-slot="radio-card-mark" aria-hidden="true"
+                            class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+                            <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('fixed')"  style="display: none" ></span>
+                        </span>
+                        <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                            <span data-slot="radio-card-title" class="text-label text-foreground">Floating widget</span>
+                            <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Floats on every page, like an assistant.</span>
+                        </span>
+                        <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground">
+                            <span aria-hidden="true" data-slot="placement-diagram"
+                                class="relative block h-11 w-16 shrink-0 overflow-hidden rounded-control border bg-background border-border">
+                                <span class="absolute inset-y-0 start-0 w-3.5 border-e border-border bg-muted"></span>
+                                <span class="absolute inset-x-0 top-0 h-2.5 border-b border-border bg-muted"></span>
+                                <span class="absolute start-1 top-4 h-0.5 w-1.5 rounded-full bg-nq-line-strong"></span>
+                                <span class="absolute start-1 top-6 h-0.5 w-1.5 rounded-full bg-nq-line-strong"></span>
+                                                                                                                                <span class="absolute bottom-1 end-1 size-2.5 rounded-full bg-primary"></span>                            </span>
+                        </span>
+                    </button>
+                                                        <button type="button" role="radio" data-slot="radio-card" data-mode="hidden" x-bind="radio('hidden')"
+                        aria-checked="false" tabindex="-1"
+                         data-unchecked                                                 class="group/card relative flex w-full cursor-pointer items-start gap-3 rounded-card border border-border bg-card p-3 text-start outline-none transition-colors duration-150 ease-nq hover:border-nq-line-strong data-checked:border-primary data-checked:bg-nq-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+                        <span data-slot="radio-card-mark" aria-hidden="true"
+                            class="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card group-data-checked/card:border-primary group-data-checked/card:bg-primary">
+                            <span class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked('hidden')"  style="display: none" ></span>
+                        </span>
+                        <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                            <span data-slot="radio-card-title" class="text-label text-foreground">Hidden</span>
+                            <span data-slot="radio-card-description" class="text-caption text-muted-foreground">Not shown anywhere in the app.</span>
+                        </span>
+                        <span data-slot="radio-card-meta" class="shrink-0 text-label text-foreground">
+                            <span aria-hidden="true" data-slot="placement-diagram"
+                                class="relative block h-11 w-16 shrink-0 overflow-hidden rounded-control border bg-background border-dashed border-nq-line-strong opacity-60">
+                                <span class="absolute inset-y-0 start-0 w-3.5 border-e border-border bg-muted"></span>
+                                <span class="absolute inset-x-0 top-0 h-2.5 border-b border-border bg-muted"></span>
+                                <span class="absolute start-1 top-4 h-0.5 w-1.5 rounded-full bg-nq-line-strong"></span>
+                                <span class="absolute start-1 top-6 h-0.5 w-1.5 rounded-full bg-nq-line-strong"></span>
+                                                                                                                                                            </span>
+                        </span>
+                    </button>
+    </div>
+        </fieldset>
+        <div class="grid gap-6 sm:grid-cols-2">
+            <div class="flex flex-col gap-1.5">
+                <label x-bind:for="$id('nq-placement', 'order')" class="text-label text-foreground">Order</label>
+                <input data-slot="input" type="number"
+     dir="ltr"                 inputmode="numeric" min="0" step="1" x-bind:id="uid(`order`)" x-bind:value="orderText" x-on:input="setOrder($event.target.value)" x-bind:disabled="busy" x-bind:aria-invalid="orderValid() ? null : `true`" x-bind:aria-describedby="uid(`order-hint`)" class="min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control text-start w-32">
+                <p x-bind:id="$id('nq-placement', 'order-hint')" x-bind:class="orderValid() ? 'text-muted-foreground' : 'text-nq-danger-text'" x-text="orderValid() ? labels.orderHint : labels.orderInvalid" class="text-caption">Lower numbers come first.</p>
+            </div>
+                            <div data-slot="placement-default-page" class="flex items-start gap-3">
+                    <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(false)" x-modelable="checked" x-bind="root"
+    aria-checked="false"
+     data-unchecked                 x-model="startOn" x-bind:id="uid(`start`)" x-bind:disabled="switchOff()" x-bind:aria-describedby="uid(`start-hint`)" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 mt-0.5">
+    <span data-slot="switch-thumb"  data-unchecked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                    <div class="flex flex-col gap-0.5">
+                        <label x-bind:for="$id('nq-placement', 'start')" x-bind:class="startAllowed() ? '' : 'opacity-50'" class="text-label text-foreground">Open on start</label>
+                        <p x-bind:id="$id('nq-placement', 'start-hint')" x-text="startAllowed() ? labels.defaultPageHint : labels.defaultPageBlocked" class="text-caption text-muted-foreground">People land on this page when they open the app.</p>
+                    </div>
+                </div>
+                    </div>
+        <div data-slot="alert" data-tone="danger" role="alert" x-show="failed" x-cloak  style="display: none"  class="relative grid grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-card border border-nq-danger/30 bg-nq-danger-soft p-3 text-start">
+            <svg aria-hidden="true" data-slot="alert-icon" class="mt-0.5 size-4 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m15 9-6 6"/>
+  <path d="m9 9 6 6"/>
+</svg>            <div data-slot="alert-body" class="flex min-w-0 flex-col gap-0.5">
+                <div data-slot="alert-title" class="text-label text-foreground">Could not save</div>
+                <div data-slot="alert-description" x-show="failure" x-text="failure" class="text-body-sm text-muted-foreground"  style="display: none" ></div>
+            </div>
+        </div>
+    </div>
+    <footer class="flex flex-wrap items-center gap-3 border-t border-border px-5 py-3">
+        <span role="status" data-slot="placement-state" class="text-caption text-muted-foreground">
+            <span x-show="dirty()" class="inline-flex items-center gap-1.5" style="display: none">
+                <span aria-hidden="true" class="size-1.5 rounded-full bg-[var(--nq-tag-amber)]"></span>
+                <span x-text="labels.unsaved">Unsaved changes</span>
+            </span>
+            <span x-show="! dirty()" x-text="labels.saved">All changes saved</span>
+        </span>
+        <div class="ms-auto flex gap-2">
+            <button data-slot="button"
+     type="button"                         x-bind:disabled="resetOff()" x-on:click="reset()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 14 4 9l5-5"/>
+  <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>
+</svg>                Discard</button>
+            <button data-slot="button"
+     type="button"                         x-bind:disabled="saveOff()" x-bind:aria-busy="busy ? `true` : null" x-on:click="save()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <span x-show="busy" style="display: none"><svg data-slot="spinner" aria-hidden="true" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg></span>
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+  <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/>
+  <path d="M7 3v4a1 1 0 0 0 1 1h7"/>
+</svg>                Save changes</button>
+        </div>
+    </footer>
+</section>

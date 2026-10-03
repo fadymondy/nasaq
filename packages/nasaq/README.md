@@ -152,8 +152,39 @@ Not one of them? Theme Nasaq with your own colours, no registration: `<NasaqProv
 | `@fadymondy/nasaq/theme.css` | Tailwind v4 `@theme` mapping |
 | `@fadymondy/nasaq/web/styles.css` | Web base styles |
 | `@fadymondy/nasaq/electron/chrome.css` | Electron drag-region CSS |
+| `@fadymondy/nasaq/vue` | Vue 3 components (`NqButton`, `NqDialog`, …) on Reka UI, `NasaqProvider`, the `Nasaq` plugin |
+| `@fadymondy/nasaq/alpine` | Alpine.js plugin that drives the HTML the Blade components render (`nqDialog`, `nqTabs`, …, `$nq`, `x-nq-money`) |
+| `@fadymondy/nasaq/html` | `formatMoney` and the locale helpers for plain JS |
+| `@fadymondy/nasaq/nasaq.css` | Precompiled stylesheet: tokens, theme and every component class. For apps without Tailwind |
+| `@fadymondy/nasaq/nasaq.unlayered.css` | The same without preflight or cascade layers, for Filament and Tailwind v3 hosts |
+| `@fadymondy/nasaq/cdn/nasaq-alpine.js` | Script-tag build of the Alpine plugin; registers itself on `alpine:init` |
 
 ESM only, with TypeScript declarations. Heavy libraries (recharts, shiki, tiptap, xyflow, dnd-kit) are regular dependencies and are loaded only when the components that use them are imported; use a bundler that tree-shakes ESM (Next, Vite, esbuild, Rspack).
+
+## Not on React? Vue, Inertia, Laravel, Filament and plain HTML
+
+Every stack renders the same markup with the same Tailwind classes, so a screen looks the same in all of them.
+
+```ts
+// Vue 3 / Nuxt (and Inertia + Vue)
+import { Nasaq } from "@fadymondy/nasaq/vue";
+createApp(App).use(Nasaq).mount("#app");   // <NqButton>, <NqDialog>, …
+```
+
+```bash
+# Laravel, Livewire, Filament, TomatoPHP: <x-nq::button>, <x-nq::dialog>, …
+composer require fadymondy/nasaq-php
+php artisan vendor:publish --tag=nasaq-assets   # then @nasaqStyles @nasaqScripts, or ->plugin(NasaqPlugin::make())
+```
+
+```html
+<!-- Any page, no build step -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fadymondy/nasaq/dist/nasaq.css">
+<script defer src="https://cdn.jsdelivr.net/npm/@fadymondy/nasaq/dist/cdn/nasaq-alpine.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+```
+
+Laravel + Inertia uses this package directly (React or Vue). The setup for every stack is on [Get started](https://nasaq-ui.fadymondy.com/?path=/story/docs-installation-get-started--page), and each component page shows its code for React, shadcn, Vue, Blade and HTML + Alpine. The MCP server serves the same examples.
 
 ## Prefer to own the code? Use the shadcn registry
 

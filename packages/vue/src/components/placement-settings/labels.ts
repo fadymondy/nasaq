@@ -1,0 +1,68 @@
+import type { PlacementMode } from "./placement-logic";
+
+export const PLACEMENT_STRINGS = {
+  en: {
+    title: "Appearance & placement",
+    description: "Choose where this shows up in the app and in what order.",
+    placement: "Placement",
+    modes: {
+      sidebar: "Sidebar",
+      header: "Header",
+      sideover: "Side panel",
+      fixed: "Floating widget",
+      hidden: "Hidden",
+    } as Record<PlacementMode, string>,
+    modeHints: {
+      sidebar: "A link in the main sidebar.",
+      header: "A button in the top bar, next to notifications.",
+      sideover: "Slides in from the edge, opened from a button in the top bar.",
+      fixed: "Floats on every page, like an assistant.",
+      hidden: "Not shown anywhere in the app.",
+    } as Record<PlacementMode, string>,
+    overlayOnly: "Only for capability plugins.",
+    order: "Order",
+    orderHint: "Lower numbers come first.",
+    orderInvalid: "Enter a whole number, 0 or more.",
+    defaultPage: "Open on start",
+    defaultPageHint: "People land on this page when they open the app.",
+    defaultPageBlocked: "Only items in the sidebar or header can be the start page.",
+    unsaved: "Unsaved changes",
+    saved: "All changes saved",
+    save: "Save changes",
+    reset: "Discard",
+    saveFailed: "Could not save",
+  },
+  ar: {
+    title: "المظهر والموضع",
+    description: "اختر مكان ظهوره في التطبيق وترتيبه.",
+    placement: "الموضع",
+    modes: {
+      sidebar: "الشريط الجانبي",
+      header: "الشريط العلوي",
+      sideover: "لوحة جانبية",
+      fixed: "أداة عائمة",
+      hidden: "مخفي",
+    } as Record<PlacementMode, string>,
+    modeHints: {
+      sidebar: "رابط في الشريط الجانبي الرئيسي.",
+      header: "زر في الشريط العلوي بجانب الإشعارات.",
+      sideover: "تنزلق من الحافة، وتُفتح من زر في الشريط العلوي.",
+      fixed: "تطفو فوق كل الصفحات، مثل المساعد.",
+      hidden: "لا يظهر في أي مكان من التطبيق.",
+    } as Record<PlacementMode, string>,
+    overlayOnly: "لإضافات القدرات فقط.",
+    order: "الترتيب",
+    orderHint: "الأرقام الأصغر تظهر أولًا.",
+    orderInvalid: "أدخل عددًا صحيحًا، صفرًا أو أكثر.",
+    defaultPage: "الفتح عند البدء",
+    defaultPageHint: "تظهر هذه الصفحة أولًا عند فتح التطبيق.",
+    defaultPageBlocked: "صفحة البدء تكون فقط لعنصر في الشريط الجانبي أو العلوي.",
+    unsaved: "تغييرات غير محفوظة",
+    saved: "كل التغييرات محفوظة",
+    save: "حفظ التغييرات",
+    reset: "تجاهل",
+    saveFailed: "تعذر الحفظ",
+  },
+};
+
+export type PlacementSettingsLabels = (typeof PLACEMENT_STRINGS)["en"];

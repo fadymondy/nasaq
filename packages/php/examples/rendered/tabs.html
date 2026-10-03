@@ -1,0 +1,15 @@
+<div data-slot="tabs" data-orientation="horizontal" x-data="nqTabs('board')" x-modelable="value" x-id="['nq-tabs']" class="flex flex-col gap-4">
+    <div data-slot="tabs-list" data-variant="segmented" aria-orientation="horizontal" x-bind="list"
+    class="relative z-0 flex max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-fit gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="tabs-tab" x-bind="tab('board')"
+     data-active aria-selected="true"         class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3">Board</button>
+        <button type="button" data-slot="tabs-tab" x-bind="tab('timeline')"
+            class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 h-7 rounded-[calc(var(--radius-control)-2px)] px-3">Timeline</button>
+        <span data-slot="tabs-indicator" aria-hidden="true"
+    class="absolute -z-10 transition-[left,width] duration-200 ease-nq left-[var(--active-tab-left)] w-[var(--active-tab-width)] top-[var(--active-tab-top)] h-[var(--active-tab-height)] rounded-[calc(var(--radius-control)-2px)] bg-background shadow-xs"></span>
+</div>
+    <div data-slot="tabs-panel" x-bind="panel('board')"
+        class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">Board view</div>
+    <div data-slot="tabs-panel" x-bind="panel('timeline')"
+     hidden     class="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">Timeline view</div>
+</div>

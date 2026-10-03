@@ -65,10 +65,10 @@ claude mcp add nasaq -- npx -y @fadymondy/nasaq-mcp
 
 | Tool | What it returns |
 | --- | --- |
-| `get_setup()` | Install command, CSS imports, `NasaqProvider` props, app skeleton, and the shadcn registry setup. Call first. |
-| `list_components({ category?, query? })` | Every component grouped by category, with its summary and exports. |
+| `get_setup({ framework? })` | Install command, CSS imports, provider, app skeleton, and the shadcn registry setup. Call first. `framework`: `react` (default), `shadcn`, `inertia`, `inertia-vue`, `vue`, `nuxt`, `blade`, `livewire`, `filament`, `laravel`, `tomatophp`, `html`, `alpine`. Each returns that stack's setup guide. |
+| `list_components({ category?, query?, framework? })` | Every component grouped by category, with its summary and exports. With a non-React `framework`, only the components ported to that stack. |
 | `search_components({ query, limit? })` | Components ranked for a need in words: "switch between products", "empty state". |
-| `get_component({ name, include? })` | One component. `name` is the folder (`app-shell`), title (`AppShell`) or any export (`SidebarItem`). `include`: `readme` (default), `api`, `examples`, `source`, `story`, `all`. Also gives the import line and the shadcn install command. |
+| `get_component({ name, include? })` | One component. `name` is the folder (`app-shell`), title (`AppShell`) or any export (`SidebarItem`). `include`: `readme` (default), `api`, `examples`, `source`, `story`, `all`. Also gives the import line and the shadcn install command. `framework` returns that stack's code instead: React and shadcn from the README quick start (shadcn with `@/components/ui/*` imports and the CLI command), Vue `Nq*`, Blade `<x-nq::*>` plus what it renders, or HTML run by Alpine. Vue, Blade and HTML are ported component by component (button, dialog, spinner, tabs so far); an unported one returns a "not ported yet" message listing the ported ones. |
 | `get_foundation({ topic? })` | Design rules: `color`, `layout`, `architecture`, `component-readme-spec`, `setup`. Omit `topic` to list them. |
 | `list_tokens({ prefix?, limit? })` | `--nq-*` custom properties with their value per theme, brand and density. |
 

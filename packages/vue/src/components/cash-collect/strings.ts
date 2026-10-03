@@ -1,0 +1,33 @@
+export const STRINGS = {
+  en: {
+    title: "Cash on delivery",
+    orderTotal: "Order total",
+    deliveryFee: "Delivery fee",
+    prepaid: "Paid online",
+    due: "Amount due",
+    collected: "Cash received",
+    exact: "Exact amount",
+    shortBy: "Still owed",
+    change: "Change to return",
+    unpaid: "Nothing received yet",
+    prepaidAll: "Paid in full online. Collect nothing.",
+    confirm: "Confirm cash collected",
+    shortHelp: "The amount is less than what is due.",
+  },
+  ar: {
+    title: "الدفع عند الاستلام",
+    orderTotal: "إجمالي الطلب",
+    deliveryFee: "رسوم التوصيل",
+    prepaid: "مدفوع إلكترونيًا",
+    due: "المبلغ المستحق",
+    collected: "النقد المستلم",
+    exact: "المبلغ مطابق",
+    shortBy: "المتبقي",
+    change: "الباقي للعميل",
+    unpaid: "لم يُستلم شيء بعد",
+    prepaidAll: "مدفوع بالكامل إلكترونيًا. لا تحصّل شيئًا.",
+    confirm: "تأكيد تحصيل النقد",
+    shortHelp: "المبلغ أقل من المستحق.",
+  },
+};
+export type CashCollectLabels = Partial<(typeof STRINGS)["en"]>;

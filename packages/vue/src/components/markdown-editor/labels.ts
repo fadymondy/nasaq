@@ -1,0 +1,46 @@
+// Strings of the Markdown editor, English and Arabic (copied from the React STRINGS table).
+export const markdownEditorStrings = {
+  en: {
+    toolbar: "Formatting",
+    view: "View",
+    write: "Write",
+    preview: "Preview",
+    split: "Split",
+    placeholder: "Write in Markdown…",
+    empty: "Nothing to preview yet.",
+    bold: "Bold",
+    italic: "Italic",
+    h2: "Heading",
+    h3: "Subheading",
+    bullets: "Bulleted list",
+    numbers: "Numbered list",
+    tasks: "Task list",
+    quote: "Quote",
+    link: "Link",
+    code: "Inline code",
+    codeBlock: "Code block",
+  },
+  ar: {
+    toolbar: "التنسيق",
+    view: "طريقة العرض",
+    write: "كتابة",
+    preview: "معاينة",
+    split: "تقسيم",
+    placeholder: "اكتب بصيغة ماركداون…",
+    empty: "لا شيء للمعاينة بعد.",
+    bold: "عريض",
+    italic: "مائل",
+    h2: "عنوان",
+    h3: "عنوان فرعي",
+    bullets: "قائمة نقطية",
+    numbers: "قائمة مرقّمة",
+    tasks: "قائمة مهام",
+    quote: "اقتباس",
+    link: "رابط",
+    code: "كود سطري",
+    codeBlock: "كتلة كود",
+  },
+};
+
+export type MarkdownEditorLabels = (typeof markdownEditorStrings)["en"];
+export type MarkdownEditorView = "write" | "preview" | "split";

@@ -8,6 +8,7 @@ export interface DocEntry {
 
 export const DOCS: DocEntry[] = [
   { title: "Docs/Introduction", label: "Introduction" },
+  { title: "Docs/Installation/Get started", label: "Get started on your stack" },
   { title: "Docs/Installation/shadcn CLI", label: "Install with the shadcn CLI" },
   { title: "Docs/Installation/npm package", label: "Install from npm" },
   { title: "Docs/Installation/Project setup", label: "Project setup" },

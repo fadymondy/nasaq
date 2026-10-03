@@ -1,0 +1,71 @@
+import type { ScoreLevel, SemanticFacetField } from "./semantic-search-math";
+
+export const STRINGS = {
+  en: {
+    label: "Semantic search",
+    placeholder: "Ask or describe what you are looking for",
+    search: "Search",
+    searching: "Searching",
+    mode: "Search mode",
+    limit: "Results",
+    tune: "Refine",
+    fields: { group: "Group", kind: "Type", source: "Source" } as Record<SemanticFacetField, string>,
+    highImportance: "High importance",
+    clear: "Clear filters",
+    countOne: "1 result",
+    countMany: (n: string) => `${n} results`,
+    countOf: (n: string, total: string) => `${n} of ${total} results`,
+    open: "Open",
+    copy: "Copy text",
+    copied: "Copied",
+    score: "Match",
+    scoreTitle: (n: string) => `Similarity ${n}`,
+    levels: { strong: "Strong", good: "Good", weak: "Weak" } as Record<ScoreLevel, string>,
+    importance: (n: string) => `Importance ${n}`,
+    via: (entity: string) => `via ${entity}`,
+    idle: "Search the brain in plain words. Results are ranked by meaning, not only by matching words.",
+    none: (q: string) => `Nothing found for “${q}”`,
+    noneHint: "Try other words, or a shorter question. If it should be there, add it and it will show up as a knowledge gap.",
+    allFiltered: (n: string) => `All ${n} results are hidden by the filters.`,
+    loading: "Searching",
+    retry: "Try again",
+    modes: { semantic: "Semantic", keyword: "Keyword" } as Record<string, string>,
+  },
+  ar: {
+    label: "البحث الدلالي",
+    placeholder: "اسأل أو صِف ما تبحث عنه",
+    search: "بحث",
+    searching: "جارٍ البحث",
+    mode: "نمط البحث",
+    limit: "النتائج",
+    tune: "تضييق",
+    fields: { group: "المجموعة", kind: "النوع", source: "المصدر" } as Record<SemanticFacetField, string>,
+    highImportance: "أهمية عالية",
+    clear: "مسح التصفية",
+    countOne: "نتيجة واحدة",
+    countMany: (n: string) => `${n} نتائج`,
+    countOf: (n: string, total: string) => `${n} من ${total} نتيجة`,
+    open: "فتح",
+    copy: "نسخ النص",
+    copied: "تم النسخ",
+    score: "التطابق",
+    scoreTitle: (n: string) => `التشابه ${n}`,
+    levels: { strong: "قوي", good: "جيد", weak: "ضعيف" } as Record<ScoreLevel, string>,
+    importance: (n: string) => `الأهمية ${n}`,
+    via: (entity: string) => `عبر ${entity}`,
+    idle: "ابحث في العقل بكلمات عادية. تُرتَّب النتائج بحسب المعنى، لا بمطابقة الكلمات فقط.",
+    none: (q: string) => `لا نتائج لـ «${q}»`,
+    noneHint: "جرّب كلمات أخرى أو سؤالًا أقصر. إن كان يجب أن يكون موجودًا، أضِفه وسيظهر كفجوة معرفة.",
+    allFiltered: (n: string) => `كل النتائج (${n}) مخفية بسبب التصفية.`,
+    loading: "جارٍ البحث",
+    retry: "إعادة المحاولة",
+    modes: { semantic: "دلالي", keyword: "بالكلمات" } as Record<string, string>,
+  },
+};
+
+export type SemanticSearchLabels = (typeof STRINGS)["en"];
+export type SemanticSearchLabelOverrides = Partial<Omit<SemanticSearchLabels, "modes" | "fields" | "levels">> & {
+  modes?: Record<string, string>;
+  fields?: Partial<Record<SemanticFacetField, string>>;
+  levels?: Partial<Record<ScoreLevel, string>>;
+};

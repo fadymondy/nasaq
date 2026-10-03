@@ -1,0 +1,15 @@
+<div data-slot="slider" x-data="nqSlider(JSON.parse('{\u0022value\u0022:40,\u0022min\u0022:0,\u0022max\u0022:100,\u0022step\u0022:1,\u0022disabled\u0022:false,\u0022minStepsBetweenThumbs\u0022:0}'))" x-modelable="model"     class="flex w-full flex-col gap-2 data-disabled:opacity-50">
+            <div data-slot="slider-head" class="flex items-baseline justify-between gap-3 text-body-sm">
+            <span id="nq-slider-7958edd6-label" class="text-label text-foreground">Volume</span>            <output data-slot="slider-value" class="text-muted-foreground tabular-nums"><bdi x-text="text">40</bdi></output>        </div>
+        <div data-slot="slider-control"  x-on:pointerdown="down($event)" class="flex h-5 w-full touch-none select-none items-center">
+        <div data-slot="slider-track" x-ref="track" class="relative h-1.5 w-full rounded-full bg-nq-surface-soft">
+            <div data-slot="slider-range" :style="rangeStyle()" style="position: absolute; top: 0; bottom: 0; inset-inline-start: 0px; inset-inline-end: calc(100% - calc(40% + 1.60px))" class="rounded-full bg-primary"></div>
+                            <div data-slot="slider-thumb" role="slider" tabindex="0"
+                     aria-labelledby="nq-slider-7958edd6-label"                     aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal"
+                    :aria-valuenow="values[0]" :aria-valuetext="fmt(values[0])" :data-dragging="dragging && active === 0 ? '' : undefined"
+                                        x-on:keydown="key($event, 0)" :style="thumbStyle(0)"
+                    style="inset-inline-start: calc(40% + 1.60px); top: 50%; translate: -50% -50%; position: absolute"
+                    class="size-4 rounded-full border border-primary bg-card shadow-xs outline-none transition-[box-shadow] duration-150 ease-nq motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-dragging:shadow-md data-disabled:pointer-events-none"></div>
+                                    </div>
+    </div>
+    </div>

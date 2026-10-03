@@ -1,0 +1,104 @@
+<div class="flex flex-col gap-4">
+    <button type="button" data-slot="search-trigger" aria-keyshortcuts="Meta+K Control+K" x-data="nqSearchTrigger" x-on:click="press($event)"
+        class="flex h-control min-h-[var(--nq-touch-min,0px)] w-full items-center gap-2 rounded-control border border-border bg-card px-2 text-body-sm text-muted-foreground transition-colors duration-150 ease-nq outline-none hover:border-nq-line-strong hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4 [&_svg]:shrink-0 max-w-xs">
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>            <span class="flex-1 truncate text-start">Search…</span>
+        <span class="flex gap-0.5" dir="ltr">
+            <kbd data-slot="kbd"  dir="ltr"
+    x-text="mod" class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Ctrl</kbd>
+            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">K</kbd>
+        </span>
+    </button>
+    <div data-slot="command-palette-root" x-data="nqCommandPalette(JSON.parse('[{\u0022id\u0022:\u0022new\u0022,\u0022label\u0022:\u0022New issue\u0022,\u0022section\u0022:\u0022create\u0022,\u0022shortcut\u0022:\u0022C\u0022,\u0022keywords\u0022:[\u0022add\u0022],\u0022iconHtml\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Cpath d=\\u0022M5 12h14\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022M12 5v14\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022},{\u0022id\u0022:\u0022inbox\u0022,\u0022label\u0022:\u0022Go to inbox\u0022,\u0022section\u0022:\u0022navigation\u0022,\u0022href\u0022:\u0022\\\/inbox\u0022,\u0022hint\u0022:\u0022Page\u0022,\u0022iconHtml\u0022:\u0022\\u003Csvg aria-hidden=\\u0022true\\u0022 xmlns=\\u0022http:\\\/\\\/www.w3.org\\\/2000\\\/svg\\u0022 viewBox=\\u00220 0 24 24\\u0022 fill=\\u0022none\\u0022 stroke=\\u0022currentColor\\u0022 stroke-width=\\u00222\\u0022 stroke-linecap=\\u0022round\\u0022 stroke-linejoin=\\u0022round\\u0022\\u003E\\n  \\u003Cpolyline points=\\u002222 12 16 12 14 15 10 15 8 12 2 12\\u0022\\\/\\u003E\\n  \\u003Cpath d=\\u0022M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\\u0022\\\/\\u003E\\n\\u003C\\\/svg\\u003E\u0022},{\u0022id\u0022:\u0022status\u0022,\u0022label\u0022:\u0022Change status\u0022,\u0022section\u0022:\u0022context\u0022,\u0022children\u0022:[{\u0022id\u0022:\u0022status.todo\u0022,\u0022label\u0022:\u0022Todo\u0022},{\u0022id\u0022:\u0022status.done\u0022,\u0022label\u0022:\u0022Done\u0022}]},{\u0022id\u0022:\u0022danger\u0022,\u0022label\u0022:\u0022Delete workspace\u0022,\u0022section\u0022:\u0022system\u0022,\u0022disabled\u0022:true}]'), {})" x-modelable="open"
+    x-on:keydown.window="onHotkey($event)" x-on:nq-command-palette-open.window="show()" x-on:nq-command-palette-toggle.window="toggle()" class="contents">
+    <template x-teleport="body">
+        <div data-slot="command-palette-portal">
+            <div data-slot="command-palette-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/10 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+            <div class="pointer-events-none fixed inset-0 z-50 flex items-start justify-center px-3 pt-[12dvh]">
+                <div data-slot="command-palette" role="dialog" aria-modal="true" aria-label="Command palette" tabindex="-1" x-nq-presence="open" x-trap.noscroll="open"
+                    x-on:keydown.escape="onEscape($event)"
+                    class="pointer-events-auto flex max-h-[min(32rem,76dvh)] w-full max-w-xl flex-col overflow-hidden rounded-floating border border-border bg-popover text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+                    <div class="flex items-center gap-2 border-b border-border px-4">
+                        <svg x-show="searching" aria-hidden="true" class="size-4 shrink-0 animate-spin text-muted-foreground motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+</svg>                        <svg x-show="! searching" aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                        <template x-for="(p, i) in pages" x-bind:key="p.id">
+                            <button type="button" x-on:click="back(i)"
+                                class="flex h-6 shrink-0 items-center gap-1 rounded-[4px] bg-nq-selected px-1.5 text-caption font-medium text-foreground outline-none focus-visible:outline-2 focus-visible:outline-nq-focus">
+                                <span x-text="p.label"></span>
+                                <svg aria-hidden="true" class="size-3 text-muted-foreground rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>                            </button>
+                        </template>
+                        <input type="text" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-controls="nq-cp-list" autocomplete="off" spellcheck="false"
+                            x-model="query" x-on:keydown="onKey($event)"
+                            x-bind:aria-activedescendant="view().flat.length ? optionId(highlighted) : null"
+                            x-bind:placeholder="page() ? 'Filter\u2026' : 'Search or run a command\u2026'"
+                            class="h-12 w-full bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+                        <button type="button" x-on:click="close()" class="shrink-0 rounded-[3px] outline-none focus-visible:outline-2 focus-visible:outline-nq-focus">
+                            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Esc</kbd>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1.5 [scroll-padding-block:0.375rem]">
+                        <div x-show="view().flat.length === 0" data-slot="command-palette-empty" class="flex min-h-24 items-center justify-center text-body-sm text-muted-foreground">
+                            <span x-show="searching">Searching…</span>
+                            <span x-show="! searching">No results</span>
+                        </div>
+                        <div id="nq-cp-list" role="listbox" aria-label="Command palette">
+                            <template x-for="section in view().sections" x-bind:key="section.id">
+                                <div role="group" x-bind:aria-label="section.label" class="not-last:mb-1.5">
+                                    <div x-text="section.label" x-bind:class="page() ? 'sr-only' : ''" class="px-2.5 pt-2 pb-1 text-caption font-medium text-muted-foreground"></div>
+                                    <template x-for="row in section.items" x-bind:key="row.c.id">
+                                        <div role="option" data-slot="command-item" x-bind:id="optionId(row.i)" x-bind:data-id="row.c.id" x-bind:aria-selected="row.i === highlighted ? 'true' : 'false'"
+                                            x-bind:aria-disabled="row.c.disabled ? 'true' : null" x-bind:data-highlighted="row.i === highlighted ? '' : null" x-bind:data-disabled="row.c.disabled ? '' : null"
+                                            x-on:mousemove="highlighted = row.i" x-on:click="run(row.c)"
+                                            class="group flex h-10 min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-3 rounded-control px-2.5 text-body-sm text-foreground outline-none [scroll-margin-block:0.375rem] data-highlighted:bg-nq-selected data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground data-highlighted:[&_svg]:text-foreground">
+                                            <span x-show="row.c.iconHtml" x-html="row.c.iconHtml" class="contents"></span>
+                                            <span x-text="row.c.label" class="min-w-0 flex-1 truncate"></span>
+                                            <span x-show="row.c.hint" x-text="row.c.hint" class="shrink-0 text-caption text-muted-foreground"></span>
+                                            <span x-show="row.c.shortcut" class="flex shrink-0 gap-0.5" dir="ltr">
+                                                <template x-for="k in (row.c.shortcut ? keys(row.c.shortcut) : [])"><kbd data-slot="kbd" dir="ltr" x-text="k" class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground"></kbd></template>
+                                            </span>
+                                            <svg x-show="row.c.children" aria-hidden="true" class="size-3.5! rtl:-scale-x-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg>                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 border-t border-border bg-nq-surface-soft px-4 py-2 text-caption text-muted-foreground">
+                        <span class="flex items-center gap-1.5">
+                            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">↑</kbd>
+                            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">↓</kbd>
+                            Navigate
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground"><svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 4v7a4 4 0 0 1-4 4H4"/>
+  <path d="m9 10-5 5 5 5"/>
+</svg></kbd>
+                            Open
+                        </span>
+                        <span x-show="pages.length" class="flex items-center gap-1.5">
+                            <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">⌫</kbd>
+                            Back
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</div>
+</div>
