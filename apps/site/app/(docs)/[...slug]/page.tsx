@@ -1,0 +1,109 @@
+import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
+import defaultMdxComponents from "fumadocs-ui/mdx";
+import type { Metadata } from "next";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { notFound } from "next/navigation";
+import { type CodeStack, ComponentCode } from "@/components/component-code";
+import { ComponentPreview } from "@/components/component-preview";
+import { GroupCards } from "@/components/group-cards";
+import { PageActions } from "@/components/page-actions";
+import codeStacks from "@/lib/code.generated.json";
+import { GROUPS } from "@/lib/groups";
+import previews from "@/lib/previews.generated.json";
+import { breadcrumbs, jsonLd, markdownUrl, ogImage, publisher, website } from "@/lib/seo";
+import { SITE_URL } from "@/lib/site";
+import { source } from "@/lib/source";
+
+const withPreview = new Set<string>(previews);
+const stacksOf = codeStacks as unknown as Record<string, [CodeStack, ...CodeStack[]]>; // sync-docs only writes non-empty lists
+
+/** The first stack's source, read at build time from public/code (see scripts/sync-docs.mjs). */
+async function firstStack(name: string, stacks: [CodeStack, ...CodeStack[]]) {
+  const all = JSON.parse(await readFile(join(process.cwd(), "public/code", `${name}.json`), "utf8")) as Record<string, string>;
+  return all[stacks[0].stack] ?? "";
+}
+
+export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
+  const { slug } = await props.params;
+  const page = source.getPage(slug);
+  if (!page) notFound();
+  const Body = page.data.body;
+  const group = slug[0] === "components" && slug[1] === "groups" ? GROUPS.find((g) => g.key === slug[2]) : undefined;
+  const name = slug[0] === "components" && !group ? slug[1] : undefined;
+  const component = name && withPreview.has(name) ? name : null;
+  const stacks = name ? stacksOf[name] : undefined;
+  const initial = name && stacks ? await firstStack(name, stacks) : "";
+  const toc = stacks ? [{ title: "Code", url: "#code", depth: 2 }, ...page.data.toc] : page.data.toc;
+  const url = `${SITE_URL}${page.url}`;
+  const structured = jsonLd([
+    publisher,
+    website,
+    group
+      ? {
+          "@type": "CollectionPage",
+          "@id": `${url}#page`,
+          name: page.data.title,
+          description: page.data.description,
+          url,
+          image: `${SITE_URL}${ogImage(page.url)}`,
+          inLanguage: "en",
+          isPartOf: { "@id": website["@id"] },
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: group.items.length,
+            itemListElement: group.items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.title, url: `${SITE_URL}/components/${it.name}` })),
+          },
+        }
+      : {
+      "@type": "TechArticle",
+      "@id": `${url}#article`,
+      headline: page.data.title,
+      description: page.data.description,
+      url,
+      image: `${SITE_URL}${ogImage(page.url)}`,
+      inLanguage: "en",
+      isPartOf: { "@id": website["@id"] },
+      publisher: { "@id": publisher["@id"] },
+      ...(name ? { about: { "@type": "SoftwareSourceCode", name: page.data.title, codeRepository: "https://github.com/fadymondy/nasaq", programmingLanguage: ["TypeScript", "Vue", "PHP", "HTML"] } } : {}),
+    },
+    breadcrumbs(page.url, page.data.title ?? ""),
+  ]);
+
+  return (
+    <DocsPage toc={toc}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structured }} />
+      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsDescription className="mb-2">{page.data.description}</DocsDescription>
+      <PageActions markdown={markdownUrl(page.url)} url={url} />
+      <DocsBody>
+        {component ? <ComponentPreview name={component} title={page.data.title} /> : null}
+        {name && stacks ? (
+          <>
+            <h2 id="code">Code</h2>
+            <ComponentCode name={name} stacks={stacks} initial={initial} />
+          </>
+        ) : null}
+        {group ? <GroupCards group={group} /> : <Body components={defaultMdxComponents} />}
+      </DocsBody>
+    </DocsPage>
+  );
+}
+
+export function generateStaticParams() {
+  return source.generateParams();
+}
+
+export async function generateMetadata(props: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
+  const { slug } = await props.params;
+  const page = source.getPage(slug);
+  if (!page) notFound();
+  const image = ogImage(page.url);
+  return {
+    title: page.data.title,
+    description: page.data.description,
+    alternates: { canonical: page.url, types: { "text/markdown": markdownUrl(page.url) } },
+    openGraph: { title: page.data.title, description: page.data.description, url: page.url, type: "article", images: image },
+    twitter: { card: "summary_large_image", title: page.data.title, description: page.data.description, images: image },
+  };
+}

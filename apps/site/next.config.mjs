@@ -10,6 +10,13 @@ export default withMDX({
   // NEXT_BUILD_CPUS caps the static-generation workers so the Docker build fits a small server.
   ...(process.env.NEXT_BUILD_CPUS ? { experimental: { cpus: Number(process.env.NEXT_BUILD_CPUS) } } : {}),
   // /registry.json mirrors /r/registry.json so the shadcn CLI can be pointed at the site root.
+  // The docs used to live under /docs; the site is the docs now.
+  async redirects() {
+    return [
+      { source: "/docs", destination: "/", permanent: true },
+      { source: "/docs/:path*", destination: "/:path*", permanent: true },
+    ];
+  },
   async rewrites() {
     return [{ source: "/registry.json", destination: "/r/registry.json" }];
   },
