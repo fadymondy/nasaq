@@ -44,7 +44,7 @@ describe("NqProductMark", () => {
     expect(w.text()).toBe("ZEKRA");
     expect(w.find("[dir=ltr]").classes()).toContain("uppercase");
     const ar = mount(NqProductLogo, { props: { brand: "zekra", arabic: true } });
-    expect(ar.text()).toBe("ذكرة");
+    expect(ar.text()).toBe("ذكرى");
     expect(ar.find("[lang=ar]").classes()).toContain("font-arabic");
   });
 });

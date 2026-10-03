@@ -21,7 +21,7 @@ const meta: Record<BrandKey, Pick<BrandManifest, "name" | "typography" | "taglin
   nasaq: { name: { en: "Nasaq", ar: "نسق" }, typography: { latin: "lusail" }, site: "https://nasaq.fadymondy.com" },
   fadymondy: { name: { en: "Fady Mondy" }, typography: { latin: "lusail" }, site: "https://fadymondy.com" },
   mahaam: { name: { en: "Mahaam", ar: "مهام" }, typography: { latin: "inter" }, site: "https://mahaam.app" },
-  zekra: { name: { en: "Zekra", ar: "ذكرة" }, typography: { latin: "inter" }, site: "https://zekra.dev" },
+  zekra: { name: { en: "Zekra", ar: "ذكرى" }, typography: { latin: "inter" }, site: "https://zekra.dev" },
   moharrik: { name: { en: "Moharrik", ar: "محرّك" }, typography: { latin: "inter" } },
   seatfor: { name: { en: "SeatFor" }, typography: { latin: "lusail" } },
   "health-debug": { name: { en: "Health Debug", ar: "شفرة التعافي الصحي" }, typography: { latin: "lusail" } },

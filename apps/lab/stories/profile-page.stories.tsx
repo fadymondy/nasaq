@@ -22,7 +22,7 @@ export const Mobile: Story = { args: { profile: profileData(false) }, globals: {
 function ownerApps(ar: boolean): ProfileApp[] {
   return [
     { id: "mahaam", brand: "mahaam", name: ar ? "مهام" : "Mahaam", description: ar ? "المشاريع والمهام والوقت" : "Projects, issues, time", href: "#mahaam", role: ar ? "مالك" : "Owner", plan: "Pro", org: "3x1", lastUsed: "2026-09-30", badge: 3 },
-    { id: "zekra", brand: "zekra", name: ar ? "ذكرة" : "Zekra", description: ar ? "ذاكرة لوكلاء الذكاء الاصطناعي" : "Memory for AI agents", href: "#zekra", role: ar ? "مشرف" : "Admin", org: "3x1", lastUsed: "2026-09-28" },
+    { id: "zekra", brand: "zekra", name: ar ? "ذكرى" : "Zekra", description: ar ? "ذاكرة لوكلاء الذكاء الاصطناعي" : "Memory for AI agents", href: "#zekra", role: ar ? "مشرف" : "Admin", org: "3x1", lastUsed: "2026-09-28" },
     { id: "nasaq", brand: "nasaq", name: ar ? "نسق" : "Nasaq", description: ar ? "نظام التصميم" : "Design system", href: "#nasaq", role: ar ? "عضو" : "Member", org: "3x1", lastUsed: "2026-09-21" },
     { id: "seatfor", brand: "seatfor", name: "SeatFor", description: ar ? "الحجوزات" : "Bookings", href: "#seatfor", role: ar ? "عضو" : "Member", org: "CircleXO", lastUsed: "2026-08-02" },
   ];
