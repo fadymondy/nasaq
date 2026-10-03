@@ -1,5 +1,12 @@
 # @fadymondy/nasaq
 
+## 1.1.0
+
+### Minor Changes
+
+- c82b377: Add `AddressInput` (cascading country, city and area comboboxes with a pluggable `LocationsDataSource` and a CircleXO hub default) and `CountrySelect`.
+- 57906c1: Adds six CircleXO business-app brands to `@fadymondy/nasaq/brands` and the theme tokens: `matjar`, `sanduq`, `mizan`, `qaima`, `makhzan` and `mawared`. Each has a cube-lattice mark (copied verbatim from the products' marks table), a manifest with English and Arabic names and its circlexo.com site, and brand and action colours that pass contrast in light and dark.
+
 ## 1.0.0
 
 ### Major Changes
