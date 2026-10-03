@@ -172,4 +172,4 @@ token. Target `data-slot` values and `data-readonly`. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-editors-richtexteditor--docs
+https://docs.nasaqui.com/?path=/docs/components-editors-richtexteditor--docs

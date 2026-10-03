@@ -157,4 +157,4 @@ The summary is a polite live region. A wrong expression is announced with `role=
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-cron-builder--docs
+https://docs.nasaqui.com/?path=/docs/components-workflow-cron-builder--docs

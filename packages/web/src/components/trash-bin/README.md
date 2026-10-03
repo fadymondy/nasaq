@@ -117,4 +117,4 @@ Badge variants `neutral`, `warning`, `danger` and `outline`; EntityList tokens. 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-files-trash-bin--docs
+https://docs.nasaqui.com/?path=/docs/components-files-trash-bin--docs

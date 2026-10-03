@@ -15,8 +15,8 @@ const site = join(dirname(fileURLToPath(import.meta.url)), "..");
 const root = join(site, "..", "..");
 const componentsDir = join(root, "packages/web/src/components");
 const out = join(site, "content/docs/components");
-const REGISTRY = "https://nasaq-ui.fadymondy.com/r";
-const LAB = "https://nasaq-ui.fadymondy.com";
+const REGISTRY = "https://docs.nasaqui.com/r";
+const LAB = "https://docs.nasaqui.com";
 const LABELS = {
   account: "Account",
   actions: "Actions",

@@ -174,4 +174,4 @@ Uses `bg-popover`, `border-border`, `bg-card`, `text-muted-foreground`, `bg-nq-h
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pickers-emojipicker--docs
+https://docs.nasaqui.com/?path=/docs/components-pickers-emojipicker--docs

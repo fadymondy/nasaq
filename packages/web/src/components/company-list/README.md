@@ -96,4 +96,4 @@ Inherited from `EntityList`: table or card grid, named checkboxes and menus, a l
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-crm-company-list--docs
+https://docs.nasaqui.com/?path=/docs/components-crm-company-list--docs

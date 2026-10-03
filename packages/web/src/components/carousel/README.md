@@ -104,4 +104,4 @@ Slides use `ps-4` gutters (the track has `-ms-4`). Buttons use the `secondary` B
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-carousel--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-carousel--docs

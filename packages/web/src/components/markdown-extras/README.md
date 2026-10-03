@@ -169,4 +169,4 @@ Uses `--nq-*` border, surface, selected and focus tokens. Target `data-slot="mar
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-editors-markdown-extras--docs
+https://docs.nasaqui.com/?path=/docs/components-editors-markdown-extras--docs

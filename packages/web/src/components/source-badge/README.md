@@ -98,4 +98,4 @@ SourceBadge                     data-slot="source-badge"  (span, or a when href 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-source-badge--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-source-badge--docs

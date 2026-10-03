@@ -173,4 +173,4 @@ and text tokens. Extend with `className`; do not use raw hex.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-billing-invoiceview--docs
+https://docs.nasaqui.com/?path=/docs/components-billing-invoiceview--docs

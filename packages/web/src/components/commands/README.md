@@ -306,4 +306,4 @@ None: the registry renders nothing. Presentation belongs to [`CommandPalette`](.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-keyboard-commands-commands--docs
+https://docs.nasaqui.com/?path=/docs/components-keyboard-commands-commands--docs

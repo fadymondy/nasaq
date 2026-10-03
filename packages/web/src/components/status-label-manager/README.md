@@ -88,4 +88,4 @@ Hues map to `--nq-tag-*`. Cards fill their cell.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-status-label-manager--docs
+https://docs.nasaqui.com/?path=/docs/components-projects-work-status-label-manager--docs

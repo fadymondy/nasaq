@@ -201,4 +201,4 @@ tokens (`nq-success`, `nq-warning`, `nq-danger`, `nq-info`) and `nq-brand` for e
 - [ToggleGroup](../toggle-group/README.md)
 
 ## Lab
-https://nasaq-ui.fadymondy.com/?path=/docs/components-productivity-scheduler--docs
+https://docs.nasaqui.com/?path=/docs/components-productivity-scheduler--docs

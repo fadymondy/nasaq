@@ -193,4 +193,4 @@ export function Pick({ items }: { items: TreeNode[] }) {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-navigation-tree-view--docs
+https://docs.nasaqui.com/?path=/docs/components-navigation-tree-view--docs

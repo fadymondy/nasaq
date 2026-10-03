@@ -14,7 +14,7 @@ import { createBarrelSplitter } from "./registry-barrels.mjs";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const out = join(root, "registry");
 const src = join(out, "nasaq");
-const BASE = (process.env.NASAQ_REGISTRY_URL ?? "https://nasaq-ui.fadymondy.com/r").replace(/\/$/, "");
+const BASE = (process.env.NASAQ_REGISTRY_URL ?? "https://docs.nasaqui.com/r").replace(/\/$/, "");
 const url = (name) => `${BASE}/${name}.json`;
 
 const webPkg = JSON.parse(await readFile(join(root, "packages/web/package.json"), "utf8"));
@@ -144,7 +144,7 @@ const items = [];
     description: "The Nasaq preset: tokens for light and dark, brands, densities and expressions as CSS variables, the cn util, NasaqProvider and the theme script.",
     author: AUTHOR,
     categories: ["preset"],
-    docs: "Wrap your app in NasaqProvider (components/nasaq/nasaq-provider) and load the fonts you want: Inter, JetBrains Mono and an Arabic face. Guide: https://nasaq-ui.fadymondy.com/?path=/story/docs-installation-shadcn-cli--page",
+    docs: "Wrap your app in NasaqProvider (components/nasaq/nasaq-provider) and load the fonts you want: Inter, JetBrains Mono and an Arabic face. Guide: https://docs.nasaqui.com/?path=/story/docs-installation-shadcn-cli--page",
     dependencies: [...deps],
     files,
     cssVars,
@@ -205,7 +205,7 @@ for (const name of (await readdir(compRoot)).sort()) {
 const registry = {
   $schema: "https://ui.shadcn.com/schema/registry.json",
   name: "nasaq",
-  homepage: "https://nasaq-ui.fadymondy.com",
+  homepage: "https://docs.nasaqui.com",
   items,
 };
 await writeFile(join(out, "registry.json"), JSON.stringify(registry, null, 2) + "\n");

@@ -186,4 +186,4 @@ The provider has no DOM. `CopilotLauncher` is a `Button`; style it with `variant
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-assistant-copilot-provider--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-assistant-copilot-provider--docs

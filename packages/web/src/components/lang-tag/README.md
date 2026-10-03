@@ -89,4 +89,4 @@ A `tag` badge in a monospace, uppercase, tracked style. Hues come from the badge
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-lang-tag--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-lang-tag--docs

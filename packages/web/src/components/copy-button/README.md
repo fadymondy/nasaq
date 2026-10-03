@@ -159,4 +159,4 @@ Uses Button tokens and `text-nq-success-text` while `[data-copied]`. Extend with
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-actions-copy-button--docs
+https://docs.nasaqui.com/?path=/docs/components-actions-copy-button--docs

@@ -7,7 +7,7 @@
 - Logical properties everywhere: the same component is correct in English and Arabic.
 - Also on the shadcn registry, if you prefer to own the source (see below).
 
-Docs and live component lab: https://nasaq-ui.fadymondy.com · Landing: https://nasaq.fadymondy.com
+Docs and live component lab: https://docs.nasaqui.com · Landing: https://nasaqui.com
 
 ## Install
 
@@ -184,7 +184,7 @@ php artisan vendor:publish --tag=nasaq-assets   # then @nasaqStyles @nasaqScript
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
 ```
 
-Laravel + Inertia uses this package directly (React or Vue). The setup for every stack is on [Get started](https://nasaq-ui.fadymondy.com/?path=/story/docs-installation-get-started--page), and each component page shows its code for React, shadcn, Vue, Blade and HTML + Alpine. The MCP server serves the same examples.
+Laravel + Inertia uses this package directly (React or Vue). The setup for every stack is on [Get started](https://docs.nasaqui.com/?path=/story/docs-installation-get-started--page), and each component page shows its code for React, shadcn, Vue, Blade and HTML + Alpine. The MCP server serves the same examples.
 
 ## Prefer to own the code? Use the shadcn registry
 
@@ -192,14 +192,14 @@ The same components are published as a shadcn registry: files are copied into yo
 
 ```json
 // components.json
-{ "registries": { "@nasaq": "https://nasaq-ui.fadymondy.com/r/{name}.json" } }
+{ "registries": { "@nasaq": "https://docs.nasaqui.com/r/{name}.json" } }
 ```
 
 ```sh
 npx shadcn@latest add @nasaq/button
 ```
 
-Index: https://nasaq-ui.fadymondy.com/registry.json
+Index: https://docs.nasaqui.com/registry.json
 
 ## MCP for AI assistants
 
@@ -207,13 +207,13 @@ Index: https://nasaq-ui.fadymondy.com/registry.json
 
 ```sh
 npx -y @fadymondy/nasaq-mcp                      # stdio
-# hosted (streamable HTTP): https://nasaq-mcp.fadymondy.com/mcp
+# hosted (streamable HTTP): https://mcp.nasaqui.com/mcp
 ```
 
 ## Links
 
-- Docs and lab: https://nasaq-ui.fadymondy.com
-- Site: https://nasaq.fadymondy.com
+- Docs and lab: https://docs.nasaqui.com
+- Site: https://nasaqui.com
 - Source and issues: https://github.com/fadymondy/nasaq
 
 ## Maintainers: publishing

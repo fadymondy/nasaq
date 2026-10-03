@@ -122,4 +122,4 @@ stay LTR in both directions.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-actions-page-actions--docs
+https://docs.nasaqui.com/?path=/docs/components-actions-page-actions--docs

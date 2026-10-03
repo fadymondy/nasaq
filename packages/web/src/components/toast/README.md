@@ -202,4 +202,4 @@ Sonner renders a labelled `<section aria-live="polite">` region; each toast is a
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-toast--docs
+https://docs.nasaqui.com/?path=/docs/components-alerts-notifications-toast--docs

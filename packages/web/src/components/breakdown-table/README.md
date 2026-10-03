@@ -150,4 +150,4 @@ A real `table` with column headers and a name from `label` or `title`. Bars are 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-breakdown-table--docs
+https://docs.nasaqui.com/?path=/docs/components-analytics-breakdown-table--docs

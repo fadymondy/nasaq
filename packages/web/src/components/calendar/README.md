@@ -150,4 +150,4 @@ Uses `bg-primary`, `bg-nq-selected` (range band), `bg-nq-hover`, `border-nq-focu
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pickers-calendar--docs
+https://docs.nasaqui.com/?path=/docs/components-pickers-calendar--docs

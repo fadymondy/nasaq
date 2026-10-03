@@ -138,4 +138,4 @@ Uses the surface, border, selected and focus tokens. Target `data-slot` of the p
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-docs-shell--docs
+https://docs.nasaqui.com/?path=/docs/components-layout-docs-shell--docs

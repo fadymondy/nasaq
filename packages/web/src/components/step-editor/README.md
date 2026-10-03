@@ -126,4 +126,4 @@ Reorder, add and remove are announced by the list. Problems are text, not colour
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-step-editor--docs
+https://docs.nasaqui.com/?path=/docs/components-workflow-step-editor--docs

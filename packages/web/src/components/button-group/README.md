@@ -151,4 +151,4 @@ children must be `Button`s (or triggers rendered as one). `className` merges ont
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-actions-button-group--docs
+https://docs.nasaqui.com/?path=/docs/components-actions-button-group--docs

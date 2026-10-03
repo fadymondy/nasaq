@@ -159,4 +159,4 @@ Tokens only (`bg-nq-success`, `bg-primary`, `bg-nq-warning-soft`, `border-backgr
 
 ## Lab
 
-`https://nasaq-ui.fadymondy.com/?path=/docs/components-productivity-focus-status--docs`
+`https://docs.nasaqui.com/?path=/docs/components-productivity-focus-status--docs`

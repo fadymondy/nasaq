@@ -202,4 +202,4 @@ Base UI opens the tooltip on pointer hover and on keyboard focus of the trigger,
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-overlays-tooltip--docs
+https://docs.nasaqui.com/?path=/docs/components-overlays-tooltip--docs

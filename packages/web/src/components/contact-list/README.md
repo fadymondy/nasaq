@@ -122,4 +122,4 @@ row menu, a live result count.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-crm-contact-list--docs
+https://docs.nasaqui.com/?path=/docs/components-crm-contact-list--docs

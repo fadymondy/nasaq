@@ -153,4 +153,4 @@ ShareButton                    data-slot="share-button"
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-actions-share-button--docs
+https://docs.nasaqui.com/?path=/docs/components-actions-share-button--docs

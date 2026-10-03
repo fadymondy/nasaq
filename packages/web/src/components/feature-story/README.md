@@ -177,4 +177,4 @@ The caller localises all copy.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-website-feature-story--docs
+https://docs.nasaqui.com/?path=/docs/components-website-feature-story--docs

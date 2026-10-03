@@ -174,4 +174,4 @@ Cards, progress tones (`default`, `warning`, `danger`) and stat cards use the st
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-marketing-social-composer--docs
+https://docs.nasaqui.com/?path=/docs/components-marketing-social-composer--docs

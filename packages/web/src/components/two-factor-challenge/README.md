@@ -129,4 +129,4 @@ export function Recovery() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-two-factor-challenge--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-two-factor-challenge--docs

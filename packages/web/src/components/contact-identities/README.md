@@ -103,4 +103,4 @@ Semantic tokens only, logical Tailwind classes. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-crm-contact-identities--docs
+https://docs.nasaqui.com/?path=/docs/components-crm-contact-identities--docs

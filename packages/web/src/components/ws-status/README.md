@@ -113,4 +113,4 @@ export const Offline = () => <WsStatus variant="banner" state="offline" lastConn
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-loading-states-ws-status--docs
+https://docs.nasaqui.com/?path=/docs/components-loading-states-ws-status--docs

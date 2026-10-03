@@ -124,4 +124,4 @@ Intent badges use the status tokens (info, warning, success, neutral). Logical s
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-keyword-planner--docs
+https://docs.nasaqui.com/?path=/docs/components-seo-keyword-planner--docs

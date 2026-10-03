@@ -213,4 +213,4 @@ Same as Dialog (Base UI): `role="dialog"`, modal, focus trapped and restored, ba
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-overlays-sheet--docs
+https://docs.nasaqui.com/?path=/docs/components-overlays-sheet--docs

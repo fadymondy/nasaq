@@ -113,4 +113,4 @@ export const Badge = () => <DaysLeftBadge days={20} thresholds={{ warnDays: 14, 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-security-certificate-monitor--docs
+https://docs.nasaqui.com/?path=/docs/components-security-certificate-monitor--docs

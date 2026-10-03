@@ -104,4 +104,4 @@ TypingTerminal            data-slot="typing-terminal"  dir="ltr"
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-website-typing-terminal--docs
+https://docs.nasaqui.com/?path=/docs/components-website-typing-terminal--docs

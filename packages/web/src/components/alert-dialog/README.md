@@ -204,4 +204,4 @@ returns to the trigger on close.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-overlays-alert-dialog--docs
+https://docs.nasaqui.com/?path=/docs/components-overlays-alert-dialog--docs

@@ -138,4 +138,4 @@ Building blocks for columns and cards: `EntityIdentity`, `TagList`, `PersonCell`
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-entity-list--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-entity-list--docs

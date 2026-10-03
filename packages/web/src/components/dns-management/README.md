@@ -127,4 +127,4 @@ export const NoProxy = () => <DnsManagement zone="example.org" records={records}
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-dns-management--docs
+https://docs.nasaqui.com/?path=/docs/components-server-tools-dns-management--docs

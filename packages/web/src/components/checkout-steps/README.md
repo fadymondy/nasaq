@@ -202,4 +202,4 @@ composes. Target `[data-slot="checkout-steps"]`; extend with `className`. Do not
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-checkoutsteps--docs
+https://docs.nasaqui.com/?path=/docs/components-storefront-checkoutsteps--docs

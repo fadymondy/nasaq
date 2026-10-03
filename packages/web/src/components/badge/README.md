@@ -218,4 +218,4 @@ A badge is a static `<span>` with no role. It is not focusable.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-badge--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-badge--docs

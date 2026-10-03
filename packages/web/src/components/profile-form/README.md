@@ -115,4 +115,4 @@ Uses `Field`, `Input`, `Textarea`, `Badge`, `Alert` and `Dialog` tokens; the bar
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-profile-form--docs
+https://docs.nasaqui.com/?path=/docs/components-account-profile-form--docs

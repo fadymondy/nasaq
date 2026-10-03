@@ -208,4 +208,4 @@ Uses `border-input`, `bg-card`, `border-nq-focus`, `border-nq-danger`, `h-contro
 
 ## Lab
 
-`https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-combobox--docs`
+`https://docs.nasaqui.com/?path=/docs/components-forms-combobox--docs`

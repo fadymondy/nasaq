@@ -116,4 +116,4 @@ export const Branded = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-status-page--docs
+https://docs.nasaqui.com/?path=/docs/components-monitoring-status-page--docs

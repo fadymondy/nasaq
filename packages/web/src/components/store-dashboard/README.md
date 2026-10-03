@@ -131,4 +131,4 @@ StoreDashboard
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-store-dashboard--docs
+https://docs.nasaqui.com/?path=/docs/components-store-admin-store-dashboard--docs

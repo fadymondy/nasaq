@@ -92,4 +92,4 @@ Uses `--status-success`, `--status-warning`, `--status-danger`. Target `[data-st
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-delivery-cash-collect--docs
+https://docs.nasaqui.com/?path=/docs/components-delivery-cash-collect--docs

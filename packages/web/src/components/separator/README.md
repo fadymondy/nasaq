@@ -139,4 +139,4 @@ export function SectionsAr() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-separator--docs
+https://docs.nasaqui.com/?path=/docs/components-layout-separator--docs

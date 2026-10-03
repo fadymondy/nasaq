@@ -130,4 +130,4 @@ Uses the typography roles and `--nq-*` border, selected and focus tokens. Target
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-website-legal-page--docs
+https://docs.nasaqui.com/?path=/docs/components-website-legal-page--docs

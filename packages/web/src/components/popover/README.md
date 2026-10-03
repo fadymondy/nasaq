@@ -166,4 +166,4 @@ Base UI sets `aria-expanded` and `aria-controls` on the trigger, and the popup i
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-overlays-popover--docs
+https://docs.nasaqui.com/?path=/docs/components-overlays-popover--docs

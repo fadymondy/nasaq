@@ -203,4 +203,4 @@ export { minor };
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-currency-input--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-currency-input--docs

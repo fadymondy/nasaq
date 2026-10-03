@@ -123,4 +123,4 @@ export const Manual = () => <WhatsappQrConnect status="qr" qr="2@example" autoRe
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-integrations-whatsapp-qr-connect--docs
+https://docs.nasaqui.com/?path=/docs/components-integrations-whatsapp-qr-connect--docs

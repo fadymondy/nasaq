@@ -126,4 +126,4 @@ transition.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-assistant-weighted-criteria-card--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-assistant-weighted-criteria-card--docs

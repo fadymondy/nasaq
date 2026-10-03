@@ -106,4 +106,4 @@ NativeSelect                    data-slot="native-select" (wrapper)
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-native-select--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-native-select--docs

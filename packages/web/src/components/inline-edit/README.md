@@ -152,4 +152,4 @@ Uses `--nq-hover`, `--nq-focus` and the control tokens. Target `data-slot="inlin
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-inline-edit--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-inline-edit--docs

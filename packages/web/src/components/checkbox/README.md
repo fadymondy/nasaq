@@ -76,4 +76,4 @@ Radius 4px. `className` merges onto the root.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-checkbox--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-checkbox--docs

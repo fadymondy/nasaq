@@ -131,4 +131,4 @@ export const Security = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-alerts--docs
+https://docs.nasaqui.com/?path=/docs/components-alerts-notifications-alerts--docs

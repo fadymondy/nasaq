@@ -2,7 +2,7 @@
 
 Thank you for helping. Bug reports, fixes, accessibility findings, Arabic and RTL corrections and new components are all welcome. For anything bigger than a fix, please open an issue first so the shape can be agreed before you spend time on it.
 
-The full guide, kept next to the components it describes, is on the documentation site: https://nasaq-ui.fadymondy.com (Docs, Project, Contributing). This file is the short version.
+The full guide, kept next to the components it describes, is on the documentation site: https://docs.nasaqui.com (Docs, Project, Contributing). This file is the short version.
 
 ## Set up
 

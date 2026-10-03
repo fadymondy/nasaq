@@ -165,4 +165,4 @@ below that. Target `[data-slot="pos-register"]`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-pos-register--docs
+https://docs.nasaqui.com/?path=/docs/components-store-admin-pos-register--docs

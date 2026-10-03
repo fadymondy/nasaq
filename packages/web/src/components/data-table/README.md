@@ -245,4 +245,4 @@ or set `className`/`headerClassName` on a column for widths (`w-24`).
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-data-table--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-data-table--docs

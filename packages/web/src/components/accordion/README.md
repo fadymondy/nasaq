@@ -139,4 +139,4 @@ The title sits at the inline start and the chevron at the inline end. The chevro
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-accordion--docs
+https://docs.nasaqui.com/?path=/docs/components-layout-accordion--docs

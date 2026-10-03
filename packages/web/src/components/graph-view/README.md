@@ -174,4 +174,4 @@ One column per type, with the count in the header and a card per node. Cards are
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-maps-graph-view--docs
+https://docs.nasaqui.com/?path=/docs/components-charts-maps-graph-view--docs

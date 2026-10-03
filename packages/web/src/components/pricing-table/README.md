@@ -244,4 +244,4 @@ const [period, setPeriod] = useState<BillingPeriod>("year");
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pricing-pricing-table--docs
+https://docs.nasaqui.com/?path=/docs/components-pricing-pricing-table--docs

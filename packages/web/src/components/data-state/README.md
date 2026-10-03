@@ -119,4 +119,4 @@ The first true state wins, in that order.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-loading-states-data-state--docs
+https://docs.nasaqui.com/?path=/docs/components-loading-states-data-state--docs

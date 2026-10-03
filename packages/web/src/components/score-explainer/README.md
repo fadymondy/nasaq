@@ -90,4 +90,4 @@ Bands use success, warning and danger tokens. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-assistant-score-explainer--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-assistant-score-explainer--docs

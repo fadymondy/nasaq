@@ -167,4 +167,4 @@ The caller localises `label`, `title` and `caption`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-screenshot-frame--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-screenshot-frame--docs

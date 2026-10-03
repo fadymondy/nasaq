@@ -4,10 +4,10 @@ One product language for every surface: 354 React components, a token system, el
 
 | | |
 | --- | --- |
-| Documentation and live components | https://nasaq-ui.fadymondy.com |
-| shadcn registry | https://nasaq-ui.fadymondy.com/r/{name}.json (index: `/registry.json`) |
-| MCP server (for AI tools) | https://nasaq-mcp.fadymondy.com/mcp |
-| Landing page | https://nasaq.fadymondy.com |
+| Documentation and live components | https://docs.nasaqui.com |
+| shadcn registry | https://docs.nasaqui.com/r/{name}.json (index: `/registry.json`) |
+| MCP server (for AI tools) | https://mcp.nasaqui.com/mcp |
+| Landing page | https://nasaqui.com |
 
 ![Introduction page, light](docs/screenshots/docs-introduction-light.webp)
 
@@ -25,13 +25,13 @@ Works in any project that already runs shadcn (`components.json` present).
 
 ```bash
 # once: the Nasaq preset (tokens, theme, provider)
-npx shadcn@latest add https://nasaq-ui.fadymondy.com/r/nasaq.json
+npx shadcn@latest add https://docs.nasaqui.com/r/nasaq.json
 
 # then any component by URL
-npx shadcn@latest add https://nasaq-ui.fadymondy.com/r/button.json
+npx shadcn@latest add https://docs.nasaqui.com/r/button.json
 
 # a brand theme (11 available, theme-<brand>)
-npx shadcn@latest add https://nasaq-ui.fadymondy.com/r/theme-nasaq.json
+npx shadcn@latest add https://docs.nasaqui.com/r/theme-nasaq.json
 ```
 
 To use the short `@nasaq/<name>` form, add the namespace to `components.json`:
@@ -39,7 +39,7 @@ To use the short `@nasaq/<name>` form, add the namespace to `components.json`:
 ```json
 {
   "registries": {
-    "@nasaq": "https://nasaq-ui.fadymondy.com/r/{name}.json"
+    "@nasaq": "https://docs.nasaqui.com/r/{name}.json"
   }
 }
 ```
@@ -69,7 +69,7 @@ Lets Claude, Cursor and other MCP clients search the components and read their m
 
 ```bash
 # hosted (streamable HTTP)
-claude mcp add --transport http nasaq https://nasaq-mcp.fadymondy.com/mcp
+claude mcp add --transport http nasaq https://mcp.nasaqui.com/mcp
 
 # or local over stdio
 claude mcp add nasaq -- npx -y @fadymondy/nasaq-mcp

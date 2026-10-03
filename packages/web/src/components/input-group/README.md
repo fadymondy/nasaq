@@ -154,4 +154,4 @@ Extend with `className`.
 
 ## Lab
 
-`https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-inputgroup--docs`
+`https://docs.nasaqui.com/?path=/docs/components-forms-inputgroup--docs`

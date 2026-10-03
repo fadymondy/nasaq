@@ -192,4 +192,4 @@ Uses `Input`, `Combobox`, `Badge` and `Button` tokens. Target the `data-slot` va
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pickers-time-fields--docs
+https://docs.nasaqui.com/?path=/docs/components-pickers-time-fields--docs

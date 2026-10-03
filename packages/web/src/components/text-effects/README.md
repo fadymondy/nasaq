@@ -181,4 +181,4 @@ Colours come from `--nq-*` tokens and the tag colours (notes and marks). Target 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-typography-text-effects--docs
+https://docs.nasaqui.com/?path=/docs/components-typography-text-effects--docs

@@ -117,4 +117,4 @@ Status icons use the `nq-warning`, `nq-success` and `nq-danger` soft tokens. The
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-invite-accept--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-invite-accept--docs

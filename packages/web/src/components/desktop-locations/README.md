@@ -133,4 +133,4 @@ DesktopLocationPicker                 Select of usable locations
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-apps-platforms-desktop-locations--docs
+https://docs.nasaqui.com/?path=/docs/components-apps-platforms-desktop-locations--docs

@@ -137,4 +137,4 @@ export const Comment = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-profile-card--docs
+https://docs.nasaqui.com/?path=/docs/components-account-profile-card--docs

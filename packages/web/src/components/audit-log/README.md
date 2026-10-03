@@ -109,4 +109,4 @@ Success and danger soft tokens for the diff. Built on `DataTable`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-security-audit-log--docs
+https://docs.nasaqui.com/?path=/docs/components-security-audit-log--docs

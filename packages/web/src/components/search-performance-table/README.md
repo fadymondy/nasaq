@@ -116,4 +116,4 @@ Built on `DataTable`: a real table, sortable headers with `aria-sort`, a labelle
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-search-performance-table--docs
+https://docs.nasaqui.com/?path=/docs/components-seo-search-performance-table--docs

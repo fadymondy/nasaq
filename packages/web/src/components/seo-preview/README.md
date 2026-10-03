@@ -144,4 +144,4 @@ Uses `--nq-*` surface, border and status tokens. Meters carry `data-status="empt
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-seo-preview--docs
+https://docs.nasaqui.com/?path=/docs/components-seo-seo-preview--docs

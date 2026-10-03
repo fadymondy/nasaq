@@ -100,4 +100,4 @@ The state is spoken text, not only motion. Mute and captions are toggle buttons 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-assistant-voice-call-overlay--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-assistant-voice-call-overlay--docs

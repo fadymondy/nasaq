@@ -142,4 +142,4 @@ export const Rotating = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-api-keys--docs
+https://docs.nasaqui.com/?path=/docs/components-developer-tools-api-keys--docs

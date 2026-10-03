@@ -108,4 +108,4 @@ Built on `SettingsSection`, `DangerZone`, `Field` and `InputGroup`; follows the 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-workspace-settings--docs
+https://docs.nasaqui.com/?path=/docs/components-account-workspace-settings--docs

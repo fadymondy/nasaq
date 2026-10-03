@@ -172,4 +172,4 @@ Uses card, border and text tokens plus the success and danger text tokens for di
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-billing-wallet--docs
+https://docs.nasaqui.com/?path=/docs/components-billing-wallet--docs

@@ -129,4 +129,4 @@ Rows (list view) and tiles (grid view) open their actions (download, delete) on 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-files-file-explorer--docs
+https://docs.nasaqui.com/?path=/docs/components-files-file-explorer--docs

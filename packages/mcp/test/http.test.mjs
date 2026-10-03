@@ -56,13 +56,13 @@ test("search_components and get_component work over HTTP", async () => {
   assert.ok(!isError);
   assert.match(body, /^# ProductSwitcher \(product-switcher\)/);
   assert.match(body, /npx shadcn@latest add @nasaq\/product-switcher/);
-  assert.match(body, /https:\/\/nasaq-ui\.fadymondy\.com\/r\/product-switcher\.json/);
+  assert.match(body, /https:\/\/docs\.nasaqui\.com\/r\/product-switcher\.json/);
 });
 
 test("get_setup, list_tokens and get_foundation work over HTTP", async () => {
   const setup = (await call("get_setup")).body;
   assert.match(setup, /NasaqProvider/);
-  assert.match(setup, /https:\/\/nasaq-ui\.fadymondy\.com\/r\/\{name\}\.json/);
+  assert.match(setup, /https:\/\/docs\.nasaqui\.com\/r\/\{name\}\.json/);
   assert.doesNotMatch(setup, /nasaq\.fadymondy\.com\/r\//);
   const tokens = JSON.parse((await call("list_tokens", { prefix: "--nq-danger" })).body);
   assert.ok(tokens.total > 0);
@@ -85,7 +85,7 @@ test("GET / explains how to connect", async () => {
   assert.equal(res.status, 200);
   assert.match(res.headers.get("content-type"), /text\/html/);
   const html = await res.text();
-  assert.match(html, /claude mcp add --transport http nasaq https:\/\/nasaq-mcp\.fadymondy\.com\/mcp/);
+  assert.match(html, /claude mcp add --transport http nasaq https:\/\/mcp\.nasaqui\.com\/mcp/);
 });
 
 test("CORS preflight allows browser clients", async () => {

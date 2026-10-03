@@ -92,4 +92,4 @@ English and Arabic built in. Times use `DateTime`; browser names are shown as te
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-kill-switch--docs
+https://docs.nasaqui.com/?path=/docs/components-workflow-kill-switch--docs

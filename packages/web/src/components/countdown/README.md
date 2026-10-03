@@ -187,4 +187,4 @@ Pass `className` for layout.
 
 ## Lab
 
-`https://nasaq-ui.fadymondy.com/?path=/docs/components-utilities-countdown--docs`
+`https://docs.nasaqui.com/?path=/docs/components-utilities-countdown--docs`

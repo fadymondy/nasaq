@@ -138,4 +138,4 @@ export const Shipping = () => <CountryFlag code="KW" label="Kuwait" className="t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-country-flag--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-country-flag--docs

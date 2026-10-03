@@ -194,4 +194,4 @@ so the new week is announced when the arrows are used. Previous and next week bu
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pickers-time-range-picker--docs
+https://docs.nasaqui.com/?path=/docs/components-pickers-time-range-picker--docs

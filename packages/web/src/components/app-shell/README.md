@@ -621,6 +621,6 @@ Menus and the mobile sheet render in portals and follow the document, so set den
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-pages-app-shell--docs
+https://docs.nasaqui.com/?path=/docs/components-layout-pages-app-shell--docs
 
 Frames: `Inset` (rounded panel, support/docs/status footer), `Text-only on desktop` and its mobile sheet, `Top navigation`, `Top navigation, empty page`, `Top navigation, mobile` and `Top navigation, text-only tabs`.

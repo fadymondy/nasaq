@@ -139,4 +139,4 @@ export function Failing() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-oauth-consent--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-oauth-consent--docs

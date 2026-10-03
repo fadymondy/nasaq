@@ -164,4 +164,4 @@ Uses `--nq-*` tokens only. Target `data-slot` names above; `data-dragging` marks
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-store-products-admin--docs
+https://docs.nasaqui.com/?path=/docs/components-store-admin-store-products-admin--docs

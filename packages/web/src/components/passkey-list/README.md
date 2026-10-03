@@ -119,4 +119,4 @@ export const canUsePasskeys = () => isPasskeySupported();
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-security-passkey-list--docs
+https://docs.nasaqui.com/?path=/docs/components-security-passkey-list--docs

@@ -125,4 +125,4 @@ New, lost and toxic use the info, warning and danger tokens. Chart series use `-
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-backlink-monitor--docs
+https://docs.nasaqui.com/?path=/docs/components-seo-backlink-monitor--docs

@@ -108,4 +108,4 @@ CatalogStore                data-slot="catalog-store"
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-catalog-store--docs
+https://docs.nasaqui.com/?path=/docs/components-storefront-catalog-store--docs

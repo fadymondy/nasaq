@@ -124,4 +124,4 @@ Every `section` prop except `children` and `title`, plus:
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-database-explorer--docs
+https://docs.nasaqui.com/?path=/docs/components-server-tools-database-explorer--docs

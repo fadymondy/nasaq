@@ -134,4 +134,4 @@ Uses StatCard, DataTable and Badge styles. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-admin-admin-users--docs
+https://docs.nasaqui.com/?path=/docs/components-admin-admin-users--docs

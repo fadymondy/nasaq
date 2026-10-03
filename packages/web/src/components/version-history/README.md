@@ -116,4 +116,4 @@ Versions are toggle buttons. The diff is a table whose added and removed rows ar
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-files-version-history--docs
+https://docs.nasaqui.com/?path=/docs/components-files-version-history--docs

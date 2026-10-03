@@ -113,4 +113,4 @@ import { BookingStatusBadge } from "@fadymondy/nasaq/web";
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-booking-pipeline--docs
+https://docs.nasaqui.com/?path=/docs/components-bookings-booking-pipeline--docs

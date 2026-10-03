@@ -6,12 +6,12 @@ It is read-only and needs no account or API key.
 
 ## Connect to the hosted server
 
-Endpoint: `https://nasaq-mcp.fadymondy.com/mcp` (streamable HTTP, no authentication).
+Endpoint: `https://mcp.nasaqui.com/mcp` (streamable HTTP, no authentication).
 
 **Claude Code**
 
 ```bash
-claude mcp add --transport http nasaq https://nasaq-mcp.fadymondy.com/mcp
+claude mcp add --transport http nasaq https://mcp.nasaqui.com/mcp
 ```
 
 Add `--scope user` to have it in every project, or `--scope project` to write it to the repo's `.mcp.json` so your team gets it too.
@@ -25,7 +25,7 @@ Open Settings, then Connectors, then Add custom connector. Name it `Nasaq` and p
 Add it in Settings, MCP, or put this in `~/.cursor/mcp.json` (or `.cursor/mcp.json` in a project):
 
 ```json
-{ "mcpServers": { "nasaq": { "url": "https://nasaq-mcp.fadymondy.com/mcp" } } }
+{ "mcpServers": { "nasaq": { "url": "https://mcp.nasaqui.com/mcp" } } }
 ```
 
 **Other clients**
@@ -33,12 +33,12 @@ Add it in Settings, MCP, or put this in `~/.cursor/mcp.json` (or `.cursor/mcp.js
 Most clients that read a JSON config accept this shape, and some use `servers` instead of `mcpServers`:
 
 ```json
-{ "mcpServers": { "nasaq": { "type": "http", "url": "https://nasaq-mcp.fadymondy.com/mcp" } } }
+{ "mcpServers": { "nasaq": { "type": "http", "url": "https://mcp.nasaqui.com/mcp" } } }
 ```
 
-A client that only speaks stdio can bridge the URL: `npx -y mcp-remote https://nasaq-mcp.fadymondy.com/mcp`.
+A client that only speaks stdio can bridge the URL: `npx -y mcp-remote https://mcp.nasaqui.com/mcp`.
 
-To check the server is up, open `https://nasaq-mcp.fadymondy.com/health`. It returns the version and catalogue counts.
+To check the server is up, open `https://mcp.nasaqui.com/health`. It returns the version and catalogue counts.
 
 ## Run it locally over stdio
 

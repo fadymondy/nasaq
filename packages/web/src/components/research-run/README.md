@@ -89,4 +89,4 @@ Progress is a list with a text state per stage. Citations are buttons named by t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-research-run--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-agents-research-run--docs

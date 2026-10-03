@@ -197,4 +197,4 @@ export function Failed({ retry }: { retry: () => void }) {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-chat-chat--docs
+https://docs.nasaqui.com/?path=/docs/components-chat-chat--docs

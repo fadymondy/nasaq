@@ -168,4 +168,4 @@ export function Enabled() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-security-two-factor-setup--docs
+https://docs.nasaqui.com/?path=/docs/components-security-two-factor-setup--docs

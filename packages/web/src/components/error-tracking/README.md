@@ -121,4 +121,4 @@ Other `EntityList` props (`toolbar`, `empty`, `density`) pass through.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-error-tracking--docs
+https://docs.nasaqui.com/?path=/docs/components-monitoring-error-tracking--docs

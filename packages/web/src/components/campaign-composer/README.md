@@ -97,4 +97,4 @@ Semantic tokens only. Channels are text, no brand mark is drawn.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-marketing-campaign-composer--docs
+https://docs.nasaqui.com/?path=/docs/components-marketing-campaign-composer--docs

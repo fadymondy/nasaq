@@ -136,4 +136,4 @@ export function Sms() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-verify-otp-form--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-verify-otp-form--docs

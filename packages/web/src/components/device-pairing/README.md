@@ -130,4 +130,4 @@ export function Screen({ status }: { status: "pending" | "approved" | "denied" |
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-pages-device-pairing--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-pages-device-pairing--docs

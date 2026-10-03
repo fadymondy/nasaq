@@ -145,4 +145,4 @@ Uses Card, Badge, Button, Tabs, Switch and status tokens (`--nq-success`, `--nq-
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-marketing-pages-trends--docs
+https://docs.nasaqui.com/?path=/docs/components-marketing-pages-trends--docs

@@ -121,4 +121,4 @@ export function Quick() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-forgot-password-form--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-forgot-password-form--docs

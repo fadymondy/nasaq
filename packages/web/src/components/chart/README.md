@@ -249,4 +249,4 @@ two series must be distinguished for colour-blind readers.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-maps-chart--docs
+https://docs.nasaqui.com/?path=/docs/components-charts-maps-chart--docs

@@ -145,4 +145,4 @@ Same control tokens as `Input` and `Select`. Target `data-invalid`, `data-popup-
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pickers-datepicker--docs
+https://docs.nasaqui.com/?path=/docs/components-pickers-datepicker--docs

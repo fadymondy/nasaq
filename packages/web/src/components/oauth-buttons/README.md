@@ -150,4 +150,4 @@ export function Sso() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-oauth-buttons--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-oauth-buttons--docs

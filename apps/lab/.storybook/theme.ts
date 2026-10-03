@@ -5,7 +5,7 @@ import { create } from "storybook/theming";
 // packages/brands/assets (see staticDirs in main.ts).
 const shared = {
   brandTitle: "Nasaq",
-  brandUrl: "https://nasaq-ui.fadymondy.com",
+  brandUrl: "https://docs.nasaqui.com",
   brandTarget: "_self",
   fontBase: 'Inter, Alexandria, system-ui, sans-serif',
   fontCode: '"JetBrains Mono", ui-monospace, monospace',

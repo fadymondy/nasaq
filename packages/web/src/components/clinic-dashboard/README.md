@@ -100,4 +100,4 @@ Every `div` prop is passed through unless noted.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-healthcare-clinic-dashboard--docs
+https://docs.nasaqui.com/?path=/docs/components-healthcare-clinic-dashboard--docs

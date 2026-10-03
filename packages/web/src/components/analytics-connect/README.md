@@ -157,4 +157,4 @@ The empty state is a labelled section with a heading; the connector's dialog tra
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-integrations-analytics-connect--docs
+https://docs.nasaqui.com/?path=/docs/components-integrations-analytics-connect--docs

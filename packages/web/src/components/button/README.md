@@ -229,4 +229,4 @@ Base UI renders a native `<button>`, so the browser provides the keyboard behavi
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-actions-button--docs
+https://docs.nasaqui.com/?path=/docs/components-actions-button--docs

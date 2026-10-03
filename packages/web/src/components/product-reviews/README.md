@@ -133,4 +133,4 @@ Set the provider locale to `ar`. Strings, digits, dates and the layout follow.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-product-reviews--docs
+https://docs.nasaqui.com/?path=/docs/components-storefront-product-reviews--docs

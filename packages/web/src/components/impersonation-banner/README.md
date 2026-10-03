@@ -91,4 +91,4 @@ Built-in English and Arabic. The email stays left-to-right inside an Arabic sent
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-admin-impersonation-banner--docs
+https://docs.nasaqui.com/?path=/docs/components-admin-impersonation-banner--docs

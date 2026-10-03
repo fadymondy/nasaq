@@ -9,8 +9,8 @@ with the shadcn CLI, so you own the code; tokens are `--nq-*` CSS variables that
 ## Install from the registry
 
 ```bash
-npx shadcn@latest add https://nasaq-ui.fadymondy.com/r/nasaq.json
-npx shadcn@latest add https://nasaq-ui.fadymondy.com/r/button.json
+npx shadcn@latest add https://docs.nasaqui.com/r/nasaq.json
+npx shadcn@latest add https://docs.nasaqui.com/r/button.json
 ```
 
 Or register it once in `components.json` and use the short name:
@@ -18,7 +18,7 @@ Or register it once in `components.json` and use the short name:
 ```json
 {
   "registries": {
-    "@nasaq": "https://nasaq-ui.fadymondy.com/r/{name}.json"
+    "@nasaq": "https://docs.nasaqui.com/r/{name}.json"
   }
 }
 ```

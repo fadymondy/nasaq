@@ -176,4 +176,4 @@ Target `[data-slot="theme-card"]`, `[data-slot="wallpaper-tile"]`, `[data-slot="
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pickers-appearance-pickers--docs
+https://docs.nasaqui.com/?path=/docs/components-pickers-appearance-pickers--docs

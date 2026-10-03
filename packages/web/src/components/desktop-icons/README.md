@@ -103,4 +103,4 @@ DesktopIconGrid            data-slot="desktop-icon-grid"  role="group"  data-fre
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-apps-platforms-desktop-icons--docs
+https://docs.nasaqui.com/?path=/docs/components-apps-platforms-desktop-icons--docs

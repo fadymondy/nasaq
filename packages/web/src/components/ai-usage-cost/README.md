@@ -123,4 +123,4 @@ The chart has a text name and the same data is in the breakdown tables. The toke
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-ai-usage-cost--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-agents-ai-usage-cost--docs

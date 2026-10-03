@@ -179,4 +179,4 @@ plan.ok; // true, plan.refundAmount is the estimate in minor units
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-store-account--docs
+https://docs.nasaqui.com/?path=/docs/components-storefront-store-account--docs

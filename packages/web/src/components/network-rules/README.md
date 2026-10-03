@@ -114,4 +114,4 @@ export const FirewallOnly = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-network-rules--docs
+https://docs.nasaqui.com/?path=/docs/components-server-tools-network-rules--docs

@@ -126,4 +126,4 @@ A link that skips over cards on its row arcs above them; in a single column it i
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-workflow-network--docs
+https://docs.nasaqui.com/?path=/docs/components-workflow-workflow-network--docs

@@ -11,12 +11,12 @@ The server is read-only and needs no account or API key. Use it hosted (nothing 
 
 ### Hosted (recommended)
 
-Endpoint: **`https://nasaq-mcp.fadymondy.com/mcp`** (streamable HTTP, no authentication).
+Endpoint: **`https://mcp.nasaqui.com/mcp`** (streamable HTTP, no authentication).
 
 **Claude Code**
 
 ```bash
-claude mcp add --transport http nasaq https://nasaq-mcp.fadymondy.com/mcp
+claude mcp add --transport http nasaq https://mcp.nasaqui.com/mcp
 ```
 
 Add `--scope user` to make it available in every project, or `--scope project` to write it to the repo's `.mcp.json`.
@@ -30,7 +30,7 @@ Settings, Connectors, Add custom connector. Name it `Nasaq` and paste the URL ab
 Settings, MCP, Add new MCP server, or edit `~/.cursor/mcp.json` (or `.cursor/mcp.json` in a project):
 
 ```json
-{ "mcpServers": { "nasaq": { "url": "https://nasaq-mcp.fadymondy.com/mcp" } } }
+{ "mcpServers": { "nasaq": { "url": "https://mcp.nasaqui.com/mcp" } } }
 ```
 
 **Any other client**
@@ -38,16 +38,16 @@ Settings, MCP, Add new MCP server, or edit `~/.cursor/mcp.json` (or `.cursor/mcp
 Clients that read a JSON config generally accept one of these shapes:
 
 ```json
-{ "mcpServers": { "nasaq": { "type": "http", "url": "https://nasaq-mcp.fadymondy.com/mcp" } } }
+{ "mcpServers": { "nasaq": { "type": "http", "url": "https://mcp.nasaqui.com/mcp" } } }
 ```
 
 ```json
-{ "servers": { "nasaq": { "type": "http", "url": "https://nasaq-mcp.fadymondy.com/mcp" } } }
+{ "servers": { "nasaq": { "type": "http", "url": "https://mcp.nasaqui.com/mcp" } } }
 ```
 
-Clients that only speak stdio can bridge the URL with `npx -y mcp-remote https://nasaq-mcp.fadymondy.com/mcp`.
+Clients that only speak stdio can bridge the URL with `npx -y mcp-remote https://mcp.nasaqui.com/mcp`.
 
-Check it is up: `https://nasaq-mcp.fadymondy.com/health` returns the version and catalogue counts.
+Check it is up: `https://mcp.nasaqui.com/health` returns the version and catalogue counts.
 
 ### Local (stdio)
 
@@ -80,8 +80,8 @@ Categories: `layout`, `navigation`, `actions`, `forms`, `pickers`, `data-display
 
 ## Links
 
-- Docs and live examples: https://nasaq-ui.fadymondy.com
-- shadcn registry: `https://nasaq-ui.fadymondy.com/r/{name}.json` (namespace `@nasaq`, e.g. `npx shadcn@latest add @nasaq/button`)
+- Docs and live examples: https://docs.nasaqui.com
+- shadcn registry: `https://docs.nasaqui.com/r/{name}.json` (namespace `@nasaq`, e.g. `npx shadcn@latest add @nasaq/button`)
 - Source: https://github.com/fadymondy/nasaq
 
 ## Run the HTTP server yourself

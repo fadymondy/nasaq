@@ -135,6 +135,6 @@ export function Syncing() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-loading-states-spinner--docs
+https://docs.nasaqui.com/?path=/docs/components-loading-states-spinner--docs
 
 The spinner has no story of its own; it appears under the `Primitives` story of Components/States.

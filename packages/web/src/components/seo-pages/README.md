@@ -136,4 +136,4 @@ Score bands use the success, warning and danger tokens. All spacing is logical.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-seo-pages--docs
+https://docs.nasaqui.com/?path=/docs/components-seo-seo-pages--docs

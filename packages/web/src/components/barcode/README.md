@@ -117,4 +117,4 @@ export const Retail = () => <BarcodeGenerator formats={["EAN13", "EAN8", "UPC"]}
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-utilities-barcode--docs
+https://docs.nasaqui.com/?path=/docs/components-utilities-barcode--docs

@@ -184,4 +184,4 @@ Uses `--nq-*` surface, border, selected and focus tokens. Target `data-slot`, an
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-editors-editor-chrome--docs
+https://docs.nasaqui.com/?path=/docs/components-editors-editor-chrome--docs

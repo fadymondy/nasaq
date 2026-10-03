@@ -110,4 +110,4 @@ onFinish={async ({ followUp }) => {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-healthcare-current-visit--docs
+https://docs.nasaqui.com/?path=/docs/components-healthcare-current-visit--docs

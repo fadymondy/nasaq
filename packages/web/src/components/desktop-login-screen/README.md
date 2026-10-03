@@ -108,4 +108,4 @@ DesktopLoginScreen          data-slot="desktop-login-screen"
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-pages-desktop-login-screen--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-pages-desktop-login-screen--docs

@@ -159,4 +159,4 @@ Box uses `border-input`, `bg-card`, `border-nq-focus`; errors use `border-nq-dan
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-tag-input--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-tag-input--docs

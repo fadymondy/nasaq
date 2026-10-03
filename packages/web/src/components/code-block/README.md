@@ -161,4 +161,4 @@ export function Install() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-code-block--docs
+https://docs.nasaqui.com/?path=/docs/components-developer-tools-code-block--docs

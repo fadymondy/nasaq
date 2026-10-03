@@ -100,4 +100,4 @@ Badge variants and text tokens. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-infolist--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-infolist--docs

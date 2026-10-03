@@ -281,4 +281,4 @@ Provided by Base UI Menu: trigger has `aria-haspopup="menu"` and `aria-expanded`
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-overlays-dropdown-menu--docs
+https://docs.nasaqui.com/?path=/docs/components-overlays-dropdown-menu--docs

@@ -156,4 +156,4 @@ The bar is a Base UI `meter` with an accessible name and a spoken value ("46 of 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-usage-meter--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-usage-meter--docs

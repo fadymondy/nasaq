@@ -154,4 +154,4 @@ Without `onSelect` the tiles are a labelled group of text. With it, each tile is
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-metric-tiles--docs
+https://docs.nasaqui.com/?path=/docs/components-analytics-metric-tiles--docs

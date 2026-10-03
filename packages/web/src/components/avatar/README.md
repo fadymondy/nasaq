@@ -183,4 +183,4 @@ An avatar is not focusable and has no keyboard behaviour.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-avatar--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-avatar--docs

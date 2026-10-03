@@ -152,4 +152,4 @@ Uses the dialog, control and `--nq-*` selected and focus tokens. Target `data-sl
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-productivity-quick-capture--docs
+https://docs.nasaqui.com/?path=/docs/components-productivity-quick-capture--docs

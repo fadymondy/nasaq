@@ -86,4 +86,4 @@ Other children flow normally inside the box.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-aspect-ratio--docs
+https://docs.nasaqui.com/?path=/docs/components-layout-aspect-ratio--docs

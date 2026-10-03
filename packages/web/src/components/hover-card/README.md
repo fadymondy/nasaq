@@ -139,4 +139,4 @@ action in it.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-overlays-hover-card--docs
+https://docs.nasaqui.com/?path=/docs/components-overlays-hover-card--docs

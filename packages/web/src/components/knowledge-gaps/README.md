@@ -96,4 +96,4 @@ Status is text plus an icon, never colour alone. Action buttons carry the query 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-knowledge-gaps--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-agents-knowledge-gaps--docs

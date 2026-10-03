@@ -155,4 +155,4 @@ Composes `DataTable`, `StatCard` and `Tabs`, so it uses their tokens. Target `[d
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-billing-invoicelist--docs
+https://docs.nasaqui.com/?path=/docs/components-billing-invoicelist--docs

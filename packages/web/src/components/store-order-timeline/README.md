@@ -132,4 +132,4 @@ Helpers: `trackingModel({ status, payment, placedAt, events, hasTracking })` ret
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-store-order-timeline--docs
+https://docs.nasaqui.com/?path=/docs/components-storefront-store-order-timeline--docs

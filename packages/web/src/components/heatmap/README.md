@@ -173,4 +173,4 @@ The grid is `role="grid"` with weeks as `row`s and days as `gridcell`s. Every ce
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-maps-heatmap--docs
+https://docs.nasaqui.com/?path=/docs/components-charts-maps-heatmap--docs

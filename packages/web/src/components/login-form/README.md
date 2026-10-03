@@ -209,4 +209,4 @@ declare function signInWithPasskey(signal?: AbortSignal): Promise<void>;
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-login-form--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-login-form--docs

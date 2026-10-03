@@ -111,4 +111,4 @@ export const Tiles = () => <SeverityTiles counts={{ critical: 1, high: 4, medium
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-security-vulnerability-report--docs
+https://docs.nasaqui.com/?path=/docs/components-security-vulnerability-report--docs

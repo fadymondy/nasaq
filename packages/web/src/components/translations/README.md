@@ -124,4 +124,4 @@ None: this is logic only.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-utilities-translations--docs
+https://docs.nasaqui.com/?path=/docs/components-utilities-translations--docs

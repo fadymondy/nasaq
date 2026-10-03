@@ -86,4 +86,4 @@ An outline badge with a `--nq-brand` tinted border. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-interim-badge--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-interim-badge--docs

@@ -244,4 +244,4 @@ change (`data-moved`) only the new step's rows rise 6px, 50ms apart, with no del
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-sign-in-flow--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-sign-in-flow--docs
