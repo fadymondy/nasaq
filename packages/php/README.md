@@ -5,7 +5,7 @@
 ## Requirements
 
 - PHP 8.2+
-- Laravel 11, 12 or 13
+- Laravel 12 or 13
 - Tailwind CSS v4 (or use the precompiled stylesheet)
 - Optional: Livewire 3, Filament 3/4
 

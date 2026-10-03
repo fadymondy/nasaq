@@ -5,7 +5,7 @@
 ]">
     <x-slot:confirm>
         <x-nq::agent-steps.confirm summary="I will rename 2 tags and delete 1 duplicate." :changes="[
-            ['id' => 'c1', 'title' => 'Rename tag', 'target' => 'tags/launch', 'before' => 'name: launch'.PHP_EOL.'color: blue', 'after' => 'name: product-launch'.PHP_EOL.'color: blue'],
+            ['id' => 'c1', 'title' => 'Rename tag', 'target' => 'tags/launch', 'before' => 'name: launch'.chr(10).'color: blue', 'after' => 'name: product-launch'.chr(10).'color: blue'],
             ['id' => 'c2', 'title' => 'Delete duplicate', 'target' => 'tags/launch-2', 'before' => 'name: launch-2', 'risk' => 'high'],
         ]" />
     </x-slot:confirm>

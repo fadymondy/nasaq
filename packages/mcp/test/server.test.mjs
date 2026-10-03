@@ -86,18 +86,19 @@ test("foundations list the new setup guides and no kit", async () => {
   assert.match((await call("get_foundation", { topic: "get-started" })).body, /# Get started/);
 });
 
-test("list_components per framework lists only ported components", async () => {
+test("list_components per framework lists every component", async () => {
   for (const framework of ["vue", "nuxt", "blade", "html"]) {
     const res = JSON.parse((await call("list_components", { framework })).body);
     const names = Object.values(res.categories).flat().map((c) => c.name);
     for (const n of ["button", "dialog", "spinner", "tabs"]) assert.ok(names.includes(n), `${framework}: ${n}`);
-    assert.ok(!names.includes("app-shell"), framework);
+    assert.ok(names.includes("app-shell"), framework);
     assert.match(res.next, new RegExp(`framework: "${framework}"`));
   }
   const vue = JSON.parse((await call("list_components", { framework: "vue" })).body);
   const react = JSON.parse((await call("list_components", { framework: "react" })).body);
   const shadcn = JSON.parse((await call("list_components", { framework: "shadcn" })).body);
-  assert.ok(react.count > vue.count && shadcn.count === react.count);
+  // 1.0: every component is ported to every stack.
+  assert.ok(react.count === vue.count && shadcn.count === react.count);
 });
 
 test("get_component returns the stack's code", async () => {
@@ -131,16 +132,11 @@ test("get_component returns the stack's code", async () => {
   assert.match(react, /# Dialog/);
 });
 
-test("an unported component says so and lists what is ported", async () => {
-  for (const [framework, label] of [["vue", "Vue"], ["blade", "Blade"], ["alpine", "HTML + Alpine"]]) {
+test("every stack returns code for a component that used to be React-only", async () => {
+  for (const framework of ["vue", "blade", "alpine", "shadcn"]) {
     const res = await call("get_component", { name: "app-shell", framework });
-    assert.ok(res.isError, framework);
-    assert.ok(res.body.includes(`not ported yet to ${label}`), res.body);
-    assert.match(res.body, /React/);
-    assert.match(res.body, /button, dialog, spinner, tabs/);
+    assert.ok(!res.isError, `${framework}: ${res.body.slice(0, 120)}`);
   }
-  // shadcn still works for any component that has a Quick start.
-  assert.ok(!(await call("get_component", { name: "app-shell", framework: "shadcn" })).isError);
 });
 
 test("resources", async () => {
