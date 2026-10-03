@@ -1,0 +1,54 @@
+<div data-slot="latency-percentiles" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Latency</h3>
+        <div data-slot="card-description" class="text-body-sm text-muted-foreground">Response time percentiles</div></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-4"><dl class="grid grid-cols-3 gap-3">
+                                            <div data-percentile="p50" class="flex min-w-0 flex-col gap-0.5 rounded-control border border-border px-3 py-2">
+                    <dt class="flex items-center gap-1.5 text-caption text-muted-foreground">
+                        <span aria-hidden="true" class="size-2 rounded-full" style="background: var(--nq-tag-teal)"></span>
+                        <bdi dir="ltr" class="text-label text-foreground">p50</bdi>
+                        <span class="hidden truncate sm:inline">Median</span>
+                    </dt>
+                    <dd class="text-h3 text-foreground tabular-nums" dir="ltr">121 ms</dd>
+                                    </div>
+                                            <div data-percentile="p95" class="flex min-w-0 flex-col gap-0.5 rounded-control border border-border px-3 py-2">
+                    <dt class="flex items-center gap-1.5 text-caption text-muted-foreground">
+                        <span aria-hidden="true" class="size-2 rounded-full" style="background: var(--nq-tag-amber)"></span>
+                        <bdi dir="ltr" class="text-label text-foreground">p95</bdi>
+                        <span class="hidden truncate sm:inline">Slowest 5%</span>
+                    </dt>
+                    <dd class="text-h3 text-foreground tabular-nums" dir="ltr">486 ms</dd>
+                                    </div>
+                                            <div data-percentile="p99" class="flex min-w-0 flex-col gap-0.5 rounded-control border border-border px-3 py-2">
+                    <dt class="flex items-center gap-1.5 text-caption text-muted-foreground">
+                        <span aria-hidden="true" class="size-2 rounded-full" style="background: var(--nq-tag-pink)"></span>
+                        <bdi dir="ltr" class="text-label text-foreground">p99</bdi>
+                        <span class="hidden truncate sm:inline">Slowest 1%</span>
+                    </dt>
+                    <dd class="text-h3 text-foreground tabular-nums" dir="ltr">1.14 s</dd>
+                                    </div>
+                    </dl>
+        <div data-slot="chart"  role="img" aria-label="Latency percentiles over time"   style="--color-p50: var(--nq-tag-teal); --color-p95: var(--nq-tag-amber); --color-p99: var(--nq-tag-pink)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+        <div aria-hidden="true" class="flex w-12 shrink-0 flex-col justify-between text-end text-muted-foreground tabular-nums">
+            <span>2K</span><span>1.5K</span><span>1K</span><span>500</span><span>0</span>        </div>
+        <div class="relative min-w-0 flex-1 border-b border-border">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <line x1="0" x2="100" y1="0.00" y2="0.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                    <line x1="0" x2="100" y1="25.00" y2="25.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                    <line x1="0" x2="100" y1="50.00" y2="50.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                    <line x1="0" x2="100" y1="75.00" y2="75.00" stroke="var(--border)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                                                    <line x1="0" x2="100" y1="75.00" y2="75.00" stroke="var(--nq-warning)" stroke-width="1.5" stroke-dasharray="2 4" vector-effect="non-scaling-stroke" />
+                                                                        <polyline points="0.00,94.10 100.00,93.80" fill="none" stroke="var(--color-p50)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                        <polyline points="0.00,76.50 100.00,75.40" fill="none" stroke="var(--color-p95)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                        <polyline points="0.00,47.50 100.00,39.50" fill="none" stroke="var(--color-p99)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                            </svg>
+            <span class="absolute end-1 text-caption text-nq-warning-text" style="top: 75.00%">Target p95 500</span>                                                <span data-slot="chart-dot" title="9:00 AM: p50 118" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 0.00%; top: 94.10%; --color-key: var(--color-p50)"></span>
+                                    <span data-slot="chart-dot" title="9:05 AM: p50 124" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 100.00%; top: 93.80%; --color-key: var(--color-p50)"></span>
+                                                                <span data-slot="chart-dot" title="9:00 AM: p95 470" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 0.00%; top: 76.50%; --color-key: var(--color-p95)"></span>
+                                    <span data-slot="chart-dot" title="9:05 AM: p95 492" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 100.00%; top: 75.40%; --color-key: var(--color-p95)"></span>
+                                                                <span data-slot="chart-dot" title="9:00 AM: p99 1,050" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 0.00%; top: 47.50%; --color-key: var(--color-p99)"></span>
+                                    <span data-slot="chart-dot" title="9:05 AM: p99 1,210" class="absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-key)] opacity-0 hover:opacity-100 ltr:-translate-x-1/2 rtl:translate-x-1/2" style="inset-inline-start: 100.00%; top: 39.50%; --color-key: var(--color-p99)"></span>
+                                    </div>
+    </div>
+    <div aria-hidden="true" class="flex justify-between ps-14 text-muted-foreground">
+        <span>9:00 AM</span><span>9:05 AM</span>    </div>
+</div></div></div>

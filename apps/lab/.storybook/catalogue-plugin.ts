@@ -21,11 +21,47 @@ function frontmatter(md: string): Record<string, string> {
   return out;
 }
 
+/**
+ * `virtual:nasaq-exports`: each exported name of @nasaq/web mapped to the file the shadcn registry installs it
+ * as (`@/components/ui/<file>`), so a component page can show its Quick start with shadcn import paths.
+ */
+const EXPORTS_ID = "virtual:nasaq-exports";
+const EXPORTS_RESOLVED = `\0${EXPORTS_ID}`;
+
+function exportsMap(): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const d of readdirSync(COMPONENTS, { withFileTypes: true })) {
+    if (!d.isDirectory()) continue;
+    let index: string;
+    try {
+      index = readFileSync(join(COMPONENTS, d.name, "index.ts"), "utf8");
+    } catch {
+      continue;
+    }
+    for (const [, file] of index.matchAll(/export \* from "\.\/([\w-]+)"/g)) {
+      let src = "";
+      for (const ext of [".tsx", ".ts"]) {
+        try {
+          src = readFileSync(join(COMPONENTS, d.name, file + ext), "utf8");
+          break;
+        } catch {}
+      }
+      const names = [
+        ...[...src.matchAll(/export (?:declare )?(?:async )?(?:function|const|let|class|interface|type|enum) (\w+)/g)].map((m) => m[1]!),
+        ...[...src.matchAll(/export (?:type )?\{([^}]+)\}/g)].flatMap((m) => m[1]!.split(",").map((n) => n.trim().split(/\s+as\s+/).pop()!.replace(/^type\s+/, ""))),
+      ];
+      for (const n of names) if (n && !(n in out)) out[n] = `@/components/ui/${file}`;
+    }
+  }
+  return out;
+}
+
 export function catalogue(): Plugin {
   return {
     name: "nasaq:catalogue",
-    resolveId: (id) => (id === ID ? RESOLVED : undefined),
+    resolveId: (id) => (id === ID ? RESOLVED : id === EXPORTS_ID ? EXPORTS_RESOLVED : undefined),
     load(id) {
+      if (id === EXPORTS_RESOLVED) return `export const exportsMap = ${JSON.stringify(exportsMap())};`;
       if (id !== RESOLVED) return;
       const items = readdirSync(COMPONENTS, { withFileTypes: true })
         .filter((d) => d.isDirectory())

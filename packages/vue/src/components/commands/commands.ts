@@ -1,0 +1,340 @@
+import {
+  type Component,
+  type InjectionKey,
+  type MaybeRefOrGetter,
+  type VNode,
+  getCurrentInstance,
+  inject,
+  onBeforeUnmount,
+  onMounted,
+  provide,
+  shallowRef,
+  toValue,
+  watch,
+} from "vue";
+
+const APPLE_PLATFORMS = new Set(["darwin", "macos", "ios"]);
+const BROWSER_PLATFORMS = new Set(["web", "extension"]);
+
+/** ⌘ or Ctrl. `<html data-platform>` wins when it is set; otherwise the browser's own platform decides. */
+export function isApplePlatform(): boolean {
+  if (typeof document !== "undefined") {
+    const platform = document.documentElement.dataset.platform;
+    if (platform && !BROWSER_PLATFORMS.has(platform)) return APPLE_PLATFORMS.has(platform);
+  }
+  return typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
+}
+
+/**
+ * Standard sections, in display order. Products may use their own section ids too; those sort
+ * after "products" unless they pass `sectionOrder`.
+ */
+export const COMMAND_SECTIONS = ["context", "search", "create", "navigation", "products", "ai", "system"] as const;
+export type CommandSection = (typeof COMMAND_SECTIONS)[number];
+
+export const DEFAULT_SECTION_LABELS: Record<CommandSection, { en: string; ar: string }> = {
+  context: { en: "This page", ar: "هذه الصفحة" },
+  search: { en: "Results", ar: "النتائج" },
+  create: { en: "Create", ar: "إنشاء" },
+  navigation: { en: "Go to", ar: "انتقال" },
+  products: { en: "Switch product", ar: "تبديل المنتج" },
+  ai: { en: "Ask AI", ar: "الذكاء الاصطناعي" },
+  system: { en: "System", ar: "النظام" },
+};
+
+export interface Command {
+  /** Unique across the registry. Prefix with your product, e.g. "mahaam.issue.new". */
+  id: string;
+  label: string;
+  section?: CommandSection | (string & {});
+  /** Label for a custom section id (ignored for standard sections). */
+  sectionLabel?: string;
+  /** Position of a custom section; standard sections are 0–6. Default 4.5 (after products). */
+  sectionOrder?: number;
+  /** A lucide-vue-next icon component, or a vnode such as a NqProductMark. */
+  icon?: Component | VNode;
+  /** Extra words that should match: synonyms, the other language's name, ids. */
+  keywords?: string[];
+  /**
+   * Key sequence, space-separated: "C", "G I", "Shift A", "?", or one modified chord: "Mod K",
+   * "⌘ Shift P", "Alt N" ("Mod"/"⌘" = ⌘ on Apple, Ctrl elsewhere). Shown in the palette and, unless
+   * `bindShortcut` is false, bound globally. Plain keys never fire inside text fields; chords do.
+   * Letters and digits match physical keys, so shortcuts work on Arabic layouts.
+   */
+  shortcut?: string;
+  bindShortcut?: boolean;
+  /** Muted text at the inline end, e.g. "Project" or "Mahaam". */
+  hint?: string | VNode;
+  /** Higher sorts first within its section when there is no query. */
+  priority?: number;
+  disabled?: boolean;
+  /** Only listed once the user types (rare or destructive commands). */
+  searchOnly?: boolean;
+  perform?: () => void;
+  /** Opens a nested page of commands instead of running (e.g. "Change status →"). */
+  children?: Command[] | (() => Command[]);
+  /** Keep the palette open after `perform` (e.g. toggles you may repeat). */
+  keepOpen?: boolean;
+}
+
+/** Async results for the "search" section (or any section), run as the user types. */
+export interface CommandSource {
+  id: string;
+  /** Called with the trimmed query once it reaches `minQuery` characters. Abort on `signal`. */
+  search: (query: string, signal: AbortSignal) => Promise<Command[]> | Command[];
+  minQuery?: number;
+  /** Debounce in ms. Default 150. */
+  debounce?: number;
+}
+
+type Listener = () => void;
+
+export interface RegistrySnapshot {
+  commands: Command[];
+  sources: CommandSource[];
+  paletteOpen: boolean;
+}
+
+/** Holds every mounted component's commands. One per app. Framework-neutral; the composables below wrap it. */
+export class CommandRegistry {
+  private commands = new Map<string, Command[]>();
+  private sources = new Map<string, CommandSource>();
+  private listeners = new Set<Listener>();
+  private snapshot: RegistrySnapshot = { commands: [], sources: [], paletteOpen: false };
+  private paletteOpen = false;
+
+  subscribe = (listener: Listener) => {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  };
+  getSnapshot = () => this.snapshot;
+
+  /** The palette's open state, shared so any SearchTrigger can open the one palette. */
+  setPaletteOpen = (open: boolean) => {
+    if (open === this.paletteOpen) return;
+    this.paletteOpen = open;
+    this.emit();
+  };
+  setCommands(owner: string, commands: Command[] | null) {
+    if (commands) this.commands.set(owner, commands);
+    else this.commands.delete(owner);
+    this.emit();
+  }
+  setSource(owner: string, source: CommandSource | null) {
+    if (source) this.sources.set(owner, source);
+    else this.sources.delete(owner);
+    this.emit();
+  }
+  private emit() {
+    const commands = [...this.commands.values()].flat();
+    if ((globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env?.NODE_ENV !== "production") {
+      const seen = new Set<string>();
+      for (const c of commands) {
+        if (seen.has(c.id)) console.warn(`[nasaq] Duplicate command id "${c.id}". Ids must be unique across the registry.`);
+        seen.add(c.id);
+      }
+    }
+    this.snapshot = { commands, sources: [...this.sources.values()], paletteOpen: this.paletteOpen };
+    for (const l of this.listeners) l();
+  }
+}
+
+const REGISTRY_KEY: InjectionKey<CommandRegistry> = Symbol("nasaq-commands");
+
+/**
+ * Provides a command registry to the component tree and binds its shortcuts (browser only). Call it once, in
+ * the app shell or root component. Nested calls reuse the outer registry, so every command lands in the one palette.
+ */
+export function provideCommands(registry?: CommandRegistry): CommandRegistry {
+  const parent = inject(REGISTRY_KEY, null);
+  const value = parent ?? registry ?? new CommandRegistry();
+  provide(REGISTRY_KEY, value);
+  if (!parent) {
+    let unbind: (() => void) | undefined;
+    onMounted(() => (unbind = bindShortcuts(value)));
+    onBeforeUnmount(() => unbind?.());
+  }
+  return value;
+}
+
+export function useCommandRegistry(): CommandRegistry | null {
+  return inject(REGISTRY_KEY, null);
+}
+
+/** Everything registered right now, as a ref that updates when any component adds or removes commands. */
+export function useRegisteredCommands(from?: CommandRegistry | null) {
+  const registry = from ?? useCommandRegistry();
+  const snapshot = shallowRef<RegistrySnapshot>(registry?.getSnapshot() ?? { commands: [], sources: [], paletteOpen: false });
+  if (registry) {
+    const off = registry.subscribe(() => (snapshot.value = registry.getSnapshot()));
+    onBeforeUnmount(off);
+  }
+  return snapshot;
+}
+
+let ownerSeq = 0;
+
+/**
+ * Registers commands while the calling component is mounted, e.g. a page's contextual actions.
+ * Nasaq holds no business logic: products pass `perform` callbacks. Pass a ref, a getter or a plain array;
+ * a changed value re-registers. Inside the component that calls `provideCommands()`, pass the registry it returned.
+ */
+export function useRegisterCommands(commands: MaybeRefOrGetter<Command[] | null | undefined>, from?: CommandRegistry | null) {
+  const registry = from ?? useCommandRegistry();
+  const owner = `owner-${++ownerSeq}`;
+  if (!registry || !getCurrentInstance()) return;
+  watch(() => toValue(commands), (next) => registry.setCommands(owner, next ?? null), { immediate: true });
+  onBeforeUnmount(() => registry.setCommands(owner, null));
+}
+
+/** The shared palette open state: `[open, setOpen]`. */
+export function useCommandPaletteOpen() {
+  const registry = useCommandRegistry();
+  const snapshot = useRegisteredCommands();
+  return { open: snapshot, setOpen: registry?.setPaletteOpen ?? (() => {}) };
+}
+
+/** Registers an async search source (records, people, docs…) while mounted. */
+export function useRegisterCommandSource(source: MaybeRefOrGetter<CommandSource | null | undefined>) {
+  const registry = useCommandRegistry();
+  const owner = `source-${++ownerSeq}`;
+  if (!registry || !getCurrentInstance()) return;
+  watch(() => toValue(source), (next) => registry.setSource(owner, next ?? null), { immediate: true });
+  onBeforeUnmount(() => registry.setSource(owner, null));
+}
+
+/* ------------------------------------------------------------------ matching */
+
+/** Folds case, Arabic diacritics/tatweel and letter variants so "اداره" finds "إدارة". */
+export function normalizeForSearch(text: string) {
+  return text
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[̀-ًͯ-ٰٟـ]/g, "")
+    .replace(/[أإآٱ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
+    .trim();
+}
+
+/** 0 = no match. Prefix of the label beats a word prefix beats a substring beats a keyword. */
+export function scoreCommand(command: Command, query: string) {
+  if (!query) return 1;
+  const label = normalizeForSearch(command.label);
+  if (label.startsWith(query)) return 4;
+  if (label.split(/\s+/).some((w) => w.startsWith(query))) return 3;
+  if (label.includes(query)) return 2;
+  const keywords = (command.keywords ?? []).map(normalizeForSearch);
+  if (keywords.some((k) => k.startsWith(query))) return 1.5;
+  if (keywords.some((k) => k.includes(query))) return 1;
+  return 0;
+}
+
+export const sectionOrder = (c: Command) => {
+  const i = (COMMAND_SECTIONS as readonly string[]).indexOf(c.section ?? "context");
+  return i >= 0 ? i : (c.sectionOrder ?? 4.5);
+};
+
+/* ----------------------------------------------------------------- shortcuts */
+
+const isEditable = (el: EventTarget | null) =>
+  el instanceof HTMLElement && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.closest("[role=dialog] [role=combobox]") !== null);
+
+const MODIFIERS: Record<string, "mod" | "ctrl" | "alt" | "shift"> = {
+  mod: "mod",
+  "⌘": "mod",
+  cmd: "mod",
+  meta: "mod",
+  ctrl: "ctrl",
+  control: "ctrl",
+  "⌃": "ctrl",
+  alt: "alt",
+  option: "alt",
+  "⌥": "alt",
+  shift: "shift",
+  "⇧": "shift",
+};
+
+const isAlnum = (key: string) => /^[a-z0-9]$/.test(key);
+
+/** Letters and digits by physical key (layout-independent); anything else by the character typed. */
+const keyName = (e: KeyboardEvent) => {
+  if (e.code.startsWith("Key")) return e.code.slice(3).toLowerCase();
+  if (e.code.startsWith("Digit")) return e.code.slice(5);
+  return e.key.toLowerCase();
+};
+
+const chord = (mods: string[], key: string) => [...new Set(isAlnum(key) ? mods : mods.filter((m) => m !== "shift"))].sort().concat(key).join("+");
+
+/**
+ * Parses a shortcut into steps, each a canonical chord such as "meta+shift+p" or "g".
+ * Shift only counts for letters and digits: "?" already implies it.
+ */
+export function parseShortcut(shortcut: string): string[] {
+  const steps: string[] = [];
+  let mods: string[] = [];
+  for (const token of shortcut.trim().toLowerCase().split(/\s+/)) {
+    const mod = MODIFIERS[token];
+    if (mod) mods.push(mod === "mod" ? (isApplePlatform() ? "meta" : "ctrl") : mod);
+    else {
+      steps.push(chord(mods, token));
+      mods = [];
+    }
+  }
+  return steps;
+}
+
+const eventChord = (e: KeyboardEvent) => {
+  const mods: string[] = [];
+  if (e.altKey) mods.push("alt");
+  if (e.ctrlKey) mods.push("ctrl");
+  if (e.metaKey) mods.push("meta");
+  if (e.shiftKey) mods.push("shift");
+  return chord(mods, keyName(e));
+};
+
+const SEQUENCE_MS = 900;
+
+/**
+ * Binds registered shortcuts to the window. The longest registered sequence wins: with "G C" and "C" both bound,
+ * G then C runs "G C" only. Keys that break a sequence in progress are dropped, not re-read. Returns the unbind function.
+ */
+export function bindShortcuts(registry: CommandRegistry): () => void {
+  let buffer: string[] = [];
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.defaultPrevented || e.isComposing || /^(Shift|Control|Alt|Meta)$/.test(e.key)) return;
+    const step = eventChord(e);
+    const modified = /(^|\+)(alt|ctrl|meta)\+/.test(step);
+    if (!modified && (isEditable(e.target) || document.querySelector("[role=dialog][data-open], [role=menu][data-open]"))) return;
+
+    const bound = registry
+      .getSnapshot()
+      .commands.filter((c) => c.shortcut && c.bindShortcut !== false && !c.disabled && c.perform)
+      .map((c) => ({ command: c, steps: parseShortcut(c.shortcut!) }));
+    const keys = [...buffer, step];
+    const typed = keys.join(" ");
+    const exact = bound.find((b) => b.steps.join(" ") === typed)?.command;
+    const pending = bound.some((b) => b.steps.length > keys.length && b.steps.slice(0, keys.length).join(" ") === typed);
+
+    clearTimeout(timer);
+    buffer = [];
+    if (pending) {
+      // "G" alone may also be bound: it runs if the sequence is not continued in time.
+      buffer = keys;
+      timer = setTimeout(() => {
+        buffer = [];
+        exact?.perform?.();
+      }, SEQUENCE_MS);
+      e.preventDefault();
+    } else if (exact) {
+      e.preventDefault();
+      exact.perform!();
+    }
+  };
+  window.addEventListener("keydown", onKeyDown);
+  return () => {
+    window.removeEventListener("keydown", onKeyDown);
+    clearTimeout(timer);
+  };
+}

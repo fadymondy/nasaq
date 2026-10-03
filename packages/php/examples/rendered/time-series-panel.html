@@ -1,0 +1,165 @@
+<div data-slot="time-series-panel"  x-data="nqTimeSeriesPanel('users', true)"
+    class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground">
+    <div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Traffic</h3></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="max-w-full overflow-x-auto">
+                    <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022users\u0022]'), false)" x-modelable="value" x-bind="root"
+            aria-label="Metric" x-model="pressed" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('users')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Users</button>
+                                                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('sessions')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Sessions</button>
+</div>
+                </div>
+                                        <label class="flex items-center gap-2 text-body-sm text-muted-foreground">
+                    <button type="button" role="switch" data-slot="switch" x-data="nqSwitch(true)" x-modelable="checked" x-bind="root"
+    aria-checked="true"
+     data-checked                 x-model="compare" class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-transparent bg-nq-line-strong p-0.5 outline-none transition-colors duration-150 ease-nq data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50">
+    <span data-slot="switch-thumb"  data-checked         x-bind:data-checked="checked ? '' : undefined" x-bind:data-unchecked="checked ? undefined : ''"
+        class="block size-4 rounded-full bg-background shadow-xs data-checked:bg-primary-foreground transition-[translate] duration-150 ease-nq data-checked:translate-x-3.5 rtl:data-checked:-translate-x-3.5"></span>
+    </button>
+                    Compare with previous period
+                </label>
+                    </div>
+                                                    <div class="contents" data-metric="users" x-show="metric === 'users'" >
+                    <div data-slot="time-series-total" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-caption text-muted-foreground">Total</span>
+                        <span class="text-h2 text-foreground tabular-nums">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">4,340</bdi>
+                        </span>
+                                                    <span class="text-label text-nq-success-text" x-show="compare" >
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums">+11%</bdi>
+                            </span>
+                                            </div>
+                    <div data-slot="chart"  role="img" aria-label="Users, Sep 27 to Sep 28"   style="--color-current: var(--primary); --color-previous: var(--muted-foreground)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+                            <div aria-hidden="true" class="relative w-11 shrink-0 text-end text-muted-foreground">
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 100%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">0</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 66.67%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">1K</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 33.33%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">2K</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 0%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">3K</bdi>
+                                                                            </span>
+                                                            </div>
+                            <div data-slot="time-series-plot" class="relative min-w-0 flex-1" x-data="nqTimeSeriesChart(JSON.parse('[{\u0022x\u0022:0,\u0022y\u0022:30,\u0022date\u0022:\u0022Sep 27\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Users\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u00222,100\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u00221,900\u0022}]},{\u0022x\u0022:100,\u0022y\u0022:25.33,\u0022date\u0022:\u0022Sep 28\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Users\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u00222,240\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u00222,010\u0022}]}]'))" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 100%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 66.67%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 33.33%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 0%"></span>
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <defs>
+                                        <linearGradient id="nq-ts-3a751602" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" style="stop-color: var(--color-current); stop-opacity: 0.28" />
+                                            <stop offset="100%" style="stop-color: var(--color-current); stop-opacity: 0.02" />
+                                        </linearGradient>
+                                    </defs>
+                                                                                                                <path data-slot="time-series-previous" x-show="compare"  d="M0,36.67C33.33,35.45,66.67,34.22,100,33" fill="none" stroke="var(--color-previous)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                                        <path d="M0,30C33.33,28.44,66.67,26.89,100,25.33L100,100L0,100Z" fill="url(#nq-ts-3a751602)" stroke="none" />
+                                    <path data-slot="time-series-current" d="M0,30C33.33,28.44,66.67,26.89,100,25.33" fill="none" stroke="var(--color-current)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+                                </svg>
+                                                                <div class="contents" x-show="hover !== null" style="display: none">
+                                    <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 w-px bg-border" x-bind:style="lineStyle"></span>
+                                    <span aria-hidden="true" data-slot="chart-dot" class="pointer-events-none absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-current)] ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="dotStyle"></span>
+                                    <div class="pointer-events-none absolute top-0 z-10 ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="tipStyle">
+                                        <div data-slot="chart-tooltip" dir="ltr" class="grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md">
+                                            <div class="text-label" x-text="tip.date"></div>
+                                            <div class="grid gap-1">
+                                                <template x-for="row in tip.rows" x-bind:key="row.k">
+                                                    <div class="flex items-center gap-2" x-show="row.k === 'current' || compare">
+                                                        <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]" x-bind:style="{ backgroundColor: row.color }"></span>
+                                                        <span class="text-muted-foreground" x-text="row.label"></span>
+                                                        <span class="ms-auto ps-3 text-label tabular-nums" x-text="row.text"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-hidden="true" class="relative h-4 ms-[3.25rem]">
+                                                                                            <span class="absolute top-0 whitespace-nowrap start-0"
+                                    >Sep 27</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap end-0"
+                                    >Sep 28</span>
+                                                    </div>
+</div>
+                </div>
+                                            <div class="contents" data-metric="sessions" x-show="metric === 'sessions'"  style="display: none" >
+                    <div data-slot="time-series-total" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span class="text-caption text-muted-foreground">Total</span>
+                        <span class="text-h2 text-foreground tabular-nums">
+                            <bdi data-slot="num" data-numeric="" class="tabular-nums">5,590</bdi>
+                        </span>
+                                                    <span class="text-label text-nq-success-text" x-show="compare" >
+                                <bdi data-slot="num" data-numeric="" class="tabular-nums">+10.7%</bdi>
+                            </span>
+                                            </div>
+                    <div data-slot="chart"  role="img" aria-label="Sessions, Sep 27 to Sep 28"   style="--color-current: var(--primary); --color-previous: var(--muted-foreground)"     class="flex w-full text-caption [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-dot]:stroke-card [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector]:stroke-card [&_.recharts-surface]:outline-hidden aspect-auto flex-col justify-start gap-2 h-64">
+    <div class="flex min-h-0 flex-1 gap-2">
+                            <div aria-hidden="true" class="relative w-11 shrink-0 text-end text-muted-foreground">
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 100%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">0</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 66.67%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">1K</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 33.33%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">2K</bdi>
+                                                                            </span>
+                                                                    <span class="absolute inset-x-0 -translate-y-1/2 truncate" style="top: 0%">
+                                                                                    <bdi data-slot="num" data-numeric="" class="tabular-nums">3K</bdi>
+                                                                            </span>
+                                                            </div>
+                            <div data-slot="time-series-plot" class="relative min-w-0 flex-1" x-data="nqTimeSeriesChart(JSON.parse('[{\u0022x\u0022:0,\u0022y\u0022:10,\u0022date\u0022:\u0022Sep 27\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Sessions\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u00222,700\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u00222,450\u0022}]},{\u0022x\u0022:100,\u0022y\u0022:3.67,\u0022date\u0022:\u0022Sep 28\u0022,\u0022rows\u0022:[{\u0022k\u0022:\u0022current\u0022,\u0022label\u0022:\u0022Sessions\u0022,\u0022color\u0022:\u0022var(--color-current)\u0022,\u0022text\u0022:\u00222,890\u0022},{\u0022k\u0022:\u0022previous\u0022,\u0022label\u0022:\u0022Previous period\u0022,\u0022color\u0022:\u0022var(--color-previous)\u0022,\u0022text\u0022:\u00222,600\u0022}]}]'))" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 100%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 66.67%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 33.33%"></span>
+                                                                    <span aria-hidden="true" class="absolute inset-x-0 border-t border-border" style="top: 0%"></span>
+                                                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" class="absolute inset-0 size-full overflow-visible rtl:-scale-x-100">
+                                    <defs>
+                                        <linearGradient id="nq-ts-8653a197" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" style="stop-color: var(--color-current); stop-opacity: 0.28" />
+                                            <stop offset="100%" style="stop-color: var(--color-current); stop-opacity: 0.02" />
+                                        </linearGradient>
+                                    </defs>
+                                                                                                                <path data-slot="time-series-previous" x-show="compare"  d="M0,18.33C33.33,16.66,66.67,15,100,13.33" fill="none" stroke="var(--color-previous)" stroke-dasharray="4 4" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" />
+                                                                        <path d="M0,10C33.33,7.89,66.67,5.78,100,3.67L100,100L0,100Z" fill="url(#nq-ts-8653a197)" stroke="none" />
+                                    <path data-slot="time-series-current" d="M0,10C33.33,7.89,66.67,5.78,100,3.67" fill="none" stroke="var(--color-current)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round" />
+                                </svg>
+                                                                <div class="contents" x-show="hover !== null" style="display: none">
+                                    <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 w-px bg-border" x-bind:style="lineStyle"></span>
+                                    <span aria-hidden="true" data-slot="chart-dot" class="pointer-events-none absolute size-2 -translate-y-1/2 rounded-full bg-[var(--color-current)] ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="dotStyle"></span>
+                                    <div class="pointer-events-none absolute top-0 z-10 ltr:-translate-x-1/2 rtl:translate-x-1/2" x-bind:style="tipStyle">
+                                        <div data-slot="chart-tooltip" dir="ltr" class="grid min-w-32 gap-1.5 rounded-control border border-border bg-popover px-2.5 py-1.5 text-caption text-popover-foreground shadow-md">
+                                            <div class="text-label" x-text="tip.date"></div>
+                                            <div class="grid gap-1">
+                                                <template x-for="row in tip.rows" x-bind:key="row.k">
+                                                    <div class="flex items-center gap-2" x-show="row.k === 'current' || compare">
+                                                        <span aria-hidden="true" class="size-2.5 shrink-0 rounded-[2px]" x-bind:style="{ backgroundColor: row.color }"></span>
+                                                        <span class="text-muted-foreground" x-text="row.label"></span>
+                                                        <span class="ms-auto ps-3 text-label tabular-nums" x-text="row.text"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div aria-hidden="true" class="relative h-4 ms-[3.25rem]">
+                                                                                            <span class="absolute top-0 whitespace-nowrap start-0"
+                                    >Sep 27</span>
+                                                                                            <span class="absolute top-0 whitespace-nowrap end-0"
+                                    >Sep 28</span>
+                                                    </div>
+</div>
+                </div></div>
+</div>

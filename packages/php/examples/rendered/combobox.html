@@ -1,0 +1,116 @@
+<div class="flex w-80 flex-col gap-6">
+    <div class="flex flex-col gap-1.5">
+        <span class="text-label text-foreground">Country</span>
+        <div data-slot="combobox" x-data="nqCombobox('eg', false)" x-modelable="value" x-id="['nq-combobox']" class="contents">
+    <div data-slot="combobox-input-group" x-ref="anchor"
+    class="flex min-h-control min-w-0 w-full items-center gap-1 rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 h-control ps-3 pe-1.5">
+    <input data-slot="combobox-input" x-ref="input" x-bind="input"
+                placeholder="Search a country…" aria-label="Country" class="h-full min-w-0 flex-1 border-0 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+            <button data-slot="combobox-clear" x-bind="clear" aria-label="Clear"
+            class="flex size-6 shrink-0 cursor-default items-center justify-center rounded-control text-muted-foreground outline-none hover:text-foreground focus-visible:outline-1 focus-visible:outline-nq-focus [&_svg]:size-4 data-[hidden]:hidden"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+        <button data-slot="combobox-trigger" x-bind="trigger" aria-label="Open"
+        class="flex size-6 shrink-0 cursor-default items-center justify-center rounded-control text-muted-foreground outline-none hover:text-foreground focus-visible:outline-1 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></button>
+</div>
+            <template x-teleport="body">
+    <div data-slot="combobox-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.anchor"
+        class="z-50 w-[var(--anchor-width)] max-h-[min(var(--available-height),20rem)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="combobox-empty" x-bind="emptyState" class="px-2.5 py-2 text-body-sm text-muted-foreground empty:hidden">No results</div>
+                <div data-slot="combobox-list" class="outline-none"><div data-slot="combobox-item" x-bind="item('sa', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('sa')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate">Saudi Arabia</span>
+</div>
+                    <div data-slot="combobox-item" x-bind="item('eg', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('eg')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate">Egypt</span>
+</div>
+                    <div data-slot="combobox-item" x-bind="item('jo', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('jo')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate">Jordan</span>
+</div></div>
+    </div>
+</template>
+            <template x-if="multiple">
+            <template x-for="v in value" :key="v"><input type="hidden" name="country[]" :value="v"></template>
+        </template>
+        <template x-if="!multiple"><input type="hidden" name="country" :value="value ?? ''"></template>
+    </div>
+    </div>
+    <div class="flex flex-col gap-1.5">
+        <span class="text-label text-foreground">Markets</span>
+        <div data-slot="combobox" x-data="nqCombobox(JSON.parse('[\u0022sa\u0022]'), true)" x-modelable="value" x-id="['nq-combobox']" class="contents">
+    <div data-slot="combobox-chips" x-ref="anchor"
+    class="flex min-h-control min-w-0 w-full items-center gap-1 rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 flex-wrap px-1.5 py-1">
+    <template x-for="v in selected()" :key="v">
+        <span data-slot="combobox-chip" class="inline-flex h-6 max-w-full items-center gap-1 rounded-[4px] border border-border bg-secondary ps-2 pe-0.5 text-body-sm text-foreground outline-none data-highlighted:border-nq-focus">
+            <span class="min-w-0 truncate" x-text="labelOf(v)"></span>
+            <button type="button" data-slot="combobox-chip-remove" tabindex="-1" :aria-label="'Remove' + ' ' + labelOf(v)" @click.stop="remove(v)"
+                class="flex size-5 shrink-0 cursor-default items-center justify-center rounded-[4px] text-muted-foreground outline-none hover:text-foreground [&_svg]:size-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+        </span>
+    </template>
+    <input data-slot="combobox-input" x-ref="input" x-bind="input" :placeholder="hasValue() ? undefined : 'Pick markets'"
+                aria-label="Markets" class="h-full min-w-0 flex-1 border-0 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground pointer-coarse:text-[16px]">
+</div>
+            <template x-teleport="body">
+    <div data-slot="combobox-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.anchor"
+        class="z-50 w-[var(--anchor-width)] max-h-[min(var(--available-height),20rem)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <div data-slot="combobox-empty" x-bind="emptyState" class="px-2.5 py-2 text-body-sm text-muted-foreground empty:hidden">No results</div>
+                <div data-slot="combobox-list" class="outline-none"><div data-slot="combobox-item" x-bind="item('sa', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('sa')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate">Saudi Arabia</span>
+</div>
+                    <div data-slot="combobox-item" x-bind="item('eg', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('eg')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate">Egypt</span>
+</div>
+                    <div data-slot="combobox-item" x-bind="item('jo', false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected('jo')" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="combobox-item-text" class="min-w-0 flex-1 truncate">Jordan</span>
+</div></div>
+    </div>
+</template>
+            <template x-if="multiple">
+            <template x-for="v in value" :key="v"><input type="hidden" name="markets[]" :value="v"></template>
+        </template>
+        <template x-if="!multiple"><input type="hidden" name="markets" :value="value ?? ''"></template>
+    </div>
+    </div>
+</div>

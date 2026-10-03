@@ -1,0 +1,77 @@
+<div class="flex flex-col gap-4">
+    <div data-slot="filter-strip" role="group" aria-label="Filters" x-data="nqFilterStrip('all', false)" x-modelable="value" class="relative">
+    <div data-filter-scroller class="flex snap-x gap-2 overflow-x-auto px-4 py-1 [mask-image:linear-gradient(90deg,transparent,black_1rem,black_calc(100%-1rem),transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                                <button type="button" x-on:click="toggle('all')" x-bind:aria-pressed="pressed('all')" x-bind:class="pressed('all') ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card text-foreground hover:bg-nq-hover'"
+                class="inline-flex h-control shrink-0 snap-center items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 text-label outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                All
+                <span x-bind:class="pressed('all') ? 'text-primary-foreground/80' : 'text-muted-foreground'" class="tabular-nums">12</span>            </button>
+                                <button type="button" x-on:click="toggle('open')" x-bind:aria-pressed="pressed('open')" x-bind:class="pressed('open') ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card text-foreground hover:bg-nq-hover'"
+                class="inline-flex h-control shrink-0 snap-center items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 text-label outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <svg aria-hidden="true" class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="1"/>
+</svg>                Open
+                            </button>
+                                <button type="button" x-on:click="toggle('done')" x-bind:aria-pressed="pressed('done')" x-bind:class="pressed('done') ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card text-foreground hover:bg-nq-hover'"
+                class="inline-flex h-control shrink-0 snap-center items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 text-label outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                                Done
+                            </button>
+            </div>
+</div>
+    <div data-slot="swipe-action-row" x-data="nqSwipeRow(0, 1, false)"
+    x-bind:data-state="state" x-on:pointerdown.document="away($event)" x-on:click.capture="clickCapture($event)"
+    class="relative overflow-hidden bg-card">
+                                    <div data-slot="swipe-actions" data-side="end" x-bind:inert="state !== 'end'"
+                class="absolute inset-y-0 flex end-0" style="width: 76px">
+                                    <button type="button"  x-on:click="run($el.dataset.action)" data-action="archive"
+                        class="flex flex-1 flex-col items-center justify-center gap-1 px-1 text-caption outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus disabled:opacity-50 bg-secondary text-foreground">
+                        <svg aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="20" height="5" x="2" y="3" rx="1"/>
+  <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/>
+  <path d="M10 12h4"/>
+</svg>                        <span class="max-w-full truncate">Archive</span>
+                    </button>
+                            </div>
+                <div data-slot="swipe-surface" x-on:pointerdown="down($event)" x-on:pointermove="move($event)" x-on:pointerup="up()" x-on:pointercancel="up()"
+        x-bind:style="{ transform: 'translateX(' + px() + 'px)' }" x-bind:class="drag === null ? 'transition-transform duration-200 ease-nq' : ''"
+        class="relative bg-card [touch-action:pan-y]">
+        <div class="p-4">Design review moved to 3 PM</div>
+    </div>
+</div>
+    <nav data-slot="bottom-tab-bar" aria-label="Main navigation" x-data="nqBottomTabBar('home', JSON.parse('[\u0022home\u0022,\u0022inbox\u0022,\u0022me\u0022]'))" x-modelable="value"
+    class="z-30 border-t border-border bg-card pb-[env(safe-area-inset-bottom)] text-foreground">
+    <ul class="flex items-stretch justify-around px-1">
+                                <li class="min-w-0 flex-1">
+                                    <button data-tab-item type="button" x-bind:data-active="value === 'home' ? '' : null" x-bind:aria-current="value === 'home' ? 'page' : null" x-bind:tabindex="stop('home', 0)" x-on:keydown="onKey($event, 0)" x-on:click="pick('home')" class="relative flex min-h-14 w-full flex-col items-center justify-center gap-0.5 rounded-control px-2 py-1.5 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-primary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                                    <span class="relative">
+                        <svg aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+  <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+</svg>                                            </span>
+                    <span class="max-w-full truncate">Home</span>
+                                    </button>
+                            </li>
+                                <li class="min-w-0 flex-1">
+                                    <button data-tab-item type="button" x-bind:data-active="value === 'inbox' ? '' : null" x-bind:aria-current="value === 'inbox' ? 'page' : null" x-bind:tabindex="stop('inbox', 1)" x-on:keydown="onKey($event, 1)" x-on:click="pick('inbox')" class="relative flex min-h-14 w-full flex-col items-center justify-center gap-0.5 rounded-control px-2 py-1.5 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-primary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                                    <span class="relative">
+                        <svg aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>                                                    <span data-slot="bottom-tab-badge" class="absolute -top-1.5 -end-2.5 grid min-w-4 place-items-center rounded-full bg-nq-danger px-1 text-[10px] leading-4 font-medium text-background">3</span>
+                                            </span>
+                    <span class="max-w-full truncate">Inbox</span>
+                                    </button>
+                            </li>
+                                <li class="min-w-0 flex-1">
+                                    <button data-tab-item type="button" x-bind:data-active="value === 'me' ? '' : null" x-bind:aria-current="value === 'me' ? 'page' : null" x-bind:tabindex="stop('me', 2)" x-on:keydown="onKey($event, 2)" x-on:click="pick('me')" class="relative flex min-h-14 w-full flex-col items-center justify-center gap-0.5 rounded-control px-2 py-1.5 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground data-active:text-primary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                                    <span class="relative">
+                        <svg aria-hidden="true" class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="8" r="5"/>
+  <path d="M20 21a8 8 0 0 0-16 0"/>
+</svg>                                            </span>
+                    <span class="max-w-full truncate">Me</span>
+                                    </button>
+                            </li>
+            </ul>
+</nav>
+</div>

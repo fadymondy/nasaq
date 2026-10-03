@@ -1,0 +1,96 @@
+import { computed } from "vue";
+import { useNasaq } from "../../provider";
+
+export const STRINGS = {
+  en: {
+    contact: "Get in touch",
+    downloadCv: "Download CV",
+    about: "About",
+    experience: "Experience",
+    experienceHint: "Where I have worked, newest first.",
+    present: "Present",
+    current: "Current",
+    yearsShort: "{n} yr",
+    monthsShort: "{n} mo",
+    totalExperience: "{time} of experience",
+    skills: "Skills",
+    skillsHint: "What I use most, strongest first.",
+    projects: "Projects",
+    projectsHint: "Selected work.",
+    featuredProject: "Featured project",
+    allProjects: "All",
+    viewProject: "View project",
+    viewCode: "Source",
+    writing: "Latest writing",
+    writingHint: "Notes from the last few months.",
+    allArticles: "All articles",
+    testimonials: "Kind words",
+    testimonialsHint: "From people I have worked with.",
+    contactTitle: "Let's build something together",
+    contactBody: "Tell me about your project. I usually reply within two working days.",
+    projectsNav: "Project categories",
+    sections: "Profile sections",
+    editProfile: "Edit profile",
+    joined: "Joined {date}",
+    profileDetails: "Profile details",
+    apps: "Apps",
+    appsHint: "The apps you use with this account.",
+    browseApps: "Browse apps",
+    noApps: "No apps yet",
+    noAppsHint: "Apps you sign in to with this account show up here.",
+    lastUsed: "Used {date}",
+    account: "Account",
+    accountHint: "Only you can see this.",
+  },
+  ar: {
+    contact: "تواصل معي",
+    downloadCv: "تنزيل السيرة الذاتية",
+    about: "نبذة",
+    experience: "الخبرة",
+    experienceHint: "أين عملت، من الأحدث.",
+    present: "حتى الآن",
+    current: "الحالي",
+    yearsShort: "{n} سنة",
+    monthsShort: "{n} شهر",
+    totalExperience: "{time} من الخبرة",
+    skills: "المهارات",
+    skillsHint: "ما أستخدمه أكثر، الأقوى أولًا.",
+    projects: "المشاريع",
+    projectsHint: "أعمال مختارة.",
+    featuredProject: "مشروع مميز",
+    allProjects: "الكل",
+    viewProject: "عرض المشروع",
+    viewCode: "الشيفرة",
+    writing: "أحدث ما كتبت",
+    writingHint: "ملاحظات من الأشهر الأخيرة.",
+    allArticles: "كل المقالات",
+    testimonials: "كلمات طيبة",
+    testimonialsHint: "من أشخاص عملت معهم.",
+    contactTitle: "لنبنِ شيئًا معًا",
+    contactBody: "أخبرني عن مشروعك. أرد عادةً خلال يومي عمل.",
+    projectsNav: "تصنيفات المشاريع",
+    sections: "أقسام الملف",
+    editProfile: "تعديل الملف",
+    joined: "انضم في {date}",
+    profileDetails: "تفاصيل الملف",
+    apps: "التطبيقات",
+    appsHint: "التطبيقات التي تستخدمها بهذا الحساب.",
+    browseApps: "تصفّح التطبيقات",
+    noApps: "لا تطبيقات بعد",
+    noAppsHint: "تظهر هنا التطبيقات التي تسجّل الدخول إليها بهذا الحساب.",
+    lastUsed: "استُخدم {date}",
+    account: "الحساب",
+    accountHint: "لا يراه غيرك.",
+  },
+};
+
+export type ProfilePageLabels = (typeof STRINGS)["en"];
+
+export const fill = (template: string, values: Record<string, string | number>) => template.replace(/\{(\w+)\}/g, (_, k: string) => String(values[k] ?? ""));
+
+export function useProfileStrings(labels: () => Partial<ProfilePageLabels> | undefined) {
+  const nq = useNasaq();
+  const locale = computed(() => nq.locale.value);
+  const t = computed<ProfilePageLabels>(() => ({ ...STRINGS[locale.value.startsWith("ar") ? "ar" : "en"], ...labels() }));
+  return { locale, t };
+}

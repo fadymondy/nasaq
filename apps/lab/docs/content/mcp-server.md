@@ -58,10 +58,10 @@ claude mcp add nasaq -- npx -y @fadymondy/nasaq-mcp
 
 | Tool | Returns |
 | --- | --- |
-| `get_setup` | Install commands, CSS imports, `NasaqProvider` props and an app skeleton. Call this first. |
-| `list_components` | Every component grouped by category, with its summary and exports. Filter by `category` or `query`. |
+| `get_setup` | Install commands, CSS imports, `NasaqProvider` props and an app skeleton. Call this first. Pass `framework` for another stack: `react` (default), `shadcn`, `inertia`, `inertia-vue`, `html`, `alpine`, `vue`, `blade`, `livewire`, `filament`, `laravel`, `tomatophp`. |
+| `list_components` | Every component grouped by category, with its summary and exports. Filter by `category` or `query`; `framework` lists what exists in that stack. |
 | `search_components` | Components ranked for a need in words: "switch between products", "empty state". |
-| `get_component` | One component by folder name, title or any export. Includes the manual (`readme`), `api`, `examples`, `source` or its `story`, the import line and the shadcn install command. |
+| `get_component` | One component by folder name, title or any export. Includes the manual (`readme`), `api`, `examples`, `source` or its `story`, the import line and the shadcn install command. `framework` returns the Vue, Blade, Alpine, HTML or shadcn version. |
 | `get_foundation` | The design rules: `color`, `layout`, `architecture`, `component-readme-spec`, `setup`. |
 | `list_tokens` | The `--nq-*` custom properties with their values per theme, brand and density. |
 
