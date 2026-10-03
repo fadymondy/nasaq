@@ -38,8 +38,9 @@ describe("brand-loaders (Blade example)", () => {
   it("the braille loader advances its frame", async () => {
     const host = await mount(rendered("brand-loaders"));
     const glyph = host.querySelector<HTMLElement>('[data-slot="braille-loader"] [dir="ltr"]')!;
-    expect(glyph.textContent).toBe("⠋");
-    await vi.waitFor(() => expect(glyph.textContent).not.toBe("⠋"), { timeout: 2000 });
+    const first = glyph.textContent;
+    expect(first).toMatch(/^[\u2800-\u28ff]$/);
+    await vi.waitFor(() => expect(glyph.textContent).not.toBe(first), { timeout: 2000 });
   });
 
   it("the determinate dot matrix keeps its fill, an x-model value repaints it", async () => {

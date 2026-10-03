@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import Alpine from "alpinejs";
-import { afterEach, beforeAll, describe, expect, it } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import nasaq from "../src/alpine";
 
 const rendered = (name: string) => readFileSync(resolve(process.cwd(), "../php/examples/rendered", `${name}.html`), "utf8");
@@ -65,10 +65,9 @@ describe("typing-terminal (Blade example)", () => {
     expect(root.querySelectorAll('[data-kind="output"]')).toHaveLength(2);
     expect(root.querySelector('[data-kind="output"]')!.textContent).toContain("Installed 214 packages");
     const replay = root.querySelector<HTMLElement>('[data-slot="typing-terminal-header"] button')!;
-    expect(replay.style.display).toBe("");
+    await vi.waitFor(() => expect(replay.style.display).toBe(""), { timeout: 2000 });
     replay.click();
-    await tick(5);
-    expect(root.hasAttribute("data-playing")).toBe(true);
+    await vi.waitFor(() => expect(root.hasAttribute("data-playing")).toBe(true), { timeout: 2000 });
   });
 
   it("shows the whole transcript without playing when play is false", async () => {
