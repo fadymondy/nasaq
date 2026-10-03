@@ -10,7 +10,7 @@ import { createServer } from "node:http";
 import { realpathSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { catalogProvider, createNasaqServer, pkg } from "./create-server.mjs";
-import { URLS } from "./catalog.mjs";
+import { ASSETS, landing } from "./landing.mjs";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -53,26 +53,6 @@ function readBody(req, limit) {
   });
 }
 
-const landing = (counts) => `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nasaq MCP server</title>
-<style>body{font:16px/1.6 system-ui,sans-serif;max-width:46rem;margin:3rem auto;padding:0 1rem;color:#1a1a1a}pre{background:#f4f1ea;padding:.8rem 1rem;overflow:auto}code{font-family:ui-monospace,monospace}</style>
-</head><body>
-<h1>Nasaq MCP server</h1>
-<p>Nasaq (نسق) is a bilingual React design system. This is its public, read-only
-<a href="https://modelcontextprotocol.io">MCP</a> server: ${counts.components} components, ${counts.foundations} foundations docs and ${counts.tokens} design tokens for your AI assistant. No sign-in.</p>
-<p>Endpoint (streamable HTTP): <code>${URLS.mcp}</code></p>
-<h2>Connect</h2>
-<p>Claude Code:</p>
-<pre>claude mcp add --transport http nasaq ${URLS.mcp}</pre>
-<p>Cursor, or any client with a JSON config:</p>
-<pre>{ "mcpServers": { "nasaq": { "url": "${URLS.mcp}" } } }</pre>
-<p>Claude Desktop and claude.ai: Settings, Connectors, add a custom connector with the URL above.</p>
-<p>Offline (stdio): <code>npx -y @fadymondy/nasaq-mcp</code></p>
-<p>Docs: <a href="${URLS.docs}">${URLS.docs}</a> · Source: <a href="${URLS.repo}">${URLS.repo}</a> · Status: <a href="/health">/health</a></p>
-</body></html>
-`;
-
 /** Builds the request handler. `catalog` is a function returning the catalogue. */
 export function createHandler({ catalog, maxBodyBytes = 256 * 1024 } = {}) {
   const counts = () => {
@@ -95,7 +75,9 @@ export function createHandler({ catalog, maxBodyBytes = 256 * 1024 } = {}) {
       return send(res, 200, JSON.stringify({ status: "ok", name: "nasaq-mcp", version: pkg.version, ...counts(), catalogGeneratedAt: c.generatedAt ?? null }));
     }
 
-    if (path === "/" && (req.method === "GET" || req.method === "HEAD")) return send(res, 200, landing(counts()), "text/html");
+    if (path === "/" && (req.method === "GET" || req.method === "HEAD")) return send(res, 200, landing(counts(), pkg.version), "text/html");
+
+    if (ASSETS[path] && (req.method === "GET" || req.method === "HEAD")) return send(res, 200, ASSETS[path], "image/svg+xml", { "Cache-Control": "public, max-age=86400" });
 
     if (path !== "/mcp") return send(res, 404, JSON.stringify({ error: "Not found. The MCP endpoint is POST /mcp." }));
 
