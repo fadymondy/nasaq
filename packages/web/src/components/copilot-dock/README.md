@@ -132,4 +132,4 @@ The launcher and panel sit at the inline end, so they move to the left in Arabic
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-assistant-copilot-dock--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-assistant-copilot-dock--docs

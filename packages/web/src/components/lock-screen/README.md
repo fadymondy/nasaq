@@ -140,4 +140,4 @@ export function Secure() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-pages-lock-screen--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-pages-lock-screen--docs

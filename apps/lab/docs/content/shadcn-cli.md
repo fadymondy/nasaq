@@ -1,6 +1,6 @@
 # Install with the shadcn CLI
 
-Nasaq is published as a [shadcn registry](https://ui.shadcn.com/docs/registry). The CLI copies a component's source into your project, adds its dependencies and rewrites its imports to your aliases, so the code is yours to read and edit. Registry items are plain JSON at `https://nasaq-ui.fadymondy.com/r/{name}.json`; the full index is `https://nasaq-ui.fadymondy.com/registry.json`.
+Nasaq is published as a [shadcn registry](https://ui.shadcn.com/docs/registry). The CLI copies a component's source into your project, adds its dependencies and rewrites its imports to your aliases, so the code is yours to read and edit. Registry items are plain JSON at `https://docs.nasaqui.com/r/{name}.json`; the full index is `https://docs.nasaqui.com/registry.json`.
 
 You need a React 19 project with Tailwind CSS v4 and a `components.json` (run `npx shadcn@latest init` if you do not have one). Next.js, Vite and any other framework the shadcn CLI supports will do.
 
@@ -11,12 +11,12 @@ Add the registry to `components.json` once. The CLI fills in the `{name}` placeh
 ```json
 {
   "registries": {
-    "@nasaq": "https://nasaq-ui.fadymondy.com/r/{name}.json"
+    "@nasaq": "https://docs.nasaqui.com/r/{name}.json"
   }
 }
 ```
 
-Without the namespace you can still install by URL, for example `npx shadcn@latest add https://nasaq-ui.fadymondy.com/r/button.json`. Every command below works both ways.
+Without the namespace you can still install by URL, for example `npx shadcn@latest add https://docs.nasaqui.com/r/button.json`. Every command below works both ways.
 
 ## 2. Add the `nasaq` preset
 

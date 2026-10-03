@@ -117,4 +117,4 @@ resolves the first with `false`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-overlays-confirm-provider--docs
+https://docs.nasaqui.com/?path=/docs/components-overlays-confirm-provider--docs

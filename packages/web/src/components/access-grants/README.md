@@ -96,4 +96,4 @@ Built on `SettingsSection`, `ApiKeys`, `Select` and `Badge`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-security-access-grants--docs
+https://docs.nasaqui.com/?path=/docs/components-security-access-grants--docs

@@ -120,4 +120,4 @@ Cards use `--nq-card`/border tokens; stars use the accent token. The wall uses C
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-website-testimonials--docs
+https://docs.nasaqui.com/?path=/docs/components-website-testimonials--docs

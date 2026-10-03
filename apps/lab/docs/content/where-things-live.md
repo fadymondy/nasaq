@@ -4,12 +4,12 @@ Nasaq is served from three hosts, each with one job, plus the repository and the
 
 | What | Where |
 | --- | --- |
-| Documentation and live component lab (this site) | https://nasaq-ui.fadymondy.com |
-| shadcn registry index | https://nasaq-ui.fadymondy.com/registry.json |
-| shadcn registry item | `https://nasaq-ui.fadymondy.com/r/{name}.json`, for example [`/r/button.json`](/r/button.json) |
-| Landing page | https://nasaq.fadymondy.com |
-| MCP server (streamable HTTP) | https://nasaq-mcp.fadymondy.com/mcp |
-| MCP health check | https://nasaq-mcp.fadymondy.com/health |
+| Documentation and live component lab (this site) | https://docs.nasaqui.com |
+| shadcn registry index | https://docs.nasaqui.com/registry.json |
+| shadcn registry item | `https://docs.nasaqui.com/r/{name}.json`, for example [`/r/button.json`](/r/button.json) |
+| Landing page | https://nasaqui.com |
+| MCP server (streamable HTTP) | https://mcp.nasaqui.com/mcp |
+| MCP health check | https://mcp.nasaqui.com/health |
 | Source code, issues, releases | https://github.com/fadymondy/nasaq |
 | npm: components, tokens, brands | `@fadymondy/nasaq` |
 | npm: MCP server | `@fadymondy/nasaq-mcp` |

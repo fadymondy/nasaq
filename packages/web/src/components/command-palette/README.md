@@ -281,4 +281,4 @@ export const Ar = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-keyboard-commands-command-palette--docs
+https://docs.nasaqui.com/?path=/docs/components-keyboard-commands-command-palette--docs

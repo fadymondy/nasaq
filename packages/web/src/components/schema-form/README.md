@@ -161,4 +161,4 @@ Field, Alert and Button tokens. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-form-builders-schema-form--docs
+https://docs.nasaqui.com/?path=/docs/components-form-builders-schema-form--docs

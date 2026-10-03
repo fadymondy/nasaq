@@ -213,4 +213,4 @@ export function ShareMenu() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-navigation-menubar--docs
+https://docs.nasaqui.com/?path=/docs/components-navigation-menubar--docs

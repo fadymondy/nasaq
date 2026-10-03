@@ -182,4 +182,4 @@ export const Ar = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-navigation-workspace-switcher--docs
+https://docs.nasaqui.com/?path=/docs/components-navigation-workspace-switcher--docs

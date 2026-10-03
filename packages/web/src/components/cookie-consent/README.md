@@ -139,4 +139,4 @@ export function Footer() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-website-cookie-consent--docs
+https://docs.nasaqui.com/?path=/docs/components-website-cookie-consent--docs

@@ -1,4 +1,4 @@
-# Hosted MCP (nasaq-mcp.fadymondy.com/mcp): stateless streamable HTTP over the built catalog.
+# Hosted MCP (mcp.nasaqui.com/mcp): stateless streamable HTTP over the built catalog.
 # Build context is the repo root: docker build -f deploy/mcp.Dockerfile .
 FROM node:24-bookworm-slim AS build
 WORKDIR /repo

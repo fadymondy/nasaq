@@ -245,4 +245,4 @@ export function RouterLink() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-navigation-navigation-menu--docs
+https://docs.nasaqui.com/?path=/docs/components-navigation-navigation-menu--docs

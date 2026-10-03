@@ -147,4 +147,4 @@ export function Strict() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-reset-password-form--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-reset-password-form--docs

@@ -129,4 +129,4 @@ Tabs are Base UI Tabs with arrow-key navigation; each tab carries a badge with i
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pricing-plan-catalog-editor--docs
+https://docs.nasaqui.com/?path=/docs/components-pricing-plan-catalog-editor--docs

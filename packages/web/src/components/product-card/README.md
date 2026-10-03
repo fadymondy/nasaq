@@ -231,4 +231,4 @@ export function Modules() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-product-card--docs
+https://docs.nasaqui.com/?path=/docs/components-storefront-product-card--docs

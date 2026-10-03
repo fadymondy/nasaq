@@ -116,4 +116,4 @@ has more contrast), `darkVariant(hex)` (same hue, lightness at least 62%).
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-brand-branding-provider--docs
+https://docs.nasaqui.com/?path=/docs/components-brand-branding-provider--docs

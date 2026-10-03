@@ -122,4 +122,4 @@ Returns `values`, `setValue(name, value)`, `errors`, `setErrors`, `formError`, `
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-form--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-form--docs

@@ -152,4 +152,4 @@ Uses `bg-border`, `bg-nq-focus`, `outline-nq-focus`, `bg-card`, `text-muted-fore
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-resizable--docs
+https://docs.nasaqui.com/?path=/docs/components-layout-resizable--docs

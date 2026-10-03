@@ -110,4 +110,4 @@ const errors = validateProxyHost({ hosts: parseHosts("a.example.com, b.example.c
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-proxy-hosts--docs
+https://docs.nasaqui.com/?path=/docs/components-server-tools-proxy-hosts--docs

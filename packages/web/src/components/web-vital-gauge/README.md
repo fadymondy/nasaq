@@ -140,4 +140,4 @@ The arc is an image with a text alternative giving the metric, the value and the
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-web-vital-gauge--docs
+https://docs.nasaqui.com/?path=/docs/components-monitoring-web-vital-gauge--docs

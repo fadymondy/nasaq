@@ -98,4 +98,4 @@ Uses Combobox tokens. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-relation-picker--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-relation-picker--docs

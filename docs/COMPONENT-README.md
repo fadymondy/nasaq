@@ -46,7 +46,7 @@ Categories: `layout`, `navigation`, `actions`, `forms`, `data-display`, `feedbac
     it with `className`. Never tell people to override colours with raw hex.
 11. `## Do / Don't`: short bullets taken from the design rules (docs/foundations).
 12. `## Related`: links to sibling READMEs (`../command-palette/README.md`).
-13. `## Lab`: `https://nasaq-ui.fadymondy.com/?path=/docs/<story>--docs`.
+13. `## Lab`: `https://docs.nasaqui.com/?path=/docs/<story>--docs`.
 
 ## Style
 

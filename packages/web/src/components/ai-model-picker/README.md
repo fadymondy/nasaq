@@ -148,4 +148,4 @@ Models are a radio group (arrow keys move and select). Effort is a segmented con
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-ai-model-picker--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-agents-ai-model-picker--docs

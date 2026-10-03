@@ -85,4 +85,4 @@ Items carry `name` and `nameAr`, and the Arabic name shows when the app is Arabi
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-wellness-health-trackers--docs
+https://docs.nasaqui.com/?path=/docs/components-wellness-health-trackers--docs

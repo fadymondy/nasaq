@@ -228,4 +228,4 @@ PlanBadge                     data-slot="plan-badge"   brand Badge + sparkles
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pricing-upgrade-prompt--docs
+https://docs.nasaqui.com/?path=/docs/components-pricing-upgrade-prompt--docs

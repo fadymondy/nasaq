@@ -109,4 +109,4 @@ Uses `bg-nq-warning-soft`, `text-nq-warning-text`, `text-h1`. Extend with `class
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-admin-admin-area--docs
+https://docs.nasaqui.com/?path=/docs/components-admin-admin-area--docs

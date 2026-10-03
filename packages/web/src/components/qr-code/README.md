@@ -132,4 +132,4 @@ export const svg = qrSvgString({ value: "https://example.com", fg: "rgb(0, 0, 0)
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-utilities-qr-code--docs
+https://docs.nasaqui.com/?path=/docs/components-utilities-qr-code--docs

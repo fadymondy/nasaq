@@ -159,4 +159,4 @@ is `aria-hidden`. Localise `label`, `deltaLabel` and `sparklineLabel`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-stat-card--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-stat-card--docs

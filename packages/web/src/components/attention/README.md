@@ -159,4 +159,4 @@ hover `bg-nq-hover`, focus ring `nq-focus`. Tone colours: `text-nq-{danger,warni
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-attention--docs
+https://docs.nasaqui.com/?path=/docs/components-alerts-notifications-attention--docs

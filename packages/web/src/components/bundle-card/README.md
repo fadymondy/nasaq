@@ -166,4 +166,4 @@ export function YearlyKit() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pricing-bundle-card--docs
+https://docs.nasaqui.com/?path=/docs/components-pricing-bundle-card--docs

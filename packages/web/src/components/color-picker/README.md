@@ -218,4 +218,4 @@ from its `label`, and the selected swatch also gets a ring, so the state is not 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pickers-color-picker--docs
+https://docs.nasaqui.com/?path=/docs/components-pickers-color-picker--docs

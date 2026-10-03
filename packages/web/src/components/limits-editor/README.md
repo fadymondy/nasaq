@@ -131,4 +131,4 @@ Each row's mode is a labelled segmented control (arrow keys move, Space or Enter
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-limits-editor--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-limits-editor--docs

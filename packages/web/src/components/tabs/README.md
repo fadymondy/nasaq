@@ -202,4 +202,4 @@ Base UI provides `role="tablist"`, `role="tab"` with `aria-selected` and `aria-c
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-navigation-tabs--docs
+https://docs.nasaqui.com/?path=/docs/components-navigation-tabs--docs

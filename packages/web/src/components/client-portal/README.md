@@ -138,4 +138,4 @@ Cards, tabs, status and progress use the standard tokens; the ring uses the prim
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-crm-client-portal--docs
+https://docs.nasaqui.com/?path=/docs/components-crm-client-portal--docs

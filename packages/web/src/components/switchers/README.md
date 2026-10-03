@@ -222,4 +222,4 @@ export const Custom = () => <ThemeSwitcher labels={{ group: "Appearance", system
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-actions-switchers--docs
+https://docs.nasaqui.com/?path=/docs/components-actions-switchers--docs

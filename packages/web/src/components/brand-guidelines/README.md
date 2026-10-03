@@ -85,4 +85,4 @@ Page chrome uses Nasaq tokens. Swatches show the brand's own values, which are d
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-brand-brand-guidelines--docs
+https://docs.nasaqui.com/?path=/docs/components-brand-brand-guidelines--docs

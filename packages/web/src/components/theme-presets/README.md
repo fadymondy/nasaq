@@ -114,4 +114,4 @@ token set, so all presets keep Nasaq's contrast.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-brand-theme-presets--docs
+https://docs.nasaqui.com/?path=/docs/components-brand-theme-presets--docs

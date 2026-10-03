@@ -175,4 +175,4 @@ export function ArabicChips() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-chip-group--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-chip-group--docs

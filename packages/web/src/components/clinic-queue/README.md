@@ -103,4 +103,4 @@ const change = action === "call-next" ? callNext(list, { room: "1", at: Date.now
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-healthcare-clinic-queue--docs
+https://docs.nasaqui.com/?path=/docs/components-healthcare-clinic-queue--docs

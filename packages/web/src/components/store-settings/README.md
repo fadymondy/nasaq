@@ -144,4 +144,4 @@ Uses `--nq-*` tokens only. Target the `data-slot` names above.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-store-settings--docs
+https://docs.nasaqui.com/?path=/docs/components-store-admin-store-settings--docs

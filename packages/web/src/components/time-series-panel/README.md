@@ -186,4 +186,4 @@ The chart has a text alternative naming the metric and range, and the switcher a
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-time-series-panel--docs
+https://docs.nasaqui.com/?path=/docs/components-monitoring-time-series-panel--docs

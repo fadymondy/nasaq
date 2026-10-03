@@ -135,4 +135,4 @@ Strings ship in English and Arabic. Capability and backend names come from the h
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-provider-switcher--docs
+https://docs.nasaqui.com/?path=/docs/components-developer-tools-provider-switcher--docs

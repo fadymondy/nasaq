@@ -113,4 +113,4 @@ Cards, tabs and inputs use the standard tokens. The Fields tab is two columns fr
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-form-builders-form-builder--docs
+https://docs.nasaqui.com/?path=/docs/components-form-builders-form-builder--docs

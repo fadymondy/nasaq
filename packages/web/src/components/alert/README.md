@@ -155,4 +155,4 @@ export function DraftInvoice() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-alert--docs
+https://docs.nasaqui.com/?path=/docs/components-alerts-notifications-alert--docs

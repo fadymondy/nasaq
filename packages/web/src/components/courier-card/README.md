@@ -115,4 +115,4 @@ Uses `--status-*` tokens for the dot and `--brand` for the selected ring. Target
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-delivery-courier-card--docs
+https://docs.nasaqui.com/?path=/docs/components-delivery-courier-card--docs

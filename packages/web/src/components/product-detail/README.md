@@ -161,4 +161,4 @@ Set the provider locale to `ar`; everything, including numbers and dates, follow
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-storefront-product-detail--docs
+https://docs.nasaqui.com/?path=/docs/components-storefront-product-detail--docs

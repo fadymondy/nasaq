@@ -126,4 +126,4 @@ Uses `Avatar`, `Slider`, `Progress` and `Button` tokens plus `border-nq-focus`, 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-avatar-upload--docs
+https://docs.nasaqui.com/?path=/docs/components-account-avatar-upload--docs

@@ -324,4 +324,4 @@ The parts are native table elements, so screen readers get table, row and column
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-table--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-table--docs

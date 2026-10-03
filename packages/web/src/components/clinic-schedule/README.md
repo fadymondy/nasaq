@@ -104,4 +104,4 @@ import { findOverlaps, nextAppointment, summariseAppointments } from "@fadymondy
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-healthcare-clinic-schedule--docs
+https://docs.nasaqui.com/?path=/docs/components-healthcare-clinic-schedule--docs

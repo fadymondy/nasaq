@@ -95,4 +95,4 @@ Uses `Table`, `Progress`, `Alert` and `Badge` tokens; nothing custom.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-files-import-wizard--docs
+https://docs.nasaqui.com/?path=/docs/components-files-import-wizard--docs

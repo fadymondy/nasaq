@@ -120,4 +120,4 @@ Border, focus and danger tokens of the form controls. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-keyboard-commands-hotkey-recorder--docs
+https://docs.nasaqui.com/?path=/docs/components-keyboard-commands-hotkey-recorder--docs

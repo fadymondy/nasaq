@@ -136,4 +136,4 @@ export const Pulls = () => <GithubActivity repo={{ owner: "acme", name: "storefr
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-github-activity--docs
+https://docs.nasaqui.com/?path=/docs/components-developer-tools-github-activity--docs

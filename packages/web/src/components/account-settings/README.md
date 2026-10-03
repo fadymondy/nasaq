@@ -119,4 +119,4 @@ Uses `bg-nq-selected`, `bg-nq-hover`, `text-nq-danger-text`, `border-nq-danger` 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-account-settings--docs
+https://docs.nasaqui.com/?path=/docs/components-account-account-settings--docs

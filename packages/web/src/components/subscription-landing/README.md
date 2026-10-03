@@ -88,4 +88,4 @@ Semantic tokens only.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-marketing-subscription-landing--docs
+https://docs.nasaqui.com/?path=/docs/components-marketing-subscription-landing--docs

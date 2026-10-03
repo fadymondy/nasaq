@@ -220,4 +220,4 @@ screen never just pops:
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-auth-layout--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-auth-layout--docs

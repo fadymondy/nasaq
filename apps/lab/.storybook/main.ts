@@ -6,14 +6,14 @@ import type { StorybookConfig } from "@storybook/react-vite";
 import type { Plugin, PluginOption } from "vite";
 import { catalogue } from "./catalogue-plugin";
 
-// Served publicly through win-tunnel at nasaq-ui.fadymondy.com.
+// Served publicly through win-tunnel at docs.nasaqui.com.
 // An absolute path: packages/native sits outside apps/lab, so the bare name does not resolve from there in a build.
 // TypeScript 7 has no ts.sys, so @vue/compiler-sfc needs an fs to read prop types imported from .ts files.
 const VUE_SCRIPT_FS = { fileExists: existsSync, readFile: (f: string) => (existsSync(f) ? readFileSync(f, "utf8") : undefined), realpath: realpathSync };
 const RN_WEB = resolve(import.meta.dirname, "../node_modules/react-native-web");
 // Every component Docs page mounts its Vue example live (stack-tabs.tsx); the examples import the published path.
 const NASAQ_VUE = resolve(import.meta.dirname, "../../../packages/vue/src/index.ts");
-const HOSTS = ["nasaq-ui.fadymondy.com", "localhost", "127.0.0.1"];
+const HOSTS = ["docs.nasaqui.com", "localhost", "127.0.0.1"];
 
 const BASE_UI = [
   "autocomplete", "avatar", "button", "collapsible", "dialog", "direction-provider", "field", "popover",

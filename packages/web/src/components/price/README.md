@@ -148,4 +148,4 @@ export function ArabicPrices() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pricing-price--docs
+https://docs.nasaqui.com/?path=/docs/components-pricing-price--docs

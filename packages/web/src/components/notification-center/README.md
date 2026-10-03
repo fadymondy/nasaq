@@ -161,4 +161,4 @@ export function Bell() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-notification-center--docs
+https://docs.nasaqui.com/?path=/docs/components-alerts-notifications-notification-center--docs

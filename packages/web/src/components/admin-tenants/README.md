@@ -109,4 +109,4 @@ Uses `PlanCard`, `Price`, `Meter` and `Status`. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-admin-admin-tenants--docs
+https://docs.nasaqui.com/?path=/docs/components-admin-admin-tenants--docs

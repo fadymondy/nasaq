@@ -150,4 +150,4 @@ Up, down and neutral use the success, danger and muted tokens. Charts use the `-
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-seo-keyword-tracker--docs
+https://docs.nasaqui.com/?path=/docs/components-seo-keyword-tracker--docs

@@ -280,4 +280,4 @@ Keys on a row's drag handle in `SidebarCustomize` (the handle has `aria-keyshort
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-navigation-sidebar-customize--docs
+https://docs.nasaqui.com/?path=/docs/components-navigation-sidebar-customize--docs

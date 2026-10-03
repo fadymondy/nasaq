@@ -204,4 +204,4 @@ describe it. The country list is inside its own Field scope so it does not take 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-phone-input--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-phone-input--docs

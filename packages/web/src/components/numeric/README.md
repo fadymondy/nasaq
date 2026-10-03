@@ -311,4 +311,4 @@ export function Editorial() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-typography-num--docs
+https://docs.nasaqui.com/?path=/docs/components-typography-num--docs

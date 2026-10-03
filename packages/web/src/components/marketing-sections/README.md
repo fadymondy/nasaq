@@ -208,4 +208,4 @@ Backdrops use `--nq-brand`, the tag colours and `--nq-line`. Panels use `bg-nq-s
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-website-marketing-sections--docs
+https://docs.nasaqui.com/?path=/docs/components-website-marketing-sections--docs

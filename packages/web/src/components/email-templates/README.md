@@ -109,4 +109,4 @@ preview frame has a title. Delete uses a confirmation dialog. Save, test and err
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-editors-email-templates--docs
+https://docs.nasaqui.com/?path=/docs/components-editors-email-templates--docs

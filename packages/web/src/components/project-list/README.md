@@ -98,4 +98,4 @@ text plus an icon, never colour alone. Overdue dates say "Overdue" in text.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-project-list--docs
+https://docs.nasaqui.com/?path=/docs/components-projects-work-project-list--docs

@@ -124,4 +124,4 @@ Every group has `role="group"` with its match mode as the name. The sentence is 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-rule-builder--docs
+https://docs.nasaqui.com/?path=/docs/components-workflow-rule-builder--docs

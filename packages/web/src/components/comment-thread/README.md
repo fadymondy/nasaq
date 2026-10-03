@@ -101,4 +101,4 @@ Semantic tokens only. Reply indent uses logical padding.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-collaboration-comment-thread--docs
+https://docs.nasaqui.com/?path=/docs/components-collaboration-comment-thread--docs

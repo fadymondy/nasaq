@@ -118,4 +118,4 @@ Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-navigation-icon-rail-sidebar--docs
+https://docs.nasaqui.com/?path=/docs/components-navigation-icon-rail-sidebar--docs

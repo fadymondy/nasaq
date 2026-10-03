@@ -168,4 +168,4 @@ export function Checkout() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-navigation-stepper--docs
+https://docs.nasaqui.com/?path=/docs/components-navigation-stepper--docs

@@ -51,7 +51,7 @@ import { AppHeader, ProductSwitcher, type Product } from "@fadymondy/nasaq/web";
 const products: Product[] = [
   { id: "mahaam", brand: "mahaam", name: "Mahaam", href: "https://mahaam.app", pinned: true },
   { id: "zekra", brand: "zekra", name: "Zekra", href: "https://zekra.dev", pinned: true },
-  { id: "nasaq", brand: "nasaq", name: "Nasaq", href: "https://nasaq.fadymondy.com" },
+  { id: "nasaq", brand: "nasaq", name: "Nasaq", href: "https://nasaqui.com" },
 ];
 
 export function Header() {
@@ -249,4 +249,4 @@ const products = installed.map((app) => ({
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-navigation-product-switcher--docs
+https://docs.nasaqui.com/?path=/docs/components-navigation-product-switcher--docs

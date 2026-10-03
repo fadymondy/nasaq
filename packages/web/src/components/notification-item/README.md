@@ -216,7 +216,7 @@ export function Row() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-alerts-notifications-notification-item--docs
+https://docs.nasaqui.com/?path=/docs/components-alerts-notifications-notification-item--docs
 
 The item has no story of its own; it is demoed by `NotificationsSheet` in `apps/lab/stories/_notifications.tsx`,
 used by the Layout/App Shell stories.

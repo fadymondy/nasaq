@@ -111,4 +111,4 @@ Uses `Kbd`, Dialog and muted text tokens. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-keyboard-commands-keyboard-shortcuts--docs
+https://docs.nasaqui.com/?path=/docs/components-keyboard-commands-keyboard-shortcuts--docs

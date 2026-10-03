@@ -146,4 +146,4 @@ inline-start and inline-end corners with logical classes.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-actions-toggle-group--docs
+https://docs.nasaqui.com/?path=/docs/components-actions-toggle-group--docs

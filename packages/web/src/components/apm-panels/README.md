@@ -166,4 +166,4 @@ Charts have text alternatives and the percentile chips are text. Tables are real
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-apm-panels--docs
+https://docs.nasaqui.com/?path=/docs/components-monitoring-apm-panels--docs

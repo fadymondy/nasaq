@@ -126,4 +126,4 @@ export const Stopped = () => <ServerCard server={{ ...server, status: "stopped",
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-server-card--docs
+https://docs.nasaqui.com/?path=/docs/components-server-tools-server-card--docs

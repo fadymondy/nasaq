@@ -126,4 +126,4 @@ Bars use the primary token with decreasing emphasis; the biggest drop uses the w
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-funnel-chart--docs
+https://docs.nasaqui.com/?path=/docs/components-analytics-funnel-chart--docs

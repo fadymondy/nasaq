@@ -123,4 +123,4 @@ Same as `BreakdownTable`. The flag is an emoji shown with the country name besid
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-geo-list--docs
+https://docs.nasaqui.com/?path=/docs/components-analytics-geo-list--docs

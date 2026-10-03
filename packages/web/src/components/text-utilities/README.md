@@ -93,4 +93,4 @@ Semantic tokens only. Extend with `className`, `linkClassName` and `contentClass
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-utilities-text-utilities--docs
+https://docs.nasaqui.com/?path=/docs/components-utilities-text-utilities--docs

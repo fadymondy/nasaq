@@ -133,4 +133,4 @@ export const step = (status: "waiting" | "connected"): SetupStep => ({
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-onboarding-pages-setup-wizard--docs
+https://docs.nasaqui.com/?path=/docs/components-onboarding-pages-setup-wizard--docs

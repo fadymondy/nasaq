@@ -101,4 +101,4 @@ const hours = hoursForDate(availability, new Date(2026, 9, 20)); // null on vaca
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-availability-editor--docs
+https://docs.nasaqui.com/?path=/docs/components-bookings-availability-editor--docs

@@ -232,4 +232,4 @@ export function OnNavy() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/brand-product-mark--docs
+https://docs.nasaqui.com/?path=/docs/brand-product-mark--docs

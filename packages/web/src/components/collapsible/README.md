@@ -171,4 +171,4 @@ Base UI sets `aria-expanded` and `aria-controls` on the trigger, and hides the p
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-collapsible--docs
+https://docs.nasaqui.com/?path=/docs/components-layout-collapsible--docs

@@ -10,12 +10,12 @@ const here = dirname(fileURLToPath(import.meta.url));
 
 /** Public locations. The registry lives on the docs host; the landing page is a separate app. */
 export const URLS = {
-  docs: "https://nasaq-ui.fadymondy.com",
-  registry: "https://nasaq-ui.fadymondy.com/r/{name}.json",
-  registryIndex: "https://nasaq-ui.fadymondy.com/registry.json",
+  docs: "https://docs.nasaqui.com",
+  registry: "https://docs.nasaqui.com/r/{name}.json",
+  registryIndex: "https://docs.nasaqui.com/registry.json",
   repo: "https://github.com/fadymondy/nasaq",
-  landing: "https://nasaq.fadymondy.com",
-  mcp: "https://nasaq-mcp.fadymondy.com/mcp",
+  landing: "https://nasaqui.com",
+  mcp: "https://mcp.nasaqui.com/mcp",
 };
 
 /** How to add one component to a shadcn project, from the public registry. */

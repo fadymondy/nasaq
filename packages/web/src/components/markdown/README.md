@@ -143,4 +143,4 @@ export function Plain({ text }: { text: string }) {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-typography-markdown--docs
+https://docs.nasaqui.com/?path=/docs/components-typography-markdown--docs

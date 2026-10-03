@@ -94,4 +94,4 @@ Semantic tokens only. Extend with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-crm-contact-merge--docs
+https://docs.nasaqui.com/?path=/docs/components-crm-contact-merge--docs

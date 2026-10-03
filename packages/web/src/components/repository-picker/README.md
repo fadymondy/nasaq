@@ -105,4 +105,4 @@ RepositoryPicker            data-slot="repository-picker"
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-repository-picker--docs
+https://docs.nasaqui.com/?path=/docs/components-developer-tools-repository-picker--docs

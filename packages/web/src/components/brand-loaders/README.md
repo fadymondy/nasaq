@@ -131,4 +131,4 @@ export function Wait() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-brand-brand-loaders--docs
+https://docs.nasaqui.com/?path=/docs/components-brand-brand-loaders--docs

@@ -112,4 +112,4 @@ Semantic tokens only. The tab list scrolls sideways on narrow screens; the setti
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-project-view--docs
+https://docs.nasaqui.com/?path=/docs/components-projects-work-project-view--docs

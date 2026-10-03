@@ -101,4 +101,4 @@ Cards use `Card` and `Badge`; tones come from `--nq-*` status tokens. Cards fill
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-approval-queue--docs
+https://docs.nasaqui.com/?path=/docs/components-workflow-approval-queue--docs

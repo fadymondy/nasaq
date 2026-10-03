@@ -151,4 +151,4 @@ State attributes: `data-disabled`, `data-dragging`. `className` merges onto the 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-slider--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-slider--docs

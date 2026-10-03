@@ -102,4 +102,4 @@ With only the current session, an empty state says no other device is signed in.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-security-active-sessions--docs
+https://docs.nasaqui.com/?path=/docs/components-security-active-sessions--docs

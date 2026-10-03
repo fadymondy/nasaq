@@ -125,4 +125,4 @@ The count is in a polite live region, so changes are announced without interrupt
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-realtime-counter--docs
+https://docs.nasaqui.com/?path=/docs/components-analytics-realtime-counter--docs

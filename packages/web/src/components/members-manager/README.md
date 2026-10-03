@@ -133,4 +133,4 @@ Built from Nasaq parts (`DataTable`, `Select`, `Badge`, `Alert`), so it follows 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-collaboration-members-manager--docs
+https://docs.nasaqui.com/?path=/docs/components-collaboration-members-manager--docs

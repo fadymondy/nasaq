@@ -227,4 +227,4 @@ None of these are focusable; keyboard access is through the `actions` you pass.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-loading-states-states--docs
+https://docs.nasaqui.com/?path=/docs/components-loading-states-states--docs

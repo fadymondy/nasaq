@@ -129,4 +129,4 @@ Helpers: `deriveStatus`, `stepDuration`, `totalDuration`, `formatDuration`, `tai
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-deploy-view--docs
+https://docs.nasaqui.com/?path=/docs/components-server-tools-deploy-view--docs

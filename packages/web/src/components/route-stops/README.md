@@ -85,4 +85,4 @@ Uses `--status-success`, `--status-danger`, `--brand`. Target `[data-current]`, 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-delivery-route-stops--docs
+https://docs.nasaqui.com/?path=/docs/components-delivery-route-stops--docs

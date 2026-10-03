@@ -112,4 +112,4 @@ Every `div` prop is passed through unless noted.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-booking-slots--docs
+https://docs.nasaqui.com/?path=/docs/components-bookings-booking-slots--docs

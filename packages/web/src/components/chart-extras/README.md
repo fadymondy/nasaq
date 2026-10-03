@@ -227,4 +227,4 @@ biggest drop is a badge with an icon and text. `TrendCell` has a visually hidden
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-maps-extra-charts--docs
+https://docs.nasaqui.com/?path=/docs/components-charts-maps-extra-charts--docs

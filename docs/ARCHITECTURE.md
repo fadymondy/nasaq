@@ -12,8 +12,8 @@
 |---|---|
 | Repository | `github.com/fadymondy/nasaq` (not created yet; D-7) |
 | npm | `@fadymondy/nasaq`, one package with subpaths `/tokens`, `/web`, `/native`, `/electron` (+ `/brands`, `/tokens/*.css`) |
-| Landing, docs, registry, MCP | Landing `https://nasaq.fadymondy.com`. Docs (the static Storybook) and registry `https://nasaq-ui.fadymondy.com`, registry at `/r/{name}.json`, index at `/registry.json`. MCP `https://nasaq-mcp.fadymondy.com/mcp` |
-| Lab (Storybook) | `https://nasaq-ui.fadymondy.com` (dev server via win-tunnel) |
+| Landing, docs, registry, MCP | Landing `https://nasaqui.com`. Docs (the static Storybook) and registry `https://docs.nasaqui.com`, registry at `/r/{name}.json`, index at `/registry.json`. MCP `https://mcp.nasaqui.com/mcp` |
+| Lab (Storybook) | `https://docs.nasaqui.com` (dev server via win-tunnel) |
 | Mahaam project | `Nasaq` |
 | Zekra brain | namespace `nasaq` |
 
@@ -99,8 +99,8 @@ Internal packages are private workspace packages (`@nasaq/tokens`, …). Only `@
 - Registry items are **generated from `packages/web` sources** by a build step that rewrites imports to shadcn aliases (`@/lib/utils`, `@/components/ui/*`). There is no second copy to drift.
 - Registry items **never depend on `@fadymondy/nasaq`**. Their dependencies are limited to `@base-ui/react`, `class-variance-authority`, `clsx`, `tailwind-merge`, `lucide-react`, and `sonner` / `cmdk` / `recharts` where the component needs them. This keeps the "no huge runtime" rule.
 - The registry is **flat**, and `/registry.json` has no `content` in its files, as the shadcn directory requires.
-- The preset item is `nasaq`: `https://nasaq-ui.fadymondy.com/r/nasaq.json`, type `registry:style`. It installs the cssVars, the `cn` util and the provider.
-- Namespace config for consumers: `"@nasaq": "https://nasaq-ui.fadymondy.com/r/{name}.json"`.
+- The preset item is `nasaq`: `https://docs.nasaqui.com/r/nasaq.json`, type `registry:style`. It installs the cssVars, the `cn` util and the provider.
+- Namespace config for consumers: `"@nasaq": "https://docs.nasaqui.com/r/{name}.json"`.
 - Submission to the shadcn directory (`apps/v4/registry/directory.json` + `pnpm validate:registries` + a PR) happens after the P1 catalog is stable. It is outward-facing, so it waits for Fady's approval.
 
 ## 6. Tokens
@@ -316,7 +316,7 @@ A brand manifest can put Inter first for Latin text, as Mahaam, Zekra, Moharrik 
 - **Install.** The registry item `https://console.mahaam.app/r/feedback.json` goes into `apps/lab` and `apps/site`. The component files land in `components/mahaam/*`.
 - **Core package.** `@mahaam/feedback-core` is **not on npm** (404). It is vendored into `packages/feedback` as a generated copy of `fadymondy/mahaam-feedback/packages/core`, via `scripts/sync-feedback.mjs` with `--check`, the same pattern fmv2 uses. A follow-up issue tracks switching to npm once it is published.
 - **Key.** The key is read from `VITE_MAHAAM_FEEDBACK_KEY` / `NEXT_PUBLIC_MAHAAM_FEEDBACK_KEY`, set in `.env.local` and never committed. It is sent as the `X-Mahaam-Key` header.
-- **Allowed origins.** The key's allowed origins must include `https://nasaq.fadymondy.com`, `https://nasaq-ui.fadymondy.com` and `http://localhost:*`. **Fady has to add them**, because the MCP token cannot edit keys.
+- **Allowed origins.** The key's allowed origins must include `https://nasaqui.com`, `https://docs.nasaqui.com` and `http://localhost:*`. **Fady has to add them**, because the MCP token cannot edit keys.
 - **Verification.** Submit a test report and expect an `MG-n` key back, then delete the test issue.
 
 ## 15. Lab (Storybook) and site
@@ -329,10 +329,10 @@ A brand manifest can put Inter first for Latin text, as Mahaam, Zekra, Moharrik 
   - **Brand / Brand matrix** renders the same primitives under the eight product manifests side by side, with the primary action's contrast ratio. Upstream colours below AA are marked as decision B15.
   - Native components render through react-native-web aliases. Electron renderer components render with a simulated `data-platform`.
   - **Every component has a story.** CI fails if a component in `packages/web` or `packages/native` lacks a `*.stories.tsx`.
-  - Served as a dev server by win-tunnel `create_project` with subdomain `nasaq-ui`, giving `nasaq-ui.fadymondy.com`.
+  - Served as a dev server by win-tunnel `create_project` with subdomain `nasaq-ui`, giving `docs.nasaqui.com`.
 - **`apps/site`**
   - Next.js 16 + fumadocs: docs, a brand page (marks from `MarkSpec`, downloadable, generated), `/registry.json` and `/r/*.json` (`shadcn build` output).
-  - The docs and the registry are served from the static Storybook build (`pnpm --filter @nasaq/lab build`) at `nasaq-ui.fadymondy.com`; `nasaq.fadymondy.com` is the landing site.
+  - The docs and the registry are served from the static Storybook build (`pnpm --filter @nasaq/lab build`) at `docs.nasaqui.com`; `nasaqui.com` is the landing site.
 
 ## 16. Quality gates (CI)
 
@@ -355,7 +355,7 @@ A brand manifest can put Inter first for Latin text, as Mahaam, Zekra, Moharrik 
 | D-5 | **Lusail licence**: can Nasaq redistribute it? | Not bundled until confirmed |
 | D-6 | Approve the **Nasaq mark** (BRAND-AUDIT §4 (internal, not published)) and adding `nasaq` to fmv2 `marks.ts` | Approve, then upstream |
 | D-7 | Create the **GitHub repo** `fadymondy/nasaq` (public) and publish **npm** `@fadymondy/nasaq`. Both are outward-facing; npm is not logged in on this machine. | Create the repo after the review; publish 0.1.0 after the P1 catalog |
-| D-8 | **Hosting** | Decided: the docs and registry are one static folder (`apps/lab/storybook-static`) on `nasaq-ui.fadymondy.com`, served by `apps/lab/scripts/serve-static.mjs`; the landing stays on `nasaq.fadymondy.com` |
+| D-8 | **Hosting** | Decided: the docs and registry are one static folder (`apps/lab/storybook-static`) on `docs.nasaqui.com`, served by `apps/lab/scripts/serve-static.mjs`; the landing stays on `nasaqui.com` |
 | D-9 | Latin UI face default: Lusail or Inter? | Lusail first, with a per-brand Inter option (as the 4 products do) |
 | D-10 | Brand ambiguities B1–B14 | Defaults as listed in the brand audit |
 
@@ -368,7 +368,7 @@ The plan is phased, with one issue per phase. Nothing beyond Phase 5 starts befo
 3. Phase 2: `tokens` (DTCG source, Style Dictionary build, CSS/TS/RN outputs, `--grid-*` aliases, contrast tests).
 4. Phase 3: `brands` (manifests, marks, Nasaq mark assets, `ProductMark` / `ProductLogo`).
 5. Phase 4: web foundation plus the P0 components, each with a story.
-6. Phase 5: lab (Storybook, `nasaq-ui.fadymondy.com`, Mahaam Feedback verified).
+6. Phase 5: lab (Storybook, `docs.nasaqui.com`, Mahaam Feedback verified).
 7. Phase 6: native foundation (provider, Text, Button, Screen, ProductMark).
 8. Phase 7: Electron layer (chrome factory, title bar, drag region, controls inset).
 9. Phase 8: registry and site (`nasaq.json`, `/r/*`, validation).

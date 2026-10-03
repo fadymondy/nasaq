@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import "./global.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nasaq-ui.fadymondy.com"),
+  metadataBase: new URL("https://docs.nasaqui.com"),
   title: { default: "Nasaq", template: "%s | Nasaq" },
   description: "Nasaq: one product language, every surface. A shadcn registry of tokens, themes and components.",
 };

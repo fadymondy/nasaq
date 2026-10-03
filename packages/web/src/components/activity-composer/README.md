@@ -94,4 +94,4 @@ Semantic tokens only.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-crm-activity-composer--docs
+https://docs.nasaqui.com/?path=/docs/components-crm-activity-composer--docs

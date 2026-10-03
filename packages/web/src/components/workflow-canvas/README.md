@@ -179,4 +179,4 @@ Choosing a version draws it read-only on the canvas under a "Previewing version 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-workflow-canvas--docs
+https://docs.nasaqui.com/?path=/docs/components-workflow-workflow-canvas--docs

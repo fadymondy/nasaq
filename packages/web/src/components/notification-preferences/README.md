@@ -105,4 +105,4 @@ Built on `SettingsSection`, `Checkbox`, `Switch`, `Select` and `TimePicker`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-notification-preferences--docs
+https://docs.nasaqui.com/?path=/docs/components-account-notification-preferences--docs

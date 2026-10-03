@@ -122,4 +122,4 @@ declare const api: { passkey(): Promise<void> };
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-auth-pages-session-expired--docs
+https://docs.nasaqui.com/?path=/docs/components-auth-pages-session-expired--docs

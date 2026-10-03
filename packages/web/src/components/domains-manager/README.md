@@ -125,4 +125,4 @@ export const Cell = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-domains-manager--docs
+https://docs.nasaqui.com/?path=/docs/components-server-tools-domains-manager--docs

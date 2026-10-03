@@ -87,4 +87,4 @@ Semantic tokens only.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-chat-canned-replies--docs
+https://docs.nasaqui.com/?path=/docs/components-chat-canned-replies--docs

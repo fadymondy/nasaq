@@ -170,4 +170,4 @@ Bubbles use the brand action colour with a card-colour border and a soft ring. S
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-charts-maps-map-view--docs
+https://docs.nasaqui.com/?path=/docs/components-charts-maps-map-view--docs

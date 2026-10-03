@@ -147,4 +147,4 @@ Cards are `Card`; the editing outline uses `border` and `ring` tokens. Target `[
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-pages-dashboard-board--docs
+https://docs.nasaqui.com/?path=/docs/components-layout-pages-dashboard-board--docs

@@ -1,6 +1,6 @@
 # nasaq-php
 
-[Nasaq](https://nasaq-ui.fadymondy.com) (نسق) for Laravel: Blade components (`<x-nq::button>`), Alpine behaviours, Livewire `wire:model` support and a FilamentPHP plugin. The markup and Tailwind classes match the React components, so a page looks the same in every stack. Arabic and RTL are native.
+[Nasaq](https://docs.nasaqui.com) (نسق) for Laravel: Blade components (`<x-nq::button>`), Alpine behaviours, Livewire `wire:model` support and a FilamentPHP plugin. The markup and Tailwind classes match the React components, so a page looks the same in every stack. Arabic and RTL are native.
 
 ## Requirements
 
@@ -134,14 +134,14 @@ Money defaults to USD, or SAR when the locale is Arabic. Override it with `NASAQ
 
 ## Components
 
-The full list, props and live examples are at https://nasaq-ui.fadymondy.com. Every component page has a Blade tab. Each component's view starts with a comment listing its props.
+The full list, props and live examples are at https://docs.nasaqui.com. Every component page has a Blade tab. Each component's view starts with a comment listing its props.
 
 ## MCP server for AI
 
 Give Claude, Cursor or any MCP client the component manuals:
 
 ```bash
-claude mcp add --transport http nasaq https://nasaq-mcp.fadymondy.com/mcp
+claude mcp add --transport http nasaq https://mcp.nasaqui.com/mcp
 # or: claude mcp add nasaq -- npx -y @fadymondy/nasaq-mcp
 ```
 

@@ -105,4 +105,4 @@ socket.onclose = () => setConnection("reconnecting");
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-waiting-screen--docs
+https://docs.nasaqui.com/?path=/docs/components-bookings-waiting-screen--docs

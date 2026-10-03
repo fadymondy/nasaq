@@ -120,4 +120,4 @@ export function Simple({ save }: { save: (v: { newPassword: string }) => Promise
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-account-change-password-form--docs
+https://docs.nasaqui.com/?path=/docs/components-account-change-password-form--docs

@@ -136,4 +136,4 @@ onSubmit={async (booking) => {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-bookings-booking-flow--docs
+https://docs.nasaqui.com/?path=/docs/components-bookings-booking-flow--docs

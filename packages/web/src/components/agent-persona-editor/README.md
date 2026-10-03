@@ -94,4 +94,4 @@ Every field has a label. Errors are tied to their field. The Write and Preview t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-agent-persona-editor--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-agents-agent-persona-editor--docs

@@ -143,4 +143,4 @@ Buttons use `Button` variants; the current page uses `border-primary` and `bg-nq
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-navigation-pagination--docs
+https://docs.nasaqui.com/?path=/docs/components-navigation-pagination--docs

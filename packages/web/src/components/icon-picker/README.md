@@ -147,4 +147,4 @@ export function NavIcon({ icon }: { icon?: string }) {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pickers-icon-picker--docs
+https://docs.nasaqui.com/?path=/docs/components-pickers-icon-picker--docs

@@ -175,4 +175,4 @@ Uses the Card, Badge, StatCard and chart tokens (`--nq-success`, `--nq-warning`,
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-pages-profitability--docs
+https://docs.nasaqui.com/?path=/docs/components-analytics-pages-profitability--docs

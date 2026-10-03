@@ -106,4 +106,4 @@ View names ship in English and Arabic. Arrow keys follow the reading direction.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-actions-view-toggle--docs
+https://docs.nasaqui.com/?path=/docs/components-actions-view-toggle--docs

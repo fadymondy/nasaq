@@ -133,4 +133,4 @@ State and the killed banner use the danger, success, warning and neutral tokens.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-feature-flag-detail--docs
+https://docs.nasaqui.com/?path=/docs/components-developer-tools-feature-flag-detail--docs

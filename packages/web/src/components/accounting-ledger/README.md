@@ -124,4 +124,4 @@ Semantic tokens only. Entry lines are cards below 42rem and a grid above. Target
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-billing-accounting-ledger--docs
+https://docs.nasaqui.com/?path=/docs/components-billing-accounting-ledger--docs

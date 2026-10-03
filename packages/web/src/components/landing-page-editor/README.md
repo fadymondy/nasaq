@@ -106,4 +106,4 @@ icon with a text label. Errors are announced in an alert.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-editors-landing-page-editor--docs
+https://docs.nasaqui.com/?path=/docs/components-editors-landing-page-editor--docs

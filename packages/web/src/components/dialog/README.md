@@ -227,4 +227,4 @@ returns to the trigger on close. Content behind it is made inert.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-overlays-dialog--docs
+https://docs.nasaqui.com/?path=/docs/components-overlays-dialog--docs

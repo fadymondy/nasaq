@@ -109,4 +109,4 @@ decorative; the name is the accessible label of the row and the card.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-brain-list--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-agents-brain-list--docs

@@ -124,4 +124,4 @@ export const cmd = mcpSnippet("claude-code", { name: "example", url: "https://mc
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-integrations-mcp-connect--docs
+https://docs.nasaqui.com/?path=/docs/components-integrations-mcp-connect--docs

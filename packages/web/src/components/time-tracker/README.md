@@ -166,4 +166,4 @@ Uses card, border, text and danger tokens. Target `[data-slot="time-tracker"]`, 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-productivity-timetracker--docs
+https://docs.nasaqui.com/?path=/docs/components-productivity-timetracker--docs

@@ -260,4 +260,4 @@ export function Hints({ owner }: { owner: string }) {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/foundations-icons-bidi--docs
+https://docs.nasaqui.com/?path=/docs/foundations-icons-bidi--docs

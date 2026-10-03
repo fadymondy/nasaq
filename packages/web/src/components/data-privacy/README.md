@@ -120,4 +120,4 @@ Built on `SettingsSection`, `DangerZone`, `Progress` and `AuthLayout`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-security-data-privacy--docs
+https://docs.nasaqui.com/?path=/docs/components-security-data-privacy--docs

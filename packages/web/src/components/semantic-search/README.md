@@ -92,4 +92,4 @@ The score is shown as a word (strong, good, weak) as well as a bar. Facet chips 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-assistant-semantic-search--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-assistant-semantic-search--docs

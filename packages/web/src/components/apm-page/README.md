@@ -131,4 +131,4 @@ The page has one `h1`; tabs follow the WAI-ARIA tabs pattern (arrow keys move, t
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-pages-apm--docs
+https://docs.nasaqui.com/?path=/docs/components-monitoring-pages-apm--docs

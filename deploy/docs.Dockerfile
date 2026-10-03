@@ -1,4 +1,4 @@
-# Docs host (nasaq-ui.fadymondy.com): the static Storybook plus the shadcn registry at /r.
+# Docs host (docs.nasaqui.com): the static Storybook plus the shadcn registry at /r.
 # Build context is the repo root: docker build -f deploy/docs.Dockerfile .
 FROM node:24-bookworm-slim AS build
 WORKDIR /repo

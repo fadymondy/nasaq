@@ -195,4 +195,4 @@ the card and `data-phase`, `data-confirming` on the break screen. The screen sit
 
 ## Lab
 
-`https://nasaq-ui.fadymondy.com/?path=/docs/components-productivity-pomodoro-card--docs`
+`https://docs.nasaqui.com/?path=/docs/components-productivity-pomodoro-card--docs`

@@ -123,4 +123,4 @@ Every select is named with its task class and role ("Chat: Model"). Errors sit u
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-ai-agents-model-routing-editor--docs
+https://docs.nasaqui.com/?path=/docs/components-ai-agents-model-routing-editor--docs

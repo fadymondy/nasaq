@@ -220,4 +220,4 @@ The caller localises name, description, notes, features and badge. The built-in 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-pricing-plan-card--docs
+https://docs.nasaqui.com/?path=/docs/components-pricing-plan-card--docs

@@ -133,4 +133,4 @@ export function Accounts() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-integrations-connected-accounts--docs
+https://docs.nasaqui.com/?path=/docs/components-integrations-connected-accounts--docs

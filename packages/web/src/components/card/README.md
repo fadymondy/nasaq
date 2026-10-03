@@ -201,4 +201,4 @@ A card is a plain `div`. It has no role, focus or keyboard behaviour.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-card--docs
+https://docs.nasaqui.com/?path=/docs/components-layout-card--docs

@@ -167,4 +167,4 @@ Border `border-nq-line-strong`, checked `bg-primary` / `border-primary`, card se
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-radio-group--docs
+https://docs.nasaqui.com/?path=/docs/components-forms-radio-group--docs

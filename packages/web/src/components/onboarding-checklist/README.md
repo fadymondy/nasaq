@@ -115,4 +115,4 @@ export const Empty = () => <EmptyState title="No projects yet" description="Crea
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-onboarding-pages-checklist--docs
+https://docs.nasaqui.com/?path=/docs/components-onboarding-pages-checklist--docs

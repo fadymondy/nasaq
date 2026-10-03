@@ -156,4 +156,4 @@ export function Draft() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-data-display-status--docs
+https://docs.nasaqui.com/?path=/docs/components-data-display-status--docs

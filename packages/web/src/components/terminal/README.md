@@ -151,4 +151,4 @@ const [lines, setLines] = useState<TerminalLine[]>([{ kind: "command", text: "pn
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-terminal--docs
+https://docs.nasaqui.com/?path=/docs/components-developer-tools-terminal--docs

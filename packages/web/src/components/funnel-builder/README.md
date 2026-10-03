@@ -115,4 +115,4 @@ Standard field, card and button tokens. Logical spacing only.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-analytics-funnel-builder--docs
+https://docs.nasaqui.com/?path=/docs/components-analytics-funnel-builder--docs

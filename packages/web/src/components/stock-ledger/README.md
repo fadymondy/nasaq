@@ -106,4 +106,4 @@ Semantic tokens only. Tables scroll sideways on narrow widths. Target `[data-slo
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-stock-ledger--docs
+https://docs.nasaqui.com/?path=/docs/components-store-admin-stock-ledger--docs

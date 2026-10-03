@@ -3,7 +3,7 @@
 //   1. scripts/registry.mjs         registry sources -> shadcn build -> validate  (apps/lab/.registry/r)
 //   2. storybook build              -> storybook-static (docs, stories, demo images)
 //   3. copy the registry            -> storybook-static/r/*.json and storybook-static/registry.json
-// One folder, one host: https://nasaq-ui.fadymondy.com serves the docs and https://nasaq-ui.fadymondy.com/r/{name}.json.
+// One folder, one host: https://docs.nasaqui.com serves the docs and https://docs.nasaqui.com/r/{name}.json.
 // Set NASAQ_SKIP_REGISTRY=1 to reuse an existing apps/lab/.registry/r (for quick docs-only builds).
 import { spawnSync } from "node:child_process";
 import { cpSync, existsSync, readdirSync, rmSync, statSync } from "node:fs";

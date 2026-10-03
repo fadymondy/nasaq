@@ -140,4 +140,4 @@ export const Weekly = () => (
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-server-tools-backup-manager--docs
+https://docs.nasaqui.com/?path=/docs/components-server-tools-backup-manager--docs

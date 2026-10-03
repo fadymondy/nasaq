@@ -120,4 +120,4 @@ export const Firefox = () => <ChromeExtensionInstall storeUrl="https://example.c
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-apps-platforms-chrome-extension-install--docs
+https://docs.nasaqui.com/?path=/docs/components-apps-platforms-chrome-extension-install--docs

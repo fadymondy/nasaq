@@ -109,4 +109,4 @@ with `className`.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-admin-user-actions-menu--docs
+https://docs.nasaqui.com/?path=/docs/components-admin-user-actions-menu--docs

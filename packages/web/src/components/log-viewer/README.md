@@ -179,4 +179,4 @@ the newest entry.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-log-viewer--docs
+https://docs.nasaqui.com/?path=/docs/components-monitoring-log-viewer--docs

@@ -108,4 +108,4 @@ Semantic tokens only. Overdue dates use the danger tokens.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-issue-view--docs
+https://docs.nasaqui.com/?path=/docs/components-projects-work-issue-view--docs

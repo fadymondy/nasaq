@@ -221,4 +221,4 @@ Uses `border-input`, `bg-card`, `bg-nq-hover`, `bg-nq-selected`, `border-nq-focu
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-files-file-upload--docs
+https://docs.nasaqui.com/?path=/docs/components-files-file-upload--docs

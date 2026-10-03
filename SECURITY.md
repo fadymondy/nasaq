@@ -17,7 +17,7 @@ Please include what you found, how to reproduce it, the affected package and ver
 
 ## Scope
 
-In scope: the published packages (`@fadymondy/nasaq`, `@fadymondy/nasaq-mcp`), the shadcn registry items served at `https://nasaq-ui.fadymondy.com/r/`, the hosted MCP server at `https://nasaq-mcp.fadymondy.com`, and the documentation site.
+In scope: the published packages (`@fadymondy/nasaq`, `@fadymondy/nasaq-mcp`), the shadcn registry items served at `https://docs.nasaqui.com/r/`, the hosted MCP server at `https://mcp.nasaqui.com`, and the documentation site.
 
 Notes that help triage:
 

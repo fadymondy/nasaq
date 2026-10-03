@@ -209,4 +209,4 @@ export function Roles() {
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/foundations-typography--docs
+https://docs.nasaqui.com/?path=/docs/foundations-typography--docs

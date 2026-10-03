@@ -92,4 +92,4 @@ Same tokens as the catalog store and workflow network. No raw hex.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-workflow-workflow-marketplace--docs
+https://docs.nasaqui.com/?path=/docs/components-workflow-workflow-marketplace--docs

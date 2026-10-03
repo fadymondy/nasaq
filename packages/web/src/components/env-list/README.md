@@ -140,4 +140,4 @@ parseEnv('A=1\nexport B="two words"\nA=3').duplicates; // ["A"], the last value 
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-developer-tools-env-list--docs
+https://docs.nasaqui.com/?path=/docs/components-developer-tools-env-list--docs

@@ -131,4 +131,4 @@ On the root and viewport: `data-has-overflow-x`, `data-has-overflow-y`, `data-ov
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-layout-scroll-area--docs
+https://docs.nasaqui.com/?path=/docs/components-layout-scroll-area--docs

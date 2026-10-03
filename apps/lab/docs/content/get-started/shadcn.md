@@ -7,7 +7,7 @@ Add the registry to `components.json` once:
 ```json
 {
   "registries": {
-    "@nasaq": "https://nasaq-ui.fadymondy.com/r/{name}.json"
+    "@nasaq": "https://docs.nasaqui.com/r/{name}.json"
   }
 }
 ```

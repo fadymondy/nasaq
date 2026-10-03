@@ -173,4 +173,4 @@ Target `data-over` on columns and `data-dragging` on items. Extend with `classNa
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-projects-work-kanban-board--docs
+https://docs.nasaqui.com/?path=/docs/components-projects-work-kanban-board--docs

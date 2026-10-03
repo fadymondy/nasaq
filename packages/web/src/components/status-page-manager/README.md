@@ -108,4 +108,4 @@ isValidStatusSlug("Acme Status"); // false
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-monitoring-status-page-manager--docs
+https://docs.nasaqui.com/?path=/docs/components-monitoring-status-page-manager--docs

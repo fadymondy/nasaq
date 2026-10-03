@@ -33,7 +33,7 @@ export function Hero() {
           <Text as="span" variant="eyebrow">
             Start in a minute
           </Text>
-          <CodeBlock language="bash" code={"npx shadcn@latest add https://nasaq-ui.fadymondy.com/r/nasaq.json\nnpx shadcn@latest add https://nasaq-ui.fadymondy.com/r/button.json"} />
+          <CodeBlock language="bash" code={"npx shadcn@latest add https://docs.nasaqui.com/r/nasaq.json\nnpx shadcn@latest add https://docs.nasaqui.com/r/button.json"} />
           <Text as="p" variant="caption" className="text-muted-foreground">
             Add the preset once, then any component by name. The <code>@nasaq</code> namespace shortens this to <code>@nasaq/button</code>.
           </Text>

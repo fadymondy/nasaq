@@ -196,4 +196,4 @@ StoreAbandonedCarts [data-slot="store-abandoned-carts"]
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-store-admin-store-orders-admin--docs
+https://docs.nasaqui.com/?path=/docs/components-store-admin-store-orders-admin--docs
