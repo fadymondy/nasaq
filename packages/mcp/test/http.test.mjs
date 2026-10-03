@@ -88,6 +88,20 @@ test("GET / explains how to connect", async () => {
   assert.match(html, /claude mcp add --transport http nasaq https:\/\/mcp\.nasaqui\.com\/mcp/);
 });
 
+test("GET / is a full landing page with the brand assets it links", async () => {
+  const html = await (await fetch(base)).text();
+  assert.ok(html.includes('<link rel="canonical" href="https://mcp.nasaqui.com/">'));
+  assert.match(html, /"@type":"SoftwareApplication"/);
+  for (const tool of ["list_components", "search_components", "get_component", "get_foundation", "list_tokens", "get_setup"]) assert.ok(html.includes(tool), tool);
+  for (const path of ["/brand/nasaq-mark.svg", "/brand/nasaq-mark-on-dark.svg", "/favicon.svg"]) {
+    assert.ok(html.includes(path), path);
+    const res = await fetch(base + path);
+    assert.equal(res.status, 200, path);
+    assert.ok(res.headers.get("content-type").startsWith("image/svg+xml"), path);
+    assert.match(await res.text(), /<svg/);
+  }
+});
+
 test("CORS preflight allows browser clients", async () => {
   const res = await fetch(`${base}/mcp`, { method: "OPTIONS", headers: { Origin: "https://claude.ai", "Access-Control-Request-Method": "POST", "Access-Control-Request-Headers": "content-type,mcp-protocol-version" } });
   assert.equal(res.status, 204);
