@@ -49,6 +49,8 @@ describe("desktop-locations (Blade example)", () => {
     await vi.waitFor(() => expect(seen).toHaveLength(1), { timeout: 2000 });
     expect(seen[0].id).toBe("l1");
     expect(seen[0].permissions).toEqual({ read: true, write: false, index: true });
+    // The row is busy until the first change settles; a click before then is ignored.
+    await vi.waitFor(() => expect(read!.hasAttribute("disabled")).toBe(false), { timeout: 2000 });
     read!.click();
     await vi.waitFor(() => expect(seen).toHaveLength(2), { timeout: 2000 });
     expect(seen[1].permissions).toEqual({ read: false, write: false, index: false });

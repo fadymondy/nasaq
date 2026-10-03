@@ -234,7 +234,7 @@ export const desktopLocations: Register = (Alpine) => {
     off(this: { locked: boolean; busyId: string | null; id: string; p: Permissions }, key: keyof Permissions) {
       return this.locked || this.busyId === this.id || (key !== "read" && !this.p.read);
     },
-    async changed(this: { id: string; p: Permissions; last: Permissions; sending: boolean; $nextTick(): Promise<void>; run(id: string, name: string, detail: Record<string, unknown>): Promise<boolean> }) {
+    async changed(this: { id: string; p: Permissions; last: Permissions; sending: boolean; $nextTick(): Promise<void>; changed(): Promise<void>; run(id: string, name: string, detail: Record<string, unknown>): Promise<boolean> }) {
       if (this.sending) return;
       if (!this.p.read && (this.p.write || this.p.index)) this.p = { ...this.p, write: false, index: false };
       const next = { ...this.p };
@@ -245,6 +245,8 @@ export const desktopLocations: Register = (Alpine) => {
       else this.p = { ...this.last };
       await this.$nextTick();
       this.sending = false;
+      // A switch flipped while this change was in flight was skipped above; send it now.
+      return this.changed();
     },
   }));
 };
