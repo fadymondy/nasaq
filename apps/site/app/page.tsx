@@ -28,13 +28,16 @@ export default function HomePage() {
         <header className="flex flex-col gap-4">
           <h1 className="text-4xl font-bold tracking-tight">Nasaq (نسق)</h1>
           <p className="text-lg text-fd-muted-foreground">
-            One product language, every surface. Nasaq is a design system of <code>--nq-*</code> tokens, eleven brand themes
-            and Base UI components, built for light, dark, LTR and RTL. Install what you need through the shadcn CLI and
-            own the code, or take the whole thing from npm.
+            One product language, every surface. Nasaq is a design system of <code>--nq-*</code> tokens, seventeen brand
+            themes and 390 components, built for light, dark, LTR and RTL. The same markup ships for React, shadcn, Vue 3,
+            Laravel Blade (Livewire, Filament) and plain HTML with Alpine.js, and an MCP server teaches it to your AI.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/docs" className="rounded-md bg-fd-primary px-4 py-2 text-sm font-medium text-fd-primary-foreground">
-              Read the docs
+            <Link href="/docs/components" className="rounded-md bg-fd-primary px-4 py-2 text-sm font-medium text-fd-primary-foreground">
+              Browse components
+            </Link>
+            <Link href="/docs/guides/get-started" className="rounded-md border px-4 py-2 text-sm font-medium">
+              Get started
             </Link>
             <Link href="/themes" className="rounded-md border px-4 py-2 text-sm font-medium">
               Brand themes
@@ -54,6 +57,16 @@ export default function HomePage() {
         <Step title="Or install from npm" lang="bash" code="pnpm add @fadymondy/nasaq">
           The same components as a package, if you prefer a dependency to copied files.
         </Step>
+        <section className="flex flex-col gap-2">
+          <h2 className="text-lg font-semibold">Other stacks</h2>
+          <p className="text-fd-muted-foreground">
+            <Link href="/docs/guides/get-started-vue" className="underline">Vue 3</Link>,{" "}
+            <Link href="/docs/guides/get-started-laravel" className="underline">Laravel, Livewire and Filament</Link>,{" "}
+            <Link href="/docs/guides/get-started-inertia" className="underline">Inertia</Link> and{" "}
+            <Link href="/docs/guides/get-started-html" className="underline">plain HTML + Alpine.js</Link>. Every component page
+            has a live preview and the code for each stack.
+          </p>
+        </section>
       </main>
     </HomeLayout>
   );

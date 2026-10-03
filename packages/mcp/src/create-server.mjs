@@ -189,6 +189,7 @@ server.registerTool(
       `path: ${c.path}`,
       `install (shadcn registry): ${c.registry?.command ?? `npx shadcn@latest add @nasaq/${c.name}`}  (${c.registry?.url ?? `https://docs.nasaqui.com/r/${c.name}.json`})`,
       c.related.length ? `related: ${c.related.join(", ")}` : null,
+      `docs (live preview, every stack): https://docs.nasaqui.com/docs/components/${c.name}`,
       c.story ? `lab: ${c.story.url}` : null,
       stacks.length ? `other stacks: shadcn, ${stacks.map((k) => ({ vue: "vue", blade: "blade", html: "html/alpine" })[k]).join(", ")}; get_component({ name: "${c.name}", framework })` : null,
     ].filter(Boolean);

@@ -11,6 +11,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 /** Public locations. The registry lives on the docs host; the landing page is a separate app. */
 export const URLS = {
   docs: "https://docs.nasaqui.com",
+  lab: "https://lab.nasaqui.com",
   registry: "https://docs.nasaqui.com/r/{name}.json",
   registryIndex: "https://docs.nasaqui.com/registry.json",
   repo: "https://github.com/fadymondy/nasaq",
@@ -174,7 +175,7 @@ Nasaq is also a shadcn registry (namespace \`@nasaq\`). Add the namespace to \`c
 
 Install the preset once (\`npx shadcn@latest add @nasaq/nasaq\`), then any component by name
 (\`npx shadcn@latest add @nasaq/button\`). Each item is also a plain URL, e.g. ${URLS.registry.replace("{name}", "button")}.
-Registry index: ${URLS.registryIndex}. Docs and live examples: ${URLS.docs}.
+Registry index: ${URLS.registryIndex}. Docs with live previews: ${URLS.docs}/docs/components/{name}. Interactive lab (Storybook): ${URLS.lab}.
 
 ## Not on React?
 
@@ -323,7 +324,7 @@ export function buildCatalog(root = findRoot()) {
       baseUi: data["base-ui"] ?? [],
       storyMissing: Boolean(data["story-missing"]),
       readme: body.trim(),
-      story: story ? { id: data.story, file: story.file, title: story.title, stories: story.stories, source: story.source, url: `${URLS.docs}/?path=/docs/${data.story}--docs` } : null,
+      story: story ? { id: data.story, file: story.file, title: story.title, stories: story.stories, source: story.source, url: `${URLS.lab}/?path=/docs/${data.story}--docs` } : null,
     });
   }
 
