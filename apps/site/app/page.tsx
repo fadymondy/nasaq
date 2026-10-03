@@ -1,13 +1,17 @@
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import {
-  Accessibility, Atom, BookOpen, Bot, Code, Coins, Languages, LayoutGrid, type LucideIcon, Moon, Palette, Rocket, Server, SwatchBook,
+  Accessibility, ArrowUpRight, Atom, BookOpen, Bot, Code, Coins, Languages, LayoutGrid, type LucideIcon, Moon, Palette, Rocket, Server, SwatchBook,
 } from "lucide-react";
 import Link from "next/link";
+import { TemplateCards } from "@/components/template-cards";
 import { GROUPS, groupIcon } from "@/lib/groups";
 import { baseOptions } from "@/lib/layout.shared";
 import { jsonLd, publisher, SITE_DESCRIPTION, website } from "@/lib/seo";
 import { REGISTRY_URL, SITE_URL } from "@/lib/site";
+import { storeUrl, templates } from "@/lib/templates";
+
+export const revalidate = 3600;
 
 const QUICK_LINKS: { title: string; text: string; href: string; icon: LucideIcon }[] = [
   { title: "Getting started", text: "Add the preset and your first component, then learn how the pieces fit together.", href: "/guides/get-started", icon: Rocket },
@@ -42,7 +46,8 @@ const structured = jsonLd([
   },
 ]);
 
-export default function HomePage() {
+export default async function HomePage() {
+  const list = await templates();
   return (
     <HomeLayout {...baseOptions}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structured }} />
@@ -87,7 +92,7 @@ export default function HomePage() {
               const Icon = groupIcon(g.key);
               return (
                 <li key={g.key}>
-                  <Link href={`/components#${g.key}`} className="flex items-center gap-3 rounded-lg border bg-fd-card px-4 py-3 transition-colors hover:border-fd-primary/50 hover:bg-fd-accent/40">
+                  <Link href={`/components/groups/${g.key}`} className="flex items-center gap-3 rounded-lg border bg-fd-card px-4 py-3 transition-colors hover:border-fd-primary/50 hover:bg-fd-accent/40">
                     <Icon className="size-4 shrink-0 text-fd-primary" aria-hidden />
                     <span className="flex-1 truncate text-sm font-medium">{g.label}</span>
                     <span className="text-xs text-fd-muted-foreground tabular-nums">{g.names.length}</span>
@@ -97,6 +102,24 @@ export default function HomePage() {
             })}
           </ul>
         </section>
+
+        {list.length ? (
+          <section className="flex flex-col gap-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <div className="flex flex-col gap-1">
+                <h2 className="text-xl font-semibold">Website templates</h2>
+                <p className="text-sm text-fd-muted-foreground">Complete bilingual sites built with Nasaq in Nasaq Studio, ready in the CircleXO template store.</p>
+              </div>
+              <Link href="/templates" className="flex items-center gap-1.5 text-sm font-medium text-fd-primary">
+                All {list.length} templates <ArrowUpRight className="size-4" aria-hidden />
+              </Link>
+            </div>
+            <TemplateCards list={list.slice(0, 6)} placement="home" />
+            <a href={storeUrl(null, "home")} target="_blank" rel="noopener" className="self-center text-sm font-medium text-fd-primary">
+              Browse the CircleXO template store
+            </a>
+          </section>
+        ) : null}
       </main>
     </HomeLayout>
   );

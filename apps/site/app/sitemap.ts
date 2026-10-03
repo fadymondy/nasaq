@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: SITE_URL, lastModified: built, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE_URL}/components`, lastModified: built, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE_URL}/templates`, lastModified: built, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE_URL}/themes`, lastModified: built, changeFrequency: "monthly", priority: 0.6 },
     ...source
       .getPages()
@@ -16,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${SITE_URL}${page.url}`,
         lastModified: built,
         changeFrequency: "monthly" as const,
-        priority: page.url.startsWith("/components/") ? 0.7 : 0.8,
+        priority: page.url.startsWith("/components/groups/") ? 0.85 : page.url.startsWith("/components/") ? 0.7 : 0.8,
       })),
   ];
 }

@@ -1,4 +1,5 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import { BookOpen, FlaskConical, LayoutGrid, LayoutTemplate, Palette } from "lucide-react";
 import { LAB_URL } from "./site";
 
 /** The official Nasaq mark (packages/brands/assets, copied to public/brand), never recoloured: one file per theme. */
@@ -16,9 +17,10 @@ export const baseOptions: BaseLayoutProps = {
   nav: { title: <Logo />, url: "/" },
   githubUrl: "https://github.com/fadymondy/nasaq",
   links: [
-    { text: "Guides", url: "/guides/get-started", active: "nested-url" },
-    { text: "Components", url: "/components", active: "nested-url" },
-    { text: "Themes", url: "/themes" },
-    { text: "Lab", url: LAB_URL, external: true },
+    { text: "Guides", url: "/guides/get-started", active: "nested-url", icon: <BookOpen /> },
+    { text: "Components", url: "/components", active: "nested-url", icon: <LayoutGrid /> },
+    { text: "Themes", url: "/themes", icon: <Palette /> },
+    { text: "Templates", url: "/templates", icon: <LayoutTemplate /> },
+    { text: "Lab", url: LAB_URL, external: true, icon: <FlaskConical /> },
   ],
 };

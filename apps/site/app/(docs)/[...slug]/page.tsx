@@ -6,8 +6,10 @@ import { join } from "node:path";
 import { notFound } from "next/navigation";
 import { type CodeStack, ComponentCode } from "@/components/component-code";
 import { ComponentPreview } from "@/components/component-preview";
+import { GroupCards } from "@/components/group-cards";
 import { PageActions } from "@/components/page-actions";
 import codeStacks from "@/lib/code.generated.json";
+import { GROUPS } from "@/lib/groups";
 import previews from "@/lib/previews.generated.json";
 import { breadcrumbs, jsonLd, markdownUrl, ogImage, publisher, website } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
@@ -27,7 +29,8 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   const page = source.getPage(slug);
   if (!page) notFound();
   const Body = page.data.body;
-  const name = slug[0] === "components" ? slug[1] : undefined;
+  const group = slug[0] === "components" && slug[1] === "groups" ? GROUPS.find((g) => g.key === slug[2]) : undefined;
+  const name = slug[0] === "components" && !group ? slug[1] : undefined;
   const component = name && withPreview.has(name) ? name : null;
   const stacks = name ? stacksOf[name] : undefined;
   const initial = name && stacks ? await firstStack(name, stacks) : "";
@@ -36,7 +39,23 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   const structured = jsonLd([
     publisher,
     website,
-    {
+    group
+      ? {
+          "@type": "CollectionPage",
+          "@id": `${url}#page`,
+          name: page.data.title,
+          description: page.data.description,
+          url,
+          image: `${SITE_URL}${ogImage(page.url)}`,
+          inLanguage: "en",
+          isPartOf: { "@id": website["@id"] },
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: group.items.length,
+            itemListElement: group.items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.title, url: `${SITE_URL}/components/${it.name}` })),
+          },
+        }
+      : {
       "@type": "TechArticle",
       "@id": `${url}#article`,
       headline: page.data.title,
@@ -65,7 +84,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
             <ComponentCode name={name} stacks={stacks} initial={initial} />
           </>
         ) : null}
-        <Body components={defaultMdxComponents} />
+        {group ? <GroupCards group={group} /> : <Body components={defaultMdxComponents} />}
       </DocsBody>
     </DocsPage>
   );

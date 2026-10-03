@@ -27,7 +27,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string[]
   if (path !== "index" && !page) return new Response("Not found", { status: 404 });
   const title = page?.data.title ?? "Nasaq Documentation";
   const description = page?.data.description ?? "One product language, every surface.";
-  const section = path.startsWith("components/") ? "Component" : path.startsWith("guides/") ? "Guide" : "docs.nasaqui.com";
+  const section = path.startsWith("components/groups/") ? "Component group" : path.startsWith("components/") ? "Component" : path.startsWith("guides/") ? "Guide" : "docs.nasaqui.com";
 
   const image = new ImageResponse(
     (

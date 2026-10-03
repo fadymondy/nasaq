@@ -148,7 +148,8 @@ const previewHead = (title) => `<!doctype html>
 <div id="nq-preview">
 `;
 const previews = [];
-const llm = []; // every page as markdown for /llms.txt, /llms-full.txt and /<page>.md (written at the end)
+const llm = [];
+const info = {}; // name -> { title, summary }, for the group pages // every page as markdown for /llms.txt, /llms-full.txt and /<page>.md (written at the end)
 
 const byCategory = new Map(CATEGORIES.map((c) => [c, []]));
 for (const name of readdirSync(componentsDir).sort()) {
@@ -157,6 +158,7 @@ for (const name of readdirSync(componentsDir).sort()) {
   const { data, body } = parseFrontmatter(readFileSync(file, "utf8").replace(/\r\n/g, "\n"));
   const title = data.title ?? name;
   const category = CATEGORIES.includes(data.category) ? data.category : "utilities";
+  info[name] = { title, summary: data.summary ?? "" };
   byCategory.get(category).push(name);
 
   const text = body
@@ -192,7 +194,16 @@ const groups = [];
 for (const [category, names] of [...byCategory].sort(([a], [b]) => label(a).localeCompare(label(b)))) {
   if (!names.length) continue;
   pages.push(`---${label(category)}---`, ...names);
-  groups.push({ key: category, label: label(category), names });
+  groups.push({ key: category, label: label(category), names, items: names.map((n) => ({ name: n, ...info[n] })) });
+}
+// One index page per group at /components/groups/<key> (some keys are also component names), opened from the
+// home grid, the components index and the sidebar folder; app/(docs)/[...slug]/page.tsx renders it as cards.
+await mkdir(join(out, "groups"), { recursive: true });
+for (const { key, label: l, items } of groups) {
+  const description = `${items.length} ${l} components for React, shadcn, Vue 3, Laravel Blade and HTML + Alpine.js: ${items.map((i) => i.title).join(", ")}.`;
+  const body = items.map((i) => `- [${i.title}](/components/${i.name})${i.summary ? `: ${i.summary}` : ""}`).join("\n");
+  await writeFile(join(out, "groups", `${key}.md`), ["---", `title: ${q(`${l} components`)}`, `description: ${q(description)}`, "---", "", body, ""].join("\n"));
+  llm.push({ url: `/components/groups/${key}`, title: `${l} components`, description, group: "Component groups", body });
 }
 await writeFile(join(out, "meta.json"), JSON.stringify({ title: "Components", pages }, null, 2));
 await writeFile(join(site, "lib/groups.generated.json"), JSON.stringify(groups));
@@ -200,7 +211,7 @@ const total = [...byCategory.values()].reduce((n, l) => n + l.length, 0);
 await writeFile(
   join(out, "index.md"),
   ["---", 'title: "Components"', `description: ${q(`${total} components in ${groups.length} groups, each with a live preview, the code for every stack and an install command.`)}`, "---", "",
-    ...groups.flatMap(({ key, label: l, names }) => [`## ${l} [#${key}]`, "", names.map((n) => `[${n}](/components/${n})`).join(" · "), ""])].join("\n"),
+    ...groups.flatMap(({ key, label: l, names }) => [`## ${l} [#${key}]`, "", names.map((n) => `[${n}](/components/${n})`).join(" · "), "", `[All ${l} components →](/components/groups/${key})`, ""])].join("\n"),
 );
 
 // The official Nasaq mark and favicon, served unchanged for the site header.
@@ -260,6 +271,7 @@ await rm(join(pub, "components"), { recursive: true, force: true });
 await rm(join(pub, "guides"), { recursive: true, force: true });
 await mkdir(join(pub, "components"), { recursive: true });
 await mkdir(join(pub, "guides"), { recursive: true });
+await mkdir(join(pub, "components", "groups"), { recursive: true });
 const pageMd = (p, withCode) => {
   const stacks = withCode && p.code ? STACKS.filter(([stack]) => examples[p.code]?.[stack]) : [];
   const codeMd = stacks.length
@@ -282,14 +294,14 @@ const intro = [
   "",
 ];
 // Guides first, then the component groups in sidebar order.
-const sections = new Map([...GUIDES.map(([g]) => g), ...groups.map((g) => `Components: ${g.label}`)].map((k) => [k, []]));
+const sections = new Map([...GUIDES.map(([g]) => g), "Component groups", ...groups.map((g) => `Components: ${g.label}`)].map((k) => [k, []]));
 for (const p of llm) {
   const key = p.code ? `Components: ${p.group}` : p.group;
   sections.get(key)?.push(`- [${p.title}](${SITE}${p.url}.md)${p.description ? `: ${p.description}` : ""}`);
 }
 await writeFile(
   join(pub, "llms.txt"),
-  [...intro, ...[...sections].filter(([, lines]) => lines.length).flatMap(([k, lines]) => [`## ${k}`, "", ...lines, ""]), "## Optional", "", `- [Full text](${SITE}/llms-full.txt): every guide and component manual in one file`, `- [shadcn registry](${REGISTRY}/registry.json)`, ""].join("\n"),
+  [...intro, ...[...sections].filter(([, lines]) => lines.length).flatMap(([k, lines]) => [`## ${k}`, "", ...lines, ""]), "## Optional", "", `- [Full text](${SITE}/llms-full.txt): every guide and component manual in one file`, `- [shadcn registry](${REGISTRY}/registry.json)`, `- [Website templates](${SITE}/templates): complete bilingual sites built with Nasaq in Nasaq Studio, from the CircleXO template store`, ""].join("\n"),
 );
 await writeFile(join(pub, "llms-full.txt"), [...intro, ...[...sections.keys()].flatMap((k) => llm.filter((p) => (p.code ? `Components: ${p.group}` : p.group) === k)).map((p) => pageMd(p, false))].join("\n\n"));
 

@@ -20,7 +20,7 @@ export function breadcrumbs(url: string, title: string) {
   if (section === "components") {
     items.push({ name: "Components", url: `${SITE_URL}/components` });
     const group = name ? groupOf.get(name) : undefined;
-    if (group) items.push({ name: group.label, url: `${SITE_URL}/components#${group.key}` });
+    if (group) items.push({ name: group.label, url: `${SITE_URL}/components/groups/${group.key}` });
   } else if (section === "guides") items.push({ name: "Guides", url: `${SITE_URL}/guides/get-started` });
   if (name || section !== "components") items.push({ name: title, url: `${SITE_URL}${url}` });
   return {

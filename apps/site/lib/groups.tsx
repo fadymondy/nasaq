@@ -11,6 +11,7 @@ export interface Group {
   key: string;
   label: string;
   names: string[];
+  items: { name: string; title: string; summary: string }[];
 }
 
 /** The component groups in sidebar order, written by scripts/sync-docs.mjs from each README's category. */
