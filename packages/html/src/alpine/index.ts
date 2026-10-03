@@ -6,6 +6,7 @@ import { accountSettings } from "./account-settings";
 import { accountingLedger } from "./accounting-ledger";
 import { activeSessions } from "./active-sessions";
 import { activityComposer } from "./activity-composer";
+import { addressInput } from "./address-input";
 import { adminTenants } from "./admin-tenants";
 import { adminUsers } from "./admin-users";
 import { agentPersonaEditor } from "./agent-persona-editor";
@@ -85,6 +86,7 @@ import { copilotProvider } from "./copilot-provider";
 import { copyButton } from "./copy-button";
 import { countdown } from "./countdown";
 import { countryFlag } from "./country-flag";
+import { countrySelect } from "./country-select";
 import { cronBuilder } from "./cron-builder";
 import { currencyInput } from "./currency-input";
 import { currentVisit } from "./current-visit";
@@ -329,6 +331,7 @@ export const components: Record<string, Register> = {
   "accounting-ledger": accountingLedger,
   "active-sessions": activeSessions,
   "activity-composer": activityComposer,
+  "address-input": addressInput,
   "admin-tenants": adminTenants,
   "admin-users": adminUsers,
   "agent-persona-editor": agentPersonaEditor,
@@ -408,6 +411,7 @@ export const components: Record<string, Register> = {
   "copy-button": copyButton,
   "countdown": countdown,
   "country-flag": countryFlag,
+  "country-select": countrySelect,
   "cron-builder": cronBuilder,
   "currency-input": currencyInput,
   "current-visit": currentVisit,
