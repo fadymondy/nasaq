@@ -148,6 +148,7 @@ const previewHead = (title) => `<!doctype html>
 <div id="nq-preview">
 `;
 const previews = [];
+const llm = []; // every page as markdown for /llms.txt, /llms-full.txt and /<page>.md (written at the end)
 
 const byCategory = new Map(CATEGORIES.map((c) => [c, []]));
 for (const name of readdirSync(componentsDir).sort()) {
@@ -161,7 +162,7 @@ for (const name of readdirSync(componentsDir).sort()) {
   const text = body
     .trim()
     .replace(/^#\s+.*\n+/, "") // the page title comes from frontmatter
-    .replace(/\]\(\.\.\/([\w-]+)\/README\.md(#[\w-]*)?\)/g, (_, n, hash = "") => `](/docs/components/${n}${hash})`)
+    .replace(/\]\(\.\.\/([\w-]+)\/README\.md(#[\w-]*)?\)/g, (_, n, hash = "") => `](/components/${n}${hash})`)
     .replace(/\]\((?:\.\.\/)+docs\/foundations\/[\w-]+\.md\)/g, `](${LAB}/)`);
 
   const install = registryItems.has(name)
@@ -174,6 +175,7 @@ for (const name of readdirSync(componentsDir).sort()) {
   const md = ["---", `title: ${q(title)}`, `description: ${q(data.summary ?? "")}`, "---", "", meta, "", ...lab, ...install, text, ""].join("\n");
   await writeFile(join(out, `${name}.md`), md);
   await writeCode(name);
+  llm.push({ url: `/components/${name}`, title, description: data.summary ?? "", group: label(category), body: [...install, text].join("\n"), code: name });
   const html = examples[name]?.html;
   if (html) {
     await writeFile(join(pub, "preview", `${name}.html`), `${previewHead(title)}${html}\n</div>\n</body>\n</html>\n`);
@@ -184,18 +186,25 @@ await writeFile(join(site, "lib/previews.generated.json"), JSON.stringify(previe
 await writeFile(join(site, "lib/code.generated.json"), JSON.stringify(code));
 
 const pages = ["index"];
-// Sidebar groups run alphabetically by their label, like the Lab.
+const groups = [];
+// Sidebar groups run alphabetically by their label, like the Lab. app/(docs)/layout.tsx folds each group into a
+// collapsible folder with its icon (lib/groups.tsx), keyed by lib/groups.generated.json.
 for (const [category, names] of [...byCategory].sort(([a], [b]) => label(a).localeCompare(label(b)))) {
   if (!names.length) continue;
   pages.push(`---${label(category)}---`, ...names);
+  groups.push({ key: category, label: label(category), names });
 }
 await writeFile(join(out, "meta.json"), JSON.stringify({ title: "Components", pages }, null, 2));
+await writeFile(join(site, "lib/groups.generated.json"), JSON.stringify(groups));
 const total = [...byCategory.values()].reduce((n, l) => n + l.length, 0);
 await writeFile(
   join(out, "index.md"),
-  ["---", 'title: "Components"', `description: ${q(`${total} components, each with a manual, an install command and a live story.`)}`, "---", "",
-    ...[...byCategory].filter(([, n]) => n.length).flatMap(([c, names]) => [`## ${label(c)}`, "", names.map((n) => `[${n}](/docs/components/${n})`).join(" · "), ""])].join("\n"),
+  ["---", 'title: "Components"', `description: ${q(`${total} components in ${groups.length} groups, each with a live preview, the code for every stack and an install command.`)}`, "---", "",
+    ...groups.flatMap(({ key, label: l, names }) => [`## ${l} [#${key}]`, "", names.map((n) => `[${n}](/components/${n})`).join(" · "), ""])].join("\n"),
 );
+
+// The official Nasaq mark and favicon, served unchanged for the site header.
+cpSync(join(root, "packages/brands/assets"), join(pub, "brand"), { recursive: true });
 
 // Guides: the lab's long-form pages, with its ?page= links turned into site links.
 const guidesSrc = join(root, "apps/lab/docs/content");
@@ -208,10 +217,10 @@ const GUIDES = [
 const slugOf = (id) => id.replace("/", "-");
 const guideIds = GUIDES.flatMap(([, ids]) => ids);
 const pageLink = (id) => {
-  if (id === "docs-catalogue-components") return "/docs/components";
-  if (id === "docs-guides-theming-and-brands") return "/docs/guides/theming";
+  if (id === "docs-catalogue-components") return "/components";
+  if (id === "docs-guides-theming-and-brands") return "/guides/theming";
   const hit = guideIds.find((g) => id.endsWith("-" + slugOf(g)));
-  return hit ? `/docs/guides/${slugOf(hit)}` : `${LAB}/?path=/docs/${id}--docs`;
+  return hit ? `/guides/${slugOf(hit)}` : `${LAB}/?path=/docs/${id}--docs`;
 };
 await rm(guidesOut, { recursive: true, force: true });
 await mkdir(guidesOut, { recursive: true });
@@ -234,9 +243,55 @@ for (const [group, ids] of GUIDES) {
     const description = lead.replace(/\]\([^)]*\)/g, "]").replace(/[*`[\]]/g, "").replace(/\s+/g, " ").trim().slice(0, 200);
     await writeFile(join(guidesOut, `${slugOf(id)}.md`), ["---", `title: ${q(title)}`, `description: ${q(description)}`, "---", "", body.trim(), ""].join("\n"));
     guidePages.push(slugOf(id));
+    llm.push({ url: `/guides/${slugOf(id)}`, title, description, group, body });
   }
 }
 await writeFile(join(guidesOut, "meta.json"), JSON.stringify({ title: "Guides", pages: guidePages }, null, 2));
+
+// For search engines, answer engines and LLMs: every page as plain markdown at /<page>.md (component pages carry
+// the code for every stack), an index at /llms.txt (llmstxt.org) and the whole text at /llms-full.txt.
+const SITE = "https://docs.nasaqui.com";
+const abs = (md) => md.replace(/\]\(\//g, `](${SITE}/`);
+const fence = (lang, src) => {
+  const ticks = "`".repeat(Math.max(3, ...[...src.matchAll(/`+/g)].map((m) => m[0].length + 1)));
+  return [ticks + lang, src.trim(), ticks];
+};
+await rm(join(pub, "components"), { recursive: true, force: true });
+await rm(join(pub, "guides"), { recursive: true, force: true });
+await mkdir(join(pub, "components"), { recursive: true });
+await mkdir(join(pub, "guides"), { recursive: true });
+const pageMd = (p, withCode) => {
+  const stacks = withCode && p.code ? STACKS.filter(([stack]) => examples[p.code]?.[stack]) : [];
+  const codeMd = stacks.length
+    ? ["## Code", "", ...stacks.flatMap(([stack, lang, l]) => [`### ${l}`, "", ...fence(lang, examples[p.code][stack]), ""])]
+    : [];
+  return [`# ${p.title}`, "", ...(p.description ? [`> ${p.description}`, ""] : []), `Source: ${SITE}${p.url}`, "", abs(p.body).trim(), "", ...codeMd].join("\n");
+};
+for (const p of llm) await writeFile(join(pub, `${p.url.slice(1)}.md`), pageMd(p, true));
+await writeFile(
+  join(pub, "components.md"),
+  [`# Nasaq components`, "", `> ${total} components in ${groups.length} groups.`, "",
+    ...groups.flatMap(({ label: l, names }) => [`## ${l}`, "", ...names.map((n) => `- [${n}](${SITE}/components/${n}.md)`), ""])].join("\n"),
+);
+const intro = [
+  "# Nasaq",
+  "",
+  `> Nasaq (نسق) is a bilingual (English/Arabic, LTR/RTL) design system: --nq-* CSS tokens, brand themes and ${total} components, shipped for React (Base UI), the shadcn CLI, Vue 3, Laravel Blade (Livewire, FilamentPHP) and plain HTML with Alpine.js.`,
+  "",
+  `Install: \`npx shadcn@latest add ${REGISTRY}/nasaq.json\`, then \`npx shadcn@latest add ${REGISTRY}/<component>.json\`, or \`npm install @fadymondy/nasaq\`. Prices in examples are USD (SAR in Arabic). An MCP server (https://mcp.nasaqui.com) serves the same manuals to AI assistants. Each link below is the page as markdown; component pages include the code for every stack.`,
+  "",
+];
+// Guides first, then the component groups in sidebar order.
+const sections = new Map([...GUIDES.map(([g]) => g), ...groups.map((g) => `Components: ${g.label}`)].map((k) => [k, []]));
+for (const p of llm) {
+  const key = p.code ? `Components: ${p.group}` : p.group;
+  sections.get(key)?.push(`- [${p.title}](${SITE}${p.url}.md)${p.description ? `: ${p.description}` : ""}`);
+}
+await writeFile(
+  join(pub, "llms.txt"),
+  [...intro, ...[...sections].filter(([, lines]) => lines.length).flatMap(([k, lines]) => [`## ${k}`, "", ...lines, ""]), "## Optional", "", `- [Full text](${SITE}/llms-full.txt): every guide and component manual in one file`, `- [shadcn registry](${REGISTRY}/registry.json)`, ""].join("\n"),
+);
+await writeFile(join(pub, "llms-full.txt"), [...intro, ...[...sections.keys()].flatMap((k) => llm.filter((p) => (p.code ? `Components: ${p.group}` : p.group) === k)).map((p) => pageMd(p, false))].join("\n\n"));
 
 // The shadcn registry, once it has been built (pnpm --filter @nasaq/site registry).
 const registryDir = join(root, "apps/lab/.registry/r");

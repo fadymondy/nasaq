@@ -6,8 +6,11 @@ import { join } from "node:path";
 import { notFound } from "next/navigation";
 import { type CodeStack, ComponentCode } from "@/components/component-code";
 import { ComponentPreview } from "@/components/component-preview";
+import { PageActions } from "@/components/page-actions";
 import codeStacks from "@/lib/code.generated.json";
 import previews from "@/lib/previews.generated.json";
+import { breadcrumbs, jsonLd, markdownUrl, ogImage, publisher, website } from "@/lib/seo";
+import { SITE_URL } from "@/lib/site";
 import { source } from "@/lib/source";
 
 const withPreview = new Set<string>(previews);
@@ -19,21 +22,41 @@ async function firstStack(name: string, stacks: [CodeStack, ...CodeStack[]]) {
   return all[stacks[0].stack] ?? "";
 }
 
-export default async function Page(props: { params: Promise<{ slug?: string[] }> }) {
+export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
   const { slug } = await props.params;
   const page = source.getPage(slug);
   if (!page) notFound();
   const Body = page.data.body;
-  const name = slug?.[0] === "components" ? slug[1] : undefined;
+  const name = slug[0] === "components" ? slug[1] : undefined;
   const component = name && withPreview.has(name) ? name : null;
   const stacks = name ? stacksOf[name] : undefined;
   const initial = name && stacks ? await firstStack(name, stacks) : "";
   const toc = stacks ? [{ title: "Code", url: "#code", depth: 2 }, ...page.data.toc] : page.data.toc;
+  const url = `${SITE_URL}${page.url}`;
+  const structured = jsonLd([
+    publisher,
+    website,
+    {
+      "@type": "TechArticle",
+      "@id": `${url}#article`,
+      headline: page.data.title,
+      description: page.data.description,
+      url,
+      image: `${SITE_URL}${ogImage(page.url)}`,
+      inLanguage: "en",
+      isPartOf: { "@id": website["@id"] },
+      publisher: { "@id": publisher["@id"] },
+      ...(name ? { about: { "@type": "SoftwareSourceCode", name: page.data.title, codeRepository: "https://github.com/fadymondy/nasaq", programmingLanguage: ["TypeScript", "Vue", "PHP", "HTML"] } } : {}),
+    },
+    breadcrumbs(page.url, page.data.title ?? ""),
+  ]);
 
   return (
     <DocsPage toc={toc}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structured }} />
       <DocsTitle>{page.data.title}</DocsTitle>
-      <DocsDescription>{page.data.description}</DocsDescription>
+      <DocsDescription className="mb-2">{page.data.description}</DocsDescription>
+      <PageActions markdown={markdownUrl(page.url)} url={url} />
       <DocsBody>
         {component ? <ComponentPreview name={component} title={page.data.title} /> : null}
         {name && stacks ? (
@@ -52,14 +75,16 @@ export function generateStaticParams() {
   return source.generateParams();
 }
 
-export async function generateMetadata(props: { params: Promise<{ slug?: string[] }> }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
   const { slug } = await props.params;
   const page = source.getPage(slug);
   if (!page) notFound();
+  const image = ogImage(page.url);
   return {
     title: page.data.title,
     description: page.data.description,
-    alternates: { canonical: page.url },
-    openGraph: { title: page.data.title, description: page.data.description, url: page.url, type: "article" },
+    alternates: { canonical: page.url, types: { "text/markdown": markdownUrl(page.url) } },
+    openGraph: { title: page.data.title, description: page.data.description, url: page.url, type: "article", images: image },
+    twitter: { card: "summary_large_image", title: page.data.title, description: page.data.description, images: image },
   };
 }
