@@ -1,9 +1,8 @@
-import { enableAutoUnmount, mount } from "@vue/test-utils";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { mount } from "@vue/test-utils";
+import { describe, expect, it, vi } from "vitest";
 import { NasaqProvider } from "../../provider";
 import { NqVoiceCallOverlay, NqVoiceVisualizer, formatVoiceCallTime, voiceCallWords } from ".";
 
-enableAutoUnmount(afterEach);
 
 const agent = { name: "Nasaq assistant", subtitle: "Support" };
 const base = { state: "listening" as const, agent, onEnd: () => {}, contained: true };

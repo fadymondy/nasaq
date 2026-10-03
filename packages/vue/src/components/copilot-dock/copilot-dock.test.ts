@@ -1,9 +1,8 @@
-import { flushPromises, enableAutoUnmount, mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { NasaqProvider } from "../../provider";
 import { NqCopilotDock } from ".";
 
-enableAutoUnmount(afterEach);
 afterEach(() => {
   document.documentElement.lang = "";
   document.documentElement.removeAttribute("dir");

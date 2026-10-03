@@ -1,5 +1,5 @@
 // The Blade desktop-locations example (packages/php/examples/rendered/desktop-locations.html) under real Alpine.
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { mount, setup, tick } from "./_float-setup";
 
 setup();
@@ -46,12 +46,11 @@ describe("desktop-locations (Blade example)", () => {
     const row = root.querySelectorAll<HTMLElement>('[data-slot="desktop-location"]')[0]!;
     const [read, write, index] = [...row.querySelectorAll<HTMLElement>('[role="switch"]')];
     write!.click();
-    await tick(60);
-    expect(seen).toHaveLength(1);
+    await vi.waitFor(() => expect(seen).toHaveLength(1), { timeout: 2000 });
     expect(seen[0].id).toBe("l1");
     expect(seen[0].permissions).toEqual({ read: true, write: false, index: true });
     read!.click();
-    await tick(60);
+    await vi.waitFor(() => expect(seen).toHaveLength(2), { timeout: 2000 });
     expect(seen[1].permissions).toEqual({ read: false, write: false, index: false });
     expect(write!.hasAttribute("disabled")).toBe(true);
     expect(index!.getAttribute("aria-checked")).toBe("false");

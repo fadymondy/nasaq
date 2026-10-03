@@ -1,8 +1,7 @@
-import { enableAutoUnmount, mount } from "@vue/test-utils";
-import { afterEach, describe, expect, it } from "vitest";
+import { mount } from "@vue/test-utils";
+import { describe, expect, it } from "vitest";
 import { NqHandwrittenMark, NqHandwrittenNote, NqMarquee, NqTextFlip, NqTextReveal, NqTextShimmer, marqueeCopies, nextFlipIndex, splitText } from ".";
 
-enableAutoUnmount(afterEach);
 
 describe("text-effects", () => {
   it("TextFlip exposes every phrase to assistive tech", () => {

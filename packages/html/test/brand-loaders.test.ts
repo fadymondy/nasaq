@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import Alpine from "alpinejs";
-import { afterEach, beforeAll, describe, expect, it } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import nasaq from "../src/alpine";
 
 
@@ -39,8 +39,7 @@ describe("brand-loaders (Blade example)", () => {
     const host = await mount(rendered("brand-loaders"));
     const glyph = host.querySelector<HTMLElement>('[data-slot="braille-loader"] [dir="ltr"]')!;
     expect(glyph.textContent).toBe("⠋");
-    await tick(200);
-    expect(glyph.textContent).not.toBe("⠋");
+    await vi.waitFor(() => expect(glyph.textContent).not.toBe("⠋"), { timeout: 2000 });
   });
 
   it("the determinate dot matrix keeps its fill, an x-model value repaints it", async () => {

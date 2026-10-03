@@ -6,5 +6,5 @@ export default defineConfig({
   plugins: [vue()],
   // examples/*.vue import from the published name, the way an app would.
   resolve: { alias: { "@fadymondy/nasaq/vue": fileURLToPath(new URL("./src/index.ts", import.meta.url)) } },
-  test: { environment: "happy-dom", include: ["test/**/*.test.ts", "src/**/*.test.ts"] },
+  test: { environment: "happy-dom", include: ["test/**/*.test.ts", "src/**/*.test.ts"], setupFiles: ["test/setup.ts"], sequence: { hooks: "list" } },
 });

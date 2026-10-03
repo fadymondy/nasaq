@@ -1,10 +1,9 @@
-import { enableAutoUnmount, flushPromises, mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { defineComponent, h } from "vue";
 import { NasaqProvider } from "../../provider";
 import { NqCopilotLauncher, NqCopilotProvider, describeInteraction, finishAnswer, reduceStream, retryPoint, splitStreamingText, startAnswer, useCopilot, useOptionalCopilot, type CopilotContextValue, type CopilotTransport } from ".";
 
-enableAutoUnmount(afterEach);
 afterEach(() => {
   document.documentElement.lang = "";
   document.documentElement.removeAttribute("dir");
