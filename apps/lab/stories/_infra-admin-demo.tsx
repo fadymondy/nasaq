@@ -427,7 +427,7 @@ export function WebhooksDemo({ loading = false, empty = false, withPush = true }
           return undefined;
         }
         setEndpoints((list) => [...list, { id: `e${Date.now()}`, name: input.name, url: input.url, channel: input.channel, events: input.events, enabled: true, secretLast4: "Xy12" }]);
-        return { secret: "whsec_8d1f0c6a5b3e49f2a7c04e1b9d5f3a62Xy12" };
+        return { secret: "whsec_demo_not_a_real_secret_Xy12" };
       }}
       onDeleteEndpoint={async (id) => {
         await wait(600);
@@ -440,7 +440,7 @@ export function WebhooksDemo({ loading = false, empty = false, withPush = true }
       onRotateSecret={async (id) => {
         await wait(800);
         setEndpoints((list) => list.map((e) => (e.id === id ? { ...e, secretLast4: "Rt55" } : e)));
-        return { secret: "whsec_2b7e91d3c0a84f5e96b1d7a34c8f0e5aRt55" };
+        return { secret: "whsec_demo_not_a_real_secret_Rt55" };
       }}
       onTest={async (id) => {
         await wait(1000);
