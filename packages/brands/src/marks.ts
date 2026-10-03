@@ -95,6 +95,60 @@ export const MARKS = {
     body: "#2E6F9E",
     accent: "#C9A227",
   },
+  /** CircleXO product, matjar.circlexo.com */
+  matjar: {
+    name: "Matjar",
+    cells: [[3, 0], [0, 1], [2, 1], [4, 1], [6, 1], [1, 2], [3, 2], [5, 2], [2, 3], [4, 3]],
+    accentCells: [[3, 0]],
+    body: "#0E7C66",
+    bodyOnDark: "#2FCB9F",
+    accent: "#C9A227",
+  },
+  /** CircleXO product, sanduq.circlexo.com */
+  sanduq: {
+    name: "Sanduq",
+    cells: [[1, 0], [3, 0], [0, 1], [2, 1], [4, 1], [1, 2], [3, 2]],
+    accentCells: [[2, 1]],
+    body: "#B7791F",
+    bodyOnDark: "#E9B44C",
+    accent: "#0E1A3C",
+  },
+  /** CircleXO product, mizan.circlexo.com */
+  mizan: {
+    name: "Mizan",
+    cells: [[3, 0], [2, 1], [4, 1], [1, 2], [3, 2], [5, 2], [0, 3], [6, 3]],
+    accentCells: [[3, 0]],
+    body: "#1E3A5F",
+    bodyOnDark: "#7FA7D9",
+    accent: "#C9A227",
+  },
+  /** CircleXO product, qaima.circlexo.com */
+  qaima: {
+    name: "Qaima",
+    cells: [[1, 0], [5, 0], [0, 1], [2, 1], [4, 1], [6, 1], [1, 2], [3, 2], [5, 2]],
+    accentCells: [[3, 2]],
+    body: "#B5400F",
+    bodyOnDark: "#F0A062",
+    accent: "#C9A227",
+  },
+  /** CircleXO product, makhzan.circlexo.com */
+  makhzan: {
+    name: "Makhzan",
+    cells: [[3, 0], [2, 1], [4, 1], [1, 2], [3, 2], [5, 2], [0, 3], [2, 3], [4, 3], [6, 3]],
+    accentCells: [[3, 0]],
+    body: "#8D6E3F",
+    bodyOnDark: "#D2B48C",
+    accent: "#C9A227",
+  },
+  /** CircleXO product, mawared.circlexo.com */
+  mawared: {
+    name: "Mawared",
+    cells: [[1, 0], [5, 0], [0, 1], [2, 1], [4, 1], [6, 1], [3, 2]],
+    accentCells: [[3, 2]],
+    body: "#A23B72",
+    bodyOnDark: "#E07AAE",
+    accent: "#C9A227",
+  },
   /** upstream: orchestra-mcp */
   orchestra: {
     name: "Orchestra",

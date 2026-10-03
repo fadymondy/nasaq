@@ -158,7 +158,7 @@ export function Root({ children }: { children: React.ReactNode }) {
 }
 \`\`\`
 
-- \`brand\`: a brand key (nasaq, fadymondy, mahaam, zekra, moharrik, seatfor, health-debug, circlexo, hosbah, orchestra, togo).
+- \`brand\`: a brand key (nasaq, fadymondy, mahaam, zekra, moharrik, seatfor, health-debug, circlexo, hosbah, orchestra, togo, matjar, sanduq, mizan, qaima, makhzan, mawared).
 - \`locale\`: "en" | "ar" (sets dir="rtl" for Arabic). \`density\`: "comfortable" | "compact" | "dense".
 - An app with a sidebar starts from \`AppShell\` (see get_component("app-shell")); add a \`CommandPalette\` and register
   commands with \`useRegisterCommands\` (see get_component("commands")).

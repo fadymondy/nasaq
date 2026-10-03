@@ -18,4 +18,12 @@ describe("marks", () => {
     expect(resolveBrand("cloudy")?.key).toBe("hosbah");
     expect(BRANDS.zekra.aliases).toContain("cabrain");
   });
+
+  it("the CircleXO business apps are registered with their site, Arabic name and dark body", () => {
+    for (const key of ["matjar", "sanduq", "mizan", "qaima", "makhzan", "mawared"] as const) {
+      expect(BRANDS[key].links?.site).toBe(`https://${key}.circlexo.com`);
+      expect(BRANDS[key].mark.bodyOnDark).toBeTruthy();
+      expect(BRANDS[key].name.ar).toBeTruthy();
+    }
+  });
 });
