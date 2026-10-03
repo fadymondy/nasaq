@@ -12,6 +12,18 @@
 
 import type { Magics, Register } from "./types";
 
+interface ChartTip {
+  heading: string;
+  rows: { color: string; label: string; text: string }[];
+}
+
+interface ChartState {
+  tips: ChartTip[];
+  hover: number | null;
+  px: number;
+  py: number;
+}
+
 interface ActionConfig {
   id: string;
   label: string;
@@ -67,6 +79,38 @@ interface PickerState extends Magics {
 }
 
 export const artifactRenderer: Register = (Alpine) => {
+  // nqArtifactChart: the hover tooltip of a chart (the same look as <x-nq::chart.tooltip>). It follows the pointer inside the plot.
+  //   <div class="relative" x-data="nqArtifactChart([{ heading, rows: [{ color, label, text }] }])" x-on:pointermove="move($event)" x-on:pointerleave="leave()">
+  //     a shape with x-on:pointerenter="show(i)" per point or slice, and the tooltip with x-show="hover !== null"
+  Alpine.data("nqArtifactChart", (tips: ChartTip[] = []) => ({
+    tips,
+    hover: null as number | null,
+    px: 0,
+    py: 0,
+    get tip(): ChartTip {
+      const s = this as unknown as ChartState;
+      return s.tips[s.hover ?? 0] ?? { heading: "", rows: [] };
+    },
+    /** Beside the pointer; flipped to its other side near the end of the plot so it stays inside. */
+    get tipStyle() {
+      const s = this as unknown as ChartState & Magics;
+      const w = s.$el.getBoundingClientRect().width;
+      const flip = w > 0 && s.px > w - 180;
+      return { left: `${s.px + (flip ? -12 : 12)}px`, top: `${Math.max(0, s.py - 8)}px`, transform: flip ? "translateX(-100%)" : "none" };
+    },
+    show(this: ChartState, i: number) {
+      this.hover = i;
+    },
+    move(this: ChartState & Magics, event: PointerEvent) {
+      const box = this.$el.getBoundingClientRect();
+      this.px = event.clientX - box.left;
+      this.py = event.clientY - box.top;
+    },
+    leave(this: ChartState) {
+      this.hover = null;
+    },
+  }));
+
   Alpine.data("nqArtifactActions", (config: ActionsConfig) => {
     let root: HTMLElement | undefined;
     const none = { label: "", confirm: "", danger: false };

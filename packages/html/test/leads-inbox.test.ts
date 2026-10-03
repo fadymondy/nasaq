@@ -46,10 +46,10 @@ function answer(root: HTMLElement, answers: Record<string, (d: Detail) => unknow
   return seen;
 }
 const data = (root: HTMLElement) => Alpine.$data(root) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
-const act = (root: HTMLElement, action: string, id: string) => root.dispatchEvent(new CustomEvent("nq-data-table-action", { bubbles: true, detail: { action, row: { id } } }));
+const act = (root: HTMLElement, action: string, id: string) => root.dispatchEvent(new CustomEvent("nq-entity-list-action", { bubbles: true, detail: { action, row: { id } } }));
 const text = (el: Element) => el.textContent!.replace(/\s+/g, " ").trim();
 const stageButton = (root: HTMLElement, key: string) => root.querySelector<HTMLButtonElement>(`[data-stage="${key}"]`)!;
-const ids = (root: HTMLElement) => data(root).view.rows.map((r: { id: string }) => r.id);
+const ids = (root: HTMLElement) => data(root).lead_rows.rows.map((r: { id: string }) => r.id);
 
 describe("leads-inbox helpers", () => {
   it("classifies sources, moves and counts", () => {
@@ -66,8 +66,8 @@ describe("leads-inbox (Blade example)", () => {
   it("lists the leads with their allowed row actions and filters by stage", async () => {
     const root = await mount();
     expect(ids(root)).toEqual(["l1", "l2", "l3"]);
-    expect(data(root).view.rows[0].actions).toContain("convert");
-    expect(data(root).view.rows[0].actions).not.toContain("move-new");
+    expect(data(root).lead_rows.rows[0].actions).toContain("convert");
+    expect(data(root).lead_rows.rows[0].actions).not.toContain("move-new");
     expect(text(root)).toContain("Sara Haddad");
     stageButton(root, "qualified").click();
     await tick();
@@ -85,10 +85,41 @@ describe("leads-inbox (Blade example)", () => {
     expect(data(root).lead("l1").status).toBe("new");
   });
 
+  it("toggles to the cards layout and opens the score explainer from a row badge", async () => {
+    const root = await mount();
+    const list = root.querySelector<HTMLElement>('[data-slot="entity-list"]')!;
+    expect(list.getAttribute("data-view")).toBe("table");
+    const toggle = root.querySelectorAll<HTMLElement>('[data-slot="toggle"]');
+    expect(toggle.length).toBe(2);
+    toggle[1]!.click();
+    await tick();
+    expect(list.getAttribute("data-view")).toBe("cards");
+    expect(root.querySelectorAll("[data-card]").length).toBeGreaterThan(0);
+    toggle[0]!.click();
+    await tick();
+    const badge = [...root.querySelectorAll<HTMLElement>('[data-slot="score-badge"]')].find((b) => (b.closest("span.contents") as HTMLElement).style.display !== "none")!;
+    expect(badge).toBeDefined();
+    badge.click();
+    await tick();
+    expect(badge.getAttribute("aria-expanded")).toBe("true");
+    expect(document.querySelector('[data-slot="score-explainer"]')).not.toBeNull();
+  });
+
+  it("opens the detail panel when a row is clicked, but not from the score badge", async () => {
+    const root = await mount();
+    const badge = root.querySelector<HTMLElement>('[data-slot="score-badge"]')!;
+    badge.click();
+    await tick();
+    expect(data(root).detail.open).toBe(false);
+    root.querySelector<HTMLElement>('[data-slot="entity-list"] [data-row]')!.click();
+    await tick();
+    expect(data(root).detail.open).toBe(true);
+  });
+
   it("opens the detail panel, shows attribution and sends a reply", async () => {
     const root = await mount();
     const seen = answer(root, { "lead-reply": () => undefined });
-    root.dispatchEvent(new CustomEvent("nq-data-table-row-click", { bubbles: true, detail: { row: { id: "l1" } } }));
+    root.dispatchEvent(new CustomEvent("nq-entity-list-row-click", { bubbles: true, detail: { row: { id: "l1" } } }));
     await tick();
     const sheet = document.querySelector('[data-slot="sheet-content"]')!;
     expect(sheet).not.toBeNull();
@@ -119,7 +150,7 @@ describe("leads-inbox (Blade example)", () => {
     expect(d.lead("l1").status).toBe("converted");
     expect(d.convert.open).toBe(false);
     expect(ids(root)).toContain("l1");
-    expect(data(root).view.rows[0].actions).not.toContain("convert");
+    expect(data(root).lead_rows.rows[0].actions).not.toContain("convert");
   });
 
   it("moves a lead from the detail panel", async () => {

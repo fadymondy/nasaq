@@ -7,6 +7,7 @@
      view: table | cards. selectable, page-size, row-actions, loading, error, search pass to the list.
      Bubbling events from the list: nq-entity-list-row-click { row }, nq-entity-list-action { action, row }, nq-entity-list-selection { ids }, nq-entity-list-view { view }. row.id is the project id. --}}
 @props(['projects' => [], 'label' => null, 'labels' => [], 'now' => null, 'view' => 'table', 'selectable' => true, 'pageSize' => 0, 'rowActions' => [], 'loading' => false, 'error' => null, 'search' => true])
+@include('nasaq::components.entity-list._cells')
 @php
     $ar = \Nasaq\Nasaq::rtl();
     $loc = $ar ? 'ar' : 'en';
@@ -55,7 +56,27 @@
 </div>
 BLADE, ['p' => $p, 't' => $t, 'view_' => $view_, 'status' => $status, 'progress' => $progress, 'overdue' => $overdue, 'tags' => $tags]);
 
+        $cell = nq_el_cells(<<<'BLADE'
+<template data-cell="name"><x-nq::entity-list.identity :avatar-name="$p['name']" :avatar="$p['logo'] ?? null" shape="square">
+    {{ $p['name'] }}
+    <x-slot:subtitle>@if (! empty($p['key']))<bdi dir="ltr">{{ $p['key'] }}</bdi>@endif{{ ! empty($p['key']) && ! empty($p['client']) ? ' · ' : '' }}{{ $p['client'] ?? '' }}</x-slot:subtitle>
+</x-nq::entity-list.identity></template>
+<template data-cell="status"><x-nq::status :tone="$view_[$status][0]" :icon="$view_[$status][1]">{{ $t['statuses'][$status] ?? $status }}</x-nq::status></template>
+<template data-cell="progress"><span class="flex w-36 items-center gap-2">
+    <x-nq::progress :value="$progress" size="sm" :tone="$view_[$status][2]" :aria-label="$t['progress'].': '.$p['name']" class="flex-1" />
+    <span class="w-9 shrink-0 text-end text-caption tabular-nums text-muted-foreground">{{ $progress }}%</span>
+</span></template>
+<template data-cell="members"><x-nq::entity-list.avatar-stack :people="$p['members'] ?? []" /></template>
+<template data-cell="due">@if (empty($p['dueDate']))<span class="text-muted-foreground">—</span>@else<span class="inline-flex items-center gap-1.5 {{ $overdue ? 'text-nq-danger-text' : '' }}"><x-nq::numeric.date-time :value="$p['dueDate']" class="text-body-sm" />@if ($overdue)<span class="text-caption">{{ $t['overdue'] }}</span>@endif</span>@endif</template>
+<template data-cell="activity"><x-nq::entity-list.activity-cell :value="$p['lastActivity'] ?? null" /></template>
+BLADE, ['p' => $p, 't' => $t, 'view_' => $view_, 'status' => $status, 'progress' => $progress, 'overdue' => $overdue]);
+
         return [
+            'nameCell' => $cell['name'], 'statusCell' => $cell['status'], 'progressCell' => $cell['progress'], 'membersCell' => $cell['members'], 'dueCell' => $cell['due'], 'activityCell' => $cell['activity'],
+            'searchText' => trim(($p['name'] ?? '').' '.($p['key'] ?? '').' '.($p['client'] ?? '')),
+            'statusRank' => array_search($status, array_keys($view_)),
+            'dueTs' => ! empty($p['dueDate']) ? \Carbon\Carbon::parse($p['dueDate'])->getTimestamp() : null,
+            'activityTs' => ! empty($p['lastActivity']) ? \Carbon\Carbon::parse($p['lastActivity'])->getTimestamp() : 0,
             'id' => (string) $p['id'], 'name' => $p['name'], 'client' => $p['client'] ?? '—', 'status' => $status, 'statusLabel' => $t['statuses'][$status] ?? $status, 'progress' => $progress, 'progressText' => $progress.'%',
             'members' => array_map(fn ($m) => $m['name'], (array) ($p['members'] ?? [])), 'membersText' => implode(', ', array_map(fn ($m) => $m['name'], (array) ($p['members'] ?? []))) ?: '—',
             'owner' => $p['owner']['name'] ?? '—', 'due' => $due.($overdue ? ' · '.$t['overdue'] : ''), 'tags' => array_map(fn ($x) => $x['label'], $tags),
@@ -70,13 +91,12 @@ BLADE, ['p' => $p, 't' => $t, 'view_' => $view_, 'status' => $status, 'progress'
         ['id' => 'tags', 'title' => $t['tags'], 'key' => 'tags', 'options' => $options(collect($rows)->pluck('tags')->flatten())],
     ], fn ($f) => $f['options']));
     $columns = [
-        ['id' => 'name', 'header' => $t['name'], 'sortable' => true, 'searchable' => true],
-        ['id' => 'client', 'header' => $t['client'], 'sortable' => true, 'searchable' => true],
-        ['id' => 'status', 'key' => 'statusLabel', 'header' => $t['status'], 'sortable' => true],
-        ['id' => 'progress', 'key' => 'progressText', 'header' => $t['progress'], 'align' => 'end'],
-        ['id' => 'members', 'key' => 'membersText', 'header' => $t['members']],
-        ['id' => 'due', 'header' => $t['due']],
-        ['id' => 'lastActivity', 'key' => 'lastActivityText', 'header' => $t['lastActivity'], 'align' => 'end'],
+        ['id' => 'name', 'type' => 'html', 'key' => 'nameCell', 'sortKey' => 'name', 'searchKey' => 'searchText', 'header' => $t['name'], 'sortable' => true, 'searchable' => true],
+        ['id' => 'status', 'type' => 'html', 'key' => 'statusCell', 'sortKey' => 'statusRank', 'header' => $t['status'], 'sortable' => true],
+        ['id' => 'progress', 'type' => 'html', 'key' => 'progressCell', 'sortKey' => 'progress', 'header' => $t['progress'], 'sortable' => true],
+        ['id' => 'members', 'type' => 'html', 'key' => 'membersCell', 'header' => $t['members']],
+        ['id' => 'due', 'type' => 'html', 'key' => 'dueCell', 'sortKey' => 'dueTs', 'header' => $t['due'], 'sortable' => true],
+        ['id' => 'lastActivity', 'type' => 'html', 'key' => 'activityCell', 'sortKey' => 'activityTs', 'header' => $t['lastActivity'], 'align' => 'end', 'sortable' => true],
     ];
 @endphp
 <div data-slot="{{ $attributes->get('data-slot', 'project-list') }}" {{ $attributes->except('data-slot')->cn('min-w-0') }}>

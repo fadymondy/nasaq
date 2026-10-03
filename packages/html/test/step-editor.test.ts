@@ -107,8 +107,20 @@ describe("step-editor example", () => {
     click(document.querySelector('[data-pick-type="loop"]'));
     await tick();
     const first = data().steps[0].id;
-    click(document.querySelector('button[aria-label="Move down HTTP request"]'));
+    // pointer drag on the handle: the first row is dragged below the second
+    rows().forEach((el, i) => (el.getBoundingClientRect = () => ({ top: i * 60, bottom: i * 60 + 50, height: 50, left: 0, right: 100, width: 100, x: 0, y: i * 60, toJSON() {} }) as DOMRect));
+    const ev = (type: string, y: number) => {
+      const e = new Event(type, { bubbles: true, cancelable: true }) as Event & Record<string, unknown>;
+      Object.assign(e, { clientY: y, pointerId: 1, pointerType: "touch", button: 0 });
+      return e;
+    };
+    document.querySelector('button[aria-label="Reorder HTTP request"]')!.dispatchEvent(ev("pointerdown", 25));
+    window.dispatchEvent(ev("pointermove", 80));
     await tick();
+    expect(rows()[0]!.dataset.dragging).toBe("true");
+    window.dispatchEvent(ev("pointerup", 80));
+    await tick();
+    expect(rows()[0]!.dataset.dragging).toBeUndefined();
     expect(data().steps[1].id).toBe(first);
     click(document.querySelector('button[aria-label="Duplicate HTTP request"]'));
     await tick();

@@ -6,16 +6,18 @@
                             <p class="text-pretty text-body-sm text-muted-foreground">Latency, errors and traces for api.nasaq.dev</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-2">
-                <div role="group" data-slot="period-toggle" data-variant="segmented" data-orientation="horizontal"
+                <div class="contents" x-data="nqPageToggle(JSON.parse('[\u00226\u0022]'), `nq-period-change`, `period`, true)">
+            <div role="group" data-slot="period-toggle" data-variant="segmented" data-orientation="horizontal"
     x-data="nqToggleGroup(JSON.parse('[\u00226\u0022]'), false)" x-modelable="value" x-bind="root"
-            aria-label="Time window" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+            aria-label="Time window" x-model="choice" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
     <button type="button" data-slot="toggle" aria-pressed="false"
      x-bind="toggle('1')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">1 hour</button>
-                            <button type="button" data-slot="toggle" aria-pressed="true"
+                                    <button type="button" data-slot="toggle" aria-pressed="true"
      x-bind="toggle('6')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">6 hours</button>
-                            <button type="button" data-slot="toggle" aria-pressed="false"
+                                    <button type="button" data-slot="toggle" aria-pressed="false"
      x-bind="toggle('24')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">24 hours</button>
-</div>                                    <button data-slot="button"
+</div>
+        </div>                                    <button data-slot="button"
      type="button"                     x-on:click="refresh()" x-bind:aria-busy="refreshing ? &#039;true&#039; : null" x-bind:disabled="refreshing" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
         <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="refreshing" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
@@ -57,7 +59,8 @@
 </span>
                                     <span>Connected to <bdi dir="ltr">ops@nasaq.dev</bdi></span>
                                             </p>
-                            <div data-slot="metric-tiles" role="group" aria-label="Key metrics" x-data="nqMetricTiles(null)" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3">
+                            <div class="contents" x-data="nqApmPage(JSON.parse('{\u0022endpoints\u0022:[{\u0022id\u0022:\u0022ep1\u0022,\u0022method\u0022:\u0022GET\u0022,\u0022route\u0022:\u0022\\\/api\\\/orders\\\/:id\u0022,\u0022requests\u0022:48210,\u0022p50\u0022:84,\u0022p95\u0022:410,\u0022errorRate\u0022:0.004},{\u0022id\u0022:\u0022ep2\u0022,\u0022method\u0022:\u0022POST\u0022,\u0022route\u0022:\u0022\\\/api\\\/checkout\u0022,\u0022requests\u0022:9120,\u0022p50\u0022:380,\u0022p95\u0022:1640,\u0022errorRate\u0022:0.021}],\u0022errors\u0022:[{\u0022id\u0022:\u0022e1\u0022,\u0022message\u0022:\u0022TimeoutError\u0022,\u0022count\u0022:14,\u0022endpoint\u0022:\u0022POST \\\/api\\\/checkout\u0022,\u0022lastSeenAt\u0022:\u00222026-09-29T08:40:00Z\u0022}],\u0022traces\u0022:[{\u0022id\u0022:\u0022t1\u0022,\u0022method\u0022:\u0022POST\u0022,\u0022name\u0022:\u0022\\\/api\\\/checkout\u0022,\u0022status\u0022:200,\u0022durationMs\u0022:1820,\u0022startedAt\u0022:\u00222026-09-29T08:55:00Z\u0022},{\u0022id\u0022:\u0022t2\u0022,\u0022method\u0022:\u0022GET\u0022,\u0022name\u0022:\u0022\\\/api\\\/orders\\\/:id\u0022,\u0022status\u0022:200,\u0022durationMs\u0022:96,\u0022startedAt\u0022:\u00222026-09-29T08:58:00Z\u0022}]}'))" x-on:nq-select="route($event)">
+    <div data-slot="metric-tiles" role="group" aria-label="Key metrics" x-data="nqMetricTiles(null)" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3">
                                             <div data-slot="stat-card"  data-trend="up" data-tone="positive"   data-metric="requests" class="flex flex-col gap-3 rounded-card border border-border bg-card px-4 py-4 text-card-foreground">
             <div class="flex items-center gap-2">
                             <span data-slot="stat-card-icon" aria-hidden="true" class="grid size-8 shrink-0 place-items-center rounded-control bg-secondary text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -267,7 +270,7 @@
     <div aria-hidden="true" class="flex justify-between ps-14 text-muted-foreground">
         <span>7:00 AM</span><span>8:00 AM</span><span>9:00 AM</span>    </div>
 </div></div></div>
-        <div data-slot="error-rate-panel" data-over-slo="false" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Error rate</h3>
+        <div data-slot="error-rate-panel" data-over-slo="false" x-data="{ pick(id) { $el.dispatchEvent(new CustomEvent(`nq-select`, { bubbles: true, detail: { id } })) } }" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Error rate</h3>
         <div data-slot="card-description" class="text-body-sm text-muted-foreground">Failed requests as a share of all requests</div></div>
     <div data-slot="card-content" class="px-4 flex flex-col gap-4"><div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
                 <div class="flex flex-wrap items-baseline gap-x-3">
@@ -321,7 +324,7 @@
                 <h4 class="text-label text-muted-foreground">Top errors</h4>
                                     <ul class="flex flex-col divide-y divide-border rounded-control border border-border">
                                                     <li>
-                                <div class="flex items-start gap-2.5 px-3 py-2">                                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <button type="button" x-on:click="pick('e1')" class="flex w-full items-start gap-2.5 px-3 py-2 hover:bg-muted focus-visible:outline-2 focus-visible:outline-nq-focus">                                    <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-nq-danger-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
   <path d="M12 9v4"/>
   <path d="M12 17h.01"/>
@@ -332,7 +335,7 @@
 </span>                                        </span>
                                     </span>
                                     <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text">14 times</span>
-                                </div>                            </li>
+                                </button>                            </li>
                                             </ul>
                             </section></div></div>
     </div>
@@ -540,7 +543,7 @@
                                                     </div>
                     </div>
                     <div role="rowgroup" class="contents" data-slot="table-body">
-                                                    <div role="row" data-slot="table-row" data-row data-row-id="ep2" x-bind:style="rowStyle('ep2')"                                                                 class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus ">
+                                                    <div role="row" data-slot="table-row" data-row data-row-id="ep2" x-bind:style="rowStyle('ep2')"                                  tabindex="0" x-on:click="pick('ep2')" x-on:keydown.enter.self.prevent="pick('ep2')"                                 class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus cursor-pointer">
                                 <div role="cell" data-slot="table-cell" class="flex h-row items-center px-4 py-3 align-middle whitespace-nowrap">
                                     <bdi dir="ltr" class="flex max-w-[30ch] items-center gap-2 sm:max-w-[44ch]">
                                         <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground font-mono">POST</span>
@@ -569,7 +572,7 @@
                                     <bdi data-slot="num" data-numeric="" class="tabular-nums">2.1%</bdi>
                                 </div>
                             </div>
-                                                    <div role="row" data-slot="table-row" data-row data-row-id="ep1" x-bind:style="rowStyle('ep1')"                                                                 class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus ">
+                                                    <div role="row" data-slot="table-row" data-row data-row-id="ep1" x-bind:style="rowStyle('ep1')"                                  tabindex="0" x-on:click="pick('ep1')" x-on:keydown.enter.self.prevent="pick('ep1')"                                 class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus cursor-pointer">
                                 <div role="cell" data-slot="table-cell" class="flex h-row items-center px-4 py-3 align-middle whitespace-nowrap">
                                     <bdi dir="ltr" class="flex max-w-[30ch] items-center gap-2 sm:max-w-[44ch]">
                                         <span data-slot="badge"     class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground font-mono">GET</span>
@@ -707,4 +710,5 @@
                                             </ul>
                 </section></div></div></div>
 </div>
+    </div>
             </div>

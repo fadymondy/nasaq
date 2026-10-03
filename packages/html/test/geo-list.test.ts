@@ -32,15 +32,15 @@ async function mountHtml(html: string) {
 }
 
 describe("geo-list (Blade example)", () => {
-  it("lists countries by value with a flag and the localised name on a breakdown table", async () => {
+  it("renders each country as a decorative flag span and the localised name", async () => {
     const host = await mountHtml(rendered("geo-list"));
-    const root = host.querySelector<HTMLElement>('[data-slot="breakdown-table"]')!;
-    expect(root.textContent).toContain("Countries");
-    expect([...root.querySelectorAll("thead th")][0]!.textContent).toBe("Country");
-    const rows = [...root.querySelectorAll("tbody tr")];
-    expect(rows.map((r) => r.getAttribute("data-row"))).toEqual(["SA", "EG"]);
-    expect(rows[0]!.textContent).toContain("🇸🇦 Saudi Arabia");
-    expect(rows[0]!.textContent).toContain("12,400");
-    expect(rows[0]!.textContent).toContain("+10.7%");
+    const labels = [...host.querySelectorAll("tbody span.inline-flex.items-center.gap-2, [role=row] span.inline-flex.items-center.gap-2")];
+    expect(labels.map((l) => l.textContent)).toEqual(["🇸🇦Saudi Arabia", "🇪🇬Egypt"]);
+    for (const label of labels) {
+      const flag = label.firstElementChild!;
+      expect(flag.getAttribute("aria-hidden")).toBe("true");
+      expect(flag.className).toContain("text-base");
+      expect(flag.className).toContain("leading-none");
+    }
   });
 });

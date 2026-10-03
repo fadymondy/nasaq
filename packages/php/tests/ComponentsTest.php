@@ -34,6 +34,25 @@ class ComponentsTest extends TestCase
         }
     }
 
+    public function test_store_cart_hides_controls_whose_flag_is_off_and_server_renders_the_lines(): void
+    {
+        $lines = "[['id' => 'a', 'productId' => 'a', 'variantId' => 'a1', 'name' => 'Tee', 'unitPrice' => 2900, 'quantity' => 2, 'maxQuantity' => 3]]";
+        $on = Blade::render("<x-nq::store-cart :lines=\"$lines\" currency=\"USD\" />");
+        $this->assertStringContainsString('data-ssr', $on);
+        $this->assertStringContainsString('Save for later', $on);
+        $this->assertStringContainsString('View product', $on);
+        $this->assertStringContainsString('spinbutton', $on);
+        $this->assertStringContainsString('Continue shopping', $on);
+        $this->assertStringContainsString('Checkout', $on);
+        $this->assertStringContainsString('$58', $on);
+
+        $off = Blade::render("<x-nq::store-cart :lines=\"$lines\" currency=\"USD\" :quantity=\"false\" :remove=\"false\" :save=\"false\" :open-product=\"false\" :checkout=\"false\" :continue-shopping=\"false\" :fix-stock=\"false\" :retry=\"false\" />");
+        foreach (['Save for later', 'View product', 'spinbutton', 'Continue shopping', 'Checkout', 'Try again', 'Adjust quantities', 'remove(line.id)'] as $gone) {
+            $this->assertStringNotContainsString($gone, $off, $gone);
+        }
+        $this->assertStringContainsString('Tee', $off);
+    }
+
     public function test_button_overrides_and_loading(): void
     {
         $html = Blade::render('<x-nq::button class="h-12" loading>Go</x-nq::button>');

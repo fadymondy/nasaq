@@ -155,6 +155,8 @@ export const storeCart: Register = (Alpine) => {
       init(this: any) {
         this._root = this.$el as HTMLElement;
         roots.get(key)!.add(this._root!);
+        // The Blade page server-renders the first paint (lines, count, totals) as [data-ssr] rows; the x-for rows take over, so they go before the children are walked.
+        for (const node of this._root.querySelectorAll("[data-ssr]")) node.remove();
       },
       destroy(this: any) {
         roots.get(key)?.delete(this._root);

@@ -12,8 +12,8 @@
        rules     detail.rules, wait(promise)                          variants  detail.variants, wait(promise)
        kill      detail.reason, wait(promise)                         restore   wait(promise)
      Each wait promise: resolve, or resolve { error } to show it. A rejection, or nobody listening, shows the generic error and rolls the change back.
-     Differences from the React component: the rule builders' "serve variant" choices are the variants at render, not live edits; the variant list and the rules draw after
-     Alpine starts. Needs the Alpine runtime (@nasaqScripts). --}}
+     The rule builders' "serve variant" choices follow the variant edits live. The rules and the variant rows are in the server HTML (inert until Alpine starts, then Alpine owns them).
+     Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['flag', 'environments' => [], 'fields' => [], 'audit' => [], 'toggle' => true, 'rollout' => true, 'rules' => true, 'variants' => true, 'kill' => true, 'restore' => true, 'labels' => [], 'locale' => null])
 @php
     $locale ??= app()->getLocale();
@@ -44,7 +44,22 @@
         'partial' => $L('statePartial', 'Rolling out', 'إطلاق تدريجي'),
         'off' => $L('stateOff', 'Off', 'متوقف'),
     ];
-    $stateTones = ['killed' => 'danger', 'on' => 'success', 'partial' => 'warning', 'off' => 'neutral'];
+    // The variants' shares (whole numbers adding up to 100, largest remainder), as the React flag model does.
+    $weights = array_map(fn ($v) => max(0, (float) ($v['weight'] ?? 0)), $flagVariants);
+    $wsum = array_sum($weights);
+    $raw = $wsum > 0 ? array_map(fn ($w) => $w / $wsum * 100, $weights) : array_map(fn () => 100 / max(1, count($weights)), $weights);
+    $shares = array_map('floor', $raw);
+    $left = $raw ? 100 - array_sum($shares) : 0;
+    $byRemainder = array_keys($raw);
+    usort($byRemainder, fn ($a, $b) => ($raw[$b] - floor($raw[$b])) <=> ($raw[$a] - floor($raw[$a])) ?: $a <=> $b);
+    foreach ($byRemainder as $i) {
+        if ($left <= 0) break;
+        $shares[$i]++;
+        $left--;
+    }
+    $fill = fn (string $tpl, $v) => preg_replace('/\{[nk]\}/', (string) $v, $tpl, 1);
+    $keyOk = fn ($k) => (bool) preg_match('/^[a-z0-9][a-z0-9._-]*$/', (string) $k);
+    $stateTones =['killed' => 'danger', 'on' => 'success', 'partial' => 'warning', 'off' => 'neutral'];
     $t = [
         'saved' => $L('saved', 'Saved.', 'تم الحفظ.'),
         'failed' => $L('failed', 'Could not save this. Try again.', 'تعذّر الحفظ. حاول مرة أخرى.'),
@@ -145,6 +160,24 @@
                 </x-nq::card.header>
                 <x-nq::card.content class="flex flex-col gap-4">
                     <p x-show="ffRules.length === 0" @if (count($flagRules) > 0) style="display: none" @endif class="rounded-card border border-dashed border-border p-4 text-body-sm text-muted-foreground">{{ $L('noRules', 'No targeting rules. Everyone follows the rollout.', 'لا قواعد استهداف. الجميع يتبع الإطلاق.') }}</p>
+                    {{-- The rules as the server renders them; Alpine drops this copy and draws the live list below. --}}
+                    <div data-ssr="rules" x-ignore class="contents">
+                        @foreach ($flagRules as $ri => $rule)
+                            <section aria-label="{{ $fill($t['rule'], $ri + 1) }}" data-slot="flag-rule" class="flex flex-col gap-3 rounded-card border border-border p-3">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-label text-foreground">{{ $fill($t['rule'], $ri + 1) }}</span>
+                                    @if ($rules)
+                                        <span class="flex items-center">
+                                            <x-nq::button type="button" size="icon-sm" variant="ghost" aria-label="{{ $fill($t['moveUp'], $ri + 1) }}" :disabled="$ri === 0"><x-lucide-arrow-up aria-hidden="true" /></x-nq::button>
+                                            <x-nq::button type="button" size="icon-sm" variant="ghost" aria-label="{{ $fill($t['moveDown'], $ri + 1) }}" :disabled="$ri === count($flagRules) - 1"><x-lucide-arrow-down aria-hidden="true" /></x-nq::button>
+                                            <x-nq::button type="button" size="icon-sm" variant="ghost" aria-label="{{ $fill($t['removeRule'], $ri + 1) }}"><x-lucide-trash-2 aria-hidden="true" /></x-nq::button>
+                                        </span>
+                                    @endif
+                                </div>
+                                <x-nq::rule-builder :events="$ruleEvents" :fields="$fields" :action-types="$ruleActionTypes" :value="(array) $rule" :disabled="! $rules" />
+                            </section>
+                        @endforeach
+                    </div>
                     <template x-for="(r, ri) in ffRules" x-bind:key="ri">
                         <section x-bind:aria-label="fmt('rule', ri + 1)" data-slot="flag-rule" class="flex flex-col gap-3 rounded-card border border-border p-3">
                             <div class="flex items-center justify-between gap-2">
@@ -157,7 +190,7 @@
                                     </span>
                                 @endif
                             </div>
-                            <x-nq::rule-builder :events="$ruleEvents" :fields="$fields" :action-types="$ruleActionTypes" :disabled="! $rules" x-model="ffRules[ri]" />
+                            <x-nq::rule-builder :events="$ruleEvents" :fields="$fields" :action-types="$ruleActionTypes" action-types-from="ffActionTypes()" :disabled="! $rules" x-model="ffRules[ri]" />
                         </section>
                     </template>
                     <p x-show="! rulesValid()" style="display: none" role="alert" class="text-body-sm text-danger">{{ $L('fixRules', 'Finish or remove the rules that are incomplete.', 'أكمل القواعد الناقصة أو احذفها.') }}</p>
@@ -179,6 +212,29 @@
                 </x-nq::card.header>
                 <x-nq::card.content class="flex flex-col gap-3">
                     <p x-show="ffVariants.length === 0" @if (count($flagVariants) > 0) style="display: none" @endif class="rounded-card border border-dashed border-border p-4 text-body-sm text-muted-foreground">{{ $L('noVariants', 'No variants: the flag is a plain on/off.', 'لا متغيّرات: المفتاح تشغيل وإيقاف فقط.') }}</p>
+                    <div data-ssr="variants" x-ignore class="contents">
+                        @foreach ($flagVariants as $vi => $v)
+                            @php $kerr = ! $keyOk($v['key'] ?? '') ? $t['keyInvalid'] : (array_search($v['key'], array_column($flagVariants, 'key'), true) !== $vi ? $t['keyDuplicate'] : null); @endphp
+                            <div data-slot="flag-variant" class="flex flex-wrap items-start gap-3">
+                                <x-nq::field class="min-w-40 flex-1">
+                                    <x-nq::field.label>{{ $L('variantKey', 'Key', 'المفتاح') }}</x-nq::field.label>
+                                    <x-nq::field.input ltr value="{{ $v['key'] }}" :disabled="! $variants" :data-invalid="$kerr ? '' : null" :aria-invalid="$kerr ? 'true' : null" />
+                                    @if ($kerr)<span role="alert" class="text-caption text-danger">{{ $kerr }}</span>@endif
+                                </x-nq::field>
+                                <x-nq::field class="w-28">
+                                    <x-nq::field.label>{{ $L('variantWeight', 'Weight', 'الوزن') }}</x-nq::field.label>
+                                    <x-nq::field.input ltr type="number" min="0" inputmode="numeric" value="{{ $v['weight'] ?? 0 }}" :disabled="! $variants" />
+                                </x-nq::field>
+                                <div class="flex w-20 flex-col gap-1.5">
+                                    <span class="text-label text-foreground">{{ $L('variantShare', 'Share', 'الحصة') }}</span>
+                                    <span class="flex h-9 items-center text-body-sm tabular-nums text-muted-foreground">{{ (int) ($shares[$vi] ?? 0) }}%</span>
+                                </div>
+                                @if ($variants)
+                                    <x-nq::button type="button" size="icon-sm" variant="ghost" class="mt-6" aria-label="{{ $fill($t['removeVariant'], $v['key']) }}"><x-lucide-trash-2 aria-hidden="true" /></x-nq::button>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
                     <template x-for="(v, vi) in ffVariants" x-bind:key="vi">
                         <div data-slot="flag-variant" class="flex flex-wrap items-start gap-3">
                             <x-nq::field class="min-w-40 flex-1">

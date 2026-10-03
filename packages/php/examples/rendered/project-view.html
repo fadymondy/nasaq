@@ -920,8 +920,24 @@
                                                                                                     </div>
                                             </template>
                                                                                 <span  x-show="! isEditing(row, col(&#039;priority&#039;))"  class="flex min-w-0 items-center gap-1.5 "  x-bind:class="isPending(row, col(&#039;priority&#039;)) ? 'opacity-60' : ''" >
-                                                                                            <span data-slot="badge" x-show="shownText(row, col(&#039;priority&#039;)) !== ''" x-bind:style="hueStyle(row, col(&#039;priority&#039;))" style="display: none"
-                                                    class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border border-transparent bg-[var(--tag-soft)] px-1.5 text-caption font-medium text-[var(--tag-solid)]" x-text="shownText(row, col(&#039;priority&#039;))"></span>
+                                                                                            <span class="inline-flex items-center gap-1.5">
+                                    <span class="contents" x-show="row.priority === 'urgent'" style="display: none"><svg aria-hidden="true" style="color: var(--nq-danger)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                                    <span class="contents" x-show="row.priority === 'high'" style="display: none"><svg aria-hidden="true" style="color: var(--nq-tag-orange)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                                    <span class="contents" x-show="row.priority === 'medium'" style="display: none"><svg aria-hidden="true" style="color: var(--nq-tag-amber)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                                    <span class="contents" x-show="row.priority === 'low'" style="display: none"><svg aria-hidden="true" style="color: var(--nq-tag-blue)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                                    <span class="contents" x-show="row.priority === 'none'" style="display: none"><svg aria-hidden="true" style="color: var(--nq-fg-muted)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                                <span x-text="shownText(row, col('priority'))"></span>
+            </span>
                                                                                                                                         <x-lucide-loader-circle aria-hidden="true" x-show="isPending(row, col(&#039;priority&#039;))" style="display: none" class="size-3.5 shrink-0 animate-spin text-muted-foreground motion-reduce:animate-none" />
                                                 <span x-show="failure(row, col(&#039;priority&#039;))" x-bind:title="failure(row, col(&#039;priority&#039;))" style="display: none" class="inline-flex shrink-0 items-center text-nq-danger-text">
                                                     <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -951,8 +967,21 @@
                                                                                                     </div>
                                             </template>
                                                                                 <span  x-show="! isEditing(row, col(&#039;assignee&#039;))"  class="flex min-w-0 items-center gap-1.5 "  x-bind:class="isPending(row, col(&#039;assignee&#039;)) ? 'opacity-60' : ''" >
-                                                                                            <span data-slot="badge" x-show="shownText(row, col(&#039;assignee&#039;)) !== ''" x-bind:style="hueStyle(row, col(&#039;assignee&#039;))" style="display: none"
-                                                    class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border border-transparent bg-[var(--tag-soft)] px-1.5 text-caption font-medium text-[var(--tag-solid)]" x-text="shownText(row, col(&#039;assignee&#039;))"></span>
+                                                                                            <span class="inline-flex items-center gap-2">
+                                    <span class="contents" x-show="row.assignee === 'u1'" style="display: none"><span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-5 text-[9px] rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Layla Hassan" >LH</span>
+    </span>
+</span>
+                                    <span class="contents" x-show="row.assignee === 'u2'" style="display: none"><span data-slot="avatar" x-data="nqAvatar(0)"
+    class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-5 text-[9px] rounded-full">
+                    <span data-slot="avatar-fallback" class="flex size-full items-center justify-center" x-bind="fallback"
+             role="img" aria-label="Omar Said" >OS</span>
+    </span>
+</span>
+                                <span x-bind:class="row.assignee === '' ? 'text-muted-foreground' : ''" x-text="shownText(row, col('assignee'))"></span>
+            </span>
                                                                                                                                         <x-lucide-loader-circle aria-hidden="true" x-show="isPending(row, col(&#039;assignee&#039;))" style="display: none" class="size-3.5 shrink-0 animate-spin text-muted-foreground motion-reduce:animate-none" />
                                                 <span x-show="failure(row, col(&#039;assignee&#039;))" x-bind:title="failure(row, col(&#039;assignee&#039;))" style="display: none" class="inline-flex shrink-0 items-center text-nq-danger-text">
                                                     <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

@@ -64,6 +64,19 @@ describe("nqDocsShell", () => {
     expect(root(host).querySelector("nav[aria-label='Previous and next pages']")?.textContent).toContain("Installation");
   });
 
+  it("draws a tree badge as a real badge after the title, not as text", async () => {
+    const host = await mount();
+    const row = root(host).querySelector<HTMLElement>("[data-slot='docs-sidebar'] [data-node-id='install']")!;
+    const badge = row.querySelector<HTMLElement>("[data-slot='badge']")!;
+    expect(badge).not.toBeNull();
+    expect(badge.textContent!.trim()).toBe("New");
+    expect(badge.getAttribute("data-variant") ?? badge.className).toContain("info");
+    expect(row.textContent).not.toContain("·");
+    expect(row.querySelector("span[dir='auto']")!.textContent!.trim()).toBe("Installation");
+    // A row without a badge has none.
+    expect(root(host).querySelector("[data-slot='docs-sidebar'] [data-node-id='intro'] [data-slot='badge']")).toBeNull();
+  });
+
   it("opens the drawer and closes it when navigating", async () => {
     const host = await mount();
     const d = data(root(host));

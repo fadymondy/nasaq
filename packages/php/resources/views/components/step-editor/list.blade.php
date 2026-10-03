@@ -15,12 +15,12 @@
         class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">@if ($inner){{ $T('Nothing inside yet.', 'لا شيء بالداخل بعد.') }}@else{{ $T('No steps yet.', 'لا خطوات بعد.') }}@endif</p>
     <ol x-show="countAt({{ $path }}) !== 0" x-cloak style="display: none" aria-label="{{ $inner ? $T('Steps inside', 'الخطوات بالداخل') : $T('Steps', 'الخطوات') }}" class="flex flex-col gap-2">
         <template x-for="({{ $s }}, {{ $i }}) in listAt({{ $path }})" :key="{{ $s }}.id">
-            <li data-slot="step-editor-row" :data-step-id="{{ $s }}.id" :data-collapsed="isOpen({{ $s }}) ? undefined : 'true'" class="relative rounded-card border border-border bg-card">
+            <li data-slot="step-editor-row" :data-step-id="{{ $s }}.id" :data-collapsed="isOpen({{ $s }}) ? undefined : 'true'" :data-dragging="isDragging('steps:' + {{ $path }}.join('-'), {{ $i }}) ? 'true' : null" :style="dragStyle('steps:' + {{ $path }}.join('-'), {{ $i }})" class="relative rounded-card border border-border bg-card data-dragging:z-10 data-dragging:border-nq-focus data-dragging:shadow-floating">
                 <div data-slot="step-editor-row-header" class="flex min-h-control items-center gap-1 p-1.5">
                     <button type="button" x-show="countAt({{ $path }}) !== 1" :data-handle="{{ $path }}.join('-') + ':' + {{ $i }}"
                         :aria-label="$nq.t('Reorder ' + nameOf({{ $s }}), 'إعادة ترتيب ' + nameOf({{ $s }}))" :title="$nq.t('Reorder ' + nameOf({{ $s }}), 'إعادة ترتيب ' + nameOf({{ $s }}))"
-                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, {{ $path }}, {{ $i }})"
-                        class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
+                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, {{ $path }}, {{ $i }})" x-on:pointerdown="startDrag($event, 'steps:' + {{ $path }}.join('-'), {{ $i }})"
+                        class="inline-flex size-control-sm shrink-0 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none active:cursor-grabbing hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
                         <x-lucide-grip-vertical aria-hidden="true" />
                     </button>
                     <button type="button" :aria-expanded="isOpen({{ $s }}) ? 'true' : 'false'" :aria-label="isOpen({{ $s }}) ? $nq.t('Collapse ' + nameOf({{ $s }}), 'طيّ ' + nameOf({{ $s }})) : $nq.t('Expand ' + nameOf({{ $s }}), 'توسيع ' + nameOf({{ $s }}))"
@@ -32,12 +32,6 @@
                     </button>
                     <x-nq::badge variant="outline" x-show="{{ $s }}.continueOnFailure === true" x-cloak style="display: none">{{ $T('Continue if this step fails', 'المتابعة إذا فشلت هذه الخطوة') }}</x-nq::badge>
                     <x-nq::badge variant="danger" x-show="stepIssueCount({{ $s }}) !== 0" x-cloak style="display: none" x-text="stepIssueCount({{ $s }})"></x-nq::badge>
-                    <x-nq::button type="button" variant="ghost" size="icon-sm" class="text-muted-foreground" ::aria-label="$nq.t('Move up ' + nameOf({{ $s }}), 'نقل لأعلى ' + nameOf({{ $s }}))" ::disabled="disabled || {{ $i }} === 0" x-on:click="move({{ $path }}, {{ $i }}, -1)">
-                        <x-lucide-chevron-up aria-hidden="true" />
-                    </x-nq::button>
-                    <x-nq::button type="button" variant="ghost" size="icon-sm" class="text-muted-foreground" ::aria-label="$nq.t('Move down ' + nameOf({{ $s }}), 'نقل لأسفل ' + nameOf({{ $s }}))" ::disabled="disabled || {{ $i }} === countAt({{ $path }}) - 1" x-on:click="move({{ $path }}, {{ $i }}, 1)">
-                        <x-lucide-chevron-down aria-hidden="true" />
-                    </x-nq::button>
                     <x-nq::button type="button" variant="ghost" size="icon-sm" ::aria-label="$nq.t('Duplicate ' + nameOf({{ $s }}), 'تكرار ' + nameOf({{ $s }}))" ::disabled="disabled" x-on:click="duplicate({{ $path }}, {{ $i }})">
                         <x-lucide-copy aria-hidden="true" />
                     </x-nq::button>

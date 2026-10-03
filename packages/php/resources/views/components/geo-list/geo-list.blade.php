@@ -3,7 +3,7 @@
      <x-nq::breakdown-table>. rows: ['code' => ISO 3166-1 alpha-2 ("SA"), 'value', 'previous'] - anything else shows as Unknown; the name is localised for you.
      value-label: heading of the value column. title / description: card header (default "Countries"). format, limit (default 8), invert, color, loading:
      as in breakdown-table. labels: array overriding country, unknown, title; labels['table'] overrides the breakdown-table words. Needs the Alpine
-     runtime for Show all (@nasaqScripts). The flag is emoji text placed before the name in the label. --}}
+     runtime for Show all (@nasaqScripts). The flag is the emoji for the code in its own aria-hidden span before the name, as in React (the label is rendered as HTML). --}}
 @props(['rows' => [], 'valueLabel' => '', 'title' => null, 'description' => null, 'format' => [], 'limit' => 8, 'invert' => false, 'color' => 'var(--primary)', 'loading' => false, 'labels' => [], 'locale' => null])
 @php
     $locale ??= app()->getLocale();
@@ -21,7 +21,7 @@
             'id' => $r['code'],
             'value' => $r['value'],
             'previous' => $r['previous'] ?? null,
-            'label' => $flag !== '' ? $flag.' '.$name : $t['unknown'],
+            'label' => new \Illuminate\Support\HtmlString('<span class="inline-flex items-center gap-2">'.($flag !== '' ? '<span aria-hidden="true" class="text-base leading-none">'.e($flag).'</span>' : '').e($flag !== '' ? $name : $t['unknown']).'</span>'),
         ];
     }
 @endphp

@@ -6,12 +6,13 @@
      'series' => [n, …] (events per bucket, oldest first), 'release', 'environment', 'tags', 'frames', 'breadcrumbs', 'diagnostics'], ...]: see x-nq::error-tracking.detail.
      can-change (default false): Resolve / Ignore / Reopen in the detail and the row menu. open: an id to start with its detail open. now: pins "now" (tests, docs).
      label: the list's accessible name. page-size: rows per page (0 = all). loading, error: passed to the list. labels: override any string. locale: en or ar.
-     Slot: empty (when there are no issues). Table cells are text here (the entity list's cells are text): the sparkline is in the card view and the detail.
+     Slot: empty (when there are no issues). Table cells are React's: title with culprit, level and status chips, the frequency sparkline (colour = trend), events, last seen. Resolve / Ignore show on unresolved rows, Reopen on the others.
      Bubbling events: "nq-error-open" { id }, "nq-error-status" { id, status, previous, waitUntil(promise) }: await your API inside waitUntil; resolve { error: '…' } or reject to
      keep the old status and show why. Alpine members in scope: openIssue(id), back(), changeStatus(id, status), statusOf(id), entries, openId, busy, failure.
      Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['issues' => [], 'canChange' => false, 'open' => null, 'now' => null, 'label' => null, 'pageSize' => 0, 'loading' => false, 'error' => null, 'labels' => [], 'locale' => null])
 @include('nasaq::components.error-tracking._logic')
+@include('nasaq::components.entity-list._cells')
 @php
     $locale ??= app()->getLocale();
     $ar = str_starts_with($locale, 'ar');
@@ -29,7 +30,17 @@
             ])
             : '';
 
+        $sparkCell = $series
+            ? \Illuminate\Support\Facades\Blade::render('<x-nq::chart.sparkline :data="$series" :color="$color" :label="$label" class="h-8 w-28" />', [
+                'series' => $series, 'color' => $trendColor[$trend], 'label' => str_replace('{n}', nq_et_num(nq_et_total($series), $locale), $t['frequencyLabel']),
+            ])
+            : '—';
+        $titleCell = nq_el_cells(<<<'BLADE'
+<template data-cell="t"><span class="flex min-w-0 flex-col"><span dir="auto" class="truncate text-label text-foreground">{{ $i['title'] }}</span>@if (! empty($i['culprit']))<bdi dir="ltr" class="truncate font-mono text-code text-muted-foreground">{{ $i['culprit'] }}</bdi>@endif</span></template>
+BLADE, ['i' => $i])['t'];
+
         return [
+            'sparkCell' => $sparkCell, 'titleCell' => $titleCell, 'searchText' => ($i['title'] ?? '').' '.($i['culprit'] ?? '').' '.($i['release'] ?? ''), 'eventsNum' => (int) ($i['count'] ?? 0),
             'id' => (string) $i['id'], 'title' => $i['title'], 'culprit' => $i['culprit'] ?? '', 'level' => $i['level'], 'levelText' => $t['levels'][$i['level']] ?? $i['level'],
             'status' => $i['status'], 'statusText' => $t['statuses'][$i['status']] ?? $i['status'], 'trend' => $series ? ($trend === 'up' ? $t['trendUp'] : ($trend === 'down' ? $t['trendDown'] : $t['trendFlat'])) : '—',
             'events' => nq_et_num($i['count'] ?? 0, $locale), 'users' => isset($i['users']) ? nq_et_num($i['users'], $locale) : '—',
@@ -39,9 +50,9 @@
     })->sortBy([fn ($a, $b) => ($a['status'] === 'unresolved' ? 0 : 1) <=> ($b['status'] === 'unresolved' ? 0 : 1), fn ($a, $b) => $a['rank'] <=> $b['rank'], fn ($a, $b) => $b['ts'] <=> $a['ts']])->values()->all();
     $actions = array_values(array_filter([
         ['id' => 'open', 'label' => $t['open'], 'icon' => 'bug'],
-        $canChange ? ['id' => 'resolve', 'label' => $t['resolve'], 'icon' => 'check-check', 'group' => 'status'] : null,
-        $canChange ? ['id' => 'ignore', 'label' => $t['ignore'], 'icon' => 'eye-off', 'group' => 'status'] : null,
-        $canChange ? ['id' => 'reopen', 'label' => $t['reopen'], 'icon' => 'rotate-ccw', 'group' => 'status'] : null,
+        $canChange ? ['id' => 'resolve', 'label' => $t['resolve'], 'icon' => 'check-check', 'group' => 'status', 'visibleWhen' => ['field' => 'status', 'eq' => 'unresolved']] : null,
+        $canChange ? ['id' => 'ignore', 'label' => $t['ignore'], 'icon' => 'eye-off', 'group' => 'status', 'visibleWhen' => ['field' => 'status', 'eq' => 'unresolved']] : null,
+        $canChange ? ['id' => 'reopen', 'label' => $t['reopen'], 'icon' => 'rotate-ccw', 'group' => 'status', 'visibleWhen' => ['field' => 'status', 'ne' => 'unresolved']] : null,
     ]));
     $facets = [
         ['id' => 'status', 'title' => $t['status'], 'key' => 'status', 'options' => array_map(fn ($v) => ['value' => $v, 'label' => $t['statuses'][$v]], ['unresolved', 'resolved', 'ignored'])],
@@ -54,13 +65,12 @@
     {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-4') }}>
     <div x-show="openId === null" @if ($open !== null) style="display: none" @endif>
         <x-nq::entity-list :label="$label ?? $t['label']" :search="$t['search']" :columns="[
-                ['id' => 'title', 'header' => $t['error'], 'sortable' => true, 'searchable' => true],
-                ['id' => 'culprit', 'header' => $t['culprit'], 'sortable' => true, 'searchable' => true],
-                ['id' => 'level', 'key' => 'levelText', 'header' => $t['level'], 'sortable' => true],
-                ['id' => 'status', 'key' => 'statusText', 'header' => $t['status'], 'sortable' => true],
-                ['id' => 'frequency', 'key' => 'trend', 'header' => $t['frequency']],
-                ['id' => 'events', 'header' => $t['events'], 'align' => 'end'],
-                ['id' => 'lastSeen', 'key' => 'lastSeenText', 'header' => $t['lastSeen'], 'align' => 'end'],
+                ['id' => 'title', 'type' => 'html', 'key' => 'titleCell', 'sortKey' => 'title', 'searchKey' => 'searchText', 'header' => $t['error'], 'sortable' => true, 'searchable' => true],
+                ['id' => 'level', 'type' => 'status', 'key' => 'level', 'header' => $t['level'], 'sortable' => true, 'options' => array_map(fn ($v, $tone) => ['value' => $v, 'label' => $t['levels'][$v], 'tone' => $tone], ['fatal', 'error', 'warning', 'info'], ['danger', 'danger', 'warning', 'info'])],
+                ['id' => 'status', 'type' => 'status', 'key' => 'status', 'header' => $t['status'], 'sortable' => true, 'options' => array_map(fn ($v, $tone) => ['value' => $v, 'label' => $t['statuses'][$v], 'tone' => $tone], ['unresolved', 'resolved', 'ignored'], ['warning', 'success', 'neutral'])],
+                ['id' => 'frequency', 'type' => 'html', 'key' => 'sparkCell', 'header' => $t['frequency']],
+                ['id' => 'events', 'type' => 'number', 'key' => 'eventsNum', 'header' => $t['events'], 'align' => 'end', 'sortable' => true],
+                ['id' => 'lastSeen', 'key' => 'lastSeenText', 'sortKey' => 'ts', 'header' => $t['lastSeen'], 'align' => 'end', 'sortable' => true],
             ]" :rows="$rows" :facets="$facets" :row-actions="$actions" :selectable="false" :page-size="$pageSize" :loading="$loading" :error="$error" x-model="entries">
             <x-slot:card>
                 <div class="flex min-w-0 flex-col gap-3">

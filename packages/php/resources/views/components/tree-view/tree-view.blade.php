@@ -1,5 +1,6 @@
 {{-- <x-nq::tree-view aria-label="Files" :items="$items" :default-expanded="['docs']" />
      items: nested arrays of ['id' => 'docs', 'label' => 'Documents', 'icon' => 'folder' (lucide name, optional), 'textValue' => 'Documents' (typeahead),
+            'badge' => 'New' (a badge after the label, optional; 'badgeVariant' => 'neutral' | 'info' | ...),
             'disabled' => false, 'hasChildren' => false (children load on demand), 'children' => [...]]. Give every node a unique id.
      default-expanded / default-selected: arrays of ids. selection-mode: single (default) | multiple | none. dir: ltr | rtl (default: the page direction).
      indent: rem per level (1.25). loading-label: the spinner text (Loading / جارٍ التحميل). selected is x-modelable: x-model="$wire.picked".
@@ -26,6 +27,8 @@
                 'text' => (string) ($node['textValue'] ?? $node['id']),
                 'label' => $node['label'] ?? $node['id'],
                 'icon' => $node['icon'] ?? null,
+                'badge' => $node['badge'] ?? null,
+                'badgeVariant' => $node['badgeVariant'] ?? 'neutral',
             ];
             $rows[] = $row;
             if (is_array($children)) {
@@ -85,7 +88,14 @@
             @if ($row['icon'])
                 <span data-slot="tree-view-icon" aria-hidden="true" class="flex shrink-0 items-center text-muted-foreground [&_svg]:size-4"><x-dynamic-component :component="'lucide-'.$row['icon']" /></span>
             @endif
-            <span class="min-w-0 flex-1 truncate">{{ $row['label'] }}</span>
+            @if (filled($row['badge']))
+                <span class="flex min-w-0 flex-1 items-center gap-2">
+                    <span dir="auto" class="truncate">{{ $row['label'] }}</span>
+                    <x-nq::badge :variant="$row['badgeVariant']">{{ $row['badge'] }}</x-nq::badge>
+                </span>
+            @else
+                <span class="min-w-0 flex-1 truncate">{{ $row['label'] }}</span>
+            @endif
         </div>
     @endforeach
 </div>

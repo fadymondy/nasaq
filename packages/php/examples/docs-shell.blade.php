@@ -1,7 +1,7 @@
 @php
     $nav = [
         ['id' => 'intro', 'title' => 'Introduction'],
-        ['id' => 'guides', 'title' => 'Guides', 'children' => [['id' => 'install', 'title' => 'Installation']]],
+        ['id' => 'guides', 'title' => 'Guides', 'children' => [['id' => 'install', 'title' => 'Installation', 'badge' => 'New']]],
     ];
     $page = ['id' => 'intro', 'title' => 'Introduction', 'markdown' => "## Why\n\nText.\n\n> [!TIP]\n> Start small."];
 @endphp

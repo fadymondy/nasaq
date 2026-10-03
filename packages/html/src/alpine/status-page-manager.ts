@@ -8,8 +8,13 @@
 //   save           { settings: { title, slug, domain?, services }, wait }   resolve, or resolve { error } (shown above the form)
 //   post-incident  { input: { title, body, impact, status, serviceIds }, wait }   resolve, or resolve { error } (shown in the dialog)
 // After a successful save the staged copy becomes the saved copy. A rejected promise, or nobody listening, shows the generic error.
+//
+// The incident list is live, like React's controlled `incidents` prop: `incidents` is x-modelable (x-model="incidents" / wire:model), the server-rendered
+// list is the first paint and gives way to the Alpine one as soon as the array differs from the initial one. A post-incident handler may resolve
+// { incident } (added to the list) or { incidents } (replaces it) instead of updating the model itself. An incident is { id, title, status, impact,
+// startedAt, resolvedAt?, services?: string[], updates?: [{ at, status, body }] } with ISO times. Editing or resolving one is the host replacing it in the array.
 
-import { isValidStatusSlug, moveStatusItem, type StatusServiceDraft } from "./status-page-manager-logic";
+import { incidentDuration, isValidStatusSlug, moveStatusItem, sortIncidents, type StatusIncident, type StatusServiceDraft } from "./status-page-manager-logic";
 import type { Magics, Register } from "./types";
 
 interface Settings {
@@ -21,13 +26,38 @@ interface Settings {
 
 interface Config {
   settings: Settings;
-  labels: { genericError: string; show: string; up: string; down: string };
+  incidents?: StatusIncident[];
+  locale?: string;
+  labels: {
+    genericError: string;
+    show: string;
+    up: string;
+    down: string;
+    impact?: Record<string, string>;
+    statuses?: Record<string, string>;
+    units?: { d: string; h: string; m: string };
+  };
 }
 
-type Outcome = { error?: string } | void | undefined;
+type Outcome = { error?: string; incident?: StatusIncident; incidents?: StatusIncident[] } | void | undefined;
+
+/** The badge colours of the incident list (the same variants as <x-nq::badge>). */
+const BADGE: Record<string, string> = {
+  warning: "border-nq-warning/40 bg-nq-warning-soft text-nq-warning-text",
+  danger: "border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text",
+  info: "border-nq-info/40 bg-nq-info-soft text-nq-info-text",
+  success: "border-nq-success/40 bg-nq-success-soft text-nq-success-text",
+  neutral: "border-border bg-secondary text-foreground",
+};
+const IMPACT_VARIANT: Record<string, string> = { minor: "warning", major: "danger", maintenance: "info" };
+const RELATIVE_UNITS: [Intl.RelativeTimeFormatUnit, number][] = [["year", 31_536_000_000], ["month", 2_592_000_000], ["day", 86_400_000], ["hour", 3_600_000], ["minute", 60_000]];
 
 interface State extends Magics {
   config: Config;
+  incidents: StatusIncident[];
+  firstIncidents: string;
+  live: boolean;
+  sortedIncidents: StatusIncident[];
   original: string;
   draft: Settings;
   tried: boolean;
@@ -52,6 +82,7 @@ interface State extends Magics {
   dirty: boolean;
   validate(): void;
   validateIncident(): void;
+  statusLabel(status: string): string;
   ask(name: string, detail: Record<string, unknown>): Promise<Outcome>;
 }
 
@@ -60,6 +91,8 @@ const snapshot = (s: Settings): string => JSON.stringify({ title: s.title, slug:
 export const statusPageManager: Register = (Alpine) => {
   Alpine.data("nqStatusPageManager", (config: Config) => ({
     config,
+    incidents: (config.incidents ?? []).map((i) => ({ ...i })) as StatusIncident[],
+    firstIncidents: JSON.stringify(config.incidents ?? []),
     original: snapshot(config.settings),
     draft: { ...config.settings, domain: config.settings.domain ?? "", services: config.settings.services.map((s) => ({ ...s })) } as Settings,
     tried: false,
@@ -90,6 +123,14 @@ export const statusPageManager: Register = (Alpine) => {
     destroy(this: State) {
       this.alive = false;
     },
+    /** True once the incidents differ from the server-rendered ones: the Alpine list takes over from the first paint. */
+    get live(): boolean {
+      const s = this as unknown as State;
+      return JSON.stringify(s.incidents ?? []) !== s.firstIncidents;
+    },
+    get sortedIncidents(): StatusIncident[] {
+      return sortIncidents((this as unknown as State).incidents ?? []);
+    },
     get dirty(): boolean {
       const s = this as unknown as State;
       return snapshot(s.draft) !== s.original;
@@ -101,6 +142,36 @@ export const statusPageManager: Register = (Alpine) => {
     validateIncident(this: State) {
       this.incTitleInvalid = this.incTried && !this.incTitle.trim();
       this.incBodyInvalid = this.incTried && !this.incBody.trim();
+    },
+    impactLabel(this: State, impact: string): string {
+      return this.config.labels.impact?.[impact] ?? impact;
+    },
+    statusLabel(this: State, status: string): string {
+      return this.config.labels.statuses?.[status] ?? status;
+    },
+    impactBadge(impact: string): string {
+      return BADGE[IMPACT_VARIANT[impact] ?? "neutral"]!;
+    },
+    statusBadge(status: string): string {
+      return BADGE[status === "resolved" ? "success" : "warning"]!;
+    },
+    iso(value: string): string {
+      const d = new Date(value);
+      return Number.isNaN(d.getTime()) ? "" : d.toISOString();
+    },
+    ago(this: State, value: string): string {
+      const diff = new Date(value).getTime() - Date.now();
+      if (Number.isNaN(diff)) return "";
+      const rtf = new Intl.RelativeTimeFormat(`${(this.config.locale ?? "en").replace("_", "-")}-u-nu-latn`, { numeric: "auto" });
+      for (const [unit, ms] of RELATIVE_UNITS) if (Math.abs(diff) >= ms) return rtf.format(Math.trunc(diff / ms), unit);
+      return rtf.format(Math.trunc(diff / 1000), "second");
+    },
+    lasted(this: State, incident: StatusIncident): string {
+      return incident.resolvedAt ? incidentDuration(incident.startedAt, incident.resolvedAt, this.config.labels.units ?? { d: "d", h: "h", m: "min" }) : "";
+    },
+    /** The incident's updates as timeline items, newest first. */
+    updatesOf(this: State, incident: StatusIncident): { title: string; description: string; time: string }[] {
+      return [...(incident.updates ?? [])].reverse().map((u) => ({ title: this.statusLabel(u.status), description: u.body, time: u.at }));
     },
     showLabel(this: State, s: StatusServiceDraft): string {
       return this.config.labels.show.replace("{name}", s.name);
@@ -185,7 +256,11 @@ export const statusPageManager: Register = (Alpine) => {
         const r = await this.ask("post-incident", { input });
         if (!this.alive) return;
         if (r && r.error) this.incError = r.error;
-        else this.incOpen = false;
+        else {
+          if (r && r.incidents) this.incidents = r.incidents;
+          else if (r && r.incident) this.incidents = [r.incident, ...this.incidents.filter((i) => i.id !== r.incident!.id)];
+          this.incOpen = false;
+        }
       } catch {
         if (this.alive) this.incError = this.config.labels.genericError;
       } finally {

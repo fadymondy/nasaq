@@ -119,11 +119,11 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-3 border-t border-border pt-4">
-            <x-nq::button type="submit" variant="primary" x-bind:disabled="config.disabled || cannotSave" x-bind:data-disabled="(config.disabled || cannotSave) ? '' : null" x-bind:aria-busy="saving">
+            <x-nq::button type="submit" variant="primary" :disabled="true" x-bind:disabled="config.disabled || cannotSave" x-bind:data-disabled="(config.disabled || cannotSave) ? '' : null" x-bind:aria-busy="saving">
                 <x-nq::spinner x-show="saving" x-cloak class="size-3.5" />
                 <span x-text="saveLabel">{{ $t['save'] }}</span>
             </x-nq::button>
-            <x-nq::button type="button" variant="ghost" x-bind:disabled="config.disabled || saving || ! dirty" x-bind:data-disabled="(config.disabled || saving || ! dirty) ? '' : null" x-on:click="revert()">
+            <x-nq::button type="button" variant="ghost" :disabled="true" x-bind:disabled="config.disabled || saving || ! dirty" x-bind:data-disabled="(config.disabled || saving || ! dirty) ? '' : null" x-on:click="revert()">
                 <x-lucide-rotate-ccw aria-hidden="true" />
                 {{ $t['revert'] }}
             </x-nq::button>

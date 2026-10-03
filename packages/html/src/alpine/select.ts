@@ -26,12 +26,14 @@ interface SelectState extends Magics {
   open: boolean;
   highlighted: string | null;
   labels: Record<string, string>;
+  icons: Record<string, string>;
   query: string;
   queryTimer: ReturnType<typeof setTimeout> | undefined;
   show(): void;
   close(refocus?: boolean): void;
   toggle(): void;
-  reg(value: Value, label: string): void;
+  reg(value: Value, label: string, icon?: string): void;
+  icon(): string;
   isSelected(value: Value): boolean;
   choose(value: Value): void;
   label(): string | null;
@@ -49,6 +51,7 @@ export const select: Register = (Alpine) => {
     open: false,
     highlighted: null as string | null,
     labels: {} as Record<string, string>,
+    icons: {} as Record<string, string>,
     query: "",
     queryTimer: undefined as ReturnType<typeof setTimeout> | undefined,
     init(this: SelectState) {
@@ -79,11 +82,17 @@ export const select: Register = (Alpine) => {
       else this.show();
     },
     /** An item announces its label so the trigger can show it before the list has ever opened. */
-    reg(this: SelectState, value: Value, label: string) {
+    reg(this: SelectState, value: Value, label: string, icon = "") {
       this.labels[key(value)] = label;
+      if (icon) this.icons[key(value)] = icon;
+    },
+    /** The markup of the chosen item's icon (an element marked data-select-icon inside the item), for a trigger that shows it. Empty when there is none. */
+    icon(this: SelectState) {
+      if (Array.isArray(this.value) || this.value === null) return "";
+      return this.icons[key(this.value)] ?? "";
     },
     isSelected(this: SelectState, value: Value) {
-      return Array.isArray(this.value) ? this.value.some((v) => key(v) === key(value)) : this.value !== null && key(this.value) === key(value);
+      return Array.isArray(this.value) ? this.value.some((v) => key(v) === key(value)) : this.value != null && key(this.value) === key(value);
     },
     choose(this: SelectState, value: Value) {
       if (this.multiple) {
@@ -96,7 +105,7 @@ export const select: Register = (Alpine) => {
     },
     /** The text for the trigger: the selected item's label (several are joined), or null. */
     label(this: SelectState) {
-      const picked = Array.isArray(this.value) ? this.value : this.value === null ? [] : [this.value];
+      const picked = Array.isArray(this.value) ? this.value : this.value == null ? [] : [this.value];
       if (!picked.length) return null;
       return picked.map((v) => this.labels[key(v)] ?? key(v)).join(", ");
     },
@@ -200,7 +209,10 @@ export const select: Register = (Alpine) => {
         ...(disabled ? { "aria-disabled": "true", "data-disabled": "" } : {}),
         "x-init"(this: SelectState) {
           const text = this.$el.querySelector('[data-slot="select-item-text"]') ?? this.$el;
-          this.reg(value, (text.textContent ?? "").trim());
+          const announce = () => this.reg(value, (text.textContent ?? "").trim(), this.$el.querySelector("[data-select-icon]")?.innerHTML ?? "");
+          announce();
+          // An item whose text is an x-text (a list drawn by x-for) has no text yet: announce again once it is filled in.
+          if (!text.textContent?.trim()) this.$nextTick(announce);
         },
         ":aria-selected"(this: SelectState) {
           return String(this.isSelected(value));

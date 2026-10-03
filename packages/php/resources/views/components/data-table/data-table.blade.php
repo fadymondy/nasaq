@@ -3,7 +3,8 @@
      label: the accessible name of the table (localise it). rows: arrays keyed by column; x-modelable. row-key: the row field that identifies a row (default "id"). name-key: the field that names a row for "Select …" (default row-key).
      columns: each ['id', 'header', 'key' (row field, default id), 'type' => text | mono | number | date | datetime | currency | status | tag | boolean | meter | avatar | link, 'sortable', 'sortKey' (a row field with the number to sort by, when the cell shows text), 'searchable', 'hideable' (default true), 'hidden', 'align' => start | center | end,
        'filter' => true (a facet filter on the column's options), 'range' => true | ['kind' => 'date'], 'options' => [['value', 'label', 'tone' => neutral | info | success | warning | danger, 'hue' => blue …]],
-       'currency' => 'USD' (default USD, SAR in Arabic), 'edit' => text | number | date | switch | select].
+       'currency' => 'USD' (default USD, SAR in Arabic), 'edit' => text | number | date | switch | select,
+       'editDisabledWhen' => a row condition like an action's disabledWhen: matching rows are not editable (a switch shows disabled)].
      Cell types: mono (code font); datetime (date + time, 'format' => 'relative' shows "2 hours ago" with the absolute time as its title); meter (0..'max' 100 bar, turns warning at 'warnAt' 0.8 and danger at 'dangerAt' 0.95);
        avatar (initials, or the row field named by 'src' as the image; the value is the name, 'secondary' names the row field shown under it ('secondaryDir' => 'ltr' for emails),
        'badge' => 'self' + 'badgeLabel' => 'You' draws an outline badge after the name on rows where that field is truthy); link ('href' = a row field, or a template "/issues/{key}"; 'target');

@@ -6,10 +6,10 @@
      events: [['id', 'label', 'description']]. fields: [['id', 'label', 'kind' => text | number | select | boolean, 'options' => [['value', 'label']]]].
      action-types: [['id', 'label', 'description', 'fields' => [['name', 'label', 'kind' => text | textarea | number | boolean | select | url | code, 'required', 'placeholder', 'help', 'options']], 'defaults' => []]].
      value: the starting rule ['event' => '', 'conditions' => ['kind' => 'group', 'id' => 'g', 'join' => 'and', 'children' => []], 'actions' => []] (x-modelable as "rule": x-model reads and writes it).
-     max-depth: how deep condition groups nest (default 3). disabled: read only. Slot: header (under the sentence: a name field, a Save button). labels: override any string
+     action-types-from: an Alpine expression in the surrounding scope that returns the action types, for a host that edits them live (the choices follow it); action-types is the starting value. max-depth: how deep condition groups nest (default 3). disabled: read only. Slot: header (under the sentence: a name field, a Save button). labels: override any string
      ({n}, {field}, {join}, {event} stand for the values; sentence and ops are arrays).
      Fires "nq-rule-change" ({ rule, issues }) after every change; issues is empty when nothing is missing. Needs the Alpine runtime (@nasaqScripts). --}}
-@props(['events' => [], 'fields' => [], 'actionTypes' => [], 'value' => null, 'maxDepth' => 3, 'disabled' => false, 'header' => null, 'labels' => []])
+@props(['events' => [], 'fields' => [], 'actionTypes' => [], 'actionTypesFrom' => null, 'value' => null, 'maxDepth' => 3, 'disabled' => false, 'header' => null, 'labels' => []])
 @php
     $T = fn (string $en, string $ar) => \Nasaq\Nasaq::t($en, $ar);
     $l = array_replace_recursive([
@@ -69,7 +69,7 @@
     $maxDepth = max(1, (int) $maxDepth);
     $uid = 'nq-rule-'.\Illuminate\Support\Str::random(6);
     $config = [
-        'events' => $events, 'fields' => $fields, 'actionTypes' => $actionTypes, 'value' => $value, 'maxDepth' => $maxDepth, 'disabled' => (bool) $disabled,
+        'events' => $events, 'fields' => $fields, 'actionTypes' => $actionTypes, 'actionTypesFrom' => $actionTypesFrom, 'value' => $value, 'maxDepth' => $maxDepth, 'disabled' => (bool) $disabled,
         't' => array_intersect_key($l, array_flip(['whenHelp', 'chooseField', 'yes', 'no', 'groupLabel', 'matchAll', 'matchAny', 'actionRow', 'problems', 'issueEvent', 'issueActions', 'issueField', 'issueValue', 'issueActionField', 'sentence', 'ops'])),
     ];
     $control = 'w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]';

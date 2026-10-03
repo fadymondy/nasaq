@@ -172,4 +172,42 @@ describe("copilot-chat example", () => {
     await tick();
     expect(seen).toEqual(["close", "new"]);
   });
+
+  it("History uses the shared popover and picking a session emits and closes it", async () => {
+    const host = await mount("copilot-chat");
+    const el = root(host);
+    const trigger = host.querySelector<HTMLElement>("[data-slot='popover-trigger'][aria-label='History']")!;
+    expect(trigger).toBeTruthy();
+    const content = () => document.querySelector<HTMLElement>("[data-slot='popover-content']")!;
+    expect(content().style.display).toBe("none");
+    trigger.click();
+    await tick(80);
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+    expect(content().style.display).not.toBe("none");
+    expect(content().textContent).toContain("Weekly summary");
+    let id = "";
+    el.addEventListener("nq-session-select", (e) => (id = (e as CustomEvent).detail.id));
+    [...content().querySelectorAll<HTMLElement>("button")].find((b) => b.textContent!.includes("Weekly summary"))!.click();
+    await tick(300);
+    expect(id).toBe("h1");
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect("menu" in data(el)).toBe(false);
+    expect("toggleMenu" in data(el)).toBe(false);
+  });
+
+  it("Add context uses the shared dropdown-menu and adding emits the items", async () => {
+    const host = await mount("copilot-chat");
+    const el = root(host);
+    const trigger = host.querySelector<HTMLElement>("button[aria-label='Add context']")!;
+    expect(trigger).toBeTruthy();
+    trigger.click();
+    await tick(80);
+    const item = [...document.querySelectorAll<HTMLElement>("[data-slot='dropdown-menu-item']")].find((i) => i.textContent!.includes("Roadmap"))!;
+    expect(item).toBeTruthy();
+    let items: { id: string }[] = [];
+    el.addEventListener("nq-context-change", (e) => (items = (e as CustomEvent).detail.items));
+    item.click();
+    await tick(300);
+    expect(items.map((i) => i.id)).toContain("c2");
+  });
 });

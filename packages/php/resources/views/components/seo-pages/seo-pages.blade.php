@@ -62,8 +62,8 @@
     $actions = array_values(array_filter([
         $openable ? ['id' => 'issues', 'label' => $t['viewIssues'], 'icon' => 'list-checks', 'group' => 'open'] : null,
         ['id' => 'open', 'label' => $t['openPage'], 'icon' => 'external-link', 'group' => 'open'],
-        $recrawl ? ['id' => 'recrawl', 'label' => $t['recrawl'], 'icon' => 'refresh-cw', 'group' => 'crawl'] : null,
-        $requestIndexing ? ['id' => 'index', 'label' => $t['requestIndexing'], 'icon' => 'send', 'group' => 'crawl'] : null,
+        $recrawl ? ['id' => 'recrawl', 'label' => $t['recrawl'], 'icon' => 'refresh-cw', 'group' => 'crawl', 'disabledWhen' => ['field' => 'busyCrawl', 'eq' => true]] : null,
+        $requestIndexing ? ['id' => 'index', 'label' => $t['requestIndexing'], 'icon' => 'send', 'group' => 'crawl', 'disabledWhen' => ['field' => 'busyIndex', 'eq' => true]] : null,
     ]));
 @endphp
 <x-nq::card data-slot="{{ $attributes->get('data-slot', 'seo-page-list') }}" x-data="nqSeoPages({{ \Illuminate\Support\Js::from($config) }})" x-on:nq-data-table-action="onAction($event)"

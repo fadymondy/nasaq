@@ -19,6 +19,7 @@ import { alerts } from "./alerts";
 import { analyticsConnect } from "./analytics-connect";
 import { apiKeys } from "./api-keys";
 import { apiReference } from "./api-reference";
+import { apmPage } from "./apm-page";
 import { apmPanels } from "./apm-panels";
 import { appShell } from "./app-shell";
 import { appUpdate } from "./app-update";
@@ -192,6 +193,7 @@ import { oauthConsent } from "./oauth-consent";
 import { onboardingChecklist } from "./onboarding-checklist";
 import { onboardingFlow } from "./onboarding-flow";
 import { otpInput } from "./otp-input";
+import { pageToggle } from "./page-toggle";
 import { pagination } from "./pagination";
 import { passkeyList } from "./passkey-list";
 import { passwordInput } from "./password-input";
@@ -330,6 +332,7 @@ export const components: Record<string, Register> = {
   "analytics-connect": analyticsConnect,
   "api-keys": apiKeys,
   "api-reference": apiReference,
+  "apm-page": apmPage,
   "apm-panels": apmPanels,
   "app-shell": appShell,
   "app-update": appUpdate,
@@ -503,6 +506,7 @@ export const components: Record<string, Register> = {
   "onboarding-checklist": onboardingChecklist,
   "onboarding-flow": onboardingFlow,
   "otp-input": otpInput,
+  "page-toggle": pageToggle,
   "pagination": pagination,
   "passkey-list": passkeyList,
   "password-input": passwordInput,

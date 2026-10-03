@@ -24,12 +24,12 @@
         class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">No steps yet.</p>
     <ol x-show="countAt([]) !== 0" x-cloak style="display: none" aria-label="Steps" class="flex flex-col gap-2">
         <template x-for="(step0, index0) in listAt([])" :key="step0.id">
-            <li data-slot="step-editor-row" :data-step-id="step0.id" :data-collapsed="isOpen(step0) ? undefined : 'true'" class="relative rounded-card border border-border bg-card">
+            <li data-slot="step-editor-row" :data-step-id="step0.id" :data-collapsed="isOpen(step0) ? undefined : 'true'" :data-dragging="isDragging('steps:' + [].join('-'), index0) ? 'true' : null" :style="dragStyle('steps:' + [].join('-'), index0)" class="relative rounded-card border border-border bg-card data-dragging:z-10 data-dragging:border-nq-focus data-dragging:shadow-floating">
                 <div data-slot="step-editor-row-header" class="flex min-h-control items-center gap-1 p-1.5">
                     <button type="button" x-show="countAt([]) !== 1" :data-handle="[].join('-') + ':' + index0"
                         :aria-label="$nq.t('Reorder ' + nameOf(step0), 'إعادة ترتيب ' + nameOf(step0))" :title="$nq.t('Reorder ' + nameOf(step0), 'إعادة ترتيب ' + nameOf(step0))"
-                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, [], index0)"
-                        class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
+                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, [], index0)" x-on:pointerdown="startDrag($event, 'steps:' + [].join('-'), index0)"
+                        class="inline-flex size-control-sm shrink-0 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none active:cursor-grabbing hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <circle cx="9" cy="12" r="1"/>
   <circle cx="9" cy="5" r="1"/>
@@ -49,16 +49,6 @@
                     </button>
                     <span data-slot="badge"  style="display: none"     x-show="step0.continueOnFailure === true" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Continue if this step fails</span>
                     <span data-slot="badge"  style="display: none"     x-show="stepIssueCount(step0) !== 0" x-cloak="x-cloak" x-text="stepIssueCount(step0)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"></span>
-                    <button data-slot="button"
-     type="button"                     :aria-label="$nq.t(&#039;Move up &#039; + nameOf(step0), &#039;نقل لأعلى &#039; + nameOf(step0))" :disabled="disabled || index0 === 0" x-on:click="move([], index0, -1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="m18 15-6-6-6 6"/>
-</svg></button>
-                    <button data-slot="button"
-     type="button"                     :aria-label="$nq.t(&#039;Move down &#039; + nameOf(step0), &#039;نقل لأسفل &#039; + nameOf(step0))" :disabled="disabled || index0 === countAt([]) - 1" x-on:click="move([], index0, 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="m6 9 6 6 6-6"/>
-</svg></button>
                     <button data-slot="button"
      type="button"                     :aria-label="$nq.t(&#039;Duplicate &#039; + nameOf(step0), &#039;تكرار &#039; + nameOf(step0))" :disabled="disabled" x-on:click="duplicate([], index0)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -165,12 +155,12 @@
         class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">Nothing inside yet.</p>
     <ol x-show="countAt([index0]) !== 0" x-cloak style="display: none" aria-label="Steps inside" class="flex flex-col gap-2">
         <template x-for="(step1, index1) in listAt([index0])" :key="step1.id">
-            <li data-slot="step-editor-row" :data-step-id="step1.id" :data-collapsed="isOpen(step1) ? undefined : 'true'" class="relative rounded-card border border-border bg-card">
+            <li data-slot="step-editor-row" :data-step-id="step1.id" :data-collapsed="isOpen(step1) ? undefined : 'true'" :data-dragging="isDragging('steps:' + [index0].join('-'), index1) ? 'true' : null" :style="dragStyle('steps:' + [index0].join('-'), index1)" class="relative rounded-card border border-border bg-card data-dragging:z-10 data-dragging:border-nq-focus data-dragging:shadow-floating">
                 <div data-slot="step-editor-row-header" class="flex min-h-control items-center gap-1 p-1.5">
                     <button type="button" x-show="countAt([index0]) !== 1" :data-handle="[index0].join('-') + ':' + index1"
                         :aria-label="$nq.t('Reorder ' + nameOf(step1), 'إعادة ترتيب ' + nameOf(step1))" :title="$nq.t('Reorder ' + nameOf(step1), 'إعادة ترتيب ' + nameOf(step1))"
-                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, [index0], index1)"
-                        class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
+                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, [index0], index1)" x-on:pointerdown="startDrag($event, 'steps:' + [index0].join('-'), index1)"
+                        class="inline-flex size-control-sm shrink-0 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none active:cursor-grabbing hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <circle cx="9" cy="12" r="1"/>
   <circle cx="9" cy="5" r="1"/>
@@ -190,16 +180,6 @@
                     </button>
                     <span data-slot="badge"  style="display: none"     x-show="step1.continueOnFailure === true" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Continue if this step fails</span>
                     <span data-slot="badge"  style="display: none"     x-show="stepIssueCount(step1) !== 0" x-cloak="x-cloak" x-text="stepIssueCount(step1)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"></span>
-                    <button data-slot="button"
-     type="button"                     :aria-label="$nq.t(&#039;Move up &#039; + nameOf(step1), &#039;نقل لأعلى &#039; + nameOf(step1))" :disabled="disabled || index1 === 0" x-on:click="move([index0], index1, -1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="m18 15-6-6-6 6"/>
-</svg></button>
-                    <button data-slot="button"
-     type="button"                     :aria-label="$nq.t(&#039;Move down &#039; + nameOf(step1), &#039;نقل لأسفل &#039; + nameOf(step1))" :disabled="disabled || index1 === countAt([index0]) - 1" x-on:click="move([index0], index1, 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="m6 9 6 6 6-6"/>
-</svg></button>
                     <button data-slot="button"
      type="button"                     :aria-label="$nq.t(&#039;Duplicate &#039; + nameOf(step1), &#039;تكرار &#039; + nameOf(step1))" :disabled="disabled" x-on:click="duplicate([index0], index1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -306,12 +286,12 @@
         class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">Nothing inside yet.</p>
     <ol x-show="countAt([index0, index1]) !== 0" x-cloak style="display: none" aria-label="Steps inside" class="flex flex-col gap-2">
         <template x-for="(step2, index2) in listAt([index0, index1])" :key="step2.id">
-            <li data-slot="step-editor-row" :data-step-id="step2.id" :data-collapsed="isOpen(step2) ? undefined : 'true'" class="relative rounded-card border border-border bg-card">
+            <li data-slot="step-editor-row" :data-step-id="step2.id" :data-collapsed="isOpen(step2) ? undefined : 'true'" :data-dragging="isDragging('steps:' + [index0, index1].join('-'), index2) ? 'true' : null" :style="dragStyle('steps:' + [index0, index1].join('-'), index2)" class="relative rounded-card border border-border bg-card data-dragging:z-10 data-dragging:border-nq-focus data-dragging:shadow-floating">
                 <div data-slot="step-editor-row-header" class="flex min-h-control items-center gap-1 p-1.5">
                     <button type="button" x-show="countAt([index0, index1]) !== 1" :data-handle="[index0, index1].join('-') + ':' + index2"
                         :aria-label="$nq.t('Reorder ' + nameOf(step2), 'إعادة ترتيب ' + nameOf(step2))" :title="$nq.t('Reorder ' + nameOf(step2), 'إعادة ترتيب ' + nameOf(step2))"
-                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, [index0, index1], index2)"
-                        class="inline-flex size-control-sm shrink-0 items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
+                        aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onHandleKey($event, [index0, index1], index2)" x-on:pointerdown="startDrag($event, 'steps:' + [index0, index1].join('-'), index2)"
+                        class="inline-flex size-control-sm shrink-0 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none active:cursor-grabbing hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <circle cx="9" cy="12" r="1"/>
   <circle cx="9" cy="5" r="1"/>
@@ -331,16 +311,6 @@
                     </button>
                     <span data-slot="badge"  style="display: none"     x-show="step2.continueOnFailure === true" x-cloak="x-cloak" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">Continue if this step fails</span>
                     <span data-slot="badge"  style="display: none"     x-show="stepIssueCount(step2) !== 0" x-cloak="x-cloak" x-text="stepIssueCount(step2)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text"></span>
-                    <button data-slot="button"
-     type="button"                     :aria-label="$nq.t(&#039;Move up &#039; + nameOf(step2), &#039;نقل لأعلى &#039; + nameOf(step2))" :disabled="disabled || index2 === 0" x-on:click="move([index0, index1], index2, -1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="m18 15-6-6-6 6"/>
-</svg></button>
-                    <button data-slot="button"
-     type="button"                     :aria-label="$nq.t(&#039;Move down &#039; + nameOf(step2), &#039;نقل لأسفل &#039; + nameOf(step2))" :disabled="disabled || index2 === countAt([index0, index1]) - 1" x-on:click="move([index0, index1], index2, 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="m6 9 6 6 6-6"/>
-</svg></button>
                     <button data-slot="button"
      type="button"                     :aria-label="$nq.t(&#039;Duplicate &#039; + nameOf(step2), &#039;تكرار &#039; + nameOf(step2))" :disabled="disabled" x-on:click="duplicate([index0, index1], index2)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover size-control-sm p-0">
         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -495,19 +465,21 @@
                 <p x-show="params.length === 0" x-cloak style="display: none" class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">No parameters yet.</p>
                 <ol x-show="params.length !== 0" x-cloak style="display: none" aria-label="Parameters" class="flex flex-col gap-2">
                     <template x-for="(p, pi) in params" :key="p.id">
-                        <li data-slot="step-editor-param" :data-param-id="p.id" class="rounded-card border border-border bg-card">
+                        <li data-slot="step-editor-param" :data-param-id="p.id" :data-dragging="isDragging('params', pi) ? 'true' : null" :style="dragStyle('params', pi)" class="relative rounded-card border border-border bg-card data-dragging:z-10 data-dragging:border-nq-focus data-dragging:shadow-floating">
                             <div class="flex min-h-control items-center gap-1 p-1.5">
+                                <button type="button" x-show="params.length !== 1" :data-param-handle="pi"
+                                    :aria-label="$nq.t('Reorder ' + paramName(p, pi), 'إعادة ترتيب ' + paramName(p, pi))" :title="$nq.t('Reorder ' + paramName(p, pi), 'إعادة ترتيب ' + paramName(p, pi))"
+                                    aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onParamKey($event, pi)" x-on:pointerdown="startDrag($event, 'params', pi)"
+                                    class="inline-flex size-control-sm shrink-0 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus active:cursor-grabbing disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="1"/>
+  <circle cx="9" cy="5" r="1"/>
+  <circle cx="9" cy="19" r="1"/>
+  <circle cx="15" cy="12" r="1"/>
+  <circle cx="15" cy="5" r="1"/>
+  <circle cx="15" cy="19" r="1"/>
+</svg>                                </button>
                                 <span class="min-w-0 flex-1 truncate px-1.5 text-label text-foreground" x-text="paramName(p, pi)"></span>
-                                <button data-slot="button"
-     type="button"                     :aria-label="$nq.t(&#039;Move up &#039; + paramName(p, pi), &#039;نقل لأعلى &#039; + paramName(p, pi))" :disabled="disabled || pi === 0" x-on:click="moveParam(pi, -1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="m18 15-6-6-6 6"/>
-</svg></button>
-                                <button data-slot="button"
-     type="button"                     :aria-label="$nq.t(&#039;Move down &#039; + paramName(p, pi), &#039;نقل لأسفل &#039; + paramName(p, pi))" :disabled="disabled || pi === params.length - 1" x-on:click="moveParam(pi, 1)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground">
-        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="m6 9 6 6 6-6"/>
-</svg></button>
                                 <button data-slot="button"
      type="button"                     :aria-label="$nq.t(&#039;Remove &#039; + paramName(p, pi), &#039;حذف &#039; + paramName(p, pi))" :disabled="disabled" x-on:click="removeParam(pi)" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-nq-hover size-control-sm p-0 text-muted-foreground hover:text-nq-danger-text">
         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

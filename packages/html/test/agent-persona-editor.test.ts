@@ -33,6 +33,8 @@ async function mount() {
 }
 
 const status = (root: HTMLElement) => root.querySelector('span.text-body-sm[role="status"]')!.textContent;
+// happy-dom keeps `disabled` true after Alpine removes a bare server-rendered `disabled` attribute, so read the attribute list.
+const off = (el: Element) => el.getAttributeNames().includes("disabled");
 const save = (root: HTMLElement) => [...root.querySelectorAll<HTMLButtonElement>('button[type="submit"]')][0]!;
 
 describe("agent-persona-editor (Blade example)", () => {
@@ -44,6 +46,28 @@ describe("agent-persona-editor (Blade example)", () => {
     expect(root.querySelector('[data-slot="field-error"]')).not.toBeNull();
   });
 
+  it("server-renders Save and Revert disabled before Alpine runs, and enables them through the binding", async () => {
+    const host = document.createElement("div");
+    host.innerHTML = rendered("agent-persona-editor");
+    const root = host.querySelector<HTMLFormElement>('[data-slot="agent-persona-editor"]')!;
+    expect(save(root).hasAttribute("disabled")).toBe(true);
+    expect(save(root).hasAttribute("data-disabled")).toBe(true);
+    const rev = [...root.querySelectorAll<HTMLButtonElement>("button")].find((b) => b.textContent!.includes("Revert"))!;
+    expect(rev.hasAttribute("disabled")).toBe(true);
+    expect(rev.hasAttribute("data-disabled")).toBe(true);
+
+    document.body.append(host);
+    Alpine.initTree(host);
+    await tick();
+    const name = root.querySelector<HTMLInputElement>('input[placeholder="Support agent"]')!;
+    name.value = "Billing bot";
+    name.dispatchEvent(new Event("input", { bubbles: true }));
+    await tick();
+    expect(off(save(root))).toBe(false);
+    expect(save(root).hasAttribute("data-disabled")).toBe(false);
+    expect(off(rev)).toBe(false);
+  });
+
   it("follows the draft: dirty, status, counts and the card name", async () => {
     const { host, root, data } = await mount();
     const name = root.querySelector<HTMLInputElement>('input[placeholder="Support agent"]')!;
@@ -52,7 +76,7 @@ describe("agent-persona-editor (Blade example)", () => {
     await tick();
     expect(data.dirty).toBe(true);
     expect(status(root)).toBe("Unsaved changes");
-    expect(save(root).disabled).toBe(false);
+    expect(off(save(root))).toBe(false);
     expect(host.querySelector('[data-slot="agent-persona-preview"] p')!.textContent).toBe("Billing bot");
   });
 

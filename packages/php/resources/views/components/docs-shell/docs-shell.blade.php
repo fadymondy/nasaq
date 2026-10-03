@@ -9,7 +9,7 @@
      labels: an array overriding the built-in texts by key (nav, menu, closeMenu, filter, clearFilter, noMatch, onThisPage, copyPage, copied, editPage, updated,
      previous, next, pager, crumbs, docs).
      Slots: brand (left of the top bar), actions (end of the top bar), sidebarHeader (above the tree), body (replaces the Markdown body).
-     A tree badge shows as text after the title. The filter works in the browser. Needs the Alpine runtime (@nasaqScripts). --}}
+     A tree badge shows as an info badge after the title. The filter works in the browser. Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['nav' => [], 'page', 'navHref' => null, 'searchable' => true, 'copyPage' => true, 'scrollOffset' => 96, 'labels' => [], 'brand' => null, 'actions' => null, 'sidebarHeader' => null, 'body' => null])
 @include('nasaq::components.blog-post._logic')
 @include('nasaq::components.docs-shell._logic')

@@ -191,6 +191,12 @@ export const calendar: Register = (Alpine) => {
 
       init(this: CalendarScope) {
         this.$el.querySelectorAll("[data-ssr]").forEach((el) => el.remove());
+        // A day set from outside (a bound model, "go to the next free day") brings its month into view.
+        this.$watch("value", (v: Value) => {
+          if (this.mode === "range" || typeof v !== "string") return;
+          const d = parseKey(v);
+          if (d && !this.inView(d)) void this.$nextTick(() => this.setMonth(d));
+        });
       },
       get locale() {
         return this.cfg.locale ?? this.$nq.locale ?? "en";

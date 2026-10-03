@@ -9,7 +9,7 @@
 //   open         { key }                               nothing to wait for
 //   create       {}                                    nothing to wait for
 // The row menu's "Copy key" writes the key to the clipboard. A rejected promise, or nobody listening, shows the generic error.
-// A killed flag's switches stay clickable (the table cannot disable one row's switch); flipping one fails with the "killed" message.
+// A killed flag's switches are disabled by the table (the column's editDisabledWhen), as in React.
 
 import type { Magics, Register } from "./types";
 
@@ -24,7 +24,7 @@ interface FeatureFlagListConfig {
   rows: FlagRow[];
   /** The environment ids, in column order: column `env_<i>` is `envs[i]`. */
   envs: string[];
-  labels: { failed: string; killed: string };
+  labels: { failed: string };
 }
 
 type Outcome = { error?: string } | void | undefined;
@@ -71,10 +71,6 @@ export const featureFlags: Register = (Alpine) => {
       const detail = event.detail;
       const environment = this.config.envs[Number(detail.column.replace(/^env_/, ""))];
       if (environment === undefined) return;
-      if (detail.row.killed) {
-        detail.promise = Promise.resolve({ error: this.config.labels.killed });
-        return;
-      }
       detail.promise = this.ask("toggle", { key: detail.row.key, environment, enabled: Boolean(detail.value) }).catch(() => ({ error: this.config.labels.failed }));
     },
     async onAction(this: FeatureFlagListState, event: CustomEvent<{ action: string; row: FlagRow }>) {

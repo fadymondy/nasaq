@@ -72,12 +72,14 @@
             return preg_replace('/\n{3,}/', "\n\n", $text);
         }
 
-        /** The navigation tree as <x-nq::tree-view> items. A badge follows the title as text. */
+        /** The navigation tree as <x-nq::tree-view> items. A badge follows the title as an info badge, like React. */
         function nq_docs_items(array $nodes): array
         {
             return array_map(fn ($n) => array_filter([
                 'id' => (string) $n['id'],
-                'label' => $n['title'].(! empty($n['badge']) ? ' · '.$n['badge'] : ''),
+                'label' => $n['title'],
+                'badge' => ! empty($n['badge']) ? (string) $n['badge'] : null,
+                'badgeVariant' => ! empty($n['badge']) ? 'info' : null,
                 'textValue' => $n['title'],
                 'children' => ! empty($n['children']) ? nq_docs_items($n['children']) : null,
             ], fn ($v) => $v !== null), array_values($nodes));

@@ -23,6 +23,23 @@ describe("artifact-renderer (Blade example)", () => {
     expect(chart.querySelectorAll("svg path")).toHaveLength(3);
   });
 
+  it("shows the styled chart tooltip on hover instead of a native SVG title", async () => {
+    const host = await mount("artifact-renderer");
+    const plot = card(host, "chart").querySelector<HTMLElement>("[data-slot=artifact-chart-plot]")!;
+    expect(plot.querySelector("svg title")).toBeNull();
+    const tip = plot.querySelector<HTMLElement>("[data-slot=chart-tooltip]")!;
+    expect(tip.parentElement!.parentElement!.style.display).toBe("none");
+    plot.querySelector<SVGElement>("rect[data-tip='1']")!.dispatchEvent(new Event("pointerenter", { bubbles: true }));
+    await tick(50);
+    expect(tip.parentElement!.parentElement!.style.display).not.toBe("none");
+    expect(tip.className).toContain("bg-popover");
+    expect(tip.querySelector(".text-label")!.textContent).not.toBe("");
+    expect(tip.querySelectorAll("[data-slot=chart-tooltip] .tabular-nums").length).toBeGreaterThan(0);
+    plot.dispatchEvent(new Event("pointerleave"));
+    await tick(50);
+    expect(tip.parentElement!.parentElement!.style.display).toBe("none");
+  });
+
   it("asks before a confirm action, and dispatches it once confirmed", async () => {
     const host = await mount("artifact-renderer");
     const root = card(host, "card");

@@ -75,6 +75,17 @@ describe("feature-flags (Blade example)", () => {
     expect(rowsOf(list)[1]!.querySelectorAll('[role="switch"]')[1]!.getAttribute("aria-checked")).toBe("false");
   });
 
+  it("disables a killed flag's switches and draws the rollout bar like React", async () => {
+    const list = await mount();
+    const killed = rowsOf(list)[2]!.querySelectorAll<HTMLButtonElement>('[role="switch"]');
+    expect([...killed].every((b) => b.disabled && b.hasAttribute('data-disabled'))).toBe(true);
+    expect(rowsOf(list)[0]!.querySelectorAll<HTMLButtonElement>('[role="switch"]')[0]!.disabled).toBe(false);
+    // The rollout bar never changes tone (React: always bg-primary), 100% for the killed flag.
+    const bar = rowsOf(list)[2]!.querySelector<HTMLElement>('.bg-primary.rounded-full.h-full')!;
+    expect(bar.getAttribute('style')).toContain('100%');
+    expect(rowsOf(list)[2]!.querySelector('[role="meter"]')).toBeNull();
+  });
+
   it("refuses to switch a killed flag", async () => {
     const list = await mount();
     let fired = false;

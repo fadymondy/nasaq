@@ -362,20 +362,48 @@
                 rows="4" x-bind:placeholder="hold(f)" x-model="answers[f.id]" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] min-h-20 py-2"></textarea>
                                             </template>
                                             <template x-if="f.kind === 'select'">
-                                                <select x-model="answers[f.id]" class="h-control w-full rounded-control border border-input bg-card px-3 text-body text-foreground outline-none focus-visible:outline-2 focus-visible:outline-nq-focus">
-                                                    <option value="">Choose an option</option>
-                                                    <template x-for="o in f.options" :key="o.value"><option x-bind:value="o.value" x-text="optLabel(o)"></option></template>
-                                                </select>
+                                                <div data-slot="select" x-data="nqSelect(null, false)" x-modelable="value" x-id="['nq-select']" x-model="answers[f.id]" class="contents">
+    <button data-slot="select-trigger" x-ref="trigger" x-bind="trigger"
+        class="flex h-control w-full min-w-0 items-center justify-between gap-2 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] cursor-default select-none outline-none transition-colors duration-150 ease-nq focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-popup-open:border-nq-focus data-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px]">
+    <span data-slot="select-value" x-text="label() ?? 'Choose an option'" :data-placeholder="empty() ? '' : undefined"
+    class="min-w-0 flex-1 truncate text-start data-placeholder:text-muted-foreground"></span>
+    <span class="flex shrink-0 text-muted-foreground [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg></span>
+</button>
+                                                    <template x-teleport="body">
+    <div data-slot="select-content" x-ref="popup" x-bind="popup" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-[var(--anchor-width)] max-h-[var(--available-height)] overflow-y-auto rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0">
+        <template x-for="o in f.options" :key="o.value + '|' + optLabel(o)">
+                                                            <div data-slot="select-item" x-bind="item(o.value, false)"
+    class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control ps-8 pe-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50">
+    <span aria-hidden="true" class="absolute start-2.5 inline-flex size-4 items-center justify-center">
+        <span x-show="isSelected(o.value)" x-cloak class="contents"><svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg></span>
+    </span>
+    <span data-slot="select-item-text" class="min-w-0 flex-1 truncate"><span x-text="optLabel(o)"></span></span>
+</div>
+                                                        </template>
+    </div>
+</template>
+    </div>
                                             </template>
                                             <template x-if="f.kind === 'radio'">
-                                                <div role="radiogroup" class="flex flex-col gap-2">
-                                                    <template x-for="o in f.options" :key="o.value">
+                                                <div role="radiogroup" data-slot="radio-group" aria-orientation="vertical" x-data="nqRadioGroup(null)" x-modelable="value" x-bind="root"
+                x-model="answers[f.id]" class="flex flex-col gap-2">
+    <template x-for="o in f.options" :key="o.value">
                                                         <label class="flex items-center gap-2 text-body">
-                                                            <input type="radio" x-bind:name="f.id" x-bind:value="o.value" x-model="answers[f.id]" class="size-4 accent-[var(--nq-action)]">
+                                                            <button type="button" role="radio" data-slot="radio" x-bind="radio(String(o.value))"
+    aria-checked="false" tabindex="-1"
+     data-unchecked         class="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-nq-line-strong bg-card outline-none transition-colors duration-150 ease-nq data-checked:border-primary data-checked:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:cursor-not-allowed data-disabled:opacity-50 after:absolute after:-inset-1 after:rounded-full">
+    <span data-slot="radio-indicator" class="block size-1.5 rounded-full bg-primary-foreground" x-show="isChecked(String(o.value))"  style="display: none" ></span>
+</button>
                                                             <span x-text="optLabel(o)"></span>
                                                         </label>
                                                     </template>
-                                                </div>
+    </div>
                                             </template>
                                             <template x-if="isPlain(f.kind)">
                                                 <input data-slot="input" type="text"
@@ -419,7 +447,7 @@
   <path d="M3 6h18"/>
   <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
 </svg>                            Remove rule</button></div>
-                    <div data-slot="card-content" class="px-4"><div data-slot="rule-builder" x-data="nqRuleBuilder(JSON.parse('{\u0022events\u0022:[{\u0022id\u0022:\u0022change\u0022,\u0022label\u0022:\u0022An answer changes\u0022}],\u0022fields\u0022:[],\u0022actionTypes\u0022:[],\u0022value\u0022:null,\u0022maxDepth\u0022:3,\u0022disabled\u0022:false,\u0022t\u0022:{\u0022whenHelp\u0022:\u0022The event that starts the rule.\u0022,\u0022matchAll\u0022:\u0022All of these\u0022,\u0022matchAny\u0022:\u0022Any of these\u0022,\u0022groupLabel\u0022:\u0022Group: {join}\u0022,\u0022chooseField\u0022:\u0022Choose a field\u0022,\u0022yes\u0022:\u0022True\u0022,\u0022no\u0022:\u0022False\u0022,\u0022actionRow\u0022:\u0022Action {n}\u0022,\u0022problems\u0022:\u0022{n} to fix\u0022,\u0022issueEvent\u0022:\u0022Choose the event that starts the rule\u0022,\u0022issueActions\u0022:\u0022Add at least one action\u0022,\u0022issueField\u0022:\u0022A condition has no field\u0022,\u0022issueValue\u0022:\u0022A condition has no value\u0022,\u0022issueActionField\u0022:\u0022An action is missing \\u0022{field}\\u0022\u0022,\u0022sentence\u0022:{\u0022when\u0022:\u0022When {event}\u0022,\u0022ifWord\u0022:\u0022if\u0022,\u0022then\u0022:\u0022then\u0022,\u0022noConditions\u0022:\u0022always\u0022,\u0022and\u0022:\u0022and\u0022,\u0022or\u0022:\u0022or\u0022},\u0022ops\u0022:{\u0022is\u0022:\u0022is\u0022,\u0022isNot\u0022:\u0022is not\u0022,\u0022contains\u0022:\u0022contains\u0022,\u0022startsWith\u0022:\u0022starts with\u0022,\u0022isEmpty\u0022:\u0022is empty\u0022,\u0022isNotEmpty\u0022:\u0022is not empty\u0022,\u0022gt\u0022:\u0022is greater than\u0022,\u0022gte\u0022:\u0022is at least\u0022,\u0022lt\u0022:\u0022is less than\u0022,\u0022lte\u0022:\u0022is at most\u0022}}}'))" x-modelable="rule" x-model="form.rules[i]" x-effect="fields = ruleFields(); actionTypes = ruleActionTypes()" class="flex min-w-0 flex-col gap-4">
+                    <div data-slot="card-content" class="px-4"><div data-slot="rule-builder" x-data="nqRuleBuilder(JSON.parse('{\u0022events\u0022:[{\u0022id\u0022:\u0022change\u0022,\u0022label\u0022:\u0022An answer changes\u0022}],\u0022fields\u0022:[],\u0022actionTypes\u0022:[],\u0022actionTypesFrom\u0022:null,\u0022value\u0022:null,\u0022maxDepth\u0022:3,\u0022disabled\u0022:false,\u0022t\u0022:{\u0022whenHelp\u0022:\u0022The event that starts the rule.\u0022,\u0022matchAll\u0022:\u0022All of these\u0022,\u0022matchAny\u0022:\u0022Any of these\u0022,\u0022groupLabel\u0022:\u0022Group: {join}\u0022,\u0022chooseField\u0022:\u0022Choose a field\u0022,\u0022yes\u0022:\u0022True\u0022,\u0022no\u0022:\u0022False\u0022,\u0022actionRow\u0022:\u0022Action {n}\u0022,\u0022problems\u0022:\u0022{n} to fix\u0022,\u0022issueEvent\u0022:\u0022Choose the event that starts the rule\u0022,\u0022issueActions\u0022:\u0022Add at least one action\u0022,\u0022issueField\u0022:\u0022A condition has no field\u0022,\u0022issueValue\u0022:\u0022A condition has no value\u0022,\u0022issueActionField\u0022:\u0022An action is missing \\u0022{field}\\u0022\u0022,\u0022sentence\u0022:{\u0022when\u0022:\u0022When {event}\u0022,\u0022ifWord\u0022:\u0022if\u0022,\u0022then\u0022:\u0022then\u0022,\u0022noConditions\u0022:\u0022always\u0022,\u0022and\u0022:\u0022and\u0022,\u0022or\u0022:\u0022or\u0022},\u0022ops\u0022:{\u0022is\u0022:\u0022is\u0022,\u0022isNot\u0022:\u0022is not\u0022,\u0022contains\u0022:\u0022contains\u0022,\u0022startsWith\u0022:\u0022starts with\u0022,\u0022isEmpty\u0022:\u0022is empty\u0022,\u0022isNotEmpty\u0022:\u0022is not empty\u0022,\u0022gt\u0022:\u0022is greater than\u0022,\u0022gte\u0022:\u0022is at least\u0022,\u0022lt\u0022:\u0022is less than\u0022,\u0022lte\u0022:\u0022is at most\u0022}}}'))" x-modelable="rule" x-model="form.rules[i]" x-effect="fields = ruleFields(); actionTypes = ruleActionTypes()" class="flex min-w-0 flex-col gap-4">
     <section aria-label="This rule" data-slot="rule-summary" class="rounded-card border border-border bg-nq-surface-soft p-4">
         <p class="flex items-start gap-2 text-body text-foreground" aria-live="polite">
             <svg aria-hidden="true" class="mt-0.5 size-4 shrink-0 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

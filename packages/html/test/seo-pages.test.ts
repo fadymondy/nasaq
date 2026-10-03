@@ -146,6 +146,42 @@ describe("Blade seo-pages list under Alpine", () => {
   });
 });
 
+describe("seo-pages busy rows and first paint", () => {
+  it("disables a row action while it runs, and frees it afterwards", async () => {
+    const host = await mountHtml(rendered("seo-pages"));
+    let done!: () => void;
+    host.addEventListener("recrawl", (e) => (e as CustomEvent).detail.wait(new Promise<void>((r) => (done = r))));
+    const row = () => listData(host).tableRows.find((r: { id: string }) => r.id === "p2");
+    expect(row().busyCrawl).toBe(false);
+    act(host, "recrawl", "p2");
+    await tick();
+    expect(row().busyCrawl).toBe(true);
+    expect(row().busyIndex).toBe(false);
+    expect(listData(host).tableRows.filter((r: { busyCrawl: boolean }) => r.busyCrawl)).toHaveLength(1);
+    done();
+    await tick();
+    expect(row().busyCrawl).toBe(false);
+  });
+
+  it("server-renders the checklist rows, score and count before Alpine starts", () => {
+    const doc = document.createElement("div");
+    doc.innerHTML = rendered("seo-pages");
+    const card = doc.querySelector<HTMLElement>('[data-slot="seo-issue-checklist"]')!;
+    const first = card.querySelector<HTMLElement>('[data-slot="seo-issue-initial"]')!;
+    expect(first.querySelectorAll("li")).toHaveLength(2);
+    expect(first.textContent).toContain("Images without alt text");
+    expect(first.textContent).toContain("How to fix");
+    expect(card.textContent).toContain("SEO score 92 of 100");
+    expect(card.textContent).toContain("2 issues are open.");
+  });
+
+  it("drops the first paint list when Alpine takes over", async () => {
+    const host = await mountHtml(rendered("seo-pages"));
+    expect(check(host).querySelector('[data-slot="seo-issue-initial"]')).toBeNull();
+    expect(items(host)).toHaveLength(2);
+  });
+});
+
 describe("Blade seo-pages checklist under Alpine", () => {
   it("lists the issues with texts, score and open count", async () => {
     const host = await mountHtml(rendered("seo-pages"));

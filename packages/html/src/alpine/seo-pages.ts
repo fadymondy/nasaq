@@ -85,6 +85,9 @@ interface Row {
   noVitals: boolean;
   crawled: string;
   actions: string[];
+  /** A recrawl / an indexing request of this page is running: its action is disabled (the `disabledWhen` of the Blade row actions). */
+  busyCrawl: boolean;
+  busyIndex: boolean;
 }
 
 /** "1 error" / "3 errors": the singular text, or the plural with {n} filled. */
@@ -121,6 +124,10 @@ export const seoPages: Register = (Alpine) => {
     init(this: ListState) {
       this.host = this.$el;
       this.tableRows = this.buildRows();
+      // A running recrawl or indexing request disables that row's action, like React's busy set.
+      this.$watch("busy", () => {
+        this.tableRows = this.buildRows();
+      });
     },
     destroy(this: ListState) {
       this.alive = false;
@@ -173,6 +180,8 @@ export const seoPages: Register = (Alpine) => {
           noVitals: vitals.length === 0,
           crawled: p.lastCrawled ?? "",
           actions,
+          busyCrawl: !!this.busy[`c-${p.id}`],
+          busyIndex: !!this.busy[`i-${p.id}`],
         };
       });
       return rows.sort((a, b) => a.score - b.score);
@@ -280,6 +289,8 @@ export const seoPages: Register = (Alpine) => {
     init(this: ChecklistState) {
       this.host = this.$el;
       this.rows = this.items;
+      // The server-rendered first paint gives way to the live list.
+      this.$el.querySelector('[data-slot="seo-issue-initial"]')?.remove();
       // The checkboxes write `marks`; a change is the user's toggle. Reverting a failed one updates `seen` first so it is not a toggle.
       this.$watch("marks", (marks: Record<string, boolean>) => {
         this.rows = this.items;

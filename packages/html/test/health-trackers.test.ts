@@ -203,4 +203,41 @@ describe("flagged entries", () => {
     expect(root.textContent).toContain("Logged after the cut-off time.");
     expect(root.textContent).toContain("Caffeine:");
   });
+
+describe("food catalogue table cells", () => {
+  const table = async () => {
+    const host = await mountHtml(rendered("health-trackers"));
+    const root = slot(host, "food-catalogue");
+    if (root.querySelector('[data-slot="entity-list"]')?.getAttribute("data-view") !== "table") [...root.querySelectorAll<HTMLButtonElement>('[data-slot="toggle"]')][0]?.click();
+    await tick(60);
+    return root;
+  };
+  const list = (root: HTMLElement) =>
+    Alpine.$data(root.querySelector<HTMLElement>('[data-slot="entity-list"]')!) as { actions: { id: string }[]; rows: { id: string; pinned: boolean }[]; actionOn(r: unknown, i: number): boolean; shown: Record<string, boolean> };
+
+  it("puts a pin icon on pinned names and a status chip in the verdict column", async () => {
+    const root = await table();
+    const tea = [...root.querySelectorAll<HTMLElement>("[data-row]")].find((r) => r.textContent!.includes("Green tea"))!;
+    expect(tea.querySelector('[data-cell-col="name"] svg[aria-label="Pinned"]')).not.toBeNull();
+    expect(tea.querySelector('[data-cell-col="verdict"] [data-slot="status"]')).not.toBeNull();
+  });
+
+  it("hides the note column until the View menu shows it", async () => {
+    const root = await table();
+    const d = list(root);
+    expect(d.shown.note).toBe(false);
+    expect((root.querySelector('[data-slot="table-head"][data-col="note"]') as HTMLElement | null)?.style.display ?? "none").toBe("none");
+    expect(root.querySelector('[data-slot="entity-list-columns"]')).not.toBeNull();
+    d.shown.note = true;
+    await tick();
+    expect((root.querySelector('[data-row] [data-cell-col="note"]') as HTMLElement).style.display).not.toBe("none");
+  });
+
+  it("offers one Pin / Unpin entry per row", async () => {
+    const root = await table();
+    const d = list(root);
+    const at = (id: string) => d.actions.findIndex((a) => a.id === id);
+    for (const r of d.rows) expect([d.actionOn(r, at("pin")), d.actionOn(r, at("unpin"))]).toEqual(r.pinned ? [false, true] : [true, false]);
+  });
+});
 });

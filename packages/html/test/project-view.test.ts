@@ -180,6 +180,20 @@ describe("project-view (Blade example)", { timeout: 120000 }, () => {
     expect(data().newOpen).toBe(true);
   });
 
+  it("draws priority flags and assignee avatars in the List rows", async () => {
+    const { root } = await mount();
+    const table = root.querySelector('[data-slot="project-issue-table"]')!;
+    const visible = (el: Element) => (el as HTMLElement).style.display !== "none";
+    const rows = [...table.querySelectorAll<HTMLElement>('[role="row"]')].filter((r) => r.querySelectorAll('[role="cell"]').length > 3);
+    expect(rows.length).toBeGreaterThan(0);
+    const shown = (r: Element, sel: string) => [...r.querySelectorAll(sel)].filter((e) => visible(e.parentElement!));
+    for (const r of rows) {
+      expect(shown(r, 'svg[style*="color"]').length).toBe(1);
+    }
+    const withAvatar = rows.filter((r) => shown(r, '[data-slot="avatar"]').length === 1);
+    expect(withAvatar.length).toBeGreaterThan(0);
+  });
+
   it("sends a list edit as an update patch and an open on row click", async () => {
     const { root, data } = await mount();
     const seen = answer(root, "nq-project-update-issue");

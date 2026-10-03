@@ -74,4 +74,41 @@ describe("error-tracking (Blade example)", () => {
     expect(data(host).entries.find((r) => r.id === "e1")!.status).toBe("unresolved");
     expect(data(host).failure).toBe("No.");
   });
+
+  describe("table cells", () => {
+    const table = async () => {
+      const host = await mount();
+      if (root(host).querySelector('[data-slot="entity-list"]')?.getAttribute("data-view") !== "table") [...host.querySelectorAll<HTMLButtonElement>('[data-slot="toggle"]')][0]?.click();
+      await tick();
+      return host;
+    };
+    it("draws a frequency sparkline in the table column", async () => {
+      const host = await table();
+      const cell = host.querySelector('[data-row] [data-cell-col="frequency"]')!;
+      expect(cell.querySelector("svg")).not.toBeNull();
+    });
+    it("shows Resolve and Ignore on unresolved rows and Reopen on the rest", async () => {
+      const host = await table();
+      const list = Alpine.$data(host.querySelector<HTMLElement>('[data-slot="entity-list"]')!) as {
+        actions: { id: string }[];
+        rows: { status: string }[];
+        actionOn(row: unknown, i: number): boolean;
+      };
+      const at = (id: string) => list.actions.findIndex((a) => a.id === id);
+      const open = list.rows.find((r) => r.status === "unresolved")!;
+      const done = list.rows.find((r) => r.status !== "unresolved");
+      expect([list.actionOn(open, at("resolve")), list.actionOn(open, at("ignore")), list.actionOn(open, at("reopen"))]).toEqual([true, true, false]);
+      if (done) expect([list.actionOn(done, at("resolve")), list.actionOn(done, at("reopen"))]).toEqual([false, true]);
+    });
+    it("shows a spinner on the button while the status change is pending", async () => {
+      const host = await mount();
+      root(host).addEventListener("nq-error-status", (e) => (e as CustomEvent).detail.waitUntil(tick(150)));
+      data(host).openIssue("e1");
+      void data(host).changeStatus("e1", "resolved");
+      await tick(30);
+      const d = detail(host, "e1");
+      expect([...d.querySelectorAll<HTMLElement>('[data-slot="spinner"]')].some((s) => s.style.display !== "none")).toBe(true);
+      await tick(250);
+    });
+  });
 });

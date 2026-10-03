@@ -65,4 +65,21 @@ describe("trash-bin (Blade example)", () => {
     expect(data(host).entries).toEqual([]);
     expect(root(host).textContent).toContain("The trash is empty");
   });
+
+  it("shows React's cells in the table: type icon with name, type badge, relative date, time-left badge", async () => {
+    const host = await mount("trash-bin");
+    const toggle = [...host.querySelectorAll<HTMLButtonElement>('[data-slot="toggle"]')][0]!;
+    if (root(host).querySelector('[data-slot="entity-list"]')?.getAttribute("data-view") !== "table") toggle.click();
+    await tick();
+    const row = host.querySelector<HTMLElement>("[data-row]")!;
+    expect(row.querySelector('[data-cell-col="name"] svg')).not.toBeNull();
+    expect(row.querySelector('[data-cell-col="type"] [data-slot="badge"]')).not.toBeNull();
+    expect(row.querySelector('[data-cell-col="timeLeft"] [data-urgency]')).not.toBeNull();
+    expect(row.querySelector('[data-cell-col="deleted"]')!.textContent!.trim()).not.toBe("");
+    const list = host.querySelector<HTMLElement>('[data-slot="entity-list"]')!;
+    const d = Alpine.$data(list) as { setSort(id: string, dir: string): void; sortedRows?: unknown };
+    d.setSort("timeLeft", "desc");
+    await tick();
+    expect(host.querySelector("[data-row]")!.querySelector("[data-urgency]")!.getAttribute("data-urgency")).not.toBe("urgent");
+  });
 });

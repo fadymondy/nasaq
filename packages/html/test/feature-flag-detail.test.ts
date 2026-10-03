@@ -120,13 +120,45 @@ describe("feature-flag-detail (Blade example)", () => {
     expect(seen).toEqual([3]);
     expect(root.textContent).toContain("Saved.");
 
-    expect(root.querySelectorAll('[data-slot="flag-rule"]')).toHaveLength(0);
+    expect(root.querySelectorAll('[data-slot="flag-rule"]')).toHaveLength(1);
     button(root, "Add rule").click();
     await tick();
-    expect(root.querySelectorAll('[data-slot="flag-rule"]')).toHaveLength(1);
-    root.querySelector<HTMLElement>('[aria-label="Remove rule 1"]')!.click();
+    expect(root.querySelectorAll('[data-slot="flag-rule"]')).toHaveLength(2);
+    root.querySelector<HTMLElement>('[aria-label="Remove rule 2"]')!.click();
     await tick();
-    expect(root.querySelectorAll('[data-slot="flag-rule"]')).toHaveLength(0);
+    expect(root.querySelectorAll('[data-slot="flag-rule"]')).toHaveLength(1);
+  });
+
+  it("has the rules and variant rows in the server HTML, and Alpine replaces them", async () => {
+    const host = document.createElement("div");
+    host.innerHTML = rendered("feature-flag-detail");
+    // Before Alpine starts: one rule (with its builder) and two variant rows are already there.
+    expect(host.querySelectorAll('[data-ssr="rules"] [data-slot="flag-rule"]')).toHaveLength(1);
+    expect(host.querySelector('[data-ssr="rules"] [data-slot="rule-builder"]')).not.toBeNull();
+    expect(host.querySelectorAll('[data-ssr="variants"] [data-slot="flag-variant"]')).toHaveLength(2);
+    expect(host.querySelector('[data-ssr="variants"]')!.textContent).toContain("50%");
+    document.body.append(host);
+    Alpine.initTree(host);
+    await tick(100);
+    // After: only the live copies, no duplicates.
+    expect(host.querySelectorAll("[data-ssr]")).toHaveLength(0);
+    expect(host.querySelectorAll('[data-slot="flag-rule"]')).toHaveLength(1);
+    expect(host.querySelectorAll('[data-slot="flag-variant"]')).toHaveLength(2);
+  });
+
+  it("makes the rule builders' serve-variant choices follow variant edits", async () => {
+    const root = await mount();
+    const options = () => [...root.querySelectorAll<HTMLOptionElement>('[data-slot="flag-rule"] select option')].map((o) => o.value);
+    expect(options()).toContain("single-page");
+    const keys = [...root.querySelectorAll<HTMLInputElement>('[data-slot="flag-variant"] input')].filter((i) => i.type !== "number");
+    keys[1]!.value = "one-page";
+    keys[1]!.dispatchEvent(new Event("input", { bubbles: true }));
+    await tick();
+    expect(options()).toContain("one-page");
+    expect(options()).not.toContain("single-page");
+    button(root, "Add variant").click();
+    await tick();
+    expect(options()).toContain("variant-3");
   });
 
   it("kills the flag with a reason and restores it", async () => {

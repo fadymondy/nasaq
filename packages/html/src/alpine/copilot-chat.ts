@@ -1,6 +1,6 @@
 // nqCopilotChat: the behaviour of the React CopilotChat. The server renders the header, the messages and what belongs to them (steps,
 // sources, artifacts, the action buttons); this adds the composer: the draft and @mentions, "/" commands, context chips, attached files,
-// toggles, the model, drag and drop, the history and add-context menus, and an outbox that shows the person's message at once.
+// toggles, the model, drag and drop, the history popover and add-context menu (the shared popover and dropdown-menu), and an outbox that shows the person's message at once.
 //
 //   <section data-slot="copilot-chat" x-data="nqCopilotChat({ commands, context, contextOptions, toggles, model, feedback, busy, transcript, words })">
 //
@@ -111,7 +111,6 @@ interface State extends Magics {
   slashIndex: number;
   slashDismissed: number | null;
   dragging: boolean;
-  menu: "" | "context" | "history";
   copiedKey: string;
   error: string;
   transcript: string;
@@ -153,7 +152,6 @@ export const copilotChat: Register = (Alpine) => {
     slashIndex: 0,
     slashDismissed: null as number | null,
     dragging: false,
-    menu: "" as "" | "context" | "history",
     copiedKey: "",
     error: "",
     transcript: options.transcript ?? "",
@@ -288,19 +286,11 @@ export const copilotChat: Register = (Alpine) => {
     },
     addContext(this: State, item: CopilotContextItem) {
       this.ctx = [...this.ctx, item];
-      this.menu = "";
       this.emit("nq-context-change", { items: this.ctx });
     },
 
-    // Menus (add context, history).
-    toggleMenu(this: State, name: "context" | "history") {
-      this.menu = this.menu === name ? "" : name;
-    },
-    closeMenu(this: State) {
-      this.menu = "";
-    },
+    // History: the popover (the shared x-nq::popover) closes itself; the add-context menu is the shared x-nq::dropdown-menu.
     pickSession(this: State, id: string) {
-      this.menu = "";
       this.emit("nq-session-select", { id });
     },
     dropSession(this: State, id: string) {

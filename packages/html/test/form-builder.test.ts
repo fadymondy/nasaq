@@ -100,6 +100,36 @@ describe("form-builder (Blade example)", () => {
     expect(seen).toHaveBeenCalledWith("Contact");
   });
 
+  it("previews choice fields with the library select and radio group, not native controls", async () => {
+    const host = await mount("form-builder");
+    await tick(100);
+    const preview = host.querySelector<HTMLElement>('form[data-kind="preview"]')!;
+    expect(preview.querySelector("select, input[type='radio']")).toBeNull();
+    const trigger = preview.querySelector<HTMLElement>('[data-slot="select-trigger"]')!;
+    expect(trigger).not.toBeNull();
+    trigger.click();
+    await tick(80);
+    const items = [...document.querySelectorAll<HTMLElement>('[data-slot="select-item"]')].filter((i) => ["Sales", "Support", "Something else"].includes(i.textContent!.trim()));
+    expect(items.map((i) => i.textContent!.trim())).toEqual(["Sales", "Support", "Something else"]);
+    items[1]!.click();
+    await tick(80);
+    expect(data(host).answers.topic).toBe("support");
+    expect(trigger.textContent).toContain("Support");
+
+    data(host).addField("radio");
+    await tick(100);
+    const radioId = data(host).form.fields.at(-1).id;
+    const group = preview.querySelector<HTMLElement>(`[data-field="${radioId}"] [data-slot="radio-group"]`)!;
+    expect(group).not.toBeNull();
+    const radios = [...group.querySelectorAll<HTMLElement>('[data-slot="radio"]')];
+    expect(radios.length).toBeGreaterThan(1);
+    radios[1]!.click();
+    await tick(60);
+    expect(radios[1]!.getAttribute("aria-checked")).toBe("true");
+    expect(radios[0]!.getAttribute("aria-checked")).toBe("false");
+    expect(data(host).answers[radioId]).toBe(data(host).form.fields.at(-1).options[1].value);
+  });
+
   it("previews rules and validates without sending", async () => {
     const host = await mount("form-builder");
     await tick(100);

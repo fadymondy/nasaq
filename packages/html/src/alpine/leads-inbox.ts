@@ -1,5 +1,5 @@
 // nqLeadsInbox: inquiries from your forms with where each came from (UTM, referrer, Google click id), a stage pipeline with counts, a detail
-// panel with reply and canned replies, and conversion into a CRM contact. The list is an <x-nq::data-table> fed through x-model (its row
+// panel with reply and canned replies, and conversion into a CRM contact. The list is an <x-nq::entity-list> (table or cards) fed through x-model (its row
 // actions also open as a context menu); the stage buttons, the detail sheet, the convert dialog and the canned picker live here.
 //
 //   <div x-data="nqLeadsInbox({ leads, canned, can, locale, labels })" @lead-status="$event.detail.wait(…)" @lead-convert="…" @lead-reply="…"> … </div>
@@ -9,7 +9,7 @@
 //   lead-status   { id, lead, status }                                -> { error? }   (never "converted")
 //   lead-convert  { id, lead, conversion: { contactName, company?, deal? } } -> { error? }   (the lead becomes converted, with its contact, company and deal)
 //   lead-reply    { id, lead, message }                               -> { error? }
-// Not ported here: the cards view (the list is the table), and the score explainer popover (the score is a number and its band in words).
+// The cards view and the per-row score explainer (x-nq::score-explainer.badge) are drawn by the Blade view.
 
 import { applySnippet, filterSnippets, type CannedSnippet } from "./inbox-logic";
 import {
@@ -90,7 +90,7 @@ interface State extends Magics {
   config: Config;
   leads: Lead[];
   stage: LeadStatus | "all";
-  view: { rows: Row[] };
+  lead_rows: { rows: Row[] };
   failure: string;
   detail: Detail;
   convert: Convert;
@@ -123,7 +123,7 @@ export const leadsInbox: Register = (Alpine) => {
     config,
     leads: config.leads.map((l) => ({ ...l })),
     stage: "all" as LeadStatus | "all",
-    view: { rows: [] as Row[] },
+    lead_rows: { rows: [] as Row[] },
     failure: "",
     detail: { open: false, id: "", text: "", busy: false, note: "", noteTone: "", moveError: "" } as Detail,
     convert: { open: false, id: "", name: "", withCompany: false, company: "", withDeal: false, deal: "", pending: false, error: "" } as Convert,
@@ -183,12 +183,13 @@ export const leadsInbox: Register = (Alpine) => {
     refresh(this: State) {
       const self = this as unknown as { actionIds(l: Lead): string[]; scoreLabel(s: number | undefined): string };
       const shown = this.stage === "all" ? this.leads : this.leads.filter((l) => l.status === this.stage);
-      this.view.rows = shown.map((l) => {
+      this.lead_rows.rows = shown.map((l) => {
         const src = classifyLeadSource(l.attribution);
         return {
           id: l.id,
           name: l.name,
           secondary: l.company || l.email || "",
+          message: l.message ?? "",
           searchText: `${l.name} ${l.email ?? ""} ${l.company ?? ""} ${l.message ?? ""} ${l.attribution?.utmCampaign ?? ""} ${l.attribution?.utmSource ?? ""}`,
           sourceKind: src.kind,
           sourceDetail: [src.name, src.campaign].filter(Boolean).join(" · "),

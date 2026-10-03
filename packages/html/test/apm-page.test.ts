@@ -55,4 +55,57 @@ describe("apm-page (Blade example)", () => {
     expect(tabs[1]!.getAttribute("aria-selected")).toBe("true");
     expect(tabs[0]!.getAttribute("aria-selected")).toBe("false");
   });
+
+  const listen = (host: HTMLElement, name: string) => {
+    const seen: CustomEvent[] = [];
+    host.addEventListener(name, (e) => seen.push(e as CustomEvent));
+    return seen;
+  };
+
+  it("clicking an endpoint row emits nq-endpoint-click with the row", async () => {
+    const host = await mountHtml(rendered("apm-page"));
+    const seen = listen(host, "nq-endpoint-click");
+    const raw = listen(host, "nq-select");
+    host.querySelector<HTMLElement>('[data-slot="endpoint-table"] [data-row-id="ep2"]')!.click();
+    expect(seen).toHaveLength(1);
+    expect(seen[0]!.detail.id).toBe("ep2");
+    expect(seen[0]!.detail.row).toMatchObject({ route: "/api/checkout", p95: 1640 });
+    expect(raw).toHaveLength(0);
+  });
+
+  it("clicking a top error emits nq-error-click with the error", async () => {
+    const host = await mountHtml(rendered("apm-page"));
+    const seen = listen(host, "nq-error-click");
+    host.querySelector<HTMLElement>('[data-slot="error-rate-panel"] button.w-full')!.click();
+    expect(seen).toHaveLength(1);
+    expect(seen[0]!.detail.id).toBe("e1");
+    expect(seen[0]!.detail.row).toMatchObject({ message: "TimeoutError", count: 14 });
+  });
+
+  it("choosing and closing a trace emits nq-trace-select", async () => {
+    const host = await mountHtml(rendered("apm-page"));
+    const seen = listen(host, "nq-trace-select");
+    const button = host.querySelector<HTMLElement>('[data-slot="trace-list"] button[aria-pressed]')!;
+    button.click();
+    await tick();
+    expect(seen[0]!.detail.id).toBe("t1");
+    expect(seen[0]!.detail.row).toMatchObject({ name: "/api/checkout", status: 200 });
+    button.click();
+    await tick();
+    expect(seen[1]!.detail).toEqual({ id: null, row: null });
+  });
+
+  it("the period toggle emits nq-period-change with the hours, and keeps a choice", async () => {
+    const host = await mountHtml(rendered("apm-page"));
+    const seen = listen(host, "nq-period-change");
+    const toggles = [...host.querySelectorAll<HTMLElement>('[data-slot="period-toggle"] [data-slot="toggle"]')];
+    toggles[2]!.click();
+    await tick();
+    expect(seen.map((e) => e.detail)).toEqual([{ period: 24 }]);
+    expect(toggles[2]!.getAttribute("aria-pressed")).toBe("true");
+    toggles[2]!.click();
+    await tick();
+    expect(toggles[2]!.getAttribute("aria-pressed")).toBe("true");
+    expect(seen).toHaveLength(1);
+  });
 });

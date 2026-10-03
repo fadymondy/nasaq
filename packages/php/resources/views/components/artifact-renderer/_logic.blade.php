@@ -671,11 +671,11 @@
             foreach ($data as $i => $row) {
                 $x0 = $bandX($i);
                 $left = $rtl ? $W - ($x0 + $band) : $x0;
-                $lines = [];
+                $tipRows = [];
                 foreach ($keys as $s => $k) {
-                    $lines[] = ($labels[$s] ?? $k).': '.$fmt((float) $row[$k]);
+                    $tipRows[] = ['color' => "var(--color-$k)", 'label' => (string) ($labels[$s] ?? $k), 'text' => $fmt((float) $row[$k])];
                 }
-                $out['bands'][] = ['x' => nq_art_f($left), 'width' => nq_art_f($band), 'title' => implode("\n", [(string) $row['x'], ...$lines])];
+                $out['bands'][] = ['x' => nq_art_f($left), 'width' => nq_art_f($band), 'tip' => ['heading' => (string) $row['x'], 'rows' => $tipRows]];
             }
 
             return $out;
@@ -701,7 +701,7 @@
                 $d = $inner
                     ? 'M'.$pt($outer, $a0).'A'.nq_art_f($outer).','.nq_art_f($outer).",0,$large,1,".$pt($outer, $a1).'L'.$pt($inner, $a1).'A'.nq_art_f($inner).','.nq_art_f($inner).",0,$large,0,".$pt($inner, $a0).'Z'
                     : 'M'.nq_art_f($cx).','.nq_art_f($cy).'L'.$pt($outer, $a0).'A'.nq_art_f($outer).','.nq_art_f($outer).",0,$large,1,".$pt($outer, $a1).'Z';
-                $out[] = ['key' => "p$i", 'd' => $d, 'title' => ($names[$i] ?? '').': '.nq_art_fmt($s['value'], $locale)];
+                $out[] = ['key' => "p$i", 'd' => $d, 'tip' => ['heading' => '', 'rows' => [['color' => "var(--color-p$i)", 'label' => (string) ($names[$i] ?? ''), 'text' => nq_art_fmt($s['value'], $locale)]]]];
             }
 
             return ['width' => $width, 'height' => $height, 'slices' => $out];

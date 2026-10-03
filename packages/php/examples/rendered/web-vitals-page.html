@@ -6,24 +6,28 @@
                             <p class="text-pretty text-body-sm text-muted-foreground">Real-user performance of nasaq.dev, judged at the 75th percentile</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-2">
+                <div class="contents" x-data="nqPageToggle(JSON.parse('[\u0022mobile\u0022]'), `nq-device-change`, `device`, false)">
                 <div role="group" data-slot="device-toggle" data-variant="segmented" data-orientation="horizontal"
     x-data="nqToggleGroup(JSON.parse('[\u0022mobile\u0022]'), false)" x-modelable="value" x-bind="root"
-            aria-label="Device" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+            aria-label="Device" x-model="choice" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
     <button type="button" data-slot="toggle" aria-pressed="true"
      x-bind="toggle('mobile')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Mobile</button>
-                <button type="button" data-slot="toggle" aria-pressed="false"
+                    <button type="button" data-slot="toggle" aria-pressed="false"
      x-bind="toggle('desktop')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Desktop</button>
 </div>
-                <div role="group" data-slot="period-toggle" data-variant="segmented" data-orientation="horizontal"
+            </div>
+                <div class="contents" x-data="nqPageToggle(JSON.parse('[\u002228\u0022]'), `nq-period-change`, `period`, true)">
+            <div role="group" data-slot="period-toggle" data-variant="segmented" data-orientation="horizontal"
     x-data="nqToggleGroup(JSON.parse('[\u002228\u0022]'), false)" x-modelable="value" x-bind="root"
-            aria-label="Time window" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+            aria-label="Time window" x-model="choice" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
     <button type="button" data-slot="toggle" aria-pressed="false"
      x-bind="toggle('7')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">7 days</button>
-                            <button type="button" data-slot="toggle" aria-pressed="true"
+                                    <button type="button" data-slot="toggle" aria-pressed="true"
      x-bind="toggle('28')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">28 days</button>
-                            <button type="button" data-slot="toggle" aria-pressed="false"
+                                    <button type="button" data-slot="toggle" aria-pressed="false"
      x-bind="toggle('90')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">90 days</button>
-</div>                                    <button data-slot="button"
+</div>
+        </div>                                    <button data-slot="button"
      type="button"                     x-on:click="refresh()" x-bind:aria-busy="refreshing ? &#039;true&#039; : null" x-bind:disabled="refreshing" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-border bg-card text-foreground hover:bg-nq-hover h-control-sm px-2.5">
         <svg data-slot="spinner" aria-hidden="true" style="display: none;" x-show="refreshing" class="size-4 animate-spin motion-reduce:animate-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
@@ -65,7 +69,7 @@
 </span>
                                     <span>Connected to <bdi dir="ltr">ops@nasaq.dev</bdi></span>
                                             </p>
-                            <div class="contents" x-data="nqWebVitalsPage('LCP')" x-on:nq-metric="choose($event.detail.id)">
+                            <div class="contents" x-data="nqWebVitalsPage('LCP', JSON.parse('[{\u0022id\u0022:\u0022p1\u0022,\u0022url\u0022:\u0022\\\/\u0022,\u0022loads\u0022:48210,\u0022vitals\u0022:{\u0022LCP\u0022:2100,\u0022INP\u0022:150,\u0022CLS\u0022:0.05}},{\u0022id\u0022:\u0022p2\u0022,\u0022url\u0022:\u0022\\\/pricing\u0022,\u0022loads\u0022:9120,\u0022vitals\u0022:{\u0022LCP\u0022:3400,\u0022INP\u0022:320,\u0022CLS\u0022:0.21}}]'))" x-on:nq-metric="choose($event.detail.id)">
                     <div data-slot="web-vitals-verdict" data-pass="true" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-content" class="px-4 flex items-center gap-3"><svg aria-hidden="true" class="size-8 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <circle cx="12" cy="12" r="10"/>
   <path d="m9 12 2 2 4-4"/>
@@ -2203,7 +2207,7 @@
                                 <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">LCP</th>
 <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">INP</th>
 <th data-slot="table-head" scope="col" class="h-row align-middle text-caption font-medium whitespace-nowrap text-muted-foreground px-4 py-3 text-end">CLS</th></tr></thead>
-                        <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 max-w-0 min-w-40"><bdi dir="ltr" class="block truncate">/</bdi></td>
+                        <tbody data-slot="table-body" class="[&_tr:last-child]:border-0"><tr data-slot="table-row"     data-row-id="p1" tabindex="0" x-on:click="pick($el.dataset.rowId)" x-on:keydown.enter.self.prevent="pick($el.dataset.rowId)" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected cursor-pointer"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 max-w-0 min-w-40"><bdi dir="ltr" class="block truncate">/</bdi></td>
                                     <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums">48,210</td>
                                                                             <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><span data-slot="status" data-tone="success" title="Good" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-nq-success-text justify-end">
             <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2223,7 +2227,7 @@
   <path d="m9 12 2 2 4-4"/>
 </svg>        <span class="truncate"  title="0.05" ><bdi dir="ltr">0.05</bdi></span>
 </span></td></tr>
-                                                            <tr data-slot="table-row"     class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 max-w-0 min-w-40"><bdi dir="ltr" class="block truncate">/pricing</bdi></td>
+                                                            <tr data-slot="table-row"     data-row-id="p2" tabindex="0" x-on:click="pick($el.dataset.rowId)" x-on:keydown.enter.self.prevent="pick($el.dataset.rowId)" class="border-b border-border transition-colors duration-150 ease-nq hover:bg-nq-hover data-[state=selected]:bg-nq-selected cursor-pointer"><td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 max-w-0 min-w-40"><bdi dir="ltr" class="block truncate">/pricing</bdi></td>
                                     <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums">9,120</td>
                                                                             <td data-slot="table-cell" class="h-row align-middle whitespace-nowrap px-4 py-3 text-end tabular-nums"><span data-slot="status" data-tone="warning" title="Needs improvement" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-nq-warning-text justify-end">
             <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

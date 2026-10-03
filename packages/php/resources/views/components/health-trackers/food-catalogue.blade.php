@@ -4,13 +4,14 @@
      items: [id, kind (food | drink), name, nameAr?, verdict (safe | trigger | unreviewed), verdictSource? (none | you | catalogue | clinician), triggerFamilies? [ids], note?, pinned?]. families: [id, name, nameAr?].
      pin / edit / delete / add: switch on the matching action (the Add item button, the row menu entries). label, loading, page-size, labels: as on <x-nq::entity-list>.
      Events on the root:
-       pin     detail.id, detail.pinned            resolve, or resolve { error } shown above the list. On success the row updates. (Pin and Unpin are two entries; both show.)
+       pin     detail.id, detail.pinned            resolve, or resolve { error } shown above the list. On success the row updates. (One toggle entry per row: Pin, or Unpin once pinned.)
        delete  detail.id                           fired when the person confirms the dialog. Resolve, or resolve { error } shown in the dialog. On success the row leaves the list.
        edit    detail.id                           no answer needed.
        add     (none)                              no answer needed.
-     Differences from the React component: cells are text (no pin icon or status chip in the table; the card shows them), the note column is always shown, and there is no per-row "visible when" so pin and unpin are both listed.
+     Like React: the name cell carries a pin icon on pinned rows, the verdict cell a status chip with its source, families are tags, and the Note column starts hidden (the View menu shows it).
      Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['items' => [], 'families' => [], 'pin' => false, 'edit' => false, 'delete' => false, 'add' => false, 'label' => null, 'loading' => false, 'pageSize' => 0, 'labels' => []])
+@include('nasaq::components.entity-list._cells')
 @php
     $t = \Nasaq\Nasaq::class;
     $ar = $t::rtl();
@@ -39,6 +40,7 @@
         'delete' => $t::t('Delete', 'حذف'),
         'pin' => $t::t('Pin to quick log', 'ثبّت في التسجيل السريع'),
         'unpin' => $t::t('Unpin', 'إلغاء التثبيت'),
+        'pinned' => $t::t('Pinned', 'مثبّت'),
         'deleteTitle' => $t::t('Delete {name}?', 'حذف {name}؟'),
         'deleteBody' => $t::t('It leaves the catalogue and your quick log. Entries already logged keep their record.', 'يخرج من الكتالوج ومن التسجيل السريع. تحتفظ الإدخالات المسجّلة بسجلها.'),
         'cancel' => $t::t('Cancel', 'إلغاء'),
@@ -58,13 +60,23 @@
 
         return (string) $id;
     };
-    $rows = array_values(array_map(function ($i) use ($ar, $verdictText, $sourceText, $kindText, $famName) {
+    $verdictIcon = ['safe' => 'shield-check', 'trigger' => 'triangle-alert', 'unreviewed' => 'circle-help'];
+    $verdictTone = ['safe' => 'success', 'trigger' => 'danger', 'unreviewed' => 'neutral'];
+    $rows = array_values(array_map(function ($i) use ($ar, $verdictText, $sourceText, $kindText, $famName, $verdictIcon, $verdictTone) {
         $i = (array) $i;
         $verdict = $i['verdict'] ?? 'unreviewed';
         $source = $verdict !== 'unreviewed' && ! empty($i['verdictSource']) ? ($sourceText[$i['verdictSource']] ?? null) : null;
         $fams = array_values((array) ($i['triggerFamilies'] ?? []));
 
+        $cells = nq_el_cells(<<<'BLADE'
+<template data-cell="verdict"><span class="flex flex-col items-start gap-0.5"><x-nq::status :tone="$tone" :icon="$icon">{{ $vtext }}</x-nq::status>@if ($source)<span class="text-caption text-muted-foreground">{{ $source }}</span>@endif</span></template>
+<template data-cell="families"><x-nq::entity-list.tag-list :tags="$tags" :max="100" /></template>
+<template data-cell="note">@if ($note)<span dir="auto" class="line-clamp-2 text-body-sm text-muted-foreground">{{ $note }}</span>@else<span class="text-muted-foreground">—</span>@endif</template>
+BLADE, ['tone' => $verdictTone[$verdict] ?? 'neutral', 'icon' => $verdictIcon[$verdict] ?? 'circle-help', 'vtext' => $verdictText[$verdict] ?? '', 'source' => $source, 'tags' => array_map(fn ($f) => ['label' => $famName($f)], $fams), 'note' => $i['note'] ?? '']);
+
         return [
+            'verdictCell' => $cells['verdict'], 'familiesCell' => $cells['families'], 'noteCell' => $cells['note'],
+            'searchText' => trim(($i['name'] ?? '').' '.($i['nameAr'] ?? '').' '.($i['note'] ?? '')),
             'id' => (string) $i['id'],
             'name' => $ar && ! empty($i['nameAr']) ? $i['nameAr'] : $i['name'],
             'kindKey' => $i['kind'] ?? 'food',
@@ -87,15 +99,15 @@
         $facets[] = ['id' => 'family', 'title' => $w['families'], 'key' => 'familyIds', 'options' => array_map(fn ($f) => ['value' => (string) $f['id'], 'label' => $famName($f['id'])], $famList)];
     }
     $columns = [
-        ['id' => 'name', 'header' => $w['name'], 'key' => 'name', 'sortable' => true, 'searchable' => true],
+        ['id' => 'name', 'header' => $w['name'], 'key' => 'name', 'searchKey' => 'searchText', 'sortable' => true, 'searchable' => true],
         ['id' => 'kind', 'header' => $w['kind'], 'key' => 'kindText', 'sortable' => true],
-        ['id' => 'verdict', 'header' => $w['verdict'], 'key' => 'verdictFull', 'sortable' => true],
-        ['id' => 'families', 'header' => $w['families'], 'key' => 'familiesText'],
-        ['id' => 'note', 'header' => $w['note'], 'key' => 'note', 'searchable' => true],
+        ['id' => 'verdict', 'type' => 'html', 'header' => $w['verdict'], 'key' => 'verdictCell', 'sortKey' => 'verdictKey', 'sortable' => true],
+        ['id' => 'families', 'type' => 'html', 'header' => $w['families'], 'key' => 'familiesCell', 'hideable' => true],
+        ['id' => 'note', 'type' => 'html', 'header' => $w['note'], 'key' => 'noteCell', 'hidden' => true, 'hideable' => true],
     ];
     $actions = array_values(array_filter([
-        $pin ? ['id' => 'pin', 'label' => $w['pin'], 'icon' => 'pin', 'group' => 'main'] : null,
-        $pin ? ['id' => 'unpin', 'label' => $w['unpin'], 'icon' => 'pin-off', 'group' => 'main'] : null,
+        $pin ? ['id' => 'pin', 'label' => $w['pin'], 'icon' => 'pin', 'group' => 'main', 'visibleWhen' => ['field' => 'pinned', 'ne' => true]] : null,
+        $pin ? ['id' => 'unpin', 'label' => $w['unpin'], 'icon' => 'pin-off', 'group' => 'main', 'visibleWhen' => ['field' => 'pinned', 'eq' => true]] : null,
         $edit ? ['id' => 'edit', 'label' => $w['edit'], 'icon' => 'pencil', 'group' => 'main'] : null,
         $delete ? ['id' => 'delete', 'label' => $w['delete'], 'icon' => 'trash-2', 'danger' => true, 'group' => 'danger'] : null,
     ]));
@@ -110,6 +122,12 @@
                 <x-nq::button variant="primary" x-on:click="addItem()"><x-lucide-plus aria-hidden="true" />{{ $w['add'] }}</x-nq::button>
             </x-slot:toolbar>
         @endif
+        <x-slot:cell_name>
+            <span class="flex min-w-0 items-center gap-2">
+                <x-lucide-pin role="img" aria-label="{{ $w['pinned'] }}" class="size-3.5 shrink-0 text-primary" x-show="row.pinned" :style="collect($rows)->contains('pinned', true) ? '' : 'display: none'" />
+                <span dir="auto" class="truncate text-label text-foreground" x-text="row.name"></span>
+            </span>
+        </x-slot:cell_name>
         <x-slot:card>
             <div class="flex min-w-0 flex-col gap-2">
                 <span class="flex min-w-0 flex-col">

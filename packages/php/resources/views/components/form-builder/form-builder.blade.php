@@ -8,7 +8,7 @@
      save-button: show the Save button (true). labels: array overriding the built-in texts (the keys of nq_fb_words()).
      Fires nq-form-builder-change ({ form }) after every edit and nq-form-builder-save ({ form, waitUntil(promise) }) from the Save button, which stays busy until
      the promise settles. Read the edited form from x-data too: it is the form property. The field rows have a context menu (move, duplicate, remove) next to
-     their buttons. The preview's choice fields are native selects and radios, because the library select takes static items.
+     their buttons. The preview's choice fields are the library select and radio group (their items take value-expr, so a list drawn by x-for works).
      Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['form' => null, 'formKey' => 'pk_live_demo', 'embedBaseUrl' => 'https://forms.example.com', 'saveButton' => true, 'labels' => []])
 @include('nasaq::components.form-builder._logic')
@@ -183,20 +183,26 @@
                                                 <x-nq::field.textarea rows="4" x-bind:placeholder="hold(f)" x-model="answers[f.id]" />
                                             </template>
                                             <template x-if="f.kind === 'select'">
-                                                <select x-model="answers[f.id]" class="h-control w-full rounded-control border border-input bg-card px-3 text-body text-foreground outline-none focus-visible:outline-2 focus-visible:outline-nq-focus">
-                                                    <option value="">{{ $pf['choose'] }}</option>
-                                                    <template x-for="o in f.options" :key="o.value"><option x-bind:value="o.value" x-text="optLabel(o)"></option></template>
-                                                </select>
+                                                <x-nq::select x-model="answers[f.id]">
+                                                    <x-nq::select.trigger>
+                                                        <x-nq::select.value placeholder="{{ $pf['choose'] }}" />
+                                                    </x-nq::select.trigger>
+                                                    <x-nq::select.content>
+                                                        <template x-for="o in f.options" :key="o.value + '|' + optLabel(o)">
+                                                            <x-nq::select.item value-expr="o.value"><span x-text="optLabel(o)"></span></x-nq::select.item>
+                                                        </template>
+                                                    </x-nq::select.content>
+                                                </x-nq::select>
                                             </template>
                                             <template x-if="f.kind === 'radio'">
-                                                <div role="radiogroup" class="flex flex-col gap-2">
+                                                <x-nq::radio-group x-model="answers[f.id]">
                                                     <template x-for="o in f.options" :key="o.value">
                                                         <label class="flex items-center gap-2 text-body">
-                                                            <input type="radio" x-bind:name="f.id" x-bind:value="o.value" x-model="answers[f.id]" class="size-4 accent-[var(--nq-action)]">
+                                                            <x-nq::radio-group.radio value-expr="o.value" />
                                                             <span x-text="optLabel(o)"></span>
                                                         </label>
                                                     </template>
-                                                </div>
+                                                </x-nq::radio-group>
                                             </template>
                                             <template x-if="isPlain(f.kind)">
                                                 <x-nq::field.input type="text" x-bind:placeholder="hold(f)" x-bind:dir="dirOf(f)" x-model="answers[f.id]" />

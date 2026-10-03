@@ -50,4 +50,4 @@
         ],
     ];
 @endphp
-<x-nq::apm-page :service="$service" :data="$data" app="api.nasaq.dev" :target-ms="500" :slo="0.01" :period="6" refreshable />
+<x-nq::apm-page :service="$service" :data="$data" app="api.nasaq.dev" :target-ms="500" :slo="0.01" :period="6" refreshable endpoint-click error-click />

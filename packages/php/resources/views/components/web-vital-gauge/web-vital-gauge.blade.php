@@ -23,12 +23,12 @@
     $ratingVar = ['good' => 'var(--nq-success)', 'needs-improvement' => 'var(--nq-warning)', 'poor' => 'var(--nq-danger)'];
     $gaugeLabel = $hasValue ? sprintf($t['gaugeLabel'], $t['names'][$metric], $text($value), $t['rating'][$rating]) : $t['names'][$metric].': '.$t['noData'];
     $deltaTone = $delta === null ? '' : ($delta < 0 ? 'text-nq-success-text' : ($delta > 0 ? 'text-nq-danger-text' : 'text-muted-foreground'));
-    $extra = ["data-metric" => $metric, "data-rating" => $rating] + ($selectable ? ["x-bind:class" => "selected === ".json_encode($metric)." ? 'border-primary ring-1 ring-primary' : ''"] : []);
+    $extra = ["data-metric" => $metric, "data-rating" => $rating] + ($selectable ? ["x-bind:class" => "selected === `".$metric."` ? `border-primary ring-1 ring-primary` : ``"] : []);
 @endphp
 @if ($selectable)
     <button type="button" x-bind:aria-pressed="String(selected === @js($metric))" x-on:click="select(@js($metric))" class="rounded-card text-start outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
 @endif
-<x-nq::card data-slot="{{ $attributes->get('data-slot', 'web-vital-gauge') }}" {{ $attributes->except('data-slot')->merge($extra)->cn('h-full gap-3 px-4 py-4') }}>
+<x-nq::card data-slot="{{ $attributes->get('data-slot', 'web-vital-gauge') }}" {{ $attributes->except('data-slot')->merge($extra, false)->cn('h-full gap-3 px-4 py-4') }}>
     <div class="flex items-start justify-between gap-2">
         <div class="flex min-w-0 flex-col">
             <div class="flex items-center gap-2">

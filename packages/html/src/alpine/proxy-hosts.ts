@@ -25,6 +25,7 @@ interface Labels {
   genericError: string;
   deleteTitle: string;
   more: string;
+  moreLabel?: string;
 }
 interface Config {
   hosts: Host[];
@@ -92,6 +93,8 @@ export const proxyHosts: Register = (Alpine) => {
         hosts: [...h.hosts],
         shown: h.hosts.slice(0, h.hosts.length > 3 ? 2 : 3),
         more: h.hosts.length > 3 ? fill(this.config.labels.more, { n: h.hosts.length - 2 }) : "",
+        moreLabel: h.hosts.length > 3 ? fill(this.config.labels.moreLabel ?? "", { n: h.hosts.length - 2 }) : "",
+        rest: h.hosts.length > 3 ? h.hosts.slice(2) : [],
         hostsText: h.hosts.join(" "),
         upstream: h.upstream,
         tls: h.tlsMode,

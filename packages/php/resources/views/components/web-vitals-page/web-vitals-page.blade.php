@@ -7,10 +7,16 @@
      header holding an array); omit to hide it. metric: the metric charted first (default LCP). period: the window in days (default 28); windows: the toggle's options
      (default 7, 28, 90). loading, error (replaces the report), retryable, refreshable, refreshing, updated-at, labels, frame-labels. Events as in
      analytics-connect.page-frame: nq-refresh, nq-retry, nq-disconnect, nq-connect, nq-select-account, each with detail.wait(promise). Choosing a gauge or switching
-     the chart's metric moves both together (Alpine nqWebVitalsPage); the chart's switcher bubbles "nq-metric" ({ id }). Needs the Alpine runtime (@nasaqScripts). --}}
+     the chart's metric moves both together (Alpine nqWebVitalsPage); the chart's switcher bubbles "nq-metric" ({ id }). Needs the Alpine runtime (@nasaqScripts).
+     Hooks (the React callbacks), all bubbling from the page:
+       nq-select { id }                 a metric was chosen, from a gauge or the chart's switcher (onMetricChange); id is LCP, INP, CLS, FCP or TTFB.
+       nq-device-change { device }      the device switch changed (onDeviceChange): mobile or desktop.
+       nq-period-change { period }      the window toggle changed (onPeriodChange); period is the days as a number.
+       nq-page-click { id, row }        a row of the pages table was clicked (onPageClick), with the row you passed; add page-click to make the rows clickable.
+     e.g. <x-nq::web-vitals-page … page-click x-on:nq-page-click="open($event.detail.row)" x-on:nq-select="focus($event.detail.id)" /> --}}
 @include('nasaq::components.web-vital-gauge._logic')
 @props(['service', 'data' => null, 'site' => null, 'device' => null, 'metric' => 'LCP', 'period' => 28, 'windows' => [7, 28, 90], 'loading' => false, 'error' => null, 'retryable' => false,
-    'refreshable' => false, 'refreshing' => false, 'updatedAt' => null, 'labels' => [], 'frameLabels' => [], 'locale' => null])
+    'refreshable' => false, 'refreshing' => false, 'pageClick' => false, 'updatedAt' => null, 'labels' => [], 'frameLabels' => [], 'locale' => null])
 @php
     $locale ??= app()->getLocale();
     $ar = str_starts_with($locale, 'ar');
@@ -54,18 +60,22 @@
     :retryable="$retryable" :refreshable="$refreshable" :refreshing="$refreshing" :updated-at="$updatedAt" :labels="$frameLabels" :attributes="$attributes">
     <x-slot:actions>
         @if ($device)
-            <x-nq::toggle-group :default-value="[$device]" :aria-label="$t['device']" data-slot="device-toggle">
-                <x-nq::toggle-group.toggle value="mobile">{{ $t['mobile'] }}</x-nq::toggle-group.toggle>
-                <x-nq::toggle-group.toggle value="desktop">{{ $t['desktop'] }}</x-nq::toggle-group.toggle>
-            </x-nq::toggle-group>
+            <div class="contents" x-data="nqPageToggle({!! \Illuminate\Support\Js::from([$device]) !!}, `nq-device-change`, `device`, false)">
+                <x-nq::toggle-group :default-value="[$device]" :aria-label="$t['device']" data-slot="device-toggle" x-model="choice">
+                    <x-nq::toggle-group.toggle value="mobile">{{ $t['mobile'] }}</x-nq::toggle-group.toggle>
+                    <x-nq::toggle-group.toggle value="desktop">{{ $t['desktop'] }}</x-nq::toggle-group.toggle>
+                </x-nq::toggle-group>
+            </div>
         @endif
-        <x-nq::toggle-group :default-value="[(string) $period]" :aria-label="$t['window']" data-slot="period-toggle">
-            @foreach ($windows as $n)
-                <x-nq::toggle-group.toggle :value="(string) $n">{{ $daysLabel((int) $n) }}</x-nq::toggle-group.toggle>
-            @endforeach
-        </x-nq::toggle-group>
+        <div class="contents" x-data="nqPageToggle({!! \Illuminate\Support\Js::from([(string) $period]) !!}, `nq-period-change`, `period`, true)">
+            <x-nq::toggle-group :default-value="[(string) $period]" :aria-label="$t['window']" data-slot="period-toggle" x-model="choice">
+                @foreach ($windows as $n)
+                    <x-nq::toggle-group.toggle :value="(string) $n">{{ $daysLabel((int) $n) }}</x-nq::toggle-group.toggle>
+                @endforeach
+            </x-nq::toggle-group>
+        </div>
     </x-slot:actions>
-    <div class="contents" x-data="nqWebVitalsPage(@js($metric))" x-on:nq-metric="choose($event.detail.id)">
+    <div class="contents" x-data="nqWebVitalsPage({!! \Illuminate\Support\Js::from($metric) !!}, {!! \Illuminate\Support\Js::from($data['pages'] ?? []) !!})" x-on:nq-metric="choose($event.detail.id)">
         @if ($busy)
             <x-nq::states.skeleton class="h-20 w-full" />
         @else
@@ -131,7 +141,8 @@
                         </x-nq::table.header>
                         <x-nq::table.body>
                             @foreach ($data['pages'] as $row)
-                                <x-nq::table.row>
+                                <x-nq::table.row :data-row-id="(string) $row['id']" :tabindex="$pageClick ? '0' : null" :x-on:click="$pageClick ? 'pick($el.dataset.rowId)' : null"
+                                    :x-on:keydown.enter.self.prevent="$pageClick ? 'pick($el.dataset.rowId)' : null" :class="$pageClick ? 'cursor-pointer' : ''">
                                     <x-nq::table.cell class="max-w-0 min-w-40"><bdi dir="ltr" class="block truncate">{{ $row['url'] }}</bdi></x-nq::table.cell>
                                     <x-nq::table.cell class="text-end tabular-nums">{{ (new \NumberFormatter(str_replace('_', '-', $locale).'@numbers=latn', \NumberFormatter::DECIMAL))->format($row['loads']) }}</x-nq::table.cell>
                                     @foreach ($core as $id)

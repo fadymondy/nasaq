@@ -5,7 +5,7 @@
        (kind: text | textarea | number | boolean | select | url | code). categories: [['id' => 'data', 'label' => 'Data']]. steps: [['id' => 's1', 'type' => 'http', 'config' => [...], 'children' => [...]]].
      params: [['id' => 'p1', 'name' => 'host', 'value' => 'api.example.com', 'secret' => false]]. nestable: step type ids that can hold steps (up to 3 levels). known: placeholder names always available.
      testable shows the Test run tab: listen with x-on:nq-step-test="$event.detail.waitUntil(fetch(...).then((r) => r.json()))" (resolve [{ stepId, status, durationMs, output, error }] or { error }).
-     A "change" event ({ steps, params }) bubbles after every edit. There is no backend. Reorder with the move buttons or the handle's arrow keys / Home / End.
+     A "change" event ({ steps, params }) bubbles after every edit. There is no backend. Reorder by dragging the handle or with its arrow keys / Home / End.
      Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['types' => [], 'categories' => [], 'steps' => [], 'params' => [], 'nestable' => [], 'known' => [], 'testable' => false, 'disabled' => false])
 @php
@@ -49,15 +49,15 @@
                 <p x-show="params.length === 0" x-cloak style="display: none" class="rounded-card border border-dashed border-border px-4 py-6 text-center text-body-sm text-muted-foreground">{{ $T('No parameters yet.', 'لا معاملات بعد.') }}</p>
                 <ol x-show="params.length !== 0" x-cloak style="display: none" aria-label="{{ $T('Parameters', 'المعاملات') }}" class="flex flex-col gap-2">
                     <template x-for="(p, pi) in params" :key="p.id">
-                        <li data-slot="step-editor-param" :data-param-id="p.id" class="rounded-card border border-border bg-card">
+                        <li data-slot="step-editor-param" :data-param-id="p.id" :data-dragging="isDragging('params', pi) ? 'true' : null" :style="dragStyle('params', pi)" class="relative rounded-card border border-border bg-card data-dragging:z-10 data-dragging:border-nq-focus data-dragging:shadow-floating">
                             <div class="flex min-h-control items-center gap-1 p-1.5">
+                                <button type="button" x-show="params.length !== 1" :data-param-handle="pi"
+                                    :aria-label="$nq.t('Reorder ' + paramName(p, pi), 'إعادة ترتيب ' + paramName(p, pi))" :title="$nq.t('Reorder ' + paramName(p, pi), 'إعادة ترتيب ' + paramName(p, pi))"
+                                    aria-keyshortcuts="ArrowUp ArrowDown Home End" :disabled="disabled" x-on:keydown="onParamKey($event, pi)" x-on:pointerdown="startDrag($event, 'params', pi)"
+                                    class="inline-flex size-control-sm shrink-0 cursor-grab touch-none items-center justify-center rounded-control text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus active:cursor-grabbing disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:size-4">
+                                    <x-lucide-grip-vertical aria-hidden="true" />
+                                </button>
                                 <span class="min-w-0 flex-1 truncate px-1.5 text-label text-foreground" x-text="paramName(p, pi)"></span>
-                                <x-nq::button type="button" variant="ghost" size="icon-sm" class="text-muted-foreground" ::aria-label="$nq.t('Move up ' + paramName(p, pi), 'نقل لأعلى ' + paramName(p, pi))" ::disabled="disabled || pi === 0" x-on:click="moveParam(pi, -1)">
-                                    <x-lucide-chevron-up aria-hidden="true" />
-                                </x-nq::button>
-                                <x-nq::button type="button" variant="ghost" size="icon-sm" class="text-muted-foreground" ::aria-label="$nq.t('Move down ' + paramName(p, pi), 'نقل لأسفل ' + paramName(p, pi))" ::disabled="disabled || pi === params.length - 1" x-on:click="moveParam(pi, 1)">
-                                    <x-lucide-chevron-down aria-hidden="true" />
-                                </x-nq::button>
                                 <x-nq::button type="button" variant="ghost" size="icon-sm" class="text-muted-foreground hover:text-nq-danger-text" ::aria-label="$nq.t('Remove ' + paramName(p, pi), 'حذف ' + paramName(p, pi))" ::disabled="disabled" x-on:click="removeParam(pi)">
                                     <x-lucide-trash-2 aria-hidden="true" />
                                 </x-nq::button>

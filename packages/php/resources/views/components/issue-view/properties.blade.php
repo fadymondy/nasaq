@@ -7,7 +7,8 @@
      update: switch editing on (off by default, like omitting the callback). now: Carbon or string, the clock for the due colour. text: array overriding the built-in words. locale: default the app locale.
      The page listens on the root (or on the issue view around it); detail.wait(promise) resolves { error } to show the message and put the field back:
        nq-issue-update { patch: { statusId | priority | type | assigneeId | labelIds | estimateHours | dueDate | projectId | parentId }, wait }.
-     Needs the Alpine module (nqIssueProperties). Differences from the React component: the trigger of a picker shows the text without its icon; the hints under the estimate and due fields are drawn by the server, so re-render after a save. --}}
+     Needs the Alpine module (nqIssueProperties). The trigger of a picker shows the choice's icon (status dot, priority flag, type glyph, avatar) before its text, as React does.
+     Differences from the React component: the hints under the estimate and due fields are drawn by the server, so re-render after a save. --}}
 @include('nasaq::components.issue-view._logic')
 @props(['issue', 'statuses' => [], 'labels' => [], 'people' => [], 'projects' => [], 'parentOptions' => [], 'loggedSeconds' => 0, 'update' => false, 'now' => null, 'text' => [], 'locale' => null])
 @php
@@ -50,10 +51,10 @@
         <dt id="{{ $uid }}-status" class="text-body-sm text-muted-foreground">{{ $t['status'] }}</dt>
         <dd class="m-0 min-w-0">
             <x-nq::select :value="$issue['statusId']" x-model="v.status">
-                <x-nq::select.trigger aria-labelledby="{{ $uid }}-status" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value /></x-nq::select.trigger>
+                <x-nq::select.trigger aria-labelledby="{{ $uid }}-status" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value icon /></x-nq::select.trigger>
                 <x-nq::select.content>
                     @foreach ($statuses as $s)
-                        <x-nq::select.item :value="$s['id']"><span class="{{ $item }}"><x-nq::issue-view.status-dot :hue="$s['hue'] ?? null" />{{ $s['name'] }}</span></x-nq::select.item>
+                        <x-nq::select.item :value="$s['id']"><span class="{{ $item }}"><span data-select-icon class="contents"><x-nq::issue-view.status-dot :hue="$s['hue'] ?? null" /></span>{{ $s['name'] }}</span></x-nq::select.item>
                     @endforeach
                 </x-nq::select.content>
             </x-nq::select>
@@ -63,10 +64,10 @@
         <dt id="{{ $uid }}-priority" class="text-body-sm text-muted-foreground">{{ $t['priority'] }}</dt>
         <dd class="m-0 min-w-0">
             <x-nq::select :value="$issue['priority'] ?? 'none'" x-model="v.priority">
-                <x-nq::select.trigger aria-labelledby="{{ $uid }}-priority" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value /></x-nq::select.trigger>
+                <x-nq::select.trigger aria-labelledby="{{ $uid }}-priority" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value icon /></x-nq::select.trigger>
                 <x-nq::select.content>
                     @foreach ($priorities as $p)
-                        <x-nq::select.item :value="$p"><span class="{{ $item }}"><x-nq::issue-view.priority-icon :priority="$p" />{{ $t[$p] }}</span></x-nq::select.item>
+                        <x-nq::select.item :value="$p"><span class="{{ $item }}"><span data-select-icon class="contents"><x-nq::issue-view.priority-icon :priority="$p" /></span>{{ $t[$p] }}</span></x-nq::select.item>
                     @endforeach
                 </x-nq::select.content>
             </x-nq::select>
@@ -76,10 +77,10 @@
         <dt id="{{ $uid }}-type" class="text-body-sm text-muted-foreground">{{ $t['type'] }}</dt>
         <dd class="m-0 min-w-0">
             <x-nq::select :value="$issue['type'] ?? 'task'" x-model="v.type">
-                <x-nq::select.trigger aria-labelledby="{{ $uid }}-type" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value /></x-nq::select.trigger>
+                <x-nq::select.trigger aria-labelledby="{{ $uid }}-type" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value icon /></x-nq::select.trigger>
                 <x-nq::select.content>
                     @foreach ($types as $x)
-                        <x-nq::select.item :value="$x"><span class="{{ $item }}"><x-nq::issue-view.type-icon :type="$x" />{{ $t[$x] }}</span></x-nq::select.item>
+                        <x-nq::select.item :value="$x"><span class="{{ $item }}"><span data-select-icon class="contents"><x-nq::issue-view.type-icon :type="$x" /></span>{{ $t[$x] }}</span></x-nq::select.item>
                     @endforeach
                 </x-nq::select.content>
             </x-nq::select>
@@ -89,11 +90,11 @@
         <dt id="{{ $uid }}-assignee" class="text-body-sm text-muted-foreground">{{ $t['assignee'] }}</dt>
         <dd class="m-0 min-w-0">
             <x-nq::select :value="$issue['assigneeId'] ?? '__none__'" x-model="v.assignee">
-                <x-nq::select.trigger aria-labelledby="{{ $uid }}-assignee" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value /></x-nq::select.trigger>
+                <x-nq::select.trigger aria-labelledby="{{ $uid }}-assignee" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value icon /></x-nq::select.trigger>
                 <x-nq::select.content>
                     <x-nq::select.item value="__none__"><span class="{{ $item }}">{{ $t['unassigned'] }}</span></x-nq::select.item>
                     @foreach ($people as $p)
-                        <x-nq::select.item :value="$p['id']"><span class="{{ $item }}"><x-nq::avatar :name="$p['name']" :src="$p['avatar'] ?? null" size="xs" />{{ $p['name'] }}</span></x-nq::select.item>
+                        <x-nq::select.item :value="$p['id']"><span class="{{ $item }}"><span data-select-icon class="contents"><x-nq::avatar :name="$p['name']" :src="$p['avatar'] ?? null" size="xs" /></span>{{ $p['name'] }}</span></x-nq::select.item>
                     @endforeach
                 </x-nq::select.content>
             </x-nq::select>
@@ -160,7 +161,7 @@
         <dt id="{{ $uid }}-project" class="text-body-sm text-muted-foreground">{{ $t['project'] }}</dt>
         <dd class="m-0 min-w-0">
             <x-nq::select :value="$issue['projectId'] ?? null" x-model="v.project">
-                <x-nq::select.trigger aria-labelledby="{{ $uid }}-project" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value /></x-nq::select.trigger>
+                <x-nq::select.trigger aria-labelledby="{{ $uid }}-project" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value icon /></x-nq::select.trigger>
                 <x-nq::select.content>
                     @foreach ($projects as $p)
                         <x-nq::select.item :value="$p['id']"><span class="{{ $item }}">{{ $p['name'] }}</span></x-nq::select.item>
@@ -173,11 +174,11 @@
         <dt id="{{ $uid }}-parent" class="text-body-sm text-muted-foreground">{{ $t['parent'] }}</dt>
         <dd class="m-0 min-w-0">
             <x-nq::select :value="$issue['parentId'] ?? '__none__'" x-model="v.parent">
-                <x-nq::select.trigger aria-labelledby="{{ $uid }}-parent" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value /></x-nq::select.trigger>
+                <x-nq::select.trigger aria-labelledby="{{ $uid }}-parent" x-bind:disabled="locked" class="{{ $trigger }}"><x-nq::select.value icon /></x-nq::select.trigger>
                 <x-nq::select.content>
                     <x-nq::select.item value="__none__"><span class="{{ $item }}">{{ $t['noParent'] }}</span></x-nq::select.item>
                     @foreach ($parents as $p)
-                        <x-nq::select.item :value="$p['id']"><span class="{{ $item }}"><x-nq::issue-view.status-dot :hue="$statusOf[$p['statusId']]['hue'] ?? null" />{{ $p['key'].' '.$p['title'] }}</span></x-nq::select.item>
+                        <x-nq::select.item :value="$p['id']"><span class="{{ $item }}"><span data-select-icon class="contents"><x-nq::issue-view.status-dot :hue="$statusOf[$p['statusId']]['hue'] ?? null" /></span>{{ $p['key'].' '.$p['title'] }}</span></x-nq::select.item>
                     @endforeach
                 </x-nq::select.content>
             </x-nq::select>

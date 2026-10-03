@@ -8,21 +8,42 @@
 // Facets match a row when ANY chosen value is among the row's values (a row's `key` field is a string or an array of strings).
 // Bubbling events: `nq-entity-list-row-click` { row }, `nq-entity-list-action` { action, row }, `nq-entity-list-selection` { ids },
 // `nq-entity-list-view` { view }. Not ported here: in-cell editing and the column picker of the DataTable.
+//
+// Cells are the DataTable's: a column `type` (text | number | date | datetime | currency | status | tag | boolean | mono | meter | avatar | link) with its
+// options, `template`, `secondary`, `href` and so on (see cell-display.ts), or a named Blade slot per column (`cell_<id>`) rendered in the row's scope.
+// Row actions: `actions` ([{ id, group?, visibleWhen?, disabledWhen? }]) and `actionsKey` work as in the DataTable: an action shows only on the rows it applies to.
 
+import { cellHelpers, type CellColumn } from "./cell-display";
 import type { Magics, Register } from "./types";
+
+type Condition = { field?: string; in?: unknown[]; notIn?: unknown[]; eq?: unknown; ne?: unknown; empty?: boolean; any?: Condition[]; all?: Condition[] };
+interface Action {
+  id: string;
+  group?: string | null;
+  visibleWhen?: Condition;
+  disabledWhen?: Condition;
+}
 
 type Row = Record<string, unknown>;
 interface Option {
   value: string;
   label: string;
 }
-interface Column {
+interface Column extends CellColumn {
   id: string;
   key?: string;
   header?: string;
+  /** A row field holding the value the column sorts by, when the cell shows something else. */
+  sortKey?: string;
+  /** A row field holding the text the column searches, when the cell shows HTML or something else. */
+  searchKey?: string;
   sortable?: boolean;
   searchable?: boolean;
   align?: "start" | "center" | "end";
+  /** A column the View menu can hide (opt-in). */
+  hideable?: boolean;
+  /** Hidden to start with (the View menu shows it again). */
+  hidden?: boolean;
 }
 interface Facet {
   id: string;
@@ -38,6 +59,8 @@ interface Options {
   pageSize?: number;
   selectable?: boolean;
   facets?: Facet[];
+  actions?: Action[];
+  actionsKey?: string;
   locale?: string;
   labels?: Record<string, string>;
 }
@@ -50,8 +73,11 @@ const fold = (s: unknown) =>
 
 export const entityList: Register = (Alpine) => {
   Alpine.data("nqEntityList", (rows: Row[] = [], columns: Column[] = [], options: Options = {}) => ({
+    ...cellHelpers,
     rows,
     columns,
+    actions: (options.actions ?? []).map((a) => ({ ...a })),
+    actionsKey: options.actionsKey ?? "",
     facets: options.facets ?? [],
     key: options.key ?? "id",
     nameKey: options.nameKey ?? options.key ?? "id",
@@ -60,6 +86,11 @@ export const entityList: Register = (Alpine) => {
     selectable: options.selectable !== false,
     views: options.views ?? ["table", "cards"],
     view: options.view ?? "table",
+    /** `shown['note']` is false while that column is hidden. A flat map so a checkbox item can x-model it. */
+    shown: Object.fromEntries(columns.map((c) => [c.id, !c.hidden])) as Record<string, boolean>,
+    shownCount(this: State): number {
+      return this.columns.filter((c) => this.shown[c.id] !== false).length;
+    },
     query: "",
     // `facet['tags|vip']` is true while that value is chosen. It is a flat map so a checkbox item can x-model it.
     facet: {} as Record<string, boolean>,
@@ -115,7 +146,7 @@ export const entityList: Register = (Alpine) => {
       const q = fold(self.query.trim());
       const searchable = self.columns.filter((c) => c.searchable);
       return self.rows.filter((row) => {
-        if (q && !searchable.some((c) => fold(row[c.key ?? c.id]).includes(q))) return false;
+        if (q && !searchable.some((c) => fold(row[c.searchKey ?? c.key ?? c.id]).includes(q))) return false;
         return self.facets.every((f) => {
           const chosen = self.facetValues(f.id);
           if (!chosen.length) return true;
@@ -131,7 +162,7 @@ export const entityList: Register = (Alpine) => {
       const s = self.sort;
       if (!s) return list;
       const col = self.columns.find((c) => c.id === s.id);
-      const k = col?.key ?? s.id;
+      const k = col?.sortKey ?? col?.key ?? s.id;
       const collator = new Intl.Collator(self.locale, { numeric: true, sensitivity: "base" });
       return list.sort((a, b) => {
         const av = a[k];
@@ -218,11 +249,46 @@ export const entityList: Register = (Alpine) => {
       this.selection = {};
     },
 
+    // ---- per-row actions ----
+    matches(this: State, row: Row, c: Condition | undefined): boolean {
+      if (!c) return true;
+      if (c.any) return c.any.some((x) => this.matches(row, x));
+      if (c.all) return c.all.every((x) => this.matches(row, x));
+      const v = row[c.field ?? ""];
+      if (c.in) return c.in.map(String).includes(String(v));
+      if (c.notIn) return !c.notIn.map(String).includes(String(v));
+      if (c.eq !== undefined) return String(v) === String(c.eq);
+      if (c.ne !== undefined) return String(v) !== String(c.ne);
+      if (c.empty !== undefined) return (v === null || v === undefined || v === "" || (Array.isArray(v) && v.length === 0)) === c.empty;
+      return true;
+    },
+    /** Whether action `i` shows for this row. */
+    actionOn(this: State, row: Row, i: number): boolean {
+      const a = this.actions[i];
+      if (!a || !row) return false;
+      const allowed = this.actionsKey ? row[this.actionsKey] : undefined;
+      if (Array.isArray(allowed) && !allowed.map(String).includes(a.id)) return false;
+      return this.matches(row, a.visibleWhen);
+    },
+    actionOff(this: State, row: Row, i: number): boolean {
+      const a = this.actions[i];
+      return !!a?.disabledWhen && this.matches(row, a.disabledWhen);
+    },
+    hasActions(this: State, row: Row): boolean {
+      return this.actions.some((_a, i) => this.actionOn(row, i));
+    },
+    /** A separator shows before action `i` when it starts a new group among the visible actions. */
+    sepBefore(this: State, row: Row, i: number): boolean {
+      if (!this.actionOn(row, i)) return false;
+      for (let j = i - 1; j >= 0; j--) if (this.actionOn(row, j)) return (this.actions[j]!.group ?? null) !== (this.actions[i]!.group ?? null);
+      return false;
+    },
+
     // ---- actions and keyboard ----
     act(this: State, action: string, row: Row) {
       this.root?.dispatchEvent(new CustomEvent("nq-entity-list-action", { bubbles: true, detail: { action, row: { ...row } } }));
     },
-    open(this: State, row: Row, event?: Event) {
+    openRow(this: State, row: Row, event?: Event) {
       const hit = (event?.target as HTMLElement | null)?.closest("a,button,input,select,textarea,[role=checkbox],[role=menuitem]");
       if (hit && hit !== event?.currentTarget) return;
       this.root?.dispatchEvent(new CustomEvent("nq-entity-list-row-click", { bubbles: true, detail: { row: { ...row } } }));
@@ -273,7 +339,7 @@ export const entityList: Register = (Alpine) => {
         this.focusCard(move);
       } else if (event.key === "Enter") {
         event.preventDefault();
-        this.open(row);
+        this.openRow(row);
       } else if (event.key === " " && this.selectable) {
         event.preventDefault();
         this.toggleRow(row);
@@ -283,8 +349,13 @@ export const entityList: Register = (Alpine) => {
 };
 
 interface State {
+  actions: Action[];
+  actionsKey: string;
+  matches(row: Row, c: Condition | undefined): boolean;
+  actionOn(row: Row, i: number): boolean;
   rows: Row[];
   columns: Column[];
+  shown: Record<string, boolean>;
   facets: Facet[];
   key: string;
   nameKey: string;
@@ -316,5 +387,5 @@ interface State {
   selectedIds(): string[];
   cards(): HTMLElement[];
   focusCard(index: number): void;
-  open(row: Row, event?: Event): void;
+  openRow(row: Row, event?: Event): void;
 }

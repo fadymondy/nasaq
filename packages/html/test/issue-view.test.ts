@@ -70,6 +70,15 @@ describe("issue-view (Blade example)", () => {
     expect(values[3]!.endsWith("Layla Hassan")).toBe(true);
   });
 
+  it("shows the choice icon in the picker trigger", async () => {
+    const host = await mount();
+    const rows = [...host.querySelectorAll('[data-slot="issue-property"]')];
+    for (const i of [0, 1, 2, 3]) {
+      const v = rows[i]!.querySelector('[data-slot="select-value"]')!;
+      expect(v.querySelector("svg, [data-slot=\"avatar\"], span.rounded-full, [data-slot=\"status-dot\"]"), "icon in row " + i).not.toBeNull();
+    }
+  });
+
   it("saves a changed status through nq-issue-update and keeps it", async () => {
     const host = await mount();
     const got: unknown[] = [];

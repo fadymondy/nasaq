@@ -81,6 +81,8 @@ interface Column {
   options?: Option[];
   currency?: string;
   edit?: "text" | "number" | "date" | "switch" | "select";
+  /** A row condition (as an action's `disabledWhen`): matching rows are not editable, like React's `edit.disabled`. */
+  editDisabledWhen?: Condition;
   hidden?: boolean;
 }
 interface Options {
@@ -696,7 +698,7 @@ export const dataTable: Register = (Alpine) => {
       return cellKey(this.rid(row), col.id);
     },
     editable(this: State, row: Row, col: Column): boolean {
-      return !!col.edit && !(this.cellId(row, col) in this.pending);
+      return !!col.edit && !(this.cellId(row, col) in this.pending) && !(col.editDisabledWhen && this.matches(row, col.editDisabledWhen));
     },
     isEditing(this: State, row: Row, col: Column): boolean {
       return this.editing?.rowId === this.rid(row) && this.editing?.colId === col.id;

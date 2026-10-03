@@ -12,7 +12,7 @@
 //   kill      { reason, wait }                   the kill dialog was confirmed; on success the flag shows as killed
 //   restore   { wait }                           "Restore" on the killed banner; on success the flag is live again
 // State names are prefixed ff* where a child component (slider, switch, rule builder, field) has a state of the same name.
-// The targeting rule builders are static markup: their "serve variant" choices are the variants at render, not live edits.
+// The targeting rule builders follow ffActionTypes() (their "serve variant" choices track variant edits); the server-rendered rule and variant rows (data-ssr) are dropped on init.
 
 import { emptyRule, validateRule, type RuleActionType, type RuleDefinition, type RuleField } from "./rule-builder-logic";
 import type { Magics, Register } from "./types";
@@ -83,7 +83,7 @@ interface State extends Magics {
   alive: boolean;
   root: HTMLElement | null;
   run(id: string, event: string, detail: Record<string, unknown>, success?: boolean): Promise<boolean>;
-  actionTypes(): RuleActionType[];
+  ffActionTypes(): RuleActionType[];
   keyError(i: number): string | null;
   shares(): number[];
   rulesDirty(): boolean;
@@ -120,6 +120,8 @@ export const featureFlagDetail: Register = (Alpine) => {
       root: null as HTMLElement | null,
       init(this: State) {
         this.root = this.$el;
+        // The rules and variant rows are also in the server HTML so the page is whole before Alpine starts; the live lists replace them.
+        this.root.querySelectorAll("[data-ssr]").forEach((el) => el.remove());
         // A switch flipped by the user: tell the host. Our own rollbacks set the value back to the committed one, so they are ignored.
         this.$watch("ffOn", () => {
           for (const id of envs) {
@@ -184,7 +186,7 @@ export const featureFlagDetail: Register = (Alpine) => {
       },
 
       // Targeting
-      actionTypes(this: State): RuleActionType[] {
+      ffActionTypes(this: State): RuleActionType[] {
         return [
           this.ffVariants.length > 0
             ? {
@@ -197,7 +199,7 @@ export const featureFlagDetail: Register = (Alpine) => {
         ];
       },
       rulesValid(this: State): boolean {
-        return this.ffRules.every((r) => validateRule(r, this.cfg.fields, this.actionTypes()).length === 0);
+        return this.ffRules.every((r) => validateRule(r, this.cfg.fields, this.ffActionTypes()).length === 0);
       },
       rulesLocked(this: State): boolean {
         const dirty = this.rulesDirty();

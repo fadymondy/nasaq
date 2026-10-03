@@ -228,21 +228,20 @@
 </svg></button>
                     </span>
                 </template>
-                <div class="relative" x-show="available().length" style="display: none" x-on:click.outside="closeMenu()">
-                    <button type="button" x-on:click="toggleMenu('context')" x-bind:aria-expanded="menu === 'context' ? 'true' : 'false'" aria-label="Add context"
+                <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" x-show="available().length" style="display: none" class="contents"><button type="button" x-bind="trigger" aria-label="Add context"
                         class="inline-flex h-6 items-center gap-1 rounded-full border border-dashed border-border px-2 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
                         <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M5 12h14"/>
   <path d="M12 5v14"/>
 </svg>Add context
                     </button>
-                    <ul x-show="menu === 'context'" style="display: none" role="menu" x-on:keydown.escape.stop="closeMenu()" class="absolute start-0 bottom-full z-50 mb-1 min-w-48 rounded-floating border border-border bg-popover p-1 text-body-sm text-popover-foreground shadow-floating">
-                        <template x-for="o in available()" x-bind:key="o.id">
-                            <li><button type="button" role="menuitem" x-on:click="addContext(o)" class="flex w-full items-center gap-2 rounded-control px-2.5 py-1.5 text-start outline-none hover:bg-nq-hover focus-visible:bg-nq-hover">
-                                <span x-show="o.kind" class="text-muted-foreground" x-text="o.kind"></span><span dir="auto" x-text="o.label"></span></button></li>
-                        </template>
-                    </ul>
-                </div>
+                    <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><template x-for="o in available()" x-bind:key="o.id">
+                            <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addContext(o)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><span x-show="o.kind" class="text-muted-foreground" x-text="o.kind"></span><span dir="auto" x-text="o.label"></span></div>
+                        </template></div>
+</template></div>
             </div>
                         <span aria-live="polite" class="sr-only" x-text="announce()"></span>
             <div data-slot="copilot-composer" x-bind:data-dragging="dragging ? '' : null" x-on:dragover="onDragOver($event)" x-on:dragleave="onDragLeave($event)" x-on:drop="onDrop($event)"
@@ -523,21 +522,20 @@
 </svg></button>
                     </span>
                 </template>
-                <div class="relative" x-show="available().length" style="display: none" x-on:click.outside="closeMenu()">
-                    <button type="button" x-on:click="toggleMenu('context')" x-bind:aria-expanded="menu === 'context' ? 'true' : 'false'" aria-label="Add context"
+                <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" x-show="available().length" style="display: none" class="contents"><button type="button" x-bind="trigger" aria-label="Add context"
                         class="inline-flex h-6 items-center gap-1 rounded-full border border-dashed border-border px-2 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
                         <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M5 12h14"/>
   <path d="M12 5v14"/>
 </svg>Add context
                     </button>
-                    <ul x-show="menu === 'context'" style="display: none" role="menu" x-on:keydown.escape.stop="closeMenu()" class="absolute start-0 bottom-full z-50 mb-1 min-w-48 rounded-floating border border-border bg-popover p-1 text-body-sm text-popover-foreground shadow-floating">
-                        <template x-for="o in available()" x-bind:key="o.id">
-                            <li><button type="button" role="menuitem" x-on:click="addContext(o)" class="flex w-full items-center gap-2 rounded-control px-2.5 py-1.5 text-start outline-none hover:bg-nq-hover focus-visible:bg-nq-hover">
-                                <span x-show="o.kind" class="text-muted-foreground" x-text="o.kind"></span><span dir="auto" x-text="o.label"></span></button></li>
-                        </template>
-                    </ul>
-                </div>
+                    <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><template x-for="o in available()" x-bind:key="o.id">
+                            <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addContext(o)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><span x-show="o.kind" class="text-muted-foreground" x-text="o.kind"></span><span dir="auto" x-text="o.label"></span></div>
+                        </template></div>
+</template></div>
             </div>
                         <span aria-live="polite" class="sr-only" x-text="announce()"></span>
             <div data-slot="copilot-composer" x-bind:data-dragging="dragging ? '' : null" x-on:dragover="onDragOver($event)" x-on:dragleave="onDragLeave($event)" x-on:drop="onDrop($event)"
@@ -827,21 +825,20 @@
 </svg></button>
                     </span>
                 </template>
-                <div class="relative" x-show="available().length" style="display: none" x-on:click.outside="closeMenu()">
-                    <button type="button" x-on:click="toggleMenu('context')" x-bind:aria-expanded="menu === 'context' ? 'true' : 'false'" aria-label="Add context"
+                <div data-slot="dropdown-menu" x-data="nqDropdownMenu(false)" x-modelable="open" x-show="available().length" style="display: none" class="contents"><button type="button" x-bind="trigger" aria-label="Add context"
                         class="inline-flex h-6 items-center gap-1 rounded-full border border-dashed border-border px-2 text-caption text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
                         <svg aria-hidden="true" class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M5 12h14"/>
   <path d="M12 5v14"/>
 </svg>Add context
                     </button>
-                    <ul x-show="menu === 'context'" style="display: none" role="menu" x-on:keydown.escape.stop="closeMenu()" class="absolute start-0 bottom-full z-50 mb-1 min-w-48 rounded-floating border border-border bg-popover p-1 text-body-sm text-popover-foreground shadow-floating">
-                        <template x-for="o in available()" x-bind:key="o.id">
-                            <li><button type="button" role="menuitem" x-on:click="addContext(o)" class="flex w-full items-center gap-2 rounded-control px-2.5 py-1.5 text-start outline-none hover:bg-nq-hover focus-visible:bg-nq-hover">
-                                <span x-show="o.kind" class="text-muted-foreground" x-text="o.kind"></span><span dir="auto" x-text="o.label"></span></button></li>
-                        </template>
-                    </ul>
-                </div>
+                    <template x-teleport="body">
+    <div data-slot="dropdown-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open" x-anchor.bottom-start.offset.4="$refs.trigger"
+        class="z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><template x-for="o in available()" x-bind:key="o.id">
+                            <div data-slot="dropdown-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="addContext(o)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><span x-show="o.kind" class="text-muted-foreground" x-text="o.kind"></span><span dir="auto" x-text="o.label"></span></div>
+                        </template></div>
+</template></div>
             </div>
                         <span aria-live="polite" class="sr-only" x-text="announce()"></span>
             <div data-slot="copilot-composer" x-bind:data-dragging="dragging ? '' : null" x-on:dragover="onDragOver($event)" x-on:dragleave="onDragLeave($event)" x-on:drop="onDrop($event)"

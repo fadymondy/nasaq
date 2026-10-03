@@ -5,6 +5,7 @@
      Rows start A to Z. label: the list's accessible name. labels: override any string, e.g. ['stages' => ['lead' => 'Warm lead']]. view: table | cards. selectable, page-size, row-actions, loading, error, search pass to the list.
      Bubbling events from the list: nq-entity-list-row-click { row }, nq-entity-list-action { action, row }, nq-entity-list-selection { ids }, nq-entity-list-view { view }. row.id is the contact id. --}}
 @props(['contacts' => [], 'label' => null, 'labels' => [], 'view' => 'table', 'selectable' => true, 'pageSize' => 0, 'rowActions' => [], 'loading' => false, 'error' => null, 'search' => true])
+@include('nasaq::components.entity-list._cells')
 @php
     $ar = \Nasaq\Nasaq::rtl();
     $loc = $ar ? 'ar' : 'en';
@@ -44,7 +45,26 @@
 </div>
 BLADE, ['c' => $c, 't' => $t, 'tone' => $tone, 'stage' => $stage, 'tags' => $tags]);
 
+        $cell = nq_el_cells(<<<'BLADE'
+<template data-cell="name"><x-nq::entity-list.identity :avatar-name="$c['name']" :avatar="$c['avatar'] ?? null">
+    {{ $c['name'] }}
+    <x-slot:subtitle><bdi dir="ltr">{{ $c['email'] }}</bdi></x-slot:subtitle>
+</x-nq::entity-list.identity></template>
+<template data-cell="company"><span class="flex min-w-0 flex-col">
+    <span class="truncate">{{ $c['company'] ?? '—' }}</span>
+    @if (! empty($c['jobTitle']))<span class="truncate text-body-sm text-muted-foreground">{{ $c['jobTitle'] }}</span>@endif
+</span></template>
+<template data-cell="stage">@if ($stage)<x-nq::status :tone="$tone[$stage] ?? 'neutral'">{{ $t['stages'][$stage] ?? $stage }}</x-nq::status>@else—@endif</template>
+<template data-cell="tags"><x-nq::entity-list.tag-list :tags="$tags" /></template>
+<template data-cell="owner"><x-nq::entity-list.person-cell :person="$c['owner'] ?? null" /></template>
+<template data-cell="activity"><x-nq::entity-list.activity-cell :value="$c['lastActivity'] ?? null" /></template>
+BLADE, ['c' => $c, 't' => $t, 'tone' => $tone, 'stage' => $stage, 'tags' => $tags]);
+
         return [
+            'nameCell' => $cell['name'], 'companyCell' => $cell['company'], 'stageCell' => $cell['stage'], 'tagsCell' => $cell['tags'], 'ownerCell' => $cell['owner'], 'activityCell' => $cell['activity'],
+            'searchText' => trim(($c['name'] ?? '').' '.($c['email'] ?? '').' '.($c['phone'] ?? '').' '.($c['company'] ?? '').' '.($c['jobTitle'] ?? '')),
+            'stageRank' => $stage ? array_search($stage, array_keys($tone)) : null,
+            'activityTs' => ! empty($c['lastActivity']) ? \Carbon\Carbon::parse($c['lastActivity'])->getTimestamp() : 0,
             'id' => (string) $c['id'], 'name' => $c['name'], 'email' => $c['email'], 'company' => $c['company'] ?? '—', 'stage' => $stage ?? '', 'stageLabel' => $stage ? ($t['stages'][$stage] ?? $stage) : '—',
             'tagsText' => implode(', ', array_map(fn ($x) => $x['label'], $tags)) ?: '—', 'tags' => array_map(fn ($x) => $x['label'], $tags), 'owner' => $c['owner']['name'] ?? '—',
             'lastActivityText' => ! empty($c['lastActivity']) ? \Carbon\Carbon::parse($c['lastActivity'])->locale($loc)->diffForHumans() : '—', 'card' => $card,
@@ -57,13 +77,12 @@ BLADE, ['c' => $c, 't' => $t, 'tone' => $tone, 'stage' => $stage, 'tags' => $tag
         ['id' => 'owner', 'title' => $t['owner'], 'key' => 'owner', 'options' => $options(collect($rows)->pluck('owner'))],
     ], fn ($f) => $f['options']));
     $columns = [
-        ['id' => 'name', 'header' => $t['name'], 'sortable' => true, 'searchable' => true],
-        ['id' => 'email', 'header' => $t['email'], 'searchable' => true],
-        ['id' => 'company', 'header' => $t['company'], 'sortable' => true, 'searchable' => true],
-        ['id' => 'stage', 'key' => 'stageLabel', 'header' => $t['stage'], 'sortable' => true],
-        ['id' => 'tags', 'key' => 'tagsText', 'header' => $t['tags']],
-        ['id' => 'owner', 'header' => $t['owner'], 'sortable' => true],
-        ['id' => 'lastActivity', 'key' => 'lastActivityText', 'header' => $t['lastActivity'], 'align' => 'end'],
+        ['id' => 'name', 'type' => 'html', 'key' => 'nameCell', 'sortKey' => 'name', 'searchKey' => 'searchText', 'header' => $t['name'], 'sortable' => true, 'searchable' => true],
+        ['id' => 'company', 'type' => 'html', 'key' => 'companyCell', 'sortKey' => 'company', 'header' => $t['company'], 'sortable' => true],
+        ['id' => 'stage', 'type' => 'html', 'key' => 'stageCell', 'sortKey' => 'stageRank', 'header' => $t['stage'], 'sortable' => true],
+        ['id' => 'tags', 'type' => 'html', 'key' => 'tagsCell', 'header' => $t['tags']],
+        ['id' => 'owner', 'type' => 'html', 'key' => 'ownerCell', 'sortKey' => 'owner', 'header' => $t['owner'], 'sortable' => true],
+        ['id' => 'lastActivity', 'type' => 'html', 'key' => 'activityCell', 'sortKey' => 'activityTs', 'header' => $t['lastActivity'], 'align' => 'end', 'sortable' => true],
     ];
 @endphp
 <div data-slot="{{ $attributes->get('data-slot', 'contact-list') }}" {{ $attributes->except('data-slot')->cn('min-w-0') }}>

@@ -39,6 +39,35 @@ async function mount() {
 }
 
 describe("store-cart (Blade example)", () => {
+  it("server-renders the lines, count and totals before Alpine starts, then takes over without duplicates", () => {
+    const host = document.createElement("div");
+    host.innerHTML = rendered("store-cart");
+    // Before Alpine walks the tree (it does in a microtask): the page itself already reads like a cart.
+    const page = host.querySelector<HTMLElement>('[data-slot="store-cart-page"]')!;
+    const ssr = [...page.querySelectorAll<HTMLElement>("[data-ssr]")];
+    expect(ssr).toHaveLength(2);
+    const first = ssr[0]!.textContent!.replace(/s+/g, " ");
+    expect(first).toContain("Everyday cotton tee");
+    expect(first).toContain("Black / M");
+    expect(first).toContain("$58");
+    expect(first).toContain("$29");
+    expect(first).toContain("Only 3 left");
+    expect(page.querySelector("h1")!.textContent).toContain("3 items");
+    expect(page.querySelector('[data-slot="store-cart-summary"]')!.textContent).toContain("$82");
+    expect(page.querySelector('[data-slot="store-cart-summary"]')!.textContent).toContain("You are saving $20");
+    expect(page.querySelector('[data-slot="store-free-shipping"]')!.textContent).toContain("$68 away from free shipping");
+    // the shown parts are not hidden in the server render
+    for (const sel of ['ul[role="list"]', "aside", '[data-slot="store-free-shipping"]']) expect((page.querySelector(sel) as HTMLElement).style.display).not.toBe("none");
+    expect((page.querySelector('[data-slot="store-cart-summary"] button') as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it("drops the server rows once Alpine starts, leaving one row per line", async () => {
+    const { page, lines } = await mount();
+    expect(page.querySelectorAll("[data-ssr]")).toHaveLength(0);
+    expect(lines()).toHaveLength(2);
+    expect(page.querySelector("h1")!.textContent).toContain("3 items");
+  });
+
   it("draws the lines, totals and the money in USD", async () => {
     const { lines, text, page } = await mount();
     expect(lines()).toHaveLength(2);

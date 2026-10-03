@@ -58,15 +58,15 @@
             <div class="flex flex-wrap gap-2">
                 <div class="flex flex-wrap gap-2" x-show="statusOf('{{ $id }}') === 'unresolved'" @if ($i['status'] !== 'unresolved') style="display: none" @endif>
                     <x-nq::button variant="primary" x-bind:disabled="busy !== null" x-bind:aria-busy="busy === 'resolved' ? 'true' : null" x-on:click="changeStatus('{{ $id }}', 'resolved')">
-                        <x-lucide-check-check aria-hidden="true" />{{ $t['resolve'] }}
+                        <x-nq::spinner x-show="busy === 'resolved'" style="display: none" /><x-lucide-check-check aria-hidden="true" x-show="busy !== 'resolved'" />{{ $t['resolve'] }}
                     </x-nq::button>
                     <x-nq::button variant="secondary" x-bind:disabled="busy !== null" x-bind:aria-busy="busy === 'ignored' ? 'true' : null" x-on:click="changeStatus('{{ $id }}', 'ignored')">
-                        <x-lucide-eye-off aria-hidden="true" />{{ $t['ignore'] }}
+                        <x-nq::spinner x-show="busy === 'ignored'" style="display: none" /><x-lucide-eye-off aria-hidden="true" x-show="busy !== 'ignored'" />{{ $t['ignore'] }}
                     </x-nq::button>
                 </div>
                 <div class="flex flex-wrap gap-2" x-show="statusOf('{{ $id }}') !== 'unresolved'" @if ($i['status'] === 'unresolved') style="display: none" @endif>
                     <x-nq::button variant="secondary" x-bind:disabled="busy !== null" x-bind:aria-busy="busy === 'unresolved' ? 'true' : null" x-on:click="changeStatus('{{ $id }}', 'unresolved')">
-                        <x-lucide-rotate-ccw aria-hidden="true" />{{ $t['reopen'] }}
+                        <x-nq::spinner x-show="busy === 'unresolved'" style="display: none" /><x-lucide-rotate-ccw aria-hidden="true" x-show="busy !== 'unresolved'" />{{ $t['reopen'] }}
                     </x-nq::button>
                 </div>
             </div>

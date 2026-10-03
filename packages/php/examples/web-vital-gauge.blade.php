@@ -3,3 +3,9 @@
     <x-nq::web-vital-gauge metric="INP" :value="182" />
     <x-nq::web-vital-gauge metric="CLS" :value="0.08" />
 </x-nq::web-vital-gauge.grid>
+
+<x-nq::web-vital-gauge.grid selectable selected="LCP">
+    <x-nq::web-vital-gauge selectable metric="LCP" :value="2900" />
+    <x-nq::web-vital-gauge selectable metric="INP" :value="182" />
+    <x-nq::web-vital-gauge selectable metric="CLS" :value="0.08" />
+</x-nq::web-vital-gauge.grid>

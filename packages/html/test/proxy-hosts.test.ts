@@ -76,11 +76,26 @@ describe("proxy host helpers", () => {
 describe("proxy-hosts (Blade example)", () => {
   it("lists hosts, upstream, status and the enabled switches", async () => {
     const root = await mount();
-    expect(ids(root)).toEqual(["h1", "h2", "h3"]);
+    expect(ids(root)).toEqual(["h1", "h2", "h3", "h4"]);
     expect(text(root)).toContain("app.example.com");
     expect(text(root)).toContain("http://10.0.0.5:3000");
     expect(text(root)).toContain("Add proxy host");
     expect(root.querySelectorAll('[data-slot="data-table"] [role="switch"], table [role="switch"]').length).toBeGreaterThanOrEqual(3);
+  });
+
+  it('folds domains past the first two into a +N more popover (as React)', async () => {
+    const root = await mount();
+    const more = root.querySelectorAll<HTMLElement>('[data-slot="domain-chips-more"]');
+    expect(more).toHaveLength(4);
+    const shop = [...more].find((m) => m.textContent!.includes('+3 more'))!;
+    expect(shop).toBeTruthy();
+    expect(shop.style.display).not.toBe('none');
+    expect(shop.querySelector('[data-slot="popover-trigger"]')!.getAttribute('aria-label')).toBe('Show 3 more domains');
+    expect(more[0]!.style.display).toBe('none');
+    (shop.querySelector('[data-slot="popover-trigger"]') as HTMLElement).click();
+    await tick(80);
+    const hosts = [...document.body.querySelectorAll('[data-slot="popover-content"] [data-slot="domain-chip"]')].map((e) => e.textContent!.trim());
+    expect(hosts).toEqual(['cdn.example.com', 'img.example.com', 'static.example.com']);
   });
 
   it("flips the enabled switch through toggle-host and rolls back on an error", async () => {
@@ -152,7 +167,7 @@ describe("proxy-hosts (Blade example)", () => {
     document.querySelector<HTMLElement>('[data-slot="alert-dialog-action"]')!.click();
     await tick(80);
     expect(seen[0]!.detail).toMatchObject({ id: "h1" });
-    expect(ids(root)).toEqual(["h2", "h3"]);
+    expect(ids(root)).toEqual(["h2", "h3", "h4"]);
   });
 
   it("shows the generic error when the handler rejects", async () => {
@@ -163,6 +178,6 @@ describe("proxy-hosts (Blade example)", () => {
     document.querySelector<HTMLElement>('[data-slot="alert-dialog-action"]')!.click();
     await tick(80);
     expect(data(root).notice).toBe("Something went wrong. Try again.");
-    expect(ids(root)).toHaveLength(3);
+    expect(ids(root)).toHaveLength(4);
   });
 });

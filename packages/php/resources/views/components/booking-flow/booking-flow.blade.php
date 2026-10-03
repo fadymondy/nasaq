@@ -8,7 +8,7 @@
      signed-in: ['name', 'phone', 'email'?] fills the details. allow-online-payment (default true). currency: ISO code, default USD (SAR in Arabic). tax-rate: 0.14 for 14%.
      submit-url: POST (multipart: "booking" JSON plus "files[]"), answering { code?, error? }. Without it the bubbling, cancelable "booking-submit" event
      { submission, done(code?), fail(message?) } carries the booking: call preventDefault(), then done or fail. Without preventDefault the booking confirms at once.
-     Other bubbling events: "step-change" { step } and "reset". There is no calendar: days with a free time are chips above the day's times.
+     Other bubbling events: "step-change" { step } and "reset". The day is picked on <x-nq::calendar> (days with no free time are disabled), the day's times beside it.
      Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['locations' => [], 'services' => [], 'providers' => [], 'slots' => [], 'slotsUrl' => null, 'submitUrl' => null, 'signedIn' => null, 'allowOnlinePayment' => true, 'currency' => null, 'taxRate' => 0, 'locale' => null])
 @php
@@ -40,6 +40,7 @@
     $tile = 'inline-flex min-h-control flex-col items-center justify-center gap-0.5 rounded-control border border-border bg-card px-2 py-1.5 text-label tabular-nums outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:cursor-not-allowed disabled:hover:bg-card';
     $forward = $ar ? 'arrow-left' : 'arrow-right';
     $backward = $ar ? 'arrow-right' : 'arrow-left';
+    $todayKey = now()->format('Y-m-d');
     $hide = fn (string $id) => $id === $first ? null : 'display: none';
 @endphp
 <div data-slot="{{ $attributes->get('data-slot', 'booking-flow') }}" lang="{{ str_replace('_', '-', $locale) }}" x-data="nqBookingFlow({!! \Illuminate\Support\Js::from((object) $options)->toHtml() !!})"
@@ -220,21 +221,24 @@
                         </div>
                         <div x-show="isSlotReady()" style="display: none" class="flex flex-col gap-4">
                             <p x-show="noDays()" style="display: none" class="text-body-sm text-muted-foreground">{{ $T('Nothing is free in the coming weeks.', 'لا يوجد موعد متاح في الأسابيع القادمة.') }}</p>
-                            <div x-show="hasDays()" style="display: none" class="flex flex-col gap-4">
-                                <div role="group" aria-label="{{ $T('Days', 'الأيام') }}" class="flex flex-wrap gap-2">
-                                    <template x-for="d in days()" :key="d">
-                                        <button type="button" data-slot="booking-day" x-bind:data-day="d" x-bind:aria-pressed="String(d === day)" x-bind:data-state="d === day ? 'checked' : 'unchecked'" x-on:click="pickDay(d)"
-                                            x-bind:class="d === day ? 'border-primary bg-nq-selected' : ''" class="{{ $tile }}"><bdi x-text="dayLabel(d)"></bdi></button>
-                                    </template>
-                                </div>
-                                <div role="radiogroup" data-slot="radio-group" x-bind:aria-label="$nq.t('Times on ', 'المواعيد يوم ') + (day ? dayLabel(day) : '')" class="grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-2">
-                                    <template x-for="s in daySlots()" :key="s.start">
-                                        <button type="button" role="radio" data-slot="booking-slot" x-bind:data-start="s.start" x-bind:data-state="s.start === startKey ? 'checked' : s.state" x-bind:data-status="s.state"
-                                            x-bind:aria-checked="String(s.start === startKey)" x-bind:aria-label="slotLabel(s)" x-bind:disabled="s.state !== 'available'" x-on:click="pickSlot(s)"
-                                            x-bind:class="{ 'border-primary bg-nq-selected': s.start === startKey, 'bg-secondary text-muted-foreground': s.state === 'full', 'border-dashed text-muted-foreground': s.state === 'held' }" class="{{ $tile }}">
-                                            <bdi x-bind:class="s.state === 'full' ? 'line-through' : ''" x-text="timeLabel(s.start)"></bdi>
-                                        </button>
-                                    </template>
+                            <div x-show="hasDays()" style="display: none" class="flex flex-col gap-4 sm:flex-row">
+                                <x-nq::calendar x-model="calDay" x-effect="syncDays(cfg)" class="self-start" :min="$todayKey" :locale="$locale" :dir="$ar ? 'rtl' : 'ltr'" />
+                                <div data-slot="booking-slots-times" class="flex min-w-0 flex-1 flex-col gap-3">
+                                    <h3 aria-live="polite" class="text-label font-semibold"><bdi x-text="day ? dayLabel(day) : ''"></bdi></h3>
+                                    <div role="radiogroup" data-slot="radio-group" x-bind:aria-label="$nq.t('Times on ', 'المواعيد يوم ') + (day ? dayLabel(day) : '')" class="grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-2">
+                                        <template x-for="s in daySlots()" :key="s.start">
+                                            <button type="button" role="radio" data-slot="booking-slot" x-bind:data-start="s.start" x-bind:data-state="s.start === startKey ? 'checked' : s.state" x-bind:data-status="s.state"
+                                                x-bind:aria-checked="String(s.start === startKey)" x-bind:aria-label="slotLabel(s)" x-bind:disabled="s.state !== 'available'" x-on:click="pickSlot(s)"
+                                                x-bind:class="{ 'border-primary bg-nq-selected': s.start === startKey, 'bg-secondary text-muted-foreground': s.state === 'full', 'border-dashed text-muted-foreground': s.state === 'held' }" class="{{ $tile }}">
+                                                <bdi x-bind:class="s.state === 'full' ? 'line-through' : ''" x-text="timeLabel(s.start)"></bdi>
+                                            </button>
+                                        </template>
+                                    </div>
+                                    <ul aria-label="{{ $T('Legend', 'دليل الألوان') }}" class="m-0 mt-auto flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-caption text-muted-foreground">
+                                        <li class="inline-flex items-center gap-1.5"><span aria-hidden="true" class="size-3 rounded-[3px] border border-border bg-card"></span>{{ $T('Available', 'متاح') }}</li>
+                                        <li class="inline-flex items-center gap-1.5"><span aria-hidden="true" class="size-3 rounded-[3px] border border-border bg-secondary"></span>{{ $T('Full', 'محجوز') }}</li>
+                                        <li class="inline-flex items-center gap-1.5"><span aria-hidden="true" class="size-3 rounded-[3px] border border-dashed border-border bg-card"></span>{{ $T('Held', 'محجوز مؤقتًا') }}</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

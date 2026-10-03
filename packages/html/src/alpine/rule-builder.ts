@@ -56,6 +56,8 @@ interface Config {
   events: RuleEvent[];
   fields: RuleField[];
   actionTypes: RuleActionType[];
+  /** An Alpine expression, read in the surrounding scope, that returns the action types: the builder follows it when it changes (a host whose choices are edited live). */
+  actionTypesFrom?: string | null;
   value?: RuleDefinition | null;
   maxDepth?: number;
   disabled?: boolean;
@@ -125,6 +127,7 @@ export const ruleBuilder: Register = (Alpine) => {
 
     init(this: State) {
       this.rememberTypes();
+      if (config.actionTypesFrom) this.$watch<RuleActionType[]>(config.actionTypesFrom, (next) => (this.actionTypes = next ?? []));
       this.$watch("rule", () => (this.evInvalid = !this.rule.event));
       this.$watch("rule", () => {
         // A changed action type starts from that type's defaults, like the React builder's select handler.

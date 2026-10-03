@@ -6,7 +6,10 @@
        save           detail.settings { title, slug, domain?, services }; resolve, or resolve { error } shown above the form. After success the staged copy becomes the saved one.
        post-incident  detail.input { title, body, impact: minor | major | maintenance, status: investigating | identified | monitoring | resolved, serviceIds }; resolve, or resolve { error } shown in the dialog.
      A rejected promise, or nobody listening, shows a generic error. labels: array overriding the built-in words.
-     Differences from the React component: the incident list is rendered once and does not change with the events. Needs the Alpine runtime (@nasaqScripts). --}}
+     The incident list is live, like React's controlled incidents prop: the server-rendered list is the first paint; the root is x-modelable on the incidents
+     array (x-model="incidents" / wire:model) and the list re-renders in Alpine whenever it differs from the one given here. Times may be DateTime, ISO strings or
+     unix seconds in incidents; in the model they are ISO strings. A post-incident handler can resolve { incident } (added to the top) or { incidents } (replaces the list)
+     instead of updating the model itself. Editing or resolving an incident is the host replacing it in the array, as in React. Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['settings', 'incidents' => [], 'publicUrl' => null, 'postIncident' => false, 'labels' => []])
 @php
     $t = \Nasaq\Nasaq::class;
@@ -48,12 +51,26 @@
     $impact = ['minor' => $t::t('Minor', 'طفيف'), 'major' => $t::t('Major', 'كبير'), 'maintenance' => $t::t('Maintenance', 'صيانة')];
     $statuses = ['investigating' => $t::t('Investigating', 'قيد التحقق'), 'identified' => $t::t('Identified', 'تم تحديد السبب'), 'monitoring' => $t::t('Monitoring', 'تحت المراقبة'), 'resolved' => $t::t('Resolved', 'تم الحل')];
     $services = collect($settings['services'] ?? [])->map(fn ($s) => ['id' => (string) $s['id'], 'name' => $s['name'], 'visible' => (bool) ($s['visible'] ?? true)])->values()->all();
+    $iso = function ($v) {
+        $c = $v instanceof \DateTimeInterface ? \Carbon\Carbon::instance($v) : (is_numeric($v) ? \Carbon\Carbon::createFromTimestamp($v) : \Carbon\Carbon::parse($v));
+
+        return $c->toIso8601String();
+    };
+    $liveIncidents = collect($incidents)->map(fn ($i) => [
+        'id' => (string) $i['id'], 'title' => $i['title'], 'status' => $i['status'], 'impact' => $i['impact'],
+        'startedAt' => $iso($i['startedAt']), 'resolvedAt' => ! empty($i['resolvedAt']) ? $iso($i['resolvedAt']) : null,
+        'services' => array_values($i['services'] ?? []),
+        'updates' => collect($i['updates'] ?? [])->map(fn ($u) => ['at' => $iso($u['at']), 'status' => $u['status'], 'body' => $u['body']])->all(),
+    ])->values()->all();
     $config = [
+        'incidents' => $liveIncidents,
+        'locale' => app()->getLocale(),
         'settings' => ['title' => $settings['title'] ?? '', 'slug' => $settings['slug'] ?? '', 'domain' => $settings['domain'] ?? '', 'services' => $services],
-        'labels' => ['genericError' => $w['genericError'], 'show' => $w['show'], 'up' => $w['up'], 'down' => $w['down']],
+        'labels' => ['genericError' => $w['genericError'], 'show' => $w['show'], 'up' => $w['up'], 'down' => $w['down'], 'impact' => $impact, 'statuses' => $statuses,
+            'units' => ['d' => $t::t('d', 'ي'), 'h' => $t::t('h', 'س'), 'm' => $t::t('min', 'د')]],
     ];
 @endphp
-<div data-slot="{{ $attributes->get('data-slot', 'status-page-manager') }}" x-data="nqStatusPageManager(@js($config))"
+<div data-slot="{{ $attributes->get('data-slot', 'status-page-manager') }}" x-data="nqStatusPageManager(@js($config))" x-modelable="incidents"
     {{ $attributes->except('data-slot')->cn('flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground w-full') }}>
     <x-nq::card.header>
         <div class="flex flex-wrap items-center justify-between gap-2">
@@ -128,11 +145,34 @@
         </div>
 
         @if (count($incidents))
-            <section aria-labelledby="spm-incidents" class="grid gap-3">
+            <section aria-labelledby="spm-incidents" class="grid gap-3" x-show="! live">
                 <h4 id="spm-incidents" class="text-label text-foreground">{{ $w['incidents'] }}</h4>
                 <x-nq::uptime-monitors.incident-list :incidents="$incidents" />
             </section>
         @endif
+        {{-- The live list: the same markup as uptime-monitors.incident-list, drawn from the incidents array once it changes. --}}
+        <section aria-labelledby="spm-incidents-live" class="grid gap-3" x-show="live && incidents.length > 0" style="display: none">
+            <h4 id="spm-incidents-live" class="text-label text-foreground">{{ $w['incidents'] }}</h4>
+            <ul data-slot="incident-list" class="grid gap-3">
+                <template x-for="i in sortedIncidents" x-bind:key="i.id">
+                    <li data-slot="incident" x-bind:data-status="i.status" class="grid gap-2 rounded-control border border-border bg-card p-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h4 class="min-w-0 flex-1 text-label text-foreground" dir="auto" x-text="i.title"></h4>
+                            <span data-slot="badge" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3" x-bind:class="impactBadge(i.impact)" x-text="impactLabel(i.impact)"></span>
+                            <span data-slot="badge" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3" x-bind:class="statusBadge(i.status)" x-text="statusLabel(i.status)"></span>
+                        </div>
+                        <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-body-sm text-muted-foreground">
+                            <span>{{ $t::t('Started', 'بدأت') }} <time data-slot="date-time" dir="auto" class="tabular-nums [unicode-bidi:isolate]" x-bind:datetime="iso(i.startedAt)" x-bind:title="iso(i.startedAt)" x-text="ago(i.startedAt)"></time></span>
+                            <template x-if="i.resolvedAt"><span>{{ $t::t('Lasted', 'استمرت') }} <span x-text="lasted(i)"></span></span></template>
+                            <template x-if="i.services && i.services.length"><span dir="auto" x-text="i.services.join(', ')"></span></template>
+                        </p>
+                        <template x-if="i.updates && i.updates.length">
+                            <x-nq::timeline aria-label="{{ $t::t('Updates', 'التحديثات') }}" class="mt-1" items-expr="updatesOf(i)" />
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </section>
     </x-nq::card.content>
 
     @if ($postIncident)

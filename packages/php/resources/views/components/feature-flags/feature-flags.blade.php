@@ -8,7 +8,7 @@
        delete         detail.key and wait(promise); resolve, or resolve { error } shown above the table. After a successful delete the row goes.
        open, create   detail.key (create has none); nothing to wait for
      A rejected promise, or nobody listening, shows a generic error.
-     Differences from the React component: a killed flag's switches are not disabled (the table cannot disable a single row's switch); flipping one resolves with an error that says the flag is killed. The environment cells show only the switch (no On/Off text). Needs the Alpine runtime (@nasaqScripts). --}}
+     A killed flag's switches are disabled, as in React. Without toggle the environment cells read On/Off (neutral when the flag is killed). Needs the Alpine runtime (@nasaqScripts). --}}
 @props(['flags' => [], 'environments' => [], 'toggle' => true, 'open' => true, 'create' => true, 'delete' => true, 'rolloutEnvironment' => null, 'title' => null, 'description' => null, 'pageSize' => 8, 'loading' => false, 'error' => null, 'labels' => [], 'locale' => null])
 @php
     $locale ??= app()->getLocale();
@@ -39,7 +39,7 @@
         ];
         foreach ($envs as $i => $e) {
             $on = ! empty($f['environments'][$e['id']]['enabled']);
-            $row['env_'.$i] = $toggle ? $on : ($on ? 'on' : 'off');
+            $row['env_'.$i] = $toggle ? $on : ($on ? ($row['killed'] ? 'on-killed' : 'on') : 'off');
         }
         if ($rollout) {
             $row['rollout'] = $f['environments'][$rollout['id']]['rollout'] ?? 0;
@@ -50,12 +50,12 @@
     $columns = [['id' => 'flag', 'header' => $L('flag', 'Flag', 'المفتاح'), 'key' => 'search', 'sortable' => true, 'searchable' => true, 'hideable' => false]];
     foreach ($envs as $i => $e) {
         $columns[] = $toggle
-            ? ['id' => 'env_'.$i, 'header' => $e['label'], 'type' => 'boolean', 'edit' => 'switch', 'align' => 'center', 'sortable' => true]
-            : ['id' => 'env_'.$i, 'header' => $e['label'], 'type' => 'status', 'align' => 'center', 'sortable' => true, 'options' => [['value' => 'on', 'label' => $states['on'], 'tone' => 'success'], ['value' => 'off', 'label' => $states['off'], 'tone' => 'neutral']]];
+            ? ['id' => 'env_'.$i, 'header' => $e['label'], 'type' => 'boolean', 'edit' => 'switch', 'editDisabledWhen' => ['field' => 'killed', 'eq' => true], 'align' => 'center', 'sortable' => true]
+            : ['id' => 'env_'.$i, 'header' => $e['label'], 'type' => 'status', 'align' => 'center', 'sortable' => true, 'options' => [['value' => 'on', 'label' => $states['on'], 'tone' => 'success'], ['value' => 'on-killed', 'label' => $states['on'], 'tone' => 'neutral'], ['value' => 'off', 'label' => $states['off'], 'tone' => 'neutral']]];
     }
     if ($rollout) {
         $rolloutHeader = $ar ? 'الإطلاق في '.$rollout['label'] : 'Rollout in '.$rollout['label'];
-        $columns[] = ['id' => 'rollout', 'header' => $labels['rollout'] ?? $rolloutHeader, 'type' => 'meter', 'warnAt' => 2, 'dangerAt' => 2, 'sortable' => true, 'align' => 'end'];
+        $columns[] = ['id' => 'rollout', 'header' => $labels['rollout'] ?? $rolloutHeader, 'type' => 'number', 'sortable' => true, 'align' => 'end'];
         $columns[] = ['id' => 'state', 'header' => $L('state', 'State', 'الحالة'), 'type' => 'status', 'sortable' => true, 'filter' => true,
             'options' => array_map(fn ($s) => ['value' => $s, 'label' => $states[$s], 'tone' => $tones[$s]], ['on', 'partial', 'off', 'killed'])];
     }
@@ -67,7 +67,7 @@
     ]));
     $config = [
         'rows' => $rows, 'envs' => array_column($envs, 'id'),
-        'labels' => ['failed' => $L('failed', 'Could not save this. Try again.', 'تعذّر الحفظ. حاول مرة أخرى.'), 'killed' => $L('killedMessage', 'This flag is killed. Restore it before changing its switches.', 'هذا المفتاح موقوف طارئًا. استعده قبل تغيير مفاتيحه.')],
+        'labels' => ['failed' => $L('failed', 'Could not save this. Try again.', 'تعذّر الحفظ. حاول مرة أخرى.')],
     ];
 @endphp
 {{-- The card classes, copied from card.blade.php, so data-slot can be feature-flag-list. --}}
@@ -97,6 +97,14 @@
                 <span class="flex min-w-0 flex-col">
                     <span dir="auto" class="block max-w-[28ch] truncate text-label text-foreground" x-text="row.name"></span>
                     <bdi dir="ltr" class="block max-w-[28ch] truncate font-mono text-caption text-muted-foreground" x-text="row.key"></bdi>
+                </span>
+            </x-slot>
+            <x-slot name="cell_rollout">
+                <span class="flex items-center justify-end gap-2">
+                    <span aria-hidden="true" class="h-1.5 w-16 overflow-hidden rounded-full bg-muted">
+                        <span class="block h-full rounded-full bg-primary" x-bind:style="'inline-size:' + row.rollout + '%'"></span>
+                    </span>
+                    <span class="w-10 text-end tabular-nums" x-text="nf(row.rollout / 100, { style: 'percent', maximumFractionDigits: 0 })"></span>
                 </span>
             </x-slot>
             <x-slot name="cell_updated">

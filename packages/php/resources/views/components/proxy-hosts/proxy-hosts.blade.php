@@ -8,7 +8,7 @@
        delete-host  { id }                                                  resolve { error? }
        toggle-host  { id, enabled }                                         the switch in the table; an error rolls the switch back and is shown
      After a success the table is updated in the page. A rejected promise, or nobody listening, shows a generic error.
-     Differences from the React component: the domains cell shows up to three domains as chips, then "+N more" as text (no popover), and the WebSockets column reads Yes / No. --}}
+     Differences from the React component: the WebSockets column reads Yes / No. The domains cell shows two chips and a "+N more" button that opens the rest in a popover, as React does (all three when only three). --}}
 @props(['hosts' => [], 'toggle' => true, 'labels' => [], 'label' => null])
 @php
     $t = \Nasaq\Nasaq::class;
@@ -26,7 +26,7 @@
         'save' => $t::t('Save proxy host', 'حفظ مضيف الوكيل'), 'cancel' => $t::t('Cancel', 'إلغاء'),
         'deleteTitle' => $t::t('Delete the proxy host for {name}?', 'حذف مضيف الوكيل لـ {name}؟'),
         'deleteBody' => $t::t('Requests to these domains stop being forwarded. The app itself is not touched.', 'يتوقف تحويل الطلبات إلى هذه النطاقات. لا يتأثر التطبيق نفسه.'),
-        'genericError' => $t::t('Something went wrong. Try again.', 'حدث خطأ ما. حاول مرة أخرى.'), 'more' => $t::t('+{n} more', '+{n} أخرى'),
+        'genericError' => $t::t('Something went wrong. Try again.', 'حدث خطأ ما. حاول مرة أخرى.'), 'more' => $t::t('+{n} more', '+{n} أخرى'), 'moreLabel' => $t::t('Show {n} more domains', 'عرض {n} نطاقات أخرى'),
         'errHosts' => $t::t('Enter valid domain names, like app.example.com.', 'أدخل أسماء نطاقات صحيحة مثل app.example.com.'),
         'errUpstream' => $t::t('Enter an address like http://10.0.0.5:3000.', 'أدخل عنوانًا مثل http://10.0.0.5:3000.'),
         'yes' => $t::t('Yes', 'نعم'), 'no' => $t::t('No', 'لا'),
@@ -47,7 +47,7 @@
         'id' => (string) $h['id'], 'hosts' => array_values((array) $h['hosts']), 'upstream' => (string) $h['upstream'], 'tlsMode' => $h['tlsMode'] ?? 'auto',
         'websockets' => (bool) ($h['websockets'] ?? false), 'enabled' => (bool) ($h['enabled'] ?? true), 'status' => $h['status'] ?? 'unknown',
     ])->values()->all();
-    $config = ['hosts' => $items, 'can' => ['toggle' => (bool) $toggle], 'labels' => ['genericError' => $L['genericError'], 'deleteTitle' => $L['deleteTitle'], 'more' => $L['more']]];
+    $config = ['hosts' => $items, 'can' => ['toggle' => (bool) $toggle], 'labels' => ['genericError' => $L['genericError'], 'deleteTitle' => $L['deleteTitle'], 'more' => $L['more'], 'moreLabel' => $L['moreLabel']]];
     $columns = [
         ['id' => 'hosts', 'key' => 'hostsText', 'header' => $L['hosts'], 'sortable' => true, 'searchable' => true, 'hideable' => false],
         ['id' => 'upstream', 'header' => $L['upstream'], 'type' => 'mono', 'sortable' => true, 'searchable' => true],
@@ -76,7 +76,16 @@
         <x-slot name="cell_hosts">
             <span class="flex flex-wrap items-center gap-1.5">
                 <template x-for="h in row.shown" x-bind:key="h"><span class="inline-flex items-center rounded-control border border-border bg-secondary px-2 py-0.5 text-body-sm text-foreground"><bdi dir="ltr" x-text="h"></bdi></span></template>
-                <span class="text-caption text-muted-foreground" x-show="row.more" style="display: none" x-text="row.more"></span>
+                <span x-show="row.more" style="display: none" data-slot="domain-chips-more">
+                    <x-nq::popover>
+                        <x-nq::popover.trigger variant="secondary" size="sm" x-bind:aria-label="row.moreLabel" class="h-6 rounded-[4px] px-1.5 text-caption"><bdi x-text="row.more"></bdi></x-nq::popover.trigger>
+                        <x-nq::popover.content align="start" class="w-auto min-w-52">
+                            <ul class="grid gap-1.5">
+                                <template x-for="h in row.rest" x-bind:key="h"><li data-slot="domain-chip"><span class="inline-flex items-center rounded-control border border-border bg-secondary px-2 py-0.5 text-body-sm text-foreground"><bdi dir="ltr" class="font-mono" x-text="h"></bdi></span></li></template>
+                            </ul>
+                        </x-nq::popover.content>
+                    </x-nq::popover>
+                </span>
             </span>
         </x-slot>
         <x-slot:empty><x-nq::states.empty icon="network" :title="$L['empty']" class="border-0" /></x-slot:empty>

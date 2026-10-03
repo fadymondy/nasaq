@@ -7,11 +7,17 @@
      app: the application, for the subtitle. slow-ms (default 1000), target-ms, slo (fraction). period: the window in hours (default 6); windows: the toggle's
      options (default 1, 6, 24). The toggle is an x-modelable toggle group in the header: its value is an array holding the hours as a string.
      loading, error (replaces the report), retryable, refreshable, refreshing, updated-at, labels, frame-labels. Events as in analytics-connect.page-frame:
-     nq-refresh, nq-retry, nq-disconnect, nq-connect, nq-select-account, each with detail.wait(promise). Needs the Alpine runtime (@nasaqScripts). --}}
+     nq-refresh, nq-retry, nq-disconnect, nq-connect, nq-select-account, each with detail.wait(promise). Needs the Alpine runtime (@nasaqScripts).
+     Hooks (the React callbacks), all bubbling from the page, all with the full row in detail:
+       nq-period-change { period }      the window toggle changed (onPeriodChange); period is the hours as a number.
+       nq-endpoint-click { id, row }    a slow-endpoint row was clicked (onEndpointClick); add endpoint-click to make the rows clickable.
+       nq-error-click { id, row }       a top error was clicked (onErrorClick); add error-click to make the errors buttons.
+       nq-trace-select { id, row }      a trace was opened (onTraceSelect); id and row are null when the open trace is closed again.
+     e.g. <x-nq::apm-page … endpoint-click error-click x-on:nq-endpoint-click="open($event.detail.row)" x-on:nq-period-change="load($event.detail.period)" /> --}}
 @include('nasaq::components.metric-tiles._logic')
 @include('nasaq::components.apm-panels._logic')
 @props(['service', 'data' => null, 'app' => null, 'slowMs' => 1000, 'targetMs' => null, 'slo' => null, 'period' => 6, 'windows' => [1, 6, 24], 'loading' => false, 'error' => null, 'retryable' => false,
-    'refreshable' => false, 'refreshing' => false, 'updatedAt' => null, 'labels' => [], 'frameLabels' => [], 'locale' => null])
+    'refreshable' => false, 'refreshing' => false, 'endpointClick' => false, 'errorClick' => false, 'updatedAt' => null, 'labels' => [], 'frameLabels' => [], 'locale' => null])
 @php
     $locale ??= app()->getLocale();
     $ar = str_starts_with($locale, 'ar');
@@ -53,16 +59,19 @@
 <x-nq::analytics-connect.page-frame :title="$t['title']" :description="$app ? sprintf($t['description'], $app) : null" :service="$service" :benefits="$t['benefits']" :error="$error"
     :retryable="$retryable" :refreshable="$refreshable" :refreshing="$refreshing" :updated-at="$updatedAt" :labels="$frameLabels" :attributes="$attributes">
     <x-slot:actions>
-        <x-nq::toggle-group :default-value="[(string) $period]" :aria-label="$t['window']" data-slot="period-toggle">
-            @foreach ($windows as $n)
-                <x-nq::toggle-group.toggle :value="(string) $n">{{ $hoursLabel((int) $n) }}</x-nq::toggle-group.toggle>
-            @endforeach
-        </x-nq::toggle-group>
+        <div class="contents" x-data="nqPageToggle({!! \Illuminate\Support\Js::from([(string) $period]) !!}, `nq-period-change`, `period`, true)">
+            <x-nq::toggle-group :default-value="[(string) $period]" :aria-label="$t['window']" data-slot="period-toggle" x-model="choice">
+                @foreach ($windows as $n)
+                    <x-nq::toggle-group.toggle :value="(string) $n">{{ $hoursLabel((int) $n) }}</x-nq::toggle-group.toggle>
+                @endforeach
+            </x-nq::toggle-group>
+        </div>
     </x-slot:actions>
+    <div class="contents" x-data="nqApmPage({!! \Illuminate\Support\Js::from(['endpoints' => $data['endpoints'] ?? [], 'errors' => $data['topErrors'] ?? [], 'traces' => array_map(fn ($tr) => collect($tr)->except('spans')->all(), $data['traces'] ?? [])]) !!})" x-on:nq-select="route($event)">
     <x-nq::metric-tiles :metrics="$tiles" :loading="$busy" :locale="$locale" />
     <div class="grid gap-4 xl:grid-cols-2">
         <x-nq::apm-panels.latency-percentiles :data="$data['latency'] ?? []" :summary="$data['latencySummary'] ?? null" :previous="$data['previousLatencySummary'] ?? null" :target-ms="$targetMs" :loading="$busy" :locale="$locale" />
-        <x-nq::apm-panels.error-rate-panel :data="$data['errors'] ?? []" :previous-rate="$data['previousErrorRate'] ?? null" :slo="$slo" :top-errors="$data['topErrors'] ?? null" :loading="$busy" :locale="$locale" />
+        <x-nq::apm-panels.error-rate-panel :data="$data['errors'] ?? []" :previous-rate="$data['previousErrorRate'] ?? null" :slo="$slo" :top-errors="$data['topErrors'] ?? null" :error-click="$errorClick" :loading="$busy" :locale="$locale" />
     </div>
     <x-nq::time-series-panel :title="$t['throughputTitle']" :description="$t['throughputDescription']" :metrics="$throughputMetrics"
         :data="$data['throughput'] ?? []" :previous-data="$data['previousThroughput'] ?? []" :loading="$busy" :locale="$locale" />
@@ -73,10 +82,11 @@
             <x-nq::tabs.indicator />
         </x-nq::tabs.list>
         <x-nq::tabs.panel value="endpoints">
-            <x-nq::apm-panels.endpoint-table :title="$t['endpointsTitle']" :description="$t['endpointsDescription']" :rows="$data['endpoints'] ?? []" :slow-ms="$slowMs" :loading="$busy" :locale="$locale" />
+            <x-nq::apm-panels.endpoint-table :title="$t['endpointsTitle']" :description="$t['endpointsDescription']" :rows="$data['endpoints'] ?? []" :row-click="$endpointClick" :slow-ms="$slowMs" :loading="$busy" :locale="$locale" />
         </x-nq::tabs.panel>
         <x-nq::tabs.panel value="traces">
             <x-nq::apm-panels.trace-list :title="$t['tracesTitle']" :traces="$data['traces'] ?? []" :slow-ms="$slowMs" :loading="$busy" :locale="$locale" />
         </x-nq::tabs.panel>
     </x-nq::tabs>
+    </div>
 </x-nq::analytics-connect.page-frame>

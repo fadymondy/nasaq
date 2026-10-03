@@ -131,4 +131,51 @@ describe("status-page-manager (Blade example)", () => {
     await tick(60);
     expect(sent!.input).toEqual({ title: "API down", body: "We are looking into it", impact: "minor", status: "investigating", serviceIds: ["api"] });
   });
+
+  it("keeps the server-rendered incidents until the list changes, then draws it live", async () => {
+    const host = await mountHtml(rendered("status-page-manager"));
+    const root = host.querySelector<HTMLElement>('[data-slot="status-page-manager"]')!;
+    const first = root.querySelector<HTMLElement>('section[aria-labelledby="spm-incidents"]')!;
+    const live = root.querySelector<HTMLElement>('section[aria-labelledby="spm-incidents-live"]')!;
+    expect(first.style.display).not.toBe("none");
+    expect(live.style.display).toBe("none");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data = Alpine.$data(root) as any;
+    data.incidents = [
+      ...data.incidents,
+      { id: "i2", title: "Database failover", status: "resolved", impact: "major", startedAt: "2026-09-29T08:00:00Z", resolvedAt: "2026-09-29T08:45:00Z", services: ["Database"], updates: [{ at: "2026-09-29T08:45:00Z", status: "resolved", body: "Back to normal." }] },
+    ];
+    await tick(60);
+    expect(first.style.display).toBe("none");
+    expect(live.style.display).not.toBe("none");
+    const items = [...live.querySelectorAll('[data-slot="incident"]')];
+    expect(items.map((i) => i.querySelector("h4")!.textContent)).toEqual(["Database failover", "Elevated API latency"]);
+    expect(items[0]!.getAttribute("data-status")).toBe("resolved");
+    expect(items[0]!.textContent).toContain("Major");
+    expect(items[0]!.textContent).toContain("Resolved");
+    expect(items[0]!.textContent).toContain("Lasted 45 min");
+    expect(items[0]!.textContent).toContain("Back to normal.");
+    expect(items[1]!.textContent).toContain("A fix is rolled out.");
+  });
+
+  it("adds a posted incident to the list when the host resolves it", async () => {
+    const host = await mountHtml(rendered("status-page-manager"));
+    const root = host.querySelector<HTMLElement>('[data-slot="status-page-manager"]')!;
+    root.addEventListener("post-incident", (e) => {
+      const { input, wait } = (e as CustomEvent).detail;
+      wait(Promise.resolve({ incident: { id: "i9", title: input.title, status: input.status, impact: input.impact, startedAt: "2026-09-29T09:00:00Z", services: [], updates: [{ at: "2026-09-29T09:00:00Z", status: input.status, body: input.body }] } }));
+    });
+    button(root, "Post incident").click();
+    await tick(60);
+    const form = document.querySelector<HTMLFormElement>("form[novalidate]")!;
+    type(form.querySelector<HTMLInputElement>("input")!, "Checkout slow");
+    type(form.querySelector<HTMLTextAreaElement>("textarea")!, "Looking into it");
+    await tick();
+    form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    await tick(80);
+    const live = root.querySelector<HTMLElement>('section[aria-labelledby="spm-incidents-live"]')!;
+    expect(live.style.display).not.toBe("none");
+    expect([...live.querySelectorAll('[data-slot="incident"] h4')].map((h) => h.textContent)).toEqual(["Checkout slow", "Elevated API latency"]);
+    expect(live.textContent).toContain("Investigating");
+  });
 });

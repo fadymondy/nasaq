@@ -80,4 +80,50 @@ describe("entity-list (Blade example)", () => {
     await tick();
     expect(actions).toEqual(["open:a"]);
   });
+
+  describe('cells (as the data-table)', () => {
+    const table = async () => {
+      const host = await mount('entity-list');
+      data(host).setView?.('table');
+      [...host.querySelectorAll<HTMLButtonElement>('[data-slot="toggle"]')][0]!.click();
+      await tick();
+      return host;
+    };
+    const rowCells = (host: HTMLElement, i: number, col: string) => host.querySelectorAll<HTMLElement>('[data-row]')[i]!.querySelector<HTMLElement>('[data-cell-col="' + col + '"]')!;
+
+    it('renders a typed status cell, a cell_<id> slot and an html cell', async () => {
+      const host = await table();
+      expect(rowCells(host, 0, 'state').querySelector('[data-slot="status"]:not([style*="display: none"])')!.textContent!.trim()).toBe('Active');
+      expect(rowCells(host, 0, 'company').querySelector('[data-testid="company-cell"]')!.textContent).toBe('Acme');
+      expect(rowCells(host, 0, 'seen').querySelector('b')!.textContent).toBe('Today');
+    });
+
+    it('sorts an html column by its sortKey', async () => {
+      const host = await table();
+      data(host).setSort('seen', 'desc');
+      await tick();
+      expect([...host.querySelectorAll<HTMLElement>('[data-row]')].map((r) => r.querySelector('[data-testid="company-cell"]')!.textContent)).toEqual(['Acme', 'Initech', 'Globex']);
+    });
+
+    it('starts a hidden column hidden and shows it from the View menu state', async () => {
+      const host = await table();
+      expect(data(host).shownCount()).toBe(5);
+      expect(rowCells(host, 0, 'note').style.display).toBe('none');
+      data(host).shown.note = true;
+      await tick();
+      expect(rowCells(host, 0, 'note').style.display).not.toBe('none');
+      expect(rowCells(host, 0, 'note').textContent).toContain('Renewal in May');
+      expect(host.querySelector('[data-slot="entity-list-columns"]')).not.toBeNull();
+    });
+
+    it('lists a row action only when it applies', async () => {
+      const host = await table();
+      const d = data(host);
+      const idx = (id: string) => d.actions.findIndex((a: { id: string }) => a.id === id);
+      const mona = d.rows.find((r: { id: string }) => r.id === 'a');
+      const omar = d.rows.find((r: { id: string }) => r.id === 'b');
+      expect([d.actionOn(mona, idx('pause')), d.actionOn(mona, idx('resume'))]).toEqual([true, false]);
+      expect([d.actionOn(omar, idx('pause')), d.actionOn(omar, idx('resume'))]).toEqual([false, true]);
+    });
+  });
 });

@@ -1,6 +1,6 @@
 {{-- <x-nq::brain-list :brains="$brains" />
      Zekra-style brains as a table or as cards: status, access, memory and source counts, members and tags, with search, status / access / tag filters, sorting and selection.
-     Built on x-nq::entity-list, so the table cells are text; the card layout has the mark, status, counts, members and tags. Needs the Alpine runtime (@nasaqScripts).
+     Built on x-nq::entity-list: the table cells are React's (mark with name and description, status, access, counts, members, last activity); the card layout has the mark, status, counts, members and tags. Needs the Alpine runtime (@nasaqScripts).
      brains: [['id', 'name', 'description', 'avatar' (emoji or image URL), 'status' => ready | indexing | paused | error, 'visibility' => private | team | public, 'memories', 'sources', 'chats',
      'model', 'members' => [['name', 'avatar']], 'tags' => [['label', 'hue']] (or plain strings), 'lastActive' (a date)]]. Rows start newest activity first.
      label: the list's accessible name. labels: override any string, e.g. ['statuses' => ['ready' => 'Live']]. view: table | cards. selectable, page-size, row-actions, loading, error, search pass to the list.
@@ -86,12 +86,36 @@
 </div>
 BLADE, ['b' => $b, 't' => $t, 'status' => $status, 'vis' => $vis, 'statusView' => $statusView, 'visIcon' => $visIcon, 'compact' => $compact, 'tags' => $tags]);
 
+        $cells = \Illuminate\Support\Facades\Blade::render(<<<'BLADE'
+<template data-cell="name"><span class="flex min-w-0 items-center gap-3">
+    <span aria-hidden="true" class="inline-flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-control border border-border bg-secondary text-body text-foreground">
+        @if (preg_match('/^(http|\/|data:)/', (string) ($b['avatar'] ?? '')))<img src="{{ $b['avatar'] }}" alt="" class="size-full object-cover" />
+        @elseif (! empty($b['avatar'])){{ $b['avatar'] }}
+        @else<x-lucide-brain class="size-4" />@endif
+    </span>
+    <span class="flex min-w-0 flex-col">
+        <span class="truncate text-label text-foreground">{{ $b['name'] }}</span>
+        @if (! empty($b['description']))<span class="truncate text-body-sm text-muted-foreground">{{ $b['description'] }}</span>@endif
+    </span>
+</span></template>
+<template data-cell="status"><x-nq::status :tone="$statusView[$status][0]" :icon="$statusView[$status][1]">{{ $t['statuses'][$status] ?? $status }}</x-nq::status></template>
+<template data-cell="visibility"><span class="inline-flex items-center gap-1.5 text-body-sm"><x-dynamic-component :component="'lucide-'.$visIcon[$vis]" aria-hidden="true" class="size-3.5 text-muted-foreground" />{{ $t['visibilities'][$vis] ?? $vis }}</span></template>
+<template data-cell="members"><x-nq::entity-list.avatar-stack :people="$b['members'] ?? []" /></template>
+<template data-cell="lastActive"><x-nq::entity-list.activity-cell :value="$b['lastActive'] ?? null" /></template>
+BLADE, ['b' => $b, 't' => $t, 'status' => $status, 'vis' => $vis, 'statusView' => $statusView, 'visIcon' => $visIcon]);
+        preg_match_all('/<template data-cell="(\w+)">(.*?)<\/template>/s', $cells, $m, PREG_SET_ORDER);
+        $cell = collect($m)->mapWithKeys(fn ($x) => [$x[1] => trim($x[2])])->all();
+
         return [
             'id' => (string) $b['id'], 'name' => $b['name'], 'status' => $status, 'statusLabel' => $t['statuses'][$status] ?? $status, 'visibility' => $vis,
             'visibilityLabel' => $t['visibilities'][$vis] ?? $vis, 'memories' => $b['memories'] ?? null, 'sources' => $b['sources'] ?? null,
             'memoriesText' => $num($b['memories'] ?? null), 'sourcesText' => $num($b['sources'] ?? null),
             'tags' => array_map(fn ($x) => $x['label'], $tags), 'membersText' => implode(', ', array_map(fn ($m) => $m['name'], (array) ($b['members'] ?? []))) ?: '—',
             'lastActive' => ! empty($b['lastActive']) ? \Carbon\Carbon::parse($b['lastActive'])->locale($loc)->isoFormat('ll') : '—', 'card' => $card,
+            'nameCell' => $cell['name'], 'statusCell' => $cell['status'], 'visibilityCell' => $cell['visibility'], 'membersCell' => $cell['members'], 'activityCell' => $cell['lastActive'],
+            'statusRank' => array_search($status, array_keys($statusView)), 'visibilityRank' => array_search($vis, array_keys($visIcon)),
+            'activityTs' => ! empty($b['lastActive']) ? \Carbon\Carbon::parse($b['lastActive'])->getTimestamp() : 0,
+            'memoriesNum' => $b['memories'] ?? 0, 'sourcesNum' => $b['sources'] ?? 0,
         ];
     })->all();
     $tagOptions = collect($rows)->pluck('tags')->flatten()->unique()->values()->map(fn ($x) => ['value' => $x, 'label' => $x])->all();
@@ -101,13 +125,13 @@ BLADE, ['b' => $b, 't' => $t, 'status' => $status, 'vis' => $vis, 'statusView' =
         ...($tagOptions ? [['id' => 'tags', 'title' => $t['tags'], 'key' => 'tags', 'options' => $tagOptions]] : []),
     ];
     $columns = [
-        ['id' => 'name', 'header' => $t['name'], 'sortable' => true, 'searchable' => true],
-        ['id' => 'status', 'key' => 'statusLabel', 'header' => $t['status'], 'sortable' => true],
-        ['id' => 'visibility', 'key' => 'visibilityLabel', 'header' => $t['visibility'], 'sortable' => true],
-        ['id' => 'memories', 'key' => 'memoriesText', 'header' => $t['memories'], 'align' => 'end'],
-        ['id' => 'sources', 'key' => 'sourcesText', 'header' => $t['sources'], 'align' => 'end'],
-        ['id' => 'members', 'key' => 'membersText', 'header' => $t['members']],
-        ['id' => 'lastActive', 'header' => $t['lastActive'], 'align' => 'end'],
+        ['id' => 'name', 'type' => 'html', 'key' => 'nameCell', 'sortKey' => 'name', 'header' => $t['name'], 'sortable' => true, 'searchable' => true],
+        ['id' => 'status', 'type' => 'html', 'key' => 'statusCell', 'sortKey' => 'statusRank', 'header' => $t['status'], 'sortable' => true],
+        ['id' => 'visibility', 'type' => 'html', 'key' => 'visibilityCell', 'sortKey' => 'visibilityRank', 'header' => $t['visibility'], 'sortable' => true],
+        ['id' => 'memories', 'key' => 'memoriesText', 'sortKey' => 'memoriesNum', 'header' => $t['memories'], 'align' => 'end', 'sortable' => true],
+        ['id' => 'sources', 'key' => 'sourcesText', 'sortKey' => 'sourcesNum', 'header' => $t['sources'], 'align' => 'end', 'sortable' => true],
+        ['id' => 'members', 'type' => 'html', 'key' => 'membersCell', 'header' => $t['members']],
+        ['id' => 'lastActive', 'type' => 'html', 'key' => 'activityCell', 'sortKey' => 'activityTs', 'header' => $t['lastActive'], 'align' => 'end', 'sortable' => true],
     ];
 @endphp
 <div data-slot="{{ $attributes->get('data-slot', 'brain-list') }}" {{ $attributes->except('data-slot')->cn('min-w-0') }}>

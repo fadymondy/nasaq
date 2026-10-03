@@ -51,6 +51,8 @@
         ],
     ])->toHtml();
     $hasHistory = $sessions !== null;
+    $contextIds = array_map(fn ($c) => (string) ($c['id'] ?? ''), array_values($context));
+    $availableCount = count(array_filter(array_values($contextOptions), fn ($o) => ! in_array((string) ($o['id'] ?? ''), $contextIds, true)));
     $iconBtn = 'outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus';
     $chipX = 'grid size-5 shrink-0 place-items-center rounded-full text-muted-foreground '.$iconBtn;
     $copyChatJs = \Illuminate\Support\Js::from($t['copyChat'])->toHtml();
@@ -63,9 +65,9 @@
         <span aria-hidden="true" class="grid size-7 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><x-lucide-sparkles class="size-3.5" /></span>
         <h2 class="min-w-0 flex-1 truncate text-label">{{ $heading }}</h2>
         @if ($hasHistory)
-            <div class="relative" x-on:click.outside="closeMenu()">
-                <x-nq::button type="button" variant="ghost" size="icon-sm" x-on:click="toggleMenu('history')" aria-label="{{ $t['history'] }}" title="{{ $t['history'] }}"><x-lucide-history aria-hidden="true" class="size-4" /></x-nq::button>
-                <div x-show="menu === 'history'" style="display: none" x-on:keydown.escape.stop="closeMenu()" class="absolute end-0 top-full z-50 mt-1 w-72 rounded-floating border border-border bg-popover p-1 text-popover-foreground shadow-floating">
+            <x-nq::popover>
+                <x-nq::popover.trigger variant="ghost" size="icon-sm" aria-label="{{ $t['history'] }}" title="{{ $t['history'] }}"><x-lucide-history aria-hidden="true" class="size-4" /></x-nq::popover.trigger>
+                <x-nq::popover.content align="end" class="w-72 p-1">
                     @if (count($sessions) === 0)
                         <p class="px-3 py-4 text-center text-caption text-muted-foreground">{{ $t['noHistory'] }}</p>
                     @else
@@ -73,7 +75,7 @@
                             @foreach ($sessions as $s)
                                 @php($sid = \Illuminate\Support\Js::from((string) $s['id'])->toHtml())
                                 <li class="group flex items-center gap-1">
-                                    <button type="button" x-on:click="pickSession({!! $sid !!})" @if (($s['id'] ?? null) === $activeSessionId) aria-current="true" @endif
+                                    <button type="button" x-on:click="pickSession({!! $sid !!}); close()" @if (($s['id'] ?? null) === $activeSessionId) aria-current="true" @endif
                                         class="flex min-w-0 flex-1 flex-col rounded-control px-2.5 py-1.5 text-start outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus aria-[current]:bg-nq-selected">
                                         <span dir="auto" class="truncate text-body-sm text-foreground">{{ $s['title'] }}</span>
                                         @if (isset($s['at']))<x-nq::numeric.date-time :value="$s['at']" date-style="medium" time-style="short" class="text-[11px] text-muted-foreground" />@endif
@@ -85,8 +87,8 @@
                             @endforeach
                         </ul>
                     @endif
-                </div>
-            </div>
+                </x-nq::popover.content>
+            </x-nq::popover>
         @endif
         @if ($newChat)
             <x-nq::button type="button" variant="ghost" size="icon-sm" x-on:click="$dispatch('nq-new-chat')" aria-label="{{ $t['newChat'] }}" title="{{ $t['newChat'] }}"><x-lucide-plus aria-hidden="true" class="size-4" /></x-nq::button>
@@ -172,18 +174,19 @@
                         <button type="button" x-bind:aria-label="removeContextLabel(i)" x-on:click="dropContext(i.id)" class="{{ $chipX }}"><x-lucide-x aria-hidden="true" class="size-3" /></button>
                     </span>
                 </template>
-                <div class="relative" x-show="available().length" style="display: none" x-on:click.outside="closeMenu()">
-                    <button type="button" x-on:click="toggleMenu('context')" x-bind:aria-expanded="menu === 'context' ? 'true' : 'false'" aria-label="{{ $t['addContext'] }}"
+                <x-nq::dropdown-menu x-show="available().length" :style="$availableCount ? null : 'display: none'">
+                    <button type="button" x-bind="trigger" aria-label="{{ $t['addContext'] }}"
                         class="inline-flex h-6 items-center gap-1 rounded-full border border-dashed border-border px-2 text-caption text-muted-foreground {{ $iconBtn }}">
                         <x-lucide-plus aria-hidden="true" class="size-3" />{{ $t['addContext'] }}
                     </button>
-                    <ul x-show="menu === 'context'" style="display: none" role="menu" x-on:keydown.escape.stop="closeMenu()" class="absolute start-0 bottom-full z-50 mb-1 min-w-48 rounded-floating border border-border bg-popover p-1 text-body-sm text-popover-foreground shadow-floating">
+                    <x-nq::dropdown-menu.content>
                         <template x-for="o in available()" x-bind:key="o.id">
-                            <li><button type="button" role="menuitem" x-on:click="addContext(o)" class="flex w-full items-center gap-2 rounded-control px-2.5 py-1.5 text-start outline-none hover:bg-nq-hover focus-visible:bg-nq-hover">
-                                <span x-show="o.kind" class="text-muted-foreground" x-text="o.kind"></span><span dir="auto" x-text="o.label"></span></button></li>
+                            <x-nq::dropdown-menu.item x-on:click="addContext(o)">
+                                <span x-show="o.kind" class="text-muted-foreground" x-text="o.kind"></span><span dir="auto" x-text="o.label"></span>
+                            </x-nq::dropdown-menu.item>
                         </template>
-                    </ul>
-                </div>
+                    </x-nq::dropdown-menu.content>
+                </x-nq::dropdown-menu>
             </div>
             @if (count($commands))
                 <div x-show="slashOpen()" style="display: none" data-slot="copilot-commands" class="absolute inset-x-0 bottom-full z-10 mb-2 overflow-hidden rounded-card border border-border bg-popover text-popover-foreground">

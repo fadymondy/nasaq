@@ -2,6 +2,7 @@
      The List tab of x-nq::project-view: a data table of the issues with in-cell editing, facet filters on status and priority, a New issue button and row actions (Open, Copy key, Delete).
      issues: as for x-nq::issue-view (id, key, title, statusId, priority, assigneeId, dueDate, estimateHours). statuses: [['id', 'name', 'hue']]. people: [['id', 'name']].
      editable: cells can be edited. openable: rows open (event). deletable: shows Delete. creatable: shows the New issue button (opens the dialog of the enclosing project-view).
+     In the List the priority shows its flag before the name and the assignee shows an avatar (people: id, name, optional avatar), as in React; the status stays a tag, as in React.
      The edits, row clicks and row actions bubble as the events of x-nq::data-table; x-nq::project-view listens on this part's wrapper and turns them into
      nq-project-update-issue, nq-project-open-issue and nq-project-delete-issue. text: array overriding the words. locale: default the app locale. Needs the Alpine runtime (@nasaqScripts). --}}
 @include('nasaq::components.project-view._logic')
@@ -36,6 +37,22 @@
 @endphp
 <div data-slot="{{ $attributes->get('data-slot', 'project-issue-table') }}" {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-3') }}>
     <x-nq::data-table :label="$t['listLabel']" :columns="$columns" :rows="$rows" :search="$t['search']" :view-options="false" :page-size="25" :row-actions="$actions" :row-click="$openable" :locale="$locale">
+        <x-slot name="cell_priority">
+            <span class="inline-flex items-center gap-1.5">
+                @foreach ($priorities as $pr => $hue)
+                    <span class="contents" x-show="row.priority === '{{ $pr }}'" style="display: none"><x-nq::issue-view.priority-icon :priority="$pr" /></span>
+                @endforeach
+                <span x-text="shownText(row, col('priority'))"></span>
+            </span>
+        </x-slot>
+        <x-slot name="cell_assignee">
+            <span class="inline-flex items-center gap-2">
+                @foreach ($people as $pe)
+                    <span class="contents" x-show="row.assignee === '{{ addslashes((string) $pe['id']) }}'" style="display: none"><x-nq::avatar :name="$pe['name']" :src="$pe['avatar'] ?? null" size="xs" /></span>
+                @endforeach
+                <span x-bind:class="row.assignee === '' ? 'text-muted-foreground' : ''" x-text="shownText(row, col('assignee'))"></span>
+            </span>
+        </x-slot>
         @if ($creatable)
             <x-slot:toolbar><x-nq::button variant="primary" size="sm" class="ms-auto" x-on:click="newOpen = true"><x-lucide-plus aria-hidden="true" />{{ $t['newIssue'] }}</x-nq::button></x-slot:toolbar>
         @endif

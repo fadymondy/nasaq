@@ -5,7 +5,11 @@
         'key' => 'new-checkout', 'name' => 'New checkout', 'description' => 'The single-page checkout.',
         'environments' => ['dev' => ['enabled' => true, 'rollout' => 100], 'prod' => ['enabled' => true, 'rollout' => 25]],
         'variants' => [['key' => 'control', 'weight' => 50], ['key' => 'single-page', 'weight' => 50]],
-        'rules' => [],
+        'rules' => [[
+            'event' => 'evaluate',
+            'conditions' => ['kind' => 'group', 'id' => 'g1', 'join' => 'and', 'children' => [['kind' => 'condition', 'id' => 'c1', 'field' => 'plan', 'op' => 'is', 'value' => 'pro']]],
+            'actions' => [['id' => 'a1', 'type' => 'serve', 'config' => ['variant' => 'single-page']]],
+        ]],
         'updatedAt' => '2026-09-28T10:00:00Z', 'updatedBy' => 'Mona',
     ];
     $audit = [

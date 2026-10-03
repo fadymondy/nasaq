@@ -292,6 +292,34 @@ export const bookingFlow: Register = (Alpine) => {
         const state = s.state === "full" ? this.$nq.t("Full", "محجوز") : s.state === "held" ? this.$nq.t("Held", "محجوز مؤقتًا") : this.$nq.t("Available", "متاح");
         return this.timeLabel(s.start) + (this.$nq.locale.startsWith("ar") ? "، " : ", ") + state;
       },
+      /** The calendar's model: picking a day (never clearing it) selects it. */
+      get calDay(): string | null {
+        return (this as unknown as Self).day;
+      },
+      set calDay(key: string | null) {
+        const self = this as unknown as Self;
+        if (key && key !== self.day) self.pickDay(key);
+      },
+      /** Days the calendar greys out: every one of the next 180 without a free time. */
+      disabledDays(this: Self, from?: string | null) {
+        const open = new Set(this.days());
+        const out: string[] = [];
+        const d = from ? parseDay(from) : new Date();
+        d.setHours(0, 0, 0, 0);
+        for (let i = 0; i < 180; i++) {
+          const key = dayKey(d);
+          if (!open.has(key)) out.push(key);
+          d.setDate(d.getDate() + 1);
+        }
+        return out;
+      },
+      /** Called from the calendar's x-effect: hands it the days without a free time. */
+      syncDays(this: Self, cfg: { disabled: string[]; min: string | null }) {
+        const list = this.disabledDays(cfg.min);
+        void this.$nextTick(() => {
+          cfg.disabled = list;
+        });
+      },
       pickDay(this: Self, key: string) {
         this.day = key;
         this.startKey = null;

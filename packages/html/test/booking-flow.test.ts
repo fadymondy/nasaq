@@ -110,6 +110,30 @@ describe("booking-flow (Blade example)", () => {
     expect(flow(host).getAttribute("data-step")).toBe("time");
     const slots = [...document.querySelectorAll<HTMLButtonElement>('[data-slot="booking-slot"]')].filter(visible);
     expect(slots.length).toBe(5);
+    // The day is picked on the calendar (no day chips): its selected cell is the flow's day, and a day set from outside moves it.
+    expect(document.querySelector('[data-slot="booking-day"]')).toBeNull();
+    const cal = host.querySelector<HTMLElement>('[data-slot="calendar"]')!;
+    expect(visible(cal)).toBe(true);
+    expect(cal.querySelector("[data-selected]")!.getAttribute("data-date")).toBe(data(host).day);
+    const days: string[] = data(host).days();
+    expect(days.length).toBeGreaterThan(1);
+    cal.querySelectorAll<HTMLElement>("[data-date]").forEach((b) => {
+      if (!b.dataset.date || days.includes(b.dataset.date)) return;
+      expect(b.hasAttribute("data-disabled")).toBe(true);
+    });
+    const other = days[1]!;
+    data(host).calDay = other;
+    await tick();
+    expect(data(host).day).toBe(other);
+    expect(cal.querySelector("[data-selected]")!.getAttribute("data-date")).toBe(other);
+    data(host).calDay = null;
+    await tick();
+    expect(data(host).day).toBe(other);
+    data(host).calDay = days[0]!;
+    await tick();
+    const slotsNow = [...document.querySelectorAll<HTMLButtonElement>('[data-slot="booking-slot"]')].filter(visible);
+    slots.length = 0;
+    slots.push(...slotsNow);
     slots[1]!.click();
     await tick();
     expect(slots[1]!.getAttribute("aria-checked")).toBe("true");

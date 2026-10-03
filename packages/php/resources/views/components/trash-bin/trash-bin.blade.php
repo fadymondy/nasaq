@@ -4,7 +4,7 @@
      items: [['id', 'name', 'type' (a types id), 'detail', 'deletedAt', 'deletedBy', 'purgeAt'], ...]. types: [['id', 'label', 'labelAr', 'icon' (a lucide name)]].
      retention-days: days an item stays (default 30; 0 or null keeps items until emptied). now: pins "now" (tests, docs). title: a string, or false to hide the heading.
      can-restore / can-delete / can-empty (all true): hide the matching buttons. loading, error: passed to the list. labels: override any string.
-     Table cells are text here (the entity list's cells are text); the card layout has the icon, badges and dates.
+     Table cells are React's (type icon with name and detail, type badge, relative date, who, time-left badge by urgency); the card layout has the same pieces.
      Bubbling events: "trash-restore" { ids, fail(message) }, "trash-delete" { ids, fail }, "trash-empty" { ids, fail }, "trash-notify" { message }.
      The list updates at once; call fail to put the items back and show the message. Needs the Alpine runtime (@nasaqScripts). --}}
 @props([
@@ -12,6 +12,7 @@
     'loading' => false, 'error' => null, 'labels' => [], 'locale' => null,
 ])
 @include('nasaq::components.trash-bin._logic')
+@include('nasaq::components.entity-list._cells')
 @php
     $locale ??= app()->getLocale();
     $ar = str_starts_with($locale, 'ar');
@@ -32,7 +33,7 @@
             'typeLabel' => $typeLabel($item['type'] ?? null), 'deletedBy' => $item['deletedBy'] ?? '', 'urgency' => $r['urgency'], 'left' => $left,
             'purgeOn' => $r['purgeAt'] ? nq_tb_fill($t['purgeOn'], ['name' => \Carbon\CarbonImmutable::createFromTimestamp($r['purgeAt'])->locale($ar ? 'ar' : 'en')->isoFormat('l')]) : '',
             'deleted' => \Carbon\CarbonImmutable::parse($item['deletedAt'])->locale($ar ? 'ar' : 'en')->diffForHumans($nowDate, \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW),
-            'sortAt' => $r['purgeAt'] ?? PHP_INT_MAX,
+            'sortAt' => $r['purgeAt'] ?? PHP_INT_MAX, 'purgeTs' => $r['purgeAt'] ?? PHP_INT_MAX, 'deletedTs' => \Carbon\CarbonImmutable::parse($item['deletedAt'])->getTimestamp(),
         ];
     })->sortBy('sortAt')->values()->map(fn ($r) => \Illuminate\Support\Arr::except($r, 'sortAt'))->all();
     $strings = \Illuminate\Support\Arr::only($t, [
@@ -47,6 +48,19 @@
         'expired' => $badge.'border-nq-danger/40 bg-nq-danger-soft text-nq-danger-text',
         'kept' => $badge.'border-border text-muted-foreground',
     ];
+    $badge = 'inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 ';
+    $rows = array_map(function ($r) use ($typeById, $badgeClass) {
+        $icon = $typeById->get($r['type'])['icon'] ?? 'file-text';
+        $c = nq_el_cells(<<<'BLADE'
+<template data-cell="name"><span class="flex min-w-0 items-center gap-2.5"><x-dynamic-component :component="'lucide-'.$icon" aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" /><span class="flex min-w-0 flex-col"><bdi dir="auto" class="truncate text-body text-foreground">{{ $r['name'] }}</bdi>@if ($r['detail'])<bdi dir="auto" class="truncate text-caption text-muted-foreground">{{ $r['detail'] }}</bdi>@endif</span></span></template>
+<template data-cell="type"><x-nq::badge variant="outline">{{ $r['typeLabel'] }}</x-nq::badge></template>
+<template data-cell="deleted"><span class="text-body-sm text-muted-foreground">{{ $r['deleted'] }}</span></template>
+<template data-cell="deletedBy">@if ($r['deletedBy'])<bdi dir="auto" class="text-body-sm text-muted-foreground">{{ $r['deletedBy'] }}</bdi>@else<span class="text-muted-foreground">-</span>@endif</template>
+<template data-cell="left"><span data-slot="badge" data-urgency="{{ $r['urgency'] }}" @if ($r['purgeOn']) title="{{ $r['purgeOn'] }}" @endif class="{{ $badgeClass[$r['urgency']] }}">{{ $r['left'] }}</span></template>
+BLADE, ['r' => $r, 'icon' => $icon, 'badgeClass' => $badgeClass]);
+
+        return $r + ['nameCell' => $c['name'], 'typeCell' => $c['type'], 'deletedCell' => $c['deleted'], 'deletedByCell' => $c['deletedBy'], 'leftCell' => $c['left']];
+    }, $rows);
     $heading = $title === null ? $t['title'] : ($title === false ? null : $title);
     $notice = $retentionDays && $retentionDays > 0 ? nq_tb_fill($t['notice'], ['n' => $retentionDays]) : $t['noticeKept'];
     $actions = array_values(array_filter([
@@ -61,11 +75,11 @@
     <x-nq::alert tone="info" icon="trash-2">{{ $notice }}</x-nq::alert>
     <x-nq::alert tone="danger" x-show="failure" x-cloak style="display: none"><span x-text="failure"></span></x-nq::alert>
     <x-nq::entity-list :label="$t['listLabel']" :search="$t['search']" :columns="[
-            ['id' => 'name', 'header' => $t['name'], 'sortable' => true, 'searchable' => true],
-            ['id' => 'type', 'key' => 'typeLabel', 'header' => $t['type'], 'sortable' => true],
-            ['id' => 'deleted', 'header' => $t['deleted']],
-            ['id' => 'deletedBy', 'header' => $t['deletedBy'], 'sortable' => true, 'searchable' => true],
-            ['id' => 'timeLeft', 'key' => 'left', 'header' => $t['timeLeft']],
+            ['id' => 'name', 'type' => 'html', 'key' => 'nameCell', 'sortKey' => 'name', 'searchKey' => 'name', 'header' => $t['name'], 'sortable' => true, 'searchable' => true],
+            ['id' => 'type', 'type' => 'html', 'key' => 'typeCell', 'sortKey' => 'typeLabel', 'header' => $t['type'], 'sortable' => true],
+            ['id' => 'deleted', 'type' => 'html', 'key' => 'deletedCell', 'sortKey' => 'deletedTs', 'header' => $t['deleted'], 'sortable' => true],
+            ['id' => 'deletedBy', 'type' => 'html', 'key' => 'deletedByCell', 'sortKey' => 'deletedBy', 'searchKey' => 'deletedBy', 'header' => $t['deletedBy'], 'sortable' => true, 'searchable' => true],
+            ['id' => 'timeLeft', 'type' => 'html', 'key' => 'leftCell', 'sortKey' => 'purgeTs', 'header' => $t['timeLeft'], 'sortable' => true],
         ]" :rows="$rows" :facets="$facets" :row-actions="$actions" :page-size="20" :loading="$loading" :error="$error" x-model="entries"
         x-on:nq-entity-list-action="onAction($event.detail)">
         <x-slot:toolbar>

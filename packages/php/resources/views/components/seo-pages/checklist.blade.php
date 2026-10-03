@@ -6,7 +6,8 @@
      title: header text. toggle (true): makes the checkboxes live; false makes the list read-only. labels: array overriding the built-in words.
      A change fires toggle-fixed on the root with detail { issue, fixed (the new state), wait(promise) }. The checkbox changes at once; if the promise resolves { error } or rejects (or nobody listens) it goes
      back and an alert shows. On success the card keeps the new state, so the score and the order update by themselves.
-     Differences from the React component: the list is drawn by Alpine, so it is empty until the runtime starts. Needs the Alpine runtime (@nasaqScripts). --}}
+     The rows, the score and the open count are server-rendered for the first paint (plain markup, a native details for "How to fix") and replaced by the live Alpine list when the runtime starts.
+     Needs the Alpine runtime (@nasaqScripts) for toggling. --}}
 @include('nasaq::components.seo-pages._logic')
 @props(['issues' => [], 'url' => null, 'toggle' => true, 'catalog' => [], 'title' => null, 'labels' => [], 'locale' => null])
 @php
@@ -28,6 +29,19 @@
         $kind = $kinds[$i['code']] ?? null;
         $texts[$i['code']] = $kind ? $kind[$ar ? 'ar' : 'en'] : ['title' => $i['code'], 'why' => '', 'fix' => ''];
     }
+    $weights = ['error' => 10, 'warning' => 4, 'info' => 1];
+    $order = ['error' => 0, 'warning' => 1, 'info' => 2];
+    $first = $list;
+    usort($first, fn ($a, $b) => ((int) ! empty($a['fixed'])) <=> ((int) ! empty($b['fixed'])) ?: $order[$a['severity']] <=> $order[$b['severity']] ?: strcmp($a['code'], $b['code']));
+    $openFirst = array_values(array_filter($first, fn ($i) => empty($i['fixed'])));
+    $score0 = max(0, 100 - array_sum(array_map(fn ($i) => $weights[$i['severity']], $openFirst)));
+    $band0 = $score0 >= 90 ? 'good' : ($score0 >= 50 ? 'fair' : 'poor');
+    $count0 = count($openFirst);
+    $desc0 = $count0 === 0 ? $t['descNone'] : ($count0 === 1 ? $t['descOne'] : str_replace('{n}', (string) $count0, $t['descMany']));
+    $text0 = str_replace('{n}', (string) $score0, $t['scoreOf']);
+    $tone0 = ['good' => 'success', 'fair' => 'warning', 'poor' => 'danger'][$band0];
+    $badge0 = ['error' => 'danger', 'warning' => 'warning', 'info' => 'info'];
+    $icon0 = ['error' => 'circle-alert', 'warning' => 'triangle-alert', 'info' => 'info'];
     $config = [
         'issues' => $list,
         'texts' => $texts,
@@ -41,21 +55,22 @@
         <x-nq::card.title as="h3">{{ $title ?? $t['checklistTitle'] }}</x-nq::card.title>
         <x-nq::card.description>
             @if ($url)<bdi dir="ltr" class="block truncate">{{ $url }}</bdi>@endif
-            <span x-text="description"></span>
+            <span x-text="description">{{ $desc0 }}</span>
         </x-nq::card.description>
     </x-nq::card.header>
     <x-nq::card.content class="flex flex-col gap-4">
-        <div class="flex items-center gap-3" x-bind:data-band="band">
-            <span class="text-h3 font-semibold tabular-nums" x-bind:class="band === 'good' ? 'text-nq-success-text' : (band === 'fair' ? 'text-nq-warning-text' : 'text-nq-danger-text')">
-                <bdi data-slot="num" data-numeric class="tabular-nums" x-text="num(score)"></bdi>
+        <div class="flex items-center gap-3" data-band="{{ $band0 }}" x-bind:data-band="band">
+            <span class="text-h3 font-semibold tabular-nums text-nq-{{ $tone0 }}-text" x-bind:class="band === 'good' ? 'text-nq-success-text' : (band === 'fair' ? 'text-nq-warning-text' : 'text-nq-danger-text')">
+                <bdi data-slot="num" data-numeric class="tabular-nums" x-text="num(score)">{{ $score0 }}</bdi>
             </span>
             <div class="flex min-w-0 flex-1 flex-col gap-1">
-                <span class="text-caption text-muted-foreground" x-text="scoreText"></span>
-                <div data-slot="meter" role="meter" aria-valuemin="0" aria-valuemax="100" x-bind:aria-valuenow="score" x-bind:aria-valuetext="num(score)" x-bind:aria-label="scoreText"
-                    x-bind:data-tone="band === 'good' ? 'success' : (band === 'fair' ? 'warning' : 'danger')" class="flex w-full flex-col gap-1.5">
+                <span class="text-caption text-muted-foreground" x-text="scoreText">{{ $text0 }}</span>
+                <div data-slot="meter" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $score0 }}" aria-valuetext="{{ $score0 }}" aria-label="{{ $text0 }}"
+                    x-bind:aria-valuenow="score" x-bind:aria-valuetext="num(score)" x-bind:aria-label="scoreText"
+                    data-tone="{{ $tone0 }}" x-bind:data-tone="band === 'good' ? 'success' : (band === 'fair' ? 'warning' : 'danger')" class="flex w-full flex-col gap-1.5">
                     <div data-slot="meter-track" class="relative block w-full overflow-hidden rounded-full bg-nq-surface-soft h-1">
-                        <div data-slot="meter-indicator" x-bind:style="'inset-inline-start:0;width:' + score + '%'"
-                            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none"
+                        <div data-slot="meter-indicator" style="inset-inline-start:0;width:{{ $score0 }}%" x-bind:style="'inset-inline-start:0;width:' + score + '%'"
+                            class="block h-full rounded-full transition-[width] duration-300 ease-nq motion-reduce:transition-none bg-nq-{{ $tone0 }}"
                             x-bind:class="band === 'good' ? 'bg-nq-success' : (band === 'fair' ? 'bg-nq-warning' : 'bg-nq-danger')"></div>
                     </div>
                 </div>
@@ -63,7 +78,37 @@
         </div>
         <p role="alert" class="text-body-sm text-nq-danger-text" x-show="notice" x-text="notice" style="display: none"></p>
         <x-nq::states.empty icon="list-checks" :title="$t['allFixed']" :description="$t['allFixedBody']" x-show="items.length === 0" style="display: none" />
-        <ul class="flex flex-col divide-y divide-border rounded-card border border-border" x-show="items.length !== 0">
+        @if ($first !== [])
+            {{-- First paint: plain markup, removed once Alpine has drawn the live list below. --}}
+            <ul data-slot="seo-issue-initial" x-ignore class="flex flex-col divide-y divide-border rounded-card border border-border">
+                @foreach ($first as $i)
+                    @php $fx = $texts[$i['code']]; $done = ! empty($i['fixed']); @endphp
+                    <li class="flex flex-col gap-2 p-3">
+                        <div class="flex items-start gap-3">
+                            <x-nq::checkbox class="mt-0.5" :checked="$done" :disabled="! $toggle" aria-label="{{ str_replace('{title}', $fx['title'], $t['markFixed']) }}" />
+                            <div class="flex min-w-0 flex-1 flex-col gap-1">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span dir="auto" class="{{ $done ? 'text-label text-muted-foreground line-through' : 'text-label text-foreground' }}">{{ $fx['title'] }}</span>
+                                    <x-nq::badge :variant="$done ? 'success' : $badge0[$i['severity']]">
+                                        <x-dynamic-component :component="'lucide-'.$icon0[$i['severity']]" aria-hidden="true" />
+                                        <span>{{ $done ? $t['fixed'] : $t[$i['severity']] }}</span>
+                                    </x-nq::badge>
+                                </div>
+                                @if (! empty($i['detail']))<p dir="auto" class="text-body-sm text-muted-foreground">{{ $i['detail'] }}</p>@endif
+                                <details class="text-body-sm">
+                                    <summary class="w-fit cursor-pointer text-caption text-muted-foreground hover:text-foreground">{{ $t['howToFix'] }}</summary>
+                                    <dl class="mt-2 flex flex-col gap-2">
+                                        <div><dt class="text-caption font-medium text-muted-foreground">{{ $t['why'] }}</dt><dd dir="auto" class="text-foreground">{{ $fx['why'] }}</dd></div>
+                                        <div><dt class="text-caption font-medium text-muted-foreground">{{ $t['howToFix'] }}</dt><dd dir="auto" class="text-foreground">{{ $fx['fix'] }}</dd></div>
+                                    </dl>
+                                </details>
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+        <ul class="flex flex-col divide-y divide-border rounded-card border border-border" x-show="items.length !== 0" @if ($first !== []) style="display: none" @endif>
             <template x-for="issue in rows" x-bind:key="issue.id">
                 <li class="flex flex-col gap-2 p-3" x-bind:data-severity="issue.severity" x-bind:data-fixed="issue.fixed ? '' : null">
                     <x-nq::collapsible>

@@ -25,4 +25,4 @@
         ],
     ];
 @endphp
-<x-nq::web-vitals-page :service="$service" :data="$data" site="nasaq.dev" device="mobile" :period="28" refreshable />
+<x-nq::web-vitals-page :service="$service" :data="$data" site="nasaq.dev" device="mobile" :period="28" refreshable page-click />

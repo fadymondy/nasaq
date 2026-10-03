@@ -1,19 +1,19 @@
 {{-- <x-nq::leads-inbox :leads="$leads" :canned="$canned" @lead-status="$event.detail.wait(…)" @lead-convert="…" @lead-reply="…" />
      Inquiries from your forms with where each came from (UTM, referrer, Google click id), a stage pipeline with counts, a detail panel with reply and canned replies, and conversion into a CRM contact.
-     The list is an x-nq::data-table, so every row's actions also open as a context menu. Needs the Alpine runtime (@nasaqScripts).
+     The list is an x-nq::entity-list: a table or a grid of cards (the layout toggle), and every row's actions also open as a context menu. Needs the Alpine runtime (@nasaqScripts).
      leads: [['id', 'name', 'email', 'phone', 'company', 'message', 'budget' => '$12,000', 'status' => new | contacted | qualified | converted | spam, 'receivedAt' => ISO string | epoch ms | DateTime, 'form',
-       'attribution' => ['utmSource', 'utmMedium', 'utmCampaign', 'utmTerm', 'utmContent', 'referrer', 'gclid', 'landingPage'], 'score' => 82 | ['score' => 82, 'max' => 100] (a model's rating, shown as a number and its band),
+       'attribution' => ['utmSource', 'utmMedium', 'utmCampaign', 'utmTerm', 'utmContent', 'referrer', 'gclid', 'landingPage'], 'score' => 82 | ['score' => 82, 'max' => 100, 'dimensions' => [...], 'summary', 'confidence', 'model', 'aiGenerated'] (a model's rating; the badge in the table opens the score explainer, as x-nq::score-explainer.badge),
        'contact' / 'companyRef' / 'deal' => ['id', 'name'] (set once converted)]].
      canned: [['id', 'shortcut', 'title', 'body' => 'Hi {{name}}, …']] for the bolt menu of the reply box ({{name}} is the lead's first name).
      can-status: false hides the stage moves and spam. can-convert: false hides convert. can-reply: false hides the composer. open-id: start with this lead's panel open.
-     label: the list's accessible name. labels: override any string, e.g. ['convert' => 'Create contact']. page-size passes to the table. context-menu: false keeps the browser's menu.
+     label: the list's accessible name. labels: override any string, e.g. ['convert' => 'Create contact']. page-size passes to the list. view: table | cards (the start layout). context-menu is kept for compatibility (the list always has its context menu).
      It is presentational: it fires events on the root with detail { …, wait(promise) }; your handler talks to the server. Resolve, or resolve { error } shown in the panel or dialog.
        lead-status   { id, lead, status }                                       resolve { error? }   (status is never "converted")
        lead-convert  { id, lead, conversion: { contactName, company?, deal? } } resolve { error? }
        lead-reply    { id, lead, message }                                      resolve { error? }
      After a success the lead is updated in the page. A rejected promise, or nobody listening, shows a generic error.
-     Differences from the React component: no cards view (the list is the table), and the score is a number with its band in words, without the explainer popover. --}}
-@props(['leads' => [], 'canned' => [], 'canStatus' => true, 'canConvert' => true, 'canReply' => true, 'openId' => null, 'label' => null, 'labels' => [], 'pageSize' => 0, 'contextMenu' => true])
+     The layout toggle fires nq-entity-list-view { view } on the root. --}}
+@props(['leads' => [], 'canned' => [], 'canStatus' => true, 'canConvert' => true, 'canReply' => true, 'openId' => null, 'label' => null, 'labels' => [], 'pageSize' => 0, 'contextMenu' => true, 'view' => 'table'])
 @include('nasaq::components.score-explainer._logic')
 @php
     $t = \Nasaq\Nasaq::class;
@@ -55,6 +55,19 @@
 
         return $max > 0 ? round($score / $max * 100, 1) : null;
     };
+    $scoreProps = collect($leads)->mapWithKeys(function ($l) {
+        $l = (array) $l;
+        $sc = $l['score'] ?? null;
+        if ($sc === null) {
+            return [];
+        }
+        $sc = is_array($sc) ? $sc : ['score' => $sc];
+
+        return [(string) $l['id'] => [
+            'score' => (float) ($sc['score'] ?? 0), 'max' => (float) ($sc['max'] ?? 100), 'dimensions' => (array) ($sc['dimensions'] ?? []), 'summary' => $sc['summary'] ?? null,
+            'confidence' => $sc['confidence'] ?? null, 'model' => $sc['model'] ?? null, 'aiGenerated' => (bool) ($sc['aiGenerated'] ?? false),
+        ]];
+    })->all();
     $items = collect($leads)->map(function ($l) use ($when, $rating) {
         $l = (array) $l;
         $out = [];
@@ -100,8 +113,7 @@
         ] : []),
     ]));
     $columns = [
-        ['id' => 'lead', 'key' => 'name', 'header' => $L['lead'], 'type' => 'avatar', 'secondary' => 'secondary', 'sortable' => true, 'hideable' => false],
-        ['id' => 'search', 'key' => 'searchText', 'header' => $L['lead'], 'searchable' => true, 'hidden' => true, 'hideable' => false],
+        ['id' => 'lead', 'key' => 'name', 'header' => $L['lead'], 'type' => 'avatar', 'secondary' => 'secondary', 'sortable' => true, 'searchable' => true, 'searchKey' => 'searchText', 'hideable' => false],
         ['id' => 'source', 'key' => 'sourceKind', 'header' => $L['source'], 'sortable' => true],
         ['id' => 'stage', 'key' => 'stage', 'header' => $L['stage'], 'sortable' => true, 'sortKey' => 'stageOrder'],
         ['id' => 'score', 'key' => 'scoreText', 'header' => $L['score'], 'sortable' => true, 'sortKey' => 'scoreN', 'align' => 'end'],
@@ -109,7 +121,7 @@
     ];
     $tabs = ['all' => $L['all']] + $L['statuses'];
 @endphp
-<div data-slot="{{ $attributes->get('data-slot', 'leads-inbox') }}" x-data="nqLeadsInbox(@js($config))" x-on:nq-data-table-action="onAction($event)" x-on:nq-data-table-row-click="onRowClick($event)"
+<div data-slot="{{ $attributes->get('data-slot', 'leads-inbox') }}" x-data="nqLeadsInbox(@js($config))" x-on:nq-entity-list-action="onAction($event)" x-on:nq-entity-list-row-click="onRowClick($event)"
     {{ $attributes->except('data-slot')->cn('flex min-w-0 flex-col gap-3') }}>
     <div role="group" aria-label="{{ $L['pipeline'] }}" class="flex flex-wrap gap-2">
         @foreach ($tabs as $key => $text)
@@ -123,11 +135,36 @@
     </div>
     <template x-if="failure"><x-nq::alert tone="danger" dismissible x-on:nq:dismiss="failure = ''"><span x-text="failure"></span></x-nq::alert></template>
 
-    <x-nq::data-table x-model="view.rows" :label="$label ?? $L['label']" :search="$L['search']" :columns="$columns" :rows="[]" :page-size="$pageSize" :row-actions="$actions" actions-key="actions" row-click :context-menu="$contextMenu">
+    <x-nq::entity-list x-model="lead_rows.rows" :label="$label ?? $L['label']" :search="$L['search']" :columns="$columns" :rows="[]" :page-size="$pageSize" :row-actions="$actions" actions-key="actions" :selectable="false" :view="$view">
         <x-slot name="cell_source">@include('nasaq::components.leads-inbox._source', ['scope' => 'row'])</x-slot>
         <x-slot name="cell_stage">@include('nasaq::components.leads-inbox._status', ['field' => 'row.stage'])</x-slot>
+        <x-slot name="cell_score">
+            <span class="contents" x-show="row.scoreN < 0" style="display: none"><span>—</span></span>
+            @foreach ($scoreProps as $sid => $sp)
+                <span class="contents" x-show="row.id === '{{ addslashes((string) $sid) }}'" style="display: none"><x-nq::score-explainer.badge :score="$sp['score']" :max="$sp['max']" :dimensions="$sp['dimensions']" :summary="$sp['summary']" :confidence="$sp['confidence']" :model="$sp['model']" :ai-generated="$sp['aiGenerated']" :labels="(array) ($labels['score'] ?? [])" /></span>
+            @endforeach
+        </x-slot>
+        <x-slot name="card">
+            <div class="flex min-w-0 flex-col gap-2">
+                <div class="flex items-start justify-between gap-2 pe-(--entity-card-controls)">
+                    <div data-slot="entity-identity" class="flex min-w-0 items-center gap-3">
+                        <span data-slot="avatar" class="relative inline-flex size-8 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-secondary align-middle text-caption font-medium text-secondary-foreground">
+                            <span data-slot="avatar-fallback" aria-hidden="true" class="flex size-full items-center justify-center" x-text="initials(row.name)"></span>
+                        </span>
+                        <div class="flex min-w-0 flex-col">
+                            <span class="truncate text-label text-foreground" x-text="row.name"></span>
+                            <span class="truncate text-body-sm text-muted-foreground" x-show="row.secondary" style="display: none" x-text="row.secondary"></span>
+                        </div>
+                    </div>
+                    @include('nasaq::components.leads-inbox._status', ['field' => 'row.stage'])
+                </div>
+                <span dir="auto" class="line-clamp-2 text-body-sm text-muted-foreground" x-show="row.message" style="display: none" x-text="row.message"></span>
+                <x-nq::entity-list.card-meta :label="$L['source']">@include('nasaq::components.leads-inbox._source', ['scope' => 'row'])</x-nq::entity-list.card-meta>
+                <x-nq::entity-list.card-meta :label="$L['received']"><time class="tabular-nums text-body-sm text-muted-foreground" x-bind:datetime="isoOf(row, col('received'))" x-bind:title="absoluteOf(row, col('received'))" x-text="shownText(row, col('received'))"></time></x-nq::entity-list.card-meta>
+            </div>
+        </x-slot>
         <x-slot:empty><x-nq::states.empty icon="inbox" :title="$L['empty']" :description="$L['emptyHint']" class="border-0" /></x-slot:empty>
-    </x-nq::data-table>
+    </x-nq::entity-list>
 
     @include('nasaq::components.leads-inbox._detail')
     @if ($can['convert'])

@@ -25,6 +25,7 @@ import {
   type StepParam,
   type StepType,
 } from "./step-editor-logic";
+import { dropIndex, keyTarget, shiftFor } from "./repeater";
 import type { Magics, Register } from "./types";
 
 export interface StepEditorOptions {
@@ -62,6 +63,7 @@ interface S extends Magics {
   running: boolean;
   results: TestResult[] | null;
   testError: string;
+  drag: { list: string; from: number; over: number; dy: number; size: number } | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [k: string]: any;
 }
@@ -77,7 +79,10 @@ const walk = (steps: StepNode[], path: number[]): StepNode[] => {
   return list;
 };
 
+const DRAG_DISTANCE = 3;
+
 export const stepEditor: Register = (Alpine) => {
+  let cleanupDrag: (() => void) | null = null;
   Alpine.data("nqStepEditor", (options: StepEditorOptions = {}) => ({
     root: null as unknown as HTMLElement,
     types: options.types ?? [],
@@ -93,8 +98,12 @@ export const stepEditor: Register = (Alpine) => {
     running: false,
     results: null as TestResult[] | null,
     testError: "",
+    drag: null as { list: string; from: number; over: number; dy: number; size: number } | null,
     init(this: S) {
       this.root = this.$el;
+    },
+    destroy() {
+      cleanupDrag?.();
     },
     emitChange(this: S) {
       this.root.dispatchEvent(new CustomEvent("change", { bubbles: true, detail: { steps: JSON.parse(JSON.stringify(this.steps)), params: JSON.parse(JSON.stringify(this.params)) } }));
@@ -183,6 +192,65 @@ export const stepEditor: Register = (Alpine) => {
       e.preventDefault();
       this.move(path, index, to - index);
       this.$nextTick(() => this.root.querySelector<HTMLElement>(`[data-handle="${path.join("-")}:${to}"]`)?.focus());
+    },
+    // Pointer drag on a handle (native pointer events, the maths of the Repeater). `list` is "steps:" + the path, or "params".
+    startDrag(this: S, event: PointerEvent, list: string, index: number) {
+      if (this.disabled || (event.pointerType === "mouse" && event.button !== 0)) return;
+      const row = (event.currentTarget as HTMLElement).closest<HTMLElement>("li");
+      const rows = row?.parentElement ? ([...row.parentElement.children].filter((c) => c.tagName === "LI") as HTMLElement[]) : [];
+      if (rows.length < 2) return;
+      const rects = rows.map((r) => r.getBoundingClientRect());
+      const gap = Math.max(0, (rects[1]?.top ?? 0) - (rects[0]?.bottom ?? 0));
+      const session = { startY: event.clientY, centers: rects.map((r) => r.top + r.height / 2), size: (rects[index]?.height ?? 0) + gap, id: event.pointerId, active: false };
+      const state = this;
+      const onMove = (e: PointerEvent) => {
+        if (e.pointerId !== session.id) return;
+        const dy = e.clientY - session.startY;
+        if (!session.active) {
+          if (Math.abs(dy) < DRAG_DISTANCE) return;
+          session.active = true;
+        }
+        e.preventDefault();
+        state.drag = { list, from: index, over: dropIndex(session.centers, index, dy), dy, size: session.size };
+      };
+      const stop = () => {
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerup", onUp);
+        window.removeEventListener("pointercancel", stop);
+        cleanupDrag = null;
+        state.drag = null;
+      };
+      const onUp = (e: PointerEvent) => {
+        if (e.pointerId !== session.id) return;
+        const result = state.drag;
+        stop();
+        if (result && result.over !== result.from) state.reorder(result.list, result.from, result.over);
+      };
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+      window.addEventListener("pointercancel", stop);
+      cleanupDrag = stop;
+    },
+    reorder(this: S, list: string, from: number, to: number) {
+      if (list === "params") this.moveParam(from, to - from);
+      else this.move(list === "steps:" ? [] : list.slice(6).split("-").map(Number), from, to - from);
+    },
+    isDragging(this: S, list: string, index: number) {
+      return !!this.drag && this.drag.list === list && this.drag.from === index;
+    },
+    dragStyle(this: S, list: string, index: number) {
+      const d = this.drag;
+      if (!d || d.list !== list) return "";
+      if (index === d.from) return `transform:translateY(${d.dy}px);transition:none`;
+      const shift = shiftFor(index, d.from, d.over, d.size);
+      return `${shift ? `transform:translateY(${shift}px);` : ""}transition:transform 200ms var(--ease-nq, ease)`;
+    },
+    onParamKey(this: S, e: KeyboardEvent, index: number) {
+      const to = keyTarget(e.key, index, this.params.length);
+      if (to === null || to === index) return;
+      e.preventDefault();
+      this.moveParam(index, to - index);
+      this.$nextTick(() => this.root.querySelector<HTMLElement>(`[data-param-handle="${to}"]`)?.focus());
     },
     config(this: S, step: StepNode, name: string) {
       const v = step.config[name];
