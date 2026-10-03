@@ -38,7 +38,7 @@ export const Playground: Story = {
 const APPS = [
   { brand: "mahaam", name: ["Mahaam", "مهام"], en: "Projects, tasks, time and invoices in one place.", ar: "المشاريع والمهام والوقت والفواتير في مكان واحد.", cat: ["Project management", "إدارة المشاريع"], amount: 12, rating: 4.8, count: 2140 },
   { brand: "moharrik", name: ["Moharrik", "محرّك"], en: "Watches what happens around your business, acts on it and talks to your customers.", ar: "يراقب ما يحدث حول أعمالك، ويتصرّف بناءً عليه، ويتحدث إلى عملائك.", cat: ["Automation", "الأتمتة"], amount: 19, rating: 4.7, count: 1380 },
-  { brand: "zekra", name: ["Zekra", "ذكرة"], en: "A memory organ for AI agents: what one session learns, the next one already knows.", ar: "عضو ذاكرة لوكلاء الذكاء الاصطناعي: ما تتعلّمه جلسة تعرفه التالية.", cat: ["AI memory", "ذاكرة الذكاء الاصطناعي"], amount: 9, rating: 4.9, count: 860, isNew: true },
+  { brand: "zekra", name: ["Zekra", "ذكرى"], en: "A memory organ for AI agents: what one session learns, the next one already knows.", ar: "عضو ذاكرة لوكلاء الذكاء الاصطناعي: ما تتعلّمه جلسة تعرفه التالية.", cat: ["AI memory", "ذاكرة الذكاء الاصطناعي"], amount: 9, rating: 4.9, count: 860, isNew: true },
   { brand: "seatfor", name: ["SeatFor", "SeatFor"], en: "Your own booking site and admin panel in minutes. Free until you grow.", ar: "موقع حجز خاص بنشاطك ولوحة إدارة خلال دقائق. مجاناً حتى تكبر.", cat: ["Bookings", "الحجوزات"], amount: 0, rating: 4.6, count: 3920 },
 ] as const;
 

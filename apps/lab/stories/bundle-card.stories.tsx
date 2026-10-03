@@ -30,7 +30,7 @@ export const Localised: Story = {
         {...args}
         title={ar ? "حزمة الوكالات" : "Agency kit"}
         description={ar ? "أدِر مشاريع العملاء، وتذكّر كل قرار، ونسّق وكلاء الذكاء الاصطناعي." : args.description}
-        includes={ar ? "مهام · ذكرة · اوركيسترا" : args.includes}
+        includes={ar ? "مهام · ذكرى · اوركيسترا" : args.includes}
         action={
           <Button size="sm" variant="secondary">
             {ar ? "احصل على الحزمة" : "Get the kit"}

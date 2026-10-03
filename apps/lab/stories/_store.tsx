@@ -137,7 +137,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "zekra",
     brand: "zekra",
-    name: { en: "Zekra", ar: "ذكرة" },
+    name: { en: "Zekra", ar: "ذكرى" },
     category: "ai",
     tagline: {
       en: "A memory organ for AI agents: what one session learns, the next one already knows.",

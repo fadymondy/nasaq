@@ -100,7 +100,7 @@ export function AgencyKitAr() {
       items={[<ProductArtwork key="m" brand="mahaam" markSize={24} />, <ProductArtwork key="z" brand="zekra" markSize={24} />]}
       title="حزمة الوكالات"
       description="أدِر مشاريع العملاء، وتذكّر كل قرار."
-      includes="مهام · ذكرة"
+      includes="مهام · ذكرى"
       price={18}
       compareAt={21}
       action={<Button size="sm" variant="secondary">احصل على الحزمة</Button>}

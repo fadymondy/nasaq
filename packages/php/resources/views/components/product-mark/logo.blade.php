@@ -4,7 +4,7 @@
 @props(['brand' => null, 'size' => 20, 'arabic' => null])
 @php
     $names = [
-        'nasaq' => ['NASAQ', 'نسق'], 'fadymondy' => ['FADY MONDY', null], 'mahaam' => ['MAHAAM', 'مهام'], 'zekra' => ['ZEKRA', 'ذكرة'],
+        'nasaq' => ['NASAQ', 'نسق'], 'fadymondy' => ['FADY MONDY', null], 'mahaam' => ['MAHAAM', 'مهام'], 'zekra' => ['ZEKRA', 'ذكرى'],
         'moharrik' => ['MOHARRIK', 'محرّك'], 'seatfor' => ['SEATFOR', null], 'health-debug' => ['HEALTH DEBUG', 'شفرة التعافي الصحي'],
         'circlexo' => ['CIRCLEXO', 'سيركل إكس أو'], 'hosbah' => ['HOSBAH', 'حوسبة'], 'orchestra' => ['ORCHESTRA', 'اوركيسترا'], 'togo' => ['TOGO', null],
     ];

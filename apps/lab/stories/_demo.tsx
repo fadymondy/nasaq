@@ -113,7 +113,7 @@ export function useProducts(): Product[] {
   return useMemo(
     () => [
       { id: "mahaam", brand: "mahaam", name: ar ? "مهام" : "Mahaam", description: "Projects, issues, time", pinned: true, badge: 3 },
-      { id: "zekra", brand: "zekra", name: ar ? "ذكرة" : "Zekra", description: "Memory for AI agents", pinned: true },
+      { id: "zekra", brand: "zekra", name: ar ? "ذكرى" : "Zekra", description: "Memory for AI agents", pinned: true },
       { id: "nasaq", brand: "nasaq", name: ar ? "نسق" : "Nasaq", description: "Design system", pinned: true },
       { id: "moharrik", brand: "moharrik", name: ar ? "محرّك" : "Moharrik", description: "Automation" },
       { id: "circlexo", brand: "circlexo", name: "CircleXO", description: "App store" },
