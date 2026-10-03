@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { resolve } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
@@ -8,6 +8,8 @@ import { catalogue } from "./catalogue-plugin";
 
 // Served publicly through win-tunnel at nasaq-ui.fadymondy.com.
 // An absolute path: packages/native sits outside apps/lab, so the bare name does not resolve from there in a build.
+// TypeScript 7 has no ts.sys, so @vue/compiler-sfc needs an fs to read prop types imported from .ts files.
+const VUE_SCRIPT_FS = { fileExists: existsSync, readFile: (f: string) => (existsSync(f) ? readFileSync(f, "utf8") : undefined), realpath: realpathSync };
 const RN_WEB = resolve(import.meta.dirname, "../node_modules/react-native-web");
 // Every component Docs page mounts its Vue example live (stack-tabs.tsx); the examples import the published path.
 const NASAQ_VUE = resolve(import.meta.dirname, "../../../packages/vue/src/index.ts");
@@ -108,7 +110,7 @@ const config: StorybookConfig = {
   staticDirs,
   core: { disableTelemetry: true, disableWhatsNewNotifications: true, allowedHosts: HOSTS },
   async viteFinal(cfg) {
-    cfg.plugins = [...(await skipDocgen(cfg.plugins, /[\/]packages[\/]native[\/]/)), vue(), tailwindcss(), lusailFaces(), catalogue(), noEdgeCache()];
+    cfg.plugins = [...(await skipDocgen(cfg.plugins, /[\/]packages[\/]native[\/]/)), vue({ script: { fs: VUE_SCRIPT_FS } }), tailwindcss(), lusailFaces(), catalogue(), noEdgeCache()];
     // Keep Storybook's `hmr.server`: HMR must share the Storybook HTTP server. With it, Vite's client
     // connects to the page's own host, port and protocol, so it works on localhost:6106 and through
     // the tunnel (wss on 443) alike. Replacing `hmr` moved the socket to :24678, which nothing
