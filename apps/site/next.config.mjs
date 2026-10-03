@@ -18,6 +18,7 @@ export default withMDX({
     return [
       { source: "/nasaq/:path*", headers: [{ key: "Cache-Control", value: day }] },
       { source: "/preview/:path*", headers: [{ key: "Cache-Control", value: day }, { key: "X-Robots-Tag", value: "noindex" }] },
+      { source: "/code/:path*", headers: [{ key: "Cache-Control", value: day }, { key: "X-Robots-Tag", value: "noindex" }] },
       { source: "/r/:path*", headers: [{ key: "Cache-Control", value: day }, { key: "Access-Control-Allow-Origin", value: "*" }] },
     ];
   },

@@ -89,15 +89,18 @@ const STACKS = [
   ["blade", "blade", "Blade"],
   ["html", "html", "HTML + Alpine"],
 ];
-const fence = (code) => "`".repeat(Math.max(3, ...[...code.matchAll(/`{3,}/g)].map((m) => m[0].length + 1)));
-const codeTabs = (name) => {
+// Per-stack source goes to public/code/<name>.json, not into the pages: inlined, ~23 MB of highlighted
+// examples made the Next build need more than 14 GiB. The page renders it with ComponentCode.
+const codeDir = join(site, "public/code");
+await rm(codeDir, { recursive: true, force: true });
+await mkdir(codeDir, { recursive: true });
+const code = {};
+const writeCode = async (name) => {
   const entry = examples[name];
-  if (!entry) return [];
-  const tabs = STACKS.filter(([stack]) => entry[stack]).flatMap(([stack, lang, tab]) => {
-    const f = fence(entry[stack]);
-    return [`${f}${lang} tab=${q(tab)}`, entry[stack], f, ""];
-  });
-  return tabs.length ? ["## Code", "", ...tabs] : [];
+  const stacks = entry ? STACKS.filter(([stack]) => entry[stack]) : [];
+  if (!stacks.length) return;
+  code[name] = stacks.map(([stack, lang, label]) => ({ stack, lang, label }));
+  await writeFile(join(codeDir, `${name}.json`), JSON.stringify(Object.fromEntries(stacks.map(([stack]) => [stack, entry[stack]]))));
 };
 
 // Live previews: the rendered HTML of each component on the precompiled stylesheet and the Alpine runtime.
@@ -168,8 +171,9 @@ for (const name of readdirSync(componentsDir).sort()) {
     ? [`Live examples and controls: [${title} in the lab](${LAB}/?path=/docs/${data.story}--docs).`, ""]
     : [];
   const meta = `*${label(category)} · ${data.status ?? "beta"}*`;
-  const md = ["---", `title: ${q(title)}`, `description: ${q(data.summary ?? "")}`, "---", "", meta, "", ...lab, ...install, ...codeTabs(name), text, ""].join("\n");
+  const md = ["---", `title: ${q(title)}`, `description: ${q(data.summary ?? "")}`, "---", "", meta, "", ...lab, ...install, text, ""].join("\n");
   await writeFile(join(out, `${name}.md`), md);
+  await writeCode(name);
   const html = examples[name]?.html;
   if (html) {
     await writeFile(join(pub, "preview", `${name}.html`), `${previewHead(title)}${html}\n</div>\n</body>\n</html>\n`);
@@ -177,6 +181,7 @@ for (const name of readdirSync(componentsDir).sort()) {
   }
 }
 await writeFile(join(site, "lib/previews.generated.json"), JSON.stringify(previews));
+await writeFile(join(site, "lib/code.generated.json"), JSON.stringify(code));
 
 const pages = ["index"];
 // Sidebar groups run alphabetically by their label, like the Lab.
