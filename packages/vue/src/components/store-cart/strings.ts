@@ -1,0 +1,208 @@
+// Strings for the cart parts (English and Arabic, with Arabic plurals), same keys as the React kit.
+import { computed, type ComputedRef } from "vue";
+import { useNasaq } from "../../provider";
+import { minorToMajor } from "../currency-input/currency-input-logic";
+import { formatNumber } from "../numeric";
+
+/** "1 item", "2 items"; Arabic uses the singular, dual and plural forms. */
+const items = {
+  en: (n: string, count: number) => `${n} ${count === 1 ? "item" : "items"}`,
+  ar: (n: string, count: number) => (count === 1 ? "عنصر واحد" : count === 2 ? "عنصران" : count >= 3 && count <= 10 ? `${n} عناصر` : `${n} عنصرًا`),
+};
+
+const en = {
+  cart: "Cart",
+  cartCount: (n: string) => `Cart, ${n}`,
+  items: (n: string, count: number) => items.en(n, count),
+  miniTitle: "Your cart",
+  miniDescription: "Review what you are buying before checkout.",
+  close: "Close cart",
+  viewCart: "View cart",
+  checkout: "Checkout",
+  continueShopping: "Continue shopping",
+  subtotal: "Subtotal",
+  taxNote: "Shipping and taxes are worked out at checkout.",
+  shippingProgress: "Progress to free shipping",
+  awayFromFree: (money: string) => `You are ${money} away from free shipping`,
+  freeUnlocked: "You have free shipping",
+  quantity: "Quantity",
+  decrease: (name: string) => `Decrease quantity of ${name}`,
+  increase: (name: string) => `Increase quantity of ${name}`,
+  quantityOf: (name: string) => `Quantity of ${name}`,
+  maxReached: (max: string) => `Only ${max} available`,
+  remove: "Remove",
+  removeLine: (name: string) => `Remove ${name}`,
+  removedNotice: (name: string) => `${name} was removed`,
+  undo: "Undo",
+  saveForLater: "Save for later",
+  moveToCart: "Move to cart",
+  savedTitle: (n: string) => `Saved for later (${n})`,
+  savedHint: "These are not part of your order until you move them back.",
+  each: "each",
+  lineTotal: "Line total",
+  sku: "SKU",
+  outOfStock: "Out of stock",
+  overStock: (available: string) => `Only ${available} left, lower the quantity`,
+  lowStock: (available: string) => `Only ${available} left`,
+  attentionTitle: "Some items need attention",
+  attentionBody: "Adjust or remove them to continue to checkout.",
+  fixStock: "Adjust quantities",
+  promoTitle: "Promo code",
+  summary: "Order summary",
+  itemsLine: (n: string, count: number) => items.en(n, count),
+  discount: "Promo discount",
+  shipping: "Shipping",
+  shippingLater: "Calculated at checkout",
+  free: "Free",
+  tax: "Tax",
+  total: "Total",
+  saving: (money: string) => `You are saving ${money}`,
+  estimateTitle: "Estimate shipping",
+  city: "City",
+  cityPlaceholder: "Type your city",
+  estimate: "Estimate",
+  noZone: (city: string) => `We do not deliver to ${city} yet.`,
+  zoneFound: (zone: string) => `Delivering to ${zone}`,
+  etaDays: (a: string, b: string, same: boolean) => (same ? `Arrives in ${a} ${a === "1" ? "day" : "days"}` : `Arrives in ${a} to ${b} days`),
+  etaToday: "Ready today or tomorrow",
+  freeOver: (money: string) => `Free over ${money}`,
+  addForFree: (money: string) => `Add ${money} for free shipping`,
+  useShipping: "Shipping estimate",
+  crossSellTitle: "You might also like",
+  crossSellPrev: "Previous products",
+  crossSellNext: "Next products",
+  add: "Add",
+  addNamed: (name: string) => `Add ${name} to cart`,
+  emptyTitle: "Your cart is empty",
+  emptyDescription: "Add something you like and it will wait for you here.",
+  emptyAction: "Start shopping",
+  loading: "Loading your cart",
+  errorTitle: "We could not load your cart",
+  errorDescription: "Check your connection and try again.",
+  retry: "Try again",
+  toastAdded: (name: string) => `${name} added to your cart`,
+  toastView: "View cart",
+  actions: "Actions",
+  viewProduct: "View product",
+  live: {
+    added: (name: string, qty: string) => `${name} added to your cart, quantity ${qty}`,
+    removed: (name: string) => `${name} removed from your cart`,
+    quantity: (name: string, qty: string) => `${name}, quantity ${qty}`,
+    clamped: (name: string, qty: string) => `${name}, only ${qty} available, quantity set to ${qty}`,
+    saved: (name: string) => `${name} saved for later`,
+    moved: (name: string) => `${name} moved back to your cart`,
+    restored: (name: string) => `${name} is back in your cart`,
+    promoApplied: (code: string) => `Promo code ${code} applied`,
+    promoRemoved: (code: string) => `Promo code ${code} removed`,
+  },
+};
+
+export type StoreCartStrings = typeof en;
+
+const ar: StoreCartStrings = {
+  cart: "السلة",
+  cartCount: (n) => `السلة، ${n}`,
+  items: (n, count) => items.ar(n, count),
+  miniTitle: "سلتك",
+  miniDescription: "راجع مشترياتك قبل إتمام الطلب.",
+  close: "إغلاق السلة",
+  viewCart: "عرض السلة",
+  checkout: "إتمام الشراء",
+  continueShopping: "متابعة التسوق",
+  subtotal: "المجموع الفرعي",
+  taxNote: "يُحتسب الشحن والضرائب عند إتمام الشراء.",
+  shippingProgress: "التقدم نحو الشحن المجاني",
+  awayFromFree: (money) => `يفصلك ${money} عن الشحن المجاني`,
+  freeUnlocked: "حصلت على الشحن المجاني",
+  quantity: "الكمية",
+  decrease: (name) => `تقليل كمية ${name}`,
+  increase: (name) => `زيادة كمية ${name}`,
+  quantityOf: (name) => `كمية ${name}`,
+  maxReached: (max) => `المتاح ${max} فقط`,
+  remove: "إزالة",
+  removeLine: (name) => `إزالة ${name}`,
+  removedNotice: (name) => `تمت إزالة ${name}`,
+  undo: "تراجع",
+  saveForLater: "احفظ لوقت لاحق",
+  moveToCart: "انقل إلى السلة",
+  savedTitle: (n) => `محفوظ لوقت لاحق (${n})`,
+  savedHint: "هذه المنتجات ليست ضمن طلبك حتى تعيدها إلى السلة.",
+  each: "للقطعة",
+  lineTotal: "إجمالي البند",
+  sku: "رمز المنتج",
+  outOfStock: "غير متوفر",
+  overStock: (available) => `المتبقي ${available} فقط، قلّل الكمية`,
+  lowStock: (available) => `المتبقي ${available} فقط`,
+  attentionTitle: "بعض المنتجات تحتاج إلى انتباهك",
+  attentionBody: "عدّل الكميات أو أزل هذه المنتجات لتتمكن من إتمام الشراء.",
+  fixStock: "ضبط الكميات",
+  promoTitle: "رمز الخصم",
+  summary: "ملخص الطلب",
+  itemsLine: (n, count) => items.ar(n, count),
+  discount: "خصم الرمز",
+  shipping: "الشحن",
+  shippingLater: "يُحتسب عند إتمام الشراء",
+  free: "مجاني",
+  tax: "الضريبة",
+  total: "الإجمالي",
+  saving: (money) => `وفّرت ${money}`,
+  estimateTitle: "تقدير الشحن",
+  city: "المدينة",
+  cityPlaceholder: "اكتب مدينتك",
+  estimate: "احسب",
+  noZone: (city) => `لا نوصّل إلى ${city} حاليًا.`,
+  zoneFound: (zone) => `التوصيل إلى ${zone}`,
+  etaDays: (a, b, same) => (same ? `يصل خلال ${a === "1" ? "يوم واحد" : `${a} أيام`}` : `يصل خلال ${a} إلى ${b} أيام`),
+  etaToday: "جاهز اليوم أو غدًا",
+  freeOver: (money) => `مجاني عند ${money} فأكثر`,
+  addForFree: (money) => `أضف ${money} للحصول على شحن مجاني`,
+  useShipping: "تقدير الشحن",
+  crossSellTitle: "قد يعجبك أيضًا",
+  crossSellPrev: "المنتجات السابقة",
+  crossSellNext: "المنتجات التالية",
+  add: "أضف",
+  addNamed: (name) => `أضف ${name} إلى السلة`,
+  emptyTitle: "سلتك فارغة",
+  emptyDescription: "أضف ما يعجبك وسيبقى هنا في انتظارك.",
+  emptyAction: "ابدأ التسوق",
+  loading: "جارٍ تحميل سلتك",
+  errorTitle: "تعذّر تحميل سلتك",
+  errorDescription: "تحقق من اتصالك بالإنترنت وحاول مرة أخرى.",
+  retry: "حاول مرة أخرى",
+  toastAdded: (name) => `تمت إضافة ${name} إلى سلتك`,
+  toastView: "عرض السلة",
+  actions: "الإجراءات",
+  viewProduct: "عرض المنتج",
+  live: {
+    added: (name, qty) => `تمت إضافة ${name} إلى سلتك، الكمية ${qty}`,
+    removed: (name) => `تمت إزالة ${name} من سلتك`,
+    quantity: (name, qty) => `${name}، الكمية ${qty}`,
+    clamped: (name, qty) => `${name}، المتاح ${qty} فقط، وتم ضبط الكمية على ${qty}`,
+    saved: (name) => `تم حفظ ${name} لوقت لاحق`,
+    moved: (name) => `تمت إعادة ${name} إلى سلتك`,
+    promoApplied: (code) => `تم تطبيق رمز الخصم ${code}`,
+    promoRemoved: (code) => `تمت إزالة رمز الخصم ${code}`,
+    restored: (name) => `عاد ${name} إلى سلتك`,
+  },
+};
+
+export const STORE_CART_STRINGS = { en, ar } as const;
+
+export type StoreCartLabels = Partial<Omit<StoreCartStrings, "live">> & { live?: Partial<StoreCartStrings["live"]> };
+
+/** Strings and number formatting for the cart parts: the Nasaq locale picks en or ar, `labels` overrides any key. */
+export function useStoreCartStrings(labels: () => StoreCartLabels | undefined = () => undefined) {
+  const nq = useNasaq();
+  const t: ComputedRef<StoreCartStrings> = computed(() => {
+    const base = STORE_CART_STRINGS[nq.locale.value.startsWith("ar") ? "ar" : "en"];
+    const l = labels();
+    return { ...base, ...l, live: { ...base.live, ...l?.live } } as StoreCartStrings;
+  });
+  const n = (value: number) => formatNumber(value, nq.locale.value);
+  const money = (minor: number, currency: string) => {
+    const major = minorToMajor(minor, currency);
+    const digits = Number.isInteger(major) ? 0 : 2;
+    return formatNumber(major, nq.locale.value, { style: "currency", currency, minimumFractionDigits: digits, maximumFractionDigits: digits });
+  };
+  return { t, n, money, locale: nq.locale };
+}

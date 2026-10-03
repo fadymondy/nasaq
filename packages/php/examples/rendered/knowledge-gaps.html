@@ -1,0 +1,223 @@
+<section data-slot="knowledge-gaps" aria-label="Knowledge gaps" x-data="nqKnowledgeGaps(JSON.parse('[{\u0022id\u0022:\u0022g1\u0022,\u0022query\u0022:\u0022Do you ship to Jeddah?\u0022,\u0022hits\u0022:14,\u0022firstSeen\u0022:\u00222026-09-01T09:00:00Z\u0022,\u0022lastSeen\u0022:\u00222026-09-28T12:00:00Z\u0022,\u0022status\u0022:\u0022open\u0022},{\u0022id\u0022:\u0022g2\u0022,\u0022query\u0022:\u0022What is the refund window?\u0022,\u0022hits\u0022:6,\u0022firstSeen\u0022:\u00222026-09-10T09:00:00Z\u0022,\u0022lastSeen\u0022:\u00222026-09-25T12:00:00Z\u0022,\u0022status\u0022:\u0022indexed\u0022,\u0022resolution\u0022:\u0022Added to the returns policy.\u0022},{\u0022id\u0022:\u0022g3\u0022,\u0022query\u0022:\u0022asdf test\u0022,\u0022hits\u0022:1,\u0022firstSeen\u0022:\u00222026-09-12T09:00:00Z\u0022,\u0022lastSeen\u0022:\u00222026-09-12T09:30:00Z\u0022,\u0022status\u0022:\u0022dismissed\u0022}]'), JSON.parse('{\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022failed\u0022:\u0022The change could not be saved. Try again.\u0022,\u0022resolved\u0022:{\u0022open\u0022:\u0022Reopened.\u0022,\u0022indexed\u0022:\u0022Marked as indexed.\u0022,\u0022dismissed\u0022:\u0022Dismissed.\u0022}}}'))" x-modelable="gaps"
+    class="flex min-w-0 flex-col gap-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal" aria-label="Filter by status" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+            <button type="button" data-slot="toggle" x-bind:aria-pressed="String(filter === '')" x-bind:data-pressed="filter === '' ? '' : null" x-on:click="setFilter('')" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">All</button>
+                            <button type="button" data-slot="toggle" x-bind:aria-pressed="String(filter === 'open')" x-bind:data-pressed="filter === 'open' ? '' : null" x-on:click="setFilter('open')" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">
+                    Open
+                    <span class="ms-1.5 tabular-nums text-muted-foreground" x-text="count('open')"></span>
+                </button>
+                            <button type="button" data-slot="toggle" x-bind:aria-pressed="String(filter === 'indexed')" x-bind:data-pressed="filter === 'indexed' ? '' : null" x-on:click="setFilter('indexed')" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">
+                    Indexed
+                    <span class="ms-1.5 tabular-nums text-muted-foreground" x-text="count('indexed')"></span>
+                </button>
+                            <button type="button" data-slot="toggle" x-bind:aria-pressed="String(filter === 'dismissed')" x-bind:data-pressed="filter === 'dismissed' ? '' : null" x-on:click="setFilter('dismissed')" class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">
+                    Dismissed
+                    <span class="ms-1.5 tabular-nums text-muted-foreground" x-text="count('dismissed')"></span>
+                </button>
+                    </div>
+        <span class="ms-auto text-caption text-muted-foreground" x-show="gaps.some((g) => g.status === 'open')" x-text="'{n} unanswered'.replace('{n}', count('open'))" style="display: none"></span>
+    </div>
+    <p role="status" aria-live="polite" x-bind:class="failed ? 'text-nq-danger-text' : 'text-muted-foreground'" class="min-h-5 text-body-sm text-muted-foreground" x-text="message"></p>
+            <div data-slot="empty-state" style="display: none;" x-show="gaps.length === 0" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+  <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+  <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+  <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+  <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+  <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+  <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+  <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No unanswered questions</p>
+                    <p class="text-body-sm text-muted-foreground">When the brain cannot answer a question, it shows up here so you can add what is missing.</p>
+            </div>
+    </div>
+        <div data-slot="empty-state" style="display: none;" x-show="gaps.length &gt; 0 &amp;&amp; filter !== &#039;&#039; &amp;&amp; ! shown(filter)" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+  <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+  <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+  <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+  <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+  <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+  <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+  <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">Nothing with this status</p>
+            </div>
+    </div>
+                    <div data-status="open" x-show="shown('open')" class="flex flex-col gap-2" >
+                <h3 class="flex items-center gap-2 text-label text-foreground">
+                    <span data-slot="status" data-tone="warning" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-warning-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" x2="12" y1="8" y2="12"/>
+  <line x1="12" x2="12.01" y1="16" y2="16"/>
+</svg>        <span class="truncate"  title="Open" >Open</span>
+</span>
+                    <span class="text-caption tabular-nums text-muted-foreground" x-text="count('open')"></span>
+                </h3>
+                <ul aria-label="Open" class="flex flex-col divide-y divide-border rounded-card border border-border bg-card">
+                    <template x-for="gap in group('open')" :key="gap.id">
+                        <li class="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+                            <div class="min-w-0 flex-1">
+                                <p dir="auto" x-bind:title="gap.query" class="truncate text-label text-foreground" x-text="gap.query"></p>
+                                <p class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                                    <span class="inline-flex items-center gap-2">
+                                        <span aria-hidden="true" class="block h-1 w-10 overflow-hidden rounded-full bg-nq-surface-soft">
+                                            <span class="block h-full rounded-full bg-nq-accent" x-bind:style="width(gap)"></span>
+                                        </span>
+                                        <span x-text="(gap.hits === 1 ? 'Asked {n} time' : 'Asked {n} times').replace('{n}', num(gap.hits))"></span>
+                                    </span>
+                                    <span>First asked <time data-slot="date-time" dir="auto" class="tabular-nums [unicode-bidi:isolate]" x-bind:datetime="iso(gap.firstSeen)" x-text="date(gap.firstSeen)"></time></span>
+                                    <span>Last asked <time data-slot="date-time" dir="auto" class="tabular-nums [unicode-bidi:isolate]" x-bind:datetime="iso(gap.lastSeen)" x-bind:title="date(gap.lastSeen)" x-text="relative(gap.lastSeen)"></time></span>
+                                </p>
+                                <p x-show="gap.resolution" dir="auto" class="mt-1 text-body-sm italic text-muted-foreground" x-text="'“' + gap.resolution + '”'" style="display: none"></p>
+                            </div>
+                                                            <div class="flex shrink-0 flex-wrap gap-1.5">
+                                                                            <button type="button" data-slot="button" x-show="can(gap, 'open')" x-bind:aria-busy="busy === gap.id + ':open' ? 'true' : null"
+                                            x-bind:disabled="(busy !== null) ? '' : null" x-bind:data-disabled="(busy !== null) ? '' : null" x-on:click="move(gap, 'open')" style="display: none"
+                                            class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+</svg>                                            Reopen
+                                        </button>
+                                                                            <button type="button" data-slot="button" x-show="can(gap, 'indexed')" x-bind:aria-busy="busy === gap.id + ':indexed' ? 'true' : null"
+                                            x-bind:disabled="(busy !== null) ? '' : null" x-bind:data-disabled="(busy !== null) ? '' : null" x-on:click="move(gap, 'indexed')" style="display: none"
+                                            class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                            Mark as indexed
+                                        </button>
+                                                                            <button type="button" data-slot="button" x-show="can(gap, 'dismissed')" x-bind:aria-busy="busy === gap.id + ':dismissed' ? 'true' : null"
+                                            x-bind:disabled="(busy !== null) ? '' : null" x-bind:data-disabled="(busy !== null) ? '' : null" x-on:click="move(gap, 'dismissed')" style="display: none"
+                                            class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 text-foreground hover:bg-nq-hover">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                                            Dismiss
+                                        </button>
+                                                                    </div>
+                                                    </li>
+                    </template>
+                </ul>
+            </div>
+                    <div data-status="indexed" x-show="shown('indexed')" class="flex flex-col gap-2" >
+                <h3 class="flex items-center gap-2 text-label text-foreground">
+                    <span data-slot="status" data-tone="success" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-nq-success-text" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg>        <span class="truncate"  title="Indexed" >Indexed</span>
+</span>
+                    <span class="text-caption tabular-nums text-muted-foreground" x-text="count('indexed')"></span>
+                </h3>
+                <ul aria-label="Indexed" class="flex flex-col divide-y divide-border rounded-card border border-border bg-card">
+                    <template x-for="gap in group('indexed')" :key="gap.id">
+                        <li class="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+                            <div class="min-w-0 flex-1">
+                                <p dir="auto" x-bind:title="gap.query" class="truncate text-label text-foreground" x-text="gap.query"></p>
+                                <p class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                                    <span class="inline-flex items-center gap-2">
+                                        <span aria-hidden="true" class="block h-1 w-10 overflow-hidden rounded-full bg-nq-surface-soft">
+                                            <span class="block h-full rounded-full bg-nq-accent" x-bind:style="width(gap)"></span>
+                                        </span>
+                                        <span x-text="(gap.hits === 1 ? 'Asked {n} time' : 'Asked {n} times').replace('{n}', num(gap.hits))"></span>
+                                    </span>
+                                    <span>First asked <time data-slot="date-time" dir="auto" class="tabular-nums [unicode-bidi:isolate]" x-bind:datetime="iso(gap.firstSeen)" x-text="date(gap.firstSeen)"></time></span>
+                                    <span>Last asked <time data-slot="date-time" dir="auto" class="tabular-nums [unicode-bidi:isolate]" x-bind:datetime="iso(gap.lastSeen)" x-bind:title="date(gap.lastSeen)" x-text="relative(gap.lastSeen)"></time></span>
+                                </p>
+                                <p x-show="gap.resolution" dir="auto" class="mt-1 text-body-sm italic text-muted-foreground" x-text="'“' + gap.resolution + '”'" style="display: none"></p>
+                            </div>
+                                                            <div class="flex shrink-0 flex-wrap gap-1.5">
+                                                                            <button type="button" data-slot="button" x-show="can(gap, 'open')" x-bind:aria-busy="busy === gap.id + ':open' ? 'true' : null"
+                                            x-bind:disabled="(busy !== null) ? '' : null" x-bind:data-disabled="(busy !== null) ? '' : null" x-on:click="move(gap, 'open')" style="display: none"
+                                            class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+</svg>                                            Reopen
+                                        </button>
+                                                                            <button type="button" data-slot="button" x-show="can(gap, 'indexed')" x-bind:aria-busy="busy === gap.id + ':indexed' ? 'true' : null"
+                                            x-bind:disabled="(busy !== null) ? '' : null" x-bind:data-disabled="(busy !== null) ? '' : null" x-on:click="move(gap, 'indexed')" style="display: none"
+                                            class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                            Mark as indexed
+                                        </button>
+                                                                            <button type="button" data-slot="button" x-show="can(gap, 'dismissed')" x-bind:aria-busy="busy === gap.id + ':dismissed' ? 'true' : null"
+                                            x-bind:disabled="(busy !== null) ? '' : null" x-bind:data-disabled="(busy !== null) ? '' : null" x-on:click="move(gap, 'dismissed')" style="display: none"
+                                            class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 text-foreground hover:bg-nq-hover">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                                            Dismiss
+                                        </button>
+                                                                    </div>
+                                                    </li>
+                    </template>
+                </ul>
+            </div>
+                    <div data-status="dismissed" x-show="shown('dismissed')" class="flex flex-col gap-2" >
+                <h3 class="flex items-center gap-2 text-label text-foreground">
+                    <span data-slot="status" data-tone="neutral" class="inline-flex min-w-0 items-center gap-1.5 text-body-sm text-foreground">
+            <svg aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10"/>
+</svg>        <span class="truncate"  title="Dismissed" >Dismissed</span>
+</span>
+                    <span class="text-caption tabular-nums text-muted-foreground" x-text="count('dismissed')"></span>
+                </h3>
+                <ul aria-label="Dismissed" class="flex flex-col divide-y divide-border rounded-card border border-border bg-card">
+                    <template x-for="gap in group('dismissed')" :key="gap.id">
+                        <li class="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+                            <div class="min-w-0 flex-1">
+                                <p dir="auto" x-bind:title="gap.query" class="truncate text-label text-foreground" x-text="gap.query"></p>
+                                <p class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-caption text-muted-foreground">
+                                    <span class="inline-flex items-center gap-2">
+                                        <span aria-hidden="true" class="block h-1 w-10 overflow-hidden rounded-full bg-nq-surface-soft">
+                                            <span class="block h-full rounded-full bg-nq-accent" x-bind:style="width(gap)"></span>
+                                        </span>
+                                        <span x-text="(gap.hits === 1 ? 'Asked {n} time' : 'Asked {n} times').replace('{n}', num(gap.hits))"></span>
+                                    </span>
+                                    <span>First asked <time data-slot="date-time" dir="auto" class="tabular-nums [unicode-bidi:isolate]" x-bind:datetime="iso(gap.firstSeen)" x-text="date(gap.firstSeen)"></time></span>
+                                    <span>Last asked <time data-slot="date-time" dir="auto" class="tabular-nums [unicode-bidi:isolate]" x-bind:datetime="iso(gap.lastSeen)" x-bind:title="date(gap.lastSeen)" x-text="relative(gap.lastSeen)"></time></span>
+                                </p>
+                                <p x-show="gap.resolution" dir="auto" class="mt-1 text-body-sm italic text-muted-foreground" x-text="'“' + gap.resolution + '”'" style="display: none"></p>
+                            </div>
+                                                            <div class="flex shrink-0 flex-wrap gap-1.5">
+                                                                            <button type="button" data-slot="button" x-show="can(gap, 'open')" x-bind:aria-busy="busy === gap.id + ':open' ? 'true' : null"
+                                            x-bind:disabled="(busy !== null) ? '' : null" x-bind:data-disabled="(busy !== null) ? '' : null" x-on:click="move(gap, 'open')" style="display: none"
+                                            class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+</svg>                                            Reopen
+                                        </button>
+                                                                            <button type="button" data-slot="button" x-show="can(gap, 'indexed')" x-bind:aria-busy="busy === gap.id + ':indexed' ? 'true' : null"
+                                            x-bind:disabled="(busy !== null) ? '' : null" x-bind:data-disabled="(busy !== null) ? '' : null" x-on:click="move(gap, 'indexed')" style="display: none"
+                                            class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 border-border bg-card text-foreground hover:bg-nq-hover">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 6 9 17l-5-5"/>
+</svg>                                            Mark as indexed
+                                        </button>
+                                                                            <button type="button" data-slot="button" x-show="can(gap, 'dismissed')" x-bind:aria-busy="busy === gap.id + ':dismissed' ? 'true' : null"
+                                            x-bind:disabled="(busy !== null) ? '' : null" x-bind:data-disabled="(busy !== null) ? '' : null" x-on:click="move(gap, 'dismissed')" style="display: none"
+                                            class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 h-control-sm px-2.5 text-foreground hover:bg-nq-hover">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                                            Dismiss
+                                        </button>
+                                                                    </div>
+                                                    </li>
+                    </template>
+                </ul>
+            </div>
+            </section>

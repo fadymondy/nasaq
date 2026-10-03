@@ -1,0 +1,298 @@
+<section data-slot="issue-board" aria-label="Issues"
+    x-data="nqIssueBoard(JSON.parse('{\u0022cards\u0022:[{\u0022id\u0022:\u0022i1\u0022,\u0022columnId\u0022:\u0022doing\u0022,\u0022title\u0022:\u0022NSQ-1 Refunds fail for split payments\u0022,\u0022key\u0022:\u0022NSQ-1\u0022,\u0022issueTitle\u0022:\u0022Refunds fail for split payments\u0022,\u0022type\u0022:\u0022bug\u0022,\u0022priority\u0022:\u0022high\u0022,\u0022priorityLabel\u0022:\u0022High\u0022,\u0022due\u0022:\u002228 Sep\u0022,\u0022dueState\u0022:\u0022overdue\u0022,\u0022labels\u0022:[{\u0022label\u0022:\u0022Payments\u0022,\u0022hue\u0022:\u0022blue\u0022}],\u0022labelNames\u0022:[\u0022Payments\u0022],\u0022assigneeId\u0022:\u0022u1\u0022,\u0022reporterId\u0022:\u0022u2\u0022,\u0022assignee\u0022:{\u0022name\u0022:\u0022Layla Hassan\u0022},\u0022votes\u0022:12,\u0022voted\u0022:false,\u0022comments\u0022:4,\u0022attachments\u0022:1},{\u0022id\u0022:\u0022i2\u0022,\u0022columnId\u0022:\u0022todo\u0022,\u0022title\u0022:\u0022NSQ-2 New receipt layout\u0022,\u0022key\u0022:\u0022NSQ-2\u0022,\u0022issueTitle\u0022:\u0022New receipt layout\u0022,\u0022type\u0022:\u0022task\u0022,\u0022priority\u0022:\u0022medium\u0022,\u0022priorityLabel\u0022:\u0022Medium\u0022,\u0022due\u0022:\u002210 Oct\u0022,\u0022dueState\u0022:\u0022later\u0022,\u0022labels\u0022:[{\u0022label\u0022:\u0022Design\u0022,\u0022hue\u0022:\u0022violet\u0022}],\u0022labelNames\u0022:[\u0022Design\u0022],\u0022assigneeId\u0022:\u0022u2\u0022,\u0022reporterId\u0022:\u0022u1\u0022,\u0022assignee\u0022:{\u0022name\u0022:\u0022Omar Said\u0022},\u0022votes\u0022:3,\u0022voted\u0022:false,\u0022comments\u0022:0,\u0022attachments\u0022:0},{\u0022id\u0022:\u0022i3\u0022,\u0022columnId\u0022:\u0022done\u0022,\u0022title\u0022:\u0022NSQ-3 Saved cards\u0022,\u0022key\u0022:\u0022NSQ-3\u0022,\u0022issueTitle\u0022:\u0022Saved cards\u0022,\u0022type\u0022:\u0022feature\u0022,\u0022priority\u0022:\u0022low\u0022,\u0022priorityLabel\u0022:\u0022Low\u0022,\u0022due\u0022:\u0022\u0022,\u0022dueState\u0022:\u0022none\u0022,\u0022labels\u0022:[],\u0022labelNames\u0022:[],\u0022assigneeId\u0022:null,\u0022reporterId\u0022:\u0022u1\u0022,\u0022assignee\u0022:null,\u0022votes\u0022:7,\u0022voted\u0022:true,\u0022comments\u0022:0,\u0022attachments\u0022:0}],\u0022columns\u0022:[{\u0022id\u0022:\u0022todo\u0022,\u0022title\u0022:\u0022To do\u0022},{\u0022id\u0022:\u0022doing\u0022,\u0022title\u0022:\u0022In progress\u0022},{\u0022id\u0022:\u0022done\u0022,\u0022title\u0022:\u0022Shipped\u0022}],\u0022text\u0022:{\u0022count\u0022:\u0022{total} issues\u0022,\u0022countOf\u0022:\u0022{shown} of {total} issues\u0022}}'))"
+    class="flex min-w-0 flex-col gap-3">
+            <header class="flex flex-wrap items-center gap-2">
+            <h2 class="m-0 text-heading-sm text-foreground">Issues</h2>
+            <span class="text-caption tabular-nums text-muted-foreground" aria-live="polite" x-text="countText()">3 issues</span>
+                            <button data-slot="button"
+     type="button"                         x-on:click="create()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--nq-action)_88%,var(--nq-fg))] h-control-sm px-2.5 ms-auto">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="M12 5v14"/>
+</svg>New issue</button>
+                    </header>
+        <div data-slot="issue-board-toolbar" class="flex flex-wrap items-center gap-2">
+        <div role="group" data-slot="input-group"
+    class="group/input-group flex h-control min-h-[var(--nq-touch-min,0px)] w-full items-center overflow-hidden rounded-control border border-input bg-card text-body text-foreground transition-colors duration-150 ease-nq focus-within:border-nq-focus focus-within:outline-1 focus-within:outline-nq-focus has-[[data-invalid]]:border-nq-danger has-[[aria-invalid=true]]:border-nq-danger has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 min-w-48 flex-1 basis-60 sm:max-w-80"><div data-slot="input-group-addon" data-align="start"
+    class="flex h-full shrink-0 items-center gap-1.5 text-body-sm text-muted-foreground [&_svg]:size-4 order-first ps-3 pe-1"><svg aria-hidden="true" class="size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg></div>
+            <input data-slot="input-group-input"     type="search" placeholder="Search by key, title or label" aria-label="Search issues" x-model="filter.query" x-on:input="changed()" x-on:keydown="searchKey($event)" class="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-body text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed pointer-coarse:text-[16px]" /></div>
+        <div data-slot="issue-board-assignee" class="relative min-w-0 w-auto">
+    <select           class="w-full min-w-0 appearance-none rounded-control border border-input bg-card ps-3 pe-9 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm" data-slot="issue-board-assignee" aria-label="Assignee" x-effect="$el.value = filter.assigneeId ?? ''" x-on:change="pick('assigneeId', $event.target.value)">
+                            <option value=""  >Assignee: Anyone</option>
+                    <option value="none"  >Unassigned</option>
+                    <option value="u1"  >Layla Hassan</option>
+                    <option value="u2"  >Omar Said</option>
+    </select>
+    <svg aria-hidden="true" class="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></div>
+                    <div data-slot="issue-board-reporter" class="relative min-w-0 w-auto">
+    <select           class="w-full min-w-0 appearance-none rounded-control border border-input bg-card ps-3 pe-9 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm" data-slot="issue-board-reporter" aria-label="Reporter" x-effect="$el.value = filter.reporterId ?? ''" x-on:change="pick('reporterId', $event.target.value)">
+                            <option value=""  >Reporter: Anyone</option>
+                    <option value="none"  >No reporter</option>
+                    <option value="u1"  >Layla Hassan</option>
+                    <option value="u2"  >Omar Said</option>
+    </select>
+    <svg aria-hidden="true" class="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg></div>
+                <span x-show="active" x-cloak style="display: none">
+            <button data-slot="button"
+     type="button"                         x-on:click="clear()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-transparent font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-foreground hover:bg-nq-hover h-control-sm px-2.5">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>Clear filters</button>
+        </span>
+    </div>
+    <div data-slot="kanban-board" role="group" aria-label="Issue board" x-data="nqKanbanBoard(JSON.parse('[{\u0022id\u0022:\u0022todo\u0022,\u0022title\u0022:\u0022To do\u0022},{\u0022id\u0022:\u0022doing\u0022,\u0022title\u0022:\u0022In progress\u0022},{\u0022id\u0022:\u0022done\u0022,\u0022title\u0022:\u0022Shipped\u0022}]'), [], { optimistic: false })"
+        x-effect="cards = visible" x-on:move.stop="onMove($event)" class="flex w-full items-start gap-4 overflow-x-auto pb-2">
+        <p id="nq-kanban-hint-0bdfc1" class="sr-only">To pick up a card, press Space or Enter. Use the arrow keys to move it within or between columns, Space or Enter to drop it, Escape to cancel.</p>
+        <template x-for="column in columns" :key="column.id">
+            <section data-slot="kanban-column" x-bind:data-column-id="column.id" x-bind:data-over="overColumn() === column.id ? '' : null"
+                class="flex max-h-full w-72 shrink-0 flex-col gap-3 rounded-card border border-border bg-secondary p-3 transition-colors duration-150 ease-nq data-over:border-nq-focus">
+                <header data-slot="kanban-column-header" class="flex items-center justify-between gap-2">
+                    <h3 class="min-w-0 truncate text-label text-foreground" x-text="column.title"></h3>
+                    <span data-slot="badge" x-bind:aria-label="countLabel(column.id)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">
+                        <span class="tabular-nums" x-text="num(count(column.id))"></span>
+                    </span>
+                </header>
+                <ul data-slot="kanban-list" class="flex min-h-16 flex-1 flex-col gap-2 overflow-y-auto">
+                    <template x-for="card in list(column.id)" :key="card.id">
+                        <li data-slot="kanban-item" x-bind:data-card-id="card.id" x-bind:data-dragging="activeId === card.id ? '' : null" role="button" tabindex="0"
+                            aria-roledescription="draggable card" x-bind:aria-pressed="activeId === card.id ? 'true' : 'false'" aria-describedby="nq-kanban-hint-0bdfc1"
+                            x-bind:class="activeId === card.id && 'opacity-40'" x-on:pointerdown="down($event, card.id)" x-on:keydown="key($event, card.id)"
+                            class="cursor-grab touch-manipulation rounded-card outline-none active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                            <div data-slot="context-menu" x-data="nqContextMenu(false)" x-modelable="open" class="contents"><div data-slot="context-menu-trigger" x-bind="trigger" x-ref="trigger"><div data-slot="issue-card" x-on:click="openIssue(card.id)" class="flex w-full cursor-pointer flex-col gap-2 rounded-card border border-border bg-card p-3 text-start text-card-foreground">
+    <div class="flex items-center gap-2 text-caption text-muted-foreground">
+                    <span x-show="card.type === 'bug'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 20v-9"/>
+  <path d="M14 7a4 4 0 0 1 4 4v3a6 6 0 0 1-12 0v-3a4 4 0 0 1 4-4z"/>
+  <path d="M14.12 3.88 16 2"/>
+  <path d="M21 21a4 4 0 0 0-3.81-4"/>
+  <path d="M21 5a4 4 0 0 1-3.55 3.97"/>
+  <path d="M22 13h-4"/>
+  <path d="M3 21a4 4 0 0 1 3.81-4"/>
+  <path d="M3 5a4 4 0 0 0 3.55 3.97"/>
+  <path d="M6 13H2"/>
+  <path d="m8 2 1.88 1.88"/>
+  <path d="M9 7.13V6a3 3 0 1 1 6 0v1.13"/>
+</svg></span>
+                    <span x-show="card.type === 'feature'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg></span>
+                    <span x-show="card.type === 'improvement'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg></span>
+                    <span x-show="card.type === 'task'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg></span>
+                    <span x-show="card.type === 'chore'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/>
+</svg></span>
+                <bdi dir="ltr" class="font-mono" x-text="card.key"></bdi>
+        <span class="ms-auto inline-flex items-center gap-1" x-bind:title="card.priorityLabel">
+                            <span x-show="card.priority === 'urgent'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" style="color: var(--nq-danger)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                            <span x-show="card.priority === 'high'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" style="color: var(--nq-tag-orange)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                            <span x-show="card.priority === 'medium'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" style="color: var(--nq-tag-amber)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                            <span x-show="card.priority === 'low'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" style="color: var(--nq-tag-blue)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                            <span x-show="card.priority === 'none'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" style="color: var(--nq-fg-muted)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                        <span class="sr-only" x-text="card.priorityLabel"></span>
+        </span>
+    </div>
+    <div class="text-label text-foreground" x-text="card.issueTitle"></div>
+    <div x-show="card.labels.length" x-cloak style="display: none" class="flex flex-wrap gap-1">
+        <template x-for="l in card.labels" :key="l.label">
+            <span data-slot="badge" x-bind:style="tagStyle(l.hue)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-transparent bg-[var(--tag-soft)] text-[var(--tag-solid)]" x-text="l.label"></span>
+        </template>
+    </div>
+    <div x-show="card.due || card.votes !== null || card.comments || card.attachments || card.assignee" x-cloak class="flex items-center gap-3 text-caption text-muted-foreground">
+                    <button type="button" data-slot="issue-card-vote" x-bind:aria-pressed="card.voted ? 'true' : 'false'"
+                x-bind:aria-label="(card.voted ? 'Remove your vote, ' : 'Upvote, ') + num(card.votes || 0) + ' votes'"
+                x-bind:class="card.voted ? 'border-nq-accent/40 bg-nq-selected text-foreground' : 'border-border hover:bg-nq-hover'"
+                x-on:click.stop="voteIssue(card.id)" x-on:keydown.stop x-on:pointerdown.stop
+                class="-ms-1 inline-flex h-6 items-center gap-0.5 rounded-control border px-1.5 tabular-nums outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m18 15-6-6-6 6"/>
+</svg><span x-text="num(card.votes || 0)"></span>
+            </button>
+                <span x-show="card.comments" x-cloak style="display: none" class="inline-flex items-center gap-1 tabular-nums">
+            <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/>
+</svg><span aria-hidden="true" x-text="num(card.comments)"></span>
+            <span class="sr-only" x-text="num(card.comments) + ' comments'"></span>
+        </span>
+        <span x-show="card.attachments" x-cloak style="display: none" class="inline-flex items-center gap-1 tabular-nums">
+            <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/>
+</svg><span aria-hidden="true" x-text="num(card.attachments)"></span>
+            <span class="sr-only" x-text="num(card.attachments) + ' attachments'"></span>
+        </span>
+        <span x-show="card.due" x-cloak style="display: none" x-bind:data-due="card.dueState"
+            x-bind:class="card.dueState === 'overdue' ? 'text-nq-danger-text' : (card.dueState === 'today' || card.dueState === 'soon' ? 'text-nq-warning-text' : 'text-muted-foreground')" class="inline-flex items-center gap-1">
+            <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 2v3"/>
+  <path d="M16 2v3"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+  <path d="M3 9h18"/>
+  <path d="M8 13h.01"/>
+  <path d="M12 13h.01"/>
+  <path d="M16 13h.01"/>
+  <path d="M8 17h.01"/>
+  <path d="M12 17h.01"/>
+  <path d="M16 17h.01"/>
+</svg><span class="sr-only">Due</span><span x-text="card.due"></span>
+            <span x-show="card.dueState === 'overdue'" x-cloak style="display: none" class="sr-only">(Overdue)</span>
+        </span>
+        <span x-show="card.assignee" x-cloak style="display: none" data-slot="avatar" x-bind:title="card.assignee ? card.assignee.name : null" x-bind:aria-label="card.assignee ? 'Assigned to ' + card.assignee.name : null"
+            class="ms-auto inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-5 text-[9px] rounded-full" x-text="card.assignee ? initials(card.assignee.name) : ''"></span>
+    </div>
+</div></div>
+                                <template x-teleport="body">
+    <div data-slot="context-menu-content" x-bind="popup" x-init="popupEl = $el" x-nq-presence="open"
+        class="fixed z-50 min-w-44 overflow-hidden rounded-floating border border-border bg-popover p-1.5 text-popover-foreground shadow-floating outline-none max-h-[var(--available-height)] overflow-y-auto transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"><div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="openIssue(card.id)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h6v6"/>
+  <path d="M10 14 21 3"/>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</svg>Open issue</div>
+                                    <div data-slot="context-menu-item" role="menuitem" data-variant="default" x-bind="item"
+        x-on:click="copyKey(card.key)" class="relative flex h-nav-row min-h-[var(--nq-touch-min,0px)] cursor-default select-none items-center gap-2.5 rounded-control px-2.5 text-body-sm text-foreground outline-none data-highlighted:bg-nq-selected data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 17H7A5 5 0 0 1 7 7h2"/>
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2"/>
+  <line x1="8" x2="16" y1="12" y2="12"/>
+</svg>Copy key</div></div>
+</template></div>
+                        </li>
+                    </template>
+                    <li data-slot="kanban-empty" x-show="count(column.id) === 0" x-cloak style="display: none" class="flex flex-1 items-center justify-center rounded-card border border-dashed border-border p-4 text-body-sm text-muted-foreground">No issues</li>
+                </ul>
+            </section>
+        </template>
+        <div data-slot="kanban-overlay" aria-hidden="true" x-show="activeCard() && overlay" x-cloak style="display: none" x-bind:style="overlay ? 'left:' + overlay.left + 'px;top:' + overlay.top + 'px;width:' + overlay.width + 'px' : null" class="pointer-events-none fixed z-50 cursor-grabbing shadow-lg">
+            <template x-if="activeCard()">
+                <template x-for="card in [activeCard()]" :key="card.id">
+                    <div data-slot="issue-card" x-on:click="openIssue(card.id)" class="flex w-full cursor-pointer flex-col gap-2 rounded-card border border-border bg-card p-3 text-start text-card-foreground">
+    <div class="flex items-center gap-2 text-caption text-muted-foreground">
+                    <span x-show="card.type === 'bug'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 20v-9"/>
+  <path d="M14 7a4 4 0 0 1 4 4v3a6 6 0 0 1-12 0v-3a4 4 0 0 1 4-4z"/>
+  <path d="M14.12 3.88 16 2"/>
+  <path d="M21 21a4 4 0 0 0-3.81-4"/>
+  <path d="M21 5a4 4 0 0 1-3.55 3.97"/>
+  <path d="M22 13h-4"/>
+  <path d="M3 21a4 4 0 0 1 3.81-4"/>
+  <path d="M3 5a4 4 0 0 0 3.55 3.97"/>
+  <path d="M6 13H2"/>
+  <path d="m8 2 1.88 1.88"/>
+  <path d="M9 7.13V6a3 3 0 1 1 6 0v1.13"/>
+</svg></span>
+                    <span x-show="card.type === 'feature'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+  <path d="M20 2v4"/>
+  <path d="M22 4h-4"/>
+  <circle cx="4" cy="20" r="2"/>
+</svg></span>
+                    <span x-show="card.type === 'improvement'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 7h6v6"/>
+  <path d="m22 7-8.5 8.5-5-5L2 17"/>
+</svg></span>
+                    <span x-show="card.type === 'task'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2"/>
+  <path d="m9 12 2 2 4-4"/>
+</svg></span>
+                    <span x-show="card.type === 'chore'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/>
+</svg></span>
+                <bdi dir="ltr" class="font-mono" x-text="card.key"></bdi>
+        <span class="ms-auto inline-flex items-center gap-1" x-bind:title="card.priorityLabel">
+                            <span x-show="card.priority === 'urgent'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" style="color: var(--nq-danger)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                            <span x-show="card.priority === 'high'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" style="color: var(--nq-tag-orange)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                            <span x-show="card.priority === 'medium'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" style="color: var(--nq-tag-amber)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                            <span x-show="card.priority === 'low'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" style="color: var(--nq-tag-blue)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                            <span x-show="card.priority === 'none'" x-cloak style="display: none" class="contents"><svg aria-hidden="true" style="color: var(--nq-fg-muted)" class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>
+</svg></span>
+                        <span class="sr-only" x-text="card.priorityLabel"></span>
+        </span>
+    </div>
+    <div class="text-label text-foreground" x-text="card.issueTitle"></div>
+    <div x-show="card.labels.length" x-cloak style="display: none" class="flex flex-wrap gap-1">
+        <template x-for="l in card.labels" :key="l.label">
+            <span data-slot="badge" x-bind:style="tagStyle(l.hue)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-transparent bg-[var(--tag-soft)] text-[var(--tag-solid)]" x-text="l.label"></span>
+        </template>
+    </div>
+    <div x-show="card.due || card.votes !== null || card.comments || card.attachments || card.assignee" x-cloak class="flex items-center gap-3 text-caption text-muted-foreground">
+                    <button type="button" data-slot="issue-card-vote" x-bind:aria-pressed="card.voted ? 'true' : 'false'"
+                x-bind:aria-label="(card.voted ? 'Remove your vote, ' : 'Upvote, ') + num(card.votes || 0) + ' votes'"
+                x-bind:class="card.voted ? 'border-nq-accent/40 bg-nq-selected text-foreground' : 'border-border hover:bg-nq-hover'"
+                x-on:click.stop="voteIssue(card.id)" x-on:keydown.stop x-on:pointerdown.stop
+                class="-ms-1 inline-flex h-6 items-center gap-0.5 rounded-control border px-1.5 tabular-nums outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m18 15-6-6-6 6"/>
+</svg><span x-text="num(card.votes || 0)"></span>
+            </button>
+                <span x-show="card.comments" x-cloak style="display: none" class="inline-flex items-center gap-1 tabular-nums">
+            <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/>
+</svg><span aria-hidden="true" x-text="num(card.comments)"></span>
+            <span class="sr-only" x-text="num(card.comments) + ' comments'"></span>
+        </span>
+        <span x-show="card.attachments" x-cloak style="display: none" class="inline-flex items-center gap-1 tabular-nums">
+            <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/>
+</svg><span aria-hidden="true" x-text="num(card.attachments)"></span>
+            <span class="sr-only" x-text="num(card.attachments) + ' attachments'"></span>
+        </span>
+        <span x-show="card.due" x-cloak style="display: none" x-bind:data-due="card.dueState"
+            x-bind:class="card.dueState === 'overdue' ? 'text-nq-danger-text' : (card.dueState === 'today' || card.dueState === 'soon' ? 'text-nq-warning-text' : 'text-muted-foreground')" class="inline-flex items-center gap-1">
+            <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 2v3"/>
+  <path d="M16 2v3"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+  <path d="M3 9h18"/>
+  <path d="M8 13h.01"/>
+  <path d="M12 13h.01"/>
+  <path d="M16 13h.01"/>
+  <path d="M8 17h.01"/>
+  <path d="M12 17h.01"/>
+  <path d="M16 17h.01"/>
+</svg><span class="sr-only">Due</span><span x-text="card.due"></span>
+            <span x-show="card.dueState === 'overdue'" x-cloak style="display: none" class="sr-only">(Overdue)</span>
+        </span>
+        <span x-show="card.assignee" x-cloak style="display: none" data-slot="avatar" x-bind:title="card.assignee ? card.assignee.name : null" x-bind:aria-label="card.assignee ? 'Assigned to ' + card.assignee.name : null"
+            class="ms-auto inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-5 text-[9px] rounded-full" x-text="card.assignee ? initials(card.assignee.name) : ''"></span>
+    </div>
+</div>
+                </template>
+            </template>
+        </div>
+        <div role="status" aria-live="assertive" class="sr-only" x-text="announcement"></div>
+    </div>
+</section>

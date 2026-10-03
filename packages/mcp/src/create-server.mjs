@@ -3,7 +3,7 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { readFileSync } from "node:fs";
 import { z } from "zod";
-import { CATEGORIES, findComponent, loadCatalog, searchComponents, section } from "./catalog.mjs";
+import { CATEGORIES, FRAMEWORKS, findComponent, loadCatalog, searchComponents, section, setupTopic, snippetStack } from "./catalog.mjs";
 
 export const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 
@@ -25,6 +25,27 @@ const fail = (message) => ({ content: [{ type: "text", text: message }], isError
 
 const summaryOf = (c) => ({ name: c.name, title: c.title, category: c.category, status: c.status, summary: c.summary, exports: c.exports });
 
+const frameworkArg = z
+  .enum(FRAMEWORKS)
+  .optional()
+  .describe(
+    "Default react (@fadymondy/nasaq/web). shadcn: the same React components copied by the shadcn CLI. inertia / inertia-vue: Laravel + Inertia. " +
+      "vue / nuxt / inertia-vue: Vue 3. blade / livewire / filament / laravel / tomatophp: Laravel Blade components. html / alpine: rendered HTML run by Alpine.",
+  );
+
+/** Per-stack examples from the catalogue: { [name]: { react, shadcn, vue, blade, html } }. Older snapshots have none. */
+const examplesOf = (cat) => cat.frameworks?.examples ?? {};
+
+const STACK_LABEL = { react: "React", shadcn: "shadcn", vue: "Vue", blade: "Blade", html: "HTML + Alpine" };
+
+/** Names that have an example in a stack. */
+function portedNames(cat, stack) {
+  const ex = examplesOf(cat);
+  return Object.keys(ex).filter((n) => ex[n][stack]);
+}
+
+const fence = (lang, code) => ["```" + lang, code, "```"].join("\n");
+
 export function createNasaqServer(catalog) {
   function notFound(name) {
     const hints = searchComponents(catalog(), name, 5).map((h) => h.name);
@@ -40,6 +61,9 @@ export function createNasaqServer(catalog) {
       "then get_component for its manual (props, examples, accessibility, RTL rules). Use only props the manual documents.",
       "Colours come from tokens (bg-nq-*, text-nq-*); never hard-code hex. Never recolour, mirror or redraw a product logo.",
       "Docs: https://nasaq-ui.fadymondy.com. Components can also be added with the shadcn CLI: npx shadcn@latest add @nasaq/<name>.",
+      "Not on React? Pass `framework` (shadcn, inertia, inertia-vue, vue, nuxt, blade, livewire, filament, laravel, tomatophp, html, alpine) to get_setup,",
+      "list_components and get_component: get_setup returns that stack's guide and get_component a component's code for it.",
+      "Components are ported to Vue, Blade and HTML + Alpine one by one; an unported one says so, and React or shadcn cover it meanwhile.",
     ].join(" "),
   },
 );
@@ -48,16 +72,24 @@ server.registerTool(
   "list_components",
   {
     title: "List Nasaq components",
-    description: "Lists every Nasaq web component with its category, status, one-line summary and exports. Filter by category or a text query.",
+    description:
+      "Lists every Nasaq web component with its category, status, one-line summary and exports. Filter by category or a text query. " +
+      "With a non-React `framework`, lists only the components that exist in that stack.",
     inputSchema: {
       category: z.enum(CATEGORIES).optional().describe("Only this category"),
       query: z.string().optional().describe("Free-text filter, e.g. 'table' or 'menu'"),
+      framework: frameworkArg,
     },
     annotations: { readOnlyHint: true },
   },
-  async ({ category, query }) => {
+  async ({ category, query, framework }) => {
     const cat = catalog();
     let items = cat.components;
+    const stack = framework ? snippetStack(framework) : "react";
+    if (stack !== "react" && stack !== "shadcn") {
+      const ported = new Set(portedNames(cat, stack));
+      items = items.filter((c) => ported.has(c.name));
+    }
     if (category) items = items.filter((c) => c.category === category);
     if (query) {
       const hits = new Set(searchComponents({ components: items }, query, 100).map((h) => h.name));
@@ -65,7 +97,11 @@ server.registerTool(
     }
     const byCategory = {};
     for (const c of items) (byCategory[c.category] ??= []).push(summaryOf(c));
-    return text({ count: items.length, categories: byCategory, next: "get_component({ name }) returns the full manual." });
+    const next =
+      stack === "react"
+        ? "get_component({ name }) returns the full manual."
+        : `get_component({ name, framework: "${framework}" }) returns the ${framework} markup. get_setup({ framework: "${framework}" }) covers installation.`;
+    return text({ count: items.length, framework: framework ?? "react", categories: byCategory, next });
   },
 );
 
@@ -91,16 +127,59 @@ server.registerTool(
     title: "Get a Nasaq component",
     description:
       "Returns one component's details and manual. `name` may be the folder (app-shell), the title (AppShell) or any export (SidebarItem). " +
-      "`include` picks what to return: readme (default, full manual), api (API section only), examples, source (TSX), story (Storybook CSF), all.",
+      "`include` picks what to return: readme (default, full manual), api (API section only), examples, source (TSX), story (Storybook CSF), all. " +
+      "`framework` returns the component in another stack (html, alpine, vue, blade, livewire, filament, inertia, shadcn, …).",
     inputSchema: {
       name: z.string().min(1),
       include: z.array(z.enum(PARTS)).optional().describe("Default: ['readme']"),
+      framework: frameworkArg,
     },
     annotations: { readOnlyHint: true },
   },
-  async ({ name, include }) => {
-    const c = findComponent(catalog(), name);
+  async ({ name, include, framework }) => {
+    const cat = catalog();
+    const c = findComponent(cat, name);
     if (!c) return notFound(name);
+    const ex = examplesOf(cat)[c.name] ?? {};
+    const stacks = ["vue", "blade", "html"].filter((k) => ex[k]);
+    const stack = framework ? snippetStack(framework) : "react";
+    if (stack !== "react") {
+      const code = ex[stack];
+      if (!code) {
+        const label = STACK_LABEL[stack] ?? framework;
+        const ported = portedNames(cat, stack);
+        return fail(
+          `${c.title} (${c.name}) is not ported yet to ${label}. Use React (get_component({ name: "${c.name}" })) or shadcn (framework: "shadcn") meanwhile. ` +
+            `Components ported to ${label} so far: ${ported.length ? ported.join(", ") : "none"}.`,
+        );
+      }
+      const out = [`# ${c.title} (${c.name}) for ${framework}`, c.summary, `setup: get_setup({ framework: "${framework}" })`];
+      if (stack === "shadcn") {
+        out.push(
+          "",
+          `Install: ${c.registry?.command ?? `npx shadcn@latest add @nasaq/${c.name}`}. The files land in components/ui and import from "@/components/ui/<file>"; props and behaviour match the React manual.`,
+          "",
+          fence("tsx", code),
+        );
+      } else if (stack === "vue") {
+        out.push("", 'Components are `Nq*` from "@fadymondy/nasaq/vue".', "", fence("vue", code));
+      } else if (stack === "blade") {
+        out.push("", "Blade components `<x-nq::name>` from the Composer package fadymondy/nasaq-php.");
+        if (framework === "livewire")
+          out.push('For Livewire, `wire:model` works on stateful roots (dialog and tabs are x-modelable), e.g. `<x-nq::dialog wire:model="open">`.');
+        out.push("", fence("blade", code));
+        if (ex.html) out.push("", "What it renders (HTML, run by Alpine):", "", fence("html", ex.html));
+      } else {
+        out.push(
+          "",
+          "The HTML Blade renders for this component. It runs with the Alpine plugin (@fadymondy/nasaq/alpine) or the CDN script dist/cdn/nasaq-alpine.js.",
+          "",
+          fence("html", code),
+        );
+      }
+      out.push("", `Behaviour, accessibility and content rules are shared with React: get_component({ name: "${c.name}" }).`);
+      return text(out.join("\n"));
+    }
     const want = new Set(include?.length ? include : ["readme"]);
     const all = want.has("all");
     const out = [
@@ -111,6 +190,7 @@ server.registerTool(
       `install (shadcn registry): ${c.registry?.command ?? `npx shadcn@latest add @nasaq/${c.name}`}  (${c.registry?.url ?? `https://nasaq-ui.fadymondy.com/r/${c.name}.json`})`,
       c.related.length ? `related: ${c.related.join(", ")}` : null,
       c.story ? `lab: ${c.story.url}` : null,
+      stacks.length ? `other stacks: shadcn, ${stacks.map((k) => ({ vue: "vue", blade: "blade", html: "html/alpine" })[k]).join(", ")}; get_component({ name: "${c.name}", framework })` : null,
     ].filter(Boolean);
     if (!c.readme) out.push("", "⚠ This component has no README yet; rely on its source.");
     if (c.readme && (all || want.has("readme"))) out.push("", c.readme);
@@ -164,11 +244,20 @@ server.registerTool(
   "get_setup",
   {
     title: "How to install and set up Nasaq",
-    description: "Install command, CSS imports, NasaqProvider props and the usual app skeleton. Call once before building UI.",
-    inputSchema: {},
+    description:
+      "Install command, CSS imports, provider and the usual app skeleton. Call once before building UI. " +
+      "`framework` picks the guide: react (default), shadcn, inertia, html, alpine, vue, or blade/livewire/filament/laravel/tomatophp.",
+    inputSchema: { framework: frameworkArg },
     annotations: { readOnlyHint: true },
   },
-  async () => text(catalog().foundations.find((f) => f.id === "setup").content),
+  async ({ framework } = {}) => {
+    const { foundations } = catalog();
+    const topic = framework ? setupTopic(framework) : "setup";
+    const guide = foundations.find((f) => f.id === topic);
+    if (!guide) return fail(`No ${framework} guide in this catalogue. Update @fadymondy/nasaq-mcp.`);
+    const others = foundations.filter((f) => f.id.startsWith("setup-") || f.id === "get-started").map((f) => f.id);
+    return text(`${guide.content}\n\n---\nOther stacks: get_foundation({ topic }) with ${others.join(", ")}, or get_setup({ framework }).`);
+  },
 );
 
 server.registerResource(

@@ -1,0 +1,42 @@
+<div data-slot="accordion" x-data="nqAccordion(JSON.parse('[\u0022plan\u0022]'), false)" x-modelable="value" x-id="['nq-accordion']"
+    x-on:keydown="onKeydown($event)"
+        class="flex w-full flex-col rounded-card border border-border bg-card">
+    <div data-slot="accordion-item" x-data="{ v: 'plan' }"
+    :data-open="isOpen(v) ? '' : undefined" :data-closed="isOpen(v) ? undefined : ''"
+     data-open         class="border-b border-border first:rounded-t-card last:rounded-b-card last:border-b-0">
+    <h3 data-slot="accordion-header" class="m-0 flex">
+    <button type="button" data-slot="accordion-trigger" x-on:click="toggle(v)"
+        :id="$id('nq-accordion', 'trigger-' + v)" :aria-controls="$id('nq-accordion', 'panel-' + v)"
+        :aria-expanded="isOpen(v)" :data-panel-open="isOpen(v) ? '' : undefined"
+        aria-expanded="true"  data-panel-open                 class="group flex w-full items-center justify-between gap-3 px-4 py-3 text-start text-label text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50">
+        Can I change my plan later?
+        <svg data-slot="icon" aria-hidden="true" class="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-nq motion-reduce:transition-none group-data-panel-open:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg>    </button>
+</h3>
+        <div data-slot="accordion-panel" role="region" x-nq-presence="isOpen(v)"
+    :id="$id('nq-accordion', 'panel-' + v)" :aria-labelledby="$id('nq-accordion', 'trigger-' + v)"
+     data-open     class="h-(--accordion-panel-height) overflow-hidden text-body-sm text-muted-foreground transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0">
+    <div class="px-4 pb-4">Yes, any time from the billing page.</div>
+</div>
+</div>
+    <div data-slot="accordion-item" x-data="{ v: 'pay' }"
+    :data-open="isOpen(v) ? '' : undefined" :data-closed="isOpen(v) ? undefined : ''"
+     data-closed         class="border-b border-border first:rounded-t-card last:rounded-b-card last:border-b-0">
+    <h3 data-slot="accordion-header" class="m-0 flex">
+    <button type="button" data-slot="accordion-trigger" x-on:click="toggle(v)"
+        :id="$id('nq-accordion', 'trigger-' + v)" :aria-controls="$id('nq-accordion', 'panel-' + v)"
+        :aria-expanded="isOpen(v)" :data-panel-open="isOpen(v) ? '' : undefined"
+        aria-expanded="false"                 class="group flex w-full items-center justify-between gap-3 px-4 py-3 text-start text-label text-foreground outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50">
+        Which payment methods do you accept?
+        <svg data-slot="icon" aria-hidden="true" class="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-nq motion-reduce:transition-none group-data-panel-open:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m6 9 6 6 6-6"/>
+</svg>    </button>
+</h3>
+        <div data-slot="accordion-panel" role="region" x-nq-presence="isOpen(v)"
+    :id="$id('nq-accordion', 'panel-' + v)" :aria-labelledby="$id('nq-accordion', 'trigger-' + v)"
+     data-closed style="display:none"     class="h-(--accordion-panel-height) overflow-hidden text-body-sm text-muted-foreground transition-[height,opacity] duration-200 ease-nq motion-reduce:transition-none data-starting-style:h-0 data-starting-style:opacity-0 data-ending-style:h-0 data-ending-style:opacity-0">
+    <div class="px-4 pb-4">Mada, Visa and Mastercard.</div>
+</div>
+</div>
+</div>

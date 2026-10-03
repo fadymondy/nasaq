@@ -1,0 +1,55 @@
+<div data-slot="kanban-board" role="group" aria-label="Kanban board"
+    x-data="nqKanbanBoard(JSON.parse('[{\u0022id\u0022:\u0022todo\u0022,\u0022title\u0022:\u0022To do\u0022},{\u0022id\u0022:\u0022done\u0022,\u0022title\u0022:\u0022Done\u0022}]'), JSON.parse('[{\u0022id\u0022:\u0022a\u0022,\u0022columnId\u0022:\u0022todo\u0022,\u0022title\u0022:\u0022Write the brief\u0022,\u0022labels\u0022:[{\u0022label\u0022:\u0022Docs\u0022,\u0022hue\u0022:\u0022blue\u0022}],\u0022assignee\u0022:{\u0022name\u0022:\u0022Sara Ali\u0022}},{\u0022id\u0022:\u0022b\u0022,\u0022columnId\u0022:\u0022todo\u0022,\u0022title\u0022:\u0022Review copy\u0022}]'), {})" x-modelable="cards"
+    class="flex w-full items-start gap-4 overflow-x-auto pb-2">
+    <p id="nq-kanban-hint-0979cf" class="sr-only">To pick up a card, press Space or Enter. Use the arrow keys to move it within or between columns, Space or Enter to drop it, Escape to cancel.</p>
+    <template x-for="column in columns" :key="column.id">
+        <section data-slot="kanban-column" x-bind:data-column-id="column.id" x-bind:data-over="overColumn() === column.id ? '' : null"
+            class="flex max-h-full w-72 shrink-0 flex-col gap-3 rounded-card border border-border bg-secondary p-3 transition-colors duration-150 ease-nq data-over:border-nq-focus ">
+            <header data-slot="kanban-column-header" class="flex items-center justify-between gap-2">
+                <h3 class="min-w-0 truncate text-label text-foreground" x-text="column.title"></h3>
+                <span data-slot="badge" x-bind:aria-label="countLabel(column.id)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-border text-muted-foreground">
+                    <span class="tabular-nums" x-text="num(count(column.id))"></span>
+                </span>
+            </header>
+            <ul data-slot="kanban-list" class="flex min-h-16 flex-1 flex-col gap-2 overflow-y-auto">
+                <template x-for="card in list(column.id)" :key="card.id">
+                    <li data-slot="kanban-item" x-bind:data-card-id="card.id" x-bind:data-dragging="activeId === card.id ? '' : null" role="button" tabindex="0"
+                        aria-roledescription="draggable card" x-bind:aria-pressed="activeId === card.id ? 'true' : 'false'" aria-describedby="nq-kanban-hint-0979cf"
+                        x-bind:class="activeId === card.id && 'opacity-40'" x-on:pointerdown="down($event, card.id)" x-on:keydown="key($event, card.id)"
+                        class="cursor-grab touch-manipulation rounded-card outline-none active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus">
+                        <div data-slot="kanban-card" class="flex flex-col gap-2 rounded-card border border-border bg-card p-3 text-card-foreground">
+    <div x-show="card.labels && card.labels.length" x-cloak style="display: none" class="flex flex-wrap gap-1">
+        <template x-for="l in (card.labels || [])" :key="l.label">
+            <span data-slot="badge" x-bind:style="tagStyle(l.hue)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-transparent" x-text="l.label"></span>
+        </template>
+    </div>
+    <div class="text-label text-foreground" x-text="card.title"></div>
+    <div x-show="card.assignee" x-cloak style="display: none" class="flex items-center justify-end">
+        <span data-slot="avatar" x-bind:title="card.assignee && card.assignee.name" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-5 text-[9px] rounded-full" x-text="card.assignee ? initials(card.assignee.name) : ''"></span>
+    </div>
+</div>
+                    </li>
+                </template>
+                <li data-slot="kanban-empty" x-show="count(column.id) === 0" x-cloak style="display: none" class="flex flex-1 items-center justify-center rounded-card border border-dashed border-border p-4 text-body-sm text-muted-foreground">No cards</li>
+            </ul>
+        </section>
+    </template>
+    <div data-slot="kanban-overlay" aria-hidden="true" x-show="activeCard() && overlay" x-cloak style="display: none" x-bind:style="overlay ? 'left:' + overlay.left + 'px;top:' + overlay.top + 'px;width:' + overlay.width + 'px' : null" class="pointer-events-none fixed z-50 cursor-grabbing shadow-lg">
+        <template x-if="activeCard()">
+            <template x-for="card in [activeCard()]" :key="card.id">
+                <div data-slot="kanban-card" class="flex flex-col gap-2 rounded-card border border-border bg-card p-3 text-card-foreground">
+    <div x-show="card.labels && card.labels.length" x-cloak style="display: none" class="flex flex-wrap gap-1">
+        <template x-for="l in (card.labels || [])" :key="l.label">
+            <span data-slot="badge" x-bind:style="tagStyle(l.hue)" class="inline-flex h-5 shrink-0 items-center gap-1 whitespace-nowrap rounded-[4px] border px-1.5 text-caption font-medium [&_svg]:size-3 border-transparent" x-text="l.label"></span>
+        </template>
+    </div>
+    <div class="text-label text-foreground" x-text="card.title"></div>
+    <div x-show="card.assignee" x-cloak style="display: none" class="flex items-center justify-end">
+        <span data-slot="avatar" x-bind:title="card.assignee && card.assignee.name" class="inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-secondary align-middle font-medium text-secondary-foreground size-5 text-[9px] rounded-full" x-text="card.assignee ? initials(card.assignee.name) : ''"></span>
+    </div>
+</div>
+            </template>
+        </template>
+    </div>
+    <div role="status" aria-live="assertive" class="sr-only" x-text="announcement"></div>
+</div>

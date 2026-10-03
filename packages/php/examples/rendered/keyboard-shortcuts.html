@@ -1,0 +1,132 @@
+<div data-slot="shortcuts-dialog-root" x-data="nqShortcutsDialog(false, '?')" x-modelable="shown" x-on:keydown.window="onKey($event)" class="contents">
+    <div data-slot="dialog" x-data="nqDialog(false)" x-modelable="open" x-id="['nq-dialog']" x-model="shown" class="contents">
+    <template x-teleport="body">
+            <div data-slot="dialog-portal">
+                <div data-slot="dialog-backdrop" x-nq-presence="open" x-on:click="close()" class="fixed inset-0 z-50 bg-nq-fg/15 dark:bg-nq-bg/60 transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0"></div>
+                <div data-slot="shortcuts-dialog" x-bind="popup" x-nq-presence="open" x-trap.noscroll="open" class="fixed inset-0 z-50 m-auto grid h-fit gap-4 rounded-floating border border-border bg-popover p-6 text-popover-foreground outline-none transition-opacity duration-150 ease-nq data-starting-style:opacity-0 data-ending-style:opacity-0 max-h-[85dvh] w-[min(56rem,calc(100vw-2rem))] max-w-none overflow-y-auto">
+                    <div data-slot="dialog-header" class="flex flex-col gap-1.5 pe-8 text-start"><h2 data-slot="dialog-title" :id="$id('nq-dialog', 'title')" class="text-h3 text-title">Keyboard shortcuts</h2>
+                        <p data-slot="dialog-description" :id="$id('nq-dialog', 'description')" class="text-body-sm text-muted-foreground">Press these keys anywhere in the app.</p></div>
+                    <section data-slot="shortcuts-reference" x-data="nqShortcuts('auto', JSON.parse('{\u0022results\u0022:\u0022{n} shortcuts\u0022,\u0022resultsOne\u0022:\u00221 shortcut\u0022,\u0022locale\u0022:\u0022en\u0022}'))" x-id="['nq-shortcuts']"
+        class="flex min-w-0 flex-col gap-4">
+            <div class="flex flex-wrap items-center gap-3">
+                            <div class="relative min-w-48 flex-1">
+                    <svg aria-hidden="true" class="pointer-events-none absolute inset-y-0 start-3 my-auto size-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                    <input data-slot="input" type="search"
+                    x-model="query" placeholder="Search shortcuts" aria-label="Search shortcuts" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-body text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control ps-9">
+                </div>
+                                        <div role="group" data-slot="toggle-group" data-variant="segmented" data-orientation="horizontal"
+    x-data="nqToggleGroup(JSON.parse('[\u0022auto\u0022]'), false)" x-modelable="value" x-bind="root"
+            x-model="platformValue" aria-label="Show keys for" class="flex w-fit max-w-full gap-0.5 rounded-control bg-secondary p-0.5">
+    <button type="button" data-slot="toggle" aria-pressed="true"
+     x-bind="toggle('auto')"      data-pressed         class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">This device</button>
+                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('mac')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Mac</button>
+                    <button type="button" data-slot="toggle" aria-pressed="false"
+     x-bind="toggle('windows')"             class="inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-label text-muted-foreground outline-none transition-colors duration-150 ease-nq hover:text-foreground [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus data-disabled:pointer-events-none data-disabled:opacity-50 rounded-[calc(var(--radius-control)-2px)] data-pressed:bg-card data-pressed:text-foreground data-pressed:shadow-xs">Windows</button>
+</div>
+                    </div>
+    <span role="status" aria-live="polite" class="sr-only" x-text="status()">2 shortcuts</span>
+    <div data-slot="empty-state" x-show="total() === 0" style="display: none;" class="flex flex-col items-center justify-center gap-3 border border-dashed border-border px-6 py-12 text-center rounded-card">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 8h.01"/>
+  <path d="M12 12h.01"/>
+  <path d="M14 8h.01"/>
+  <path d="M16 12h.01"/>
+  <path d="M18 8h.01"/>
+  <path d="M6 8h.01"/>
+  <path d="M7 16h10"/>
+  <path d="M8 12h.01"/>
+  <rect width="20" height="16" x="2" y="4" rx="2"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No shortcut matches</p>
+                    <p class="text-body-sm text-muted-foreground">Try another word, or clear the search.</p>
+            </div>
+    </div>
+    <div class="grid grid-cols-1 gap-x-10 gap-y-6 md:grid-cols-2" x-show="total() > 0">
+                                <div data-group="nav" data-title="Navigation" role="group" :aria-labelledby="$id('nq-shortcuts', 'g-nav')" class="flex min-w-0 flex-col" x-show="groupVisible($el)">
+                <h3 :id="$id('nq-shortcuts', 'g-nav')" class="pb-2 text-label text-foreground">Navigation</h3>
+                <ul role="list" class="flex flex-col divide-y divide-border border-y border-border">
+                                                                    <li data-item="palette" data-search="Open the command palette "
+                            data-keys-mac="Mod+K" data-keys-other="Mod+K" x-show="itemVisible($el)"
+                            class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5 py-2.5">
+                            <div class="flex min-w-0 flex-1 basis-40 flex-col">
+                                <span class="text-body text-foreground">Open the command palette</span>
+                                                            </div>
+                                                            <div data-keys="other" class="flex shrink-0 flex-wrap items-center gap-x-2 gap-y-1"
+                                    x-show="! apple" >
+                                                                                                                    <span data-slot="shortcut-keys" dir="ltr" role="img" aria-label="Ctrl K"
+                        class="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                                            <span aria-hidden="true" class="inline-flex items-center gap-0.5">
+                    <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">Ctrl</kbd>
+<kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">K</kbd>
+                </span>
+                    </span>
+                                                                            </div>
+                                                            <div data-keys="mac" class="flex shrink-0 flex-wrap items-center gap-x-2 gap-y-1"
+                                    x-show="apple"  style="display: none;" >
+                                                                                                                    <span data-slot="shortcut-keys" dir="ltr" role="img" aria-label="Command K"
+                        class="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                                            <span aria-hidden="true" class="inline-flex items-center gap-0.5">
+                    <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">⌘</kbd>
+<kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">K</kbd>
+                </span>
+                    </span>
+                                                                            </div>
+                                                    </li>
+                                                                    <li data-item="inbox" data-search="Go to inbox "
+                            data-keys-mac="G I" data-keys-other="G I" x-show="itemVisible($el)"
+                            class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5 py-2.5">
+                            <div class="flex min-w-0 flex-1 basis-40 flex-col">
+                                <span class="text-body text-foreground">Go to inbox</span>
+                                                            </div>
+                                                            <div data-keys="other" class="flex shrink-0 flex-wrap items-center gap-x-2 gap-y-1"
+                                    x-show="! apple" >
+                                                                                                                    <span data-slot="shortcut-keys" dir="ltr" role="img" aria-label="G then I"
+                        class="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                                            <span aria-hidden="true" class="inline-flex items-center gap-0.5">
+                    <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">G</kbd>
+                </span>
+                            <span aria-hidden="true" class="text-caption text-muted-foreground">then</span>                <span aria-hidden="true" class="inline-flex items-center gap-0.5">
+                    <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">I</kbd>
+                </span>
+                    </span>
+                                                                            </div>
+                                                            <div data-keys="mac" class="flex shrink-0 flex-wrap items-center gap-x-2 gap-y-1"
+                                    x-show="apple"  style="display: none;" >
+                                                                                                                    <span data-slot="shortcut-keys" dir="ltr" role="img" aria-label="G then I"
+                        class="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                                            <span aria-hidden="true" class="inline-flex items-center gap-0.5">
+                    <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">G</kbd>
+                </span>
+                            <span aria-hidden="true" class="text-caption text-muted-foreground">then</span>                <span aria-hidden="true" class="inline-flex items-center gap-0.5">
+                    <kbd data-slot="kbd"  dir="ltr"
+    class="inline-flex h-5 min-w-5 items-center justify-center rounded-[4px] border border-border bg-card px-1 font-mono text-[11px] text-muted-foreground">I</kbd>
+                </span>
+                    </span>
+                                                                            </div>
+                                                    </li>
+                                    </ul>
+            </div>
+            </div>
+</section>
+                    <button type="button" data-slot="dialog-close" x-on:click="close()" aria-label="Close"
+                        class="absolute end-3 top-3 inline-flex size-8 items-center justify-center rounded-control text-muted-foreground transition-colors duration-150 hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus [&_svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg></button>
+                </div>
+            </div>
+        </template>
+</div>
+</div>

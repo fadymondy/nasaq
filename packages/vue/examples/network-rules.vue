@@ -1,0 +1,28 @@
+<script setup lang="ts">
+import { NqNetworkRules, type FirewallRule, type HttpRule } from "@fadymondy/nasaq/vue";
+import { ref } from "vue";
+
+const firewall = ref<FirewallRule[]>([
+  { id: "f1", action: "allow", protocol: "tcp", port: "22", source: "203.0.113.0/24", note: "Office" },
+  { id: "f2", action: "allow", protocol: "tcp", port: "443", source: "any", note: "HTTPS" },
+  { id: "f3", action: "allow", protocol: "tcp", port: "80", source: "any" },
+  { id: "f4", action: "deny", protocol: "tcp", port: "3306", source: "any", note: "Database" },
+]);
+const http = ref<HttpRule[]>([
+  { id: "h1", type: "redirect", path: "/old-shop", target: "https://example.com/shop", status: 301 },
+  { id: "h2", type: "header", path: "/", name: "X-Frame-Options", value: "DENY" },
+  { id: "h3", type: "basic-auth", path: "/staging", username: "team" },
+  { id: "h4", type: "ip-deny", path: "/admin", cidr: "198.51.100.7" },
+]);
+
+async function onApplyFirewall(rules: FirewallRule[]) {
+  firewall.value = rules;
+}
+async function onApplyHttp(rules: HttpRule[]) {
+  http.value = rules.map(({ password, ...r }) => r);
+}
+</script>
+
+<template>
+  <NqNetworkRules :firewall="firewall" :http="http" :on-apply-firewall="onApplyFirewall" :on-apply-http="onApplyHttp" />
+</template>

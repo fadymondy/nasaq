@@ -1,0 +1,1 @@
+<x-nq::report-export-menu :document="['title' => 'Deals report', 'sections' => [['heading' => 'Totals', 'table' => ['columns' => ['Owner', 'Won'], 'rows' => [['Sara', 12], ['Omar', 9]]]]]]" filename="deals" />

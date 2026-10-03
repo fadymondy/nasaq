@@ -1,0 +1,51 @@
+// The panel's own words, en and ar, copied from the React Vitals.
+import type { BmiCategory } from "./math";
+
+export const STRINGS = {
+  en: {
+    title: "Vitals",
+    measuredOn: (date: string) => `Measured ${date}`,
+    weight: "Weight",
+    bmi: "Body mass index",
+    bodyWater: "Body water",
+    visceralFat: "Visceral fat",
+    muscleMass: "Muscle mass",
+    metabolicAge: "Metabolic age",
+    restingHeartRate: "Resting heart rate",
+    categories: { underweight: "Underweight", normal: "Normal range", overweight: "Overweight", obese: "Obese" } as Record<BmiCategory, string>,
+    bmiNote: "Body mass index is a rough screening figure, not a diagnosis.",
+    trendLabel: (label: string) => `${label}, recent trend`,
+    targets: "Targets",
+    targetsDescription: "How far each figure is from the target you set.",
+    noBaseline: "Targets appear once a baseline measurement is set.",
+    onTarget: "On target",
+    inProgress: "In progress",
+    toGo: "To go",
+    empty: "No measurements yet.",
+    notMeasured: "Not measured",
+  },
+  ar: {
+    title: "المؤشرات الحيوية",
+    measuredOn: (date: string) => `قيس في ${date}`,
+    weight: "الوزن",
+    bmi: "مؤشر كتلة الجسم",
+    bodyWater: "ماء الجسم",
+    visceralFat: "الدهون الحشوية",
+    muscleMass: "الكتلة العضلية",
+    metabolicAge: "العمر الأيضي",
+    restingHeartRate: "نبض الراحة",
+    categories: { underweight: "نحافة", normal: "ضمن المعدل", overweight: "وزن زائد", obese: "سمنة" } as Record<BmiCategory, string>,
+    bmiNote: "مؤشر كتلة الجسم رقم تقريبي للفرز، وليس تشخيصًا.",
+    trendLabel: (label: string) => `${label}، الاتجاه الأخير`,
+    targets: "الأهداف",
+    targetsDescription: "بُعد كل رقم عن الهدف الذي حددته.",
+    noBaseline: "تظهر الأهداف بعد تسجيل قياس أساسي.",
+    onTarget: "عند الهدف",
+    inProgress: "قيد التقدّم",
+    toGo: "المتبقي",
+    empty: "لا قياسات بعد.",
+    notMeasured: "لم يُقس",
+  },
+};
+
+export type VitalsLabels = typeof STRINGS.en;

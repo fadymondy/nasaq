@@ -99,7 +99,7 @@ export const Comment = () => (
     text="Thanks @Sara, looping in @Design"
     mentions={[
       { id: "u1", name: "Sara", start: 7, end: 12 },
-      { id: "t1", name: "Design", start: 24, end: 31 },
+      { id: "t1", name: "Design", start: 25, end: 32 },
     ]}
     resolve={(id) => (id === "t1" ? { kind: "team" } : { person: people[id] })}
   />

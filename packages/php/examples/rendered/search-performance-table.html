@@ -1,0 +1,146 @@
+<div data-slot="search-performance-table" class="flex flex-col gap-4 rounded-card border border-border bg-card py-4 text-card-foreground"><div data-slot="card-header" class="grid auto-rows-min items-start gap-1 px-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]"><h3 data-slot="card-title" class="text-label text-foreground">Search queries</h3></div>
+    <div data-slot="card-content" class="px-4 flex flex-col gap-3"><div x-data="nqDataTable(JSON.parse('[{\u0022id\u0022:\u0022q1\u0022,\u0022label\u0022:\u0022rtl react components\u0022,\u0022clicks\u0022:420,\u0022impressions\u0022:9800,\u0022ctr\u0022:0.04285714285714286,\u0022position\u0022:4.2,\u0022clicksText\u0022:\u0022420\u0022,\u0022clicksDelta\u0022:\u0022+11%\u0022,\u0022clicksTone\u0022:\u0022text-nq-success-text\u0022,\u0022impressionsText\u0022:\u00229,800\u0022,\u0022ctrText\u0022:\u00224.3%\u0022,\u0022positionText\u0022:\u00224.2\u0022,\u0022positionDiff\u0022:\u0022-0.9\u0022,\u0022positionTone\u0022:\u0022text-nq-success-text\u0022},{\u0022id\u0022:\u0022q2\u0022,\u0022label\u0022:\u0022arabic design system\u0022,\u0022clicks\u0022:900,\u0022impressions\u0022:12000,\u0022ctr\u0022:0.075,\u0022position\u0022:2.1,\u0022clicksText\u0022:\u0022900\u0022,\u0022clicksDelta\u0022:\u0022\u0022,\u0022clicksTone\u0022:\u0022text-muted-foreground\u0022,\u0022impressionsText\u0022:\u002212,000\u0022,\u0022ctrText\u0022:\u00227.5%\u0022,\u0022positionText\u0022:\u00222.1\u0022,\u0022positionDiff\u0022:\u0022\u0022,\u0022positionTone\u0022:\u0022text-muted-foreground\u0022}]'), JSON.parse('[{\u0022id\u0022:\u0022label\u0022,\u0022header\u0022:\u0022Query\u0022,\u0022sortable\u0022:true,\u0022searchable\u0022:true},{\u0022id\u0022:\u0022clicks\u0022,\u0022header\u0022:\u0022Clicks\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022},{\u0022id\u0022:\u0022impressions\u0022,\u0022header\u0022:\u0022Impressions\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022},{\u0022id\u0022:\u0022ctr\u0022,\u0022header\u0022:\u0022CTR\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022},{\u0022id\u0022:\u0022position\u0022,\u0022header\u0022:\u0022Position\u0022,\u0022type\u0022:\u0022number\u0022,\u0022sortable\u0022:true,\u0022align\u0022:\u0022end\u0022}]'), JSON.parse('{\u0022pageSize\u0022:10,\u0022locale\u0022:\u0022en\u0022,\u0022labels\u0022:{\u0022range\u0022:\u0022{from}\\u2013{to} of {total}\u0022}}'))" x-init="sorting = [{ id: 'clicks', direction: 'desc' }]" class="flex min-w-0 flex-col gap-3">
+            <div data-slot="data-table-toolbar" class="flex flex-wrap items-center gap-2">
+                <div data-slot="data-table-search" class="relative w-full sm:w-64">
+                    <svg aria-hidden="true" class="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>                    <input data-slot="input" type="search"
+                    x-model="query" x-on:keydown.escape="if (query) { $event.preventDefault(); query = &#039;&#039; }" placeholder="Filter queries…" aria-label="Filter queries…" class="w-full min-w-0 rounded-control border border-input bg-card px-3 text-foreground min-h-[var(--nq-touch-min,0px)] transition-colors duration-150 ease-nq outline-none placeholder:text-muted-foreground focus-visible:border-nq-focus focus-visible:outline-1 focus-visible:outline-nq-focus data-invalid:border-nq-danger aria-invalid:border-nq-danger disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:text-[16px] h-control-sm ps-8 pe-8 text-body-sm [&::-webkit-search-cancel-button]:hidden">
+                    <button type="button" x-show="query" aria-label="Clear search" x-on:click="query = ''" style="display: none"
+                        class="absolute end-1.5 top-1/2 inline-flex size-5 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground outline-none hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus">
+                        <svg aria-hidden="true" class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
+</svg>                    </button>
+                </div>
+            </div>
+            <div data-slot="table-container" role="region" tabindex="0" aria-label="Search queries"                 class="relative w-full overflow-x-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+                <div data-slot="table" role="table" aria-label="Search queries" x-bind:style="'grid-template-columns: repeat(' + shownCount() + ', auto)'" class="grid w-full min-w-max text-body-sm">
+                    <div data-slot="table-header" role="rowgroup" class="contents">
+                        <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid border-b border-border">
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="label" x-show="shown['label']" x-bind:class="pad" x-bind:aria-sort="ariaSort('label')"
+                                    class="flex items-center h-row text-start align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('label', $event.shiftKey)" x-bind:class="sortOf('label') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus ">
+                                        <span>Query</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('label')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('label') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('label') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="clicks" x-show="shown['clicks']" x-bind:class="pad" x-bind:aria-sort="ariaSort('clicks')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('clicks', $event.shiftKey)" x-bind:class="sortOf('clicks') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Clicks</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('clicks')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('clicks') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('clicks') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="impressions" x-show="shown['impressions']" x-bind:class="pad" x-bind:aria-sort="ariaSort('impressions')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('impressions', $event.shiftKey)" x-bind:class="sortOf('impressions') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Impressions</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('impressions')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('impressions') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('impressions') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="ctr" x-show="shown['ctr']" x-bind:class="pad" x-bind:aria-sort="ariaSort('ctr')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('ctr', $event.shiftKey)" x-bind:class="sortOf('ctr') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>CTR</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('ctr')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('ctr') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('ctr') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                                                            <div role="columnheader" data-slot="table-head" data-col="position" x-show="shown['position']" x-bind:class="pad" x-bind:aria-sort="ariaSort('position')"
+                                    class="flex items-center h-row text-end justify-end align-middle text-caption font-medium whitespace-nowrap text-muted-foreground">
+                                    <button type="button" x-on:click="toggleSort('position', $event.shiftKey)" x-bind:class="sortOf('position') ? 'text-foreground' : ''"
+                                        class="-mx-1.5 inline-flex h-7 max-w-full items-center gap-1 rounded-control px-1.5 outline-none transition-colors duration-150 ease-nq hover:bg-nq-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-nq-focus flex-row-reverse">
+                                        <span>Position</span>
+                                        <svg aria-hidden="true" x-show="! sortOf('position')" class="size-3.5 shrink-0 opacity-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m7 15 5 5 5-5"/>
+  <path d="m7 9 5-5 5 5"/>
+</svg>                                        <x-lucide-arrow-up aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('position') === 'asc'" style="display: none" />
+                                        <x-lucide-arrow-down aria-hidden="true" class="size-3.5 shrink-0" x-show="sortOf('position') === 'desc'" style="display: none" />
+                                    </button>
+                                </div>
+                                                    </div>
+                    </div>
+                                            <div role="rowgroup" class="contents" data-slot="table-body" x-show="rowCount === 0" style="display: none">
+                            <div role="row" data-slot="table-row" class="col-span-full grid grid-cols-subgrid border-0">
+                                <div role="cell" data-slot="table-cell" class="col-span-full h-auto p-0 whitespace-normal">
+                                    <div x-show="isFiltered" style="display: none">
+                                        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 py-12 text-center rounded-card border-0">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No matching results</p>
+                    <p class="text-body-sm text-muted-foreground">Try a different search or clear the filters.</p>
+            </div>
+    <button type="button" x-on:click="resetFilters()" class="inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-control border border-border bg-card text-foreground font-sans text-label transition-colors duration-150 ease-nq min-h-[var(--nq-touch-min,0px)] outline-none hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus h-control-sm px-3">Clear filters</button>
+    </div>
+                                    </div>
+                                    <div x-show="! isFiltered" style="display: none">
+                                        <div data-slot="empty-state" class="flex flex-col items-center justify-center gap-3 border-dashed border-border px-6 py-12 text-center rounded-card border-0">
+            <span data-slot="state-icon" class="inline-flex size-10 items-center justify-center rounded-control border border-border bg-card [&amp;_svg]:size-5 text-muted-foreground">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+</svg>        </span>
+        <div class="flex max-w-sm flex-col gap-1">
+        <p class="text-label text-foreground">No search data for this period</p>
+            </div>
+    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <template x-for="(row, index) in pageRows" x-bind:key="rid(row)">
+                            <div role="rowgroup" class="contents" data-slot="table-body">
+                                <div role="row" data-slot="table-row" data-row x-bind:tabindex="index === 0 ? 0 : -1"
+                                    x-on:keydown="rowKey($event, row, index, false)"                                     class="col-span-full grid grid-cols-subgrid group/row border-b border-border outline-none transition-colors duration-150 ease-nq focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus hover:bg-nq-hover ">
+                                    <div role="cell" data-slot="table-cell" data-cell-col="label" x-show="shown['label']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap">
+                                                                                    <span class="block max-w-[28ch] truncate sm:max-w-[40ch]" dir="auto" x-text="row.label"></span>
+                                                                            </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="clicks" x-show="shown['clicks']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <div class="flex flex-col items-end">
+                                            <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.clicksText"></bdi>
+                                            <bdi data-slot="num" data-numeric x-show="row.clicksDelta" x-bind:class="row.clicksTone" x-text="row.clicksDelta" style="display: none" class="tabular-nums text-caption"></bdi>
+                                        </div>
+                                    </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="impressions" x-show="shown['impressions']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.impressionsText"></bdi>
+                                    </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="ctr" x-show="shown['ctr']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.ctrText"></bdi>
+                                    </div>
+                                    <div role="cell" data-slot="table-cell" data-cell-col="position" x-show="shown['position']" x-bind:class="pad" class="flex items-center relative h-row align-middle whitespace-nowrap text-end justify-end">
+                                        <div class="flex flex-col items-end" title="Lower is better">
+                                            <bdi data-slot="num" data-numeric class="tabular-nums" x-text="row.positionText"></bdi>
+                                            <bdi data-slot="num" data-numeric x-show="row.positionDiff" x-bind:class="row.positionTone" x-text="row.positionDiff" style="display: none" class="tabular-nums text-caption"></bdi>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                                    </div>
+            </div>
+                    </div></div></div>
