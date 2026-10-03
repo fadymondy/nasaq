@@ -67,8 +67,20 @@ export function findIcon(name: string | null | undefined, icons: readonly IconEn
 
 const isIconUrl = (name: string) => /^(https?:\/\/|\/|data:image\/)/.test(name);
 
+/**
+ * The Boxicons class for a stored name, or `undefined` when it is not a Boxicons name. Accepts the prefixed
+ * forms `bx:home`, `bxs:home`, `bxl:github` and the legacy class forms `bx-home`, `bxs-home`, `bxl-github`.
+ */
+export function boxiconClass(name: string | null | undefined): string | undefined {
+  const m = name?.trim().match(/^(bx|bxs|bxl)[:-]([a-z0-9-]+)$/i);
+  return m ? `${m[1]!.toLowerCase()}-${m[2]!.toLowerCase()}` : undefined;
+}
+
 export type IconByNameProps = {
-  /** An icon name (`users`, `Users`, `lucide:users`) or an image URL (`https://…`, `/…`, `data:image/…`). */
+  /**
+   * An icon name (`users`, `Users`, `lucide:users`), a Boxicons name (`bx:home`, `bxl:github`, `bx-home`; needs the
+   * Boxicons CSS on the page) or an image URL (`https://…`, `/…`, `data:image/…`).
+   */
   name: string | null | undefined;
   icons?: readonly IconEntry[];
   /** Rendered when the name is empty or unknown. Default: nothing. */
@@ -91,6 +103,17 @@ export function IconByName({ name, icons, fallback = null, className, size, ...p
         width={px}
         height={px}
         className={cn("inline-block shrink-0 object-contain", px === undefined && "size-4", className as string)}
+      />
+    );
+  }
+  const bx = boxiconClass(name);
+  if (bx) {
+    return (
+      <i
+        aria-hidden
+        data-slot="icon-boxicon"
+        className={cn("bx inline-block shrink-0 not-italic", bx, className as string)}
+        style={{ fontSize: size ?? "1em", lineHeight: 1 }}
       />
     );
   }

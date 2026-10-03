@@ -31,12 +31,23 @@ export const buttonVariants = cva(
         icon: "size-control p-0",
         "icon-sm": "size-control-sm p-0",
       },
+      shape: {
+        /** The system's control radius. */
+        default: "",
+        /** Fully rounded: chips-like calls to action, toolbars over media. Icon sizes become circles. */
+        pill: "rounded-full",
+      },
     },
     compoundVariants: [
       // Text-sized links collapse to their line box; className or an icon size can still override.
       { variant: "link", size: ["sm", "md", "lg"], className: "h-auto px-0" },
+      // Round ends eat into the label's room, so pills get a little more padding.
+      { shape: "pill", size: "sm", className: "px-3.5" },
+      { shape: "pill", size: "md", className: "px-5" },
+      { shape: "pill", size: "lg", className: "px-7" },
+      { shape: "pill", variant: "link", className: "rounded-control px-0" },
     ],
-    defaultVariants: { variant: "secondary", size: "md" },
+    defaultVariants: { variant: "secondary", size: "md", shape: "default" },
   },
 );
 
@@ -45,12 +56,13 @@ export interface ButtonProps extends ComponentProps<typeof BaseButton>, VariantP
   loading?: boolean;
 }
 
-export function Button({ className, variant, size, loading = false, disabled, children, ...props }: ButtonProps) {
+export function Button({ className, variant, size, shape, loading = false, disabled, children, ...props }: ButtonProps) {
   const iconOnly = size === "icon" || size === "icon-sm";
   return (
     <BaseButton
       data-slot="button"
-      className={cn(buttonVariants({ variant, size }), className as string)}
+      data-shape={shape === "pill" ? "pill" : undefined}
+      className={cn(buttonVariants({ variant, size, shape }), className as string)}
       {...props}
       aria-busy={loading || undefined}
       disabled={disabled || loading}

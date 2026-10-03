@@ -70,6 +70,7 @@ Button                      data-slot="button"   (renders a <button>)
 | --- | --- | --- | --- |
 | `variant?` | `"primary" \| "secondary" \| "ghost" \| "danger" \| "link"` | `"secondary"` | Visual style. See below. |
 | `size?` | `"sm" \| "md" \| "lg" \| "icon" \| "icon-sm"` | `"md"` | Size. See below. |
+| `shape?` | `"default" \| "pill"` | `"default"` | `pill` is fully rounded with a little more padding; icon sizes become circles. Sets `data-shape="pill"`. No effect on `link`. |
 | `loading?` | `boolean` | `false` | Shows a `Spinner` before the children (in place of them for `icon` / `icon-sm`), sets `aria-busy`, blocks interaction but keeps focus (`focusableWhenDisabled`). `aria-busy` and `disabled` are applied after your props, so they cannot be overridden while loading. |
 | `disabled?` | `boolean` | `false` | Disabled (50% opacity, no pointer events). Also disabled while `loading`. |
 | `className?` | `string` | none | Merged after the variant classes with `cn`. |
@@ -96,9 +97,16 @@ Sizes:
 | `icon` | square `size-control`, no padding |
 | `icon-sm` | square `size-control-sm`, no padding |
 
+Shapes:
+
+| `shape` | Use |
+| --- | --- |
+| `default` | Everywhere in the app: forms, toolbars, dialogs. |
+| `pill` | Marketing calls to action, floating toolbars over media, and filter-like actions next to chips. Keep one shape per group. |
+
 ### `buttonVariants`
 
-`cva` function: `buttonVariants({ variant?, size? }) => string`. Use it to style non-button elements.
+`cva` function: `buttonVariants({ variant?, size?, shape? }) => string`. Use it to style non-button elements.
 
 ```tsx
 import { buttonVariants } from "@fadymondy/nasaq/web";

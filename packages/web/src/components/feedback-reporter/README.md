@@ -3,12 +3,12 @@ name: feedback-reporter
 title: FeedbackReporter
 category: feedback-sdk
 status: beta
-summary: The interface around the feedback dialog. A floating launcher as a pill, circle or edge tab, a hub of reports already made on this page, a launcher configurator with install code, and a shake-to-report sheet for phones.
-exports: [FeedbackReporterLabels, FeedbackFloatingLauncherProps, FeedbackFloatingLauncher, FeedbackHubProps, FeedbackHub, FeedbackLauncherConfiguratorProps, FeedbackLauncherConfigurator, ShakeToReportOptions, useShakeToReport, ShakeReportSheetProps, ShakeReportSheet]
+summary: The interface around the feedback dialog. A floating launcher as a pill, circle or edge tab that visitors can drag aside, a hub of reports already made on this page, a launcher configurator with install code, and a shake-to-report sheet for phones.
+exports: [FeedbackReporterLabels, FeedbackFloatingLauncherProps, FeedbackFloatingLauncher, FeedbackHubProps, FeedbackHubFilter, FeedbackHub, FeedbackLauncherConfiguratorProps, FeedbackLauncherConfigurator, ShakeToReportOptions, useShakeToReport, ShakeReportSheetProps, ShakeReportSheet]
 related: [sheet, dialog, chat-widget, alert]
 story: components-feedback-sdk-feedback-reporter
 base-ui: [dialog, toggle-group, tabs, switch]
-keywords: [feedback, report a problem, floating button, launcher, shake to report, bug report, hub, votes, mahaam]
+keywords: [feedback, report a problem, floating button, launcher, draggable, movable, my reports, pagination, shake to report, bug report, hub, votes, mahaam]
 ---
 
 # FeedbackReporter
@@ -60,8 +60,8 @@ export function Feedback() {
 ## Anatomy
 
 ```
-FeedbackFloatingLauncher      data-slot="feedback-launcher" (data-shape, data-position)
-FeedbackHub                   data-slot="feedback-hub": header, status filter, report list with votes
+FeedbackFloatingLauncher      data-slot="feedback-launcher" (data-shape, data-position or data-side, data-movable, data-dragging)
+FeedbackHub                   data-slot="feedback-hub": header, status / Mine filter, report list with votes, Load more
 FeedbackLauncherConfigurator  data-slot="feedback-configurator": shape, position, text, preview, install code
 ShakeReportSheet              data-slot="shake-report-sheet": bottom sheet, report, not now, setting
 useShakeToReport              devicemotion listener, counts jolts
@@ -71,7 +71,11 @@ useShakeToReport              devicemotion listener, counts jolts
 
 **FeedbackFloatingLauncher**: button props except `children` and `type`, plus `shape` (`"pill" | "circle" | "tab"`), `position` (`"bottom-end" | "bottom-start" | "top-end" | "top-start" | "edge-end" | "edge-start"`), `label`, `count`, `placement` (`"fixed"`), `icon`. A tab always sits on an edge and a pill or circle never does: `normalizePosition` settles a mismatch.
 
-**FeedbackHub**: `issues` (`FeedbackHubIssue[]`: `id`, `title`, `status` `"open" | "in-progress" | "resolved"`, `createdAt`, `votes`, `voted`, `author`), `page`, `onVote(id)`, `onReportNew`, `onOpenIssue(id)`, `labels`.
+With `movable` the visitor can drag the launcher out of the way. On release it snaps to the nearer side and keeps its height (`FeedbackLauncherSpot`: `{ side: "start" | "end", y }`, `y` a fraction of the height); a drag never counts as a click. Alt + arrow keys move it too. The spot is saved in `localStorage` under `storageKey` (default `"nasaq-feedback-launcher"`, `null` to keep it in memory) and read back after mount. `spot` makes it controlled, `defaultSpot` sets the first one, `onSpotChange(spot)` reports drops and key moves.
+
+**FeedbackHub**: `issues` (`FeedbackHubIssue[]`: `id`, `title`, `status` `"open" | "in-progress" | "resolved"`, `createdAt`, `votes`, `voted`, `author`), `page`, `onVote(id)`, `onReportNew`, `onOpenIssue(id)`, `labels`. Issues with `mine: true` are the visitor's own: they get a "Yours" badge and a **Mine** tab (`mineTab` forces it on or off).
+
+For a server-paged list pass the first page as `issues`, the totals as `counts` (`{ all, open, "in-progress", resolved, mine }`), refetch on `onFilterChange(filter)`, and set `hasMore`, `onLoadMore` and `loadingMore` for the **Load more** row.
 
 **FeedbackLauncherConfigurator**: `value` (`{ shape, position, label }`), `onChange`, `labels`.
 
@@ -79,7 +83,7 @@ useShakeToReport              devicemotion listener, counts jolts
 
 **useShakeToReport({ onShake, enabled, threshold, jolts, cooldown })** returns `{ supported, permission, requestPermission }`. On iOS call `requestPermission()` from a tap.
 
-Pure helpers in `feedback-reporter-utils.ts`: `feedbackInstallSnippet`, `normalizePosition`, `isShake`, `motionDelta`, `countByStatus`.
+Pure helpers in `feedback-reporter-utils.ts`: `feedbackInstallSnippet`, `normalizePosition`, `isShake`, `motionDelta`, `countByStatus`, `filterHubIssues`, and for the movable launcher `snapLauncherSpot`, `moveLauncherSpot`, `spotFromPosition`, `parseLauncherSpot`.
 
 ## Examples
 
@@ -94,7 +98,7 @@ const shake = useShakeToReport({ onShake: () => setSheet(true) });
 
 ## Accessibility
 
-- The launcher is a real button with a name (the circle gets an `aria-label`). The status filter is a labelled toggle group and votes are pressed-state buttons.
+- The launcher is a real button with a name (the circle gets an `aria-label`). A movable one also moves with Alt + arrow keys (`aria-keyshortcuts`, and a title that says so). The status filter is a labelled toggle group and votes are pressed-state buttons.
 - The sheet is a dialog: focus is trapped and Escape closes it. Shaking is optional and can be switched off from the sheet.
 
 ## RTL & i18n
@@ -109,7 +113,7 @@ const shake = useShakeToReport({ onShake: () => setSheet(true) });
 
 - Do keep the public feedback key in an environment variable. The install code reads it from one.
 - Do show the hub before the dialog when a page already has reports.
-- Don't put a floating launcher over a primary action: move it to the other side.
+- Don't put a floating launcher over a primary action: move it to the other side, or make it `movable`.
 - Don't rely on shaking alone: it is not available on desktops or when motion access is refused.
 
 ## Related

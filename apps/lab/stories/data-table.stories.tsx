@@ -7,10 +7,12 @@ import {
   type DataTableColumn,
   DataTableFacetFilter,
   DataTablePagination,
+  DataTableRangeFilter,
   DataTableSearch,
   DataTableToolbar,
   DataTableViewOptions,
   Status,
+  type TableDensity,
   toast,
   useDataTable,
   useNasaq,
@@ -414,3 +416,261 @@ function EditDemo() {
 /** In-cell edit: text, number, select and date columns with validation, a pending state and rollback on failure. */
 export const InCellEdit: Story = { render: () => <EditDemo /> };
 export const InCellEditArabic: Story = { globals: { locale: "ar" }, render: () => <EditDemo /> };
+
+// ---------------------------------------------------------------------------------------------
+// Multi-sort, pinning, resizing, expandable rows, range filters, density and page size
+// ---------------------------------------------------------------------------------------------
+
+interface Invoice {
+  id: string;
+  client: string;
+  owner: string;
+  status: keyof typeof STATUS;
+  amount: number;
+  issued: string;
+  due: string;
+  lines: { item: [string, string]; qty: number; price: number }[];
+}
+
+const CLIENTS = ["Acme Logistics", "Nile Foods", "Delta Clinics", "Sahara Labs", "Cairo Motors", "Red Sea Travel", "Atlas Retail"];
+const ITEMS: [string, string][] = [
+  ["Hosting (monthly)", "استضافة (شهرية)"],
+  ["Support hours", "ساعات دعم"],
+  ["Design sprint", "سبرنت تصميم"],
+  ["API overage", "تجاوز واجهة البرمجة"],
+  ["Training session", "جلسة تدريب"],
+];
+const pad = (n: number) => String(n).padStart(2, "0");
+const INVOICES: Invoice[] = Array.from({ length: 42 }, (_, i) => {
+  const lines = Array.from({ length: (i % 3) + 1 }, (_, j) => ({
+    item: ITEMS[(i + j * 2) % ITEMS.length]!,
+    qty: ((i + j) % 4) + 1,
+    price: 150 + ((i * 37 + j * 91) % 900),
+  }));
+  const issuedDay = (i % 28) + 1;
+  return {
+    id: `INV-${2400 + i}`,
+    client: CLIENTS[(i * 3) % CLIENTS.length]!,
+    owner: PEOPLE[(i * 2) % PEOPLE.length]!,
+    status: Object.keys(STATUS)[(i * 3) % 5]!,
+    amount: lines.reduce((s, l) => s + l.qty * l.price, 0),
+    issued: `2026-0${(i % 3) + 7}-${pad(issuedDay)}`,
+    due: `2026-0${(i % 3) + 8}-${pad(issuedDay)}`,
+    lines,
+  };
+});
+
+function useInvoiceColumns(ar: boolean) {
+  const locale = ar ? "ar" : "en";
+  return useMemo<DataTableColumn<Invoice>[]>(() => {
+    const money = new Intl.NumberFormat(locale, { style: "currency", currency: "USD", maximumFractionDigits: 0, numberingSystem: "latn" });
+    const date = new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", numberingSystem: "latn", timeZone: "UTC" });
+    return [
+      {
+        id: "id",
+        header: ar ? "الفاتورة" : "Invoice",
+        cell: (r) => <span className="font-mono text-caption text-muted-foreground">{r.id}</span>,
+        sortValue: (r) => r.id,
+        searchValue: (r) => r.id,
+        hideable: false,
+        size: 120,
+      },
+      {
+        id: "client",
+        header: ar ? "العميل" : "Client",
+        cell: (r) => <span className="text-label text-foreground">{r.client}</span>,
+        sortValue: (r) => r.client,
+        searchValue: (r) => r.client,
+        size: 200,
+      },
+      {
+        id: "status",
+        header: ar ? "الحالة" : "Status",
+        cell: (r) => <Status tone={STATUS[r.status]!.tone}>{STATUS[r.status]![ar ? "ar" : "en"]}</Status>,
+        sortValue: (r) => Object.keys(STATUS).indexOf(r.status),
+        filterValue: (r) => r.status,
+        size: 150,
+      },
+      {
+        id: "owner",
+        header: ar ? "المسؤول" : "Owner",
+        cell: (r) => (
+          <span className="flex items-center gap-2">
+            <Avatar size="xs" name={r.owner} />
+            {r.owner}
+          </span>
+        ),
+        sortValue: (r) => r.owner,
+        size: 180,
+      },
+      {
+        id: "issued",
+        header: ar ? "تاريخ الإصدار" : "Issued",
+        cell: (r) => <time className="tabular-nums text-muted-foreground">{date.format(new Date(r.issued))}</time>,
+        sortValue: (r) => r.issued,
+        rangeValue: (r) => r.issued,
+        size: 130,
+      },
+      {
+        id: "due",
+        header: ar ? "الاستحقاق" : "Due",
+        cell: (r) => <time className="tabular-nums text-muted-foreground">{date.format(new Date(r.due))}</time>,
+        sortValue: (r) => r.due,
+        rangeValue: (r) => r.due,
+        size: 130,
+      },
+      {
+        id: "amount",
+        header: ar ? "المبلغ" : "Amount",
+        cell: (r) => <span className="tabular-nums text-foreground">{money.format(r.amount)}</span>,
+        sortValue: (r) => r.amount,
+        rangeValue: (r) => r.amount,
+        align: "end",
+        size: 130,
+      },
+    ];
+  }, [ar, locale]);
+}
+
+const tableName = (ar: boolean) => (ar ? "الفواتير" : "Invoices");
+
+/** Shift-click headers to add sort keys: try Status, then Shift-click Amount. The number shows each key's order. */
+export const MultiSort: Story = {
+  render: function Render() {
+    const ar = useAr();
+    const columns = useInvoiceColumns(ar);
+    const table = useDataTable({
+      data: INVOICES.slice(0, 14),
+      columns,
+      getRowId: (r) => r.id,
+      multiSort: true,
+      defaultSorting: [
+        { id: "status", direction: "asc" },
+        { id: "amount", direction: "desc" },
+      ],
+    });
+    return (
+      <div className="flex max-w-5xl flex-col gap-2">
+        <DataTable table={table} label={tableName(ar)} />
+        <p className="text-caption text-muted-foreground">
+          {ar ? "اضغط Shift مع النقر على رأس عمود لإضافته كمفتاح ترتيب." : "Shift-click a header to add it as another sort key."}
+        </p>
+      </div>
+    );
+  },
+};
+
+/**
+ * The invoice column is pinned to the start and amount to the end; scroll sideways and they stay. Drag a column
+ * border (or focus it and use the arrow keys, double-click to reset) to resize. "View" pins any column.
+ */
+export const PinnedAndResizable: Story = {
+  render: function Render() {
+    const ar = useAr();
+    const base = useInvoiceColumns(ar);
+    const columns = useMemo(() => base.map((c) => (c.id === "id" ? { ...c, pin: "start" as const } : c.id === "amount" ? { ...c, pin: "end" as const } : c)), [base]);
+    const table = useDataTable({
+      data: INVOICES.slice(0, 12),
+      columns,
+      getRowId: (r) => r.id,
+      selectable: true,
+      resizable: true,
+    });
+    return (
+      <div className="flex max-w-3xl flex-col gap-3">
+        <DataTableToolbar>
+          <DataTableViewOptions table={table} pinning />
+        </DataTableToolbar>
+        <DataTable
+          table={table}
+          label={tableName(ar)}
+          frame
+          rowLabel={(r) => r.id}
+          rowActions={(r) => [{ id: "open", label: ar ? "فتح" : "Open", icon: Pencil, onSelect: () => toast(r.id) }]}
+        />
+      </div>
+    );
+  },
+};
+
+/** `renderExpanded` adds an expand button per row. Focus a row and press → / ← (mirrored in Arabic) to open and close. */
+export const Expandable: Story = {
+  render: function Render() {
+    const ar = useAr();
+    const columns = useInvoiceColumns(ar);
+    const money = new Intl.NumberFormat(ar ? "ar" : "en", { style: "currency", currency: "USD", maximumFractionDigits: 0, numberingSystem: "latn" });
+    const table = useDataTable({ data: INVOICES.slice(0, 8), columns, getRowId: (r) => r.id });
+    return (
+      <div className="max-w-5xl">
+        <DataTable
+          table={table}
+          label={tableName(ar)}
+          rowLabel={(r) => r.id}
+          canExpand={(r) => r.status !== "todo"}
+          renderExpanded={(r) => (
+            <dl className="grid max-w-md grid-cols-[1fr_auto_auto] gap-x-6 gap-y-1 py-1 text-body-sm">
+              {r.lines.map((l, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: lines are positional
+                <div key={i} className="contents">
+                  <dt className="text-foreground">{l.item[ar ? 1 : 0]}</dt>
+                  <dd className="m-0 tabular-nums text-muted-foreground">×{l.qty}</dd>
+                  <dd className="m-0 text-end tabular-nums text-foreground">{money.format(l.qty * l.price)}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        />
+      </div>
+    );
+  },
+};
+
+/** Number and date range filters next to a facet filter. Both ends are optional and inclusive. */
+export const RangeFilters: Story = {
+  render: function Render() {
+    const ar = useAr();
+    const columns = useInvoiceColumns(ar);
+    const table = useDataTable({ data: INVOICES, columns, getRowId: (r) => r.id, pageSize: 10 });
+    return (
+      <div className="flex max-w-5xl flex-col gap-3">
+        <DataTableToolbar>
+          <DataTableSearch table={table} placeholder={ar ? "ابحث في الفواتير…" : "Search invoices…"} />
+          <DataTableFacetFilter
+            table={table}
+            column="status"
+            options={Object.entries(STATUS).map(([value, s]) => ({ value, label: s[ar ? "ar" : "en"] }))}
+          />
+          <DataTableRangeFilter table={table} column="amount" min={0} step={50} />
+          <DataTableRangeFilter table={table} column="due" kind="date" />
+        </DataTableToolbar>
+        <DataTable table={table} label={tableName(ar)} />
+        <DataTablePagination table={table} />
+      </div>
+    );
+  },
+};
+
+/** Density from the "View" menu and a rows-per-page choice in the pager. */
+export const DensityAndPageSize: Story = {
+  render: function Render() {
+    const ar = useAr();
+    const columns = useInvoiceColumns(ar);
+    const [density, setDensity] = useState<TableDensity>("default");
+    const table = useDataTable({ data: INVOICES, columns, getRowId: (r) => r.id, pageSize: 10 });
+    return (
+      <div className="flex max-w-5xl flex-col gap-3">
+        <DataTableToolbar>
+          <DataTableSearch table={table} placeholder={ar ? "ابحث في الفواتير…" : "Search invoices…"} />
+          <DataTableViewOptions table={table} density={density} onDensityChange={setDensity} />
+        </DataTableToolbar>
+        <DataTable table={table} label={tableName(ar)} density={density} striped />
+        <DataTablePagination table={table} pageSizeOptions={[10, 25, 50]} />
+      </div>
+    );
+  },
+};
+
+export const MultiSortArabic: Story = { ...MultiSort, globals: { locale: "ar" } };
+export const PinnedAndResizableArabic: Story = { ...PinnedAndResizable, globals: { locale: "ar" } };
+export const ExpandableArabic: Story = { ...Expandable, globals: { locale: "ar" } };
+export const RangeFiltersArabic: Story = { ...RangeFilters, globals: { locale: "ar" } };

@@ -74,7 +74,9 @@ ErrorState        data-slot="error-state"      role="alert"
 
 LoadingState      data-slot="loading-state"    role="status", aria-live="polite"
 ├─ sr-only label
-└─ skeleton row × rows  (or spinner + label when rows is 0)
+├─ skeleton × rows       data-shape="rows" (rows), "grid" (loading-card), "timeline" (loading-event)
+│                         (or spinner + label when rows is 0)
+└─ caption               visible text under the skeleton, when set
 
 Skeleton          data-slot="skeleton"         aria-hidden
 ```
@@ -105,7 +107,10 @@ Both accept the same props (the exported `StateProps` interface):
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `label?` | `string` | `"Loading…"` / `"جارٍ التحميل…"` by provider locale | Announced to assistive tech; also shown next to the spinner when `rows` is `0`. |
-| `rows?` | `number` | `3` | Number of skeleton rows. With `0`, a centred spinner and label are shown instead. |
+| `rows?` | `number` | `3` | Number of skeleton items (rows, cards or events). With `0`, a centred spinner and label are shown instead. |
+| `shape?` | `"rows" \| "grid" \| "timeline"` | `"rows"` | The layout being previewed: list rows, a grid of cards, or a timeline of events. |
+| `columns?` | `1 \| 2 \| 3 \| 4` | `3` | Grid columns from the `sm` breakpoint up; one column below it. |
+| `caption?` | `ReactNode` | none | Visible text under the skeleton ("Fetching the last 30 days…"). Replaces the `sr-only` label as the announced text. |
 | `className?` | `string` | none | Merged onto the wrapper. |
 
 ### `Skeleton`
@@ -114,6 +119,13 @@ Both accept the same props (the exported `StateProps` interface):
 only when motion is allowed (`motion-safe:animate-pulse`). Give it a size with `className`.
 
 ## Examples
+
+### Grid and timeline
+
+```tsx
+<LoadingState shape="grid" columns={3} rows={6} />
+<LoadingState shape="timeline" rows={4} caption="Fetching the audit trail…" />
+```
 
 ### Error with retry
 

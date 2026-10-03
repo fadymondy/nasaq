@@ -3,12 +3,12 @@ name: data-table
 title: Data Table
 category: data-display
 status: beta
-summary: The interactive layer on top of Table. A useDataTable hook plus opt-in pieces for sorting, search, facet filters, column visibility, selection with bulk actions, row actions, keyboard navigation, pagination, and loading, empty and error states.
-exports: [DataTableSortDirection, DataTableSort, DataTableColumn, DataTableRowAction, UseDataTableOptions, DataTableInstance, DataTableLabels, useDataTable, DataTableProps, DataTable, DataTableToolbar, DataTableSearchProps, DataTableSearch, DataTableFacetOption, DataTableFacetFilterProps, DataTableFacetFilter, DataTableViewOptions, DataTableBulkActionsProps, DataTableBulkActions, DataTablePagination, DataTableActions, DataTableAction, DataTableActionsProps, DataTableCellEdit, DataTableCustomEditContext, DataTableCellEditResult, DataTableEditOption, DataTableCellValue]
+summary: The interactive layer on top of Table. A useDataTable hook plus opt-in pieces for sorting (multi-column), search, facet and range filters, column visibility, pinning and resizing, expandable rows, selection with bulk actions, row actions, keyboard navigation, pagination with page sizes, and loading, empty and error states.
+exports: [DataTableColumn, DataTableRowAction, UseDataTableOptions, DataTableInstance, DataTableLabels, useDataTable, DataTableProps, DataTable, DataTableToolbar, DataTableSearchProps, DataTableSearch, DataTableFacetOption, DataTableFacetFilterProps, DataTableFacetFilter, DataTableViewOptionsProps, DataTableViewOptions, DataTableRangeFilterProps, DataTableRangeFilter, DataTableBulkActionsProps, DataTableBulkActions, DataTablePaginationProps, DataTablePagination, DataTableActions, DataTableAction, DataTableActionsProps, DataTableCellEdit, DataTableCustomEditContext, DataTableCellEditResult, DataTableEditOption, DataTableCellValue]
 related: [table, checkbox, states, dropdown-menu, page-actions, status]
 story: components-data-display-data-table
 base-ui: [menu, checkbox]
-keywords: [data table, datagrid, grid, table, sort, sorting, filter, facet, search, pagination, paging, selection, bulk actions, row actions, columns, visibility, keyboard, server-side]
+keywords: [data table, datagrid, grid, table, sort, sorting, filter, facet, search, pagination, paging, page size, selection, bulk actions, row actions, columns, visibility, keyboard, server-side, multi-sort, range filter, pin, sticky column, resize, expandable, expand row, density]
 ---
 
 # Data Table
@@ -109,20 +109,38 @@ DataTablePagination         "1–20 of 143"  ‹ ›
 | `defaultSort` | `DataTableSort \| null` | `{ id, direction }`. |
 | `sort`, `query`, `filters`, `page`, `selection`, `hidden` | `{ value, onChange }` | Control any piece of state (URL params, server). |
 | `manual`, `rowCount` | `boolean`, `number` | `data` is already sorted, filtered and paged by the server. |
+| `multiSort` | `boolean` | Shift-click a header to add it as a further sort key. |
+| `defaultSorting`, `sorting` | `DataTableSort[]` | All sort keys, in priority order. `sorting` is `{ value, onChange }`. `sort` still works and controls the first key. |
+| `ranges` | `{ value, onChange }` | Control the range filters: `Record<columnId, { min?, max? }>`. |
+| `perPage` | `{ value, onChange }` | Control the page size (the rows-per-page choice). |
+| `expanded` | `{ value, onChange }` | Control which rows are open (`Set` of row ids). |
+| `pinning` | `{ value, onChange }` | Control pinning: `{ start?: ids, end?: ids }`. Uncontrolled, columns start from their `pin`. |
+| `resizable`, `sizes` | `boolean`, `{ value, onChange }` | Drag, or arrow-key, column borders. `sizes` is `Record<columnId, px>`. |
 
 It returns a `DataTableInstance`: `rows` (what to render), `rowCount`, `sort`/`toggleSort`, `query`/`setQuery`,
 `filters`/`setFilter`/`resetFilters`, `isFiltered`, `page`/`setPage`/`pageCount`, `hidden`/`toggleColumn`,
-`selection`/`selectedRows`/`toggleRow`/`togglePage`/`setSelection`.
+`selection`/`selectedRows`/`toggleRow`/`togglePage`/`setSelection`, plus `sorting`/`setSorting`,
+`ranges`/`setRange`, `setPageSize`, `expanded`/`toggleExpanded`/`setExpanded`, `pinning`/`pinColumn`/`pinOf` and
+`sizes`/`setColumnSize`. `visibleColumns` is already in pinned order.
 
 Any change to sort, search or filters goes back to page 1. Search is case-insensitive and folds Arabic
 (أ/إ/آ → ا, ة → ه, ى → ي, no tashkeel), so "مراجعه" finds "مراجعة". Sorting uses `Intl.Collator` with
 numeric ordering, is stable, and puts empty values last.
 
+With `multiSort`, a plain click sorts by that column alone (asc, desc, off). Shift-click adds it as the next key,
+then flips it, then removes it. Headers show the key's position (1, 2, …) when there is more than one.
+
+The pure helpers behind this are exported too and have no React in them: `nextSorting`, `sortTableRows`,
+`rangeBound`, `rangeValueOf`, `isActiveRange`, `inRange`, `orderByPinning`, `pinColumnIn`, `pinOffsets` and
+`clampColumnSize`, with the types `DataTableSort`, `DataTableSortDirection`, `DataTableRange`, `DataTablePinning`
+and `SortableValue`. Use them to run the same sort or range logic on a server.
+
 ### `DataTableColumn<T>`
 
 `id`, `header`, `cell` (required). `label` (a plain-text name when `header` is not a string), `sortValue`,
 `searchValue`, `filterValue`, `align` (`start` · `end` · `center`), `hideable` (default true), `defaultHidden`,
-`className`, `headerClassName`.
+`className`, `headerClassName`. `rangeValue` (a number or date for `DataTableRangeFilter`), `pin` (`start` ·
+`end`), `size`, `minSize`, `maxSize` (pixels) and `resizable` (default true when the table is resizable).
 
 ### `<DataTable>`
 
@@ -135,6 +153,8 @@ numeric ordering, is stable, and puts empty values last.
 | `loading` | Skeleton rows and `aria-busy`. |
 | `error`, `onRetry` | Replaces the body with `ErrorState`. |
 | `empty` | Shown when there is no data. When filtering leaves no rows, "No matching results" with **Clear filters** is shown instead. |
+| `renderExpanded` | `(row) => ReactNode`. Adds an expand button column; the detail shows in a full-width row under it. |
+| `canExpand` | `(row) => boolean`. Rows that return false get no expand button. |
 | `labels` | Override any built-in string. |
 
 ### Pieces
@@ -143,10 +163,15 @@ numeric ordering, is stable, and puts empty values last.
 - `DataTableSearch`: `table`, `placeholder`. Esc clears it.
 - `DataTableFacetFilter`: `table`, `column`, `options: { value, label, icon? }[]`, `title?`. A dashed button
   when empty. Shows one chosen label, or the count.
-- `DataTableViewOptions`: the column checklist. The last visible column cannot be hidden.
+- `DataTableRangeFilter`: `table`, `column` (with `rangeValue`), `kind` (`number` · `date`), `min`, `max`,
+  `step`, `format`, `title?`. From / To inputs in a popover; the button reads "100–500", "≥ 100" or "≤ 500".
+  Both ends are inclusive; a `date` max covers the whole day.
+- `DataTableViewOptions`: the column checklist. The last visible column cannot be hidden. `pinning` adds
+  Pin to start / Pin to end / Unpin per column; `density` + `onDensityChange` add a density choice.
 - `DataTableBulkActions`: `table` + your buttons. Hidden when nothing is selected. It includes the count and
   a clear button.
-- `DataTablePagination`: renders nothing when there is only one page.
+- `DataTablePagination`: renders nothing when there is only one page. `pageSizeOptions` (e.g. `[10, 25, 50]`)
+  adds a rows-per-page select; it then shows whenever there are more rows than the smallest option.
 
 ## Examples
 
@@ -165,7 +190,7 @@ const table = useDataTable({
 });
 ```
 
-See the lab for all states: Default, SortOnly, States.
+See the lab for all states: Default, SortOnly, States, MultiSort, PinnedAndResizable, Expandable, RangeFilters, DensityAndPageSize.
 
 ## Context menu, table actions and in-cell edit
 

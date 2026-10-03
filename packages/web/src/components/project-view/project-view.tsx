@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AvatarStack, type EntityPerson } from "../entity-list";
 import { Field, FieldDescription, FieldLabel, Input } from "../field";
 import { type Issue, ISSUE_PRIORITIES, ISSUE_TYPES, type IssuePatch, type IssuePerson, type IssuePriority, type IssueType, isOpenIssue, PRIORITY_RANK } from "../issue-view/issue-logic";
+import { IssueCard } from "../issue-view/issue-card";
 import { PriorityIcon, TypeIcon, useIssueText } from "../issue-view/issue-marks";
 import type { IssueActivityProps, IssueAiProps, IssueTimeProps } from "../issue-view/issue-view";
 import { EnvList, type EnvListProps } from "../env-list";
@@ -426,16 +427,11 @@ interface CardIssue extends KanbanCardData {
 }
 
 function IssueBoard({ issues, statuses, labels, people, onMove, onOpen, t }: { issues: Issue[]; statuses: WorkStatus[]; labels: WorkLabel[]; people: IssuePerson[]; onMove: (id: string, statusId: string, index: number) => void; onOpen?: (issue: Issue) => void; t: ReturnType<typeof useText>["t"] }) {
-  const { t: it } = useIssueText();
-  const personOf = new Map(people.map((p) => [p.id, p]));
-  const labelOf = new Map(labels.map((l) => [l.id, l]));
   const cards: CardIssue[] = issues.map((i) => ({
     id: i.id,
     columnId: i.statusId,
     title: `${i.key} ${i.title}`,
     issue: i,
-    labels: i.labelIds.flatMap((id) => (labelOf.has(id) ? [{ label: labelOf.get(id)!.name, hue: labelOf.get(id)!.hue }] : [])),
-    assignee: i.assigneeId && personOf.has(i.assigneeId) ? { name: personOf.get(i.assigneeId)!.name, src: personOf.get(i.assigneeId)!.avatar } : undefined,
   }));
   return (
     <KanbanBoard<CardIssue>
@@ -450,43 +446,14 @@ function IssueBoard({ issues, statuses, labels, people, onMove, onOpen, t }: { i
         { id: "copy", label: t.copyKey, icon: Link2, onSelect: () => void navigator.clipboard?.writeText(card.issue.key) },
       ]}
       renderCard={(card) => (
-        <div
-          data-slot="kanban-card"
-          onClick={() => onOpen?.(card.issue)}
-          className="flex w-full flex-col gap-2 rounded-card border border-border bg-card p-3 text-card-foreground"
-        >
-          <div className="flex items-center gap-2 text-caption text-muted-foreground">
-            <TypeIcon type={card.issue.type} />
-            <bdi dir="ltr" className="font-mono">
-              {card.issue.key}
-            </bdi>
-            <span className="ms-auto inline-flex items-center gap-1" title={it.priorities[card.issue.priority]}>
-              <PriorityIcon priority={card.issue.priority} />
-              <span className="sr-only">{it.priorities[card.issue.priority]}</span>
-            </span>
-          </div>
-          <div className="text-label text-foreground">{card.issue.title}</div>
-          {card.labels?.length ? (
-            <div className="flex flex-wrap gap-1">
-              {card.labels.map((l) => (
-                <Badge key={l.label} variant="tag" hue={l.hue ?? "gray"}>
-                  {l.label}
-                </Badge>
-              ))}
-            </div>
-          ) : null}
-          <div className="flex items-center justify-between gap-2">
-            {card.issue.dueDate ? (
-              <span className="inline-flex items-center gap-1 text-caption text-muted-foreground">
-                <CalendarDays aria-hidden className="size-3.5" />
-                <DateTime value={new Date(`${card.issue.dueDate}T00:00:00`)} format={{ day: "numeric", month: "short" }} />
-              </span>
-            ) : (
-              <span />
-            )}
-            {card.assignee ? <Avatar name={card.assignee.name} src={card.assignee.src} size="xs" /> : null}
-          </div>
-        </div>
+        <IssueCard
+          issue={card.issue}
+          labels={labels}
+          people={people}
+          open={isOpenIssue(card.issue, statuses)}
+          onClick={onOpen ? () => onOpen(card.issue) : undefined}
+          className={onOpen ? "cursor-pointer" : undefined}
+        />
       )}
     />
   );
