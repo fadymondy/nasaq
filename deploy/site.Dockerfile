@@ -2,12 +2,14 @@
 # Build context is the repo root: docker build -f deploy/site.Dockerfile .
 FROM node:24-bookworm-slim AS build
 WORKDIR /repo
-ENV CI=1 NODE_OPTIONS=--max-old-space-size=6144 NEXT_TELEMETRY_DISABLED=1
+ENV CI=1 NODE_OPTIONS=--max-old-space-size=3072 NEXT_TELEMETRY_DISABLED=1 NEXT_BUILD_CPUS=2
 RUN npm install -g pnpm@11.24.0
 COPY . .
 RUN pnpm install --frozen-lockfile
+# Sized for an 8 GiB LXC: one turbo task at a time and two Next workers, each capped at 3 GiB of heap
+# (loose env mode so turbo passes NODE_OPTIONS and NEXT_BUILD_CPUS through).
 # @fadymondy/nasaq builds nasaq.css and the Alpine runtime the previews load; the site build syncs them into public/.
-RUN pnpm turbo run build --filter=@fadymondy/nasaq --filter=@nasaq/site
+RUN pnpm turbo run build --env-mode=loose --concurrency=1 --filter=@fadymondy/nasaq --filter=@nasaq/site
 
 FROM node:24-bookworm-slim
 WORKDIR /app
