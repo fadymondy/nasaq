@@ -4,8 +4,8 @@ import { NqQrCode, NqQrCodeGenerator, qrLayout, qrSvgString } from ".";
 
 describe("qrLayout / qrSvgString", () => {
   it("is deterministic and keeps the finder patterns out of the data modules", () => {
-    const a = qrLayout({ value: "https://nasaqui.com" });
-    const b = qrLayout({ value: "https://nasaqui.com" });
+    const a = qrLayout({ value: "https://nasaq.fadymondy.com" });
+    const b = qrLayout({ value: "https://nasaq.fadymondy.com" });
     expect(a).toEqual(b);
     expect(a.eyes).toHaveLength(3);
     expect(a.size).toBeGreaterThan(0);
@@ -23,13 +23,13 @@ describe("qrLayout / qrSvgString", () => {
 
 describe("NqQrCode", () => {
   it("renders one role=img SVG named after the value, LTR, with the React classes", () => {
-    const w = mount(NqQrCode, { props: { value: "https://nasaqui.com" } });
+    const w = mount(NqQrCode, { props: { value: "https://nasaq.fadymondy.com" } });
     expect(w.attributes("data-slot")).toBe("qr-code");
     expect(w.attributes("dir")).toBe("ltr");
     expect(w.classes()).toEqual(expect.arrayContaining(["inline-flex", "flex-col", "items-center", "gap-3"]));
     const svg = w.get('[data-slot="qr-code-svg"]');
     expect(svg.attributes("role")).toBe("img");
-    expect(svg.attributes("aria-label")).toBe("QR code for https://nasaqui.com");
+    expect(svg.attributes("aria-label")).toBe("QR code for https://nasaq.fadymondy.com");
     expect(svg.attributes("width")).toBe("192");
     expect(svg.attributes("shape-rendering")).toBe("crispEdges");
     expect(svg.classes()).toEqual(expect.arrayContaining(["aspect-square", "rounded-control", "border"]));
@@ -75,7 +75,7 @@ describe("NqQrCodeGenerator", () => {
     expect(w.get('[data-slot="card-title"]').text()).toBe("QR code");
     const before = w.get('[data-slot="qr-code-svg"] path').attributes("d");
     const ta = w.get("textarea");
-    expect((ta.element as HTMLTextAreaElement).value).toBe("https://nasaqui.com");
+    expect((ta.element as HTMLTextAreaElement).value).toBe("https://nasaq.fadymondy.com");
     await ta.setValue("something else entirely");
     expect(w.get('[data-slot="qr-code-svg"] path').attributes("d")).not.toBe(before);
     expect(w.get('[data-slot="qr-code"]').attributes("data-module-style")).toBe("rounded");
