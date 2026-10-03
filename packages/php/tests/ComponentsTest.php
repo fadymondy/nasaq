@@ -24,7 +24,17 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('data-slot=', $html);
         $rendered = dirname($file).'/rendered/'.basename($file, '.blade.php').'.html';
         $this->assertFileExists($rendered, 'run php scripts/render-examples.php');
-        $this->assertSame(file_get_contents($rendered), $html, 'stale: run php scripts/render-examples.php');
+        $this->assertSame(self::unicode(file_get_contents($rendered)), self::unicode($html), 'stale: run php scripts/render-examples.php');
+    }
+
+    /** Laravel 13's Js::from keeps non-ASCII characters raw where Laravel 12 escaped them (\uXXXX, or \\uXXXX inside JSON.parse); compare both the same way. */
+    private static function unicode(string $html): string
+    {
+        return preg_replace_callback(
+            '/(?:(?:\\\\){1,2}u(?!00[0-7])[0-9a-fA-F]{4})+/',
+            fn ($m) => json_decode('"'.str_replace('\\\\', '\\', $m[0]).'"'),
+            $html,
+        );
     }
 
     public function test_every_component_has_an_example(): void

@@ -243,6 +243,11 @@ function buildExamples(root, components, problems) {
   for (const c of components) if (quickStart(c.readme)) names.add(c.name);
   for (const c of components) if (quickStart(c.readme)) names.add(c.name);
   const examples = {};
+  // Extra Blade demos of a part (code-tabs) or a variant (chat-widget-offline) fold into the web component that owns it.
+  const pascal = (n) => n.replace(/(^|-)(\w)/g, (_, __, ch) => ch.toUpperCase());
+  const ownerOf = (name) =>
+    components.find((x) => x.exports.includes(pascal(name))) ?? components.find((x) => name.startsWith(x.name + "-"));
+  const extras = [];
   for (const name of [...names].sort()) {
     const entry = {};
     for (const [stack, [dir, suffix]] of Object.entries(sources)) {
@@ -256,8 +261,21 @@ function buildExamples(root, components, problems) {
         entry.react = react.trimEnd();
         entry.shadcn = shadcnCode(name, entry.react, files);
       }
-    } else problems.push({ name, problem: "vue/blade/html example has no matching web component" });
+    } else {
+      const owner = ownerOf(name);
+      if (owner) extras.push([owner.name, name, entry]);
+      else problems.push({ name, problem: "vue/blade/html example has no matching web component" });
+      continue;
+    }
     examples[name] = entry;
+  }
+  for (const [owner, name, entry] of extras) {
+    const target = (examples[owner] ??= {});
+    for (const [stack, code] of Object.entries(entry)) {
+      const note = stack === "vue" ? `<!-- ${name} -->` : `{{-- ${name} --}}`;
+      const label = stack === "html" ? `<!-- ${name} -->` : note;
+      target[stack] = target[stack] ? `${target[stack]}\n\n${label}\n${code}` : code;
+    }
   }
   return examples;
 }
