@@ -24,7 +24,7 @@ export interface McpConnectType {
 }
 
 /**
- * The call to action that opens a connect panel: a green pill with a plug, the way products say "this
+ * The call to action that opens a connect panel: a pill in the brand's primary colour with a plug, the way products say "this
  * talks to your tools". Use it on its own or let `McpConnectSheet` render it.
  */
 export function ConnectButton({ className, children, ...props }: ComponentProps<typeof Button>) {
@@ -34,10 +34,8 @@ export function ConnectButton({ className, children, ...props }: ComponentProps<
       data-slot="connect-button"
       shape="pill"
       size="sm"
-      className={cn(
-        "border border-nq-success/40 bg-nq-success text-white shadow-sm hover:bg-[color-mix(in_oklab,var(--nq-success)_86%,black)]",
-        className as string,
-      )}
+      variant="primary"
+      className={cn("shadow-sm", className as string)}
       {...props}
     >
       {children ?? (
