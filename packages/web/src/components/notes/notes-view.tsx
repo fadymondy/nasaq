@@ -90,6 +90,8 @@ export interface NotesViewProps extends NoteMenuOptions {
   onRetry?: () => void;
   /** Rendered after the last note, inside the scrolling list (a "load more" sentinel, say). */
   footer?: ReactNode;
+  /** Extra header buttons, shown before the list actions menu. */
+  actions?: ReactNode;
   /** Also show the chips row of notebooks, tags and filters. The header's scope menu already does this job. Default false. */
   showScopeBar?: boolean;
   scopeBarClassName?: string;
@@ -120,6 +122,7 @@ export function NotesView(props: NotesViewProps) {
     onRetry,
     showScopeBar = false,
     footer,
+    actions: headerActions,
     scopeBarClassName,
     onNotebookCreate,
     onNotebookRename,
@@ -280,7 +283,8 @@ export function NotesView(props: NotesViewProps) {
           />
         }
       >
-        <button type="button" data-slot="note-open" aria-current={note.id === activeId ? "true" : undefined} onClick={open} onKeyDown={(e) => onRowKey(e, note)} className="flex w-full min-w-0 items-center gap-3 rounded-lg px-3 py-2.5 text-start transition-colors duration-150 ease-nq hover:bg-nq-hover group-data-active/note:bg-nq-selected focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
+        <button type="button" data-slot="note-open" aria-current={note.id === activeId ? "true" : undefined} onClick={open} onKeyDown={(e) => onRowKey(e, note)} className="flex w-full min-w-0 items-center gap-3 rounded-lg px-3 py-2.5 text-start transition-colors duration-150 ease-nq hover:bg-nq-hover group-data-active/note:bg-nq-selected outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-nq-focus/40">
+          {note.icon ? <span className="shrink-0 self-start pt-0.5">{note.icon}</span> : null}
           <span className="flex min-w-0 flex-1 flex-col gap-0.5">
             <span className="flex min-w-0 items-center gap-1.5 pe-6">
               {note.color ? <span aria-hidden className="size-2 shrink-0 rounded-full" style={{ backgroundColor: `var(--nq-tag-${note.color})` }} /> : null}
@@ -366,6 +370,7 @@ export function NotesView(props: NotesViewProps) {
           <Button variant="ghost" size="icon-sm" aria-label={view === "list" ? t.viewGrid : t.viewList} title={view === "list" ? t.viewGrid : t.viewList} onClick={() => setView(view === "list" ? "grid" : "list")} className="text-muted-foreground">
             {view === "list" ? <LayoutGrid aria-hidden /> : <List aria-hidden />}
           </Button>
+          {headerActions}
           <NoteActionsMenu actions={listActions} label={t.listActions} />
         </div>
         <InputGroup>
