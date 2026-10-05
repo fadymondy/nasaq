@@ -134,3 +134,23 @@ numbered steps with the snippet inline. Use it inside a sheet or dialog.
 `<McpConnectSheet types={[...]} />` is "Connect to your project" as a side-over. A green `ConnectButton`
 pill opens it, the connection types (MCP, API, SDK…) sit as tiles across the top, and the chosen type's
 content fills the panel. Pass `trigger={null}` and `open` to drive it yourself, or your own trigger element.
+
+## App picker for non-technical people (`McpConnectApps`)
+
+For people who have never heard of MCP: they pick the app they use by its logo, then follow two or three plain numbered steps with one big button each.
+
+```tsx
+<McpConnectSheet
+  types={[{ value: "mcp", label: "MCP", content: (
+    <McpConnectApps
+      product="Mahaam"
+      server={{ name: "mahaam", url: "https://mahaam.app/api/mcp" }}
+      oauth                                   // Claude, ChatGPT, Claude Code sign in; no key
+      renderKeyForm={(done) => <MintKey onMinted={done} />} // Cursor, VS Code, other
+      tryHint="“What are my tasks today?”"
+    />
+  ) }]}
+/>
+```
+
+`oauth` (default true) means the server supports MCP authorization discovery. Turn it off and every app asks for a key. Brand marks are exported as `ClaudeLogo`, `ClaudeCodeLogo`, `OpenAILogo`, `CursorLogo`, `VSCodeLogo`, `McpLogo` and the tile `McpAppLogo`.

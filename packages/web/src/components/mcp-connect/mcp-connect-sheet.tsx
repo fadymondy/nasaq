@@ -24,27 +24,30 @@ export interface McpConnectType {
 }
 
 /**
- * The call to action that opens a connect panel: a pill in the brand's primary colour with a plug, the way products say "this
- * talks to your tools". Use it on its own or let `McpConnectSheet` render it.
+ * The call to action that opens a connect panel: a pill in the brand's primary colour with a plug. A thin light travels
+ * around its edge, the way AI products mark "this talks to your agent" — quiet enough for a header, and it stops when
+ * people turn motion off. Use it on its own or let `McpConnectSheet` render it.
  */
 export function ConnectButton({ className, children, ...props }: ComponentProps<typeof Button>) {
   const ar = useOptionalNasaq()?.locale.startsWith("ar") ?? false;
   return (
-    <Button
+    <span
       data-slot="connect-button"
-      shape="pill"
-      size="sm"
-      variant="primary"
-      className={cn("shadow-sm", className as string)}
-      {...props}
+      className="group relative inline-flex overflow-hidden rounded-full p-px shadow-sm shadow-primary/25 transition-shadow duration-300 hover:shadow-md hover:shadow-primary/40"
     >
-      {children ?? (
-        <>
-          <Plug aria-hidden />
-          {STRINGS[ar ? "ar" : "en"].connect}
-        </>
-      )}
-    </Button>
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -inset-[200%] bg-[conic-gradient(from_0deg,transparent_0deg,transparent_270deg,rgb(255_255_255/0.9)_320deg,transparent_360deg)] motion-safe:animate-spin motion-safe:[animation-duration:3.5s] motion-reduce:hidden"
+      />
+      <Button shape="pill" size="sm" variant="primary" className={cn("relative", className as string)} {...props}>
+        {children ?? (
+          <>
+            <Plug aria-hidden className="transition-transform duration-300 group-hover:-rotate-12" />
+            {STRINGS[ar ? "ar" : "en"].connect}
+          </>
+        )}
+      </Button>
+    </span>
   );
 }
 
@@ -69,7 +72,7 @@ export interface McpConnectSheetProps {
 
 /**
  * "Connect to your project" as a side-over: a title, a row of connection types (MCP, API, SDK…) as
- * tiles, and the selected type's setup below. Pair the MCP type with `<McpConnect layout="steps" />`.
+ * tiles, and the selected type's setup below. Pair the MCP type with `<McpConnectApps />` (or `<McpConnect layout="steps" />`).
  */
 export function McpConnectSheet({
   types,
