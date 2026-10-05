@@ -141,6 +141,8 @@ and `SortableValue`. Use them to run the same sort or range logic on a server.
 `searchValue`, `filterValue`, `align` (`start` · `end` · `center`), `hideable` (default true), `defaultHidden`,
 `className`, `headerClassName`. `rangeValue` (a number or date for `DataTableRangeFilter`), `pin` (`start` ·
 `end`), `size`, `minSize`, `maxSize` (pixels) and `resizable` (default true when the table is resizable).
+`footer` (a ReactNode): the column's cell in a footer row under the body, for totals. Any visible column with a
+footer adds the row; it follows the column's alignment, visibility and pinning.
 
 ### `<DataTable>`
 
@@ -155,6 +157,7 @@ and `SortableValue`. Use them to run the same sort or range logic on a server.
 | `empty` | Shown when there is no data. When filtering leaves no rows, "No matching results" with **Clear filters** is shown instead. |
 | `renderExpanded` | `(row) => ReactNode`. Adds an expand button column; the detail shows in a full-width row under it. |
 | `canExpand` | `(row) => boolean`. Rows that return false get no expand button. |
+| `footerRowProps` | Attributes for the footer row the columns' `footer` cells make. |
 | `labels` | Override any built-in string. |
 
 ### Pieces

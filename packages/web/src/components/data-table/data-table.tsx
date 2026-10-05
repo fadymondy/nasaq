@@ -47,7 +47,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 import { Spinner } from "../spinner";
 import { EmptyState, ErrorState, Skeleton } from "../states";
 import { Switch } from "../switch";
-import { Table, TableBody, TableCell, type TableDensity, TableHead, TableHeader, TableRow } from "../table";
+import { Table, TableBody, TableCell, type TableDensity, TableFooter, TableHead, TableHeader, TableRow } from "../table";
 import { type CellEditMove, type CellEditorOption, ChoiceEditor, hueOf, TextEditor } from "./cell-editors";
 import { type CellEditKind, type CellPos, type CellValue, cellKey, coerceEditValue, nextCell, sameCellValue } from "./cell-edit-logic";
 import {
@@ -98,6 +98,12 @@ export interface DataTableColumn<T> {
   defaultHidden?: boolean;
   className?: string;
   headerClassName?: string;
+  /**
+   * The column's cell in a footer row (a total, a count). Any visible column with a `footer` adds the row under the
+   * body; it follows the column's `align`, `className`, visibility and pinning. Computed by you, so it can total every
+   * row, not only the current page.
+   */
+  footer?: ReactNode;
   /**
    * Makes the cells of this column editable in place (needs `onCellEdit` on `<DataTable>`). Enter, F2, a double-click
    * or just typing starts an edit; Enter and Tab save, Esc cancels. `cell` still renders the read-only view.
@@ -607,6 +613,8 @@ export interface DataTableProps<T> extends Omit<ComponentProps<"table">, "childr
   bordered?: boolean;
   /** Every other row tinted. */
   striped?: boolean;
+  /** Attributes for the footer row that the columns' `footer` cells make (e.g. a `data-` hook for tests or print). */
+  footerRowProps?: ComponentProps<"tr">;
   /** Highlight the row under the pointer. Default true. */
   hover?: boolean;
   labels?: Partial<DataTableLabels>;
@@ -673,6 +681,7 @@ export function DataTable<T>({
   frame,
   striped,
   hover = true,
+  footerRowProps,
   ...props
 }: DataTableProps<T>) {
   const { locale, t: base } = useLocale();
@@ -1234,6 +1243,9 @@ export function DataTable<T>({
     return { "data-col": id, className: cn(extra, pin.className), style: pin.style, "data-pin": pin["data-pin"] };
   };
 
+  // A footer row (totals) when a visible column has one, over real rows only.
+  const hasFooter = !loading && !error && rows.length > 0 && visibleColumns.some((c) => c.footer !== undefined);
+
   const grid = (
     <Table
       label={label}
@@ -1275,6 +1287,22 @@ export function DataTable<T>({
         </TableRow>
       </TableHeader>
       <TableBody ref={body}>{content}</TableBody>
+      {hasFooter ? (
+        <TableFooter>
+          <TableRow {...footerRowProps}>
+            {selectable ? <TableCell {...cellPin(SELECT_COL)} /> : null}
+            {expandable ? <TableCell {...cellPin(EXPAND_COL)} /> : null}
+            {visibleColumns.map((c) => {
+              return (
+                <TableCell key={c.id} data-col={c.id} {...cellPin(c.id, cn(alignClass(c.align), c.className))}>
+                  {c.footer}
+                </TableCell>
+              );
+            })}
+            {rowActions ? <TableCell {...cellPin(ACTIONS_COL)} /> : null}
+          </TableRow>
+        </TableFooter>
+      ) : null}
     </Table>
   );
   if (!canEdit) return grid;
