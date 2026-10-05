@@ -1,5 +1,15 @@
 # @fadymondy/nasaq
 
+## 1.1.0
+
+### Minor Changes
+
+- c82b377: Add `AddressInput` (cascading country, city and area comboboxes with a pluggable `LocationsDataSource` and a CircleXO hub default) and `CountrySelect`.
+- 57906c1: Adds six CircleXO business-app brands to `@fadymondy/nasaq/brands` and the theme tokens: `matjar`, `sanduq`, `mizan`, `qaima`, `makhzan` and `mawared`. Each has a cube-lattice mark (copied verbatim from the products' marks table), a manifest with English and Arabic names and its circlexo.com site, and brand and action colours that pass contrast in light and dark.
+- ba98109: McpConnect gets `layout="steps"` (client select, numbered steps, no card). New `McpConnectSheet` side-over with connection-type tiles and a primary-colour `ConnectButton`.
+  
+  New `McpConnectApps`: a non-technical MCP setup � pick your app (Claude, ChatGPT, Claude Code, Cursor, VS Code, other) by its real logo, then plain numbered steps with one big button. OAuth apps need only the link; the rest take a key from `renderKeyForm`. Brand logos exported (`ClaudeLogo`, `OpenAILogo`, �, `McpAppLogo`). `ConnectButton` gains a light that travels around its edge (motion-safe).
+
 ## 1.0.0
 
 ### Major Changes
