@@ -125,3 +125,12 @@ export const cmd = mcpSnippet("claude-code", { name: "example", url: "https://mc
 ## Lab
 
 https://docs.nasaqui.com/?path=/docs/components-integrations-mcp-connect--docs
+
+## Steps layout and the connect sheet
+
+`<McpConnect layout="steps" />` drops the card and tabs: the client comes from a select and the setup is
+numbered steps with the snippet inline. Use it inside a sheet or dialog.
+
+`<McpConnectSheet types={[...]} />` is "Connect to your project" as a side-over. A green `ConnectButton`
+pill opens it, the connection types (MCP, API, SDK…) sit as tiles across the top, and the chosen type's
+content fills the panel. Pass `trigger={null}` and `open` to drive it yourself, or your own trigger element.
