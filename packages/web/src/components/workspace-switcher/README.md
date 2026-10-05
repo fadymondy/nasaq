@@ -98,7 +98,8 @@ WorkspaceSwitcher
 | `onValueChange` | `(id: string) => void` | required | Called when the user picks one. |
 | `onCreate?` | `() => void` | none | Adds an "Add workspace" item. |
 | `className?` | `string` | none | Classes for the trigger. |
-| `labels?` | `{ heading?: string; create?: string }` | EN/AR built in | Menu heading ("Workspaces" / "مساحات العمل") and create item ("Add workspace" / "إضافة مساحة عمل"). |
+| `searchable?` | `boolean` | on above 6 workspaces | A filter field at the top of the menu. Matches name and description; Enter picks the first match, arrow keys move into the list. |
+| `labels?` | `{ heading?: string; create?: string; search?: string; empty?: string }` | EN/AR built in | Menu heading ("Workspaces" / "مساحات العمل"), create item ("Add workspace" / "إضافة مساحة عمل"), search placeholder ("Search…" / "ابحث…") and no-match text ("No matches" / "لا نتائج"). |
 | `children?` | `ReactNode` | none | Extra `DropdownMenuItem`s under the list (Settings, Invite members…). |
 
 ## Examples

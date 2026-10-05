@@ -1,7 +1,7 @@
 "use client";
 
-import { Check, ChevronsUpDown, Plus } from "lucide-react";
-import type { ReactNode } from "react";
+import { Check, ChevronsUpDown, Plus, Search } from "lucide-react";
+import { useState, type KeyboardEvent, type ReactNode } from "react";
 import { cn } from "../../lib/cn";
 import { useNasaq } from "../../provider/nasaq-provider";
 import { useSidebarCollapsed } from "../app-shell";
@@ -32,7 +32,9 @@ export interface WorkspaceSwitcherProps {
   onValueChange: (id: string) => void;
   /** Adds an "Add workspace" item. */
   onCreate?: () => void;
-  labels?: { heading?: string; create?: string };
+  labels?: { heading?: string; create?: string; search?: string; empty?: string };
+  /** A filter field at the top of the menu. Defaults to on once there are more than 6 workspaces. */
+  searchable?: boolean;
   /** Extra items (Settings, Invite members…) placed under the workspace list. */
   children?: ReactNode;
   className?: string;
@@ -55,14 +57,31 @@ function WorkspaceLogo({ workspace, size }: { workspace: Workspace; size: "sm" |
 }
 
 /** The organisation / team switcher at the top of the sidebar (shadcn TeamSwitcher, Linear). */
-export function WorkspaceSwitcher({ workspaces, value, onValueChange, onCreate, labels, children, className }: WorkspaceSwitcherProps) {
+export function WorkspaceSwitcher({ workspaces, value, onValueChange, onCreate, labels, searchable, children, className }: WorkspaceSwitcherProps) {
   const collapsed = useSidebarCollapsed();
   const ar = useNasaq().locale.startsWith("ar");
+  const [query, setQuery] = useState("");
   const active = workspaces.find((w) => w.id === value) ?? workspaces[0];
   if (!active) return null;
 
+  const search = searchable ?? workspaces.length > 6;
+  const q = query.trim().toLocaleLowerCase();
+  const shown = q
+    ? workspaces.filter((w) => w.name.toLocaleLowerCase().includes(q) || w.description?.toLocaleLowerCase().includes(q))
+    : workspaces;
+
+  // The menu owns arrow keys and typeahead; the field keeps everything else. Enter opens the first match.
+  function onSearchKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Escape" || e.key === "Tab") return;
+    e.stopPropagation();
+    if (e.key === "Enter" && shown[0]) {
+      e.preventDefault();
+      onValueChange(shown[0].id);
+    }
+  }
+
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={(open) => !open && setQuery("")}>
       <DropdownMenuTrigger
         data-slot="workspace-switcher"
         aria-label={collapsed ? active.name : undefined}
@@ -93,11 +112,28 @@ export function WorkspaceSwitcher({ workspaces, value, onValueChange, onCreate, 
       <DropdownMenuContent
         side={collapsed ? "inline-end" : "bottom"}
         align="start"
-        className={cn("w-64", !collapsed && "w-[max(16rem,var(--anchor-width))]")}
+        className={cn("w-64", !collapsed && "w-[max(16rem,var(--anchor-width))]", search && "max-h-[min(28rem,var(--available-height))] overflow-y-auto")}
       >
         <DropdownMenuGroup>
           <DropdownMenuLabel>{labels?.heading ?? (ar ? "مساحات العمل" : "Workspaces")}</DropdownMenuLabel>
-          {workspaces.map((workspace) => (
+          {search ? (
+            <label data-slot="workspace-switcher-search" className="mx-1 mb-1 flex h-8 items-center gap-2 rounded-control border border-border bg-background px-2 focus-within:border-nq-focus">
+              <Search aria-hidden className="size-3.5 shrink-0 text-muted-foreground" />
+              <input
+                autoFocus
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={onSearchKeyDown}
+                placeholder={labels?.search ?? (ar ? "ابحث…" : "Search…")}
+                aria-label={labels?.search ?? (ar ? "ابحث" : "Search")}
+                className="min-w-0 flex-1 bg-transparent text-label text-foreground outline-none placeholder:text-muted-foreground"
+              />
+            </label>
+          ) : null}
+          {search && !shown.length ? (
+            <p className="px-2 py-2 text-caption text-muted-foreground">{labels?.empty ?? (ar ? "لا نتائج" : "No matches")}</p>
+          ) : null}
+          {shown.map((workspace) => (
             <DropdownMenuItem
               key={workspace.id}
               onClick={() => onValueChange(workspace.id)}
