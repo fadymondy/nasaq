@@ -268,7 +268,7 @@ export function NotesView(props: NotesViewProps) {
       );
     }
     // The list row reads like a notes app's sidebar: a bold title; the date and the first line of
-    // text; the notebook. A hairline separates rows and hides around the selected one.
+    // text; the notebook. A gap separates the rounded rows.
     return (
       <NoteContextRegion
         key={note.id}
@@ -279,7 +279,7 @@ export function NotesView(props: NotesViewProps) {
             data-slot="note-row"
             data-active={note.id === activeId ? "" : undefined}
             data-color={note.color ?? undefined}
-            className="group/note relative after:pointer-events-none after:absolute after:inset-x-3 after:bottom-0 after:h-px after:bg-border last:after:hidden data-active:after:hidden [&:has(+[data-active])]:after:hidden"
+            className="group/note relative"
           />
         }
       >
@@ -411,7 +411,7 @@ export function NotesView(props: NotesViewProps) {
                   {groupLabel(group.kind)}
                 </h3>
               )}
-              <ul role="list" aria-label={groupLabel(group.kind)} className={cn(view === "grid" ? "grid grid-cols-[repeat(auto-fill,minmax(min(100%,13.5rem),1fr))] gap-2.5 px-1" : "flex flex-col")}>
+              <ul role="list" aria-label={groupLabel(group.kind)} className={cn(view === "grid" ? "grid grid-cols-[repeat(auto-fill,minmax(min(100%,13.5rem),1fr))] gap-2.5 px-1" : "flex flex-col gap-1")}>
                 {group.notes.map(renderNote)}
               </ul>
             </div>
