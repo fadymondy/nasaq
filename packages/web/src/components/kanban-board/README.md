@@ -85,7 +85,7 @@ KanbanBoard            data-slot="kanban-board"   (role="group")
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `columns` | `KanbanColumnData[]` | required | `{ id, title }`, in display order. |
+| `columns` | `KanbanColumnData[]` | required | `{ id, title, count?, accent?, meta?, footer? }`, in display order. `count` is the column's real size when it is paged (the badge shows it instead of the cards on screen); `accent` sits before the title (a status dot); `meta` is a line under the header (a total value); `footer` sits below the cards, outside the drop list (a "Load more" button). |
 | `cards` | `T extends KanbanCardData` | required | Flat list. Cards keep the array order inside their column. |
 | `onMove` | `(cardId, toColumn, toIndex) => void` | required | Fired once on drop, only when the card ended somewhere new. `toIndex` is the index in the destination column after the card is removed from its old place. |
 | `renderCard` | `(card, { overlay, dragging }) => ReactNode` | `KanbanCard` | The card slot. The board supplies the drag handle. |
