@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ca
 import { CodeBlock } from "../code-block";
 import { CopyButton, CopyField } from "../copy-button";
 import { Field, FieldLabel } from "../field";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group";
 import { Tabs, TabsIndicator, TabsList, TabsPanel, TabsTab } from "../tabs";
 import { MCP_CLIENTS, type McpClientId, type McpServerInfo, maskToken, mcpSnippet } from "./snippets";
@@ -47,6 +48,7 @@ const STRINGS = {
       generic: ["Add this to your client's MCP configuration.", "Clients that read mcpServers use this shape. Rename the root key if yours differs."],
     } satisfies Record<McpClientId, string[]>,
     step: (n: number) => `Step ${n}`,
+    followSteps: "Follow these steps",
     copy: "Copy",
     copySnippet: (target: string) => `Copy ${target}`,
     deepLink: { cursor: "Add to Cursor", vscode: "Install in VS Code" } as Partial<Record<McpClientId, string>>,
@@ -91,6 +93,7 @@ const STRINGS = {
       generic: ["أضف هذا إلى إعدادات MCP في عميلك.", "العملاء الذين يقرؤون mcpServers يستخدمون هذا الشكل. غيّر المفتاح الجذري إن اختلف عندك."],
     } satisfies Record<McpClientId, string[]>,
     step: (n: number) => `الخطوة ${n}`,
+    followSteps: "اتبع هذه الخطوات",
     copy: "نسخ",
     copySnippet: (target: string) => `نسخ ${target}`,
     deepLink: { cursor: "أضف إلى Cursor", vscode: "ثبّت في VS Code" } as Partial<Record<McpClientId, string>>,
@@ -136,7 +139,16 @@ export interface McpConnectProps extends Omit<ComponentProps<"div">, "children">
   /** Check the server answers. Resolve with the outcome; a rejection shows a generic failure. Omit to hide the test. */
   onTest?: () => Promise<McpTestResult>;
   labels?: Partial<McpConnectLabels>;
+  /**
+   * `card` (default) frames everything in a card with one tab per client. `steps` drops the frame and the
+   * title, picks the client from a select and lays the setup out as numbered steps with the snippet inline:
+   * the shape to use inside a sheet or dialog, such as `McpConnectSheet`.
+   */
+  layout?: "card" | "steps";
 }
+
+/** The step a client's snippet belongs under (0-based): the one that says to run or add it. */
+const SNIPPET_STEP: Record<McpClientId, number> = { "claude-code": 1, "claude-desktop": 1, cursor: 0, vscode: 0, generic: 0 };
 
 type TestState = { status: "idle" } | { status: "testing" } | { status: "done"; result: McpTestResult } | { status: "error" };
 
@@ -180,6 +192,7 @@ export function McpConnect({
   defaultClient,
   onTest,
   labels,
+  layout = "card",
   className,
   ...props
 }: McpConnectProps) {
@@ -189,6 +202,7 @@ export function McpConnect({
   const [test, setTest] = useState<TestState>({ status: "idle" });
   const server: McpServerInfo = { name: serverName, url: serverUrl, token, header: tokenHeader };
   const first = defaultClient && clients.includes(defaultClient) ? defaultClient : clients[0];
+  const [client, setClient] = useState<McpClientId>(first ?? "generic");
 
   async function run() {
     if (!onTest || test.status === "testing") return;
@@ -200,13 +214,8 @@ export function McpConnect({
     }
   }
 
-  return (
-    <Card data-slot="mcp-connect" className={cn("w-full max-w-3xl", className)} {...props}>
-      <CardHeader>
-        <CardTitle as="h2">{t.title}</CardTitle>
-        <CardDescription>{t.description}</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-5">
+  const credentials = (
+    <>
         <div className="grid gap-4 sm:grid-cols-2">
           <Field>
             <FieldLabel>{t.serverUrl}</FieldLabel>
@@ -236,6 +245,91 @@ export function McpConnect({
         </div>
         {token ? <p className="text-caption text-muted-foreground">{t.tokenNote}</p> : <Alert tone="info">{t.noToken}</Alert>}
 
+    </>
+  );
+
+  const testPanel = onTest ? (
+          <div className="flex flex-col gap-3 border-t border-border pt-4" data-slot="mcp-test" data-state={test.status}>
+            <div>
+              <Button type="button" onClick={run} loading={test.status === "testing"}>
+                <Plug aria-hidden />
+                {test.status === "testing" ? t.testing : t.test}
+              </Button>
+            </div>
+            <div role="status" aria-live="polite">
+              {test.status === "done" && test.result.ok ? (
+                <Alert tone="success" title={t.testOk}>
+                  {t.testOkDetail(test.result.latencyMs, test.result.tools)}
+                </Alert>
+              ) : null}
+              {test.status === "done" && !test.result.ok ? (
+                <Alert tone="danger" title={t.testFailed}>
+                  {test.result.error ?? t.testFailedFallback}
+                </Alert>
+              ) : null}
+              {test.status === "error" ? <Alert tone="danger">{t.unexpected}</Alert> : null}
+            </div>
+          </div>
+        ) : null;
+
+  if (layout === "steps") {
+    const names = clients.map((c) => ({ value: c, label: t.clientNames[c] }));
+    return (
+      <div data-slot="mcp-connect" data-layout="steps" className={cn("flex w-full flex-col gap-5", className)} {...props}>
+        <div className="grid items-center gap-2 sm:grid-cols-[10rem_1fr]">
+          <span className="text-label text-foreground" id="mcp-connect-client">
+            {t.clients}
+          </span>
+          <Select items={names} value={client} onValueChange={(v) => v && setClient(v as McpClientId)}>
+            <SelectTrigger aria-labelledby="mcp-connect-client" className="w-full" data-slot="mcp-client-select">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {names.map((n) => (
+                <SelectItem key={n.value} value={n.value}>
+                  {n.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        {credentials}
+        <div className="flex flex-col gap-3 border-t border-border pt-5">
+          <h3 className="text-label text-foreground">{t.followSteps}</h3>
+          <ol className="flex flex-col" data-slot="mcp-steps">
+            {t.steps[client].map((s, i, all) => (
+              <li key={s} className="relative flex gap-3 pb-5 last:pb-0">
+                {i < all.length - 1 ? <span aria-hidden className="absolute start-3 top-7 bottom-1 w-px bg-border" /> : null}
+                <span
+                  aria-hidden
+                  className="inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card text-caption tabular-nums text-muted-foreground"
+                >
+                  {i + 1}
+                </span>
+                <div className="flex min-w-0 flex-1 flex-col gap-3 pt-0.5">
+                  <p className="text-body-sm text-foreground">
+                    <span className="sr-only">{t.step(i + 1)}: </span>
+                    {s}
+                  </p>
+                  {i === Math.min(SNIPPET_STEP[client], all.length - 1) ? <Snippet client={client} server={server} reveal={reveal} t={t} /> : null}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+        {testPanel}
+      </div>
+    );
+  }
+
+  return (
+    <Card data-slot="mcp-connect" className={cn("w-full max-w-3xl", className)} {...props}>
+      <CardHeader>
+        <CardTitle as="h2">{t.title}</CardTitle>
+        <CardDescription>{t.description}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-5">
+        {credentials}
         <Tabs defaultValue={first} className="gap-4">
           <TabsList aria-label={t.clients}>
             {clients.map((c) => (
@@ -263,29 +357,7 @@ export function McpConnect({
           ))}
         </Tabs>
 
-        {onTest ? (
-          <div className="flex flex-col gap-3 border-t border-border pt-4" data-slot="mcp-test" data-state={test.status}>
-            <div>
-              <Button type="button" onClick={run} loading={test.status === "testing"}>
-                <Plug aria-hidden />
-                {test.status === "testing" ? t.testing : t.test}
-              </Button>
-            </div>
-            <div role="status" aria-live="polite">
-              {test.status === "done" && test.result.ok ? (
-                <Alert tone="success" title={t.testOk}>
-                  {t.testOkDetail(test.result.latencyMs, test.result.tools)}
-                </Alert>
-              ) : null}
-              {test.status === "done" && !test.result.ok ? (
-                <Alert tone="danger" title={t.testFailed}>
-                  {test.result.error ?? t.testFailedFallback}
-                </Alert>
-              ) : null}
-              {test.status === "error" ? <Alert tone="danger">{t.unexpected}</Alert> : null}
-            </div>
-          </div>
-        ) : null}
+        {testPanel}
       </CardContent>
     </Card>
   );
