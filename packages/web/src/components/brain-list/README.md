@@ -60,13 +60,13 @@ access, tag. The card view renders `BrainCard`.
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `brains` | `BrainSummary[]` | `{ id, name, description?, avatar?, status, visibility, memories, sources, chats?, model?, members?, tags?, lastActive? }`. |
+| `brains` | `BrainSummary[]` | `{ id, name, description?, avatar?, color?, status, visibility, memories, sources, chats?, model?, members?, tags?, lastActive? }`. |
 | `label` | `string` | Accessible name. Default "Brains" / "العقول". |
 | `labels` | `Partial<BrainListLabels>` | Override any string, including `statuses` and `visibilities`. |
 
 `BrainCard` takes `brain`, `footer` (extra content such as buttons), `labels` and `className`.
 
-`avatar` is an emoji or an image URL (`https://`, `/` or `data:`); without one a brain icon is shown.
+`avatar` is an emoji or an image URL (`https://`, `/` or `data:`); without one a brain icon is shown. `color` (any CSS colour) tints the mark tile and its border.
 
 ## Examples
 
