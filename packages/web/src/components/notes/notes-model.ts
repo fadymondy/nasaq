@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 /* Pure logic of the notes components: the data model, filtering, sorting, grouping, backlinks, export, the
    Markdown formatting commands and the autosave state machine. No React, no DOM, so it runs under `node --test`. */
 
@@ -23,6 +24,8 @@ export interface Note {
   sealed?: boolean;
   /** A preview image URL, shown on the trailing edge of the note's row. */
   thumbnail?: string | null;
+  /** A leading icon or tile for the row, e.g. the note's category icon on its colour. */
+  icon?: ReactNode;
   /** Milliseconds since the epoch. */
   createdAt: number;
   updatedAt: number;
