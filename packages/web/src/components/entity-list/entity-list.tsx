@@ -148,6 +148,24 @@ export interface EntityListProps<T> {
   /** Minimum card width in px. Default 272. */
   cardMinWidth?: number;
   defaultSort?: UseDataTableOptions<T>["defaultSort"];
+  /**
+   * Server mode: `data` is already searched, filtered, sorted and paged by the server, so the list shows it as it
+   * is. Control `query`, `facetValues`, `sort` and `page` to send them to the server, and pass `rowCount`.
+   */
+  manual?: boolean;
+  /** Total matching rows on the server (manual mode). Defaults to `data.length`. */
+  rowCount?: number;
+  /** The search text. Controlled when `value` is set. */
+  query?: UseDataTableOptions<T>["query"];
+  /** The chosen facet values, by facet id. Controlled when set. */
+  facetValues?: Record<string, string[]>;
+  onFacetValuesChange?: (values: Record<string, string[]>) => void;
+  /** The sort. Controlled when `value` is set. */
+  sort?: UseDataTableOptions<T>["sort"];
+  /** The page index. Controlled when `value` is set. */
+  page?: UseDataTableOptions<T>["page"];
+  /** Replaces the built-in pagination, e.g. a cursor pager for a server list. `false` hides it. */
+  pagination?: ReactNode | false;
   labels?: Partial<EntityListLabels> & Partial<DataTableLabels>;
   className?: string;
 }
@@ -309,6 +327,14 @@ export function EntityList<T>({
   empty,
   cardMinWidth = 272,
   defaultSort,
+  manual = false,
+  rowCount,
+  query: queryControl,
+  facetValues,
+  onFacetValuesChange,
+  sort,
+  page,
+  pagination,
   labels,
   className,
 }: EntityListProps<T>) {
@@ -327,9 +353,16 @@ export function EntityList<T>({
   };
 
   // Facets can match several values per row, so they filter the data before the table sees it.
-  const [facetState, setFacetState] = useState<Record<string, string[]>>({});
+  // In manual mode the server has already applied them.
+  const [ownFacets, setOwnFacets] = useState<Record<string, string[]>>({});
+  const facetState = facetValues ?? ownFacets;
+  const setFacetState = (next: Record<string, string[]>) => {
+    if (facetValues === undefined) setOwnFacets(next);
+    onFacetValuesChange?.(next);
+  };
   const facetActive = facets.some((f) => (facetState[f.id]?.length ?? 0) > 0);
   const facetFiltered = useMemo(() => {
+    if (manual) return data;
     const active = facets.filter((f) => facetState[f.id]?.length);
     if (!active.length) return data;
     return data.filter((row) =>
@@ -338,7 +371,7 @@ export function EntityList<T>({
         return f.getValues(row).some((v) => wanted.has(v));
       }),
     );
-  }, [data, facets, facetState]);
+  }, [manual, data, facets, facetState]);
 
   const table = useDataTable({
     data: facetFiltered,
@@ -348,14 +381,19 @@ export function EntityList<T>({
     selectable,
     defaultSort,
     selection,
+    manual,
+    rowCount,
+    query: queryControl,
+    sort,
+    page,
   });
 
   const query = normalizeForSearch(table.query);
   const filteredRows = useMemo(() => {
-    if (!query) return facetFiltered;
+    if (manual || !query) return facetFiltered;
     const searchable = columns.filter((c) => c.searchValue);
     return facetFiltered.filter((row) => searchable.some((c) => normalizeForSearch(c.searchValue!(row)).includes(query)));
-  }, [facetFiltered, columns, query]);
+  }, [manual, facetFiltered, columns, query]);
 
   const selectedRows = useMemo(() => data.filter((row) => table.selection.has(getRowId(row))), [data, table.selection, getRowId]);
   const context: EntityListContext<T> = {
@@ -372,6 +410,7 @@ export function EntityList<T>({
     table.resetFilters();
   };
   const showClear = facetActive || table.isFiltered;
+  const shown = manual ? table.rowCount : filteredRows.length;
   const noResults = (
     <EmptyState
       icon={Search}
@@ -406,7 +445,7 @@ export function EntityList<T>({
             facet={facet}
             chosen={facetState[facet.id] ?? []}
             onChange={(values) => {
-              setFacetState((s) => ({ ...s, [facet.id]: values }));
+              setFacetState({ ...facetState, [facet.id]: values });
               table.setPage(0);
             }}
             resetLabel={t.facetReset}
@@ -446,7 +485,7 @@ export function EntityList<T>({
       {selectable && bulkActions ? <DataTableBulkActions table={table}>{bulkActions(context)}</DataTableBulkActions> : null}
 
       <span role="status" aria-live="polite" className="sr-only">
-        {loading ? t.loadingList : filteredRows.length === 1 ? t.resultsOne : t.results(n(filteredRows.length))}
+        {loading ? t.loadingList : shown === 1 ? t.resultsOne : t.results(n(shown))}
       </span>
 
       {view === "table" ? (
@@ -461,7 +500,7 @@ export function EntityList<T>({
           loading={loading}
           error={error}
           onRetry={onRetry}
-          empty={facetActive ? noResults : empty}
+          empty={facetActive || (manual && table.isFiltered) ? noResults : empty}
           labels={labels}
         />
       ) : (
@@ -481,7 +520,7 @@ export function EntityList<T>({
           t={t}
         />
       )}
-      <DataTablePagination table={table} />
+      {pagination === undefined ? <DataTablePagination table={table} /> : pagination || null}
     </div>
   );
 }
