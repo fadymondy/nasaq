@@ -21,6 +21,8 @@ export interface Note {
   archived?: boolean;
   /** Password-protected: the title and tags stay visible, the body stays hidden until it is unlocked. */
   sealed?: boolean;
+  /** A preview image URL, shown on the trailing edge of the note's row. */
+  thumbnail?: string | null;
   /** Milliseconds since the epoch. */
   createdAt: number;
   updatedAt: number;
