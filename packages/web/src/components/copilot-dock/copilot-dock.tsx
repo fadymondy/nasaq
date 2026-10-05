@@ -47,7 +47,30 @@ export type CopilotDockSide = "end" | "start" | "bottom" | "float";
 
 const SIDES: readonly CopilotDockSide[] = ["end", "start", "bottom", "float"];
 
-export interface CopilotDockProps extends Omit<CopilotChatProps, "mode" | "onClose"> {
+/** What a custom panel body receives: the dock's own header controls and a way to close it. */
+export interface CopilotDockPanel {
+  /** Position menu + expand button (plus `headerActions`), for the body's own header. */
+  controls: ReactNode;
+  /** Closes the dock and returns focus to the launcher or the bar. */
+  close: () => void;
+  expanded: boolean;
+  side: CopilotDockSide;
+}
+
+export interface CopilotDockProps extends Omit<CopilotChatProps, "mode" | "onClose" | "messages" | "onSend" | "children"> {
+  /** The conversation. Required unless `children` replaces the chat. */
+  messages?: CopilotChatProps["messages"];
+  onSend?: CopilotChatProps["onSend"];
+  /**
+   * Replaces `CopilotChat` with your own panel body: an inbox, a notes pane, a support console. A function receives
+   * the dock's header controls and `close`, so the body can render its own header with them.
+   */
+  children?: ReactNode | ((panel: CopilotDockPanel) => ReactNode);
+  /**
+   * With `collapsedBar`, replaces the "Ask anything" input with your own content (a title, an unread count, a
+   * preview). The whole bar then becomes one button that opens the dock.
+   */
+  barContent?: ReactNode;
   /** Controlled open state. */
   open?: boolean;
   defaultOpen?: boolean;
@@ -97,8 +120,8 @@ function readSide(key: string | undefined): CopilotDockSide | null {
 const SIDE_ICON = { end: PanelRight, start: PanelLeft, bottom: PanelBottom, float: PictureInPicture2 } as const;
 
 /**
- * The app-wide assistant: a launcher (a round button or a slim "Ask anything" bar) that opens `CopilotChat` in a
- * non-modal panel. The panel docks to either edge or the bottom, floats as a window, or expands to the whole page.
+ * The app-wide assistant: a launcher (a round button or a slim "Ask anything" bar) that opens `CopilotChat` — or
+ * any panel body passed as `children` — in a non-modal panel. The panel docks to either edge or the bottom, floats as a window, or expands to the whole page.
  * ⌘J / Ctrl+J toggles it from anywhere; Escape inside the panel closes it and returns focus to the launcher.
  */
 export function CopilotDock({
@@ -125,6 +148,10 @@ export function CopilotDock({
   className,
   style,
   headerActions,
+  children,
+  barContent,
+  messages = [],
+  onSend,
   ...chat
 }: CopilotDockProps) {
   const nasaq = useOptionalNasaq();
@@ -141,6 +168,7 @@ export function CopilotDock({
   const panelRef = useRef<HTMLDivElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const barRef = useRef<HTMLInputElement>(null);
+  const barButtonRef = useRef<HTMLButtonElement>(null);
   const [shortcut, setShortcut] = useState<string | null>(null);
   const [barText, setBarText] = useState("");
 
@@ -190,7 +218,7 @@ export function CopilotDock({
   const close = () => {
     setOpen(false);
     setExpanded(false);
-    requestAnimationFrame(() => (collapsedBar ? barRef.current : launcherRef.current)?.focus());
+    requestAnimationFrame(() => (collapsedBar ? (barRef.current ?? barButtonRef.current) : launcherRef.current)?.focus());
   };
 
   const sendFromBar = () => {
@@ -201,7 +229,7 @@ export function CopilotDock({
     }
     setBarText("");
     setOpen(true);
-    void chat.onSend?.(text, { context: [...(chat.context ?? [])], model: chat.model, mentions: [], attachments: [], commands: [], toggles: [] });
+    void onSend?.(text, { context: [...(chat.context ?? [])], model: chat.model, mentions: [], attachments: [], commands: [], toggles: [] });
   };
 
   const menuSides = sides.filter((s) => SIDES.includes(s));
@@ -288,7 +316,37 @@ export function CopilotDock({
           {launcherIcon ?? <Sparkles aria-hidden />}
         </button>
       )}
-      {launcher && !open && collapsedBar && (
+      {launcher && !open && collapsedBar && barContent !== undefined && (
+        <button
+          ref={barButtonRef}
+          type="button"
+          data-slot="copilot-dock-bar"
+          aria-expanded={false}
+          aria-controls={panelId}
+          aria-keyshortcuts={keys}
+          title={launcherName}
+          onClick={() => setOpen(true)}
+          className={cn(
+            placement,
+            "inset-x-0 bottom-4 z-40 mx-auto flex w-[min(calc(100%-2rem),36rem)] items-center gap-2 rounded-full border border-border bg-background ps-3 pe-1.5 py-1.5 text-start shadow-floating",
+            "transition-colors duration-150 ease-nq hover:bg-muted outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus",
+          )}
+        >
+          <span aria-hidden className="text-primary [&_svg]:size-4">
+            {launcherIcon ?? <Sparkles />}
+          </span>
+          <span className="flex min-w-0 flex-1 items-center gap-2 text-sm">{barContent}</span>
+          {shortcut ? (
+            <kbd dir="ltr" className="hidden rounded-sm border border-border px-1 font-mono text-[11px] text-muted-foreground sm:inline">
+              {shortcut}
+            </kbd>
+          ) : null}
+          <span aria-hidden className="inline-flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground [&_svg]:size-3.5">
+            <Maximize2 />
+          </span>
+        </button>
+      )}
+      {launcher && !open && collapsedBar && barContent === undefined && (
         <form
           data-slot="copilot-dock-bar"
           role="search"
@@ -311,7 +369,7 @@ export function CopilotDock({
             value={barText}
             onChange={(event) => setBarText(event.target.value)}
             onFocus={() => {
-              if (chat.onSend === undefined) setOpen(true);
+              if (onSend === undefined) setOpen(true);
             }}
             aria-label={t.ask}
             aria-controls={panelId}
@@ -355,7 +413,24 @@ export function CopilotDock({
           className,
         )}
       >
-        {open && <CopilotChat {...chat} mode={expanded ? "page" : "panel"} onClose={close} headerActions={controls} className="min-h-0 flex-1" />}
+        {open &&
+          (children !== undefined ? (
+            typeof children === "function" ? (
+              children({ controls, close, expanded, side })
+            ) : (
+              children
+            )
+          ) : (
+            <CopilotChat
+              {...chat}
+              messages={messages}
+              onSend={onSend ?? (() => {})}
+              mode={expanded ? "page" : "panel"}
+              onClose={close}
+              headerActions={controls}
+              className="min-h-0 flex-1"
+            />
+          ))}
       </div>
     </>
   );

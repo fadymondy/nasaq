@@ -4,7 +4,7 @@ title: CopilotDock
 category: ai
 status: beta
 summary: "App-wide assistant: a launcher or an Ask bar that opens CopilotChat in a non-modal panel docked to either edge or the bottom, floating, or expanded to the page. Toggled with ⌘J / Ctrl+J."
-exports: [CopilotDock, CopilotDockProps, CopilotDockLabels, CopilotDockSide]
+exports: [CopilotDock, CopilotDockProps, CopilotDockLabels, CopilotDockSide, CopilotDockPanel]
 related: [copilot-chat, copilot-provider, chat, ask-ai, feedback-reporter, app-shell]
 story: components-ai-assistant-copilot-dock
 base-ui: []
@@ -55,7 +55,7 @@ div    [data-slot=copilot-dock][data-open][data-side][data-expanded]   role comp
 
 ### `CopilotDock`
 
-Takes every [`CopilotChat`](../copilot-chat/README.md) prop except `mode` and `onClose`, plus:
+Takes every [`CopilotChat`](../copilot-chat/README.md) prop except `mode` and `onClose` (`messages` and `onSend` become optional), plus:
 
 | Prop | Type | Default | Notes |
 | --- | --- | --- | --- |
@@ -75,6 +75,8 @@ Takes every [`CopilotChat`](../copilot-chat/README.md) prop except `mode` and `o
 | `width` | `string` | `"26rem"` | Side and floating width, never wider than the screen. |
 | `height` | `string` | `50vh` / `40rem` | Bottom and floating height. |
 | `dockLabels` | `Partial<CopilotDockLabels>` | — | Launcher and panel names. `labels` still goes to the chat. |
+| `children` | `ReactNode \| (panel: CopilotDockPanel) => ReactNode` | — | Replaces `CopilotChat` with your own panel body. The function form gets `{ controls, close, expanded, side }`, so your header can carry the dock's position and expand controls. |
+| `barContent` | `ReactNode` | — | With `collapsedBar`, replaces the Ask input. The bar becomes one button that opens the dock. |
 
 ## Examples
 
@@ -95,6 +97,32 @@ const [open, setOpen] = useState(false);
 <CopilotProvider transport={transport} dock={{ persistKey: "copilot-side", collapsedBar: true }}>
   {children}
 </CopilotProvider>
+```
+
+### A dock that is not a chat
+
+`children` turns the dock into a shell for any panel: an inbox, a support console, a notes pane. The bar shows your own summary instead of an input.
+
+```tsx
+<CopilotDock
+  collapsedBar
+  defaultSide="bottom"
+  sides={["bottom", "end"]}
+  height="70vh"
+  launcherIcon={<Inbox />}
+  barContent={<><span className="font-medium">Inbox</span><Badge>3</Badge></>}
+>
+  {({ controls, close }) => (
+    <section className="flex min-h-0 flex-1 flex-col">
+      <header className="flex items-center gap-1 border-b px-3 py-2">
+        <h2 className="flex-1 text-sm font-medium">Inbox</h2>
+        {controls}
+        <Button variant="ghost" size="icon-sm" aria-label="Close" onClick={close}><X /></Button>
+      </header>
+      <InboxBody />
+    </section>
+  )}
+</CopilotDock>
 ```
 
 ### Wider panel, no shortcut
