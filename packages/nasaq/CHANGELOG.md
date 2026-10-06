@@ -1,5 +1,14 @@
 # @fadymondy/nasaq
 
+## 1.2.0
+
+### Minor Changes
+
+- b285354: CopilotDock hosts any panel, not only a chat: `children` (or a render function given `{ controls, close, expanded, side }`) replaces `CopilotChat`, and `barContent` puts your own summary in the collapsed bar. `messages` and `onSend` are optional when `children` is set.
+- b285354: CopilotDock `resizable`: drag the panel's inner edge to resize it — height only when docked at the bottom, width only on a side. The edge is a keyboard-operable separator (arrows, Home/End, double click resets), and `persistKey` remembers the size.
+- b285354: EntityList gets a server mode for lists the server pages: `manual` hands sorting, filtering and paging to you, with `rowCount` for the true total, so a page of 25 from a list of 4,000 still shows the right count and page controls.
+- a9e2980: KanbanBoard columns take optional `count`, `accent`, `meta` and `footer`: the real size of a paged column in its badge, a status dot, a line under the title (a stage's total value) and a slot below the cards (a "Load more" button). Boards that pass only `{ id, title }` render as before.
+
 ## 1.1.0
 
 ### Minor Changes
