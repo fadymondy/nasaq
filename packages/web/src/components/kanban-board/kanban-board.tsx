@@ -61,6 +61,14 @@ export interface KanbanColumnData {
   /** Unique across columns AND cards. */
   id: string;
   title: string;
+  /** The column's real size when only part of it is on the board (a paged column). Default: the cards shown. */
+  count?: number;
+  /** Before the title, e.g. a status dot. Decorative. */
+  accent?: ReactNode;
+  /** A line under the header, e.g. the column's total value. */
+  meta?: ReactNode;
+  /** Below the cards, outside the drop list, e.g. a "Load more" button. */
+  footer?: ReactNode;
 }
 
 export interface KanbanCardData {
@@ -204,7 +212,7 @@ function Column<T extends KanbanCardData>({
   const { t, locale } = useStrings();
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
   const headingId = useId();
-  const count = formatNumber(ids.length, locale);
+  const count = formatNumber(column.count ?? ids.length, locale);
   return (
     <section
       data-slot="kanban-column"
@@ -216,13 +224,25 @@ function Column<T extends KanbanCardData>({
         className,
       )}
     >
-      <header data-slot="kanban-column-header" className="flex items-center justify-between gap-2">
-        <h3 id={headingId} className="min-w-0 truncate text-label text-foreground">
-          {column.title}
-        </h3>
-        <Badge variant="outline" aria-label={t.cardCount(count)}>
-          <span className="tabular-nums">{count}</span>
-        </Badge>
+      <header data-slot="kanban-column-header" className="flex flex-col gap-1">
+        <div className="flex items-center justify-between gap-2">
+          {column.accent ? (
+            <span aria-hidden className="flex shrink-0 items-center">
+              {column.accent}
+            </span>
+          ) : null}
+          <h3 id={headingId} className="min-w-0 flex-1 truncate text-label text-foreground">
+            {column.title}
+          </h3>
+          <Badge variant="outline" aria-label={t.cardCount(count)}>
+            <span className="tabular-nums">{count}</span>
+          </Badge>
+        </div>
+        {column.meta ? (
+          <div data-slot="kanban-column-meta" className="min-w-0 truncate text-body-sm text-muted-foreground">
+            {column.meta}
+          </div>
+        ) : null}
       </header>
       <SortableContext items={ids} strategy={verticalListSortingStrategy}>
         <ul ref={setNodeRef} data-slot="kanban-list" className="flex min-h-16 flex-1 flex-col gap-2 overflow-y-auto">
@@ -240,6 +260,7 @@ function Column<T extends KanbanCardData>({
           ) : null}
         </ul>
       </SortableContext>
+      {column.footer ? <div data-slot="kanban-column-footer">{column.footer}</div> : null}
     </section>
   );
 }
