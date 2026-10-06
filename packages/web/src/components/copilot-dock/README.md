@@ -74,6 +74,7 @@ Takes every [`CopilotChat`](../copilot-chat/README.md) prop except `mode` and `o
 | `persistKey` | `string` | | localStorage key that remembers the position. |
 | `width` | `string` | `"26rem"` | Side and floating width, never wider than the screen. |
 | `height` | `string` | `50vh` / `40rem` | Bottom and floating height. |
+| `resizable` | `boolean` | `false` | Drag the inner edge to resize: height when docked at the bottom, width on a side. Arrow keys on the focused edge, double click resets; remembered with `persistKey`. |
 | `dockLabels` | `Partial<CopilotDockLabels>` | — | Launcher and panel names. `labels` still goes to the chat. |
 | `children` | `ReactNode \| (panel: CopilotDockPanel) => ReactNode` | — | Replaces `CopilotChat` with your own panel body. The function form gets `{ controls, close, expanded, side }`, so your header can carry the dock's position and expand controls. |
 | `barContent` | `ReactNode` | — | With `collapsedBar`, replaces the Ask input. The bar becomes one button that opens the dock. |
