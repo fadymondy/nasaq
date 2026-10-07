@@ -14,9 +14,11 @@ RUN pnpm turbo run build --env-mode=loose --concurrency=1 --filter=@fadymondy/na
 FROM node:24-bookworm-slim
 WORKDIR /app
 ENV NODE_ENV=production HOSTNAME=0.0.0.0 PORT=8080 NEXT_TELEMETRY_DISABLED=1
-COPY --from=build /repo/apps/site/.next/standalone ./
-COPY --from=build /repo/apps/site/.next/static ./apps/site/.next/static
-COPY --from=build /repo/apps/site/public ./apps/site/public
+# Owned by node, not root: Next writes regenerated pages back under .next/server and
+# creates .next/cache at runtime, and as root-owned files that failed with EACCES (MH-1287).
+COPY --chown=node:node --from=build /repo/apps/site/.next/standalone ./
+COPY --chown=node:node --from=build /repo/apps/site/.next/static ./apps/site/.next/static
+COPY --chown=node:node --from=build /repo/apps/site/public ./apps/site/public
 USER node
 EXPOSE 8080
 CMD ["node", "apps/site/server.js"]
