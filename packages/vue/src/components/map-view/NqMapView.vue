@@ -453,7 +453,6 @@ const cardClass =
             :src="tileSrc(tile)!"
             alt=""
             draggable="false"
-            referrerpolicy="no-referrer"
             class="absolute max-w-none"
             :style="{ left: `${tile.left}px`, top: `${tile.top}px`, width: `${tile.size + 0.5}px`, height: `${tile.size + 0.5}px` }"
             @error="(e) => ((e.target as HTMLElement).style.visibility = 'hidden')"

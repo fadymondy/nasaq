@@ -677,7 +677,6 @@ export function MapView({
                     src={src}
                     alt=""
                     draggable={false}
-                    referrerPolicy="no-referrer"
                     onError={(event) => {
                       event.currentTarget.style.visibility = "hidden";
                     }}

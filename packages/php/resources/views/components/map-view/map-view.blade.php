@@ -86,7 +86,7 @@
     {{ $attributes->cn('relative isolate h-[28rem] min-h-64 w-full touch-none select-none overflow-hidden rounded-card border border-border bg-secondary outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus') }}>
     <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden" x-show="tiles.length > 0" {!! $hide !!}>
         <template x-for="tile in tiles" :key="tile.key">
-            <img x-bind:src="tile.src" alt="" draggable="false" referrerpolicy="no-referrer" class="absolute max-w-none" x-bind:style="tile.style" x-on:error="$event.target.style.visibility = 'hidden'">
+            <img x-bind:src="tile.src" alt="" draggable="false" class="absolute max-w-none" x-bind:style="tile.style" x-on:error="$event.target.style.visibility = 'hidden'">
         </template>
     </div>
     <svg aria-hidden="true" data-slot="map-grid" class="pointer-events-none absolute inset-0 size-full stroke-border" x-html="gridSvg"></svg>
