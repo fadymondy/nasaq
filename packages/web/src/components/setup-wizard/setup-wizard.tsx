@@ -93,6 +93,8 @@ export interface SetupWizardProps extends Omit<ComponentProps<"div">, "children"
   completed?: string[];
   /** Runs when leaving a step forward. Resolve `{ error }` to stay put and show why. */
   onStepComplete?: (stepId: string) => Promise<AuthSubmitResult> | AuthSubmitResult;
+  /** Runs when an optional step is skipped, before moving on. Record it so a resumed wizard opens past it. */
+  onStepSkip?: (stepId: string) => void;
   /** The server's verdict that setup may finish. `false` blocks Finish and shows `gateMessage`. Default true. */
   canFinish?: boolean;
   /** Why Finish is blocked, when the server has said so. */
@@ -121,6 +123,7 @@ export function SetupWizard({
   onCurrentChange,
   completed,
   onStepComplete,
+  onStepSkip,
   canFinish = true,
   gateMessage,
   onFinish,
@@ -265,7 +268,11 @@ export function SetupWizard({
           </Button>
           <div className="flex flex-col-reverse gap-2 sm:flex-row">
             {step.optional && !last ? (
-              <Button variant="secondary" disabled={pending !== null} onClick={() => go(current + 1)}>
+              <Button variant="secondary" disabled={pending !== null} onClick={() => {
+                  onStepSkip?.(step.id);
+                  go(current + 1);
+                }}
+              >
                 {t.skip}
               </Button>
             ) : null}
