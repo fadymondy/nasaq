@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ArrowUp, ArrowUpDown, Columns3, ExternalLink, LayoutGrid, List, Maximize2, Minus, Network, Plus, Search, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, ChevronDown, Columns3, ExternalLink, LayoutGrid, List, Maximize2, Minus, Network, Plus, Search, X } from "lucide-react";
 import { type LucideIcon } from "lucide-react";
 import { type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject, useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState, useSyncExternalStore } from "react";
 import { cn } from "../../lib/cn";
@@ -12,6 +12,7 @@ import { DateTime, formatNumber } from "../numeric";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../table";
 import { EmptyState } from "../states";
 import { Toggle, ToggleGroup } from "../toggle-group";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../dropdown-menu";
 import { adjacency, boundsOf, filterNodes, fitTransform, forceLayout, linksAmong, type ListSortKey, nodeRadius, type Point, pinchTransform, sortRows, toGraphPoint, type Transform, zoomAbout } from "./graph-layout";
 import { orderByNeighbours, type SchemaBox, schemaColumns, schemaConnector, schemaFit } from "./graph-schema";
 import { arrowPoints, dashFor, type GraphLinkStyle, type GraphNodeShape, linkEnds, shapeExtent, shapePath } from "./graph-shapes";
@@ -53,6 +54,8 @@ export interface GraphViewKind {
   label: string;
   /** Categorical colour. Kinds are also told apart by name in the legend, cards and list. */
   hue: TagHue;
+  /** One line on what this kind holds, shown in the kinds filter. */
+  description?: string;
   icon?: LucideIcon;
   /** The shape of this kind's nodes in the graph. Default `"circle"`. */
   shape?: GraphNodeShape;
@@ -94,6 +97,7 @@ export interface GraphViewLabels {
   list: string;
   schema: string;
   kinds: string;
+  allKinds: string;
   counts: (nodes: string, links: string) => string;
   zoomIn: string;
   zoomOut: string;
@@ -128,12 +132,13 @@ const STRINGS: { en: GraphViewLabels; ar: GraphViewLabels } = {
     list: "List",
     schema: "Schema",
     kinds: "Filter by type",
+    allKinds: "All types",
     counts: (n, l) => `${n} items, ${l} links`,
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
     fit: "Fit to view",
     graphHint: "Drag a node to pin it, double-click to release it. Drag the background to pan, scroll to zoom.",
-    schemaHint: "Hover a card to trace its links. Drag to pan, Ctrl and scroll to zoom.",
+    schemaHint: "Hover a card to trace its links. Drag to pan, scroll to zoom.",
     pinned: "pinned",
     inspector: "Details",
     close: "Close",
@@ -160,12 +165,13 @@ const STRINGS: { en: GraphViewLabels; ar: GraphViewLabels } = {
     list: "قائمة",
     schema: "مخطط",
     kinds: "تصفية حسب النوع",
+    allKinds: "كل الأنواع",
     counts: (n, l) => `${n} عنصرًا، ${l} روابط`,
     zoomIn: "تكبير",
     zoomOut: "تصغير",
     fit: "ملاءمة العرض",
     graphHint: "اسحب عقدة لتثبيتها وانقر مرتين لتحريرها. اسحب الخلفية للتحريك ومرّر للتكبير.",
-    schemaHint: "مرّر فوق بطاقة لتتبّع روابطها. اسحب للتحريك، وCtrl مع التمرير للتكبير.",
+    schemaHint: "مرّر فوق بطاقة لتتبّع روابطها. اسحب للتحريك، ومرّر للتكبير.",
     pinned: "مثبّتة",
     inspector: "التفاصيل",
     close: "إغلاق",
@@ -298,14 +304,42 @@ export function GraphView({
           <Search aria-hidden className="pointer-events-none absolute start-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t.search} aria-label={t.search} className="ps-8" type="search" />
         </div>
-        <ToggleGroup value={picked} onValueChange={(v) => setPicked(v as string[])} multiple aria-label={t.kinds} className="flex-wrap">
-          {kinds.map((k) => (
-            <Toggle key={k.id} value={k.id} aria-label={k.label}>
-              <span aria-hidden className="size-2.5 rounded-full" style={{ backgroundColor: hueVar(k.hue) }} />
-              {k.label}
-            </Toggle>
-          ))}
-        </ToggleGroup>
+        <DropdownMenu>
+          <DropdownMenuTrigger render={<Button variant="secondary" size="sm" aria-label={t.kinds} />}>
+            {picked.length === 1 && kindById.get(picked[0] ?? "") ? (
+              <span aria-hidden className="size-2.5 rounded-full" style={{ backgroundColor: hueVar(kindById.get(picked[0] ?? "")!.hue) }} />
+            ) : null}
+            {picked.length === 0 ? t.allKinds : picked.length === 1 ? (kindById.get(picked[0] ?? "")?.label ?? t.kinds) : `${t.kinds} · ${num(picked.length)}`}
+            <ChevronDown aria-hidden className="opacity-60" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="max-h-80 min-w-64 overflow-y-auto">
+            <DropdownMenuItem disabled={picked.length === 0} onClick={() => setPicked([])}>
+              {t.allKinds}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {kinds.map((k) => {
+              const Icon = k.icon;
+              const count = nodes.filter((n) => n.kind === k.id).length;
+              return (
+                <DropdownMenuCheckboxItem
+                  key={k.id}
+                  checked={picked.includes(k.id)}
+                  onCheckedChange={(on) => setPicked((p) => (on ? [...p, k.id] : p.filter((x) => x !== k.id)))}
+                  closeOnClick={false}
+                >
+                  <span className="flex min-w-0 flex-1 items-start gap-2">
+                    {Icon ? <Icon aria-hidden className="mt-0.5 size-4 shrink-0" style={{ color: hueVar(k.hue) }} /> : <span aria-hidden className="mt-1.5 size-2.5 shrink-0 rounded-full" style={{ backgroundColor: hueVar(k.hue) }} />}
+                    <span className="flex min-w-0 flex-col">
+                      <span className="truncate">{k.label}</span>
+                      {k.description ? <span className="text-caption text-muted-foreground">{k.description}</span> : null}
+                    </span>
+                    <span className="ms-auto ps-2 text-caption text-muted-foreground tabular-nums">{num(count)}</span>
+                  </span>
+                </DropdownMenuCheckboxItem>
+              );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
         <div className="ms-auto flex items-center gap-2">
           <span className="hidden text-caption text-muted-foreground sm:inline">
             <bdi>{t.counts(num(shownNodes.length), num(shownLinks.length))}</bdi>
@@ -931,7 +965,7 @@ function SchemaMode({
     userMoved.current = true;
     setTf(fn);
   }, []);
-  useWheel(view, applyTf, true);
+  useWheel(view, applyTf, false);
 
   const pointers = useRef(new Map<number, Point>());
   const gesture = useRef<{ kind: "pan"; pointer: number; sx: number; sy: number; ox: number; oy: number; moved: boolean } | { kind: "pinch"; start: Transform; a: Point; b: Point } | null>(null);

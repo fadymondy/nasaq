@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUp, Maximize2, Minimize2, PanelBottom, PanelLeft, PanelRight, PictureInPicture2, Sparkles } from "lucide-react";
-import { type CSSProperties, type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode, useEffect, useId, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
 import { isApplePlatform, useModHotkey } from "../../lib/hotkey";
 import { useOptionalNasaq } from "../../provider/nasaq-provider";
@@ -23,6 +23,7 @@ const STRINGS = {
     collapse: "Exit full page",
     ask: "Ask anything…",
     send: "Send",
+    resize: "Resize panel",
   },
   ar: {
     open: "افتح المساعد",
@@ -37,6 +38,7 @@ const STRINGS = {
     collapse: "اخرج من ملء الصفحة",
     ask: "اسأل عن أي شيء…",
     send: "أرسل",
+    resize: "غيّر حجم اللوحة",
   },
 };
 
@@ -47,7 +49,30 @@ export type CopilotDockSide = "end" | "start" | "bottom" | "float";
 
 const SIDES: readonly CopilotDockSide[] = ["end", "start", "bottom", "float"];
 
-export interface CopilotDockProps extends Omit<CopilotChatProps, "mode" | "onClose"> {
+/** What a custom panel body receives: the dock's own header controls and a way to close it. */
+export interface CopilotDockPanel {
+  /** Position menu + expand button (plus `headerActions`), for the body's own header. */
+  controls: ReactNode;
+  /** Closes the dock and returns focus to the launcher or the bar. */
+  close: () => void;
+  expanded: boolean;
+  side: CopilotDockSide;
+}
+
+export interface CopilotDockProps extends Omit<CopilotChatProps, "mode" | "onClose" | "messages" | "onSend" | "children"> {
+  /** The conversation. Required unless `children` replaces the chat. */
+  messages?: CopilotChatProps["messages"];
+  onSend?: CopilotChatProps["onSend"];
+  /**
+   * Replaces `CopilotChat` with your own panel body: an inbox, a notes pane, a support console. A function receives
+   * the dock's header controls and `close`, so the body can render its own header with them.
+   */
+  children?: ReactNode | ((panel: CopilotDockPanel) => ReactNode);
+  /**
+   * With `collapsedBar`, replaces the "Ask anything" input with your own content (a title, an unread count, a
+   * preview). The whole bar then becomes one button that opens the dock.
+   */
+  barContent?: ReactNode;
   /** Controlled open state. */
   open?: boolean;
   defaultOpen?: boolean;
@@ -81,7 +106,36 @@ export interface CopilotDockProps extends Omit<CopilotChatProps, "mode" | "onClo
   width?: string;
   /** Height of a bottom or floating panel. Default 50vh for bottom, 40rem for float. */
   height?: string;
+  /**
+   * Let people drag the panel's inner edge to resize it: the top edge when docked at the bottom (height only), the
+   * inner side edge when docked to a side (width only). Arrow keys work on the focused edge, a double click resets.
+   * With `persistKey`, the size is remembered too. Default false.
+   */
+  resizable?: boolean;
   dockLabels?: Partial<CopilotDockLabels>;
+}
+
+/** Smallest size a drag can reach, in px. The largest leaves 4rem of the page visible. */
+const MIN_WIDTH = 320;
+const MIN_HEIGHT = 240;
+const KEY_STEP = 16;
+
+interface DockSize {
+  width?: number;
+  height?: number;
+}
+
+function readSize(key: string | undefined): DockSize {
+  if (!key || typeof window === "undefined") return {};
+  try {
+    const v = JSON.parse(window.localStorage.getItem(`${key}:size`) ?? "{}") as DockSize;
+    return {
+      width: typeof v.width === "number" && v.width > 0 ? v.width : undefined,
+      height: typeof v.height === "number" && v.height > 0 ? v.height : undefined,
+    };
+  } catch {
+    return {};
+  }
 }
 
 function readSide(key: string | undefined): CopilotDockSide | null {
@@ -97,8 +151,8 @@ function readSide(key: string | undefined): CopilotDockSide | null {
 const SIDE_ICON = { end: PanelRight, start: PanelLeft, bottom: PanelBottom, float: PictureInPicture2 } as const;
 
 /**
- * The app-wide assistant: a launcher (a round button or a slim "Ask anything" bar) that opens `CopilotChat` in a
- * non-modal panel. The panel docks to either edge or the bottom, floats as a window, or expands to the whole page.
+ * The app-wide assistant: a launcher (a round button or a slim "Ask anything" bar) that opens `CopilotChat` — or
+ * any panel body passed as `children` — in a non-modal panel. The panel docks to either edge or the bottom, floats as a window, or expands to the whole page.
  * ⌘J / Ctrl+J toggles it from anywhere; Escape inside the panel closes it and returns focus to the launcher.
  */
 export function CopilotDock({
@@ -121,10 +175,15 @@ export function CopilotDock({
   persistKey,
   width = "26rem",
   height,
+  resizable = false,
   dockLabels,
   className,
   style,
   headerActions,
+  children,
+  barContent,
+  messages = [],
+  onSend,
   ...chat
 }: CopilotDockProps) {
   const nasaq = useOptionalNasaq();
@@ -141,8 +200,11 @@ export function CopilotDock({
   const panelRef = useRef<HTMLDivElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const barRef = useRef<HTMLInputElement>(null);
+  const barButtonRef = useRef<HTMLButtonElement>(null);
   const [shortcut, setShortcut] = useState<string | null>(null);
   const [barText, setBarText] = useState("");
+  const [dragSize, setDragSize] = useState<DockSize>({});
+  const [resizing, setResizing] = useState(false);
 
   const setOpen = (next: boolean) => {
     setInner(next);
@@ -164,11 +226,12 @@ export function CopilotDock({
     onExpandedChange?.(next);
   };
 
-  // A saved position is only readable in the browser, after the first render.
+  // A saved position (and size) is only readable in the browser, after the first render.
   useEffect(() => {
     const saved = readSide(persistKey);
     if (saved && sideProp === undefined) setInnerSide(saved);
-  }, [persistKey, sideProp]);
+    if (resizable) setDragSize(readSize(persistKey));
+  }, [persistKey, sideProp, resizable]);
 
   useModHotkey(hotkey || "j", () => setOpen(!open), hotkey !== false);
 
@@ -190,7 +253,7 @@ export function CopilotDock({
   const close = () => {
     setOpen(false);
     setExpanded(false);
-    requestAnimationFrame(() => (collapsedBar ? barRef.current : launcherRef.current)?.focus());
+    requestAnimationFrame(() => (collapsedBar ? (barRef.current ?? barButtonRef.current) : launcherRef.current)?.focus());
   };
 
   const sendFromBar = () => {
@@ -201,7 +264,7 @@ export function CopilotDock({
     }
     setBarText("");
     setOpen(true);
-    void chat.onSend?.(text, { context: [...(chat.context ?? [])], model: chat.model, mentions: [], attachments: [], commands: [], toggles: [] });
+    void onSend?.(text, { context: [...(chat.context ?? [])], model: chat.model, mentions: [], attachments: [], commands: [], toggles: [] });
   };
 
   const menuSides = sides.filter((s) => SIDES.includes(s));
@@ -255,13 +318,89 @@ export function CopilotDock({
     bottom: "inset-x-0 bottom-0 border-t",
     float: "bottom-4 end-4 max-h-[calc(100%-2rem)] max-w-[calc(100%-2rem)] rounded-card border",
   };
+  // A dragged size wins over the `width` / `height` props, but never past the screen.
+  const sideWidth = dragSize.width ? `${dragSize.width}px` : width;
+  const bottomHeight = dragSize.height ? `${dragSize.height}px` : (height ?? "50vh");
   const size: CSSProperties = expanded
     ? {}
     : side === "bottom"
-      ? { height: `min(100%, ${height ?? "50vh"})` }
+      ? { height: `min(100%, ${bottomHeight})` }
       : side === "float"
         ? { width, height: height ?? "40rem" }
-        : { width: `min(100%, ${width})` };
+        : { width: `min(100%, ${sideWidth})` };
+
+  // Only docked panels resize, and only along one axis: height at the bottom, width on a side.
+  const axis: "x" | "y" | null = !resizable || expanded ? null : side === "bottom" ? "y" : side === "end" || side === "start" ? "x" : null;
+  const bounds = () => {
+    const box = typeof window === "undefined" ? undefined : panelRef.current?.offsetParent?.getBoundingClientRect();
+    const w = box?.width || (typeof window === "undefined" ? 1280 : window.innerWidth);
+    const h = box?.height || (typeof window === "undefined" ? 800 : window.innerHeight);
+    return axis === "x" ? { min: MIN_WIDTH, max: Math.max(MIN_WIDTH, w - 64) } : { min: MIN_HEIGHT, max: Math.max(MIN_HEIGHT, h - 64) };
+  };
+  const commitSize = (next: DockSize) => {
+    setDragSize(next);
+    if (persistKey) {
+      try {
+        window.localStorage.setItem(`${persistKey}:size`, JSON.stringify(next));
+      } catch {
+        // Storage can be off; the size still holds for this visit.
+      }
+    }
+  };
+  const applySize = (px: number, persist: boolean) => {
+    const { min, max } = bounds();
+    const v = Math.round(Math.min(max, Math.max(min, px)));
+    const next = axis === "x" ? { ...dragSize, width: v } : { ...dragSize, height: v };
+    if (persist) commitSize(next);
+    else setDragSize(next);
+    return next;
+  };
+  // Dragging away from the docked edge grows the panel. "end" is the right edge in LTR and the left in RTL.
+  const growSign = side === "bottom" ? -1 : (side === "end") !== rtl ? -1 : 1;
+  const drag = useRef<{ start: number; size: number; last: DockSize } | null>(null);
+  const onResizeStart = (event: PointerEvent<HTMLDivElement>) => {
+    if (!axis || event.button !== 0 || !panelRef.current) return;
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    const rect = panelRef.current.getBoundingClientRect();
+    drag.current = { start: axis === "x" ? event.clientX : event.clientY, size: axis === "x" ? rect.width : rect.height, last: dragSize };
+    setResizing(true);
+  };
+  const onResizeMove = (event: PointerEvent<HTMLDivElement>) => {
+    const d = drag.current;
+    if (!d) return;
+    const delta = (axis === "x" ? event.clientX : event.clientY) - d.start;
+    d.last = applySize(d.size + growSign * delta, false);
+  };
+  const onResizeEnd = () => {
+    const d = drag.current;
+    if (!d) return;
+    drag.current = null;
+    setResizing(false);
+    commitSize(d.last);
+  };
+  const onResizeKey = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!axis || !panelRef.current) return;
+    const rect = panelRef.current.getBoundingClientRect();
+    const current = axis === "x" ? rect.width : rect.height;
+    // Arrows move the edge the way they point; Home and End jump to the smallest and largest size.
+    const leftGrows = (side === "end") !== rtl;
+    const keys: Record<string, number> =
+      axis === "y" ? { ArrowUp: KEY_STEP, ArrowDown: -KEY_STEP } : { ArrowLeft: leftGrows ? KEY_STEP : -KEY_STEP, ArrowRight: leftGrows ? -KEY_STEP : KEY_STEP };
+    const step = keys[event.key];
+    if (step !== undefined) applySize(current + step, true);
+    else if (event.key === "Home") applySize(0, true);
+    else if (event.key === "End") applySize(Number.POSITIVE_INFINITY, true);
+    else return;
+    event.preventDefault();
+  };
+  // The handle sits on the panel's inner edge: wider to grab than the hairline it shows.
+  const handleEdge =
+    side === "bottom"
+      ? "inset-x-0 top-0 h-2 cursor-row-resize after:inset-x-0 after:top-0 after:h-0.5"
+      : side === "end"
+        ? "inset-y-0 start-0 w-2 cursor-col-resize after:inset-y-0 after:start-0 after:w-0.5"
+        : "inset-y-0 end-0 w-2 cursor-col-resize after:inset-y-0 after:end-0 after:w-0.5";
 
   const launcherName = shortcut ? `${t.open} (${shortcut})` : t.open;
   const keys = hotkey ? `${isApplePlatform() ? "Meta" : "Control"}+${hotkey.toUpperCase()}` : undefined;
@@ -288,7 +427,37 @@ export function CopilotDock({
           {launcherIcon ?? <Sparkles aria-hidden />}
         </button>
       )}
-      {launcher && !open && collapsedBar && (
+      {launcher && !open && collapsedBar && barContent !== undefined && (
+        <button
+          ref={barButtonRef}
+          type="button"
+          data-slot="copilot-dock-bar"
+          aria-expanded={false}
+          aria-controls={panelId}
+          aria-keyshortcuts={keys}
+          title={launcherName}
+          onClick={() => setOpen(true)}
+          className={cn(
+            placement,
+            "inset-x-0 bottom-4 z-40 mx-auto flex w-[min(calc(100%-2rem),36rem)] items-center gap-2 rounded-full border border-border bg-background ps-3 pe-1.5 py-1.5 text-start shadow-floating",
+            "transition-colors duration-150 ease-nq hover:bg-muted outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nq-focus",
+          )}
+        >
+          <span aria-hidden className="text-primary [&_svg]:size-4">
+            {launcherIcon ?? <Sparkles />}
+          </span>
+          <span className="flex min-w-0 flex-1 items-center gap-2 text-sm">{barContent}</span>
+          {shortcut ? (
+            <kbd dir="ltr" className="hidden rounded-sm border border-border px-1 font-mono text-[11px] text-muted-foreground sm:inline">
+              {shortcut}
+            </kbd>
+          ) : null}
+          <span aria-hidden className="inline-flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground [&_svg]:size-3.5">
+            <Maximize2 />
+          </span>
+        </button>
+      )}
+      {launcher && !open && collapsedBar && barContent === undefined && (
         <form
           data-slot="copilot-dock-bar"
           role="search"
@@ -311,7 +480,7 @@ export function CopilotDock({
             value={barText}
             onChange={(event) => setBarText(event.target.value)}
             onFocus={() => {
-              if (chat.onSend === undefined) setOpen(true);
+              if (onSend === undefined) setOpen(true);
             }}
             aria-label={t.ask}
             aria-controls={panelId}
@@ -340,6 +509,7 @@ export function CopilotDock({
         data-open={open || undefined}
         data-side={side}
         data-expanded={expanded || undefined}
+        data-resizing={resizing || undefined}
         onKeyDown={(event) => {
           if (event.key === "Escape" && !event.defaultPrevented) {
             event.stopPropagation();
@@ -351,11 +521,55 @@ export function CopilotDock({
         className={cn(
           placement,
           "z-40 flex flex-col overflow-hidden border-border bg-background shadow-floating outline-none",
+          resizing && "select-none",
           expanded ? "inset-0" : shape[side],
           className,
         )}
       >
-        {open && <CopilotChat {...chat} mode={expanded ? "page" : "panel"} onClose={close} headerActions={controls} className="min-h-0 flex-1" />}
+        {open && axis && (
+          <div
+            role="separator"
+            tabIndex={0}
+            aria-label={t.resize}
+            aria-orientation={axis === "y" ? "horizontal" : "vertical"}
+            aria-controls={panelId}
+            aria-valuemin={bounds().min}
+            aria-valuemax={bounds().max}
+            aria-valuenow={axis === "x" ? dragSize.width : dragSize.height}
+            data-slot="copilot-dock-resize"
+            data-active={resizing || undefined}
+            onPointerDown={onResizeStart}
+            onPointerMove={onResizeMove}
+            onPointerUp={onResizeEnd}
+            onPointerCancel={onResizeEnd}
+            onKeyDown={onResizeKey}
+            onDoubleClick={() => commitSize(axis === "x" ? { ...dragSize, width: undefined } : { ...dragSize, height: undefined })}
+            className={cn(
+              "absolute z-10 touch-none outline-none",
+              "after:absolute after:bg-primary after:opacity-0 after:transition-opacity after:duration-150 after:ease-nq",
+              "hover:after:opacity-60 focus-visible:after:opacity-100 data-[active]:after:opacity-100",
+              handleEdge,
+            )}
+          />
+        )}
+        {open &&
+          (children !== undefined ? (
+            typeof children === "function" ? (
+              children({ controls, close, expanded, side })
+            ) : (
+              children
+            )
+          ) : (
+            <CopilotChat
+              {...chat}
+              messages={messages}
+              onSend={onSend ?? (() => {})}
+              mode={expanded ? "page" : "panel"}
+              onClose={close}
+              headerActions={controls}
+              className="min-h-0 flex-1"
+            />
+          ))}
       </div>
     </>
   );

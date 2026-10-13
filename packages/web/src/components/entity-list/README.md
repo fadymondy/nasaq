@@ -87,6 +87,11 @@ EntityList                    data-slot="entity-list"
 | `loading` / `error` / `onRetry` | | | Skeleton table or cards; error state with retry. |
 | `empty` | `ReactNode` | | Shown when there is no data at all. |
 | `cardMinWidth` / `defaultSort` / `labels` / `className` | | `272` | |
+| `manual` | `boolean` | `false` | Server mode: `data` is one page already searched, filtered and sorted by the server; the list shows it as it is. |
+| `rowCount` | `number` | `data.length` | Total matching rows on the server (manual mode). |
+| `query` / `sort` / `page` | `{ value?, onChange? }` | | Controlled search, sort and page, as in `useDataTable`. |
+| `facetValues` / `onFacetValuesChange` | `Record<string, string[]>` | | Controlled facet choices, keyed by facet id. |
+| `pagination` | `ReactNode \| false` | | Replaces the built-in pager (a cursor pager, say); `false` hides it. |
 
 Building blocks for columns and cards: `EntityIdentity`, `TagList`, `PersonCell`, `ActivityCell`, `AvatarStack`, `CardMeta`.
 
@@ -100,6 +105,27 @@ Building blocks for columns and cards: `EntityIdentity`, `TagList`, `PersonCell`
   toolbar={({ filteredRows, selectedRows }) => (
     <ExportButton columns={exportColumns} scopes={{ selected: selectedRows, filtered: filteredRows, all: props.data }} />
   )}
+/>
+```
+
+**A server-paged list**
+
+Thousands of rows live on the server, so the list only shows the page it was given and hands every change back.
+
+```tsx
+const [q, setQ] = useState("")
+const [facets, setFacets] = useState<Record<string, string[]>>({})
+const page = useContactsPage({ q, stage: facets.stage, cursor })
+
+<EntityList
+  {...props}
+  data={page.rows}
+  manual
+  rowCount={page.total}
+  query={{ value: q, onChange: setQ }}
+  facetValues={facets}
+  onFacetValuesChange={setFacets}
+  pagination={<CursorPager next={page.next} prev={page.prev} />}
 />
 ```
 

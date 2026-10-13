@@ -72,6 +72,8 @@ export interface BrainSummary {
   description?: string;
   /** An emoji or an image URL shown as the brain's mark. Falls back to a brain icon. */
   avatar?: string;
+  /** Brand colour for the mark (any CSS colour): tints its tile and border. */
+  color?: string;
   status: BrainStatus;
   visibility: BrainVisibility;
   /** Facts, notes and documents retained. */
@@ -110,6 +112,7 @@ function BrainMark({ brain, size = "md" }: { brain: BrainSummary; size?: "md" | 
   return (
     <span
       aria-hidden
+      style={brain.color ? { backgroundColor: `color-mix(in srgb, ${brain.color} 16%, transparent)`, borderColor: `color-mix(in srgb, ${brain.color} 45%, transparent)` } : undefined}
       className={cn(
         "inline-flex shrink-0 items-center justify-center overflow-hidden rounded-control border border-border bg-secondary text-foreground",
         size === "lg" ? "size-11 text-h3" : "size-9 text-body",

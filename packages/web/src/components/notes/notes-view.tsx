@@ -1,6 +1,6 @@
 "use client";
 
-import { Archive, ArrowDownUp, FolderPlus, LayoutGrid, List, Lock, LockOpen, Pin, Plus, Search, X, Download, Pencil, Trash2 } from "lucide-react";
+import { Archive, ArrowDownUp, Check, ChevronDown, Folder, FolderPlus, LayoutGrid, List, Lock, LockOpen, Pin, Plus, Search, SquarePen, X, Download, Pencil, Trash2 } from "lucide-react";
 import { type KeyboardEvent, type ReactNode, useCallback, useMemo, useState } from "react";
 import { cn } from "../../lib/cn";
 import { Badge } from "../badge";
@@ -10,7 +10,6 @@ import { ExportDialog } from "../export-action";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group";
 import { formatRelativeTime, useFormatNumber } from "../numeric";
 import { EmptyState, ErrorState, LoadingState } from "../states";
-import { Toggle, ToggleGroup } from "../toggle-group";
 import { NotebookDialog, type NotebookDialogState, type NoteResult } from "./notes-dialogs";
 import { type NoteAction, NoteActionsMenu, NoteContextRegion, type NoteMenuApi, type NoteMenuOptions, useNoteMenu } from "./notes-menu";
 import {
@@ -41,6 +40,14 @@ export function noteTint(color: NoteColor | null | undefined) {
   return color
     ? { background: `var(--nq-tag-${color}-soft)`, borderColor: `color-mix(in oklab, var(--nq-tag-${color}) 45%, transparent)` }
     : undefined;
+}
+
+/** Today's notes show the time; older ones a short date ("3/9/26"). */
+function shortDate(value: number, locale: string, now = Date.now()) {
+  const d = new Date(value);
+  return d.toDateString() === new Date(now).toDateString()
+    ? d.toLocaleTimeString(locale, { hour: "numeric", minute: "2-digit" })
+    : d.toLocaleDateString(locale, { dateStyle: "short" });
 }
 
 function useControllable<T>(value: T | undefined, defaultValue: T, onChange?: (next: T) => void) {
@@ -81,7 +88,11 @@ export interface NotesViewProps extends NoteMenuOptions {
   loading?: boolean;
   error?: ReactNode;
   onRetry?: () => void;
-  /** Show the chips row of notebooks, tags and filters above the list. Default true. */
+  /** Rendered after the last note, inside the scrolling list (a "load more" sentinel, say). */
+  footer?: ReactNode;
+  /** Extra header buttons, shown before the list actions menu. */
+  actions?: ReactNode;
+  /** Also show the chips row of notebooks, tags and filters. The header's scope menu already does this job. Default false. */
   showScopeBar?: boolean;
   scopeBarClassName?: string;
   onNotebookCreate?: (name: string, parentId: string | null) => Promise<NoteResult>;
@@ -109,7 +120,9 @@ export function NotesView(props: NotesViewProps) {
     loading,
     error,
     onRetry,
-    showScopeBar = true,
+    showScopeBar = false,
+    footer,
+    actions: headerActions,
     scopeBarClassName,
     onNotebookCreate,
     onNotebookRename,
@@ -135,6 +148,7 @@ export function NotesView(props: NotesViewProps) {
   const counts = useMemo(() => scopeCounts(notes, notebooks), [notes, notebooks]);
   const shown = useMemo(() => sortNotes(filterNotes(notes, { scope, query, notebooks, unlocked }), sort, { locale, pinnedFirst: scope !== "archive" }), [notes, scope, query, notebooks, unlocked, sort, locale]);
   const groups = useMemo(() => groupNotes(shown, sort, now), [shown, sort, now]);
+  const scopeItems = useMemo(() => scopeList(t, notes, notebooks), [t, notes, notebooks]);
   const currentNotebook = scope.startsWith("nb:") ? notebooks.find((n) => n.id === scope.slice(3)) : undefined;
 
   const create = async () => {
@@ -253,6 +267,8 @@ export function NotesView(props: NotesViewProps) {
         </NoteContextRegion>
       );
     }
+    // The list row reads like a notes app's sidebar: a bold title; the date and the first line of
+    // text; the notebook. A gap separates the rounded rows.
     return (
       <NoteContextRegion
         key={note.id}
@@ -263,19 +279,37 @@ export function NotesView(props: NotesViewProps) {
             data-slot="note-row"
             data-active={note.id === activeId ? "" : undefined}
             data-color={note.color ?? undefined}
-            className="group/note relative rounded-control border-s-[3px] border-transparent hover:bg-nq-hover data-active:bg-nq-selected"
-            style={note.color ? { borderInlineStartColor: `var(--nq-tag-${note.color})` } : undefined}
+            className="group/note relative"
           />
         }
       >
-        <button type="button" data-slot="note-open" aria-current={note.id === activeId ? "true" : undefined} onClick={open} onKeyDown={(e) => onRowKey(e, note)} className="flex w-full min-w-0 flex-col gap-1 rounded-control px-3 py-2.5 text-start focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nq-focus">
-          <span className="flex min-w-0 items-center gap-1.5 pe-8">
-            {lead}
-            <span dir="auto" className="min-w-0 flex-1 truncate text-label text-foreground">{title}</span>
-            <span className="shrink-0 text-caption text-muted-foreground">{when}</span>
+        <button type="button" data-slot="note-open" aria-current={note.id === activeId ? "true" : undefined} onClick={open} onKeyDown={(e) => onRowKey(e, note)} className="flex w-full min-w-0 items-center gap-3 rounded-lg px-3 py-2.5 text-start transition-colors duration-150 ease-nq hover:bg-nq-hover group-data-active/note:bg-nq-selected outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-nq-focus/40">
+          {note.icon ? <span className="shrink-0 self-start pt-0.5">{note.icon}</span> : null}
+          <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+            <span className="flex min-w-0 items-center gap-1.5 pe-6">
+              {note.color ? <span aria-hidden className="size-2 shrink-0 rounded-full" style={{ backgroundColor: `var(--nq-tag-${note.color})` }} /> : null}
+              {lead}
+              <span dir="auto" className="min-w-0 flex-1 truncate text-label font-semibold text-foreground">{title}</span>
+            </span>
+            <span className="flex min-w-0 items-baseline gap-2 text-body-sm">
+              <time dateTime={new Date(note.updatedAt).toISOString()} title={when} className="shrink-0 text-foreground/80 tabular-nums">{shortDate(note.updatedAt, locale, now)}</time>
+              {locked ? <span className="truncate text-muted-foreground">{t.sealedHint}</span> : <span dir="auto" className="truncate text-muted-foreground">{snippetOf(note, 120)}</span>}
+            </span>
+            {path.length || note.tags?.length ? (
+              <span className="flex min-w-0 items-center gap-1 text-caption text-muted-foreground">
+                {path.length ? (
+                  <>
+                    <Folder aria-hidden className="size-3.5 shrink-0" />
+                    <span className="truncate">{path.join(" / ")}</span>
+                  </>
+                ) : null}
+                {(note.tags ?? []).slice(0, 2).map((tag) => (
+                  <span key={tag} className="truncate">#{tag}</span>
+                ))}
+              </span>
+            ) : null}
           </span>
-          <span dir="auto">{snippet}</span>
-          {path.length || note.tags?.length ? meta : null}
+          {note.thumbnail && !locked ? <img src={note.thumbnail} alt="" loading="lazy" className="size-12 shrink-0 rounded-md border border-border bg-muted object-cover" /> : null}
         </button>
         {controls}
       </NoteContextRegion>
@@ -288,27 +322,34 @@ export function NotesView(props: NotesViewProps) {
   return (
     <section data-slot="notes-view" data-view={view} aria-label={t.notes} className={cn("flex min-h-0 min-w-0 flex-col", className)}>
       <div className="flex flex-col gap-2 border-b border-border p-3">
-        <InputGroup>
-          <InputGroupAddon>
-            <Search aria-hidden className="size-4 text-muted-foreground" />
-          </InputGroupAddon>
-          <InputGroupInput data-slot="notes-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t.searchPlaceholder} aria-label={t.search} />
-          {query ? (
-            <InputGroupAddon align="end">
-              <Button variant="ghost" size="icon-sm" aria-label={t.clearSearch} onClick={() => setQuery("")}>
-                <X aria-hidden />
-              </Button>
-            </InputGroupAddon>
-          ) : null}
-        </InputGroup>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex min-w-0 items-center gap-1">
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={<button type="button" data-slot="notes-scope" aria-label={t.scopes} className="flex min-w-0 flex-col items-start rounded-control px-1.5 py-0.5 text-start hover:bg-nq-hover focus-visible:outline-2 focus-visible:outline-nq-focus" />}
+            >
+              <span className="flex min-w-0 items-center gap-1 text-label font-semibold text-foreground">
+                <span className="truncate">{scopeItems.find((s) => s.id === scope)?.label ?? t.all}</span>
+                <ChevronDown aria-hidden className="size-3.5 shrink-0 text-muted-foreground" />
+              </span>
+              <span className="text-caption text-muted-foreground">{t.noteCount(shown.length)}</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="max-h-80 min-w-56 overflow-y-auto">
+              {scopeItems.map((item) => (
+                <DropdownMenuItem key={item.id} onClick={() => setScope(item.id)}>
+                  {item.id === "archive" ? <Archive aria-hidden /> : item.id.startsWith("nb:") ? <Folder aria-hidden /> : item.id === "pinned" ? <Pin aria-hidden /> : <span aria-hidden className="size-4" />}
+                  <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                  <span className="text-caption text-muted-foreground tabular-nums">{fmt(counts[item.id] ?? 0)}</span>
+                  {scope === item.id ? <Check aria-hidden /> : <span aria-hidden className="size-4" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <span className="ms-auto" />
           {onCreate ? (
-            <Button variant="primary" size="sm" loading={creating} onClick={create} data-slot="notes-new">
-              <Plus aria-hidden />
-              {t.newNote}
+            <Button variant="ghost" size="icon-sm" loading={creating} onClick={create} data-slot="notes-new" aria-label={t.newNote} title={t.newNote} className="text-muted-foreground">
+              <SquarePen aria-hidden />
             </Button>
           ) : null}
-          <span className="ms-auto" />
           <DropdownMenu>
             <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label={`${t.sortBy}: ${t.sort[sort]}`} className="text-muted-foreground" />}>
               <ArrowDownUp aria-hidden />
@@ -326,16 +367,25 @@ export function NotesView(props: NotesViewProps) {
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          <ToggleGroup value={[view]} onValueChange={(v) => v[0] && setView(v[0] as NoteViewMode)} aria-label={t.viewMode}>
-            <Toggle value="list" aria-label={t.viewList}>
-              <List aria-hidden />
-            </Toggle>
-            <Toggle value="grid" aria-label={t.viewGrid}>
-              <LayoutGrid aria-hidden />
-            </Toggle>
-          </ToggleGroup>
+          <Button variant="ghost" size="icon-sm" aria-label={view === "list" ? t.viewGrid : t.viewList} title={view === "list" ? t.viewGrid : t.viewList} onClick={() => setView(view === "list" ? "grid" : "list")} className="text-muted-foreground">
+            {view === "list" ? <LayoutGrid aria-hidden /> : <List aria-hidden />}
+          </Button>
+          {headerActions}
           <NoteActionsMenu actions={listActions} label={t.listActions} />
         </div>
+        <InputGroup>
+          <InputGroupAddon>
+            <Search aria-hidden className="size-4 text-muted-foreground" />
+          </InputGroupAddon>
+          <InputGroupInput data-slot="notes-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t.searchPlaceholder} aria-label={t.search} />
+          {query ? (
+            <InputGroupAddon align="end">
+              <Button variant="ghost" size="icon-sm" aria-label={t.clearSearch} onClick={() => setQuery("")}>
+                <X aria-hidden />
+              </Button>
+            </InputGroupAddon>
+          ) : null}
+        </InputGroup>
         {createError ? (
           <p role="alert" className="text-body-sm text-nq-danger-text">
             {createError}
@@ -356,18 +406,18 @@ export function NotesView(props: NotesViewProps) {
           groups.map((group) => (
             <div key={group.kind} data-slot="note-group" data-group={group.kind} className="flex flex-col gap-1">
               {group.kind === "all" ? null : (
-                <h3 className="flex items-center gap-1.5 px-3 pb-1 pt-3 text-caption font-medium uppercase text-muted-foreground">
-                  {group.kind === "pinned" ? <Pin aria-hidden className="size-3" /> : null}
+                <h3 className="flex items-center gap-1.5 px-3 pb-1 pt-3 text-label font-semibold text-foreground">
+                  {group.kind === "pinned" ? <Pin aria-hidden className="size-3.5 text-muted-foreground" /> : null}
                   {groupLabel(group.kind)}
-                  <span className="font-normal">{fmt(group.notes.length)}</span>
                 </h3>
               )}
-              <ul role="list" aria-label={groupLabel(group.kind)} className={cn(view === "grid" ? "grid grid-cols-[repeat(auto-fill,minmax(min(100%,13.5rem),1fr))] gap-2.5 px-1" : "flex flex-col gap-0.5")}>
+              <ul role="list" aria-label={groupLabel(group.kind)} className={cn(view === "grid" ? "grid grid-cols-[repeat(auto-fill,minmax(min(100%,13.5rem),1fr))] gap-2.5 px-1" : "flex flex-col gap-1")}>
                 {group.notes.map(renderNote)}
               </ul>
             </div>
           ))
         )}
+        {footer}
       </div>
 
       {menuProp ? null : own.dialogs}
@@ -419,18 +469,23 @@ function flatten(nodes: NotebookNode[]): NotebookNode["notebook"][] {
   return nodes.flatMap((n) => [n.notebook, ...flatten(n.children)]);
 }
 
-/** A row of chips: All, Pinned, Sealed, each notebook, each tag and Archive. The sidebar does the same job on wide screens. */
-export function ScopeBar({ scope, onScope, notes, notebooks, counts, labels, className }: { scope: string; onScope: (scope: string) => void; notes: readonly Note[]; notebooks: readonly NotebookNode["notebook"][]; counts: Record<string, number>; labels?: Partial<NotesLabels>; className?: string }) {
-  const { t } = useNotesLabels(labels);
-  const fmt = useFormatNumber();
-  const items = [
+/** Every scope a list can show: All, Pinned, Sealed (when any note is), each notebook, each tag and Archive. */
+function scopeList(t: NotesLabels, notes: readonly Note[], notebooks: readonly NotebookNode["notebook"][]) {
+  return [
     { id: "all", label: t.all },
     { id: "pinned", label: t.pinned },
-    { id: "sealed", label: t.sealed },
+    ...(notes.some((n) => n.sealed) ? [{ id: "sealed", label: t.sealed }] : []),
     ...flatten(notebookTree(notebooks)).map((n) => ({ id: notebookScope(n.id), label: n.name })),
     ...tagCounts(notes).map((x) => ({ id: tagScope(x.tag), label: `#${x.tag}` })),
     { id: "archive", label: t.archive },
   ];
+}
+
+/** A row of chips: All, Pinned, Sealed, each notebook, each tag and Archive. The sidebar does the same job on wide screens. */
+export function ScopeBar({ scope, onScope, notes, notebooks, counts, labels, className }: { scope: string; onScope: (scope: string) => void; notes: readonly Note[]; notebooks: readonly NotebookNode["notebook"][]; counts: Record<string, number>; labels?: Partial<NotesLabels>; className?: string }) {
+  const { t } = useNotesLabels(labels);
+  const fmt = useFormatNumber();
+  const items = scopeList(t, notes, notebooks);
   return (
     <div role="group" aria-label={t.scopes} data-slot="notes-scope-bar" className={cn("flex gap-1.5 overflow-x-auto border-b border-border px-3 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden", className)}>
       {items.map((item) => (

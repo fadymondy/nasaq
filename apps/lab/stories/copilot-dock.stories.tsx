@@ -17,7 +17,7 @@ function Demo({ defaultOpen = false, side, bar = false, expanded = false }: { de
           ? "اضغط زر المساعد أو ⌘J / Ctrl+J. تبقى الصفحة قابلة للاستخدام بجانب اللوحة، ويغلقها Escape."
           : "Press the assistant button or ⌘J / Ctrl+J. The page stays usable beside the panel; Escape closes it."}
       </p>
-      <CopilotDock {...props} placement="absolute" defaultOpen={defaultOpen} defaultSide={side} collapsedBar={bar} defaultExpanded={expanded} persistKey="nasaq-lab-copilot-side" />
+      <CopilotDock {...props} placement="absolute" defaultOpen={defaultOpen} defaultSide={side} collapsedBar={bar} defaultExpanded={expanded} persistKey="nasaq-lab-copilot-side" resizable />
     </div>
   );
 }

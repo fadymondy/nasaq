@@ -40,6 +40,7 @@ const STRINGS = {
     // scopes
     scopes: "Notebooks and filters",
     all: "All notes",
+    noteCount: (n: number) => (n === 1 ? "1 note" : `${n.toLocaleString("en")} notes`),
     pinned: "Pinned",
     sealed: "Sealed",
     archive: "Archive",
@@ -194,6 +195,7 @@ const STRINGS = {
     listActions: "إجراءات الملاحظات",
     scopes: "الدفاتر والمرشّحات",
     all: "كل الملاحظات",
+    noteCount: (n: number) => (n === 1 ? "ملاحظة واحدة" : n === 2 ? "ملاحظتان" : n >= 3 && n <= 10 ? `${n} ملاحظات` : `${n} ملاحظة`),
     pinned: "المثبّتة",
     sealed: "المختومة",
     archive: "الأرشيف",

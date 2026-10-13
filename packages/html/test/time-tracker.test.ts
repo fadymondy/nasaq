@@ -34,6 +34,9 @@ async function choose(sel: HTMLSelectElement, value: string) {
 const data = () => Alpine.$data(root()) as any;
 const dialog = () => document.querySelector<HTMLElement>('[role="dialog"]');
 
+// The example data is dated (late Sep - early Oct 2026); pin the clock so the "this week" timesheet stays populated.
+vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-01T12:00:00") });
+
 describe("time-tracker (Blade example)", () => {
   it("renders the idle timer, the entry groups and the timesheet", async () => {
     await open();
