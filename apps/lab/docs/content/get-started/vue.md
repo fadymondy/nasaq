@@ -3,8 +3,10 @@
 The Vue components (`NqButton`, `NqDialog` …) are built on [Reka UI](https://reka-ui.com) and use the same Tailwind classes as the React ones. They ship in the same package.
 
 ```bash
-pnpm add @fadymondy/nasaq vue
+pnpm add @fadymondy/nasaq vue reka-ui lucide-vue-next vue-sonner
 ```
+
+`reka-ui`, `lucide-vue-next` and `vue-sonner` are optional peer dependencies of the package (so React apps don't install them): a Vue app adds them itself.
 
 Add the styles to your Tailwind v4 entry CSS:
 

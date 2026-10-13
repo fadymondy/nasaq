@@ -18,6 +18,15 @@ npm install tailwindcss @tailwindcss/postcss   # Tailwind v4 (or @tailwindcss/vi
 
 Requires React 19+ and Tailwind CSS 4. `react-native`, `react-native-svg`, `expo-haptics` and `electron` are optional peers, needed only for `/native` and `/electron`.
 
+The Vue and Alpine adapters' libraries are optional peers too, so a React app installs no Vue or Alpine code. Add them only for the entry point you use:
+
+```sh
+npm install vue reka-ui lucide-vue-next vue-sonner                     # @fadymondy/nasaq/vue
+npm install alpinejs @alpinejs/anchor @alpinejs/collapse @alpinejs/focus  # @fadymondy/nasaq/alpine
+```
+
+The script-tag build (`cdn/nasaq-alpine.js`) bundles the Alpine plugins and needs neither.
+
 There is no root import. Use the subpaths listed below.
 
 ## CSS setup (required)

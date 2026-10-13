@@ -4,6 +4,7 @@ Inertia pages are ordinary React or Vue components, so you use the JavaScript pa
 
 ```bash
 npm install @fadymondy/nasaq
+npm install reka-ui lucide-vue-next vue-sonner   # Vue only
 ```
 
 In `resources/css/app.css` (Tailwind v4 through `@tailwindcss/vite`), keep the `@source` line for your stack's build:

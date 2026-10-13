@@ -18,7 +18,11 @@ No build step: one stylesheet and one script from the CDN, then Alpine. The scri
 
 Pin a version in production (`@fadymondy/nasaq@0.5`). Set `lang="ar" dir="rtl"` for Arabic. `$nq` is available in every Alpine expression: `$nq.setLocale('ar')`, `$nq.toggleTheme()`, and `$nq.money(12)` (USD, or SAR in Arabic).
 
-**With a bundler** (Vite, esbuild), install the package and register the plugin yourself:
+**With a bundler** (Vite, esbuild), install the package with Alpine and its plugins (optional peers of the package), then register the plugin yourself:
+
+```bash
+npm install @fadymondy/nasaq alpinejs @alpinejs/anchor @alpinejs/collapse @alpinejs/focus
+```
 
 ```ts
 import Alpine from "alpinejs";
