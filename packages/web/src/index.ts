@@ -6,6 +6,7 @@ export * from "./provider/nasaq-provider";
 export * from "./provider/theme-script";
 
 export * from "./components/app-shell";
+export * from "./components/product-shell";
 export * from "./components/attention";
 export * from "./components/avatar";
 export * from "./components/badge";
@@ -264,6 +265,7 @@ export * from "./components/idle-lock";
 export * from "./components/session-expired";
 export * from "./components/onboarding-flow";
 export * from "./components/onboarding-checklist";
+export * from "./components/product-onboarding";
 export * from "./components/ai-states";
 export * from "./components/gamification";
 export * from "./components/booking-flow";

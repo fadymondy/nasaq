@@ -9,6 +9,7 @@ const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
 const targets = [];
 const walk = (v) => (typeof v === "string" ? targets.push(v) : Object.values(v ?? {}).forEach(walk));
 walk(pkg.exports);
+walk(pkg.bin);
 // A "./x/*" pattern needs its directory to exist and hold at least one file.
 const present = (t) => (t.includes("*") ? existsSync(join(root, dirname(t))) && readdirSync(join(root, dirname(t))).length > 0 : existsSync(join(root, t)));
 const missing = targets.filter((t) => !present(t));

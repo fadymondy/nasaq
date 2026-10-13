@@ -81,6 +81,7 @@ SetupWizard                   data-slot="setup-wizard"
 | `current` / `defaultCurrent` / `onCurrentChange` | | | Zero-based step. |
 | `completed` | `string[]` | | Step ids the server counts done. Required steps missing here block Finish. |
 | `onStepComplete` | `(id) => AuthSubmitResult \| Promise` | | Runs on Continue. `{ error }` keeps the step. |
+| `onStepSkip` | `(id) => void` | | Runs when an optional step is skipped. Record it so a resumed wizard opens past it. |
 | `canFinish` / `gateMessage` | `boolean` / `string` | `true` | The server verdict, and the reason if false. |
 | `onFinish` | `() => AuthSubmitResult \| Promise` | required | |
 | `title`, `description`, `doneTitle`, `doneDescription`, `doneAction`, `labels` | | | |

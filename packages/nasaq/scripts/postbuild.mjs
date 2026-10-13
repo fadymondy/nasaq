@@ -10,6 +10,8 @@ const files = [
   ["tokens/dist/tokens.css", "dist/tokens.css"],
   ["tokens/dist/theme.css", "dist/theme.css"],
   ["electron/src/chrome.css", "dist/electron/chrome.css"],
+  // The RTL/token lint, so products can run `nasaq-lint app components` in CI.
+  ["tooling/src/lint.mjs", "dist/bin/nasaq-lint.mjs"],
 ];
 for (const [from, to] of files) {
   const src = join(pkgs, from);
