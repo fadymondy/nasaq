@@ -9,7 +9,7 @@ pnpm add @fadymondy/nasaq
 # or: npm install @fadymondy/nasaq / yarn add @fadymondy/nasaq / bun add @fadymondy/nasaq
 ```
 
-Peer dependencies: `react` and `react-dom` 19 or newer for the web kit. `react-native`, `react-native-svg`, `expo-haptics` and `electron` are optional and only needed for their entry points. The package is ESM only.
+Peer dependencies: `react` and `react-dom` 19 or newer for the web kit. `react-native`, `react-native-svg`, `expo-haptics` and `electron` are optional and only needed for their entry points. The Vue entry (`/vue`) needs `vue`, `reka-ui`, `lucide-vue-next` and `vue-sonner`; the Alpine entry (`/alpine`) needs `@alpinejs/anchor`, `@alpinejs/collapse` and `@alpinejs/focus`. Those are optional peers too, so React apps don't install them. The package is ESM only.
 
 ## Entry points
 
