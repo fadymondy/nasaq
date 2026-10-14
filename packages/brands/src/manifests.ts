@@ -12,7 +12,8 @@ export interface BrandManifest {
   wordmark: { latin: string; arabic?: string };
   mark: MarkSpec;
   color: { brand: Pair; action: Pair; onAction: Pair; accent: string };
-  typography: { latin: "inter" };
+  /** "lusail" is a retired legacy value: still accepted so old manifests parse, rendered as IBM Plex Sans Arabic. */
+  typography: { latin: "inter" | "plex-arabic" | "lusail" };
   tagline?: { en: string; ar?: string };
   links?: { site?: string };
 }
