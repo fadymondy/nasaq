@@ -189,7 +189,7 @@ export interface BrandManifest {
     accent?:  string;                             // defaults to gold
     chart?:   { light: string[]; dark: string[] };
   };
-  typography?: { latin?: "lusail" | "inter" }; // Arabic is always the Arabic face
+  typography?: { latin?: "inter" }; // Arabic is always IBM Plex Sans Arabic
   links?: { site?: string; brandPage?: string };
 }
 ```
@@ -244,21 +244,21 @@ export interface BrandManifest {
 | code | JetBrains Mono 13 | JetBrains Mono (Latin only) |
 
 **Rules**
-- Weights are 300, 400 and 500 only. Bold is not used; the Lusail Bold file exists, but the grid rule bans weight 700.
+- Weights are 300, 400 and 500 only. Bold is not used; IBM Plex Sans Arabic has a Bold file, but the grid rule bans weight 700.
 - Arabic letter-spacing is always 0.
 - The floor is 12px.
 - The raised scale matches the products' 2026-09-23 readability decision.
 
 **Font stacks**
-- `--nq-font-sans`: `"Lusail", "Inter", "Alexandria", system-ui, sans-serif`
-- `--nq-font-arabic`: `"Lusail", "Alexandria", "IBM Plex Sans Arabic", system-ui, sans-serif`
-- `--nq-font-mono`: `"JetBrains Mono", "Lusail", ui-monospace, monospace`. Lusail sits before generic mono so Arabic never falls into a system mono.
+- `--nq-font-sans`: `"Inter", "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif`
+- `--nq-font-arabic`: `"IBM Plex Sans Arabic", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif`
+- `--nq-font-mono`: `"JetBrains Mono", "IBM Plex Sans Arabic", ui-monospace, monospace`. Plex sits before generic mono so Arabic never falls into a system mono.
 
-A brand manifest can put Inter first for Latin text, as Mahaam, Zekra, Moharrik and Hosbah do today.
+Every brand manifest uses Inter for Latin text and IBM Plex Sans Arabic for Arabic.
 
 **Licensing**
-- Nasaq depends only on OFL fonts via `@fontsource`: Inter, JetBrains Mono and Alexandria.
-- **Lusail is never bundled** until its licence is verified (D-5). The host app provides it.
+- Nasaq depends only on OFL fonts via `@fontsource`: Inter, JetBrains Mono and IBM Plex Sans Arabic.
+- **Lusail is retired** (2026-10-14): it is the State of Qatar's typeface with no third-party licence. Arabic is IBM Plex Sans Arabic (SIL OFL).
 - The Inter `calt` feature is disabled for numerals, per the Moharrik finding.
 
 ## 10. Layout, RTL and theming
@@ -352,11 +352,11 @@ A brand manifest can put Inter first for Latin text, as Mahaam, Zekra, Moharrik 
 | D-2 | Should fmv2 `grid-web` and `grid-native` become **generated from Nasaq** (Nasaq replaces the grid), or should they coexist? | Nasaq replaces the grid after P1; `--grid-*` aliases bridge the migration |
 | D-3 | Default **expression** for web: square `grid`, or `native`? Add a cooler neutral palette? | `grid` on web; `native` on desktop, mobile and extension; no new palette yet |
 | D-4 | Base UI only, or also a Radix registry build? | Base UI only; revisit if directory users ask |
-| D-5 | **Lusail licence**: can Nasaq redistribute it? | Not bundled until confirmed |
+| D-5 | **Lusail licence**: can Nasaq redistribute it? | No. Lusail is retired; Arabic is IBM Plex Sans Arabic (OFL) |
 | D-6 | Approve the **Nasaq mark** (BRAND-AUDIT §4 (internal, not published)) and adding `nasaq` to fmv2 `marks.ts` | Approve, then upstream |
 | D-7 | Create the **GitHub repo** `fadymondy/nasaq` (public) and publish **npm** `@fadymondy/nasaq`. Both are outward-facing; npm is not logged in on this machine. | Create the repo after the review; publish 0.1.0 after the P1 catalog |
 | D-8 | **Hosting** | Decided: the docs and registry are one static folder (`apps/lab/storybook-static`) on `docs.nasaqui.com`, served by `apps/lab/scripts/serve-static.mjs`; the landing stays on `nasaqui.com` |
-| D-9 | Latin UI face default: Lusail or Inter? | Lusail first, with a per-brand Inter option (as the 4 products do) |
+| D-9 | Latin UI face default: Lusail or Inter? | Inter (Lusail retired 2026-10-14) |
 | D-10 | Brand ambiguities B1–B14 | Defaults as listed in the brand audit |
 
 ## 18. Implementation plan (Mahaam)

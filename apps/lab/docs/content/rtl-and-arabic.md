@@ -57,7 +57,7 @@ import { Bdi, Ltr } from "@fadymondy/nasaq/web";
 
 ## Typography
 
-Arabic has its own type tokens: taller line heights (body 1.85 instead of 1.5), no letter-spacing, no uppercase transform, and weights that suit the script. They are applied automatically under `[lang|="ar"]`, so a component looks right in Arabic with no extra code. The Arabic font stack starts with an optional licensed face and falls back to Alexandria; see [Project setup](?page=docs-installation-project-setup).
+Arabic has its own type tokens: taller line heights (body 1.85 instead of 1.5), no letter-spacing, no uppercase transform, and weights that suit the script. They are applied automatically under `[lang|="ar"]`, so a component looks right in Arabic with no extra code. The Arabic font stack starts with IBM Plex Sans Arabic (SIL OFL) and falls back to Inter; see [Project setup](?page=docs-installation-project-setup).
 
 Numerals are Latin digits by default, which suits UI data; pass the locale to `Num` where a product wants Arabic-Indic digits. `Num` and `DateTime` (see the numeric component) format with a fixed digit set, tabular figures and bidi isolation.
 

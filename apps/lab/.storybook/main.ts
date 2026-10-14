@@ -30,13 +30,9 @@ const WEB_DEPS = [
   "tailwind-merge",
 ];
 
-// Lusail is the products' Arabic face. Its licence does not allow redistribution (BRAND-AUDIT B3),
-// so nothing is copied into this repo: the dev server serves the product's own files when they exist on
-// this machine (override with NASAQ_LUSAIL_DIR) and falls back to Alexandria everywhere else.
-// The static build is public, so it never bundles Lusail unless NASAQ_LUSAIL_DIR is set on purpose.
+// Arabic renders in IBM Plex Sans Arabic (SIL OFL), self-hosted in apps/lab/public/fonts/ibm-plex-sans-arabic.
+// Storybook's dev server has Vite's public dir off, so the fonts are mapped by staticDirs; the static build copies public/ whole.
 const isBuild = process.argv.includes("build");
-const LUSAIL_DIR = process.env.NASAQ_LUSAIL_DIR ?? (isBuild ? "" : resolve(import.meta.dirname, "../../../../booki/web/public/fonts/lusail"));
-const hasLusail = LUSAIL_DIR !== "" && existsSync(LUSAIL_DIR);
 // Files under apps/lab/public (the store demo images). Vite's own public dir is off in Storybook.
 const FONTSOURCE = resolve(import.meta.dirname, "../node_modules/@fontsource");
 const staticDirs = [
@@ -46,21 +42,8 @@ const staticDirs = [
   { from: resolve(FONTSOURCE, "inter/files"), to: "/brand-fonts/inter" },
   { from: resolve(FONTSOURCE, "jetbrains-mono/files"), to: "/brand-fonts/jetbrains-mono" },
   { from: resolve(FONTSOURCE, "alexandria/files"), to: "/brand-fonts/alexandria" },
-  ...(isBuild ? [{ from: resolve(import.meta.dirname, "../public"), to: "/" }] : []),
-  ...(hasLusail ? [{ from: LUSAIL_DIR, to: "/fonts/lusail" }] : []),
+  ...(isBuild ? [{ from: resolve(import.meta.dirname, "../public"), to: "/" }] : [{ from: resolve(import.meta.dirname, "../public/fonts"), to: "/fonts" }]),
 ];
-
-/** Without the Lusail files, drop its @font-face rules so the browser never asks for (and 404s on) them. */
-function lusailFaces(): Plugin {
-  return {
-    name: "nasaq:lusail-faces",
-    enforce: "pre",
-    transform(code, id) {
-      if (hasLusail || !/[\\/]lab\.css(\?|$)/.test(id)) return;
-      return code.replace(/@font-face\s*\{[^}]*font-family:\s*Lusail[^}]*\}/g, "");
-    },
-  };
-}
 
 /**
  * Cloudflare turns Vite's `Cache-Control: no-cache` into `max-age=14400` and caches it at the edge,
@@ -110,7 +93,7 @@ const config: StorybookConfig = {
   staticDirs,
   core: { disableTelemetry: true, disableWhatsNewNotifications: true, allowedHosts: HOSTS },
   async viteFinal(cfg) {
-    cfg.plugins = [...(await skipDocgen(cfg.plugins, /[\/]packages[\/]native[\/]/)), vue({ script: { fs: VUE_SCRIPT_FS } }), tailwindcss(), lusailFaces(), catalogue(), noEdgeCache()];
+    cfg.plugins = [...(await skipDocgen(cfg.plugins, /[\/]packages[\/]native[\/]/)), vue({ script: { fs: VUE_SCRIPT_FS } }), tailwindcss(), catalogue(), noEdgeCache()];
     // Keep Storybook's `hmr.server`: HMR must share the Storybook HTTP server. With it, Vite's client
     // connects to the page's own host, port and protocol, so it works on localhost:6106 and through
     // the tunnel (wss on 443) alike. Replacing `hmr` moved the socket to :24678, which nothing

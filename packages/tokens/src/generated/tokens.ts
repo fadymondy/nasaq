@@ -132,21 +132,23 @@ export const duration = {
 export const font = {
   "sans": [
     "Inter",
-    "Alexandria",
+    "IBM Plex Sans Arabic",
     "system-ui",
+    "-apple-system",
+    "Segoe UI",
     "sans-serif"
   ],
   "arabic": [
-    "Lusail",
-    "Inter",
-    "Alexandria",
     "IBM Plex Sans Arabic",
+    "Inter",
     "system-ui",
+    "-apple-system",
+    "Segoe UI",
     "sans-serif"
   ],
   "mono": [
     "JetBrains Mono",
-    "Lusail",
+    "IBM Plex Sans Arabic",
     "ui-monospace",
     "monospace"
   ]

@@ -61,14 +61,14 @@ The type tokens name font families but never load them, so you choose how:
 
 | Token | Stack | Used for |
 | --- | --- | --- |
-| `--nq-font-sans` | Inter, Alexandria, system-ui | Latin UI text |
-| `--nq-font-arabic` | Lusail, Inter, Alexandria, IBM Plex Sans Arabic, system-ui | UI text when `lang` is `ar` |
-| `--nq-font-mono` | JetBrains Mono, Lusail, ui-monospace | Code, tabular figures |
+| `--nq-font-sans` | Inter, IBM Plex Sans Arabic, system-ui, -apple-system, Segoe UI | Latin UI text |
+| `--nq-font-arabic` | IBM Plex Sans Arabic, Inter, system-ui, -apple-system, Segoe UI | UI text when `lang` is `ar` |
+| `--nq-font-mono` | JetBrains Mono, IBM Plex Sans Arabic, ui-monospace | Code, tabular figures |
 
-Inter, JetBrains Mono and Alexandria are open-licensed and available from [Fontsource](https://fontsource.org). This site loads them like this:
+Inter, JetBrains Mono and IBM Plex Sans Arabic are open-licensed (SIL OFL) and available from [Fontsource](https://fontsource.org). This site loads them like this:
 
 ```bash
-pnpm add @fontsource/inter @fontsource/jetbrains-mono @fontsource/alexandria
+pnpm add @fontsource/inter @fontsource/jetbrains-mono @fontsource/ibm-plex-sans-arabic
 ```
 
 ```ts
@@ -76,11 +76,11 @@ import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/jetbrains-mono/400.css";
-import "@fontsource/alexandria/400.css";
-import "@fontsource/alexandria/500.css";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
 ```
 
-Lusail is the Arabic face of the author's own products. It is licensed to those products and is **not** distributed with Nasaq or bundled into this site. When it is not loaded, the stack falls through to Alexandria, so nothing breaks. If you have a licence for a different Arabic face, put it first in `--nq-font-arabic`.
+IBM Plex Sans Arabic is the Arabic face of Nasaq and the author's products. This site self-hosts three weights (300, 400, 500) from `apps/lab/public/fonts/ibm-plex-sans-arabic` together with the OFL licence. If you prefer a different Arabic face, put it first in `--nq-font-arabic`.
 
 ## Dark mode class
 

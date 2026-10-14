@@ -21,7 +21,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function App() {
   return (
-    <NasaqProvider brand="mahaam" locale="ar" fonts={{ arabic: "Lusail", latin: "Inter" }}
+    <NasaqProvider brand="mahaam" locale="ar" fonts={{ arabic: "IBMPlexSansArabic", latin: "Inter" }}
       onDirectionChangeRequiresReload={() => Updates.reloadAsync()}>
       <Home />
     </NasaqProvider>
