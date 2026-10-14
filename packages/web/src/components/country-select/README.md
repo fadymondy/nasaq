@@ -133,4 +133,4 @@ with raw hex.
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-address-input--docs
+https://lab.nasaqui.com/?path=/docs/components-forms-address-input--docs

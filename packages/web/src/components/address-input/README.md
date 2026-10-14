@@ -212,4 +212,4 @@ Caller must localise any `labels` override. Built-in strings come in English and
 
 ## Lab
 
-https://nasaq-ui.fadymondy.com/?path=/docs/components-forms-address-input--docs
+https://lab.nasaqui.com/?path=/docs/components-forms-address-input--docs

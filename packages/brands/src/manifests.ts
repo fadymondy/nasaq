@@ -18,7 +18,7 @@ export interface BrandManifest {
 }
 
 const meta: Record<BrandKey, Pick<BrandManifest, "name" | "typography" | "tagline"> & { site?: string }> = {
-  nasaq: { name: { en: "Nasaq", ar: "نسق" }, typography: { latin: "lusail" }, site: "https://nasaq.fadymondy.com" },
+  nasaq: { name: { en: "Nasaq", ar: "نسق" }, typography: { latin: "lusail" }, site: "https://nasaqui.com" },
   fadymondy: { name: { en: "Fady Mondy" }, typography: { latin: "lusail" }, site: "https://fadymondy.com" },
   mahaam: { name: { en: "Mahaam", ar: "مهام" }, typography: { latin: "inter" }, site: "https://mahaam.app" },
   zekra: { name: { en: "Zekra", ar: "ذكرى" }, typography: { latin: "inter" }, site: "https://zekra.dev" },

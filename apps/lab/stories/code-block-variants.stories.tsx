@@ -54,7 +54,7 @@ export const Command: Story = {
   render: () => (
     <div className="flex max-w-xl flex-col gap-3">
       <CommandSnippet command="npm i @nasaq/web" />
-      <CommandSnippet command="$ pnpm dlx shadcn@latest add https://nasaq-ui.fadymondy.com/r/terminal.json" prompt={false} />
+      <CommandSnippet command="$ pnpm dlx shadcn@latest add https://nasaqui.com/r/terminal.json" prompt={false} />
       <CommandSnippet command="git clone https://github.com/example/very-long-repository-name-that-scrolls-sideways.git" />
     </div>
   ),

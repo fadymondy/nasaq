@@ -56,5 +56,5 @@ export const ogCards = (ar: boolean): BrandOgCard[] => [
 ];
 
 export const longText =
-  "Nasaq ships components that read right to left natively. Visit https://nasaq-ui.fadymondy.com/docs or write to hello@example.com, and see www.example.com/path?q=1. Trailing punctuation stays outside the link.";
-export const arabicMixed = "مرحبا بك في نسق، زر https://nasaq-ui.fadymondy.com/docs أو راسلنا على hello@example.com للمزيد.";
+  "Nasaq ships components that read right to left natively. Visit https://nasaqui.com/docs or write to hello@example.com, and see www.example.com/path?q=1. Trailing punctuation stays outside the link.";
+export const arabicMixed = "مرحبا بك في نسق، زر https://nasaqui.com/docs أو راسلنا على hello@example.com للمزيد.";

@@ -33,7 +33,7 @@ interface Props {
  * the code update, and download it as SVG or PNG. Built on `NqQrCode`.
  */
 const props = withDefaults(defineProps<Props>(), {
-  defaultValue: "https://nasaq.fadymondy.com",
+  defaultValue: "https://nasaqui.com",
   defaultModuleStyle: "rounded",
   defaultEyeStyle: "rounded",
   defaultFg: "black",

@@ -371,7 +371,7 @@ export const qrCode: Register = (Alpine) => {
   // The generator: the same state plus the controls (content, styles, colours, centre logo).
   // (withProps keeps the base getters live; a spread would freeze them.)
   Alpine.data("nqQrGenerator", (options: QrOptions = {}) =>
-    withProps(state({ moduleStyle: "rounded", eyeStyle: "rounded", value: "https://nasaq.fadymondy.com", size: 224, ...options }), {
+    withProps(state({ moduleStyle: "rounded", eyeStyle: "rounded", value: "https://nasaqui.com", size: 224, ...options }), {
     /** The ECC the code really uses: a logo forces H. */
     get effectiveEcc(): QrEcc {
       const s = this as unknown as QrState;

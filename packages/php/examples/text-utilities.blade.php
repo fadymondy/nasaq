@@ -1,5 +1,5 @@
 <div class="flex max-w-md flex-col gap-4">
-    <x-nq::text-utilities.linkify text="Docs at https://nasaq-ui.fadymondy.com or write to hello@example.com." />
+    <x-nq::text-utilities.linkify text="Docs at https://nasaqui.com or write to hello@example.com." />
     <x-nq::text-utilities.user-text block :lines="2" linkify>مرحبا Sara, see www.example.com for the details of the plan we discussed on Sunday.</x-nq::text-utilities.user-text>
     <x-nq::text-utilities.translatable-text original="مرحبًا بك في الفريق" source-lang="ar" target-lang="en" fetch />
     <x-nq::text-utilities.scroll-fade>
