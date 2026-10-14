@@ -162,6 +162,18 @@ If you believe something here is used in a way its owner does not allow, please 
 
 Built by Fady Mondy. Made with [Base UI](https://base-ui.com), [Tailwind CSS](https://tailwindcss.com), [shadcn/ui](https://ui.shadcn.com) (registry format and component anatomy), [Storybook](https://storybook.js.org), [Style Dictionary](https://styledictionary.com) and the [DTCG token format](https://www.w3.org/community/design-tokens/).
 
+## Sponsor
+
+Nasaq is free and open source, built and maintained by [Fady Mondy](https://github.com/fadymondy).
+If it saves you time or powers your business, please consider supporting its development:
+
+<p>
+  <a href="https://github.com/sponsors/fadymondy"><img src="https://img.shields.io/badge/GitHub%20Sponsors-fadymondy-ea4aaa?logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" /></a>
+  <a href="https://buymeacoffee.com/fadymondy"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-fadymondy-ffdd00?logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" /></a>
+</p>
+
+Every sponsorship goes into maintenance, docs, translations and new features.
+
 ## Licence
 
 MIT, © 2026 Fady Mondy. See [LICENSE](LICENSE).
