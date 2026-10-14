@@ -87,7 +87,7 @@ classic, synchronous script in `<head>` (no `async` or `defer`) so it runs befor
 
 ### Fonts
 
-The package ships no font files. The stacks are `Inter`, `Alexandria` and `JetBrains Mono` (all SIL OFL, so you can load them with `next/font` or `@fontsource/*`) and `Lusail`, which is proprietary and is not bundled: load your own licensed copy or leave it out and Inter takes over. Without any of them, the system fonts are used.
+The package ships no font files. The stacks are `Inter`, `IBM Plex Sans Arabic` and `JetBrains Mono` (all SIL OFL, so you can load them with `next/font` or `@fontsource/*`). Without any of them, the system fonts are used.
 
 ## A first component
 

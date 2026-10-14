@@ -44,7 +44,7 @@ for (const f of ["index.html", "iframe.html", "index.json", "registry.json", "r/
   if (!existsSync(join(out, f))) problems.push(`missing ${f}`);
 }
 if (!existsSync(join(out, "store"))) problems.push("missing the store demo images (apps/lab/public/store)");
-if (existsSync(join(out, "fonts/lusail"))) problems.push("fonts/lusail is in the build; Lusail's licence does not allow redistribution");
+if (existsSync(join(out, "fonts/lusail"))) problems.push("fonts/lusail is in the build; Lusail is the State of Qatar's typeface and is not licensed for redistribution");
 const walk = (d) => readdirSync(d).flatMap((n) => (statSync(join(d, n)).isDirectory() ? walk(join(d, n)) : [join(d, n)]));
 const files = walk(out);
 const fonts = files.filter((f) => /lusail/i.test(f));

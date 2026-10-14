@@ -15,8 +15,7 @@ import { useGlobals } from "storybook/preview-api";
 import { DocsPage } from "./docs-page";
 import { nasaqLight } from "./theme";
 
-// Arabic renders in Lusail (the products' face, 300/400/500) when its files are present; see main.ts.
-// Alexandria is the OFL fallback. Neither is part of @nasaq/web.
+// Arabic renders in IBM Plex Sans Arabic (300/400/500, self-hosted, see lab.css and main.ts); it is not part of @nasaq/web.
 
 // Reports from the lab land in the Nasaq project's Mahaam inbox. The key lives in apps/lab/.env.local
 // (VITE_MAHAAM_FEEDBACK_KEY, gitignored); without it no launcher is mounted.

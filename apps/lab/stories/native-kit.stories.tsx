@@ -32,7 +32,7 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 // The app-facing half of @nasaq/native (cards, fields, sheets, delivery pieces), on react-native-web.
-const WEB_FONTS = { latin: "Inter, system-ui", arabic: "Lusail, Alexandria, system-ui", mono: "'JetBrains Mono', monospace" };
+const WEB_FONTS = { latin: "Inter, system-ui", arabic: "'IBM Plex Sans Arabic', Inter, system-ui", mono: "'JetBrains Mono', monospace" };
 
 const withNative: Decorator = (Story, { globals }) => (
   <div className="h-[720px] overflow-hidden border border-border">

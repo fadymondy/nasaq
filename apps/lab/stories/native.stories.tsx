@@ -7,7 +7,7 @@ import { View } from "react-native";
 // @nasaq/native rendered through react-native-web. It reads the same toolbar globals as the web stories;
 // "system" theme follows the OS here, as it does on a phone.
 // On a phone these are the family names registered with expo-font; on web a CSS stack works.
-const WEB_FONTS = { latin: "Inter, system-ui", arabic: "Lusail, Alexandria, system-ui", mono: "'JetBrains Mono', monospace" };
+const WEB_FONTS = { latin: "Inter, system-ui", arabic: "'IBM Plex Sans Arabic', Inter, system-ui", mono: "'JetBrains Mono', monospace" };
 
 const withNative: Decorator = (Story, { globals }) => (
   <div className="h-[640px] overflow-hidden border border-border">
