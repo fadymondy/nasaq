@@ -45,10 +45,27 @@ pnpm --filter @nasaq/site registry   # build and validate the shadcn registry
 
 Short, imperative commit messages. A change to a published package needs a changeset (`pnpm changeset`) that says which packages change and whether it is a patch, minor or major.
 
+## Developer Certificate of Origin (DCO)
+
+Every commit must be signed off, certifying the [Developer Certificate of Origin](https://developercertificate.org/):
+you wrote the change, or otherwise have the right to submit it under the project's license.
+
+```bash
+git commit -s -m "fix: describe the change"
+```
+
+This adds a `Signed-off-by: Your Name <you@example.com>` trailer that matches your Git identity.
+Forgot? `git commit --amend -s` for the last commit, or `git rebase --signoff main` for a branch.
+
 ## Conduct
 
-Be kind and be specific. Critique the work, not the person.
+Be kind and be specific. Critique the work, not the person. Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Licence
 
 By contributing you agree that your contribution is released under the MIT licence of this project.
+
+## Community
+
+- **Questions and ideas:** [GitHub Discussions](https://github.com/fadymondy/nasaq/discussions)
+- **Bugs and feature requests:** [Issues](https://github.com/fadymondy/nasaq/issues/new/choose)

@@ -1,4 +1,19 @@
-# Nasaq (نسق)
+<div align="center">
+
+<img src="packages/brands/assets/nasaq-mark.svg" alt="Nasaq" width="88" />
+
+# Nasaq · نسق
+
+**One product language for every surface: 392 components, design tokens and 17 brand themes, with Arabic and RTL built in.**
+
+[![CI](https://github.com/fadymondy/nasaq/actions/workflows/ci.yml/badge.svg)](https://github.com/fadymondy/nasaq/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@fadymondy/nasaq.svg)](https://www.npmjs.com/package/@fadymondy/nasaq)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/fadymondy/nasaq?style=social)](https://github.com/fadymondy/nasaq/stargazers)
+
+[Docs](https://docs.nasaqui.com) · [Website](https://nasaqui.com) · [Discussions](https://github.com/fadymondy/nasaq/discussions) · [Contributing](CONTRIBUTING.md)
+
+</div>
 
 One product language for every surface: 392 React components, a token system, 17 brand themes and full page templates, built on Base UI and Tailwind CSS v4, with Arabic and right-to-left layout treated as a first-class case. Install it as a shadcn registry (you own the source) or as the npm package `@fadymondy/nasaq`.
 
@@ -118,7 +133,20 @@ pnpm --filter @nasaq/lab serve             # serve that folder on http://127.0.0
 
 The static build is one folder: the docs, every story, the demo images, `r/*.json` and `registry.json`. `apps/lab/scripts/serve-static.mjs` is a dependency-free server for it (per-path cache headers and CORS for the registry files); see `docs/ARCHITECTURE.md` for the hosting notes. To run it as a long-lived service: `node apps/lab/scripts/serve-static.mjs --port 6108 --host 0.0.0.0`.
 
-Contributions are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md). Security reports: [SECURITY.md](SECURITY.md).
+
+## Contributing
+
+Contributions are welcome: bug reports, accessibility and RTL fixes, docs and new components. Read
+[CONTRIBUTING.md](CONTRIBUTING.md) for setup, conventions and the DCO sign-off, then look for
+[`good first issue`](https://github.com/fadymondy/nasaq/labels/good%20first%20issue).
+
+## Community
+
+- [GitHub Discussions](https://github.com/fadymondy/nasaq/discussions): questions, ideas, show and tell
+- [Issues](https://github.com/fadymondy/nasaq/issues/new/choose): bugs and feature requests
+- Security reports: see [SECURITY.md](SECURITY.md)
+
+Please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Fonts, logos and brands
 

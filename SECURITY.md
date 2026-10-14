@@ -11,7 +11,7 @@ Please do not open a public issue for a security problem.
 Report it privately, using either of these:
 
 - GitHub: open a private advisory at https://github.com/fadymondy/nasaq/security/advisories/new
-- Contact form: https://fadymondy.com (mention "Nasaq security")
+- Email: **info@3x1.io** (mention "Nasaq security")
 
 Please include what you found, how to reproduce it, the affected package and version, and the impact you expect. You will get an acknowledgement within a few days. Fixes are released as patch versions, and the advisory credits the reporter unless you prefer otherwise.
 
