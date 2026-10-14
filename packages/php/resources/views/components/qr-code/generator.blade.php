@@ -1,8 +1,8 @@
-{{-- <x-nq::qr-code.generator default-value="https://nasaq.fadymondy.com" download-name="my-link" />
+{{-- <x-nq::qr-code.generator default-value="https://nasaqui.com" download-name="my-link" />
      The QR generator: type the content, pick the module and corner style, colours and a centre logo, watch the code update,
      and download it as SVG or PNG. Same options as <x-nq::qr-code>, as starting values. Needs the Alpine runtime. --}}
 @props([
-    'defaultValue' => 'https://nasaq.fadymondy.com', 'defaultModuleStyle' => 'rounded', 'defaultEyeStyle' => 'rounded',
+    'defaultValue' => 'https://nasaqui.com', 'defaultModuleStyle' => 'rounded', 'defaultEyeStyle' => 'rounded',
     'defaultFg' => 'black', 'defaultBg' => 'white', 'defaultLogo' => null, 'downloadName' => 'qr-code',
 ])
 @php

@@ -5,7 +5,7 @@ const meta = { title: "Components/Utilities/QR Code" } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 
-const URL_VALUE = "https://nasaq.fadymondy.com";
+const URL_VALUE = "https://nasaqui.com";
 
 /** Square modules, black on white: the most scannable. Colours default to that on purpose. */
 export const Default: Story = { render: () => <QrCode value={URL_VALUE} downloadable /> };

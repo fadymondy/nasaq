@@ -6,7 +6,7 @@ const meta = { title: "Components/Editors/RichTextEditor", component: RichTextEd
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const en = `<h2>Release notes</h2><p>Nasaq <strong>1.4</strong> adds a <em>rich text</em> editor with <a href="https://nasaq-ui.fadymondy.com">links</a>.</p><ul><li>Bullets</li><li>Numbers</li></ul><blockquote>Quotes too.</blockquote>`;
+const en = `<h2>Release notes</h2><p>Nasaq <strong>1.4</strong> adds a <em>rich text</em> editor with <a href="https://nasaqui.com">links</a>.</p><ul><li>Bullets</li><li>Numbers</li></ul><blockquote>Quotes too.</blockquote>`;
 const ar = `<h2>ملاحظات الإصدار</h2><p>يضيف <strong>نسق</strong> محرر نص <em>منسقًا</em> مع الروابط.</p><ul><li>نقاط</li><li>أرقام</li></ul><blockquote>واقتباسات.</blockquote>`;
 const mixed = `<p>هذه فقرة عربية تبدأ من اليمين.</p><p>This English paragraph starts from the left.</p><p>ثم عربية مرة أخرى، مع <code>code</code> داخلها.</p><ol><li>واحد</li><li>Two</li></ol>`;
 

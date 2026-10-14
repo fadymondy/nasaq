@@ -37,7 +37,7 @@ describe("qr-code (Blade example)", () => {
     expect(root.getAttribute("dir")).toBe("ltr");
     const svg = root.querySelector<SVGElement>('[data-slot="qr-code-svg"]')!;
     expect(svg.getAttribute("role")).toBe("img");
-    expect(svg.getAttribute("aria-label")).toBe("QR code for https://nasaq.fadymondy.com");
+    expect(svg.getAttribute("aria-label")).toBe("QR code for https://nasaqui.com");
     expect(svg.getAttribute("viewBox")).toMatch(/^0 0 (\d+) \1$/);
     expect(svg.getAttribute("shape-rendering")).toBe("crispEdges");
     expect(svg.style.background).toBe("white");

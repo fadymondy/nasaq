@@ -1,6 +1,6 @@
 # Nasaq (نسق)
 
-One product language for every surface: 354 React components, a token system, eleven brand themes and full page templates, built on Base UI and Tailwind CSS v4, with Arabic and right-to-left layout treated as a first-class case. Install it as a shadcn registry (you own the source) or, once the first release is out, as an npm package.
+One product language for every surface: 392 React components, a token system, 17 brand themes and full page templates, built on Base UI and Tailwind CSS v4, with Arabic and right-to-left layout treated as a first-class case. Install it as a shadcn registry (you own the source) or as the npm package `@fadymondy/nasaq`.
 
 | | |
 | --- | --- |
@@ -17,7 +17,7 @@ One product language for every surface: 354 React components, a token system, el
 
 ## Status
 
-Version 0.1.0. The components are in daily use in the author's own products, but the API is not frozen: expect changes between 0.x releases. The npm package `@fadymondy/nasaq` is prepared but **not published yet**; until it is, use the shadcn registry. Each component's manual carries a status of stable, beta or experimental.
+Version 1.4.0, published on npm as [`@fadymondy/nasaq`](https://www.npmjs.com/package/@fadymondy/nasaq). The components are in daily use in the author's own products. Each component's manual carries a status of stable, beta or experimental: stable APIs follow semver, beta ones may still gain props.
 
 ## Quick start: shadcn registry
 
@@ -50,7 +50,7 @@ npx shadcn@latest add @nasaq/button
 
 The registry serves plain JSON with `Access-Control-Allow-Origin: *`, so it also works from other tools.
 
-## Quick start: npm (pending the first release)
+## Quick start: npm
 
 ```bash
 pnpm add @fadymondy/nasaq
@@ -61,7 +61,7 @@ import { Button, NasaqProvider } from "@fadymondy/nasaq/web";
 import "@fadymondy/nasaq/web/styles.css";
 ```
 
-Entry points: `/web`, `/web/styles.css`, `/tokens`, `/tokens.css`, `/theme.css`, `/brands`, `/native` (React Native) and `/electron`. This section describes the intended package layout; it is not installable until the release is published.
+Entry points: `/web`, `/web/styles.css`, `/tokens`, `/tokens.css`, `/theme.css`, `/brands`, `/native` (React Native) and `/electron`.
 
 ## MCP server
 
@@ -125,7 +125,7 @@ Contributions are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md). Security repo
 The MIT licence covers the source code and documentation. It does **not** cover the items below.
 
 - **Fonts.** No font files are included in this repository or in the published site. The token stacks name Inter and Alexandria (open licences, loaded by the app that uses them) and IBM Plex Sans Arabic, with the Arabic display face Lusail first in the Arabic stack. Lusail is a commercial-licence face that is not redistributed here; where it is not installed the stack falls back to the next family. If you deploy Nasaq you are responsible for the licences of the fonts you load.
-- **Logos and brand marks.** The sign-in components (`oauth-buttons`, `connected-accounts`) draw the official Google, GitHub, Apple and Microsoft marks, unmodified, in the providers' own colours, following each provider's branding guidelines. They are trademarks of their owners, are never recoloured, mirrored or redrawn, and are not licensed to you by this repository: follow each provider's guidelines in your own product. The brand manifests (`packages/brands`) hold the marks of the author's own products and the eleven brand themes, drawn as data to demonstrate theming; do not use one for a product you do not own.
+- **Logos and brand marks.** The sign-in components (`oauth-buttons`, `connected-accounts`) draw the official Google, GitHub, Apple and Microsoft marks, unmodified, in the providers' own colours, following each provider's branding guidelines. They are trademarks of their owners, are never recoloured, mirrored or redrawn, and are not licensed to you by this repository: follow each provider's guidelines in your own product. The brand manifests (`packages/brands`) hold the marks of the author's own products and the 17 brand themes, drawn as data to demonstrate theming; do not use one for a product you do not own.
 - **Images.** The storefront demos use simple SVG illustrations under `apps/lab/public/store`, drawn for the demos so they render. They are not a product-photo library.
 
 If you believe something here is used in a way its owner does not allow, please tell us through [SECURITY.md](SECURITY.md) and it will be removed.

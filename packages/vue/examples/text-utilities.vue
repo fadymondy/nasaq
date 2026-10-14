@@ -7,7 +7,7 @@ const save = () => new Promise<void>((resolve) => setTimeout(resolve, 300));
 
 <template>
   <div class="flex max-w-md flex-col gap-4">
-    <NqLinkify text="Docs at https://nasaq-ui.fadymondy.com or write to hello@example.com." />
+    <NqLinkify text="Docs at https://nasaqui.com or write to hello@example.com." />
     <NqUserText block :lines="2" linkify>مرحبا Sara, see www.example.com for the details of the plan we discussed on Sunday.</NqUserText>
     <NqTranslatableText original="مرحبًا بك في الفريق" source-lang="ar" :on-translate="translate" />
     <NqScrollFade>

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const en = `# Release notes
 
-Nasaq **1.4** adds a \`Markdown\` component. See the [docs](https://nasaq-ui.fadymondy.com) for more.
+Nasaq **1.4** adds a \`Markdown\` component. See the [docs](https://nasaqui.com) for more.
 
 ## What changed
 
@@ -33,7 +33,7 @@ export const greet = (name: string) => \`Hello, \${name}\`;
 
 const ar = `# ملاحظات الإصدار
 
-يضيف **نسق** مكوّن \`Markdown\`. راجع [التوثيق](https://nasaq-ui.fadymondy.com) للمزيد.
+يضيف **نسق** مكوّن \`Markdown\`. راجع [التوثيق](https://nasaqui.com) للمزيد.
 
 ## ما الجديد
 

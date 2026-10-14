@@ -1,1 +1,1 @@
-<x-nq::qr-code value="https://nasaq.fadymondy.com" downloadable download-name="my-link" />
+<x-nq::qr-code value="https://nasaqui.com" downloadable download-name="my-link" />

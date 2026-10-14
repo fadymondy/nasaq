@@ -4,7 +4,7 @@ import { NqAppHeader, NqProductSwitcher, type Product } from "@fadymondy/nasaq/v
 const products: Product[] = [
   { id: "mahaam", brand: "mahaam", name: "Mahaam", href: "https://mahaam.app", pinned: true },
   { id: "zekra", brand: "zekra", name: "Zekra", href: "https://zekra.dev", pinned: true },
-  { id: "nasaq", brand: "nasaq", name: "Nasaq", href: "https://nasaq.fadymondy.com" },
+  { id: "nasaq", brand: "nasaq", name: "Nasaq", href: "https://nasaqui.com" },
 ];
 </script>
 

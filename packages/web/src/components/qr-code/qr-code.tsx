@@ -249,7 +249,7 @@ function hexOf(value: string, node: Element | null) {
  * the code update, and download it as SVG or PNG. Built on `QrCode`.
  */
 export function QrCodeGenerator({
-  defaultValue = "https://nasaq.fadymondy.com",
+  defaultValue = "https://nasaqui.com",
   defaultModuleStyle = "rounded",
   defaultEyeStyle = "rounded",
   defaultFg = "black",

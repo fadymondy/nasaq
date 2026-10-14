@@ -1,4 +1,4 @@
-{{-- <x-nq::qr-code value="https://nasaq.fadymondy.com" downloadable download-name="my-link" />
+{{-- <x-nq::qr-code value="https://nasaqui.com" downloadable download-name="my-link" />
      A styled QR code drawn as one SVG, left-to-right in Arabic too. The code is drawn in the browser (Alpine runtime + `uqr`), so
      it is also live: x-model / wire:model on `value` redraws it.
      module-style: square | dots | rounded   eye-style: square | rounded | circle   ecc: L | M | Q | H ("H" is forced with a logo)

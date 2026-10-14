@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NqQrCode } from "@fadymondy/nasaq/vue";
 
-const url = "https://nasaq.fadymondy.com";
+const url = "https://nasaqui.com";
 </script>
 
 <template>

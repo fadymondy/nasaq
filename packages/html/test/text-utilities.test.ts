@@ -38,7 +38,7 @@ describe("text-utilities (Blade example)", () => {
   it("linkify makes safe links, left to right, and keeps trailing punctuation out", async () => {
     const host = await mount();
     const links = [...slot(host, "linkify").querySelectorAll("a")];
-    expect(links.map((a) => a.getAttribute("href"))).toEqual(["https://nasaq-ui.fadymondy.com", "mailto:hello@example.com"]);
+    expect(links.map((a) => a.getAttribute("href"))).toEqual(["https://nasaqui.com", "mailto:hello@example.com"]);
     expect(links[0]!.getAttribute("rel")).toContain("noopener");
     expect(links[1]!.getAttribute("target")).toBeNull();
     expect(links[0]!.parentElement!.getAttribute("dir")).toBe("ltr");
