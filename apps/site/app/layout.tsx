@@ -1,6 +1,7 @@
 import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata, Viewport } from "next";
 import { Alexandria, Inter, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 import type { ReactNode } from "react";
 import { ogImage, SITE_DESCRIPTION } from "@/lib/seo";
 import "./global.css";
@@ -8,6 +9,9 @@ import "./global.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const alexandria = Alexandria({ subsets: ["arabic"], variable: "--font-alexandria" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono" });
+
+// GA4: the Nasaq property, shared with nasaqui.com. Production builds only, so dev.nasaqui.com and local runs send nothing.
+const GA_ID = process.env.NODE_ENV === "production" ? "G-5WCEZ5T93G" : "";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://docs.nasaqui.com"),
@@ -36,6 +40,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" dir="ltr" className={`${inter.variable} ${alexandria.variable} ${mono.variable}`} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
         <RootProvider>{children}</RootProvider>
+        {GA_ID ? (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+            <Script id="ga4" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","${GA_ID}");`}
+            </Script>
+          </>
+        ) : null}
       </body>
     </html>
   );
