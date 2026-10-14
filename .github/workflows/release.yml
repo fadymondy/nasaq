@@ -5,7 +5,12 @@ name: Release
 # @fadymondy/nasaq and @fadymondy/nasaq-mcp with `pnpm release`.
 #
 # Auth: npm trusted publishing (OIDC, no stored token). Configure it once per package on npmjs.com
-# (Settings > Trusted Publisher > GitHub Actions: repo fadymondy/nasaq, workflow release.yml).
+# (Settings > Trusted Publisher > GitHub Actions: repo fadymondy/nasaq, workflow release.yml), and tick
+# "Direct npm publish" under Allowed actions. Trusted publishers created since September 2026 allow only
+# staged publishes by default, and `npm publish` then fails with
+# "E403 ... OIDC permission denied for this action". From a 2FA session the CLI equivalent is:
+#   npm trust github @fadymondy/nasaq --file release.yml --repo fadymondy/nasaq --allow-publish
+#   npm trust github @fadymondy/nasaq-mcp --file release.yml --repo fadymondy/nasaq --allow-publish
 # A brand-new package must be published once by hand first (see docs in packages/nasaq/README.md), because
 # npm only lets you attach a trusted publisher to a package that exists.
 # Fallback: add an NPM_TOKEN repository secret (granular, publish access to both packages); the step below
@@ -70,3 +75,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: "true"
+      # A staged publish (the default for a token without 2FA) reports success but leaves the version
+      # invisible until someone approves it on npmjs.com. Fail loudly so that never passes as a release.
+      - name: Check the versions are on npm
+        run: |
+          for dir in packages/nasaq packages/mcp; do
+            name=$(node -p "require('./$dir/package.json').name")
+            version=$(node -p "require('./$dir/package.json').version")
+            if npm view "$name@$version" version >/dev/null 2>&1; then
+              echo "$name@$version is on npm"
+            else
+              echo "::error::$name@$version is not on npm (staged or failed). Approve it on npmjs.com, or enable Direct npm publish for the trusted publisher."
+              exit 1
+            fi
+          done
