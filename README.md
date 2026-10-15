@@ -170,6 +170,8 @@ Moharrik and Hosbah. The best way to support Nasaq is to **sponsor ToGO**, which
 
 **[Sponsor ToGO →](https://to-go.dev/sponsor)**
 
+Or back Nasaq directly on Open Collective: **[opencollective.com/nasaq-ui →](https://opencollective.com/nasaq-ui)**
+
 <p>
   <a href="https://to-go.dev/sponsor"><img src="https://img.shields.io/badge/Sponsor-ToGO-00ADD8?logo=go&logoColor=white" alt="Sponsor ToGO" /></a>
   <a href="https://github.com/sponsors/fadymondy"><img src="https://img.shields.io/badge/GitHub%20Sponsors-fadymondy-ea4aaa?logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" /></a>
