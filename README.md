@@ -10,7 +10,7 @@
 [![npm](https://img.shields.io/npm/v/@fadymondy/nasaq.svg)](https://www.npmjs.com/package/@fadymondy/nasaq)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/fadymondy/nasaq?style=social)](https://github.com/fadymondy/nasaq/stargazers)
-
+ · [Read the launch article](https://nasaqui.com/en/blog/nasaq-arabic-rtl-design-system-mcp)
 [Docs](https://docs.nasaqui.com) · [Website](https://nasaqui.com) · [Discussions](https://github.com/fadymondy/nasaq/discussions) · [Contributing](CONTRIBUTING.md)
 
 </div>
