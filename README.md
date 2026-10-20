@@ -162,6 +162,18 @@ If you believe something here is used in a way its owner does not allow, please 
 
 Built by Fady Mondy. Made with [Base UI](https://base-ui.com), [Tailwind CSS](https://tailwindcss.com), [shadcn/ui](https://ui.shadcn.com) (registry format and component anatomy), [Storybook](https://storybook.js.org), [Style Dictionary](https://styledictionary.com) and the [DTCG token format](https://www.w3.org/community/design-tokens/).
 
+## Follow the build
+
+Built in public by **[Fady Mondy](https://github.com/fadymondy)** (فادي مندي): open source, AI agents & MCP, Laravel and Go.
+Release notes, deep-dives and behind-the-scenes go out here first:
+
+[![Follow on X](https://img.shields.io/badge/X-@fadymondy-0B1429?style=flat-square&logo=x&logoColor=E2661C)](https://x.com/fadymondy)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Fady%20Mondy-0B1429?style=flat-square&logo=linkedin&logoColor=E2661C)](https://www.linkedin.com/in/fadymondy/)
+[![YouTube](https://img.shields.io/badge/YouTube-@FadyMondy-0B1429?style=flat-square&logo=youtube&logoColor=E2661C)](https://www.youtube.com/@FadyMondy?sub_confirmation=1)
+[![Bluesky](https://img.shields.io/badge/Bluesky-fadymondy-0B1429?style=flat-square&logo=bluesky&logoColor=E2661C)](https://bsky.app/profile/fadymondy.bsky.social)
+[![Threads](https://img.shields.io/badge/Threads-@engfadymondy-0B1429?style=flat-square&logo=threads&logoColor=E2661C)](https://www.threads.com/@engfadymondy)
+[![GitHub followers](https://img.shields.io/github/followers/fadymondy?label=Follow&style=flat-square&logo=github&color=0B1429&logoColor=E2661C)](https://github.com/fadymondy)
+
 ## Sponsor
 
 Nasaq is made by [Fady Mondy](https://github.com/fadymondy), the creator of
